@@ -55,3 +55,11 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_perm
 INSERT INTO `permission` (`libelle`) VALUES ('program.get');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('program.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('program.update');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
