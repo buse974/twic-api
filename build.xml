@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="api-lms" default="main" basedir=".">
+
+	<property name="git.rev" value=""  />
+	<if>
+		<available file=".git" type="dir" />
+		<then>
+		    <exec command="git describe --abbrev=0 --tags" error="/dev/null" outputProperty="git.rev" />
+		</then>
+	</if>
+	<if>
+		<and>
+			<available file=".git" type="dir" />
+			<equals arg1="${git.rev}" arg2="" />
+		</and>
+		<then>
+			<exec command="git log --pretty=format:'%h' -n 1" error="/dev/null" outputProperty="git.rev" />
+	    </then>
+	</if>
+
+	<if>
+		<equals arg1="${git.rev}" arg2="" />
+		<then>
+			<property name="git.rev" value="tmpwow" override="true" />
+		</then>
+	</if>
+
+	<echo message="REVISION : ${git.rev}" />
+
+	<property file="${project.basedir}/Zdeploy/properties/default.properties" />
+	<php function="get_cfg_var" returnProperty="phing.env">
+		<param value="phing.env"/>
+	</php>
+	<if>
+		<not>
+		<equals arg1="${phing.env}" arg2="" />
+		</not>
+		<then>
+		    <property file="${project.basedir}/Zdeploy/properties/${phing.env}.properties" override="true" />
+		</then>
+	</if>
+	<if><isset property="build.env" />
+		<then>
+	    	<property file="${project.basedir}/Zdeploy/properties/${build.env}.properties" override="true" />
+		</then>
+	</if>
+
+	<target name="main">
+		<echo message="+------------------------------------------+"/>
+		<echo message="|                                          |"/>
+		<echo message="|          Building The Project            |"/>
+		<echo message="|                                          |"/>
+		<echo message="+------------------------------------------+"/>
+
+		<phingcall target="configuration" />
+		<if>
+			<equals arg1="${deploy.init}" arg2="true" />
+			<then>
+				<phingcall target="database-deploy" />
+			</then>
+		</if>
+		<phingcall target="database" />
+		<phingcall target="restart-service" />
+		<phingcall target="chown" />
+	</target>
+
+	<target name="configuration">
+		<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="configuration" />
+	</target>
+
+	<target name="restart-service">
+			<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="restart-service" />
+	</target>
+
+	<target name="database-deploy">
+		<phing phingfile="${project.basedir}/Zdeploy/build/build-database.xml" target="database-deploy" />
+	</target>
+
+    <target name="database">
+        <phing phingfile="${project.basedir}/Zdeploy/build/build-database.xml" target="database" />
+    </target>
+
+	<target name="tar">
+		<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="create-targz" />
+	</target>
+
+	<target name="chown">
+		<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="chown" />
+	</target>
+
+</project>

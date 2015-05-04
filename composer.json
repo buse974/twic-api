@@ -1,0 +1,28 @@
+{
+    "name": "buse974/skeleton-application",
+    "description": "Skeleton Application for ZF2",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2"
+    ],
+    "homepage": "https://github.com/buse974/ZendSkeletonApplication/",
+    "require": {
+        "php": ">=5.4",
+        "zendframework/zendframework": "2.4.*",
+        "buse974/dms":"dev-master",
+        "buse974/dal":"dev-master",
+        "buse974/address":"dev-master",
+        "buse974/jrpc":"dev-master",
+	"buse974/ZOpenTok":"dev-master"
+    },
+    "require-dev": {
+            "zendframework/zftool": "dev-develop",
+            "phing/phing": "*",
+            "fabpot/php-cs-fixer":"*",
+            "phpunit/phpunit" : "*"
+    },
+    "config": {
+            "bin-dir": "bin/"
+   }
+}

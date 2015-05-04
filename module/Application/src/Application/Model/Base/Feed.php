@@ -1,0 +1,128 @@
+<?php
+
+namespace Application\Model\Base;
+
+use Dal\Model\AbstractModel;
+
+class Feed extends AbstractModel
+{
+    protected $id;
+    protected $content;
+    protected $user_id;
+    protected $link;
+    protected $video;
+    protected $picture;
+    protected $document;
+    protected $created_date;
+    protected $deleted_date;
+
+    protected $prefix = 'feed';
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    public function setLink($link)
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    public function getVideo()
+    {
+        return $this->video;
+    }
+
+    public function setVideo($video)
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    public function setDocument($document)
+    {
+        $this->document = $document;
+
+        return $this;
+    }
+
+    public function getCreatedDate()
+    {
+        return $this->created_date;
+    }
+
+    public function setCreatedDate($created_date)
+    {
+        $this->created_date = $created_date;
+
+        return $this;
+    }
+
+    public function getDeletedDate()
+    {
+        return $this->deleted_date;
+    }
+
+    public function setDeletedDate($deleted_date)
+    {
+        $this->deleted_date = $deleted_date;
+
+        return $this;
+    }
+}
