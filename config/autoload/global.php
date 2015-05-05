@@ -88,7 +88,7 @@ return array(
     'zopentok-conf' => array(
         'api_key'     =>  '45105812',
         'api_secret'  =>  '071024b92d648e39339d0bb891668401a2254bd4',
-        'expire_time' => 60*60*24*30,
+        'expire_time' => 60 * 60 * 24 * 30,
         'adapter'     => 'http-adapter',
     ),
     'dms-conf' => array(

@@ -13,7 +13,7 @@ class MessageTest extends AbstractService
 		parent::setUpBeforeClass();
 	}
     
-    public function testCanTest()
+   /* public function testCanTest()
     {
         $this->setIdentity(1);
     
@@ -22,11 +22,11 @@ class MessageTest extends AbstractService
         print_r($datas);
         
         exit();
-    }
+    }*/
 	
 	public function testCanSend()
 	{
-		$this->setIdentity(1);
+		$this->setIdentity(3);
 		
 		$datas = $this->jsonRpc('message.send', array(
 				'suject' => 'suject', 
@@ -48,7 +48,7 @@ class MessageTest extends AbstractService
 	
 	public function testCanSave()
 	{
-		$this->setIdentity(1);
+		$this->setIdentity(3);
 		
 		$datas = $this->jsonRpc('message.save', array(
 				'suject' => 'suject2',
@@ -74,6 +74,8 @@ class MessageTest extends AbstractService
 	 */
 	public function testCanAddReveiver($id)
 	{
+		$this->setIdentity(3);
+		
 		$datas = $this->jsonRpc('message.addReceiver', array(
 				'message' => $id['message'],
 				'receiver' => array('user' => 5, 'type' => 'cc')
@@ -94,6 +96,8 @@ class MessageTest extends AbstractService
 	 */
 	public function testCanDeleteReveiver($id, $mess)
 	{
+		$this->setIdentity(3);
+		
 		$datas = $this->jsonRpc('message.deleteReceiver', array(
 				'message' => $mess,
 				'receiver_id' => $id
@@ -111,6 +115,8 @@ class MessageTest extends AbstractService
 	 */
 	public function testCanAddDocument($mess)
 	{
+		$this->setIdentity(3);
+		
 		$datas = $this->jsonRpc('message.addDocument', array(
 				'message' => $mess['message'],
 				'document' => 'token3'
@@ -131,6 +137,8 @@ class MessageTest extends AbstractService
 	 */
 	public function testCanDeleteDoc($id, $mess)
 	{
+		$this->setIdentity(3);
+		
 		$datas = $this->jsonRpc('message.deleteDocument', array(
 				'message' => $mess,
 				'document_id' => $id
@@ -148,7 +156,7 @@ class MessageTest extends AbstractService
 	 */
 	public function testCanUpdateDraftMessage($mess)
 	{
-		$this->setIdentity(1);
+		$this->setIdentity(3);
 		
 		$datas = $this->jsonRpc('message.update', array(
 				'id' => $mess['message'],
@@ -169,6 +177,7 @@ class MessageTest extends AbstractService
 	 */
 	public function testCanSendDraft($mess)
 	{
+		$this->setIdentity(3);
 		$datas = $this->jsonRpc('message.sendById', array(
 				'id' => $mess['message']
 		));
@@ -269,99 +278,72 @@ class MessageTest extends AbstractService
 
 		$this->assertEquals(count($datas) , 3); 
 		$this->assertEquals(count($datas['result']) , 2); 
-		$this->assertEquals($datas['result']['count'] , 3); 
-		$this->assertEquals(count($datas['result']['list']) , 3); 
+		$this->assertEquals($datas['result']['count'] , 2); 
+		$this->assertEquals(count($datas['result']['list']) , 2); 
 		$this->assertEquals(count($datas['result']['list'][0]) , 7); 
-		$this->assertEquals(count($datas['result']['list'][0]['receiver']) , 3); 
+		$this->assertEquals(count($datas['result']['list'][0]['receiver']) , 4); 
 		$this->assertEquals(count($datas['result']['list'][0]['receiver'][0]) , 4); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['id'] , 10); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['id'] , 17); 
 		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['type'] , "to"); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['user_id'] , 4); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['message_id'] , 2); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['user_id'] , 1); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][0]['message_id'] , 4); 
 		$this->assertEquals(count($datas['result']['list'][0]['receiver'][1]) , 4); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['id'] , 11); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['id'] , 18); 
 		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['type'] , "cc"); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['user_id'] , 2); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['message_id'] , 2); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['user_id'] , 3); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][1]['message_id'] , 4); 
 		$this->assertEquals(count($datas['result']['list'][0]['receiver'][2]) , 4); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['id'] , 12); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['type'] , "from"); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['user_id'] , 1); 
-		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['message_id'] , 2); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['id'] , 19); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['type'] , "cci"); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['user_id'] , 4); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][2]['message_id'] , 4); 
+		$this->assertEquals(count($datas['result']['list'][0]['receiver'][3]) , 4); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][3]['id'] , 20); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][3]['type'] , "from"); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][3]['user_id'] , 2); 
+		$this->assertEquals($datas['result']['list'][0]['receiver'][3]['message_id'] , 4); 
 		$this->assertEquals(count($datas['result']['list'][0]['message_user']) , 4); 
-		$this->assertEquals($datas['result']['list'][0]['message_user']['id'] , 7); 
+		$this->assertEquals($datas['result']['list'][0]['message_user']['id'] , 12); 
 		$this->assertEquals(!empty($datas['result']['list'][0]['message_user']['created_date']) , true); 
 		$this->assertEquals($datas['result']['list'][0]['message_user']['deleted_date'] , null); 
 		$this->assertEquals($datas['result']['list'][0]['message_user']['read_date'] , null); 
-		$this->assertEquals($datas['result']['list'][0]['id'] , 2); 
+		$this->assertEquals($datas['result']['list'][0]['id'] , 4); 
 		$this->assertEquals(!empty($datas['result']['list'][0]['message_group_id']) , true); 
-		$this->assertEquals($datas['result']['list'][0]['suject'] , "un suject update"); 
-		$this->assertEquals($datas['result']['list'][0]['content'] , "un content update"); 
+		$this->assertEquals($datas['result']['list'][0]['suject'] , "suject2"); 
+		$this->assertEquals($datas['result']['list'][0]['content'] , "content2"); 
 		$this->assertEquals(!empty($datas['result']['list'][0]['created_date']) , true); 
 		$this->assertEquals(count($datas['result']['list'][1]) , 7); 
 		$this->assertEquals(count($datas['result']['list'][1]['receiver']) , 4); 
 		$this->assertEquals(count($datas['result']['list'][1]['receiver'][0]) , 4); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][0]['id'] , 17); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][0]['id'] , 25); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][0]['type'] , "to"); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][0]['user_id'] , 1); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][0]['message_id'] , 4); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][0]['message_id'] , 6); 
 		$this->assertEquals(count($datas['result']['list'][1]['receiver'][1]) , 4); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][1]['id'] , 18); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][1]['id'] , 26); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][1]['type'] , "cc"); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][1]['user_id'] , 3); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][1]['message_id'] , 4); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][1]['message_id'] , 6); 
 		$this->assertEquals(count($datas['result']['list'][1]['receiver'][2]) , 4); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][2]['id'] , 19); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][2]['id'] , 27); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][2]['type'] , "cci"); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][2]['user_id'] , 4); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][2]['message_id'] , 4); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][2]['message_id'] , 6); 
 		$this->assertEquals(count($datas['result']['list'][1]['receiver'][3]) , 4); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][3]['id'] , 20); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][3]['id'] , 28); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][3]['type'] , "from"); 
 		$this->assertEquals($datas['result']['list'][1]['receiver'][3]['user_id'] , 2); 
-		$this->assertEquals($datas['result']['list'][1]['receiver'][3]['message_id'] , 4); 
+		$this->assertEquals($datas['result']['list'][1]['receiver'][3]['message_id'] , 6); 
 		$this->assertEquals(count($datas['result']['list'][1]['message_user']) , 4); 
-		$this->assertEquals($datas['result']['list'][1]['message_user']['id'] , 12); 
+		$this->assertEquals($datas['result']['list'][1]['message_user']['id'] , 20); 
 		$this->assertEquals(!empty($datas['result']['list'][1]['message_user']['created_date']) , true); 
 		$this->assertEquals($datas['result']['list'][1]['message_user']['deleted_date'] , null); 
 		$this->assertEquals($datas['result']['list'][1]['message_user']['read_date'] , null); 
-		$this->assertEquals($datas['result']['list'][1]['id'] , 4); 
-		$this->assertEquals(!empty($datas['result']['list'][0]['message_group_id']) , true); 
-		$this->assertEquals($datas['result']['list'][1]['suject'] , "suject2"); 
-		$this->assertEquals($datas['result']['list'][1]['content'] , "content2"); 
+		$this->assertEquals($datas['result']['list'][1]['id'] , 6); 
+		$this->assertEquals(!empty($datas['result']['list'][1]['message_group_id']) , true); 
+		$this->assertEquals($datas['result']['list'][1]['suject'] , "sujectG3m2"); 
+		$this->assertEquals($datas['result']['list'][1]['content'] , "contentG3m2"); 
 		$this->assertEquals(!empty($datas['result']['list'][1]['created_date']) , true); 
-		$this->assertEquals(count($datas['result']['list'][2]) , 7); 
-		$this->assertEquals(count($datas['result']['list'][2]['receiver']) , 4); 
-		$this->assertEquals(count($datas['result']['list'][2]['receiver'][0]) , 4); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][0]['id'] , 25); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][0]['type'] , "to"); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][0]['user_id'] , 1); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][0]['message_id'] , 6); 
-		$this->assertEquals(count($datas['result']['list'][2]['receiver'][1]) , 4); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][1]['id'] , 26); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][1]['type'] , "cc"); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][1]['user_id'] , 3); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][1]['message_id'] , 6); 
-		$this->assertEquals(count($datas['result']['list'][2]['receiver'][2]) , 4); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][2]['id'] , 27); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][2]['type'] , "cci"); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][2]['user_id'] , 4); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][2]['message_id'] , 6); 
-		$this->assertEquals(count($datas['result']['list'][2]['receiver'][3]) , 4); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][3]['id'] , 28); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][3]['type'] , "from"); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][3]['user_id'] , 2); 
-		$this->assertEquals($datas['result']['list'][2]['receiver'][3]['message_id'] , 6); 
-		$this->assertEquals(count($datas['result']['list'][2]['message_user']) , 4); 
-		$this->assertEquals($datas['result']['list'][2]['message_user']['id'] , 20); 
-		$this->assertEquals(!empty($datas['result']['list'][2]['message_user']['created_date']) , true); 
-		$this->assertEquals($datas['result']['list'][2]['message_user']['deleted_date'] , null); 
-		$this->assertEquals($datas['result']['list'][2]['message_user']['read_date'] , null); 
-		$this->assertEquals($datas['result']['list'][2]['id'] , 6); 
-		$this->assertEquals(!empty($datas['result']['list'][0]['message_group_id']) , true); 
-		$this->assertEquals($datas['result']['list'][2]['suject'] , "sujectG3m2"); 
-		$this->assertEquals($datas['result']['list'][2]['content'] , "contentG3m2"); 
-		$this->assertEquals(!empty($datas['result']['list'][2]['created_date']) , true); 
 		$this->assertEquals($datas['id'] , 1); 
 		$this->assertEquals($datas['jsonrpc'] , 2.0);
 	
@@ -549,21 +531,33 @@ class MessageTest extends AbstractService
 	public function setIdentity($id)
 	{
 		$identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
-		                     ->disableOriginalConstructor()->getMock();
+							 ->disableOriginalConstructor()->getMock();
 		
+		$rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
+					     ->disableOriginalConstructor()->getMock();
+	
 		$identityMock->expects($this->any())
-		             ->method('getId')
-		             ->will($this->returnValue($id));
-		
+					 ->method('getId')
+					 ->will($this->returnValue($id));
+	
 		$authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
-		                 ->disableOriginalConstructor()->getMock();
+						 ->disableOriginalConstructor()->getMock();
+	
+		$authMock->expects($this->any())
+				 ->method('getIdentity')
+				 ->will($this->returnValue($identityMock));
 		
 		$authMock->expects($this->any())
-		         ->method('getIdentity')
-		         ->will($this->returnValue($identityMock));
+				 ->method('hasIdentity')
+				 ->will($this->returnValue(true));
 		
+		$rbacMock->expects($this->any())
+		         ->method('isGranted')
+		         ->will($this->returnValue(true));
+	
 		$serviceManager = $this->getApplicationServiceLocator();
 		$serviceManager->setAllowOverride(true);
 		$serviceManager->setService('auth.service', $authMock);
+		$serviceManager->setService('rbac.service', $rbacMock);
 	}
 }

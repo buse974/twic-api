@@ -1,4 +1,5 @@
 <?php
+
 namespace Rbac\Db\Service;
 
 use Dal\Service\AbstractService;
@@ -6,7 +7,6 @@ use Dal\Service\AbstractService;
 class Role extends AbstractService
 {
     /**
-     * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function fetchAll()
@@ -17,7 +17,7 @@ class Role extends AbstractService
     public function insert($mRole)
     {
         $this->getMapper()->insert($mRole);
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -25,24 +25,24 @@ class Role extends AbstractService
     {
         return $this->getMapper()->delete($mRole);
     }
-    
+
     public function getAll()
     {
         $res_role = $this->getMapper()->fetchAll();
-        
+
         foreach ($res_role as $m_role) {
-           $m_role->setParent($this->getServiceRole()->getListByParentId($m_role->getId()));
-           $m_role->setPermission($this->getServicePermission()->getListByRole($m_role->getId()));
+            $m_role->setParent($this->getServiceRole()->getListByParentId($m_role->getId()));
+            $m_role->setPermission($this->getServicePermission()->getListByRole($m_role->getId()));
         }
-        
+
         return $res_role;
     }
-    
+
     public function getListByParentId($parent)
     {
         return $this->getMapper()->getListByParentId($parent);
     }
-    
+
     /**
      * @return \Rbac\Db\Service\RoleRelation
      */
@@ -50,7 +50,7 @@ class Role extends AbstractService
     {
         return $this->getServiceLocator()->get('rbac_service_role_relation');
     }
-    
+
     /**
      * @return \Rbac\Db\Service\Role
      */
@@ -58,7 +58,7 @@ class Role extends AbstractService
     {
         return $this->getServiceLocator()->get('rbac_service_role');
     }
-    
+
     /**
      * @return \Rbac\Db\Service\Permission
      */

@@ -1,11 +1,11 @@
 <?php
+
 namespace Rbac\Db\Service;
 
 use Dal\Service\AbstractService;
 
 class RolePermission extends AbstractService
 {
-
     public function getDroits()
     {
         return $this->getMapper()

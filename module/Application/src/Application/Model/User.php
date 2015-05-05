@@ -7,7 +7,7 @@ use Application\Model\Base\User as BaseUser;
 class User extends BaseUser
 {
     protected $school;
-    
+
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {

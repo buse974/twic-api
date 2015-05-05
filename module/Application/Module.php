@@ -21,25 +21,26 @@ class Module
     {
         $eventManager = $event->getApplication()->getEventManager();
         $eventManagerShare = $eventManager->getSharedManager();
-        
-        $eventManagerShare->attach('JRpc\Json\Server\Server','sendRequest.pre', function ($e) use ($event) {
+
+        $eventManagerShare->attach('JRpc\Json\Server\Server', 'sendRequest.pre', function ($e) use ($event) {
             $authService = $event->getApplication()->getServiceManager()->get('auth.service');
             $premission = $e->getParams()['methode'];
-            if($premission!=='user.login') {
-                if(!$authService->hasIdentity()) {
+            if ($premission !== 'user.login') {
+                if (!$authService->hasIdentity()) {
                     throw new JrpcException('Not connected', -32027);
                 }
                 $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
                 $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getCacheIdentity();
-                if(!$rbacService->isGranted($identity['roles'], $premission)) {
-                    if($e->getTarget()->getServiceMap()->getService($premission)===false) {
+
+                if (!$rbacService->isGranted($identity['roles'], $premission)) {
+                    if ($e->getTarget()->getServiceMap()->getService($premission) === false) {
                         throw new JrpcException('Methode not fond', -32028);
                     }
                     throw new JrpcException('Not authorization', -32029);
                 }
             }
         });
-        
+
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
     }

@@ -17,14 +17,14 @@ class Course extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     public function getList($program)
     {
         $select = $this->tableGateway->getSql()->select();
-        
+
         $select->columns(array('id', 'title', 'abstract', 'description', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
                 ->where(array('course.program_id' => $program));
-        
+
         return $this->selectWith($select);
     }
 }

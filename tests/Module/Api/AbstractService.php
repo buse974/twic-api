@@ -31,10 +31,10 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     	}
     }
     
-    public function jsonRpc($method, array $params, $hasToken=true)
+    public function jsonRpc($method, array $params, $hasToken=null)
     {
     	if($hasToken){
-    		$this->getRequest()->getHeaders()->addHeaderLine('Authorization',(is_bool($hasToken)) ?array('token' => rand(100, 1000)):$hasToken);
+    		$this->getRequest()->getHeaders()->addHeaderLine('Authorization',$hasToken);
     	}
     	
         $postJson = json_encode(array('method' => $method, 'id' => 1, 'params' => $params));

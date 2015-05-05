@@ -1,4 +1,5 @@
 <?php
+
 namespace Rbac\Service;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -8,29 +9,23 @@ use Zend\Permissions\Rbac\Rbac as ZRBac;
 
 class Rbac implements ServiceLocatorAwareInterface
 {
-
     /**
-     * 
      * @var \Zend\ServiceManager\ServiceManager
      */
     protected $service_locator;
 
     /**
-     *
      * @var \Zend\Permissions\Rbac\Rbac
      */
     protected $rbac;
 
-
     /**
-     * 
      * @var \Zend\Cache\Storage\StorageInterface
      */
     protected $cache;
-    
+
     /**
-     *
-     * @param array $options            
+     * @param array $options
      */
     public function initialize()
     {
@@ -38,54 +33,55 @@ class Rbac implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Check permission
-     * 
+     * Check permission.
+     *
      * @param array|string $role
-     * @param string $permission
-     * @return boolean
+     * @param string       $permission
+     *
+     * @return bool
      */
-    public function isGranted($role, $permission) 
-    {   
-        if(!is_array($role)) {
+    public function isGranted($role, $permission)
+    {
+        if (!is_array($role)) {
             $role = array($role);
         }
 
         foreach ($role as $r) {
-            if($this->getRbac()->isGranted($r, $permission)) {
+            if ($this->getRbac()->isGranted($r, $permission)) {
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     /**
-     * Get Rbac Obj
-     * 
+     * Get Rbac Obj.
+     *
      * @return \Zend\Permissions\Rbac\Rbac
      */
     public function getRbac()
     {
-        if($this->rbac === null) {
-            if(!$this->getCache()->hasItem('rbac')) {
+        if ($this->rbac === null) {
+            if (!$this->getCache()->hasItem('rbac')) {
                 $roles = $this->getServiceRole()->getAll()->toArray();
                 $rbac = new ZRBac();
                 foreach ($roles as $role) {
                     $ar_child = array();
-                    if(isset($role['parent'])) {
+                    if (isset($role['parent'])) {
                         foreach ($role['parent'] as $parent) {
-                            if(!$rbac->hasRole($parent['name'])) {
+                            if (!$rbac->hasRole($parent['name'])) {
                                 $rbac->addRole(new Role($parent['name']));
                             }
                             $ar_child[] = $rbac->getRole($parent['name']);
                         }
                     }
-                    if(!$rbac->hasRole($role['name'])) {
+                    if (!$rbac->hasRole($role['name'])) {
                         $rbac->addRole(new Role($role['name']));
                     }
                     $r = $rbac->getRole($role['name']);
                     $rbac->addRole($r, $ar_child);
-                    if(isset($role['permission'])) {
+                    if (isset($role['permission'])) {
                         foreach ($role['permission'] as $p) {
                             $r->addPermission($p['libelle']);
                         }
@@ -95,13 +91,13 @@ class Rbac implements ServiceLocatorAwareInterface
             } else {
                 $rbac = $this->getCache()->getItem('rbac');
             }
-            
+
             $this->rbac = $rbac;
         }
 
         return $this->rbac;
     }
-    
+
     /**
      * @return \Rbac\Db\Service\Role
      */
@@ -109,21 +105,21 @@ class Rbac implements ServiceLocatorAwareInterface
     {
         return $this->getServiceLocator()->get('rbac_service_role');
     }
-    
+
     /**
-     * Set servicelocator
+     * Set servicelocator.
      *
-     * @param ServiceLocatorInterface $serviceLocator            
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->service_locator = $serviceLocator;
-        
+
         return $this;
     }
 
     /**
-     * Get service locator
+     * Get service locator.
      *
      * @return ServiceLocatorInterface
      */
@@ -131,9 +127,9 @@ class Rbac implements ServiceLocatorAwareInterface
     {
         return $this->service_locator;
     }
-    
+
     /**
-     * Get Storage if define in config
+     * Get Storage if define in config.
      *
      * @return \Zend\Cache\Storage\StorageInterface
      */
@@ -146,7 +142,7 @@ class Rbac implements ServiceLocatorAwareInterface
                 $this->cache = $this->getServiceLocator()->get($cache['name']);
             }
         }
-    
+
         return $this->cache;
     }
 }

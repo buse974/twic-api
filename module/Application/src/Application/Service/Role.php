@@ -3,7 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\UserRole;
 use Application\Model\Role as ModelRole;
 
 class Role extends AbstractService
@@ -88,13 +87,12 @@ class Role extends AbstractService
 
         return $this->getMapper()->getRoleByUser($id);
     }
-    
 
     public function getIdByName($namerole)
     {
         return array_search($namerole, ModelRole::$role);
     }
-    
+
     /**
      * @return \Application\Service\UserRole
      */

@@ -65,43 +65,24 @@ class UserTest extends AbstractService
 	
 	public function testLoginIn()
 	{
-	    $datas = $this->jsonRpc('user.login', array('user' => 'xhoang@thestudnet.com', 'password' => 'thestudnet'));
+	    $datas = $this->jsonRpc('user.login', array('user' => 'crobert@thestudnet.com', 'password' => 'thestudnet'));
 
 	    $this->assertEquals(count($datas) , 3);
 	    $this->assertEquals(count($datas['result']) , 8);
-	    $this->assertEquals($datas['result']['id'] , 2);
-	    $this->assertEquals(!empty($datas['result']['token']) , true);
-	    $this->assertEquals($datas['result']['created_date'] , null);
-	    $this->assertEquals($datas['result']['firstname'] , "Xuan-Anh");
-	    $this->assertEquals($datas['result']['lastname'] , "Hoang");
-	    $this->assertEquals($datas['result']['email'] , "xhoang@thestudnet.com");
-	    $this->assertEquals($datas['result']['expiration_date'] , null);
-	    $this->assertEquals(count($datas['result']['roles']) , 1);
-	    $this->assertEquals($datas['result']['roles'][0] , "admin");
-	    $this->assertEquals($datas['id'] , 1);
-	    $this->assertEquals($datas['jsonrpc'] , 2.0);
-	
-	    return $datas['result']['token'];
-	}
-	
-	/**
-	 * @depends testLogin
-	 */
-	public function testGetIdentity($token)
-	{
-	    $datas = $this->jsonRpc('user.getIdentity', array(),$token);
-	
-	    $this->assertEquals(count($datas) , 3);
-	    $this->assertEquals(count($datas['result']) , 7);
-	    $this->assertEquals($datas['result']['id'] , 106);
+	    $this->assertEquals($datas['result']['id'] , 3);
 	    $this->assertEquals(!empty($datas['result']['token']) , true);
 	    $this->assertEquals($datas['result']['created_date'] , null);
 	    $this->assertEquals($datas['result']['firstname'] , "Christophe");
 	    $this->assertEquals($datas['result']['lastname'] , "Robert");
-	    $this->assertEquals($datas['result']['email'] , "crobertr@thestudnet.com");
+	    $this->assertEquals($datas['result']['email'] , "crobert@thestudnet.com");
 	    $this->assertEquals($datas['result']['expiration_date'] , null);
+	    $this->assertEquals(count($datas['result']['roles']) , 1);
+	    $this->assertEquals($datas['result']['roles'][0] , "academic");
 	    $this->assertEquals($datas['id'] , 1);
 	    $this->assertEquals($datas['jsonrpc'] , 2.0);
+
+	
+	    return $datas['result']['token'];
 	}
 
 	/**
@@ -109,6 +90,8 @@ class UserTest extends AbstractService
 	 */
 	public function testUpdate($id)
 	{
+		$this->setIdentity(1);
+		
 		$datas = $this->jsonRpc('user.update', array(
 			'id' => $id,
 			'firstname' => 'Jean', 
@@ -157,7 +140,7 @@ class UserTest extends AbstractService
 	    $this->assertEquals($datas['result']['interest'] , "un interet new");
 	    $this->assertEquals($datas['result']['avatar'] , "un_token_new");
 	    $this->assertEquals(count($datas['result']['roles']) , 1);
-	    $this->assertEquals($datas['result']['roles'][0] , "sadmin");
+	    $this->assertEquals($datas['result']['roles'][0] , "super-admin");
 	    $this->assertEquals($datas['id'] , 1);
 	    $this->assertEquals($datas['jsonrpc'] , 2.0);
 	}
@@ -186,6 +169,8 @@ class UserTest extends AbstractService
 	 */
 	public function testDelete($id)
 	{
+		$this->setIdentity(1);
+		
 		$datas = $this->jsonRpc('user.delete', array(
 				'id' => $id,
 		));
@@ -228,22 +213,34 @@ class UserTest extends AbstractService
 	
 	public function setIdentity($id)
 	{
-	    $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
-	    ->disableOriginalConstructor()->getMock();
+		$identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
+		->disableOriginalConstructor()->getMock();
 	
-	    $identityMock->expects($this->any())
-	    ->method('getId')
-	    ->will($this->returnValue($id));
+		$rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
+		->disableOriginalConstructor()->getMock();
 	
-	    $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
-	    ->disableOriginalConstructor()->getMock();
+		$identityMock->expects($this->any())
+		->method('getId')
+		->will($this->returnValue($id));
 	
-	    $authMock->expects($this->any())
-	    ->method('getIdentity')
-	    ->will($this->returnValue($identityMock));
+		$authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
+		->disableOriginalConstructor()->getMock();
 	
-	    $serviceManager = $this->getApplicationServiceLocator();
-	    $serviceManager->setAllowOverride(true);
-	    $serviceManager->setService('auth.service', $authMock);
+		$authMock->expects($this->any())
+		->method('getIdentity')
+		->will($this->returnValue($identityMock));
+	
+		$authMock->expects($this->any())
+		->method('hasIdentity')
+		->will($this->returnValue(true));
+	
+		$rbacMock->expects($this->any())
+		->method('isGranted')
+		->will($this->returnValue(true));
+	
+		$serviceManager = $this->getApplicationServiceLocator();
+		$serviceManager->setAllowOverride(true);
+		$serviceManager->setService('auth.service', $authMock);
+		$serviceManager->setService('rbac.service', $rbacMock);
 	}
 }

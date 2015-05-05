@@ -170,10 +170,10 @@ class Course extends AbstractService
 
         return $m_course;
     }
-    
+
     /**
      * @invokable
-     * 
+     *
      * @param unknown $program
      */
     public function getList($program)

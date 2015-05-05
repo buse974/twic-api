@@ -18,11 +18,11 @@ class UserRole extends AbstractService
 
         return true;
     }
-    
-    public function deleteByUser($id) 
+
+    public function deleteByUser($id)
     {
         $m_user_role = $this->getModel()->setUserId($id);
-        
+
         return $this->getMapper()->delete($m_user_role);
     }
 }

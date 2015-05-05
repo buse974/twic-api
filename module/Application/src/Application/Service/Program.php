@@ -65,38 +65,38 @@ class Program extends AbstractService
 
     /**
      * @invokable
-     * 
+     *
      * @param array $filter
      */
     public function getList($filter = null, $search = null)
     {
         $res_program =  $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
-        
+
         foreach ($res_program['list'] as $m_program) {
-            $m_program->setStudent($this->getServiceUser()->getList(null,'student',null,null,$m_program->getId()));
-            $m_program->setInstructor($this->getServiceUser()->getList(null,'instructor',null,null,$m_program->getId()));
+            $m_program->setStudent($this->getServiceUser()->getList(null, 'student', null, null, $m_program->getId()));
+            $m_program->setInstructor($this->getServiceUser()->getList(null, 'instructor', null, null, $m_program->getId()));
             $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId()));
         }
-        
+
         return $res_program;
     }
-    
+
     /**
      * @invokable
      *
-     * @param integer $id
+     * @param int $id
      */
     public function get($id)
     {
         $res_program = $this->getMapper()->get($id);
-        
-        if($res_program->count() <= 0) {
+
+        if ($res_program->count() <= 0) {
             throw new \Exception('error get program');
         }
-        
+
         $m_program = $res_program->current();
-        $m_program->setStudent($this->getServiceUser()->getList(null,'student',null,null,$m_program->getId()));
-        $m_program->setInstructor($this->getServiceUser()->getList(null,'instructor',null,null,$m_program->getId()));
+        $m_program->setStudent($this->getServiceUser()->getList(null, 'student', null, null, $m_program->getId()));
+        $m_program->setInstructor($this->getServiceUser()->getList(null, 'instructor', null, null, $m_program->getId()));
         $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId()));
 
         return $m_program;
@@ -126,16 +126,16 @@ class Program extends AbstractService
     public function delete($id)
     {
         $ret = array();
-        
-        if(!is_array($id)) {
+
+        if (!is_array($id)) {
             $id = array($id);
         }
-        
+
         foreach ($id as $p) {
             $m_program = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($p);
             $ret[$p] = $this->getMapper()->update($m_program);
         }
-        
+
         return $ret;
     }
 
@@ -146,7 +146,7 @@ class Program extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
+
     /**
      * @return \Application\Service\Course
      */
@@ -154,7 +154,7 @@ class Program extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_course');
     }
-    
+
     /**
      * @return \Zend\Authentication\AuthenticationService
      */

@@ -1,13 +1,11 @@
 <?php
+
 namespace Rbac\Db\Model;
 
 use Rbac\Db\Model\Base\RolePermission as BaseRolePermission;
-use Rbac\Db\Model\Role;
-use Rbac\Db\Model\Permission;
 
 class RolePermission extends BaseRolePermission
 {
-
     protected $role;
 
     protected $permission;
@@ -15,10 +13,10 @@ class RolePermission extends BaseRolePermission
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
-        
+
         $this->permission = new Permission($this);
         $this->role = new Role($this);
-        
+
         $this->permission->exchangeArray($data);
         $this->role->exchangeArray($data);
     }
@@ -31,7 +29,7 @@ class RolePermission extends BaseRolePermission
     public function setRole($role)
     {
         $this->role = $role;
-        
+
         return $this;
     }
 
@@ -43,7 +41,7 @@ class RolePermission extends BaseRolePermission
     public function setPermission($permission)
     {
         $this->permission = $permission;
-        
+
         return $this;
     }
 }

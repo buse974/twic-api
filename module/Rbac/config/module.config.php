@@ -1,4 +1,5 @@
 <?php
+
 return array(
     'dal-conf' => array(
         'namespace' => array(

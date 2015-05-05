@@ -1,11 +1,11 @@
 <?php
+
 namespace Rbac\Db\Model\Base;
 
 use Dal\Model\AbstractModel;
 
 class Role extends AbstractModel
 {
-
     protected $id;
 
     protected $name;
@@ -20,14 +20,14 @@ class Role extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
 
     public function setName($name)
     {
         $this->name = $name;
-        
+
         return $this;
     }
 

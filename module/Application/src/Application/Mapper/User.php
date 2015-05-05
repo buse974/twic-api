@@ -34,7 +34,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null)
+    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $nopragram = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
@@ -74,7 +74,7 @@ class User extends AbstractMapper
         }
 
         if ($type !== null) {
-            if(!is_array($type)) {
+            if (!is_array($type)) {
                 $type = array($type => true);
             }
             $ts = array();
@@ -93,7 +93,7 @@ class User extends AbstractMapper
             }
         }
 
-        if ($program !== null || $level !== null || $course !== null || $search !== null) {
+        if ($program !== null || $level !== null || $course !== null || $search !== null || $nopragram !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
         }
         if ($level !== null || $course !== null || $search !== null) {
@@ -112,6 +112,14 @@ class User extends AbstractMapper
             ));
         }
 
+        if ($nopragram) {
+            if (!is_array($nopragram)) {
+                foreach ($nopragram as $np) {
+                    $select->where(array('program_user_relation.program_id <> ? ' => $np));
+                }
+            }
+        }
+
         if ($level) {
             $select->where(array(
                 'program.level' => $level,
@@ -125,7 +133,7 @@ class User extends AbstractMapper
         }
 
         $select->where('user.deleted_date IS NULL');
-        
+
         return $this->selectWith($select);
     }
 }

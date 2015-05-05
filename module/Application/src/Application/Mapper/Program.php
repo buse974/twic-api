@@ -6,15 +6,15 @@ use Dal\Mapper\AbstractMapper;
 
 class Program extends AbstractMapper
 {
-    public function get($id) 
+    public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'name', 'level', 'sis'))
             ->where(array('program.id' => $id));
-        
+
         return $this->selectWith($select);
     }
-    
+
     public function getList($user_program, $all = false, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -39,14 +39,14 @@ class Program extends AbstractMapper
             $select->join('program_user_relation', 'program_user_relation.program_id=program.id', array())
                     ->where(array('program_user_relation.user_id' => $user_program));
         }
-        
+
         if ($search !== null) {
-            $select->where(array(' ( program.name LIKE ? ' => $search . '%'))
-                   ->where(array('program.sis LIKE ? ) ' => $search . '%'), 'OR');
+            $select->where(array(' ( program.name LIKE ? ' => $search.'%'))
+                   ->where(array('program.sis LIKE ? ) ' => $search.'%'), 'OR');
         }
 
         $select->where(array('program.deleted_date IS NULL'));
-        
+
         return $this->selectWith($select);
     }
 

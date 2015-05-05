@@ -1,11 +1,11 @@
 <?php
+
 namespace Rbac\Db\Model\Base;
 
 use Dal\Model\AbstractModel;
 
 class RoleRelation extends AbstractModel
 {
-
     protected $role_id;
 
     protected $parent_id;
@@ -15,7 +15,7 @@ class RoleRelation extends AbstractModel
     public function setRoleId($role_id)
     {
         $this->role_id = $role_id;
-        
+
         return $this;
     }
 
@@ -32,7 +32,7 @@ class RoleRelation extends AbstractModel
     public function setParentId($parent_id)
     {
         $this->parent_id = $parent_id;
-        
+
         return $this;
     }
 }
