@@ -160,3 +160,16 @@ INSERT INTO `program_user_relation` (`program_id`,`user_id`) VALUES ("78",61),("
 INSERT INTO `program_user_relation` (`program_id`,`user_id`) VALUES ("78",71),("78",72),("50",73),("46",74),("69",75),("69",76),("46",77),("69",78),("78",79),("78",80);
 INSERT INTO `program_user_relation` (`program_id`,`user_id`) VALUES ("69",81),("50",82),("50",83),("69",84),("50",85),("50",86),("69",87),("46",88),("78",89),("50",90);
 INSERT INTO `program_user_relation` (`program_id`,`user_id`) VALUES ("69",91),("50",92),("69",93),("46",94),("69",95),("50",96),("78",97),("50",98),("78",99),("78",100);
+
+INSERT INTO `course` (`id`,`title`,`creator_id`,`abstract`,`description`,`objectives`,`teaching`,`attendance`,`duration`,`notes`,`learning_outcomes`,`created_date`,`version`,`program_id`,`sis`)
+VALUES(1,"un cour",2,"description","long description","objectives","teaching","attendance",300,"notes","learning_outcomes","2015-20-11",1,46,1254);
+
+INSERT INTO `course` (`id`,`title`,`creator_id`,`abstract`,`description`,`objectives`,`teaching`,`attendance`,`duration`,`notes`,`learning_outcomes`,`created_date`,`version`,`program_id`,`sis`)
+VALUES(2,"un deuxieme cour",2,"description","long description","objectives","teaching","attendance",200,"notes","learning_outcomes","2015-20-12",1,46,1254);
+
+INSERT INTO `course` (`id`,`title`,`creator_id`,`abstract`,`description`,`objectives`,`teaching`,`attendance`,`duration`,`notes`,`learning_outcomes`,`created_date`,`version`,`program_id`,`sis`)
+VALUES(3,"un troisieme cour",2,"description","long description","objectives","teaching","attendance",400,"notes","learning_outcomes","2015-20-01",1,46,1254);
+
+INSERT INTO `course` (`id`,`title`,`creator_id`,`abstract`,`description`,`objectives`,`teaching`,`attendance`,`duration`,`notes`,`learning_outcomes`,`created_date`,`version`,`program_id`,`sis`)
+VALUES(4,"un quatrieme cour",2,"description","long description","objectives","teaching","attendance",500,"notes","learning_outcomes","2014-20-11",1,46,1254);
+

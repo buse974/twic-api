@@ -245,13 +245,25 @@ class User extends AbstractService
      */
     public function deleteProgram($user, $program)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setProgramId($program)
-            ->setUserId($user));
+    	if(!is_array($user)) {
+    		$user = array($user);
+    	}
+    	
+    	if(!is_array($program)) {
+    		$program = array($program);
+    	}
+    	
+    	foreach ($user as $u) {
+	    	foreach ($program as $p) {
+		        return $this->getMapper()->delete($this->getModel()
+		            ->setProgramId($p)
+		            ->setUserId($u));
+	    	}
+    	}
     }
 
     /**
-     * Update User.
+     * Update User
      *
      * @invokable
      *
