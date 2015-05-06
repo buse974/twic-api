@@ -199,6 +199,11 @@ class User extends AbstractService
             'count' => $mapper->count(),
         );
     }
+    
+    public function getListOnly($course)
+    {
+    	return $this->getMapper()->getList(null, null, null, null, null, $course);
+    }
 
     /**
      * @invokable

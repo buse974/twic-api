@@ -11,6 +11,7 @@ class Course extends BaseCourse
     protected $grading;
     protected $grading_policy;
     protected $module;
+    protected $users;
 
     public function exchangeArray(array &$data)
     {
@@ -27,6 +28,18 @@ class Course extends BaseCourse
         $this->creator->exchangeArray($data);
     }
 
+    public function setUsers($users) 
+    {
+    	$this->users = $users;
+    	
+        return $this;
+    }
+    
+    public function getUsers()
+    {
+    	return $this->users; 
+    }
+    
     public function setCreator($creator)
     {
         $this->creator = $creator;

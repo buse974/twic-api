@@ -178,7 +178,13 @@ class Course extends AbstractService
      */
     public function getList($program)
     {
-        return $this->getMapper()->getList($program);
+        $res_course = $this->getMapper()->getList($program);
+     
+        foreach ($res_course as $m_course) {
+        	$m_course->setUsers($this->getServiceUser()->getListOnly($m_course->getId()));
+        }
+        
+        return $res_course;
     }
 
     /**
@@ -211,6 +217,14 @@ class Course extends AbstractService
     public function getServiceModule()
     {
         return $this->getServiceLocator()->get('app_service_module');
+    }
+    
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+    	return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
