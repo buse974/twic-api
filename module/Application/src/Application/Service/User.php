@@ -11,18 +11,6 @@ use Application\Model\Role as ModelRole;
 class User extends AbstractService
 {
     /**
-     * @invokable
-     */
-    public function test()
-    {
-        $rbacService = $this->getServiceLocator()->get('rbac.security');
-
-        $rbacService->initialize();
-
-        exit();
-    }
-
-    /**
      * Log user.
      *
      * @invokable
@@ -238,28 +226,14 @@ class User extends AbstractService
     /**
      * @invokable
      *
-     * @param int $user
-     * @param int $program
+     * @param int|array $user
+     * @param int|array $program
      *
-     * @return int
+     * @return integer
      */
     public function deleteProgram($user, $program)
     {
-    	if(!is_array($user)) {
-    		$user = array($user);
-    	}
-    	
-    	if(!is_array($program)) {
-    		$program = array($program);
-    	}
-    	
-    	foreach ($user as $u) {
-	    	foreach ($program as $p) {
-		        return $this->getMapper()->delete($this->getModel()
-		            ->setProgramId($p)
-		            ->setUserId($u));
-	    	}
-    	}
+    	return $this->getServiceProgramUserRelation()->deleteProgram($user, $program);
     }
 
     /**

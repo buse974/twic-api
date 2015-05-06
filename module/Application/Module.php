@@ -21,11 +21,10 @@ class Module
     {
         $eventManager = $event->getApplication()->getEventManager();
         $eventManagerShare = $eventManager->getSharedManager();
-
         $eventManagerShare->attach('JRpc\Json\Server\Server', 'sendRequest.pre', function ($e) use ($event) {
-            $authService = $event->getApplication()->getServiceManager()->get('auth.service');
             $premission = $e->getParams()['methode'];
             if ($premission !== 'user.login') {
+            	$authService = $event->getApplication()->getServiceManager()->get('auth.service');
                 if (!$authService->hasIdentity()) {
                     throw new JrpcException('Not connected', -32027);
                 }
