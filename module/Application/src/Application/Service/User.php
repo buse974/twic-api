@@ -175,12 +175,12 @@ class User extends AbstractService
      *
      * @return array
      */
-    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $nopragram = null)
+    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null)
     {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList($filter, null, $this->getServiceAuth()
             ->getIdentity()
-            ->getId(), $type, $level, $course, $program, $search, $nopragram);
+            ->getId(), $type, $level, $course, $program, $search, $noprogram);
 
         $res = $res->toArray();
 
