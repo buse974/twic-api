@@ -23,7 +23,8 @@ class Course extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'title', 'abstract', 'description', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
-                ->where(array('course.program_id' => $program));
+                ->where(array('course.program_id' => $program))
+                ->where(array('course.deleted_date IS NULL'));
 
         return $this->selectWith($select);
     }
