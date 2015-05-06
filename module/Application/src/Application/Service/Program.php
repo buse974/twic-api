@@ -20,7 +20,7 @@ class Program extends AbstractService
      *
      * @return int
      */
-    public function add($name, $school_id, $level, $sis = null)
+    public function add($name, $school_id, $level = null, $sis = null)
     {
         $m_program = $this->getModel();
 
