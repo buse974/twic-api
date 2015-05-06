@@ -132,10 +132,7 @@ class Course extends AbstractService
         $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($ret = $this->getMapper()->update($m_course, array(
-            'id' => $id,
-            'creator_id' => $this->getServiceAuth()
-                ->getIdentity()
-                ->getId(),
+            'id' => $id
         )) > 0) {
             $this->getServiceMaterialDocument()->deleteByCourseId($id);
         }
