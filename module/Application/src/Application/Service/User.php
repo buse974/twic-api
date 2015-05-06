@@ -172,6 +172,7 @@ class User extends AbstractService
      * @param string $course
      * @param string $program
      * @param string $search
+     * @param string $noprogram
      *
      * @return array
      */

@@ -114,10 +114,13 @@ class User extends AbstractMapper
 
         if ($nopragram) {
             if (!is_array($nopragram)) {
-                foreach ($nopragram as $np) {
-                    $select->where(array('program_user_relation.program_id <> ? ' => $np));
-                }
+            	$nopragram = array($nopragram);
             }
+            
+            foreach ($nopragram as $np) {
+                $select->where(array('program_user_relation.program_id <> ? ' => $np));
+            }
+            
         }
 
         if ($level) {
