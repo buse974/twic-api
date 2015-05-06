@@ -201,9 +201,9 @@ class User extends AbstractService
         );
     }
     
-    public function getListOnly($course)
+    public function getListOnly($type, $course)
     {
-    	return $this->getMapper()->getList(null, null, null, null, null, $course);
+    	return $this->getMapper()->getList(null, $type, null, null, null, $course);
     }
 
     /**

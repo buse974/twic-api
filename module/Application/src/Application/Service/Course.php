@@ -181,7 +181,8 @@ class Course extends AbstractService
         $res_course = $this->getMapper()->getList($program);
      
         foreach ($res_course as $m_course) {
-        	$m_course->setUsers($this->getServiceUser()->getListOnly($m_course->getId()));
+        	$m_course->setStudent($this->getServiceUser()->getListOnly('student', $m_course->getId()));
+        	$m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
         }
         
         return $res_course;

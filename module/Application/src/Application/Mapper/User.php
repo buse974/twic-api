@@ -34,7 +34,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $nopragram = null)
+    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
@@ -93,7 +93,7 @@ class User extends AbstractMapper
             }
         }
 
-        if ($program !== null || $level !== null || $course !== null || $search !== null || $nopragram !== null) {
+        if ($program !== null || $level !== null || $course !== null || $search !== null || $noprogram !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
         }
         if ($level !== null || $course !== null || $search !== null) {
@@ -112,12 +112,12 @@ class User extends AbstractMapper
             ));
         }
 
-        if ($nopragram) {
-            if (!is_array($nopragram)) {
-            	$nopragram = array($nopragram);
+        if ($noprogram) {
+            if (!is_array($noprogram)) {
+            	$noprogram = array($noprogram);
             }
             
-            foreach ($nopragram as $np) {
+            foreach ($noprogram as $np) {
                 $select->where(array('program_user_relation.program_id <> ? ' => $np));
             }
             
