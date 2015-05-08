@@ -93,11 +93,9 @@ class User extends AbstractMapper
             }
         }
 
-        if ( ($program !== null || $level !== null || $course !== null || $search !== null) && $noprogram === null) {
+        if ($program !== null || $level !== null || $course !== null || $search !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
-        }else if($program !== null || $level !== null || $course !== null || $search !== null || $noprogram !== null){
-        	$select->join('program_user_relation', 'program_user_relation.user_id=user.id', array());
-        } 
+        }
         
         if ($level !== null || $course !== null || $search !== null) {
             $select->join('program', 'program_user_relation.program_id=program.id', array(), $select::JOIN_LEFT);
@@ -117,15 +115,13 @@ class User extends AbstractMapper
 
         if ($noprogram !== null) {
         	
-            if (!is_array($noprogram)) {
-            	$noprogram = array($noprogram);
-            }
-            
-            foreach ($noprogram as $np) {
-            	
-                $select->where(array('program_user_relation.program_id <> ? ' => $np));
-            }
-            
+        	$selectUser = $this->tableGateway->getSql()->select();
+        	
+        	$selectUser->columns(array('id'))
+			           ->join('program_user_relation', 'program_user_relation.user_id = user.id', array())
+			           ->where(array('program_user_relation.program_id' => $noprogram))
+			           ->where(array('user.deleted_date IS NULL'));
+        	 $select->where(array('user.id NOT IN ? ' => $selectUser));
         }
 
         if ($level) {
@@ -142,6 +138,7 @@ class User extends AbstractMapper
 
         $select->where('user.deleted_date IS NULL');
 
+        echo $this->printSql($select);
         return $this->selectWith($select);
     }
 }
