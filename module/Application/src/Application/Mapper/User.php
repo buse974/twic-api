@@ -138,7 +138,6 @@ class User extends AbstractMapper
 
         $select->where('user.deleted_date IS NULL');
 
-        echo $this->printSql($select);
         return $this->selectWith($select);
     }
 }
