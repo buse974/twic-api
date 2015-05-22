@@ -395,7 +395,7 @@ class CourseTest extends AbstractService
         $this->assertEquals(count($datas['result']['material_document']) , 1);
         $this->assertEquals(count($datas['result']['material_document'][0]) , 12);
         $this->assertEquals($datas['result']['material_document'][0]['id'] , 1);
-        $this->assertEquals($datas['result']['material_document'][0]['course_id'] , 1);
+        $this->assertEquals($datas['result']['material_document'][0]['course_id'] , 5);
         $this->assertEquals($datas['result']['material_document'][0]['type'] , "link");
         $this->assertEquals($datas['result']['material_document'][0]['title'] , "title");
         $this->assertEquals($datas['result']['material_document'][0]['author'] , "author");
@@ -415,7 +415,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][0]['grade'] , 4);
         $this->assertEquals($datas['result']['grading'][0]['description'] , "Outstanding performance, works shows superior command of the subject.");
         $this->assertEquals($datas['result']['grading'][0]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][0]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][0]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][1]) , 8);
         $this->assertEquals($datas['result']['grading'][1]['id'] , 14);
         $this->assertEquals($datas['result']['grading'][1]['letter'] , "A-");
@@ -424,7 +424,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][1]['grade'] , 3.7);
         $this->assertEquals($datas['result']['grading'][1]['description'] , "Very good work showing understanding and mastery of all concepts.");
         $this->assertEquals($datas['result']['grading'][1]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][1]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][1]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][2]) , 8);
         $this->assertEquals($datas['result']['grading'][2]['id'] , 15);
         $this->assertEquals($datas['result']['grading'][2]['letter'] , "B+");
@@ -433,7 +433,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][2]['grade'] , 3.3);
         $this->assertEquals($datas['result']['grading'][2]['description'] , "Good work showing understanding and mastery of most concepts.");
         $this->assertEquals($datas['result']['grading'][2]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][2]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][2]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][3]) , 8);
         $this->assertEquals($datas['result']['grading'][3]['id'] , 16);
         $this->assertEquals($datas['result']['grading'][3]['letter'] , "B");
@@ -442,7 +442,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][3]['grade'] , 3);
         $this->assertEquals($datas['result']['grading'][3]['description'] , "Fairly good work that shows an understanding of the main concepts.");
         $this->assertEquals($datas['result']['grading'][3]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][3]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][3]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][4]) , 8);
         $this->assertEquals($datas['result']['grading'][4]['id'] , 17);
         $this->assertEquals($datas['result']['grading'][4]['letter'] , "B-");
@@ -451,7 +451,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][4]['grade'] , 2.7);
         $this->assertEquals($datas['result']['grading'][4]['description'] , "Fairly good work showing understanding of several important concepts.");
         $this->assertEquals($datas['result']['grading'][4]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][4]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][4]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][5]) , 8);
         $this->assertEquals($datas['result']['grading'][5]['id'] , 18);
         $this->assertEquals($datas['result']['grading'][5]['letter'] , "C+");
@@ -460,7 +460,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][5]['grade'] , 2.3);
         $this->assertEquals($datas['result']['grading'][5]['description'] , "Uneven understanding of the concepts with occasional lack of clarity");
         $this->assertEquals($datas['result']['grading'][5]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][5]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][5]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][6]) , 8);
         $this->assertEquals($datas['result']['grading'][6]['id'] , 19);
         $this->assertEquals($datas['result']['grading'][6]['letter'] , "C");
@@ -469,7 +469,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][6]['grade'] , 2);
         $this->assertEquals($datas['result']['grading'][6]['description'] , "Work that barely meets modest expectations for the class");
         $this->assertEquals($datas['result']['grading'][6]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][6]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][6]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][7]) , 8);
         $this->assertEquals($datas['result']['grading'][7]['id'] , 20);
         $this->assertEquals($datas['result']['grading'][7]['letter'] , "C-");
@@ -478,7 +478,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][7]['grade'] , 1.7);
         $this->assertEquals($datas['result']['grading'][7]['description'] , "Work that is below modest expectations for the class");
         $this->assertEquals($datas['result']['grading'][7]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][7]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][7]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][8]) , 8);
         $this->assertEquals($datas['result']['grading'][8]['id'] , 21);
         $this->assertEquals($datas['result']['grading'][8]['letter'] , "D+");
@@ -487,7 +487,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][8]['grade'] , 1.3);
         $this->assertEquals($datas['result']['grading'][8]['description'] , "Poor performance with lack of understanding of several important concepts");
         $this->assertEquals($datas['result']['grading'][8]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][8]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][8]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][9]) , 8);
         $this->assertEquals($datas['result']['grading'][9]['id'] , 22);
         $this->assertEquals($datas['result']['grading'][9]['letter'] , "D");
@@ -496,7 +496,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][9]['grade'] , 1);
         $this->assertEquals($datas['result']['grading'][9]['description'] , "Work that is marginally above the minimum expectations for the class");
         $this->assertEquals($datas['result']['grading'][9]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][9]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][9]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][10]) , 8);
         $this->assertEquals($datas['result']['grading'][10]['id'] , 23);
         $this->assertEquals($datas['result']['grading'][10]['letter'] , "D-");
@@ -505,7 +505,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][10]['grade'] , 0.7);
         $this->assertEquals($datas['result']['grading'][10]['description'] , "Work that barely meets the minimum expectations for the class");
         $this->assertEquals($datas['result']['grading'][10]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][10]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][10]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading'][11]) , 8);
         $this->assertEquals($datas['result']['grading'][11]['id'] , 24);
         $this->assertEquals($datas['result']['grading'][11]['letter'] , "F");
@@ -514,23 +514,23 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][11]['grade'] , 0);
         $this->assertEquals($datas['result']['grading'][11]['description'] , "Work does not meet the minimum expectations for the class");
         $this->assertEquals($datas['result']['grading'][11]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading'][11]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading'][11]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading_policy']) , 2);
         $this->assertEquals(count($datas['result']['grading_policy'][0]) , 6);
         $this->assertEquals($datas['result']['grading_policy'][0]['id'] , 3);
         $this->assertEquals($datas['result']['grading_policy'][0]['name'] , "Individual Assignment");
         $this->assertEquals($datas['result']['grading_policy'][0]['grade'] , null);
         $this->assertEquals($datas['result']['grading_policy'][0]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading_policy'][0]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading_policy'][0]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][0]['mandatory'] , 1);
         $this->assertEquals(count($datas['result']['grading_policy'][1]) , 6);
         $this->assertEquals($datas['result']['grading_policy'][1]['id'] , 4);
         $this->assertEquals($datas['result']['grading_policy'][1]['name'] , "Group work");
         $this->assertEquals($datas['result']['grading_policy'][1]['grade'] , null);
         $this->assertEquals($datas['result']['grading_policy'][1]['tpl'] , 0);
-        $this->assertEquals($datas['result']['grading_policy'][1]['course_id'] , 1);
+        $this->assertEquals($datas['result']['grading_policy'][1]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][1]['mandatory'] , 1);
-        $this->assertEquals($datas['result']['id'] , 1);
+        $this->assertEquals($datas['result']['id'] , 5);
         $this->assertEquals($datas['result']['title'] , "IMERIR");
         $this->assertEquals($datas['result']['abstract'] , "un_token");
         $this->assertEquals($datas['result']['description'] , "description");
@@ -833,14 +833,14 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result'][0]['name'], "Individual Assignment");
         $this->assertEquals($datas['result'][0]['grade'], null);
         $this->assertEquals($datas['result'][0]['tpl'], 0);
-        $this->assertEquals($datas['result'][0]['course_id'], 1);
+        $this->assertEquals($datas['result'][0]['course_id'], 5);
         $this->assertEquals($datas['result'][0]['mandatory'], 1);
         $this->assertEquals(count($datas['result'][1]), 6);
         $this->assertEquals($datas['result'][1]['id'], 4);
         $this->assertEquals($datas['result'][1]['name'], "Group work");
         $this->assertEquals($datas['result'][1]['grade'], null);
         $this->assertEquals($datas['result'][1]['tpl'], 0);
-        $this->assertEquals($datas['result'][1]['course_id'], 1);
+        $this->assertEquals($datas['result'][1]['course_id'], 5);
         $this->assertEquals($datas['result'][1]['mandatory'], 1);
         $this->assertEquals($datas['id'], 1);
         $this->assertEquals($datas['jsonrpc'], 2.0);
@@ -901,21 +901,21 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result'][0]['name'], "Individual Assignment");
         $this->assertEquals($datas['result'][0]['grade'], null);
         $this->assertEquals($datas['result'][0]['tpl'], 0);
-        $this->assertEquals($datas['result'][0]['course_id'], 1);
+        $this->assertEquals($datas['result'][0]['course_id'], 5);
         $this->assertEquals($datas['result'][0]['mandatory'], 1);
         $this->assertEquals(count($datas['result'][1]), 6);
         $this->assertEquals($datas['result'][1]['id'], 4);
         $this->assertEquals($datas['result'][1]['name'], "Group work");
         $this->assertEquals($datas['result'][1]['grade'], null);
         $this->assertEquals($datas['result'][1]['tpl'], 0);
-        $this->assertEquals($datas['result'][1]['course_id'], 1);
+        $this->assertEquals($datas['result'][1]['course_id'], 5);
         $this->assertEquals($datas['result'][1]['mandatory'], 1);
         $this->assertEquals(count($datas['result'][2]), 6);
         $this->assertEquals($datas['result'][2]['id'], 5);
         $this->assertEquals($datas['result'][2]['name'], "toto");
         $this->assertEquals($datas['result'][2]['grade'], 60);
         $this->assertEquals($datas['result'][2]['tpl'], 0);
-        $this->assertEquals($datas['result'][2]['course_id'], 1);
+        $this->assertEquals($datas['result'][2]['course_id'], 5);
         $this->assertEquals($datas['result'][2]['mandatory'], 0);
         $this->assertEquals($datas['id'], 1);
         $this->assertEquals($datas['jsonrpc'], 2.0);
@@ -979,7 +979,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result'][0]['id'], 1);
         $this->assertEquals($datas['result'][0]['ask'], "une question update");
         $this->assertEquals($datas['result'][0]['answer'], "une reponse update");
-        $this->assertEquals($datas['result'][0]['course_id'], 1);
+        $this->assertEquals($datas['result'][0]['course_id'], 5);
         $this->assertEquals(! empty($datas['result'][0]['created_date']), true);
         $this->assertEquals($datas['id'], 1);
         $this->assertEquals($datas['jsonrpc'], 2.0);
@@ -1291,6 +1291,39 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['list'][2]['program'][0]['sis'] , "B8E");
     }
       
+    /**
+     * @depends testAddCourse
+     */
+    public function testCanAddUserCourse($course)
+    {
+    	$this->setIdentity(1);
+    	
+     	$datas = $this->jsonRpc('user.addCourse', array('user' => 1, 'course' => $course));
+    	
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals(count($datas['result']) , 1);
+    	$this->assertEquals(count($datas['result'][1]) , 1);
+    	$this->assertEquals($datas['result'][1][5] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
+    public function testCanAddDeleteCourse($course)
+    {
+    	$this->setIdentity(1);
+    	 
+    	$datas = $this->jsonRpc('user.deleteCourse', array('user' => 1, 'course' => $course));
+    	 
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals(count($datas['result']) , 1);
+    	$this->assertEquals(count($datas['result'][1]) , 1);
+    	$this->assertEquals($datas['result'][1][5] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
     
     /**
      * @depends testAddCourse
@@ -1331,13 +1364,13 @@ class CourseTest extends AbstractService
     }
 
     /**
-     * @depends testAddThread
+     * @depends testAddCourse
      */
-    public function testGetThread($thread)
+    public function testGetThread($course)
     {
     	$this->setIdentity(1);
         $datas = $this->jsonRpc('thread.getList', array(
-            'course' => $thread
+            'course' => $course
         ));
         
         $this->assertEquals(count($datas), 3);

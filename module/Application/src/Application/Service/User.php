@@ -172,16 +172,17 @@ class User extends AbstractService
      * @param string $course
      * @param string $program
      * @param string $search
-     * @param string $noprogram
-     *
+     * @param integer $noprogram
+     * @param integer $nocourse
+     * 
      * @return array
      */
-    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null)
+    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null)
     {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList($filter, null, $this->getServiceAuth()
             ->getIdentity()
-            ->getId(), $type, $level, $course, $program, $search, $noprogram);
+            ->getId(), $type, $level, $course, $program, $search, $noprogram, $nocourse);
 
         $res = $res->toArray();
 
@@ -228,7 +229,43 @@ class User extends AbstractService
 
         return $this->getServiceProgramUserRelation()->add($user, $program);
     }
+    
+    /**
+     * @invokable
+     *
+     * @param array $user
+     * @param array $course
+     */
+    public function addCourse($user, $course)
+    {
+    	if (!is_array($user)) {
+    		$user = array(
+    				$user,
+    		);
+    	}
+    
+    	if (!is_array($course)) {
+    		$course = array(
+    				$course,
+    		);
+    	}
+    
+    	return $this->getServiceCourseUserRelation()->add($user, $course);
+    }
 
+    /**
+     * @invokable
+     *
+     * @param int|array $user
+     * @param int|array $course
+     *
+     * @return integer
+     */
+    public function deleteCourse($user, $course)
+    {
+    	return $this->getServiceCourseUserRelation()->deleteCourse($user, $course);
+    }
+    
     /**
      * @invokable
      *
@@ -423,6 +460,14 @@ class User extends AbstractService
     public function getServiceProgramUserRelation()
     {
         return $this->getServiceLocator()->get('app_service_program_user_relation');
+    }
+    
+    /**
+     * @return \Application\Service\CourseUserRelation
+     */
+    public function getServiceCourseUserRelation()
+    {
+    	return $this->getServiceLocator()->get('app_service_course_user_relation');
     }
 
     /**
