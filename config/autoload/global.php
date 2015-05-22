@@ -37,7 +37,7 @@ return array(
     'json-rpc-server' => array(
         'cache' => 'storage_memcached',
         'log' => 'log-system',
-        'persistence' => true,
+        'persistence' => false,
         'services' => array(
             'app_service_user',
             'app_service_school',
@@ -58,9 +58,9 @@ return array(
             'app_service_module_assignments',
         ),
         'headers' => array(
-            'Access-Control-Allow-Origin' => '*',
+           /* 'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Credentials' => 'true',
-            'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+            'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',*/
         ),
     ),
     'mail-conf' => array(
