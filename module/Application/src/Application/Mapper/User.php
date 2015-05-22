@@ -123,6 +123,17 @@ class User extends AbstractMapper
 			           ->where(array('user.deleted_date IS NULL'));
         	 $select->where(array('user.id NOT IN ? ' => $selectUser));
         }
+        
+        if ($nocourse !== null) {
+        	 
+        	$selectUser = $this->tableGateway->getSql()->select();
+        	 
+        	$selectUser->columns(array('id'))
+        			   ->join('course_user_relation', 'course_user_relation.user_id = user.id', array())
+        	           ->where(array('course_user_relation.course_id' => $nocourse))
+        	           ->where(array('user.deleted_date IS NULL'));
+        	$select->where(array('user.id NOT IN ? ' => $selectUser));
+        }
 
         if ($level) {
             $select->where(array(
