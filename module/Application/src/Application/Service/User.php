@@ -172,9 +172,9 @@ class User extends AbstractService
      * @param string $course
      * @param string $program
      * @param string $search
-     * @param integer $noprogram
-     * @param integer $nocourse
-     * 
+     * @param int    $noprogram
+     * @param int    $nocourse
+     *
      * @return array
      */
     public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null)
@@ -201,10 +201,10 @@ class User extends AbstractService
             'count' => $mapper->count(),
         );
     }
-    
+
     public function getListOnly($type, $course)
     {
-    	return $this->getMapper()->getList(null, $type, null, null, null, $course);
+        return $this->getMapper()->getList(null, $type, null, null, null, $course);
     }
 
     /**
@@ -229,7 +229,7 @@ class User extends AbstractService
 
         return $this->getServiceProgramUserRelation()->add($user, $program);
     }
-    
+
     /**
      * @invokable
      *
@@ -238,19 +238,19 @@ class User extends AbstractService
      */
     public function addCourse($user, $course)
     {
-    	if (!is_array($user)) {
-    		$user = array(
-    				$user,
-    		);
-    	}
-    
-    	if (!is_array($course)) {
-    		$course = array(
-    				$course,
-    		);
-    	}
-    
-    	return $this->getServiceCourseUserRelation()->add($user, $course);
+        if (!is_array($user)) {
+            $user = array(
+                    $user,
+            );
+        }
+
+        if (!is_array($course)) {
+            $course = array(
+                    $course,
+            );
+        }
+
+        return $this->getServiceCourseUserRelation()->add($user, $course);
     }
 
     /**
@@ -259,28 +259,28 @@ class User extends AbstractService
      * @param int|array $user
      * @param int|array $course
      *
-     * @return integer
+     * @return int
      */
     public function deleteCourse($user, $course)
     {
-    	return $this->getServiceCourseUserRelation()->deleteCourse($user, $course);
+        return $this->getServiceCourseUserRelation()->deleteCourse($user, $course);
     }
-    
+
     /**
      * @invokable
      *
      * @param int|array $user
      * @param int|array $program
      *
-     * @return integer
+     * @return int
      */
     public function deleteProgram($user, $program)
     {
-    	return $this->getServiceProgramUserRelation()->deleteProgram($user, $program);
+        return $this->getServiceProgramUserRelation()->deleteProgram($user, $program);
     }
 
     /**
-     * Update User
+     * Update User.
      *
      * @invokable
      *
@@ -461,13 +461,13 @@ class User extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_program_user_relation');
     }
-    
+
     /**
      * @return \Application\Service\CourseUserRelation
      */
     public function getServiceCourseUserRelation()
     {
-    	return $this->getServiceLocator()->get('app_service_course_user_relation');
+        return $this->getServiceLocator()->get('app_service_course_user_relation');
     }
 
     /**

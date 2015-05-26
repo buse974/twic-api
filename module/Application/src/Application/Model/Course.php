@@ -32,40 +32,40 @@ class Course extends BaseCourse
 
     public function setStudent($student)
     {
-    	$this->student = $student;
-    
-    	return $this;
-    }
-    
-    public function getStudent()
-    {
-    	return $this->student;
-    }
-    
-    public function setInstructor($instructor)
-    {
-    	$this->instructor = $instructor;
-    
-    	return $this;
-    }
-    
-    public function getInstructor()
-    {
-    	return $this->instructor;
-    }
-    
-    public function setUsers($users) 
-    {
-    	$this->users = $users;
-    	
+        $this->student = $student;
+
         return $this;
     }
-    
+
+    public function getStudent()
+    {
+        return $this->student;
+    }
+
+    public function setInstructor($instructor)
+    {
+        $this->instructor = $instructor;
+
+        return $this;
+    }
+
+    public function getInstructor()
+    {
+        return $this->instructor;
+    }
+
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
     public function getUsers()
     {
-    	return $this->users; 
+        return $this->users;
     }
-    
+
     public function setCreator($creator)
     {
         $this->creator = $creator;
