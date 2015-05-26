@@ -1306,6 +1306,8 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'][1][5] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	
+    	$this->printDocTest($datas);
     }
     
     /**
@@ -1323,6 +1325,8 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'][1][5] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	
+    	$this->printDocTest($datas);
     }
     
     /**
