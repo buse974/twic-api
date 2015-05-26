@@ -132,7 +132,7 @@ class Course extends AbstractService
         $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($ret = $this->getMapper()->update($m_course, array(
-            'id' => $id
+            'id' => $id,
         )) > 0) {
             $this->getServiceMaterialDocument()->deleteByCourseId($id);
         }
@@ -176,12 +176,12 @@ class Course extends AbstractService
     public function getList($program)
     {
         $res_course = $this->getMapper()->getList($program);
-     
+
         foreach ($res_course as $m_course) {
-        	$m_course->setStudent($this->getServiceUser()->getListOnly('student', $m_course->getId()));
-        	$m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
+            $m_course->setStudent($this->getServiceUser()->getListOnly('student', $m_course->getId()));
+            $m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
         }
-        
+
         return $res_course;
     }
 
@@ -216,13 +216,13 @@ class Course extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_module');
     }
-    
+
     /**
      * @return \Application\Service\User
      */
     public function getServiceUser()
     {
-    	return $this->getServiceLocator()->get('app_service_user');
+        return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**

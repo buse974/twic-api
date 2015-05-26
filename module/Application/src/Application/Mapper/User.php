@@ -96,7 +96,7 @@ class User extends AbstractMapper
         if ($program !== null || $level !== null || $course !== null || $search !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
         }
-        
+
         if ($level !== null || $course !== null || $search !== null) {
             $select->join('program', 'program_user_relation.program_id=program.id', array(), $select::JOIN_LEFT);
         }
@@ -114,25 +114,23 @@ class User extends AbstractMapper
         }
 
         if ($noprogram !== null) {
-        	
-        	$selectUser = $this->tableGateway->getSql()->select();
-        	
-        	$selectUser->columns(array('id'))
-			           ->join('program_user_relation', 'program_user_relation.user_id = user.id', array())
-			           ->where(array('program_user_relation.program_id' => $noprogram))
-			           ->where(array('user.deleted_date IS NULL'));
-        	 $select->where(array('user.id NOT IN ? ' => $selectUser));
+            $selectUser = $this->tableGateway->getSql()->select();
+
+            $selectUser->columns(array('id'))
+                       ->join('program_user_relation', 'program_user_relation.user_id = user.id', array())
+                       ->where(array('program_user_relation.program_id' => $noprogram))
+                       ->where(array('user.deleted_date IS NULL'));
+            $select->where(array('user.id NOT IN ? ' => $selectUser));
         }
-        
+
         if ($nocourse !== null) {
-        	 
-        	$selectUser = $this->tableGateway->getSql()->select();
-        	 
-        	$selectUser->columns(array('id'))
-        			   ->join('course_user_relation', 'course_user_relation.user_id = user.id', array())
-        	           ->where(array('course_user_relation.course_id' => $nocourse))
-        	           ->where(array('user.deleted_date IS NULL'));
-        	$select->where(array('user.id NOT IN ? ' => $selectUser));
+            $selectUser = $this->tableGateway->getSql()->select();
+
+            $selectUser->columns(array('id'))
+                       ->join('course_user_relation', 'course_user_relation.user_id = user.id', array())
+                       ->where(array('course_user_relation.course_id' => $nocourse))
+                       ->where(array('user.deleted_date IS NULL'));
+            $select->where(array('user.id NOT IN ? ' => $selectUser));
         }
 
         if ($level) {
