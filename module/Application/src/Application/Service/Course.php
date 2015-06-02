@@ -123,18 +123,23 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param array $id
      *
-     * @return int
+     * @return integer
      */
     public function delete($id)
     {
+    	$ret = array();
+    	
+    	if(!is_array($id)) {
+    		$id = array($id);
+    	}
+    	
         $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        if ($ret = $this->getMapper()->update($m_course, array(
-            'id' => $id,
-        )) > 0) {
-            $this->getServiceMaterialDocument()->deleteByCourseId($id);
+        foreach ($id as $idc)
+        if ($ret[$idc] = $this->getMapper()->update($m_course, array('id' => $idc,)) > 0) {
+            $this->getServiceMaterialDocument()->deleteByCourseId($idc);
         }
 
         return $ret;

@@ -1519,13 +1519,12 @@ class CourseTest extends AbstractService
             'id' => $id
         ));
         
-        $this->assertEquals(count($datas), 3);
-        $this->assertEquals($datas['result'], 1);
-        $this->assertEquals($datas['id'], 1);
-        $this->assertEquals($datas['jsonrpc'], 2.0);
+        $this->assertEquals(count($datas) , 3);
+        $this->assertEquals(count($datas['result']) , 1);
+        $this->assertEquals($datas['result'][5] , true);
+        $this->assertEquals($datas['id'] , 1);
+        $this->assertEquals($datas['jsonrpc'] , 2.0);
     }
-    
-    
     
 	public function setIdentity($id)
 	{
