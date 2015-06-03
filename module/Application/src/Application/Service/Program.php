@@ -73,9 +73,7 @@ class Program extends AbstractService
         $res_program =  $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
 
         foreach ($res_program['list'] as $m_program) {
-            $m_program->setStudent($this->getServiceUser()->getList(null, 'student', null, null, $m_program->getId()));
-            $m_program->setInstructor($this->getServiceUser()->getList(null, 'instructor', null, null, $m_program->getId()));
-            $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId()));
+            $m_program->setInstructor($this->getServiceUser()->getList(null, 'instructor', null, null, $m_program->getId())['list']);
         }
 
         return $res_program;
