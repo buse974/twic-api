@@ -1516,11 +1516,13 @@ class CourseTest extends AbstractService
     	$this->setIdentity(1);
     
     	$datas = $this->jsonRpc('course.getList', array(
-    			'program' => $program
+    			'program' => $program,
+    			'search' => 'ME'
     	));
 
     	print_r($datas);
     	
+    	$this->printCreateTest($datas);
     	$this->assertEquals(count($datas) , 3); 
 		$this->assertEquals(count($datas['result']) , 1); 
 		$this->assertEquals(count($datas['result'][0]) , 12); 
