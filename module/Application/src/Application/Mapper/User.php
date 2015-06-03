@@ -102,8 +102,9 @@ class User extends AbstractMapper
         }
 
         if ($course !== null) {
-            $select->join('course', 'course.program_id=program.id', array(), $select::JOIN_INNER)->where(array(
-                'course.id' => $course,
+        	$select->join('course_user_relation', 'course_user_relation.course_id=user.id', array(), $select::JOIN_LEFT);
+            $select->where(array(
+                'course_user_relation.course_id' => $course,
             ));
         }
 
