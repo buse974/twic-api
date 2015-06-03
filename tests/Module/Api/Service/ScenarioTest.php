@@ -1007,7 +1007,7 @@ class CourseTest extends AbstractService
         $this->setIdentity(1);
     
         $datas = $this->jsonRpc('program.getList', array());
-    
+
         $this->assertEquals(count($datas) , 3);
         $this->assertEquals(count($datas['result']) , 2);
         $this->assertEquals(count($datas['result']['list']) , 4);
@@ -1518,7 +1518,9 @@ class CourseTest extends AbstractService
     	$datas = $this->jsonRpc('course.getList', array(
     			'program' => $program
     	));
-    	 
+
+    	print_r($datas);
+    	
     	$this->assertEquals(count($datas) , 3); 
 		$this->assertEquals(count($datas['result']) , 1); 
 		$this->assertEquals(count($datas['result'][0]) , 12); 
