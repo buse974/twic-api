@@ -549,6 +549,19 @@ class CourseTest extends AbstractService
     /**
      * @depends testAddCourse
      */
+    public function testAddModuleInCourse($course_id)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('module.add', array(
+    			'course' => $course_id
+    	));
+    	
+    	print_r($datas);
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
     public function testAddMaterialDocument($course_id)
     {
     	$this->setIdentity(3);
