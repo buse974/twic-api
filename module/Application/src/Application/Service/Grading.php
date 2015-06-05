@@ -40,6 +40,16 @@ class Grading extends AbstractService
         return $this->getMapper()->select($this->getModel()->setCourseId($id));
     }
 
+    /**
+     * 
+     * @param unknown $user
+     * @param unknown $program
+     * @param unknown $course
+     */
+    public function getget($user, $program, $course) {
+    	
+    }
+    
     public function _add($letter, $min, $max, $grade, $description, $course)
     {
         $m_grading = $this->getModel()
