@@ -59,8 +59,8 @@
 			</then>
 		</if>
 		<phingcall target="database" />
-		<phingcall target="restart-service" />
-		<phingcall target="chown" />
+		<!--phingcall target="restart-service" />
+		<phingcall target="chown" / -->
 	</target>
 
 	<target name="configuration">
