@@ -15,9 +15,9 @@ class Module extends AbstractService
 	 * @throws \Exception
 	 * @return integer
 	 */
-	public function add($course)
+	public function add($course, $title = null)
 	{
-		$res_course = $this->getMapper()->insert($this->getModel()->setCourseId($course));
+		$res_course = $this->getMapper()->insert($this->getModel()->setCourseId($course)->setTitle($title));
 		
 		if($res_course <= 0) {
 			throw new \Exception('error insert module');

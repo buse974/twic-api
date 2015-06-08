@@ -1,1 +1,1 @@
-{"method":"gradingpolicy.add","id":1,"params":{"course_id":5,"name":"tata","grade":50}}
+{"method":"school.add","id":1,"params":{"name":"universit\u00e9 de monaco","next_name":"buisness school","short_name":"IUM","logo":"token","describe":"une description","website":"www.ium.com","programme":"super programme","backroung":"backroung","phone":"+33480547852","contact":"contact@ium.com","contact_id":1,"address":{"street_no":12,"street_type":"rue","street_name":"du stade","city":{"name":"Monaco"},"country":{"name":"Monaco"}}}}
