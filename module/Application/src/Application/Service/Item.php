@@ -9,18 +9,18 @@ class Item extends AbstractService
 	/**
 	 * @invokable
 	 * 
+	 * @param integer $course
+	 * @param integer $grading_policy
 	 * @param string $title
 	 * @param string $describe
 	 * @param string $type
 	 * @param integer $weight
-	 * @param integer $course
 	 * @param integer $parent
-	 * @param integer $grading_policy
 	 * @param integer $module
 	 * @throws \Exception
 	 * @return integer
 	 */
-	public function add($title, $describe, $type, $weight, $course, $parent = null, $grading_policy, $module = null)
+	public function add($course, $grading_policy, $title = null, $describe = null, $type = null, $weight = null, $parent = null, $module = null)
 	{
 		$m_item = $this->getModel()->setTitle($title)
 		                 ->setDescribe($describe)
