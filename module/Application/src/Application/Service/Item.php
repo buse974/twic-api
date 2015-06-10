@@ -48,30 +48,45 @@ class Item extends AbstractService
 	public function updateParentId($item, $parent_id)
 	{
 		$res_item = $this->getMapper()->select($this->getModel()->setId($item));
-		$course = $res_item->current()->getCourseId();
-		$this->getMapper()->update($this->getModel()->setParentId($item), array('parent_id' => $parent_id, 'course_id' => $course));
+		$me_item = $res_item->current();
+		
+		// JE SORT
+		$this->getMapper()->update($this->getModel()->setParentId($me_item->getParentId()===null ? new IsNull():$me_item->getParentId()), array('parent_id' => $item, 'course_id' => $me_item->getCourseId()));
+		// JE RENTRE
+		$this->getMapper()->update($this->getModel()->setParentId($item), array('parent_id' => $parent_id, 'course_id' => $me_item->getCourseId()));
 		$this->getMapper()->update($this->getModel()->setId($item)->setParentId($parent_id));
 	}
 	
-	public function update($id, $grading_policy = null, $title = null, $describe = null, $weight = null, $parent = null, $module = null)
+	/**
+	 * 
+	 * @invokable
+	 * 
+	 * @param integer $id
+	 * @param integer $grading_policy
+	 * @param integer $duration
+	 * @param string $title
+	 * @param string $describe
+	 * @param integer $weight
+	 * @param string $parent
+	 * @param integer $module
+	 * @return integer
+	 */
+	public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $module = null)
 	{
 		$m_item = $this->getModel()
 		               ->setId($id) 
+		               ->setDuration($duration)
 		               ->setTitle($title)
 		               ->setDescribe($describe)
 					   ->setWeight($weight)
-					   ->setGradingPolicy($grading_policy)
-					   ->setModule($module);
-	
-		if($this->getMapper()->update($m_item) <= 0) {
-			throw new \Exception('error insert item');
-		}
+					   ->setGradingPolicyId($grading_policy)
+					   ->setModuleId($module);
 
 		if ($parent !== null) {
-			$this->updateParentId($item_id, $parent);
+			$this->updateParentId($id, $parent);
 		}		
 	
-		return $item_id;
+		return $this->getMapper()->update($m_item);
 	}
 	
 	/**

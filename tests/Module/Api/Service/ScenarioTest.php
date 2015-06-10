@@ -412,7 +412,12 @@ class CourseTest extends AbstractService
     			'weight' => 1
     	));
     	
-    	$this->printCreateTest($datas);
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	
+    	return $datas['result'];
     }
     
     /**
@@ -433,7 +438,34 @@ class CourseTest extends AbstractService
     			'weight' => 1
     	));
     	
-    	$this->printCreateTest($datas);
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 2);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testUAddItem
+     * @depends testUAddItemTwo
+     */
+    public function testUUpdateItem($id)
+    {
+    	$this->setIdentity(1);
+    
+    	$datas = $this->jsonRpc('item.update', array(
+    			'id' => $id,
+    			'grading_policy' => 2,
+    			'duration' => 123,
+    			'title' => 'titl2e',
+    			'describe' => 'description2',
+    			'weight' => 1,
+    			'parent' => 2
+    	));
+    	 
+    	$this->assertEquals(count($datas) , 3); 
+		$this->assertEquals($datas['result'] , 1); 
+		$this->assertEquals($datas['id'] , 1); 
+		$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
     
     /**
