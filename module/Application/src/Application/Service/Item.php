@@ -137,6 +137,21 @@ class Item extends AbstractService
         return $this->getMapper()->select($m_item);
     }
     
+    public function deleteByModuleId($module)
+    {
+    	$nbr = 0;
+    	$res_item = $this->getMapper()->select($this->getModel()->setModuleId($module));
+    	
+    	if($res_item->count() > 0) {
+	    	foreach ($res_item as $m_item) {
+	    		$this->getServiceItemMaterialDocumentRelation()->deleteByItem($m_item->getId());
+	    		$nbr += $this->getMapper()->delete($this->getModel()->setId($m_item->getId()));
+	    	}
+    	}
+    	
+     	return $nbr;
+    }
+    
     /**
      * @return \Application\Service\ItemMaterialDocumentRelation
      */

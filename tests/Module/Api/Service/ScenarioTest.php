@@ -470,9 +470,28 @@ class CourseTest extends AbstractService
     
     /**
      * @depends testAddCourse
-     * @depends testAddMaterialDocument
      */
-    public function testAddItem($id, $material)
+    public function testAddModuleInCourse($course_id)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('module.add', array(
+    			'course' => $course_id
+    	));
+    	 
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	 
+    	return $datas['result'];
+    }
+    
+    /**
+     * @depends testAddCourse
+     * @depends testAddMaterialDocument
+     * @depends testAddModuleInCourse
+     */
+    public function testAddItem($id, $material, $module)
     {
     	$this->setIdentity(1);
     	 
@@ -484,6 +503,7 @@ class CourseTest extends AbstractService
     			'describe' => 'description',
     			'type' => 'LC',
     			'weight' => 1,
+    			'module' => $module,
     			'materials' => array($material)
     	));
     	
@@ -585,7 +605,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'][1]['course_id'] , 5);
     	$this->assertEquals($datas['result'][1]['parent_id'] , 2);
     	$this->assertEquals($datas['result'][1]['grading_policy_id'] , 2);
-    	$this->assertEquals($datas['result'][1]['module_id'] , null);
+    	$this->assertEquals($datas['result'][1]['module_id'] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
@@ -817,22 +837,6 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['video_token'] , "video_token");
         $this->assertEquals($datas['id'] , 1);
         $this->assertEquals($datas['jsonrpc'] , 2.0);
-    }
-
-    /**
-     * @depends testAddCourse
-     */
-    public function testAddModuleInCourse($course_id)
-    {
-    	$this->setIdentity(3);
-    	$datas = $this->jsonRpc('module.add', array(
-    			'course' => $course_id
-    	));
-    	
-    	$this->assertEquals(count($datas) , 3);
-    	$this->assertEquals($datas['result'] , 1);
-    	$this->assertEquals($datas['id'] , 1);
-    	$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
     
     /**
@@ -1594,6 +1598,26 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['jsonrpc'], 2.0);
     }
 
+    // DELETE
+    
+
+    /**
+     * @depends testAddModuleInCourse
+     */
+    public function testCanDeleteModule($module)
+    {
+    	$this->setIdentity(1);
+    	
+    	$datas = $this->jsonRpc('module.delete', array(
+    			'id' => $module
+    	));
+    	
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
+    
     /**
      * @depends testAddThreadMessage
      */
@@ -1628,7 +1652,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['jsonrpc'], 2.0);
     }
     
-    // DELETE
+
     
     /**
      * @depends testAddMaterialDocument

@@ -52,4 +52,25 @@ class Module extends AbstractService
     {
     	return $this->getMapper()->select($this->getModel()->setCourseId($course));
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @return integer
+     */
+    public function delete($id)
+    {
+    	$this->getServiceItem()->deleteByModuleId($id);
+    	
+    	return $this->getMapper()->delete($this->getModel()->setId($id));
+    }
+    
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+    	return $this->getServiceLocator()->get('app_service_item');
+    }
 }
