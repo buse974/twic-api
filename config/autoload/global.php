@@ -40,6 +40,7 @@ return array(
         'persistence' => false,
         'services' => array(
             'app_service_user',
+        	'app_service_item',
             'app_service_school',
             'app_service_program',
             'app_service_role',
