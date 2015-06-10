@@ -470,6 +470,47 @@ class CourseTest extends AbstractService
     
     /**
      * @depends testAddCourse
+     * @depends testUAddItem
+     * @depends testUAddItemTwo
+     */
+    public function testCanGetListItem($course)
+    {
+    	$this->setIdentity(1);
+    	
+    	$datas = $this->jsonRpc('item.getList', array(
+    			'course' => $course,
+    	));
+    	
+    	$this->assertEquals(count($datas) , 3); 
+		$this->assertEquals(count($datas['result']) , 2); 
+		$this->assertEquals(count($datas['result'][0]) , 10); 
+		$this->assertEquals($datas['result'][0]['id'] , 2); 
+		$this->assertEquals($datas['result'][0]['title'] , "titl2e"); 
+		$this->assertEquals($datas['result'][0]['describe'] , "description2"); 
+		$this->assertEquals($datas['result'][0]['duration'] , 234); 
+		$this->assertEquals($datas['result'][0]['type'] , "CP"); 
+		$this->assertEquals($datas['result'][0]['weight'] , 1); 
+		$this->assertEquals($datas['result'][0]['course_id'] , 5); 
+		$this->assertEquals($datas['result'][0]['parent_id'] , null); 
+		$this->assertEquals($datas['result'][0]['grading_policy_id'] , 5); 
+		$this->assertEquals($datas['result'][0]['module_id'] , null); 
+		$this->assertEquals(count($datas['result'][1]) , 10); 
+		$this->assertEquals($datas['result'][1]['id'] , 1); 
+		$this->assertEquals($datas['result'][1]['title'] , "titl2e"); 
+		$this->assertEquals($datas['result'][1]['describe'] , "description2"); 
+		$this->assertEquals($datas['result'][1]['duration'] , 123); 
+		$this->assertEquals($datas['result'][1]['type'] , "LC"); 
+		$this->assertEquals($datas['result'][1]['weight'] , 1); 
+		$this->assertEquals($datas['result'][1]['course_id'] , 5); 
+		$this->assertEquals($datas['result'][1]['parent_id'] , 2); 
+		$this->assertEquals($datas['result'][1]['grading_policy_id'] , 2); 
+		$this->assertEquals($datas['result'][1]['module_id'] , null); 
+		$this->assertEquals($datas['id'] , 1); 
+		$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testAddCourse
      * @depends testUpdateCourse
      */
     public function testGetCourse($id)

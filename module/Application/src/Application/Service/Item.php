@@ -92,6 +92,21 @@ class Item extends AbstractService
     }
 
     /**
+     * @invokable
+     * 
+     * @param integer $course
+     * @return array
+     */
+    public function getList($course)
+    {
+    	$m_item = $this->getModel()->setCourseId($course);
+		
+    	$res_item = $this->getMapper()->select($m_item);
+    	
+    	return $res_item->toArrayParent();
+    }
+    
+    /**
      * Get Item by Type.
      *
      * @invokable
