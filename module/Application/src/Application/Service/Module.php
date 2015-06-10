@@ -30,17 +30,6 @@ class Module extends AbstractService
 
     /**
      * Add Module.
-     *
-     * @invokable
-     *
-     * @param int $course
-     *
-     * @throws \Exception
-     *
-     * @return int
-     */
-
-    /**
      * @invokable
      *
      * @param int    $id
@@ -51,5 +40,16 @@ class Module extends AbstractService
     public function update($id, $title)
     {
         return $this->getMapper()->update($this->getModel()->setId($id)->setTitle($title));
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $course
+     * @return array
+     */
+    public function getList($course)
+    {
+    	return $this->getMapper()->select($this->getModel()->setCourseId($course));
     }
 }
