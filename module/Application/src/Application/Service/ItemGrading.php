@@ -6,8 +6,8 @@ use Dal\Service\AbstractService;
 
 class ItemGrading extends AbstractService
 {
-	public function _getList() 
-	{
-		return $this->getMapper()->getList();
-	}
+    public function _getList()
+    {
+        return $this->getMapper()->getList();
+    }
 }

@@ -13,7 +13,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param integer $program_id
+     * @param int    $program_id
      * @param string $title
      * @param string $abstract
      * @param string $description
@@ -29,7 +29,7 @@ class Course extends AbstractService
      *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function add($program_id, $title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
@@ -177,9 +177,9 @@ class Course extends AbstractService
      *
      * @param unknown $program
      */
-    public function getList($program, $search = null, $filter=null)
+    public function getList($program, $search = null, $filter = null)
     {
-    	$mapper = $this->getMapper();
+        $mapper = $this->getMapper();
         $res_course = $mapper->usePaginator($filter)->getList($program, $search);
 
         foreach ($res_course as $m_course) {
