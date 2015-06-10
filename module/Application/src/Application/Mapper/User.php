@@ -86,10 +86,8 @@ class User extends AbstractMapper
 
             if (!empty($ts)) {
                 $select->join('user_role', 'user_role.user_id=user.id', array())
-                    ->join('role', 'user_role.role_id=role.id', array())
-                    ->where(array(
-                    'role.name' => $ts,
-                ));
+                       ->join('role', 'user_role.role_id=role.id', array())
+                       ->where(array('role.name' => $ts,));
             }
         }
 
@@ -102,7 +100,7 @@ class User extends AbstractMapper
         }
 
         if ($course !== null) {
-            $select->join('course_user_relation', 'course_user_relation.course_id=user.id', array(), $select::JOIN_LEFT);
+            $select->join('course_user_relation', 'course_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
             $select->where(array(
                 'course_user_relation.course_id' => $course,
             ));
