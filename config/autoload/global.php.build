@@ -43,6 +43,7 @@ return array(
             'app_service_school',
             'app_service_program',
             'app_service_role',
+            'app_service_item',
             'app_service_videoconf',
             'app_service_course',
             'app_service_grading',

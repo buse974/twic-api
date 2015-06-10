@@ -25,4 +25,26 @@ class Module extends AbstractService
 		
 		return $this->getMapper()->getLastInsertValue();
 	}
+	
+	/**
+	 * Add Module
+	 *
+	 * @invokable
+	 *
+	 * @param integer $course
+	 * @throws \Exception
+	 * @return integer
+	 */
+	
+	/**
+	 * @invokable
+	 * 
+	 * @param integer $id
+	 * @param string $title
+	 * @return integer
+	 */
+	public function update($id, $title)
+	{
+		return $this->getMapper()->update($this->getModel()->setId($id)->setTitle($title));
+	}
 }

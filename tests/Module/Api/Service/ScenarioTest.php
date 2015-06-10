@@ -308,38 +308,43 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][11]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading'][11]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading_policy']) , 5);
-        $this->assertEquals(count($datas['result']['grading_policy'][0]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][0]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][0]['id'] , 6);
         $this->assertEquals($datas['result']['grading_policy'][0]['name'] , "Individual assignment");
-        $this->assertEquals($datas['result']['grading_policy'][0]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][0]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][0]['type'] , "IA");
         $this->assertEquals($datas['result']['grading_policy'][0]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][0]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][0]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][1]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][1]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][1]['id'] , 7);
         $this->assertEquals($datas['result']['grading_policy'][1]['name'] , "Group work");
-        $this->assertEquals($datas['result']['grading_policy'][1]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][1]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][1]['type'] , "WG");
         $this->assertEquals($datas['result']['grading_policy'][1]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][1]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][1]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][2]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][2]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][2]['id'] , 8);
         $this->assertEquals($datas['result']['grading_policy'][2]['name'] , "Live class");
-        $this->assertEquals($datas['result']['grading_policy'][2]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][2]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][2]['type'] , "LC");
         $this->assertEquals($datas['result']['grading_policy'][2]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][2]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][2]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][3]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][3]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][3]['id'] , 9);
         $this->assertEquals($datas['result']['grading_policy'][3]['name'] , "Capstone project");
-        $this->assertEquals($datas['result']['grading_policy'][3]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][3]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][3]['type'] , "CP");
         $this->assertEquals($datas['result']['grading_policy'][3]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][3]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][3]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][4]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][4]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][4]['id'] , 10);
         $this->assertEquals($datas['result']['grading_policy'][4]['name'] , "Attendance and participation");
-        $this->assertEquals($datas['result']['grading_policy'][4]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][4]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][4]['type'] , null);
         $this->assertEquals($datas['result']['grading_policy'][4]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][4]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][4]['mandatory'] , 1);
@@ -390,6 +395,47 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['jsonrpc'], 2.0);
     }
 
+    /**
+     * @depends testAddCourse
+     */
+    public function testUAddItem($id)
+    {
+    	$this->setIdentity(1);
+    	 
+    	$datas = $this->jsonRpc('item.add', array(
+    			'course' => $id,
+    			'grading_policy' => 1,
+    			'duration' => 234,
+    			'title' => 'title',
+    			'describe' => 'description',
+    			'type' => 'LC',
+    			'weight' => 1
+    	));
+    	
+    	$this->printCreateTest($datas);
+    }
+    
+    /**
+     * @depends testAddCourse
+     * @depends testUAddItem
+     */
+    public function testUAddItemTwo($id)
+    {
+    	$this->setIdentity(1);
+    
+    	$datas = $this->jsonRpc('item.add', array(
+    			'course' => $id,
+    			'grading_policy' => 5,
+    			'duration' => 234,
+    			'title' => 'titl2e',
+    			'describe' => 'description2',
+    			'type' => 'CP',
+    			'weight' => 1
+    	));
+    	
+    	$this->printCreateTest($datas);
+    }
+    
     /**
      * @depends testAddCourse
      * @depends testUpdateCourse
@@ -537,38 +583,43 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['grading'][11]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading'][11]['course_id'] , 5);
         $this->assertEquals(count($datas['result']['grading_policy']) , 5);
-        $this->assertEquals(count($datas['result']['grading_policy'][0]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][0]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][0]['id'] , 6);
         $this->assertEquals($datas['result']['grading_policy'][0]['name'] , "Individual assignment");
-        $this->assertEquals($datas['result']['grading_policy'][0]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][0]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][0]['type'] , "IA");
         $this->assertEquals($datas['result']['grading_policy'][0]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][0]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][0]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][1]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][1]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][1]['id'] , 7);
         $this->assertEquals($datas['result']['grading_policy'][1]['name'] , "Group work");
-        $this->assertEquals($datas['result']['grading_policy'][1]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][1]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][1]['type'] , "WG");
         $this->assertEquals($datas['result']['grading_policy'][1]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][1]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][1]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][2]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][2]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][2]['id'] , 8);
         $this->assertEquals($datas['result']['grading_policy'][2]['name'] , "Live class");
-        $this->assertEquals($datas['result']['grading_policy'][2]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][2]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][2]['type'] , "LC");
         $this->assertEquals($datas['result']['grading_policy'][2]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][2]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][2]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][3]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][3]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][3]['id'] , 9);
         $this->assertEquals($datas['result']['grading_policy'][3]['name'] , "Capstone project");
-        $this->assertEquals($datas['result']['grading_policy'][3]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][3]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][3]['type'] , "CP");
         $this->assertEquals($datas['result']['grading_policy'][3]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][3]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][3]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result']['grading_policy'][4]) , 6);
+        $this->assertEquals(count($datas['result']['grading_policy'][4]) , 7);
         $this->assertEquals($datas['result']['grading_policy'][4]['id'] , 10);
         $this->assertEquals($datas['result']['grading_policy'][4]['name'] , "Attendance and participation");
-        $this->assertEquals($datas['result']['grading_policy'][4]['grade'] , null);
+        $this->assertEquals($datas['result']['grading_policy'][4]['grade'] , 20);
+        $this->assertEquals($datas['result']['grading_policy'][4]['type'] , null);
         $this->assertEquals($datas['result']['grading_policy'][4]['tpl'] , 0);
         $this->assertEquals($datas['result']['grading_policy'][4]['course_id'] , 5);
         $this->assertEquals($datas['result']['grading_policy'][4]['mandatory'] , 1);
@@ -886,38 +937,43 @@ class CourseTest extends AbstractService
         
         $this->assertEquals(count($datas) , 3);
         $this->assertEquals(count($datas['result']) , 5);
-        $this->assertEquals(count($datas['result'][0]) , 6);
+        $this->assertEquals(count($datas['result'][0]) , 7);
         $this->assertEquals($datas['result'][0]['id'] , 6);
         $this->assertEquals($datas['result'][0]['name'] , "Individual assignment");
-        $this->assertEquals($datas['result'][0]['grade'] , null);
+        $this->assertEquals($datas['result'][0]['grade'] , 20);
+        $this->assertEquals($datas['result'][0]['type'] , "IA");
         $this->assertEquals($datas['result'][0]['tpl'] , 0);
         $this->assertEquals($datas['result'][0]['course_id'] , 5);
         $this->assertEquals($datas['result'][0]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][1]) , 6);
+        $this->assertEquals(count($datas['result'][1]) , 7);
         $this->assertEquals($datas['result'][1]['id'] , 7);
         $this->assertEquals($datas['result'][1]['name'] , "Group work");
-        $this->assertEquals($datas['result'][1]['grade'] , null);
+        $this->assertEquals($datas['result'][1]['grade'] , 20);
+        $this->assertEquals($datas['result'][1]['type'] , "WG");
         $this->assertEquals($datas['result'][1]['tpl'] , 0);
         $this->assertEquals($datas['result'][1]['course_id'] , 5);
         $this->assertEquals($datas['result'][1]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][2]) , 6);
+        $this->assertEquals(count($datas['result'][2]) , 7);
         $this->assertEquals($datas['result'][2]['id'] , 8);
         $this->assertEquals($datas['result'][2]['name'] , "Live class");
-        $this->assertEquals($datas['result'][2]['grade'] , null);
+        $this->assertEquals($datas['result'][2]['grade'] , 20);
+        $this->assertEquals($datas['result'][2]['type'] , "LC");
         $this->assertEquals($datas['result'][2]['tpl'] , 0);
         $this->assertEquals($datas['result'][2]['course_id'] , 5);
         $this->assertEquals($datas['result'][2]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][3]) , 6);
+        $this->assertEquals(count($datas['result'][3]) , 7);
         $this->assertEquals($datas['result'][3]['id'] , 9);
         $this->assertEquals($datas['result'][3]['name'] , "Capstone project");
-        $this->assertEquals($datas['result'][3]['grade'] , null);
+        $this->assertEquals($datas['result'][3]['grade'] , 20);
+        $this->assertEquals($datas['result'][3]['type'] , "CP");
         $this->assertEquals($datas['result'][3]['tpl'] , 0);
         $this->assertEquals($datas['result'][3]['course_id'] , 5);
         $this->assertEquals($datas['result'][3]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][4]) , 6);
+        $this->assertEquals(count($datas['result'][4]) , 7);
         $this->assertEquals($datas['result'][4]['id'] , 10);
         $this->assertEquals($datas['result'][4]['name'] , "Attendance and participation");
-        $this->assertEquals($datas['result'][4]['grade'] , null);
+        $this->assertEquals($datas['result'][4]['grade'] , 20);
+        $this->assertEquals($datas['result'][4]['type'] , null);
         $this->assertEquals($datas['result'][4]['tpl'] , 0);
         $this->assertEquals($datas['result'][4]['course_id'] , 5);
         $this->assertEquals($datas['result'][4]['mandatory'] , 1);
@@ -952,15 +1008,17 @@ class CourseTest extends AbstractService
     {
     	$this->setIdentity(3);
         $datas = $this->jsonRpc('gradingpolicy.update', array(
-            'id' => $id,
-            'name' => 'toto',
-            'grade' => 60
+            'datas' => array(
+        		array('id' => $id,
+            		'name' => 'toto',
+            		'grade' => 60))
         ));
         
-        $this->assertEquals(count($datas), 3);
-        $this->assertEquals($datas['result'], true);
-        $this->assertEquals($datas['id'], 1);
-        $this->assertEquals($datas['jsonrpc'], 2.0);
+        $this->assertEquals(count($datas) , 3); 
+		$this->assertEquals(count($datas['result']) , 1); 
+		$this->assertEquals($datas['result'][11] , 1); 
+		$this->assertEquals($datas['id'] , 1); 
+		$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
 
     /**
@@ -975,45 +1033,51 @@ class CourseTest extends AbstractService
         
         $this->assertEquals(count($datas) , 3);
         $this->assertEquals(count($datas['result']) , 6);
-        $this->assertEquals(count($datas['result'][0]) , 6);
+        $this->assertEquals(count($datas['result'][0]) , 7);
         $this->assertEquals($datas['result'][0]['id'] , 6);
         $this->assertEquals($datas['result'][0]['name'] , "Individual assignment");
-        $this->assertEquals($datas['result'][0]['grade'] , null);
+        $this->assertEquals($datas['result'][0]['grade'] , 20);
+        $this->assertEquals($datas['result'][0]['type'] , "IA");
         $this->assertEquals($datas['result'][0]['tpl'] , 0);
         $this->assertEquals($datas['result'][0]['course_id'] , 5);
         $this->assertEquals($datas['result'][0]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][1]) , 6);
+        $this->assertEquals(count($datas['result'][1]) , 7);
         $this->assertEquals($datas['result'][1]['id'] , 7);
         $this->assertEquals($datas['result'][1]['name'] , "Group work");
-        $this->assertEquals($datas['result'][1]['grade'] , null);
+        $this->assertEquals($datas['result'][1]['grade'] , 20);
+        $this->assertEquals($datas['result'][1]['type'] , "WG");
         $this->assertEquals($datas['result'][1]['tpl'] , 0);
         $this->assertEquals($datas['result'][1]['course_id'] , 5);
         $this->assertEquals($datas['result'][1]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][2]) , 6);
+        $this->assertEquals(count($datas['result'][2]) , 7);
         $this->assertEquals($datas['result'][2]['id'] , 8);
         $this->assertEquals($datas['result'][2]['name'] , "Live class");
-        $this->assertEquals($datas['result'][2]['grade'] , null);
+        $this->assertEquals($datas['result'][2]['grade'] , 20);
+        $this->assertEquals($datas['result'][2]['type'] , "LC");
         $this->assertEquals($datas['result'][2]['tpl'] , 0);
         $this->assertEquals($datas['result'][2]['course_id'] , 5);
         $this->assertEquals($datas['result'][2]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][3]) , 6);
+        $this->assertEquals(count($datas['result'][3]) , 7);
         $this->assertEquals($datas['result'][3]['id'] , 9);
         $this->assertEquals($datas['result'][3]['name'] , "Capstone project");
-        $this->assertEquals($datas['result'][3]['grade'] , null);
+        $this->assertEquals($datas['result'][3]['grade'] , 20);
+        $this->assertEquals($datas['result'][3]['type'] , "CP");
         $this->assertEquals($datas['result'][3]['tpl'] , 0);
         $this->assertEquals($datas['result'][3]['course_id'] , 5);
         $this->assertEquals($datas['result'][3]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][4]) , 6);
+        $this->assertEquals(count($datas['result'][4]) , 7);
         $this->assertEquals($datas['result'][4]['id'] , 10);
         $this->assertEquals($datas['result'][4]['name'] , "Attendance and participation");
-        $this->assertEquals($datas['result'][4]['grade'] , null);
+        $this->assertEquals($datas['result'][4]['grade'] , 20);
+        $this->assertEquals($datas['result'][4]['type'] , null);
         $this->assertEquals($datas['result'][4]['tpl'] , 0);
         $this->assertEquals($datas['result'][4]['course_id'] , 5);
         $this->assertEquals($datas['result'][4]['mandatory'] , 1);
-        $this->assertEquals(count($datas['result'][5]) , 6);
+        $this->assertEquals(count($datas['result'][5]) , 7);
         $this->assertEquals($datas['result'][5]['id'] , 11);
         $this->assertEquals($datas['result'][5]['name'] , "toto");
         $this->assertEquals($datas['result'][5]['grade'] , 60);
+        $this->assertEquals($datas['result'][5]['type'] , null);
         $this->assertEquals($datas['result'][5]['tpl'] , 0);
         $this->assertEquals($datas['result'][5]['course_id'] , 5);
         $this->assertEquals($datas['result'][5]['mandatory'] , 0);
@@ -1108,212 +1172,32 @@ class CourseTest extends AbstractService
     
         $datas = $this->jsonRpc('program.getList', array());
 
-        print_r($datas);
-        
         $this->assertEquals(count($datas) , 3);
         $this->assertEquals(count($datas['result']) , 2);
         $this->assertEquals(count($datas['result']['list']) , 4);
-        $this->assertEquals(count($datas['result']['list'][0]) , 7);
-        $this->assertEquals(count($datas['result']['list'][0]['student']) , 2);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list']) , 11);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][0]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][0]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['id'] , 13);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['firstname'] , "Ora");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['lastname'] , "Bentley");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['email'] , "auctor@interdumlibero.ca");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][0]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['position'] , "in lobortis tellus");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['interest'] , "nec tempus scelerisque, lorem ipsum sodales purus,");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][0]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][0]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][0]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][0]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][1]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][1]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['id'] , 24);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['firstname'] , "Emma");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['lastname'] , "Norman");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['email'] , "vitae@tellusNunclectus.com");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][1]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['position'] , "consectetuer, cursus");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['interest'] , "In at pede. Cras vulputate velit");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][1]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][1]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][1]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][1]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][2]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][2]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['id'] , 36);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['firstname'] , "Arsenio");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['lastname'] , "Mejia");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['email'] , "in@Sedeueros.net");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][2]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['position'] , "nibh dolor, nonummy");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['interest'] , "Vivamus non lorem vitae odio");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][2]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][2]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][2]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][2]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][3]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][3]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['id'] , 41);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['firstname'] , "Branden");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['lastname'] , "Glover");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['email'] , "malesuada.Integer@Quisquenonummyipsum.com");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][3]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['position'] , "augue malesuada");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['interest'] , "ipsum primis in faucibus orci luctus et ultrices posuere cubilia");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][3]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][3]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][3]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][3]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][4]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][4]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['id'] , 49);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['firstname'] , "Callie");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['lastname'] , "Woods");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['email'] , "dictum.eu@sedduiFusce.edu");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][4]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['position'] , "per conubia nostra,");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['interest'] , "Etiam laoreet, libero et tristique pellentesque, tellus sem mollis");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][4]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][4]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][4]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][4]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][5]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][5]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['id'] , 66);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['firstname'] , "Myles");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['lastname'] , "Kidd");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['email'] , "eget@ornare.ca");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][5]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['position'] , "consectetuer adipiscing");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['interest'] , "parturient montes, nascetur ridiculus mus. Donec dignissim magna a tortor.");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][5]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][5]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][5]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][5]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][6]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][6]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['id'] , 68);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['firstname'] , "Buckminster");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['lastname'] , "Whitfield");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['email'] , "mollis.non@Nuncquisarcu.co.uk");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][6]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['position'] , "natoque penatibus");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['interest'] , "facilisi. Sed neque. Sed eget lacus. Mauris");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][6]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][6]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][6]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][6]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][7]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][7]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['id'] , 69);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['firstname'] , "Dalton");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['lastname'] , "Rosario");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['email'] , "Aliquam.vulputate@afelis.net");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][7]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['position'] , "iaculis enim, sit");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['interest'] , "dis parturient montes, nascetur ridiculus mus.");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][7]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][7]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][7]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][7]['program'][0]['sis'] , "B8E");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][8]) , 12);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][8]['school']) , 3);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['school']['name'] , "Tempor Limited");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['school']['short_name'] , "ornare");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['id'] , 70);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['firstname'] , "Thane");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['lastname'] , "Roman");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['email'] , "Integer@eleifendnec.com");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals(!empty($datas['result']['list'][0]['student']['list'][8]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['position'] , "Aenean eget");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['interest'] , "malesuada augue ut lacus. Nulla tincidunt, neque vitae");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['avatar'] , null);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][8]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['roles'][0] , "student");
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][8]['program']) , 1);
-        $this->assertEquals(count($datas['result']['list'][0]['student']['list'][8]['program'][0]) , 4);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['program'][0]['id'] , 46);
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['program'][0]['name'] , "ornare, lectus ante dictum");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['program'][0]['level'] , "emba");
-        $this->assertEquals($datas['result']['list'][0]['student']['list'][8]['program'][0]['sis'] , "B8E");
+        $this->assertEquals(count($datas['result']['list'][0]) , 4);
+        $this->assertEquals($datas['result']['list'][0]['id'] , 46);
+        $this->assertEquals($datas['result']['list'][0]['name'] , "ornare, lectus ante dictum");
+        $this->assertEquals($datas['result']['list'][0]['level'] , "emba");
+        $this->assertEquals($datas['result']['list'][0]['sis'] , "B8E");
+        $this->assertEquals(count($datas['result']['list'][1]) , 4);
+        $this->assertEquals($datas['result']['list'][1]['id'] , 50);
+        $this->assertEquals($datas['result']['list'][1]['name'] , "ac, fermentum vel, mauris.");
+        $this->assertEquals($datas['result']['list'][1]['level'] , "mba");
+        $this->assertEquals($datas['result']['list'][1]['sis'] , 614);
+        $this->assertEquals(count($datas['result']['list'][2]) , 4);
+        $this->assertEquals($datas['result']['list'][2]['id'] , 69);
+        $this->assertEquals($datas['result']['list'][2]['name'] , "neque vitae semper egestas,");
+        $this->assertEquals($datas['result']['list'][2]['level'] , "mba");
+        $this->assertEquals($datas['result']['list'][2]['sis'] , "5CC");
+        $this->assertEquals(count($datas['result']['list'][3]) , 4);
+        $this->assertEquals($datas['result']['list'][3]['id'] , 78);
+        $this->assertEquals($datas['result']['list'][3]['name'] , "Vivamus molestie dapibus ligula.");
+        $this->assertEquals($datas['result']['list'][3]['level'] , "mba");
+        $this->assertEquals($datas['result']['list'][3]['sis'] , "19C");
+        $this->assertEquals($datas['result']['count'] , 4);
+        $this->assertEquals($datas['id'] , 1);
+        $this->assertEquals($datas['jsonrpc'] , 2.0);
     }
     
     public function testUserGetList()
