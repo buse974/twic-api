@@ -40,8 +40,12 @@ class ItemMaterialDocumentRelation extends AbstractService
 	
 	public function replaceByItem($item, $material_documents)
 	{
-		$this->getMapper()->delete($this->getModel()->setItemId($item));
-
+		$this->deleteByItem($item);
 		return $this->addByItem($item, $material_documents);
+	}
+	
+	public function deleteByItem($item)
+	{
+		return $this->getMapper()->delete($this->getModel()->setItemId($item));
 	}
 }
