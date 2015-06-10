@@ -3,6 +3,7 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Zend\Db\Sql\Predicate\NotIn;
 
 class Item extends AbstractMapper
 {
@@ -31,11 +32,12 @@ class Item extends AbstractMapper
 		          ->where(array('parent_id IS NOT NULL'))
 		          ->where(array('course_id' => $course));
 		
-		$select->columns(array('id' => $subselect))
+		$select->columns(array('id'))
+				->where(array(new NotIn('id', $subselect)))
 		       ->where(array('course_id' => $course));
 		
 		$res = $this->selectWith($select);
-	
+
 		return (($res->count() > 0) ? $res->current()->getId() : null);
 	}
 }
