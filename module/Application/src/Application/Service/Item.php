@@ -18,12 +18,13 @@ class Item extends AbstractService
      * @param int    $weight
      * @param int    $parent
      * @param int    $module
+     * @param array  $materials
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $parent = null, $module = null)
+    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $parent = null, $module = null, $materials = null)
     {
         $m_item = $this->getModel()->setTitle($title)
                          ->setDescribe($describe)
@@ -43,7 +44,10 @@ class Item extends AbstractService
         if ($parent !== null) {
             $this->updateParentId($item_id, $parent);
         }
-
+        if($materials !== null) {
+        	$this->getServiceItemMaterialDocumentRelation()->addByItem($item_id, $materials);
+        }
+        
         return $item_id;
     }
 
@@ -70,10 +74,11 @@ class Item extends AbstractService
      * @param int    $weight
      * @param string $parent
      * @param int    $module
+     * @param array  $materials
      *
      * @return int
      */
-    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $module = null)
+    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $module = null, $materials = null)
     {
         $m_item = $this->getModel()
                        ->setId($id)
@@ -87,6 +92,9 @@ class Item extends AbstractService
         if ($parent !== null) {
             $this->updateParentId($id, $parent);
         }
+        if($materials !== null) {
+        	$this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
+        }
 
         return $this->getMapper()->update($m_item);
     }
@@ -99,9 +107,15 @@ class Item extends AbstractService
      */
     public function getList($course)
     {
-    	$m_item = $this->getModel()->setCourseId($course);
-		
-    	$res_item = $this->getMapper()->select($m_item);
+    	$res_item = $this->getMapper()->select($this->getModel()->setCourseId($course));
+    	foreach ($res_item as $m_item) {
+    		$res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
+    		$ar_imdr = array();
+    		foreach ($res_imdr as $m_imdr) {
+    			$ar_imdr[] = $m_imdr->getMaterialDocumentId();
+    		}
+    		$m_item->setMaterials($ar_imdr);
+    	}
     	
     	return $res_item->toArrayParent();
     }
@@ -121,5 +135,13 @@ class Item extends AbstractService
         $m_item = $this->getModel()->setType($type)->setCourse($course);
 
         return $this->getMapper()->select($m_item);
+    }
+    
+    /**
+     * @return \Application\Service\ItemMaterialDocumentRelation
+     */
+    public function getServiceItemMaterialDocumentRelation()
+    {
+    	return $this->getServiceLocator()->get('app_service_item_material_document_relation');
     }
 }

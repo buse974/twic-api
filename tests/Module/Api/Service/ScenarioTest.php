@@ -398,7 +398,81 @@ class CourseTest extends AbstractService
     /**
      * @depends testAddCourse
      */
-    public function testUAddItem($id)
+    public function testAddMaterialDocument($course_id)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('materialdocument.add', array(
+    			'course_id' => $course_id,
+    			'type' => 'type',
+    			'title' => 'title',
+    			'author' => 'author',
+    			'link' => 'link',
+    			'source' => 'src',
+    			'token' => 'token',
+    			'date' => '2015-01-01'
+    	));
+    
+    	$this->assertEquals(count($datas), 3);
+    	$this->assertEquals($datas['result'], 2);
+    	$this->assertEquals($datas['id'], 1);
+    	$this->assertEquals($datas['jsonrpc'], 2.0);
+    
+    	return $datas['result'];
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
+    public function testAddMaterialDocumentTwo($course_id)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('materialdocument.add', array(
+    			'course_id' => $course_id,
+    			'type' => 'type2',
+    			'title' => 'title2',
+    			'author' => 'author2',
+    			'link' => 'link2',
+    			'source' => 'src2',
+    			'token' => 'token2',
+    			'date' => '2015-01-02'
+    	));
+    
+    	$this->assertEquals(count($datas), 3);
+    	$this->assertEquals($datas['result'], 3);
+    	$this->assertEquals($datas['id'], 1);
+    	$this->assertEquals($datas['jsonrpc'], 2.0);
+    
+    	return $datas['result'];
+    }
+    
+    /**
+     * @depends testAddMaterialDocument
+     */
+    public function testUpdateMaterialDocument($id)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('materialdocument.update', array(
+    			'id' => $id,
+    			'type' => 'updatetype',
+    			'title' => 'updatetitle',
+    			'author' => 'updateauthor',
+    			'link' => 'updatelink',
+    			'source' => 'updatesrc',
+    			'token' => 'updatetoken',
+    			'date' => '2015-01-10'
+    	));
+    
+    	$this->assertEquals(count($datas), 3);
+    	$this->assertEquals($datas['result'], 1);
+    	$this->assertEquals($datas['id'], 1);
+    	$this->assertEquals($datas['jsonrpc'], 2.0);
+    }
+    
+    /**
+     * @depends testAddCourse
+     * @depends testAddMaterialDocument
+     */
+    public function testAddItem($id, $material)
     {
     	$this->setIdentity(1);
     	 
@@ -409,22 +483,23 @@ class CourseTest extends AbstractService
     			'title' => 'title',
     			'describe' => 'description',
     			'type' => 'LC',
-    			'weight' => 1
+    			'weight' => 1,
+    			'materials' => array($material)
     	));
     	
     	$this->assertEquals(count($datas) , 3);
     	$this->assertEquals($datas['result'] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
-    	
+
     	return $datas['result'];
     }
     
     /**
      * @depends testAddCourse
-     * @depends testUAddItem
+     * @depends testAddItem
      */
-    public function testUAddItemTwo($id)
+    public function testAddItemTwo($id)
     {
     	$this->setIdentity(1);
     
@@ -442,13 +517,15 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'] , 2);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
+
     }
     
     /**
-     * @depends testUAddItem
-     * @depends testUAddItemTwo
+     * @depends testAddItem
+     * @depends testAddMaterialDocumentTwo
+     * @depends testAddItemTwo
      */
-    public function testUUpdateItem($id)
+    public function testUpdateItem($id, $material)
     {
     	$this->setIdentity(1);
     
@@ -459,7 +536,8 @@ class CourseTest extends AbstractService
     			'title' => 'titl2e',
     			'describe' => 'description2',
     			'weight' => 1,
-    			'parent' => 2
+    			'parent' => 2,
+    			'materials' => array($material)
     	));
     	 
     	$this->assertEquals(count($datas) , 3); 
@@ -470,8 +548,8 @@ class CourseTest extends AbstractService
     
     /**
      * @depends testAddCourse
-     * @depends testUAddItem
-     * @depends testUAddItemTwo
+     * @depends testAddItem
+     * @depends testAddItemTwo
      */
     public function testCanGetListItem($course)
     {
@@ -481,32 +559,35 @@ class CourseTest extends AbstractService
     			'course' => $course,
     	));
     	
-    	$this->assertEquals(count($datas) , 3); 
-		$this->assertEquals(count($datas['result']) , 2); 
-		$this->assertEquals(count($datas['result'][0]) , 10); 
-		$this->assertEquals($datas['result'][0]['id'] , 2); 
-		$this->assertEquals($datas['result'][0]['title'] , "titl2e"); 
-		$this->assertEquals($datas['result'][0]['describe'] , "description2"); 
-		$this->assertEquals($datas['result'][0]['duration'] , 234); 
-		$this->assertEquals($datas['result'][0]['type'] , "CP"); 
-		$this->assertEquals($datas['result'][0]['weight'] , 1); 
-		$this->assertEquals($datas['result'][0]['course_id'] , 5); 
-		$this->assertEquals($datas['result'][0]['parent_id'] , null); 
-		$this->assertEquals($datas['result'][0]['grading_policy_id'] , 5); 
-		$this->assertEquals($datas['result'][0]['module_id'] , null); 
-		$this->assertEquals(count($datas['result'][1]) , 10); 
-		$this->assertEquals($datas['result'][1]['id'] , 1); 
-		$this->assertEquals($datas['result'][1]['title'] , "titl2e"); 
-		$this->assertEquals($datas['result'][1]['describe'] , "description2"); 
-		$this->assertEquals($datas['result'][1]['duration'] , 123); 
-		$this->assertEquals($datas['result'][1]['type'] , "LC"); 
-		$this->assertEquals($datas['result'][1]['weight'] , 1); 
-		$this->assertEquals($datas['result'][1]['course_id'] , 5); 
-		$this->assertEquals($datas['result'][1]['parent_id'] , 2); 
-		$this->assertEquals($datas['result'][1]['grading_policy_id'] , 2); 
-		$this->assertEquals($datas['result'][1]['module_id'] , null); 
-		$this->assertEquals($datas['id'] , 1); 
-		$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals(count($datas['result']) , 2);
+    	$this->assertEquals(count($datas['result'][0]) , 11);
+    	$this->assertEquals(count($datas['result'][0]['materials']) , 0);
+    	$this->assertEquals($datas['result'][0]['id'] , 2);
+    	$this->assertEquals($datas['result'][0]['title'] , "titl2e");
+    	$this->assertEquals($datas['result'][0]['describe'] , "description2");
+    	$this->assertEquals($datas['result'][0]['duration'] , 234);
+    	$this->assertEquals($datas['result'][0]['type'] , "CP");
+    	$this->assertEquals($datas['result'][0]['weight'] , 1);
+    	$this->assertEquals($datas['result'][0]['course_id'] , 5);
+    	$this->assertEquals($datas['result'][0]['parent_id'] , null);
+    	$this->assertEquals($datas['result'][0]['grading_policy_id'] , 5);
+    	$this->assertEquals($datas['result'][0]['module_id'] , null);
+    	$this->assertEquals(count($datas['result'][1]) , 11);
+    	$this->assertEquals(count($datas['result'][1]['materials']) , 1);
+    	$this->assertEquals($datas['result'][1]['materials'][0] , 3);
+    	$this->assertEquals($datas['result'][1]['id'] , 1);
+    	$this->assertEquals($datas['result'][1]['title'] , "titl2e");
+    	$this->assertEquals($datas['result'][1]['describe'] , "description2");
+    	$this->assertEquals($datas['result'][1]['duration'] , 123);
+    	$this->assertEquals($datas['result'][1]['type'] , "LC");
+    	$this->assertEquals($datas['result'][1]['weight'] , 1);
+    	$this->assertEquals($datas['result'][1]['course_id'] , 5);
+    	$this->assertEquals($datas['result'][1]['parent_id'] , 2);
+    	$this->assertEquals($datas['result'][1]['grading_policy_id'] , 2);
+    	$this->assertEquals($datas['result'][1]['module_id'] , null);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
     
     /**
@@ -532,7 +613,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['creator']['firstname'] , "Nicolas");
         $this->assertEquals($datas['result']['creator']['lastname'] , "Maremmani");
         $this->assertEquals($datas['result']['creator']['email'] , "nmaremmani@thestudnet.com");
-        $this->assertEquals(count($datas['result']['material_document']) , 1);
+        $this->assertEquals(count($datas['result']['material_document']) , 3);
         $this->assertEquals(count($datas['result']['material_document'][0]) , 12);
         $this->assertEquals($datas['result']['material_document'][0]['id'] , 1);
         $this->assertEquals($datas['result']['material_document'][0]['course_id'] , 5);
@@ -546,6 +627,32 @@ class CourseTest extends AbstractService
         $this->assertEquals(!empty($datas['result']['material_document'][0]['created_date']) , true);
         $this->assertEquals($datas['result']['material_document'][0]['deleted_date'] , null);
         $this->assertEquals($datas['result']['material_document'][0]['updated_date'] , null);
+        $this->assertEquals(count($datas['result']['material_document'][1]) , 12);
+        $this->assertEquals($datas['result']['material_document'][1]['id'] , 2);
+        $this->assertEquals($datas['result']['material_document'][1]['course_id'] , 5);
+        $this->assertEquals($datas['result']['material_document'][1]['type'] , "updatetype");
+        $this->assertEquals($datas['result']['material_document'][1]['title'] , "updatetitle");
+        $this->assertEquals($datas['result']['material_document'][1]['author'] , "updateauthor");
+        $this->assertEquals($datas['result']['material_document'][1]['link'] , "updatelink");
+        $this->assertEquals($datas['result']['material_document'][1]['source'] , "updatesrc");
+        $this->assertEquals($datas['result']['material_document'][1]['token'] , "updatetoken");
+        $this->assertEquals($datas['result']['material_document'][1]['date'] , "2015-01-10");
+        $this->assertEquals(!empty($datas['result']['material_document'][1]['created_date']) , true);
+        $this->assertEquals($datas['result']['material_document'][1]['deleted_date'] , null);
+        $this->assertEquals(!empty($datas['result']['material_document'][1]['updated_date']) , true);
+        $this->assertEquals(count($datas['result']['material_document'][2]) , 12);
+        $this->assertEquals($datas['result']['material_document'][2]['id'] , 3);
+        $this->assertEquals($datas['result']['material_document'][2]['course_id'] , 5);
+        $this->assertEquals($datas['result']['material_document'][2]['type'] , "type2");
+        $this->assertEquals($datas['result']['material_document'][2]['title'] , "title2");
+        $this->assertEquals($datas['result']['material_document'][2]['author'] , "author2");
+        $this->assertEquals($datas['result']['material_document'][2]['link'] , "link2");
+        $this->assertEquals($datas['result']['material_document'][2]['source'] , "src2");
+        $this->assertEquals($datas['result']['material_document'][2]['token'] , "token2");
+        $this->assertEquals($datas['result']['material_document'][2]['date'] , "2015-01-02");
+        $this->assertEquals(!empty($datas['result']['material_document'][2]['created_date']) , true);
+        $this->assertEquals($datas['result']['material_document'][2]['deleted_date'] , null);
+        $this->assertEquals($datas['result']['material_document'][2]['updated_date'] , null);
         $this->assertEquals(count($datas['result']['grading']) , 12);
         $this->assertEquals(count($datas['result']['grading'][0]) , 8);
         $this->assertEquals($datas['result']['grading'][0]['id'] , 13);
@@ -728,53 +835,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
     
-    /**
-     * @depends testAddCourse
-     */
-    public function testAddMaterialDocument($course_id)
-    {
-    	$this->setIdentity(3);
-        $datas = $this->jsonRpc('materialdocument.add', array(
-            'course_id' => $course_id,
-            'type' => 'type',
-            'title' => 'title',
-            'author' => 'author',
-            'link' => 'link',
-            'source' => 'src',
-            'token' => 'token',
-            'date' => '2015-01-01'
-        ));
-        
-        $this->assertEquals(count($datas), 3);
-        $this->assertEquals($datas['result'], 2);
-        $this->assertEquals($datas['id'], 1);
-        $this->assertEquals($datas['jsonrpc'], 2.0);
-        
-        return $datas['result'];
-    }
-
-    /**
-     * @depends testAddMaterialDocument
-     */
-    public function testUpdateMaterialDocument($id)
-    {
-    	$this->setIdentity(3);
-        $datas = $this->jsonRpc('materialdocument.update', array(
-            'id' => $id,
-            'type' => 'updatetype',
-            'title' => 'updatetitle',
-            'author' => 'updateauthor',
-            'link' => 'updatelink',
-            'source' => 'updatesrc',
-            'token' => 'updatetoken',
-            'date' => '2015-01-10'
-        ));
-        
-        $this->assertEquals(count($datas), 3);
-        $this->assertEquals($datas['result'], 1);
-        $this->assertEquals($datas['id'], 1);
-        $this->assertEquals($datas['jsonrpc'], 2.0);
-    }
+    
 
     /**
      * @depends testAddCourse
