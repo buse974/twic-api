@@ -18,8 +18,6 @@ class RoleTest extends AbstractService
 		$this->setIdentity(3);
 		
 		$datas = $this->jsonRpc('role.add', array('name' => 'ADMIN'));
-		
-		print_r($datas);
 		$this->assertEquals(count($datas) , 3); 
 		$this->assertEquals($datas['result'] , 7); 
 		$this->assertEquals($datas['id'] , 1); 
