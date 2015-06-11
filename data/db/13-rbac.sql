@@ -13,6 +13,10 @@ INSERT INTO `role` (`id`, `name`) VALUES ('5', 'instructor');
 INSERT INTO `role` (`id`, `name`) VALUES ('6', 'recruiter');
 */
 
+INSERT INTO `permission` (`libelle`) VALUES ('mail.getListTpl');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
 INSERT INTO `permission` (`libelle`) VALUES ('user.login');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
