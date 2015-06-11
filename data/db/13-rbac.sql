@@ -12,6 +12,60 @@ INSERT INTO `role` (`id`, `name`) VALUES ('5', 'instructor');
 INSERT INTO `role` (`id`, `name`) VALUES ('6', 'recruiter');
 */
 
+INSERT INTO `permission` (`libelle`) VALUES ('user.login');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconfinvitation.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconfinvitation.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.validTransfertVideo');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.update');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.record');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.implode');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.getRoom');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.getListVideoUpload');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.get');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('videoconf.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
+
+
 INSERT INTO `permission` (`libelle`) VALUES ('user.get');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('4', @rbac_permission_id);

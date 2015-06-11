@@ -1,3 +1,4 @@
+INSERT INTO `role` (`id`, `name`) VALUES (0, 'guest');
 INSERT INTO `role` (`id`, `name`) VALUES ('1', 'super_admin');
 INSERT INTO `role` (`id`, `name`) VALUES ('2', 'admin');
 INSERT INTO `role` (`id`, `name`) VALUES ('3', 'academic');
