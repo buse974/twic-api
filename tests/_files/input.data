@@ -1,1 +1,1 @@
-{"method":"user.deleteLanguage","id":1,"params":{"id":1}}
+{"method":"role.add","id":1,"params":{"name":"ADMIN"}}
