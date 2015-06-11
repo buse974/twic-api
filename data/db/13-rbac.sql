@@ -1,4 +1,4 @@
-INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('1', '0');
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('0', '4');
 INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('2', '1');
 INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('3', '2');
 INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('5', '3');
@@ -188,5 +188,9 @@ SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('module.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('item.delete');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
