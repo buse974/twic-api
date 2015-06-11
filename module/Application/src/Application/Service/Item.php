@@ -144,12 +144,24 @@ class Item extends AbstractService
     	
     	if($res_item->count() > 0) {
 	    	foreach ($res_item as $m_item) {
-	    		$this->getServiceItemMaterialDocumentRelation()->deleteByItem($m_item->getId());
-	    		$nbr += $this->getMapper()->delete($this->getModel()->setId($m_item->getId()));
+	    		$nbr += $this->delete($m_item->getId());
 	    	}
     	}
     	
      	return $nbr;
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @return integer
+     */
+    public function delete($id)
+    {
+    	$this->getServiceItemMaterialDocumentRelation()->deleteByItem($id);
+    	
+    	return $this->getMapper()->delete($this->getModel()->setId($id));
     }
     
     /**
