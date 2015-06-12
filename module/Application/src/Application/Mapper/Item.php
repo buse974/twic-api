@@ -7,6 +7,20 @@ use Zend\Db\Sql\Predicate\NotIn;
 
 class Item extends AbstractMapper
 {
+	
+	public function getListGrade($programs, $courses, $individualWork, $groupWork, $notGraded, $newMessage, $filter)
+	{
+		$select = $this->tableGateway->getSql()->select();
+		
+		$select->columns(array('title'))
+		       ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
+		       ->join('course', 'course.id=item.course_id', array('id', 'title'))
+		       ->join('program', 'program.id=course.program_id', array('id', 'name'))
+		       ->join('item_prog', 'item_prog.item_id=item.id', array('start_date'));
+		
+		
+	}
+	
     /**
      * Get Last parent id.
      *

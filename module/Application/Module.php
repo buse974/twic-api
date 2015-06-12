@@ -32,9 +32,9 @@ class Module
             }
             $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
               
-            if (!$rbacService->isGranted($identity['roles'], $permission)) {
+            if(!$rbacService->isGranted($identity['roles'], $permission)) {
                 if ($e->getTarget()->getServiceMap()->getService($permission) === false) {
-                    throw new JrpcException('Methode not fond', -32028);
+                    throw new JrpcException('Method not found', -32028);
                 }
                 if (!$authService->hasIdentity()) {
                 	throw new JrpcException('No connected', -32027);

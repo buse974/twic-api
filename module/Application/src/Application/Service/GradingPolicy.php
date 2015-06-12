@@ -108,13 +108,13 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $course
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function get($id)
+    public function get($course)
     {
-        return $this->getMapper()->select($this->getModel()->setCourseId($id));
+        return $this->getMapper()->select($this->getModel()->setCourseId($course));
     }
 
     public function initTpl($course)
