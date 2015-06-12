@@ -165,6 +165,26 @@ class Item extends AbstractService
     }
     
     /**
+     * @invokable
+     * 
+     * @param array $programs
+     * @param array $courses
+     * @param boolean $individualWork
+     * @param boolean $groupWork
+     * @param boolean $notGraded
+     * @param boolean $newMessage
+     * @param array $filter
+     */
+    public function getListGrade($programs, $courses = null, $individualWork = null, $groupWork = null, $notGraded = null, $newMessage = null, $filter = null)
+    {
+    	$mapper = $this->getMapper();
+    	
+    	$res_item = $mapper->usePaginator($filter)->getListGrade($programs, $courses, $individualWork, $groupWork, $notGraded, $newMessage, $filter);
+    	
+    	return array('count' => $mapper->count(), 'list' => $res_item);
+    }
+    
+    /**
      * @return \Application\Service\ItemMaterialDocumentRelation
      */
     public function getServiceItemMaterialDocumentRelation()
