@@ -22,7 +22,8 @@ class ItemProg extends AbstractService
     {
         $m_item_prog = $this->getModel()->setItemId($item)->setStartDate($start_date);
 
-        if ($this->getMapper()->insert($m_item_prog)) {
+        if ($this->getMapper()->insert($m_item_prog) <= 0) {
+        	print_r($ret);
             throw new \Exception('error insert item prog');
         }
 
