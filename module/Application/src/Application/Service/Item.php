@@ -179,7 +179,7 @@ class Item extends AbstractService
     {
     	$mapper = $this->getMapper();
     	
-    	$res_item = $mapper->usePaginator($filter)->getListGrade($programs, $courses, $individualWork, $groupWork, $notGraded, $newMessage, $filter);
+    	$res_item = $mapper->usePaginator($filter)->getListGrade($programs, $courses, $type, $notgraded, $newMessage, $filter);
     	
     	return array('count' => $mapper->count(), 'list' => $res_item);
     }

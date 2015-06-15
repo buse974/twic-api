@@ -1088,7 +1088,7 @@ class CourseTest extends AbstractService
     {
     	$this->setIdentity(3);
         $datas = $this->jsonRpc('gradingpolicy.get', array(
-            'id' => $id
+            'course' => $id
         ));
         
         $this->assertEquals(count($datas) , 3);
@@ -1184,7 +1184,7 @@ class CourseTest extends AbstractService
     {
     	$this->setIdentity(3);
         $datas = $this->jsonRpc('gradingpolicy.get', array(
-            'id' => $id
+            'course' => $id
         ));
         
         $this->assertEquals(count($datas) , 3);
@@ -1240,6 +1240,27 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['id'] , 1);
         $this->assertEquals($datas['jsonrpc'] , 2.0);
     }
+    
+    /**
+     * @depends testAddItem
+     */
+    public function testCanAddProgrmItem($item)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('itemprog.add', array(
+    			'item' => $item,
+    			'start_date' => '01-01-2015 10:10'
+    	));
+
+    	
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
+    
+    
+    
     
     // FAQ
     /**

@@ -32,7 +32,7 @@ class Module
             }
             $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
               
-            if(!$rbacService->isGranted($identity['roles'], $permission)) {
+            if (!$rbacService->isGranted($identity['roles'], $permission)) {
                 if ($e->getTarget()->getServiceMap()->getService($permission) === false) {
                     throw new JrpcException('Method not found', -32028);
                 }

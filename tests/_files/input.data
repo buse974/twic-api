@@ -1,1 +1,1 @@
-{"method":"user.deleteLanguage","id":1,"params":{"id":1}}
+{"method":"module.delete","id":1,"params":{"id":"1"}}
