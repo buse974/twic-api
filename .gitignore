@@ -8,6 +8,8 @@ nbproject
 .settings
 composer.lock
 vendor/bin
+config/
+Zdeploy/
 vendor
 composer.phar
 bin/*
