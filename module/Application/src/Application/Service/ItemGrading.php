@@ -10,4 +10,9 @@ class ItemGrading extends AbstractService
     {
         return $this->getMapper()->getList();
     }
+    
+    public function deleteByItemProgUser($item_prog_user)
+    {
+    	return $this->getMapper()->delete($this->getModel()->setItemProgUserId($item_prog_user));
+    }
 }

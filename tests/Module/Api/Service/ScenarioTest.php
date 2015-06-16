@@ -1257,8 +1257,45 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	
+    	return $datas['result'];
     }
     
+    /**
+     * @depends testCanAddProgrmItem
+     */
+    public function testCanAddItemsProgUSer($item_prog)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('itemprog.addUser', array(
+    		'item_prog' => $item_prog,
+    		'user' => array(1,2,3,4)
+    	));
+    
+    	$this->assertEquals(count($datas) , 3); 
+		$this->assertEquals(count($datas['result']) , 1); 
+		$this->assertEquals(count($datas['result'][1]) , 4); 
+		$this->assertEquals($datas['result'][1][1] , 1); 
+		$this->assertEquals($datas['result'][1][2] , 1); 
+		$this->assertEquals($datas['result'][1][3] , 1); 
+		$this->assertEquals($datas['result'][1][4] , 1); 
+		$this->assertEquals($datas['id'] , 1); 
+		$this->assertEquals($datas['jsonrpc'] , 2.0);
+		
+		return $datas['result'];
+    }
+    
+    /**
+     * @depends testCanAddProgrmItem
+     */
+    public function testCanAddItemAssigment($item_prog)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('itemprog.addUser', array(
+    		'item_prog' => $item_prog,
+    		'user' => array(1,2,3,4)
+    	));
+    } 
     
     
     
@@ -1469,8 +1506,6 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'][1][5] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
-    	
-    	$this->printDocTest($datas);
     }
     
     /**
@@ -1488,8 +1523,6 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'][1][5] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
-    	
-    	$this->printDocTest($datas);
     }
     
     /**

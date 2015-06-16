@@ -181,7 +181,7 @@ class Videoconf extends AbstractService
      *
      * @param string $token
      */
-    public function implode($id)
+    public function join($id)
     {
         return $this->get($id)->setVideoconfAdmin($this->getServiceVideoconfAdmin()->add($id));
     }
