@@ -14,6 +14,7 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use JRpc\Json\Server\Exception\JrpcException;
+use Rbac\Db\Model\Role;
 
 class Module
 {
@@ -22,23 +23,25 @@ class Module
         $eventManager = $event->getApplication()->getEventManager();
         $eventManagerShare = $eventManager->getSharedManager();
         $eventManagerShare->attach('JRpc\Json\Server\Server', 'sendRequest.pre', function ($e) use ($event) {
-            $premission = $e->getParams()['methode'];
-            if ($premission !== 'user.login') {
-                $authService = $event->getApplication()->getServiceManager()->get('auth.service');
-                if (!$authService->hasIdentity()) {
-                    throw new JrpcException('Not connected', -32027);
-                }
-                $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
-                $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getCacheIdentity();
-
-                if (!$rbacService->isGranted($identity['roles'], $premission)) {
-                    if ($e->getTarget()->getServiceMap()->getService($premission) === false) {
-                        throw new JrpcException('Methode not fond', -32028);
-                    }
-                    throw new JrpcException('Not authorization', -32029);
-                }
+            $permission = $e->getParams()['methode'];
+            $authService = $event->getApplication()->getServiceManager()->get('auth.service');
+            if ($authService->hasIdentity()) {
+             $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getCacheIdentity();
+            } else {
+             $identity['roles'] = Role::STR_GUEST;
             }
-        });
+            $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
+              
+            if (!$rbacService->isGranted($identity['roles'], $permission)) {
+                if ($e->getTarget()->getServiceMap()->getService($permission) === false) {
+                    throw new JrpcException('Method not found', -32028);
+                }
+                if (!$authService->hasIdentity()) {
+                	throw new JrpcException('No connected', -32027);
+                }
+                throw new JrpcException('No authorization', -32029);
+            }
+		});
 
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);

@@ -25,10 +25,9 @@ class Course extends AbstractMapper
         $select->columns(array('id', 'title', 'abstract', 'description', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
                 ->where(array('course.program_id' => $program))
                 ->where(array('course.deleted_date IS NULL'));
-        
-        
-        if(null ==! $search) {
-        	$select->where(array('course.title LIKE ? ' => '%' . $search . '%'));
+
+        if (null == !$search) {
+            $select->where(array('course.title LIKE ? ' => '%'.$search.'%'));
         }
 
         return $this->selectWith($select);

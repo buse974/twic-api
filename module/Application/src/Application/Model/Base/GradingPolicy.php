@@ -9,6 +9,7 @@ class GradingPolicy extends AbstractModel
     protected $id;
     protected $name;
     protected $grade;
+    protected $type;
     protected $tpl;
     protected $course_id;
     protected $mandatory;
@@ -47,6 +48,18 @@ class GradingPolicy extends AbstractModel
     public function setGrade($grade)
     {
         $this->grade = $grade;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }
