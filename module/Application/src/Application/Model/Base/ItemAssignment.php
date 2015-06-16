@@ -7,7 +7,7 @@ use Dal\Model\AbstractModel;
 class ItemAssignment extends AbstractModel
 {
  	protected $id;
-	protected $question;
+	protected $response;
 	protected $item_prog_id;
 	protected $submit_date;
 
@@ -25,14 +25,14 @@ class ItemAssignment extends AbstractModel
 		return $this;
 	}
 
-	public function getQuestion()
+	public function getResponse()
 	{
-		return $this->question;
+		return $this->response;
 	}
 
-	public function setQuestion($question)
+	public function setResponse($response)
 	{
-		$this->question = $question;
+		$this->response = $response;
 
 		return $this;
 	}

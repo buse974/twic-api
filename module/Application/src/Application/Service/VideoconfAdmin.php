@@ -5,7 +5,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use DateTimeZone;
 use DateTime;
-use OpenTok\Role;
+use OpenTok\Role as OpenTokRole;
 
 class VideoconfAdmin extends AbstractService
 {
@@ -23,7 +23,7 @@ class VideoconfAdmin extends AbstractService
         $m_identity = $this->getServiceAuth()->getIdentity();
         $token = $this->getServiceZOpenTok()->createToken($this->getServiceVideoconf()->get($videoconf_id)->getToken(),
                 '{"firstname":"'.htmlentities($m_identity->getFirstname()).'", "lastname":"'.htmlentities($m_identity->getLastname()).'"}',
-                Role::MODERATOR);
+                OpenTokRole::MODERATOR);
 
         $m_videoconf_admin = $this->getModel();
         $m_videoconf_admin->setVideoconfId($videoconf_id)
