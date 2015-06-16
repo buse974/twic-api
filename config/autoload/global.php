@@ -40,6 +40,7 @@ return array(
         'persistence' => false,
         'services' => array(
             'app_service_user',
+            'app_service_item',
             'app_service_school',
             'app_service_program',
             'app_service_role',
@@ -56,6 +57,7 @@ return array(
             'app_service_message',
             'app_service_module',
             'app_service_module_assignments',
+        	'app_service_item_prog',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',

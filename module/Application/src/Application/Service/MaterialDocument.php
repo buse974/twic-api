@@ -70,6 +70,22 @@ class MaterialDocument extends AbstractService
      *
      * @return int
      */
+    
+    /**
+     * Update Material Document by Course Id.
+     *
+     * @invokable
+     * 
+     * @param integer $id
+     * @param string $type
+     * @param string $title
+     * @param string $author
+     * @param string $link
+     * @param string $source
+     * @param string $token
+     * @param string $date
+     * @return integer
+     */
     public function update($id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
     {
         $m_material_document = $this->getModel()

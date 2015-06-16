@@ -32,16 +32,15 @@
 		<param value="phing.env"/>
 	</php>
 	<if>
-		<not>
-		<equals arg1="${phing.env}" arg2="" />
-		</not>
+		<available file="${project.basedir}/Zdeploy/properties/${phing.env}.properties" />
 		<then>
+			<echo message="${phing.env}"/>
 		    <property file="${project.basedir}/Zdeploy/properties/${phing.env}.properties" override="true" />
 		</then>
 	</if>
-	<if><isset property="build.env" />
+	<if><isset property="env" />
 		<then>
-	    	<property file="${project.basedir}/Zdeploy/properties/${build.env}.properties" override="true" />
+	    	<property file="${project.basedir}/Zdeploy/properties/${env}.properties" override="true" />
 		</then>
 	</if>
 
@@ -60,8 +59,8 @@
 			</then>
 		</if>
 		<phingcall target="database" />
-		<phingcall target="restart-service" />
-		<phingcall target="chown" />
+		<!--phingcall target="restart-service" />
+		<phingcall target="chown" / -->
 	</target>
 
 	<target name="configuration">

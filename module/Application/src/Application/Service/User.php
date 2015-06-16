@@ -180,9 +180,17 @@ class User extends AbstractService
     public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null)
     {
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($filter, null, $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), $type, $level, $course, $program, $search, $noprogram, $nocourse);
+        $res = $mapper->usePaginator($filter)->getList(
+        		$filter, 
+        		null, 
+        		$this->getServiceAuth()->getIdentity()->getId(), 
+        		$type, 
+        		$level, 
+        		$course, 
+        		$program, 
+        		$search, 
+        		$noprogram, 
+        		$nocourse);
 
         $res = $res->toArray();
 

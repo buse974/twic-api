@@ -31,11 +31,27 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
+     * @param array $datas
+     */
+    public function update($datas)
+    {
+        $ret = array();
+        foreach ($datas as $gp) {
+            $name = isset($gp['name']) ? $gp['name'] : null;
+            $grade = isset($gp['grade']) ? $gp['grade'] : null;
+
+            $ret[$gp['id']] = $this->_update($gp['id'], $name, $grade);
+        }
+
+        return $ret;
+    }
+
+    /**
      * @param int    $id
      * @param string $name
      * @param int    $grade
      */
-    public function update($id, $name = null, $grade = null)
+    public function _update($id, $name = null, $grade = null)
     {
         $m_grading = $this->getModel()
                           ->setName($name)
@@ -92,13 +108,13 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $course
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function get($id)
+    public function get($course)
     {
-        return $this->getMapper()->select($this->getModel()->setCourseId($id));
+        return $this->getMapper()->select($this->getModel()->setCourseId($course));
     }
 
     public function initTpl($course)

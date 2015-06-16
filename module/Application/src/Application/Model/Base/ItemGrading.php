@@ -9,7 +9,6 @@ class ItemGrading extends AbstractModel
     protected $id;
     protected $item_id;
     protected $user_id;
-    protected $grading_policy_id;
     protected $grade;
     protected $created_date;
 
@@ -47,18 +46,6 @@ class ItemGrading extends AbstractModel
     public function setUserId($user_id)
     {
         $this->user_id = $user_id;
-
-        return $this;
-    }
-
-    public function getGradingPolicyId()
-    {
-        return $this->grading_policy_id;
-    }
-
-    public function setGradingPolicyId($grading_policy_id)
-    {
-        $this->grading_policy_id = $grading_policy_id;
 
         return $this;
     }

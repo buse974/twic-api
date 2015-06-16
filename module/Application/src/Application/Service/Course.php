@@ -13,6 +13,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
+     * @param int    $program_id
      * @param string $title
      * @param string $abstract
      * @param string $description
@@ -25,19 +26,16 @@ class Course extends AbstractService
      * @param string $video_link
      * @param string $video_token
      * @param array  $material_document
-     * @param int    $program_id
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array(), $program_id)
+    public function add($program_id, $title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
         $m_course = $this->getModel()
             ->setTitle($title)
-            ->setCreatorId($this->getServiceAuth()
-            ->getIdentity()
-            ->getId())
+            ->setCreatorId($this->getServiceAuth()->getIdentity()->getId())
             ->setAbstract($abstract)
             ->setDescription($description)
             ->setObjectives($objectives)
@@ -179,9 +177,9 @@ class Course extends AbstractService
      *
      * @param unknown $program
      */
-    public function getList($program, $search = null, $filter=null)
+    public function getList($program, $search = null, $filter = null)
     {
-    	$mapper = $this->getMapper();
+        $mapper = $this->getMapper();
         $res_course = $mapper->usePaginator($filter)->getList($program, $search);
 
         foreach ($res_course as $m_course) {
