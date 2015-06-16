@@ -144,8 +144,9 @@ class User extends AbstractMapper
             $select->where(array('user.lastname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
 
-        $select->where('user.deleted_date IS NULL');
-
+        $select->where('user.deleted_date IS NULL')
+               ->order(array('user.id' => 'DESC'));
+        
         return $this->selectWith($select);
     }
 }
