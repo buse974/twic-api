@@ -4,14 +4,14 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class ItemGrading extends AbstractModel
+class GradingPolicyGrade extends AbstractModel
 {
  	protected $id;
-	protected $item_prog_user_id;
+	protected $grading_policy_id;
 	protected $grade;
 	protected $created_date;
 
-	protected $prefix = 'item_grading';
+	protected $prefix = 'grading_policy_grade';
 
 	public function getId()
 	{
@@ -25,14 +25,14 @@ class ItemGrading extends AbstractModel
 		return $this;
 	}
 
-	public function getItemProgUserId()
+	public function getGradingPolicyId()
 	{
-		return $this->item_prog_user_id;
+		return $this->grading_policy_id;
 	}
 
-	public function setItemProgUserId($item_prog_user_id)
+	public function setGradingPolicyId($grading_policy_id)
 	{
-		$this->item_prog_user_id = $item_prog_user_id;
+		$this->grading_policy_id = $grading_policy_id;
 
 		return $this;
 	}

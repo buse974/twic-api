@@ -52,14 +52,27 @@ class ItemProg extends AbstractService
             );
         }
 
-        return $this->getServiceItemProgUserRelation()->add($user, $item_prog);
+        return $this->getServiceItemProgUser()->add($user, $item_prog);
     }
 
-    /**
-     * @return \Application\Service\ItemProgUserRelation
-     */
-    public function getServiceItemProgUserRelation()
+    public function deleteByItem($item)
     {
-        return $this->getServiceLocator()->get('app_service_item_user_relation');
+    	$res_item_prog = $this->getMapper()->select($this->getModel()->setItemId($item));
+    	
+    	foreach ($res_item_prog as $m_item_prog) {
+    		$this->getServiceItemProgUser()->deleteByItemProg($m_item_prog->getId());
+    	}
+    	
+    	$this->getMapper()->delete($this->getModel()->setItemId($item));
     }
+    
+    /**
+     * @return \Application\Service\ItemProgUser
+     */
+    public function getServiceItemProgUser()
+    {
+        return $this->getServiceLocator()->get('app_service_item_prog_user');
+    }
+    
+
 }

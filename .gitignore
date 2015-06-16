@@ -13,3 +13,4 @@ composer.phar
 bin/*
 Zdeploy/properties/*.properties
 *.bak
+tests/_files/input.data

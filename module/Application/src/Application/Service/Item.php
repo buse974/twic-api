@@ -160,6 +160,7 @@ class Item extends AbstractService
     public function delete($id)
     {
     	$this->getServiceItemMaterialDocumentRelation()->deleteByItem($id);
+    	$this->getServiceItemProg()->deleteByItem($id);
     	
     	return $this->getMapper()->delete($this->getModel()->setId($id));
     }
@@ -190,5 +191,13 @@ class Item extends AbstractService
     public function getServiceItemMaterialDocumentRelation()
     {
     	return $this->getServiceLocator()->get('app_service_item_material_document_relation');
+    }
+    
+    /**
+     * @return \Application\Service\ItemProg
+     */
+    public function getServiceItemProg()
+    {
+    	return $this->getServiceLocator()->get('app_service_item_prog');
     }
 }

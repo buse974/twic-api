@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class ItemGradingComment extends AbstractMapper
+class GradingPolicyGrade extends AbstractMapper
 {
 }
