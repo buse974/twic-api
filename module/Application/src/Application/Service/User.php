@@ -113,13 +113,14 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function add($firstname, $lastname, $email, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
+    public function add($firstname, $lastname, $email, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
     {
         $m_user = $this->getModel();
 
         $m_user->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
+            ->setSis($sis)
             ->setPassword(md5($password))
             ->setBirthDate($birth_date)
             ->setPosition($position)
@@ -307,7 +308,7 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function update($id = null, $firstname = null, $lastname = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
+    public function update($id = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
     {
         $m_user = $this->getModel();
 
@@ -321,6 +322,7 @@ class User extends AbstractService
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
+            ->setSis($sis)
             ->setBirthDate($birth_date)
             ->setPosition($position)
             ->setSchoolId($school_id)
