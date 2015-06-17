@@ -78,6 +78,7 @@ class Program extends AbstractService
         foreach ($res_program['list'] as $m_program) {
         	$m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
         	$m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
+        	$m_program->setCourse($this->getServiceCourse()->getList($m_program->getId(), null, array('n' => 1, 'p' => 1))['count']);
         }
         
         return $res_program;
