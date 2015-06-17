@@ -1294,6 +1294,7 @@ class CourseTest extends AbstractService
     	$datas = $this->jsonRpc('itemassignment.add', array(
     		'item_prog' => $item_prog,
     		'response' => 'response',
+    		'type' => 'LC',
     		'documents' => array(
     			array(
 		    		'type' => 'type',
