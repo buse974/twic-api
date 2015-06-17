@@ -61,6 +61,7 @@ class ItemProg extends AbstractService
     	
     	foreach ($res_item_prog as $m_item_prog) {
     		$this->getServiceItemProgUser()->deleteByItemProg($m_item_prog->getId());
+    		$this->getServiceItemAssignment()->deleteByItemProg($m_item_prog->getId());
     	}
     	
     	$this->getMapper()->delete($this->getModel()->setItemId($item));
@@ -72,6 +73,14 @@ class ItemProg extends AbstractService
     public function getServiceItemProgUser()
     {
         return $this->getServiceLocator()->get('app_service_item_prog_user');
+    }
+    
+    /**
+     * @return \Application\Service\ItemAssignment
+     */
+    public function getServiceItemAssignment()
+    {
+    	return $this->getServiceLocator()->get('app_service_item_assignment');
     }
     
 

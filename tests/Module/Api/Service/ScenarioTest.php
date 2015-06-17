@@ -1291,13 +1291,27 @@ class CourseTest extends AbstractService
     public function testCanAddItemAssigment($item_prog)
     {
     	$this->setIdentity(3);
-    	$datas = $this->jsonRpc('itemprog.addUser', array(
+    	$datas = $this->jsonRpc('itemassignment.add', array(
     		'item_prog' => $item_prog,
-    		'user' => array(1,2,3,4)
+    		'response' => 'response',
+    		'documents' => array(
+    			array(
+		    		'type' => 'type',
+		    		'title' => 'title',
+		    		'author' => 'author',
+		    		'link' => 'link',
+		    		'source' => 'source',
+		    		'token' => 'token',
+    				'date' => 'date'
+    			),
+    		),
     	));
-    } 
-    
-    
+    	
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
     
     // FAQ
     /**
@@ -1428,17 +1442,17 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['list'][0]['school']['name'] , "Tempor Limited");
         $this->assertEquals($datas['result']['list'][0]['school']['short_name'] , "ornare");
         $this->assertEquals($datas['result']['list'][0]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][0]['id'] , 3);
-        $this->assertEquals($datas['result']['list'][0]['firstname'] , "Christophe");
-        $this->assertEquals($datas['result']['list'][0]['lastname'] , "Robert");
-        $this->assertEquals($datas['result']['list'][0]['email'] , "crobert@thestudnet.com");
+        $this->assertEquals($datas['result']['list'][0]['id'] , 94);
+        $this->assertEquals($datas['result']['list'][0]['firstname'] , "Hannah");
+        $this->assertEquals($datas['result']['list'][0]['lastname'] , "Henry");
+        $this->assertEquals($datas['result']['list'][0]['email'] , "tellus.sem.mollis@CuraePhasellus.org");
         $this->assertEquals($datas['result']['list'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
-        $this->assertEquals($datas['result']['list'][0]['birth_date'] , null);
-        $this->assertEquals($datas['result']['list'][0]['position'] , null);
-        $this->assertEquals($datas['result']['list'][0]['interest'] , null);
+        $this->assertEquals(!empty($datas['result']['list'][0]['birth_date']) , true);
+        $this->assertEquals($datas['result']['list'][0]['position'] , "amet massa. Quisque");
+        $this->assertEquals($datas['result']['list'][0]['interest'] , "erat. Vivamus nisi. Mauris nulla. Integer urna. Vivamus molestie dapibus");
         $this->assertEquals($datas['result']['list'][0]['avatar'] , null);
         $this->assertEquals(count($datas['result']['list'][0]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][0]['roles'][0] , "academic");
+        $this->assertEquals($datas['result']['list'][0]['roles'][0] , "instructor");
         $this->assertEquals(count($datas['result']['list'][0]['program']) , 1);
         $this->assertEquals(count($datas['result']['list'][0]['program'][0]) , 4);
         $this->assertEquals($datas['result']['list'][0]['program'][0]['id'] , 46);
@@ -1450,17 +1464,17 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['list'][1]['school']['name'] , "Tempor Limited");
         $this->assertEquals($datas['result']['list'][1]['school']['short_name'] , "ornare");
         $this->assertEquals($datas['result']['list'][1]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][1]['id'] , 10);
-        $this->assertEquals($datas['result']['list'][1]['firstname'] , "Maisie");
-        $this->assertEquals($datas['result']['list'][1]['lastname'] , "Petersen");
-        $this->assertEquals($datas['result']['list'][1]['email'] , "dui@Sedidrisus.net");
+        $this->assertEquals($datas['result']['list'][1]['id'] , 88);
+        $this->assertEquals($datas['result']['list'][1]['firstname'] , "Risa");
+        $this->assertEquals($datas['result']['list'][1]['lastname'] , "Edwards");
+        $this->assertEquals($datas['result']['list'][1]['email'] , "elementum@aliquamiaculis.com");
         $this->assertEquals($datas['result']['list'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals(!empty($datas['result']['list'][1]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][1]['position'] , "ultricies ornare, elit");
-        $this->assertEquals($datas['result']['list'][1]['interest'] , "consequat auctor, nunc nulla vulputate dui,");
+        $this->assertEquals($datas['result']['list'][1]['position'] , "vel nisl.");
+        $this->assertEquals($datas['result']['list'][1]['interest'] , "id enim. Curabitur massa. Vestibulum accumsan neque et nunc. Quisque");
         $this->assertEquals($datas['result']['list'][1]['avatar'] , null);
         $this->assertEquals(count($datas['result']['list'][1]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][1]['roles'][0] , "academic");
+        $this->assertEquals($datas['result']['list'][1]['roles'][0] , "student");
         $this->assertEquals(count($datas['result']['list'][1]['program']) , 1);
         $this->assertEquals(count($datas['result']['list'][1]['program'][0]) , 4);
         $this->assertEquals($datas['result']['list'][1]['program'][0]['id'] , 46);
@@ -1472,23 +1486,67 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['list'][2]['school']['name'] , "Tempor Limited");
         $this->assertEquals($datas['result']['list'][2]['school']['short_name'] , "ornare");
         $this->assertEquals($datas['result']['list'][2]['school']['logo'] , null);
-        $this->assertEquals($datas['result']['list'][2]['id'] , 13);
-        $this->assertEquals($datas['result']['list'][2]['firstname'] , "Ora");
-        $this->assertEquals($datas['result']['list'][2]['lastname'] , "Bentley");
-        $this->assertEquals($datas['result']['list'][2]['email'] , "auctor@interdumlibero.ca");
+        $this->assertEquals($datas['result']['list'][2]['id'] , 77);
+        $this->assertEquals($datas['result']['list'][2]['firstname'] , "Malcolm");
+        $this->assertEquals($datas['result']['list'][2]['lastname'] , "Becker");
+        $this->assertEquals($datas['result']['list'][2]['email'] , "placerat.Cras.dictum@libero.com");
         $this->assertEquals($datas['result']['list'][2]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals(!empty($datas['result']['list'][2]['birth_date']) , true);
-        $this->assertEquals($datas['result']['list'][2]['position'] , "in lobortis tellus");
-        $this->assertEquals($datas['result']['list'][2]['interest'] , "nec tempus scelerisque, lorem ipsum sodales purus,");
+        $this->assertEquals($datas['result']['list'][2]['position'] , "metus sit amet");
+        $this->assertEquals($datas['result']['list'][2]['interest'] , "convallis convallis dolor. Quisque tincidunt");
         $this->assertEquals($datas['result']['list'][2]['avatar'] , null);
         $this->assertEquals(count($datas['result']['list'][2]['roles']) , 1);
-        $this->assertEquals($datas['result']['list'][2]['roles'][0] , "student");
+        $this->assertEquals($datas['result']['list'][2]['roles'][0] , "academic");
         $this->assertEquals(count($datas['result']['list'][2]['program']) , 1);
         $this->assertEquals(count($datas['result']['list'][2]['program'][0]) , 4);
         $this->assertEquals($datas['result']['list'][2]['program'][0]['id'] , 46);
         $this->assertEquals($datas['result']['list'][2]['program'][0]['name'] , "ornare, lectus ante dictum");
         $this->assertEquals($datas['result']['list'][2]['program'][0]['level'] , "emba");
         $this->assertEquals($datas['result']['list'][2]['program'][0]['sis'] , "B8E");
+        $this->assertEquals(count($datas['result']['list'][3]) , 12);
+        $this->assertEquals(count($datas['result']['list'][3]['school']) , 3);
+        $this->assertEquals($datas['result']['list'][3]['school']['name'] , "Tempor Limited");
+        $this->assertEquals($datas['result']['list'][3]['school']['short_name'] , "ornare");
+        $this->assertEquals($datas['result']['list'][3]['school']['logo'] , null);
+        $this->assertEquals($datas['result']['list'][3]['id'] , 74);
+        $this->assertEquals($datas['result']['list'][3]['firstname'] , "Cyrus");
+        $this->assertEquals($datas['result']['list'][3]['lastname'] , "Britt");
+        $this->assertEquals($datas['result']['list'][3]['email'] , "auctor.odio.a@consequatenim.co.uk");
+        $this->assertEquals($datas['result']['list'][3]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
+        $this->assertEquals(!empty($datas['result']['list'][3]['birth_date']) , true);
+        $this->assertEquals($datas['result']['list'][3]['position'] , "penatibus et");
+        $this->assertEquals($datas['result']['list'][3]['interest'] , "Aliquam ornare, libero at auctor");
+        $this->assertEquals($datas['result']['list'][3]['avatar'] , null);
+        $this->assertEquals(count($datas['result']['list'][3]['roles']) , 1);
+        $this->assertEquals($datas['result']['list'][3]['roles'][0] , "student");
+        $this->assertEquals(count($datas['result']['list'][3]['program']) , 1);
+        $this->assertEquals(count($datas['result']['list'][3]['program'][0]) , 4);
+        $this->assertEquals($datas['result']['list'][3]['program'][0]['id'] , 46);
+        $this->assertEquals($datas['result']['list'][3]['program'][0]['name'] , "ornare, lectus ante dictum");
+        $this->assertEquals($datas['result']['list'][3]['program'][0]['level'] , "emba");
+        $this->assertEquals($datas['result']['list'][3]['program'][0]['sis'] , "B8E");
+        $this->assertEquals(count($datas['result']['list'][4]) , 12);
+        $this->assertEquals(count($datas['result']['list'][4]['school']) , 3);
+        $this->assertEquals($datas['result']['list'][4]['school']['name'] , "Tempor Limited");
+        $this->assertEquals($datas['result']['list'][4]['school']['short_name'] , "ornare");
+        $this->assertEquals($datas['result']['list'][4]['school']['logo'] , null);
+        $this->assertEquals($datas['result']['list'][4]['id'] , 70);
+        $this->assertEquals($datas['result']['list'][4]['firstname'] , "Thane");
+        $this->assertEquals($datas['result']['list'][4]['lastname'] , "Roman");
+        $this->assertEquals($datas['result']['list'][4]['email'] , "Integer@eleifendnec.com");
+        $this->assertEquals($datas['result']['list'][4]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
+        $this->assertEquals(!empty($datas['result']['list'][4]['birth_date']) , true);
+        $this->assertEquals($datas['result']['list'][4]['position'] , "Aenean eget");
+        $this->assertEquals($datas['result']['list'][4]['interest'] , "malesuada augue ut lacus. Nulla tincidunt, neque vitae");
+        $this->assertEquals($datas['result']['list'][4]['avatar'] , null);
+        $this->assertEquals(count($datas['result']['list'][4]['roles']) , 1);
+        $this->assertEquals($datas['result']['list'][4]['roles'][0] , "student");
+        $this->assertEquals(count($datas['result']['list'][4]['program']) , 1);
+        $this->assertEquals(count($datas['result']['list'][4]['program'][0]) , 4);
+        $this->assertEquals($datas['result']['list'][4]['program'][0]['id'] , 46);
+        $this->assertEquals($datas['result']['list'][4]['program'][0]['name'] , "ornare, lectus ante dictum");
+        $this->assertEquals($datas['result']['list'][4]['program'][0]['level'] , "emba");
+        $this->assertEquals($datas['result']['list'][4]['program'][0]['sis'] , "B8E");
     }
       
     /**

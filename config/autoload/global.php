@@ -57,6 +57,7 @@ return array(
             'app_service_message',
             'app_service_module',
             'app_service_module_assignments',
+        	'app_service_item_assignment',
         	'app_service_item_prog',
         ),
         'headers' => array(
