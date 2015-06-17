@@ -186,6 +186,23 @@ class Item extends AbstractService
     }
     
     /**
+     * 
+     * @param integer $item_prog
+     * @throws \Exception
+     * @return \Application\Model\Item
+     */
+    public function getByItemProg($item_prog)
+    {
+    	$res_item = $this->getMapper()->getByItemProg($item_prog);
+    	
+    	if ($res_item->count() <= 0) {
+    		throw new \Exception('error select item by itemprog');
+    	}
+    	
+    	return $res_item->current();
+    }
+    
+    /**
      * @return \Application\Service\ItemMaterialDocumentRelation
      */
     public function getServiceItemMaterialDocumentRelation()

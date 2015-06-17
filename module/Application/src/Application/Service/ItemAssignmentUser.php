@@ -16,8 +16,13 @@ class ItemAssignmentUser extends AbstractService
 		}
 		foreach ($user as $u) {
 			foreach ($item_assignment as $ia) {
-				$this->getMapper()->insert($this->getModel()->setUserId($u)->setItemAssignmentId($ia));
+				$this->getMapper()->insert($this->getModel()->setUserId($u)->setItemAssigmentId($ia));
 			}
 		}
+	}
+	
+	public function deleteByItemAssignment($item_assignment)
+	{
+		return $this->getMapper()->delete($this->getModel()->setItemAssigmentId($item_assignment));
 	}
 }

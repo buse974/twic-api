@@ -33,6 +33,16 @@ class ItemProgUser extends AbstractService
 	}
 	
 	/**
+	 * 
+	 * @param integer $item_prog
+	 * @return \Dal\Db\ResultSet\ResultSet
+	 */
+	public function getListByItemProg($item_prog)
+	{
+		return $this->getMapper()->select($this->getModel()->setItemProg($item_prog));
+	}
+	
+	/**
 	 * @return \Application\Service\ItemGrading
 	 */
 	public function getServiceItemGrading()

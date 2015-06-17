@@ -3,7 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Item;
+use Application\Model\Item as CItem;
 
 class ItemAssignment extends AbstractService
 {
@@ -11,20 +11,19 @@ class ItemAssignment extends AbstractService
 	 * @invokable
 	 * 
 	 * @param integer $item_prog
-	 * @param string $type
 	 * @param string $response
 	 * @param array $documents
 	 */
-	public function add($item_prog, $type,$response = null, $documents = null)
+	public function add($item_prog, $response = null, $documents = null)
 	{
-		$m_item_prog = $this->getModel()->setItemProgId($item_prog)
-		                                ->setResponse($response);
+		$m_item_assignment = $this->getModel()->setItemProgId($item_prog)->setResponse($response);
 
-		if($this->getMapper()->insert($m_item_prog) <= 0) {
+		if($this->getMapper()->insert($m_item_assignment) <= 0) {
 			throw new \Exception('error insert item prog');
 		}
-		
+		$m_item = $this->getServiceItem()->getByItemProg($item_prog);
 		$item_assigment_id = $this->getMapper()->getLastInsertValue();
+		
 		if(is_array($documents)) {
 			foreach ($documents as $d) {
 				$type = isset($d['type']) ? $d['type'] : null;
@@ -39,17 +38,20 @@ class ItemAssignment extends AbstractService
 			}
 		}
 		
-		switch ($type) {
-			case Item::TYPE_LIVE_CLASS:
-			
+		switch ($m_item->getType()) {
+			case CItem::TYPE_WORKGROUP:
+				$res_item_prog = $this->getServiceItemProgUser()->getListByItemProg($item_prog);
+				foreach ($res_item_prog as $m_item_prog) {
+					$this->getServiceItemAssignmentUser()->add(
+							$res_item_prog->getUserId(),
+							$item_assigment_id);
+				}
 			break;
 			
-			case (Item::TYPE_INDIVIDUAL_ASSIGMENT || Item::TYPE_CAPSTONE_PROJECT):
-				
-			break;
-				
-			case Item::TYPE_WORKGROUP:
-				
+			case (CItem::TYPE_INDIVIDUAL_ASSIGMENT || CItem::TYPE_CAPSTONE_PROJECT):
+				$this->getServiceItemAssignmentUser()->add(
+						$this->getServiceAuth()->getIdentity()->getId(),
+						$item_assigment_id);
 			break;
 		}
 		
@@ -62,6 +64,7 @@ class ItemAssignment extends AbstractService
 		
 		foreach ($res_item_assignment as $m_item_assignment) {
 			$this->getServiceItemAssignmentDocument()->deleteByItemAssignment($m_item_assignment->getId());
+			$this->getServiceItemAssignmentUser()->deleteByItemAssignment($m_item_assignment->getId());
 		}
 		
 		return $this->getMapper()->delete($this->getModel()->setItemProgId($item_prog));
@@ -76,10 +79,34 @@ class ItemAssignment extends AbstractService
 	}
 	
 	/**
+	 * @return \Application\Service\Item
+	 */
+	public function getServiceItem()
+	{
+		return $this->getServiceLocator()->get('app_service_item');
+	}
+	
+	/**
+	 * @return \Application\Service\ItemProgUser
+	 */
+	public function getServiceItemProgUser()
+	{
+		return $this->getServiceLocator()->get('app_service_item_prog_user');
+	}
+	
+	/**
 	 * @return \Application\Service\ItemAssignmentUser
 	 */
 	public function getServiceItemAssignmentUser()
 	{
-		return $this->getServiceLocator()->get('app_service_item_assigment_user');
+		return $this->getServiceLocator()->get('app_service_item_assignment_user');
+	}
+	
+	/**
+	 * @return \Zend\Authentication\AuthenticationService
+	 */
+	public function getServiceAuth()
+	{
+		return $this->getServiceLocator()->get('auth.service');
 	}
 }

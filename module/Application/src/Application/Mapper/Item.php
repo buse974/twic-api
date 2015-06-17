@@ -49,6 +49,17 @@ class Item extends AbstractMapper
 		return $this->selectWith($select);
 	}			
 	
+	public function getByItemProg($item_prog)
+	{
+		$select = $this->tableGateway->getSql()->select();
+		
+		$select->columns(array('type'))
+		       ->join('item_prog', 'item_prog.item_id=item.id', array())
+		       ->where(array('item_prog.id' => $item_prog));
+		
+		return $this->selectWith($select);
+	}
+	
     /**
      * Get Last parent id.
      *
