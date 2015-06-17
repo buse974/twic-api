@@ -1435,6 +1435,7 @@ class CourseTest extends AbstractService
     
         $datas = $this->jsonRpc('program.getList', array());
 
+        print_r($datas);
         $this->assertEquals(count($datas) , 3);
         $this->assertEquals(count($datas['result']) , 2);
         $this->assertEquals(count($datas['result']['list']) , 4);
