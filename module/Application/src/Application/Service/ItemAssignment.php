@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Item;
 
 class ItemAssignment extends AbstractService
 {
@@ -10,10 +11,11 @@ class ItemAssignment extends AbstractService
 	 * @invokable
 	 * 
 	 * @param integer $item_prog
+	 * @param string $type
 	 * @param string $response
 	 * @param array $documents
 	 */
-	public function add($item_prog, $response = null, $documents = null)
+	public function add($item_prog, $type,$response = null, $documents = null)
 	{
 		$m_item_prog = $this->getModel()->setItemProgId($item_prog)
 		                                ->setResponse($response);
@@ -37,6 +39,20 @@ class ItemAssignment extends AbstractService
 			}
 		}
 		
+		switch ($type) {
+			case Item::TYPE_LIVE_CLASS:
+			
+			break;
+			
+			case (Item::TYPE_INDIVIDUAL_ASSIGMENT || Item::TYPE_CAPSTONE_PROJECT):
+				
+			break;
+				
+			case Item::TYPE_WORKGROUP:
+				
+			break;
+		}
+		
 		return $item_assigment_id;
 	}
 	
@@ -57,5 +73,13 @@ class ItemAssignment extends AbstractService
 	public function getServiceItemAssignmentDocument()
 	{
 		return $this->getServiceLocator()->get('app_service_item_assigment_document');
+	}
+	
+	/**
+	 * @return \Application\Service\ItemAssignmentUser
+	 */
+	public function getServiceItemAssignmentUser()
+	{
+		return $this->getServiceLocator()->get('app_service_item_assigment_user');
 	}
 }
