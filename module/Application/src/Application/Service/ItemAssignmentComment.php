@@ -3,6 +3,8 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use \DateTime;
+use \DateTimeZone;
 
 class ItemAssignmentComment extends AbstractService
 {
@@ -10,11 +12,17 @@ class ItemAssignmentComment extends AbstractService
 	{
 		$m_item_assignment_comment = $this->getModel()->setItemAssignmentId($item_assignment_id)
 		                                              ->setText($text)
-		                                              ->setUserId($this->getServiceAuth()->getIdentity()->getId());
+		                                              ->setUserId($this->getServiceAuth()->getIdentity()->getId())
+		                                              ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 		
 		
-		$this->getMapper()->insert($m_item_assignment_comment);
+		return $this->getMapper()->insert($m_item_assignment_comment);
 		                
+	}
+	
+	public function deleteByItemAssignment($item_assignment)
+	{
+		return $this->getMapper()->delete($this->getModel()->setItemAssignmentId($item_assignment));
 	}
 	
 	/**

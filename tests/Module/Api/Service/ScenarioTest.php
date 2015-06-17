@@ -501,7 +501,7 @@ class CourseTest extends AbstractService
     			'duration' => 234,
     			'title' => 'title',
     			'describe' => 'description',
-    			'type' => 'LC',
+    			'type' => 'WG',
     			'weight' => 1,
     			'module' => $module,
     			'materials' => array($material)
@@ -600,7 +600,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'][1]['title'] , "titl2e");
     	$this->assertEquals($datas['result'][1]['describe'] , "description2");
     	$this->assertEquals($datas['result'][1]['duration'] , 123);
-    	$this->assertEquals($datas['result'][1]['type'] , "LC");
+    	$this->assertEquals($datas['result'][1]['type'] , "WG");
     	$this->assertEquals($datas['result'][1]['weight'] , 1);
     	$this->assertEquals($datas['result'][1]['course_id'] , 5);
     	$this->assertEquals($datas['result'][1]['parent_id'] , 2);
@@ -1307,6 +1307,41 @@ class CourseTest extends AbstractService
     		),
     	));
     	
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    	
+    	return $datas['result'];
+    }
+    
+    /**
+     * @depends testCanAddItemAssigment
+     */
+    public function testCanAddCommentItemAssigment($item_assignment)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('itemassignment.addComment', array(
+    			'text' => 'text text text',
+    			'item_assignment' => $item_assignment
+    	));
+    	
+    	$this->assertEquals(count($datas) , 3); 
+		$this->assertEquals($datas['result'] , 1); 
+		$this->assertEquals($datas['id'] , 1); 
+		$this->assertEquals($datas['jsonrpc'] , 2.0); 
+    }
+    
+    /**
+     * @depends testCanAddItemAssigment
+     */
+    public function testCanAddSubmitItemAssigment($item_assignment)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('itemassignment.submit', array(
+    			'id' => $item_assignment,
+    	));
+    	 
     	$this->assertEquals(count($datas) , 3);
     	$this->assertEquals($datas['result'] , 1);
     	$this->assertEquals($datas['id'] , 1);

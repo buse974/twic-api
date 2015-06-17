@@ -39,7 +39,7 @@ class ItemProgUser extends AbstractService
 	 */
 	public function getListByItemProg($item_prog)
 	{
-		return $this->getMapper()->select($this->getModel()->setItemProg($item_prog));
+		return $this->getMapper()->select($this->getModel()->setItemProgId($item_prog));
 	}
 	
 	/**
