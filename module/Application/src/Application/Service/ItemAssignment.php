@@ -4,6 +4,8 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Item as CItem;
+use \DateTime;
+use \DateTimeZone;
 
 class ItemAssignment extends AbstractService
 {
@@ -43,7 +45,7 @@ class ItemAssignment extends AbstractService
 				$res_item_prog = $this->getServiceItemProgUser()->getListByItemProg($item_prog);
 				foreach ($res_item_prog as $m_item_prog) {
 					$this->getServiceItemAssignmentUser()->add(
-							$res_item_prog->getUserId(),
+							$m_item_prog->getUserId(),
 							$item_assigment_id);
 				}
 			break;
@@ -58,12 +60,35 @@ class ItemAssignment extends AbstractService
 		return $item_assigment_id;
 	}
 	
+	/**
+	 * @invokable
+	 * 
+	 * @param string $text
+	 * @param integer $item_assignment
+	 */
+	public function addComment($text, $item_assignment)
+	{
+		return $this->getServiceItemAssignmentComment()->add($item_assignment, $text);
+	}
+	
+	/**
+	 * @invokable
+	 * 
+	 * @param integer $item_assignment
+	 * @return integer
+	 */
+	public function submit($id)
+	{
+		return $this->getMapper()->update($this->getModel()->setId($id)->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
+	}
+	
 	public function deleteByItemProg($item_prog)
 	{
 		$res_item_assignment = $this->getMapper()->select($this->getModel()->setItemProgId($item_prog));
 		
 		foreach ($res_item_assignment as $m_item_assignment) {
 			$this->getServiceItemAssignmentDocument()->deleteByItemAssignment($m_item_assignment->getId());
+			$this->getServiceItemAssignmentComment()->deleteByItemAssignment($m_item_assignment->getId());
 			$this->getServiceItemAssignmentUser()->deleteByItemAssignment($m_item_assignment->getId());
 		}
 		
@@ -92,6 +117,14 @@ class ItemAssignment extends AbstractService
 	public function getServiceItemProgUser()
 	{
 		return $this->getServiceLocator()->get('app_service_item_prog_user');
+	}
+	
+	/**
+	 * @return \Application\Service\ItemAssignmentComment
+	 */
+	public function getServiceItemAssignmentComment()
+	{
+		return $this->getServiceLocator()->get('app_service_item_assignment_comment');
 	}
 	
 	/**
