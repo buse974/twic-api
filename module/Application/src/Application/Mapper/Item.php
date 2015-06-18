@@ -20,6 +20,7 @@ class Item extends AbstractMapper
 		       ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id','submit_date'))
 		       ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array(),$select::JOIN_LEFT)
 		       ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
+		       ->join('grading', 'item_grading.grade BETWEEN grading.min AND grading.max', array('item_grading$letter' => 'letter'), $select::JOIN_LEFT)
 		       ->join('user', 'item_prog_user.user_id=user.id', array())
 		       ->where(array('program.id' => $programs))
 		       ->where(array('item_assignment.submit_date IS NOT NULL'))
@@ -43,6 +44,8 @@ class Item extends AbstractMapper
 			$select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
 			       ->where(array('item_assignment_comment.read_date IS NULL'));
 		}
+		
+		echo $this->printSql($select);
 		
 		return $this->selectWith($select);
 	}			

@@ -92,7 +92,7 @@ class Item extends AbstractService
         if ($parent !== null) {
             $this->updateParentId($id, $parent);
         }
-        if($materials !== null) {
+        if ($materials !== null) {
         	$this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
         }
 
