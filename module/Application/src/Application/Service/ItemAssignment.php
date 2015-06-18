@@ -73,6 +73,26 @@ class ItemAssignment extends AbstractService
 	
 	/**
 	 * @invokable
+	 *
+	 * @param integer $item_assignment
+	 * @param integer $score
+	 */
+	public function setGrade($item_assignment, $score)
+	{
+		$item_prog_id = $this->getMapper()->select($this->getModel()->setId($item_assignment))->current()->getItemProgId();
+		
+		$res_item_assignment_user = $this->getServiceItemAssignmentUser()->getByItemAssignment($item_assignment);
+		foreach ($res_item_assignment_user as $m_item_assignment_user) {
+			$item_prog_user_id = $this->getServiceItemProgUser()->get($item_prog_id, $m_item_assignment_user->getUserId())->current()->getId();
+			$this->getServiceItemGrading()->add($item_prog_user_id, $score);
+		}
+		
+		return true;
+	}
+	
+	
+	/**
+	 * @invokable
 	 * 
 	 * @param integer $item_assignment
 	 * @return integer
@@ -109,6 +129,14 @@ class ItemAssignment extends AbstractService
 	public function getServiceItem()
 	{
 		return $this->getServiceLocator()->get('app_service_item');
+	}
+	
+	/**
+	 * @return \Application\Service\ItemGrading
+	 */
+	public function getServiceItemGrading()
+	{
+		return $this->getServiceLocator()->get('app_service_item_grading');
 	}
 	
 	/**

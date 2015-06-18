@@ -1402,6 +1402,23 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
     
+    /**
+     * @depends testCanAddItemAssigment
+     */
+    public function testCanGraded($item_assignment)
+    {
+    	$this->setIdentity(3);
+    	
+    	$datas = $this->jsonRpc('itemassignment.setGrade', array(
+    			'item_assignment' => $item_assignment,
+    			'score' => 50
+    	));
+
+    	$this->assertEquals(count($datas) , 3);
+    	$this->assertEquals($datas['result'] , 1);
+    	$this->assertEquals($datas['id'] , 1);
+    	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
     
     // FAQ
     /**
