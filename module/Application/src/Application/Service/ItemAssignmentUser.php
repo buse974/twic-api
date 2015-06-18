@@ -25,4 +25,9 @@ class ItemAssignmentUser extends AbstractService
 	{
 		return $this->getMapper()->delete($this->getModel()->setItemAssignmentId($item_assignment));
 	}
+	
+	public function getByItemAssignment($item_assignment)
+	{
+		return $this->getMapper()->select($this->getModel()->setItemAssignmentId($item_assignment));
+	}
 }
