@@ -88,8 +88,8 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key'     =>  '{opentok.apikey}',
-        'api_secret'  =>  '{opentok.apisecret}',
+        'api_key'     =>  '${opentok.apikey}',
+        'api_secret'  =>  '${opentok.apisecret}',
         'expire_time' => 60*60*24*30,
         'adapter'     => 'http-adapter',
     ),
@@ -101,7 +101,7 @@ return array(
                     array('width' => 80, 'height' => 80),
                     array('width' => 300),
             ),
-            'default_path' => '{dms.uploaddir}',
+            'default_path' => '${dms.uploaddir}',
             'adapter' => 'http-adapter',
             'convert' => array(
                     'tmp' => '/tmp',
