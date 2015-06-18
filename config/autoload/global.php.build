@@ -88,8 +88,8 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key'     =>  '45105812',
-        'api_secret'  =>  '071024b92d648e39339d0bb891668401a2254bd4',
+        'api_key'     =>  '{opentok.apikey}',
+        'api_secret'  =>  '{opentok.apisecret}',
         'expire_time' => 60*60*24*30,
         'adapter'     => 'http-adapter',
     ),
@@ -101,10 +101,10 @@ return array(
                     array('width' => 80, 'height' => 80),
                     array('width' => 300),
             ),
-            'default_path' => 'upload/',
+            'default_path' => '{dms.uploaddir}',
             'adapter' => 'http-adapter',
             'convert' => array(
-                    'tmp' => '/tmp/',
+                    'tmp' => '/tmp',
             ),
             'headers' => array(
                     'Access-Control-Allow-Origin' => 'http://local.wow.in',
