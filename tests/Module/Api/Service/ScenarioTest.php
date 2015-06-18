@@ -1357,7 +1357,8 @@ class CourseTest extends AbstractService
     	$datas = $this->jsonRpc('item.getListGrade', array(
     			'program' => $program,
     	));
-    
+
+    	
     	$this->assertEquals(count($datas) , 3);
     	$this->assertEquals(count($datas['result']) , 2);
     	$this->assertEquals($datas['result']['count'] , 1);
@@ -1436,6 +1437,20 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result'] , 1);
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanAddProgram
+     */
+    public function testCangetListGradeTwo($program)
+    {
+    	$this->setIdentity(3);
+    	$datas = $this->jsonRpc('item.getListGrade', array(
+    			'program' => $program,
+    	));
+    
+    	print_r($datas);
+    	exit();
     }
     
     // FAQ
