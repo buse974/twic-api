@@ -17,7 +17,7 @@ class Item extends AbstractMapper
 		       ->join('course', 'course.id=item.course_id', array('id', 'title'))
 		       ->join('program', 'program.id=course.program_id', array('id', 'name'))
 		       ->join('item_prog', 'item_prog.item_id=item.id', array('start_date'))
-		       ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('submit_date'))
+		       ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id','submit_date'))
 		       ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array(),$select::JOIN_LEFT)
 		       ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
 		       ->join('user', 'item_prog_user.user_id=user.id', array())
@@ -43,8 +43,6 @@ class Item extends AbstractMapper
 			$select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
 			       ->where(array('item_assignment_comment.read_date IS NULL'));
 		}
-		
-		echo $this->printSql($select);
 		
 		return $this->selectWith($select);
 	}			

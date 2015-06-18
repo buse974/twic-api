@@ -435,6 +435,11 @@ class User extends AbstractService
         return $this->getServiceUserLanguage()->add($language_id, $language_level);
     }
 
+    public function getListByItemAssignment($item_assignment)
+    {
+    	return $this->getMapper()->getListByItemAssignment($item_assignment);
+    }
+    
     /**
      * delete language to user.
      *
