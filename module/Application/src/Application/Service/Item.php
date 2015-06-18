@@ -168,19 +168,22 @@ class Item extends AbstractService
     /**
      * @invokable
      * 
-     * @param array $programs
-     * @param array $courses
-     * @param boolean $individualWork
-     * @param boolean $groupWork
-     * @param boolean $notGraded
-     * @param boolean $newMessage
+     * @param array $program
+     * @param array $course
+     * @param string $type
+     * @param boolean $not_graded
+     * @param boolean $new_message
      * @param array $filter
      */
-    public function getListGrade($programs, $courses = null, $individualWork = null, $groupWork = null, $notGraded = null, $newMessage = null, $filter = null)
+    public function getListGrade($program, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null)
     {
     	$mapper = $this->getMapper();
     	
-    	$res_item = $mapper->usePaginator($filter)->getListGrade($programs, $courses, $type, $notgraded, $newMessage, $filter);
+    	$res_item = $mapper->usePaginator($filter)->getListGrade($program, $course, $type, $not_graded, $new_message, $filter);
+    	
+    	foreach ($res_item as $m_item) {
+    		$m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemAssignment()->getId()));
+    	}
     	
     	return array('count' => $mapper->count(), 'list' => $res_item);
     }
@@ -216,5 +219,13 @@ class Item extends AbstractService
     public function getServiceItemProg()
     {
     	return $this->getServiceLocator()->get('app_service_item_prog');
+    }
+    
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+    	return $this->getServiceLocator()->get('app_service_user');
     }
 }
