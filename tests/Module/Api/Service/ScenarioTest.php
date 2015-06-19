@@ -174,7 +174,7 @@ class CourseTest extends AbstractService
         ));
         
         $this->assertEquals(count($datas) , 3);
-        $this->assertEquals(count($datas['result']) , 16);
+        $this->assertEquals(count($datas['result']) , 17);
         $this->assertEquals(count($datas['result']['creator']) , 5);
         $this->assertEquals(count($datas['result']['creator']['school']) , 3);
         $this->assertEquals($datas['result']['creator']['school']['id'] , 1);
@@ -358,6 +358,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['duration'] , 18);
         $this->assertEquals($datas['result']['notes'] , "notes");
         $this->assertEquals($datas['result']['learning_outcomes'] , "learning_outcomes");
+        $this->assertEquals($datas['result']['picture'] , null);
         $this->assertEquals($datas['result']['video_link'] , "http://google.fr");
         $this->assertEquals($datas['result']['video_token'] , "video_token");
         $this->assertEquals($datas['id'] , 1);
@@ -623,7 +624,7 @@ class CourseTest extends AbstractService
         ));
         
         $this->assertEquals(count($datas) , 3);
-        $this->assertEquals(count($datas['result']) , 16);
+        $this->assertEquals(count($datas['result']) , 17);
         $this->assertEquals(count($datas['result']['creator']) , 5);
         $this->assertEquals(count($datas['result']['creator']['school']) , 3);
         $this->assertEquals($datas['result']['creator']['school']['id'] , 1);
@@ -833,6 +834,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['duration'] , 18);
         $this->assertEquals($datas['result']['notes'] , "notes");
         $this->assertEquals($datas['result']['learning_outcomes'] , "learning_outcomes");
+        $this->assertEquals($datas['result']['picture'] , null);
         $this->assertEquals($datas['result']['video_link'] , "http://google.fr");
         $this->assertEquals($datas['result']['video_token'] , "video_token");
         $this->assertEquals($datas['id'] , 1);
@@ -1356,6 +1358,10 @@ class CourseTest extends AbstractService
     	$this->setIdentity(3);
     	$datas = $this->jsonRpc('item.getListGrade', array(
     			'program' => $program,
+    			'course' => 5,
+    			'type' => array("IA","CP","WG","LC"),
+    			"new_message" => true,
+    			"filter" => array("n" => 10,"p" => 1) 
     	));
 
     	$this->assertEquals(count($datas) , 3);
@@ -1952,11 +1958,12 @@ class CourseTest extends AbstractService
     			'search' => 'ME'
     	));
 
+    	
     	$this->assertEquals(count($datas) , 3);
     	$this->assertEquals(count($datas['result']) , 2);
     	$this->assertEquals($datas['result']['count'] , 1);
     	$this->assertEquals(count($datas['result']['list']) , 1);
-    	$this->assertEquals(count($datas['result']['list'][0]) , 12);
+    	$this->assertEquals(count($datas['result']['list'][0]) , 13);
     	$this->assertEquals($datas['result']['list'][0]['id'] , 5);
     	$this->assertEquals($datas['result']['list'][0]['title'] , "IMERIR");
     	$this->assertEquals($datas['result']['list'][0]['abstract'] , "un_token");
@@ -1965,6 +1972,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result']['list'][0]['teaching'] , "teaching");
     	$this->assertEquals($datas['result']['list'][0]['attendance'] , "attendance");
     	$this->assertEquals($datas['result']['list'][0]['duration'] , 18);
+    	$this->assertEquals($datas['result']['list'][0]['picture'] , "");
     	$this->assertEquals($datas['result']['list'][0]['notes'] , "notes");
     	$this->assertEquals($datas['result']['list'][0]['learning_outcomes'] , "learning_outcomes");
     	$this->assertEquals($datas['result']['list'][0]['video_link'] , "http://google.fr");

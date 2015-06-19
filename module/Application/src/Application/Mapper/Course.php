@@ -10,7 +10,7 @@ class Course extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'abstract', 'description', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
+        $select->columns(array('id', 'title', 'abstract', 'description', 'picture','objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
                ->join('user', 'user.id=course.creator_id', array('id', 'firstname', 'lastname', 'email'))
                ->join('school', 'school.id=user.school_id', array('id', 'name', 'logo'), $select::JOIN_LEFT)
                ->where(array('course.id' => $id));
@@ -22,7 +22,7 @@ class Course extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'abstract', 'description', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
+        $select->columns(array('id', 'title', 'abstract', 'description', 'picture','objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes'))
                 ->where(array('course.program_id' => $program))
                 ->where(array('course.deleted_date IS NULL'));
 
