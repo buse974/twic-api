@@ -45,8 +45,6 @@ class Item extends AbstractMapper
 			       ->where(array('item_assignment_comment.read_date IS NULL'));
 		}
 		
-		echo $this->printSql($select);
-		
 		return $this->selectWith($select);
 	}			
 	
