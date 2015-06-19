@@ -6,6 +6,7 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\NotIn;
 use Zend\Db\Sql\Predicate\Predicate;
 
+
 class Item extends AbstractMapper
 {
 	public function getListGrade($programs, $courses, $type, $notgraded, $newMessage, $filter)
@@ -29,18 +30,17 @@ class Item extends AbstractMapper
 		if($courses !== null) {
 			$select->where(array('course.id' => $courses));
 		}
-		if($type != null) {
+		if($type !== null) {
 			$select->where(array('item.type' => $type));
 		}
 		if(isset($filter['search'])) {
 			$select->where(array(' ( user.firstname LIKE ?' => $filter['search'] .'%'))
 			       ->where(array('user.lastname LIKE ? ) ' => $filter['search'] .'%'), Predicate::OP_OR);
 		}
-
-		if($notgraded===true) {
+		if($notgraded === true) {
 			$select->where(array('item_grading.id IS NULL'));
 		}
-		if($newMessage===true) {
+		if($newMessage === true) {
 			$select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
 			       ->where(array('item_assignment_comment.read_date IS NULL'));
 		}

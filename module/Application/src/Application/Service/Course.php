@@ -31,12 +31,13 @@ class Course extends AbstractService
      *
      * @return int
      */
-    public function add($program_id, $title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
+    public function add($program_id, $title = null, $picture = null,$abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
         $m_course = $this->getModel()
             ->setTitle($title)
             ->setCreatorId($this->getServiceAuth()->getIdentity()->getId())
             ->setAbstract($abstract)
+            ->setPicture($picture)
             ->setDescription($description)
             ->setObjectives($objectives)
             ->setTeaching($teaching)
@@ -96,12 +97,13 @@ class Course extends AbstractService
      *
      * @return int
      */
-    public function update($id, $title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
+    public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
     {
         $m_course = $this->getModel()
             ->setId($id)
             ->setTitle($title)
             ->setAbstract($abstract)
+            ->setPicture($picture)
             ->setDescription($description)
             ->setObjectives($objectives)
             ->setTeaching($teaching)
