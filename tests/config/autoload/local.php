@@ -17,9 +17,9 @@ return array(
 		'adapters' => array(
 			'db-adapter' => array(
 				'driver' => 'pdo_Mysql',
-				'dsn' => 'mysql:dbname=thestudnettest;host=127.0.0.1',
+				'dsn' => 'mysql:dbname=apilms;host=127.0.0.1',
 				'username' =>  'root',
-				'password' =>  '',
+				'password' =>  'database',
 				'driver_options' => array(
 					PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
 					PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'',
