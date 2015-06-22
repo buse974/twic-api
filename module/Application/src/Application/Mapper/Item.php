@@ -5,6 +5,8 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\NotIn;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\Predicate\Expression;
+use Dal\Db\Sql\Select;
 
 
 class Item extends AbstractMapper
@@ -13,7 +15,13 @@ class Item extends AbstractMapper
 	{
 		$select = $this->tableGateway->getSql()->select();
 		
-		$select->columns(array('title'))
+		
+		$select_new_message = new Select('item_assignment_comment');
+		$select_new_message->columns(array('rrr' => new Expression('COUNT(1)')))
+		                   ->where(array('item_assignment_comment.item_assignment_id=item_assignment.id'))
+		                   ->where(array('item_assignment_comment.read_date IS NULL'));
+		
+		$select->columns(array('title', 'item$new_message' => $select_new_message))
 		       ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
 		       ->join('course', 'course.id=item.course_id', array('id', 'title'))
 		       ->join('program', 'program.id=course.program_id', array('id', 'name'))
@@ -44,7 +52,7 @@ class Item extends AbstractMapper
 			$select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
 			       ->where(array('item_assignment_comment.read_date IS NULL'));
 		}
-		
+
 		return $this->selectWith($select);
 	}			
 	

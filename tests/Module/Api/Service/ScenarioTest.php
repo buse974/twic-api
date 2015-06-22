@@ -1368,7 +1368,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals(count($datas['result']) , 2);
     	$this->assertEquals($datas['result']['count'] , 1);
     	$this->assertEquals(count($datas['result']['list']) , 1);
-    	$this->assertEquals(count($datas['result']['list'][0]) , 8);
+    	$this->assertEquals(count($datas['result']['list'][0]) , 9);
     	$this->assertEquals(count($datas['result']['list'][0]['module']) , 2);
     	$this->assertEquals($datas['result']['list'][0]['module']['id'] , 1);
     	$this->assertEquals($datas['result']['list'][0]['module']['title'] , null);
@@ -1404,6 +1404,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result']['list'][0]['item_grade']['letter'] , null);
     	$this->assertEquals($datas['result']['list'][0]['item_grade']['grade'] , null);
     	$this->assertEquals($datas['result']['list'][0]['item_grade']['created_date'] , null);
+    	$this->assertEquals($datas['result']['list'][0]['new_message'] , 1);
     	$this->assertEquals($datas['result']['list'][0]['title'] , "titl2e");
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
@@ -1459,7 +1460,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals(count($datas['result']) , 2);
     	$this->assertEquals($datas['result']['count'] , 1);
     	$this->assertEquals(count($datas['result']['list']) , 1);
-    	$this->assertEquals(count($datas['result']['list'][0]) , 8);
+    	$this->assertEquals(count($datas['result']['list'][0]) , 9);
     	$this->assertEquals(count($datas['result']['list'][0]['module']) , 2);
     	$this->assertEquals($datas['result']['list'][0]['module']['id'] , 1);
     	$this->assertEquals($datas['result']['list'][0]['module']['title'] , null);
@@ -1495,10 +1496,10 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['result']['list'][0]['item_grade']['letter'] , "D-");
     	$this->assertEquals($datas['result']['list'][0]['item_grade']['grade'] , 60);
     	$this->assertEquals(!empty($datas['result']['list'][0]['item_grade']['created_date']) , true);
+    	$this->assertEquals($datas['result']['list'][0]['new_message'] , 1);
     	$this->assertEquals($datas['result']['list'][0]['title'] , "titl2e");
     	$this->assertEquals($datas['id'] , 1);
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
-    	
     }
     
     // FAQ
