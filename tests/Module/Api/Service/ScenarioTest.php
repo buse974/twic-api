@@ -75,7 +75,7 @@ class CourseTest extends AbstractService
         $this->assertEquals($datas['result']['contact_user']['position'], null);
         $this->assertEquals($datas['result']['contact_user']['interest'], null);
         $this->assertEquals($datas['result']['contact_user']['avatar'], null);
-        $this->assertEquals($datas['result']['id'], 101);
+        $this->assertEquals($datas['result']['id'], 102);
         $this->assertEquals($datas['result']['name'], "université de monaco");
         $this->assertEquals($datas['result']['next_name'], "buisness school");
         $this->assertEquals($datas['result']['short_name'], "IUM");
@@ -1959,7 +1959,7 @@ class CourseTest extends AbstractService
     			'search' => 'ME'
     	));
 
-    	
+    	exit();
     	$this->assertEquals(count($datas) , 3);
     	$this->assertEquals(count($datas['result']) , 2);
     	$this->assertEquals($datas['result']['count'] , 1);
@@ -1982,6 +1982,7 @@ class CourseTest extends AbstractService
     	$this->assertEquals($datas['jsonrpc'] , 2.0);
     }
 
+    
     /**
      * @depends testAddCourse
      * @depends testCanAddProgram

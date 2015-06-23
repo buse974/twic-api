@@ -59,6 +59,7 @@ return array(
             'app_service_module_assignments',
         	'app_service_item_assignment',
         	'app_service_item_prog',
+        	'app_service_grading_policy_grade',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
