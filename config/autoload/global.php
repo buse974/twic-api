@@ -37,7 +37,7 @@ return array(
     'json-rpc-server' => array(
         'cache' => 'storage_memcached',
         'log' => 'log-system',
-        'persistence' => false,
+        'persistence' => true,
         'services' => array(
             'app_service_user',
             'app_service_item',

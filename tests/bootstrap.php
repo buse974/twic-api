@@ -15,6 +15,8 @@ class bootstrap
 
     public static function init()
     {
+    	
+    	
     	$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
     	 
     	if (session_status() == PHP_SESSION_NONE) {
