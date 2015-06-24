@@ -27,7 +27,7 @@ class GradingPolicyGrade extends AbstractMapper
         ->join('grading', 'T.grading_policy_grade$avg BETWEEN grading.min AND grading.max', array('grading_policy_grade$letter' => 'letter'), $select::JOIN_LEFT)
         ->join('user', 'T.grading_policy_grade$user=user.id', array('id', 'lastname', 'firstname', 'avatar'))
         ->join('course', 'T.grading_policy_grade$course=course.id', array('id', 'title'))
-        ->join('program', 'T.grading_policy_grade$program=program.id', array('id' => 'name'));
+        ->join('program', 'T.grading_policy_grade$program=program.id', array('id', 'name'));
         
         if (isset($avg['program'])) {
             $sel->group('grading_policy_grade$program');
