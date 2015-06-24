@@ -8,9 +8,9 @@
 }*/
 
 // withi optimise
-/*if (file_exists('vendor/autoload.php')) {
+if (file_exists('vendor/autoload.php')) {
     $loader = include 'vendor/autoload.php';
-}*/
+}
 
 /*include __DIR__ . '/vendor/zendframework/zendframework/library/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(array(
@@ -22,7 +22,7 @@ Zend\Loader\AutoloaderFactory::factory(array(
             'Symfony' => __DIR__ . '/vendor/symfony/event-dispatcher/Symfony',
         )
     )
-));*/
+));
 
 include __DIR__.'/vendor/zendframework/zendframework/library/Zend/Loader/AutoloaderFactory.php';
 include __DIR__.'/vendor/zendframework/zendframework/library/Zend/Loader/ClassMapAutoloader.php';
@@ -36,7 +36,7 @@ Zend\Loader\AutoloaderFactory::factory(array(
     ),
 ),
 ));
-
+*/
 if (!class_exists('Zend\Loader\AutoloaderFactory')) {
     throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
 }
