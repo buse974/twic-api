@@ -26,9 +26,7 @@ class Module
             $permission = $e->getParams()['methode'];
             $authService = $event->getApplication()->getServiceManager()->get('auth.service');
             if ($authService->hasIdentity()) {
-                $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getCacheIdentity();
-             //print_r($identity);
-             //print_r($authService->getIdentity()->toArray());
+                $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getIdentity();
             } else {
                 $identity['roles'] = Role::STR_GUEST;
             }

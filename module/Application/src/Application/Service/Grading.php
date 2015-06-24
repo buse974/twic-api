@@ -12,44 +12,51 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param array $datas
-     * @param int   $course
+     * @param int   $school
      *
      * @return bool
      */
-    public function update($datas, $course)
+    public function update($datas, $school)
     {
-        $this->getMapper()->delete($this->getModel()->setCourseId($course));
+        $this->getMapper()->delete($this->getModel()->setSchoolId($school));
         foreach ($datas as $gp) {
-            $this->_add($gp['letter'], $gp['min'], $gp['max'], $gp['grade'], $gp['description'], $course);
+            $this->_add($gp['letter'], $gp['min'], $gp['max'], $gp['grade'], $gp['description'], $school);
         }
 
         return true;
     }
 
     /**
-     * Get Grading by course id.
+     * Get Grading by school id.
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $school
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function get($id)
+    public function getBySchool($school)
     {
-        return $this->getMapper()->select($this->getModel()->setCourseId($id));
+        return $this->getMapper()->select($this->getModel()->setSchoolId($school));
     }
-
+    
     /**
-     * @param unknown $user
-     * @param unknown $program
-     * @param unknown $course
+     * Get Grading by school id.
+     *
+     * @invokable
+     *
+     * @param int $school
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getget($user, $program, $course)
+    public function getByCourse($course)
     {
+    	return $this->getMapper()->getByCourse($course);
     }
+    
+    
 
-    public function _add($letter, $min, $max, $grade, $description, $course)
+    public function _add($letter, $min, $max, $grade, $description, $school)
     {
         $m_grading = $this->getModel()
                            ->setLetter($letter)
@@ -57,18 +64,18 @@ class Grading extends AbstractService
                            ->setMax($max)
                            ->setGrade($grade)
                            ->setDescription($description)
-                           ->setCourseId($course);
+                           ->setSchoolId($school);
 
         return $this->getMapper()->insert($m_grading);
     }
 
-    public function initTpl($course)
+    public function initTpl($school)
     {
         $res_grading = $this->getMapper()->select($this->getModel()->setTpl(true));
 
         foreach ($res_grading as $m_grading) {
             $m_grading->setId(null)
-                      ->setCourseId($course)
+                      ->setSchoolId($school)
                       ->setTpl(false);
 
             $this->getMapper()->insert($m_grading);
