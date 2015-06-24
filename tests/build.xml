@@ -45,15 +45,15 @@
 	            </then>
 	        </if>
 	    	<exec
-	    		command="echo 'DROP DATABASE IF EXISTS ${dbdeploy.database}' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam}"
+	    		command="echo 'DROP DATABASE IF EXISTS `${dbdeploy.database}`' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam}"
 	    	    dir="${project.basedir}"
 	    	    checkreturn="true" />
 	    	<exec
-	    	    command="echo 'CREATE DATABASE ${dbdeploy.database}' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam}"
+	    	    command="echo 'CREATE DATABASE `${dbdeploy.database}`' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam}"
 	    	    dir="${project.basedir}"
 	    	    checkreturn="true" />
 	        <exec
-	            command="echo 'DROP TABLE IF EXISTS ${dbdeploy.database}.changelog' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam}"
+	            command="echo 'DROP TABLE IF EXISTS `${dbdeploy.database}`.`changelog`' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam}"
 	        	dir="${project.basedir}"
 	        	checkreturn="true" />
 

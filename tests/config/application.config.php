@@ -3,9 +3,9 @@
 $return = array_replace_recursive(
     include __DIR__ . '/../../config/application.config.php', 
 	array('module_listener_options' => 
-		array('config_cache_enabled' => true, 
+		array('config_cache_enabled' => false, 
 		      'config_cache_key' => 'cache-configuration', 
-                      'module_map_cache_enabled' => true, 
+                      'module_map_cache_enabled' => false, 
                       'module_map_cache_key' => 
                       'cache-module', 
                       'cache_dir' => '/home/buse974/workspace/apiwow/data/cache', 
