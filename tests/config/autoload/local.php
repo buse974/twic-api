@@ -17,7 +17,7 @@ return array(
 		'adapters' => array(
 			'db-adapter' => array(
 				'driver' => 'pdo_Mysql',
-				'dsn' => 'mysql:dbname=thestudnettest;host=127.0.0.1',
+				'dsn' => 'mysql:dbname=apilms;host=127.0.0.1',
 				'username' =>  'root',
 				'password' =>  '',
 				'driver_options' => array(
@@ -27,7 +27,7 @@ return array(
 					PDO::ATTR_EMULATE_PREPARES => false
 				),
 			),
-		),
+		)
 	),
 	'log' => array(
 		'log-system' => array(
@@ -63,7 +63,7 @@ return array(
 						array('host' => 'localhost' , 'port' => '11211', 'weight' => 33)
 					),
 					'lib_options' => array(
-						array('option' => Memcached::OPT_PREFIX_KEY, 'value' => '0.2'),
+						array('option' => Memcached::OPT_PREFIX_KEY, 'value' => '0.1'),
 						array('option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true),
 						array('option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY),
 						array('option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT),
