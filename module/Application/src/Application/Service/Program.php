@@ -16,7 +16,7 @@ class Program extends AbstractService
      * @param string $level
      * @param string $sis
      * @param string $year
-     * 
+     *
      * @throws \Exception
      *
      * @return int
@@ -29,7 +29,7 @@ class Program extends AbstractService
                   ->setSchoolId($school_id)
                   ->setLevel($level)
                   ->setSis($sis)
-        		  ->setYear($year);
+                  ->setYear($year);
 
         if ($this->getMapper()->insert($m_program) <= 0) {
             throw new \Exception('error insert');
@@ -76,11 +76,11 @@ class Program extends AbstractService
     {
         $res_program = $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
         foreach ($res_program['list'] as $m_program) {
-        	$m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
-        	$m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
-        	$m_program->setCourse($this->getServiceCourse()->getList($m_program->getId(), null, array('n' => 1, 'p' => 1))['count']);
+            $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
+            $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
+            $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId(), null, array('n' => 1, 'p' => 1))['count']);
         }
-        
+
         return $res_program;
     }
 

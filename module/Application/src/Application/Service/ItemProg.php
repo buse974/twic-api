@@ -23,7 +23,7 @@ class ItemProg extends AbstractService
         $m_item_prog = $this->getModel()->setItemId($item)->setStartDate($start_date);
 
         if ($this->getMapper()->insert($m_item_prog) <= 0) {
-        	print_r($ret);
+            print_r($ret);
             throw new \Exception('error insert item prog');
         }
 
@@ -57,16 +57,16 @@ class ItemProg extends AbstractService
 
     public function deleteByItem($item)
     {
-    	$res_item_prog = $this->getMapper()->select($this->getModel()->setItemId($item));
-    	
-    	foreach ($res_item_prog as $m_item_prog) {
-    		$this->getServiceItemProgUser()->deleteByItemProg($m_item_prog->getId());
-    		$this->getServiceItemAssignment()->deleteByItemProg($m_item_prog->getId());
-    	}
-    	
-    	$this->getMapper()->delete($this->getModel()->setItemId($item));
+        $res_item_prog = $this->getMapper()->select($this->getModel()->setItemId($item));
+
+        foreach ($res_item_prog as $m_item_prog) {
+            $this->getServiceItemProgUser()->deleteByItemProg($m_item_prog->getId());
+            $this->getServiceItemAssignment()->deleteByItemProg($m_item_prog->getId());
+        }
+
+        $this->getMapper()->delete($this->getModel()->setItemId($item));
     }
-    
+
     /**
      * @return \Application\Service\ItemProgUser
      */
@@ -74,14 +74,12 @@ class ItemProg extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_item_prog_user');
     }
-    
+
     /**
      * @return \Application\Service\ItemAssignment
      */
     public function getServiceItemAssignment()
     {
-    	return $this->getServiceLocator()->get('app_service_item_assignment');
+        return $this->getServiceLocator()->get('app_service_item_assignment');
     }
-    
-
 }

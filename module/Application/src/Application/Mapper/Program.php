@@ -23,7 +23,7 @@ class Program extends AbstractMapper
             'name',
             'level',
             'sis',
-        	'year'
+            'year',
         ));
 
         $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();

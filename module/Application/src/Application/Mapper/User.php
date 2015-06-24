@@ -87,7 +87,7 @@ class User extends AbstractMapper
             if (!empty($ts)) {
                 $select->join('user_role', 'user_role.user_id=user.id', array())
                        ->join('role', 'user_role.role_id=role.id', array())
-                       ->where(array('role.name' => $ts,));
+                       ->where(array('role.name' => $ts));
             }
         }
 
@@ -146,17 +146,17 @@ class User extends AbstractMapper
 
         $select->where('user.deleted_date IS NULL')
                ->order(array('user.id' => 'DESC'));
-        
+
         return $this->selectWith($select);
     }
-    
+
     public function getListByItemAssignment($item_assignment)
     {
-    	$select = $this->tableGateway->getSql()->select();
-    	$select->columns(array('id','firstname','lastname'))
-    	       ->join('item_assignment_user', 'item_assignment_user.user_id=user.id', array())
-    	       ->where(array('item_assignment_user.item_assignment_id' => $item_assignment));
-    	       
-    	return $this->selectWith($select);
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'firstname', 'lastname'))
+               ->join('item_assignment_user', 'item_assignment_user.user_id=user.id', array())
+               ->where(array('item_assignment_user.item_assignment_id' => $item_assignment));
+
+        return $this->selectWith($select);
     }
 }

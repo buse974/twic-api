@@ -32,7 +32,7 @@ class Course extends AbstractMapper
         }
 
         if (null == !$search) {
-            $select->where(array('course.title LIKE ? ' => '%' . $search . '%'));
+            $select->where(array('course.title LIKE ? ' => '%'.$search.'%'));
         }
 
         return $this->selectWith($select);

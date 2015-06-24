@@ -50,7 +50,7 @@ class User extends AbstractService
         if ($this->getCache()->hasItem('identity_'.$id)) {
             $user = $this->getCache()->getItem('identity_'.$id);
         } else {
-        	$user = $this->getIdentity()->toArray();
+            $user = $this->getIdentity()->toArray();
             $user['roles'] = array();
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][] = $role->getName();
@@ -183,16 +183,16 @@ class User extends AbstractService
     {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList(
-        		$filter, 
-        		null, 
-        		$this->getServiceAuth()->getIdentity()->getId(), 
-        		$type, 
-        		$level, 
-        		$course, 
-        		$program, 
-        		$search, 
-        		$noprogram, 
-        		$nocourse);
+                $filter,
+                null,
+                $this->getServiceAuth()->getIdentity()->getId(),
+                $type,
+                $level,
+                $course,
+                $program,
+                $search,
+                $noprogram,
+                $nocourse);
 
         $res = $res->toArray();
 
@@ -437,9 +437,9 @@ class User extends AbstractService
 
     public function getListByItemAssignment($item_assignment)
     {
-    	return $this->getMapper()->getListByItemAssignment($item_assignment);
+        return $this->getMapper()->getListByItemAssignment($item_assignment);
     }
-    
+
     /**
      * delete language to user.
      *
