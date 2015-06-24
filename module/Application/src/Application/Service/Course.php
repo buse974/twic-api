@@ -183,7 +183,7 @@ class Course extends AbstractService
      *
      * @return array
      */
-    public function getList($program, $search = null, $filter = null)
+    public function getList($program = null, $search = null, $filter = null)
     {
         $mapper = $this->getMapper();
         $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter);

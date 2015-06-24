@@ -2305,50 +2305,32 @@ class CourseTest extends AbstractService
 
         $datas = $this->jsonRpc(
             'course.getList', array(
-                'program' => $program,
                 'filter'  => [
                     'user' => 1
                 ]
             )
         );
 
-        $this->assertEquals(count($datas), 3);
-        $this->assertEquals(count($datas['result']), 2);
-        $this->assertEquals($datas['result']['count'], 1);
-        $this->assertEquals(count($datas['result']['list']), 1);
-        $this->assertEquals(count($datas['result']['list'][0]), 13);
-        $this->assertEquals($datas['result']['list'][0]['id'], 5);
-        $this->assertEquals($datas['result']['list'][0]['title'], "IMERIR");
-        $this->assertEquals(
-            $datas['result']['list'][0]['abstract'], "un_token"
-        );
-        $this->assertEquals(
-            $datas['result']['list'][0]['description'], "description"
-        );
-        $this->assertEquals(
-            $datas['result']['list'][0]['objectives'], "objectives"
-        );
-        $this->assertEquals(
-            $datas['result']['list'][0]['teaching'], "teaching"
-        );
-        $this->assertEquals(
-            $datas['result']['list'][0]['attendance'], "attendance"
-        );
-        $this->assertEquals($datas['result']['list'][0]['duration'], 18);
-        $this->assertEquals($datas['result']['list'][0]['notes'], "notes");
-        $this->assertEquals(
-            $datas['result']['list'][0]['learning_outcomes'], "learning_outcomes"
-        );
-        $this->assertEquals($datas['result']['list'][0]['picture'], null);
-        $this->assertEquals(
-            $datas['result']['list'][0]['video_link'], "http://google.fr"
-        );
-        $this->assertEquals(
-            $datas['result']['list'][0]['video_token'], "video_token"
-        );
-        $this->assertEquals($datas['id'], 1);
-        $this->assertEquals($datas['jsonrpc'], 2.0);
-
+        $this->assertEquals(count($datas) , 3);
+        $this->assertEquals(count($datas['result']) , 2);
+        $this->assertEquals($datas['result']['count'] , 1);
+        $this->assertEquals(count($datas['result']['list']) , 1);
+        $this->assertEquals(count($datas['result']['list'][0]) , 13);
+        $this->assertEquals($datas['result']['list'][0]['id'] , 5);
+        $this->assertEquals($datas['result']['list'][0]['title'] , "IMERIR");
+        $this->assertEquals($datas['result']['list'][0]['abstract'] , "un_token");
+        $this->assertEquals($datas['result']['list'][0]['description'] , "description");
+        $this->assertEquals($datas['result']['list'][0]['objectives'] , "objectives");
+        $this->assertEquals($datas['result']['list'][0]['teaching'] , "teaching");
+        $this->assertEquals($datas['result']['list'][0]['attendance'] , "attendance");
+        $this->assertEquals($datas['result']['list'][0]['duration'] , 18);
+        $this->assertEquals($datas['result']['list'][0]['notes'] , "notes");
+        $this->assertEquals($datas['result']['list'][0]['learning_outcomes'] , "learning_outcomes");
+        $this->assertEquals($datas['result']['list'][0]['picture'] , null);
+        $this->assertEquals($datas['result']['list'][0]['video_link'] , "http://google.fr");
+        $this->assertEquals($datas['result']['list'][0]['video_token'] , "video_token");
+        $this->assertEquals($datas['id'] , 1);
+        $this->assertEquals($datas['jsonrpc'] , 2.0);
     }
 
 
