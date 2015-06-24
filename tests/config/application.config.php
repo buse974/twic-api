@@ -8,7 +8,7 @@ $return = array_replace_recursive(
                       'module_map_cache_enabled' => false, 
                       'module_map_cache_key' => 
                       'cache-module', 
-                      'cache_dir' => '/home/buse974/workspace/apiwow/data/cache', 
+                      'cache_dir' => 'data/cache', 
                       'config_static_paths' => array( 
                       		__DIR__ . '/../../config/autoload/global.php',
                       		__DIR__ . '/autoload/local.php', 
