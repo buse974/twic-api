@@ -22,13 +22,13 @@ class GradingPolicyGrade extends AbstractMapper
 
         $sel = new Select(array('T' => $select));
         $sel->columns(array(
-                'grading_policy_grade$program' => 'grading_policy_grade$program',
-                'grading_policy_grade$course' => 'grading_policy_grade$course',
-                'grading_policy_grade$user' => 'grading_policy_grade$user',
-                'grading_policy_grade$avg' => new Expression('AVG(T.grading_policy_grade$avg)'),
+        	'grading_policy_grade$avg' => new Expression('AVG(T.grading_policy_grade$avg)'),
         ))
-        ->join('grading', 'T.grading_policy_grade$avg BETWEEN grading.min AND grading.max', array('grading_policy_grade$letter' => 'letter'), $select::JOIN_LEFT);
-
+        ->join('grading', 'T.grading_policy_grade$avg BETWEEN grading.min AND grading.max', array('grading_policy_grade$letter' => 'letter'), $select::JOIN_LEFT)
+        ->join('user', 'T.grading_policy_grade$user=user.id', array('id', 'lastname', 'firastname', 'avatar'))
+        ->join('course', 'T.grading_policy_grade$course=course.id', array('id', 'title'))
+        ->join('program', 'T.grading_policy_grade$program=program.id', array('id' => 'name'));
+        
         if (isset($avg['program'])) {
             $sel->group('grading_policy_grade$program');
         }
