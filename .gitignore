@@ -14,5 +14,5 @@ bin/*
 Zdeploy/properties/*.properties
 *.bak
 tests/_files/input.data
-
+test.properties
 upload/
