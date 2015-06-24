@@ -15,6 +15,7 @@
 return array(
     'app-conf' => array(
         'cache'   => 'storage_memcached',
+    	'secret_key' => 'toto',
     ),
     'dal-conf' => array(
         'adapter' => 'db-adapter',
