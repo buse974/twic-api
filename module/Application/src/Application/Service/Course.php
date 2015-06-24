@@ -177,12 +177,15 @@ class Course extends AbstractService
     /**
      * @invokable
      *
-     * @param unknown $program
+     * @param integer   $program
+     * @param string    $search
+     * @param array     $filter
+     * @return array
      */
     public function getList($program, $search = null, $filter = null)
     {
         $mapper = $this->getMapper();
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search);
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter);
 
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()->getListOnly('student', $m_course->getId()));
