@@ -81,7 +81,6 @@ class UserTest extends AbstractService
 	    $this->assertEquals($datas['id'] , 1);
 	    $this->assertEquals($datas['jsonrpc'] , 2.0);
 
-	
 	    return $datas['result']['token'];
 	}
 

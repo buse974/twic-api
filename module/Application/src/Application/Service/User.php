@@ -30,27 +30,18 @@ class User extends AbstractService
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
 
-        $user = $result->getIdentity()->toArray();
-
-        $user['roles'] = array();
-        foreach ($this->getServiceRole()->getRoleByUser() as $role) {
-            $user['roles'][] = $role->getName();
-        }
-
-        return $user;
+        return $this->getIdentity(true);
     }
 
-    public function getCacheIdentity()
+    public function _getCacheIdentity($init = false)
     {
         $user = array();
-        $id = $this->getServiceAuth()
-            ->getIdentity()
-            ->getId();
+        $id = $this->getServiceAuth()->getIdentity()->getId();
 
-        if ($this->getCache()->hasItem('identity_'.$id)) {
+        if ($init===false && $this->getCache()->hasItem('identity_'.$id)) {
             $user = $this->getCache()->getItem('identity_'.$id);
         } else {
-            $user = $this->getIdentity()->toArray();
+            $user = $this->getServiceAuth()->getIdentity()->toArray();
             $user['roles'] = array();
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][] = $role->getName();
@@ -66,9 +57,9 @@ class User extends AbstractService
      *
      * @return \Auth\Authentication\Storage\Model\Identity|false
      */
-    public function getIdentity()
+    public function getIdentity($init = false)
     {
-        return $this->getServiceAuth()->getIdentity();
+        return $this->_getCacheIdentity($init);
     }
 
     /**
@@ -78,8 +69,7 @@ class User extends AbstractService
     {
         $auth = $this->getServiceAuth();
 
-        return $auth->getStorage()->getListSession($auth->getIdentity()
-            ->getId());
+        return $auth->getStorage()->getListSession($auth->getIdentity()->getId());
     }
 
     /**

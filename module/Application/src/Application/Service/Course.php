@@ -57,8 +57,6 @@ class Course extends AbstractService
         }
 
         $course_id = $this->getMapper()->getLastInsertValue();
-
-        $this->getServiceGrading()->initTpl($course_id);
         $this->getServiceGradingPolicy()->initTpl($course_id);
 
         foreach ($material_document as $md) {
@@ -167,7 +165,7 @@ class Course extends AbstractService
         $m_course->setMaterialDocument($this->getServiceMaterialDocument()
             ->getListByCourse($id));
         $m_course->setGrading($this->getServiceGrading()
-            ->get($id));
+            ->getByCourse($id));
         $m_course->setGradingPolicy($this->getServiceGradingPolicy()
             ->get($id));
 
