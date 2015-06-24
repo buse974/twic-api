@@ -60,7 +60,7 @@
 	        	<include name="bin/**" />
 	        </fileset>
 	    </delete>
-    	
+
     	<if>
     		<not>
     	    	<available file='${dms.uploaddir}' type='dir' />

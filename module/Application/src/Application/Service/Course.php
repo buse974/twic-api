@@ -31,7 +31,7 @@ class Course extends AbstractService
      *
      * @return int
      */
-    public function add($program_id, $title = null, $picture = null,$abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
+    public function add($program_id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
         $m_course = $this->getModel()
             ->setTitle($title)
@@ -177,9 +177,10 @@ class Course extends AbstractService
     /**
      * @invokable
      *
-     * @param integer   $program
-     * @param string    $search
-     * @param array     $filter
+     * @param int    $program
+     * @param string $search
+     * @param array  $filter
+     *
      * @return array
      */
     public function getList($program, $search = null, $filter = null)

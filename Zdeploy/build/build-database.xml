@@ -12,7 +12,7 @@
             	<property name="db.passwordParam" value="" override="yes" />
             </then>
         </if>
-    	
+
         <echo message="Database undo file ${build.dbdeploy.undofile}" />
         <dbdeploy
             url="mysql:host=${db.host};dbname=${db.database}"
