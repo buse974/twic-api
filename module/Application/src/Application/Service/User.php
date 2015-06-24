@@ -30,6 +30,10 @@ class User extends AbstractService
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
 
+        
+    
+        
+        
         return $this->getIdentity(true);
     }
 
@@ -46,6 +50,8 @@ class User extends AbstractService
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][] = $role->getName();
             }
+            $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
+            $user['wstoken'] = sha1($secret_key + $id);
             $this->getCache()->setItem('identity_'.$id, $user);
         }
 
