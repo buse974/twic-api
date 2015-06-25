@@ -51,12 +51,12 @@ class GradingPolicyGrade extends AbstractMapper
         }
         
         if(null !== $search) {
-        	if (isset($filter['program'])) {
+        	if (isset($avg['program'])) {
         		$sel->where(array(' program.name LIKE ? ' => $search . '%'));
-        	} elseif (isset($filter['user'])) {
+        	} elseif (isset($avg['user'])) {
         		$sel->where(array('( user.firstname LIKE ?' => $search . '%'))
         		    ->where(array(' user.lastname LIKE ? )' => $search . '%'), Predicate::OP_OR);
-        	} elseif(isset($filter['course'])) {
+        	} elseif(isset($avg['course'])) {
         		$sel->where(array('course.title LIKE ?' => $search . '%'));
         	} else {
         		$sel->where(array('( user.firstname LIKE ?' => $search . '%'))
