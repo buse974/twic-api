@@ -5,10 +5,11 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Dal\Db\Sql\Select;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class GradingPolicyGrade extends AbstractMapper
 {
-    public function getList($avg = array(), $filter = array())
+    public function getList($avg = array(), $filter = array(), $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -37,6 +38,8 @@ class GradingPolicyGrade extends AbstractMapper
         if (isset($avg['course'])) {
             $sel->group('grading_policy_grade$course');
         }
+        
+        
         if (isset($filter['program'])) {
             $sel->where(array('grading_policy_grade$program' => $filter['program']));
         }
@@ -45,6 +48,22 @@ class GradingPolicyGrade extends AbstractMapper
         }
         if (isset($filter['course'])) {
             $sel->where(array('grading_policy_grade$course' => $filter['course']));
+        }
+        
+        if(null !== $search) {
+        	if (isset($filter['program'])) {
+        		$sel->where(array(' program.name LIKE ? ' => $search . '%'));
+        	} elseif (isset($filter['user'])) {
+        		$sel->where(array('( user.firstname LIKE ?' => $search . '%'))
+        		    ->where(array(' user.lastname LIKE ? )' => $search . '%'), Predicate::OP_OR);
+        	} elseif(isset($filter['course'])) {
+        		$sel->where(array('course.title LIKE ?' => $search . '%'));
+        	} else {
+        		$sel->where(array('( user.firstname LIKE ?' => $search . '%'))
+        		    ->where(array(' user.lastname LIKE ? ' => $search . '%'), Predicate::OP_OR)
+        		    ->where(array(' program.name LIKE ? ' => $search . '%'), Predicate::OP_OR)
+        		    ->where(array(' course.title LIKE ? )' => $search . '%'), Predicate::OP_OR);
+        	}
         }
 
         return $this->selectBridge($sel);
