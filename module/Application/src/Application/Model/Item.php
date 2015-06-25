@@ -20,6 +20,7 @@ class Item extends BaseItem
     protected $users;
     protected $item_grade;
     protected $new_message;
+    protected $nbr_comment;
 
     public function exchangeArray(array &$data)
     {
@@ -146,5 +147,17 @@ class Item extends BaseItem
     public function getNewMessage()
     {
         return $this->new_message;
+    }
+    
+    public function getNbrComment()
+    {
+    	return $this->nbr_comment;
+    }
+    
+    public function setNbrComment($nbr_comment)
+    {
+    	$this->nbr_comment = $nbr_comment;
+    	
+    	return $this;
     }
 }

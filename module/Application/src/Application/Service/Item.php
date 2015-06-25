@@ -198,7 +198,7 @@ class Item extends AbstractService
      */
     public function getListGradeDetail($course, $user)
     {
-    	$res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course);
+    	$res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
     	
     	foreach ($res_grading_policy as $m_grading_policy) {
     		$m_grading_policy->setItems($this->getMapper()->getListGradeItem($m_grading_policy->getId(), $course, $user));
