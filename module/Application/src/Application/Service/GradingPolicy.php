@@ -131,16 +131,15 @@ class GradingPolicy extends AbstractService
 
         return true;
     }
-    
 
     /**
      * Get the list of Grading policy by course id
      * 
      * @param integer $course
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @param integer $user
      */
-    public function getListByCourse($course)
+    public function getListByCourse($course, $user)
     {
-    	return $this->getMapper()->select($this->getModel()->setCourseId($course));
+    	return $this->getMapper()->getListByCourse($course, $user);
     }
 }

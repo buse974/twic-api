@@ -108,14 +108,18 @@ class Item extends AbstractMapper
     public function getListGradeItem($grading_policy, $course, $user)
     {
     	$select = $this->tableGateway->getSql()->select();
-    	$select->columns(array('title', 'grading_policy_id' ))
+    	
+    	$select->columns(array('title', 'grading_policy_id', 'item$nbr_comment' => new Expression('SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0))' )))
 	    	   ->join('item_prog', 'item_prog.item_id=item.id', array())
 	    	   ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
 	    	   ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
+	    	   ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array(), $select::JOIN_LEFT)
+	    	   ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
 	    	   ->where(array('item.course_id' => $course))
 	    	   ->where(array('item.grading_policy_id' => $grading_policy))
-	    	   ->where(array('item_prog_user.user_id' => $user));
-    	
+	    	   ->where(array('item_prog_user.user_id' => $user))
+	    	   ->group('item.id');
+	    	   
     	return $this->selectWith($select);
     }
 }
