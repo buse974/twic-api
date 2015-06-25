@@ -22,6 +22,17 @@ class ItemAssignmentComment extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()->setItemAssignmentId($item_assignment));
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $item
+     * @param integer $user
+     */
+    public function getList($item, $user)
+    {
+    	return $this->getMapper()->getList($item, $user);
+    }
 
     /**
      * @return \Zend\Authentication\AuthenticationService
