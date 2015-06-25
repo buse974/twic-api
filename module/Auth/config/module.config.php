@@ -5,10 +5,10 @@ return array(
         'adapter' => array(
             'name' => 'db-adapter',
             'options' => array(
-                'table'      => 'user',
-                'identity'   => 'email',
+                'table' => 'user',
+                'identity' => 'email',
                 'credential' => 'password',
-                'hash'       => 'MD5(?)',
+                'hash' => 'MD5(?)',
             ),
         ),
         'storage' => array(

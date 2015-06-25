@@ -47,7 +47,7 @@ class School extends AbstractService
 
         $school_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceGrading()->initTpl($school_id);
-        
+
         return $this->get($school_id);
     }
 
@@ -118,12 +118,12 @@ class School extends AbstractService
     {
         return $this->getServiceLocator()->get('addr_service_address');
     }
-    
+
     /**
      * @return \Application\Service\Grading
      */
     public function getServiceGrading()
     {
-    	return $this->getServiceLocator()->get('app_service_grading');
+        return $this->getServiceLocator()->get('app_service_grading');
     }
 }

@@ -7,7 +7,7 @@ use Application\Model\Base\Program as BaseProgram;
 class Program extends BaseProgram
 {
     const LEVEL_EMBA = 'emaba';
-    const LEVELMBA   = 'mba';
+    const LEVELMBA = 'mba';
 
     protected $student;
     protected $instructor;

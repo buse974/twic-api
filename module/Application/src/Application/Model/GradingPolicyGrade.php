@@ -14,17 +14,17 @@ class GradingPolicyGrade extends BaseGradingPolicyGrade
 
     public function exchangeArray(array &$data)
     {
-    	parent::exchangeArray($data);
-    
-    	$this->user = new User($this);
-    	$this->program = new Program($this);
-    	$this->course = new Course($this);
-    
-    	$this->user->exchangeArray($data);
-    	$this->program->exchangeArray($data);
-    	$this->course->exchangeArray($data);
+        parent::exchangeArray($data);
+
+        $this->user = new User($this);
+        $this->program = new Program($this);
+        $this->course = new Course($this);
+
+        $this->user->exchangeArray($data);
+        $this->program->exchangeArray($data);
+        $this->course->exchangeArray($data);
     }
-    
+
     public function setLetter($letter)
     {
         $this->letter = $letter;

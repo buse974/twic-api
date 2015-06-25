@@ -14,18 +14,18 @@
 
 return array(
     'app-conf' => array(
-        'cache'   => 'storage_memcached',
-    	'secret_key' => 'toto',
+        'cache' => 'storage_memcached',
+        'secret_key' => 'toto',
     ),
     'dal-conf' => array(
         'adapter' => 'db-adapter',
-        'cache'   => 'storage_memcached',
-        'log'     => 'log-system',
+        'cache' => 'storage_memcached',
+        'log' => 'log-system',
         'namespace' => array(
             'app' => array(
                 'service' => 'Application\\Service',
-                'mapper'  => 'Application\\Mapper',
-                'model'   => 'Application\\Model',
+                'mapper' => 'Application\\Mapper',
+                'model' => 'Application\\Model',
             ),
         ),
     ),
@@ -78,7 +78,7 @@ return array(
         ),
         'transport' => array(
             'active' => true,
-            'type'   => 'sendmail'/*'smtp'*/,
+            'type' => 'sendmail'/*'smtp'*/,
             'options' => array(
                 /*'name'              => 'christophe',
     			'host'              => 'smtp.thestudnet.com',
@@ -91,10 +91,10 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key'     =>  '45105812',
-        'api_secret'  =>  '071024b92d648e39339d0bb891668401a2254bd4',
+        'api_key' => '45105812',
+        'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',
         'expire_time' => 60 * 60 * 24 * 30,
-        'adapter'     => 'http-adapter',
+        'adapter' => 'http-adapter',
     ),
     'dms-conf' => array(
             'size_allowed' => array(

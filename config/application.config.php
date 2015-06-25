@@ -21,15 +21,15 @@ return array(
         // namespace, the value of that key the specific path to that module's
         // Module class.
         'module_paths' => array(
-            'Dal'         => __DIR__.'/../vendor/buse974/dal',
-            'JRpc'        => __DIR__.'/../vendor/buse974/jrpc',
-            'Address'     => __DIR__.'/../vendor/buse974/address',
-            'Dms'         => __DIR__.'/../vendor/buse974/dms',
+            'Dal' => __DIR__.'/../vendor/buse974/dal',
+            'JRpc' => __DIR__.'/../vendor/buse974/jrpc',
+            'Address' => __DIR__.'/../vendor/buse974/address',
+            'Dms' => __DIR__.'/../vendor/buse974/dms',
             'Application' => __DIR__.'/../module/Application',
-            'Auth'        => __DIR__.'/../module/Auth',
-            'ZOpenTok'    => __DIR__.'/../vendor/buse974/zopentok',
-            'Mail'        => __DIR__.'/../module/Mail',
-            'Rbac'        => __DIR__.'/../module/Rbac',
+            'Auth' => __DIR__.'/../module/Auth',
+            'ZOpenTok' => __DIR__.'/../vendor/buse974/zopentok',
+            'Mail' => __DIR__.'/../module/Mail',
+            'Rbac' => __DIR__.'/../module/Rbac',
         ),
 
         // An array of paths from which to glob configuration files after

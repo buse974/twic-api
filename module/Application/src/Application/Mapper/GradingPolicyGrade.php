@@ -23,12 +23,12 @@ class GradingPolicyGrade extends AbstractMapper
 
         $sel = new Select(array('T' => $select));
         $sel->columns(array(
-        	'grading_policy_grade$avg' => new Expression('AVG(T.grading_policy_grade$avg)'),
+            'grading_policy_grade$avg' => new Expression('AVG(T.grading_policy_grade$avg)'),
         ))
         ->join('user', 'T.grading_policy_grade$user=user.id', array('id', 'lastname', 'firstname', 'avatar'))
         ->join('course', 'T.grading_policy_grade$course=course.id', array('id', 'title'))
         ->join('program', 'T.grading_policy_grade$program=program.id', array('id', 'name'));
-        
+
         if (isset($avg['program'])) {
             $sel->group('grading_policy_grade$program');
         }
@@ -47,20 +47,20 @@ class GradingPolicyGrade extends AbstractMapper
         if (isset($filter['course'])) {
             $sel->where(array('grading_policy_grade$course' => $filter['course']));
         }
-        if(null !== $search) {
-        	if (isset($avg['program'])) {
-        		$sel->where(array(' program.name LIKE ? ' => $search . '%'));
-        	} elseif (isset($avg['user'])) {
-        		$sel->where(array('( user.firstname LIKE ?' => $search . '%'))
-        		    ->where(array(' user.lastname LIKE ? )' => $search . '%'), Predicate::OP_OR);
-        	} elseif(isset($avg['course'])) {
-        		$sel->where(array('course.title LIKE ?' => $search . '%'));
-        	} else {
-        		$sel->where(array('( user.firstname LIKE ?' => $search . '%'))
-        		    ->where(array(' user.lastname LIKE ? ' => $search . '%'), Predicate::OP_OR)
-        		    ->where(array(' program.name LIKE ? ' => $search . '%'), Predicate::OP_OR)
-        		    ->where(array(' course.title LIKE ? )' => $search . '%'), Predicate::OP_OR);
-        	}
+        if (null !== $search) {
+            if (isset($avg['program'])) {
+                $sel->where(array(' program.name LIKE ? ' => $search.'%'));
+            } elseif (isset($avg['user'])) {
+                $sel->where(array('( user.firstname LIKE ?' => $search.'%'))
+                    ->where(array(' user.lastname LIKE ? )' => $search.'%'), Predicate::OP_OR);
+            } elseif (isset($avg['course'])) {
+                $sel->where(array('course.title LIKE ?' => $search.'%'));
+            } else {
+                $sel->where(array('( user.firstname LIKE ?' => $search.'%'))
+                    ->where(array(' user.lastname LIKE ? ' => $search.'%'), Predicate::OP_OR)
+                    ->where(array(' program.name LIKE ? ' => $search.'%'), Predicate::OP_OR)
+                    ->where(array(' course.title LIKE ? )' => $search.'%'), Predicate::OP_OR);
+            }
         }
 
         return $this->selectBridge($sel);
