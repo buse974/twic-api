@@ -47,6 +47,6 @@ class GradingPolicyGrade extends AbstractMapper
             $sel->where(array('grading_policy_grade$course' => $filter['course']));
         }
 
-        return $this->tableGateway->selectBridge($sel);
+        return $this->selectBridge($sel);
     }
 }
