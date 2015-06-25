@@ -40,7 +40,7 @@ class Item extends AbstractService
             throw new \Exception('error insert item');
         }
 
-        $item_id =  $this->getMapper()->getLastInsertValue();
+        $item_id = $this->getMapper()->getLastInsertValue();
         if ($parent !== null) {
             $this->updateParentId($item_id, $parent);
         }
@@ -192,21 +192,21 @@ class Item extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $course
-     * @param integer $user
+     *
+     * @param int $course
+     * @param int $user
      */
     public function getListGradeDetail($course, $user)
     {
-    	$res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
-    	
-    	foreach ($res_grading_policy as $m_grading_policy) {
-    		$m_grading_policy->setItems($this->getMapper()->getListGradeItem($m_grading_policy->getId(), $course, $user));
-    	}
-    	
-    	return $res_grading_policy;
+        $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
+
+        foreach ($res_grading_policy as $m_grading_policy) {
+            $m_grading_policy->setItems($this->getMapper()->getListGradeItem($m_grading_policy->getId(), $course, $user));
+        }
+
+        return $res_grading_policy;
     }
-    
+
     /**
      * @param int $item_prog
      *
@@ -240,13 +240,13 @@ class Item extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_item_prog');
     }
-    
+
     /**
      * @return \Application\Service\GradingPolicy
      */
     public function getServiceGradingPolicy()
     {
-    	return $this->getServiceLocator()->get('app_service_grading_policy');
+        return $this->getServiceLocator()->get('app_service_grading_policy');
     }
 
     /**

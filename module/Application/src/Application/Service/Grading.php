@@ -39,7 +39,7 @@ class Grading extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setSchoolId($school));
     }
-    
+
     /**
      * Get Grading by school id.
      *
@@ -51,10 +51,8 @@ class Grading extends AbstractService
      */
     public function getByCourse($course)
     {
-    	return $this->getMapper()->getByCourse($course);
+        return $this->getMapper()->getByCourse($course);
     }
-    
-    
 
     public function _add($letter, $min, $max, $grade, $description, $school)
     {

@@ -25,7 +25,7 @@ class VideoconfInvitation extends AbstractService
     public function add($videoconf_id, $firstname, $lastname, $email, $entity, $utc, $avatar = null)
     {
         $videoconf_entity = $this->getServiceVideoconfEntity()->add($entity, $videoconf_id, $avatar);
-        $videoconf        = $this->getServiceVideoconf()->get($videoconf_id);
+        $videoconf = $this->getServiceVideoconf()->get($videoconf_id);
 
         $m_videoconf_invitation = $this->getModel();
         $m_videoconf_invitation->setVideoconfEntityId($videoconf_entity->getId())

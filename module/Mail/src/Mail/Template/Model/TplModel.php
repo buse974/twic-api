@@ -53,7 +53,7 @@ class TplModel extends ArrayObject implements \JsonSerializable
      */
     public function unserialize($data)
     {
-        $ar                        = unserialize($data);
+        $ar = unserialize($data);
         $this->protectedProperties = array_keys(get_object_vars($this));
 
         foreach ($ar as $k => $v) {

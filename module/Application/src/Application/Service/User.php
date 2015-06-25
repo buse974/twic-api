@@ -30,10 +30,6 @@ class User extends AbstractService
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
 
-        
-    
-        
-        
         return $this->getIdentity(true);
     }
 
@@ -42,7 +38,7 @@ class User extends AbstractService
         $user = array();
         $id = $this->getServiceAuth()->getIdentity()->getId();
 
-        if ($init===false && $this->getCache()->hasItem('identity_'.$id)) {
+        if ($init === false && $this->getCache()->hasItem('identity_'.$id)) {
             $user = $this->getCache()->getItem('identity_'.$id);
         } else {
             $user = $this->getServiceAuth()->getIdentity()->toArray();
