@@ -91,11 +91,31 @@ class Item extends AbstractMapper
                   ->where(array('course_id' => $course));
 
         $select->columns(array('id'))
-                ->where(array(new NotIn('id', $subselect)))
+               ->where(array(new NotIn('id', $subselect)))
                ->where(array('course_id' => $course));
 
         $res = $this->selectWith($select);
 
         return (($res->count() > 0) ? $res->current()->getId() : null);
+    }
+    
+    /**
+     * 
+     * 
+     * @param integer $course
+     * @param integer $user
+     */
+    public function getListGradeItem($grading_policy, $course, $user)
+    {
+    	$select = $this->tableGateway->getSql()->select();
+    	$select->columns(array('title', 'grading_policy_id' ))
+	    	   ->join('item_prog', 'item_prog.item_id=item.id', array())
+	    	   ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
+	    	   ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
+	    	   ->where(array('item.course_id' => $course))
+	    	   ->where(array('item.grading_policy_id' => $grading_policy))
+	    	   ->where(array('item_prog_user.user_id' => $user));
+    	
+    	return $this->selectWith($select);
     }
 }

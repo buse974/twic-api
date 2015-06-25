@@ -37,7 +37,7 @@ class Item extends BaseItem
         $this->course->exchangeArray($data);
         $this->item_prog->exchangeArray($data);
         $this->item_assignment->exchangeArray($data);
-        $this->item_grade->exchangeArray($data, 'item_grading');
+        $this->item_grade->exchangeArray($data);
     }
 
     public function setMaterials($materials)

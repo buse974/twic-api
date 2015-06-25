@@ -38,8 +38,6 @@ class GradingPolicyGrade extends AbstractMapper
         if (isset($avg['course'])) {
             $sel->group('grading_policy_grade$course');
         }
-        
-        
         if (isset($filter['program'])) {
             $sel->where(array('grading_policy_grade$program' => $filter['program']));
         }
@@ -49,7 +47,6 @@ class GradingPolicyGrade extends AbstractMapper
         if (isset($filter['course'])) {
             $sel->where(array('grading_policy_grade$course' => $filter['course']));
         }
-        
         if(null !== $search) {
         	if (isset($avg['program'])) {
         		$sel->where(array(' program.name LIKE ? ' => $search . '%'));
