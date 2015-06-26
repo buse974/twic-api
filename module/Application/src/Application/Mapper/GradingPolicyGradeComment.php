@@ -15,7 +15,7 @@ class GradingPolicyGradeComment extends AbstractMapper
 			   ->where(array('grading_policy_grade.grading_policy_id' => $grading_policy))
 			   ->where(array('grading_policy_grade.user_id' => $user));
 
-		return $this->getMapper()->getGetList($grading_policy, $user);
+		return $this->selectWith($select);
 	}
 	
 }
