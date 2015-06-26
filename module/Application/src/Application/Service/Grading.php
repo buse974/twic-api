@@ -35,8 +35,12 @@ class Grading extends AbstractService
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getBySchool($school)
+    public function getBySchool($school = null)
     {
+    	if(null === $school) {
+    		$school = $this->getServiceUser()->getIdentity()['school']['id'];
+    	}
+    	
         return $this->getMapper()->select($this->getModel()->setSchoolId($school));
     }
 
@@ -80,5 +84,13 @@ class Grading extends AbstractService
         }
 
         return true;
+    }
+    
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+    	return $this->getServiceLocator()->get('app_service_user');
     }
 }

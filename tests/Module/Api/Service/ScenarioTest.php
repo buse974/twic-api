@@ -1447,11 +1447,12 @@ class CourseTest extends AbstractService
     	$this->assertEquals($data['result'][1]['grade'] , 20);
     	$this->assertEquals(count($data['result'][2]) , 5);
     	$this->assertEquals(count($data['result'][2]['items']) , 1);
-    	$this->assertEquals(count($data['result'][2]['items'][0]) , 4);
+    	$this->assertEquals(count($data['result'][2]['items'][0]) , 5);
     	$this->assertEquals(count($data['result'][2]['items'][0]['item_grade']) , 2);
     	$this->assertEquals($data['result'][2]['items'][0]['item_grade']['grade'] , 60);
     	$this->assertEquals(!empty($data['result'][2]['items'][0]['item_grade']['created_date']) , true);
     	$this->assertEquals($data['result'][2]['items'][0]['nbr_comment'] , 1);
+    	$this->assertEquals($data['result'][2]['items'][0]['id'] , 1);
     	$this->assertEquals($data['result'][2]['items'][0]['title'] , "titl2e");
     	$this->assertEquals($data['result'][2]['items'][0]['grading_policy_id'] , 8);
     	$this->assertEquals($data['result'][2]['nbr_comment'] , 0);

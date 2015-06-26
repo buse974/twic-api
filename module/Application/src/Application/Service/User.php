@@ -46,8 +46,9 @@ class User extends AbstractService
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][] = $role->getName();
             }
+            $user['school'] = $this->get($id)['school'];
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
-            $user['wstoken'] = sha1($secret_key + $id);
+            $user['wstoken'] = sha1($secret_key . $id);
             $this->getCache()->setItem('identity_'.$id, $user);
         }
 

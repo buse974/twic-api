@@ -23,6 +23,7 @@ class User extends AbstractMapper
             'school_id',
         ))
             ->join('school', 'school.id=user.school_id', array(
+            'id',
             'name',
             'short_name',
             'logo',
