@@ -107,7 +107,7 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('title', 'grading_policy_id', 'item$nbr_comment' => new Expression('SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0))')))
+        $select->columns(array('id','title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS INTEGER )')))
                ->join('item_prog', 'item_prog.item_id=item.id', array())
                ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
                ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
