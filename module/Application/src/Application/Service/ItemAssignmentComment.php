@@ -34,7 +34,7 @@ class ItemAssignmentComment extends AbstractService
     	$res_item_assignment_comment = $this->getMapper()->getList($item, $user);
     	
     	foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
-    		$this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId());
+    		$m_item_assignment_comment->getUser()->setRoles($this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId()));
     	}
     	
     	return $res_item_assignment_comment;

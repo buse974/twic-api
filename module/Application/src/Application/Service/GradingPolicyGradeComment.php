@@ -13,8 +13,15 @@ class GradingPolicyGradeComment extends AbstractService
 	 * @param integer $grading_policy
 	 * @param integer $user
 	 */
-	public function getGetList($grading_policy, $user)
+	public function getList($grading_policy, $user)
 	{
-		return $this->getMapper()->getGetList($grading_policy, $user);
+		$res_grading_policy_grade_comment = $this->getMapper()->getList($grading_policy, $user);
+		 
+		foreach ($res_grading_policy_grade_comment as $m_grading_policy_grade_comment) {
+			$m_grading_policy_grade_comment->getUser()->setRoles($this->getServiceRole()->getRoleByUser($m_grading_policy_grade_comment->getUser()->getId()));
+		}
+		 
+		return $res_grading_policy_grade_comment;
+		
 	}
 }
