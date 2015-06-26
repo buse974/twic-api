@@ -23,7 +23,7 @@ class ItemAssignmentComment extends BaseItemAssignmentComment
 		return $this;
 	}
 	
-	public function getUser($user)
+	public function getUser()
 	{
 		return $this->user;
 	}
