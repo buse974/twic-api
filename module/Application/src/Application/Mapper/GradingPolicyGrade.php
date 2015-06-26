@@ -15,7 +15,7 @@ class GradingPolicyGrade extends AbstractMapper
 
         $select->columns(array(
                 'grading_policy_grade$user' => 'user_id',
-                'grading_policy_grade$avg' => new Expression('SUM(grading_policy.grade/100 * grading_policy_grade.grade)'),
+                'grading_policy_grade$avg' => new Expression('CAST(SUM(grading_policy.grade/100 * grading_policy_grade.grade) AS INTEGER )'),
         ))
         ->join('grading_policy', 'grading_policy_grade.grading_policy_id=grading_policy.id', array('grading_policy_grade$course' => 'course_id'))
         ->join('course', 'course.id=grading_policy.course_id', array('grading_policy_grade$program' => 'program_id'))
