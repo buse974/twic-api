@@ -31,7 +31,13 @@ class ItemAssignmentComment extends AbstractService
      */
     public function getList($item, $user)
     {
-    	return $this->getMapper()->getList($item, $user);
+    	$res_item_assignment_comment = $this->getMapper()->getList($item, $user);
+    	
+    	foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
+    		$this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId());
+    	}
+    	
+    	return $res_item_assignment_comment;
     }
 
     /**
@@ -40,5 +46,13 @@ class ItemAssignmentComment extends AbstractService
     public function getServiceAuth()
     {
         return $this->getServiceLocator()->get('auth.service');
+    }
+    
+    /**
+     * @return \Application\Service\Role
+     */
+    public function getServiceRole()
+    {
+    	return $this->getServiceLocator()->get('app_service_role');
     }
 }

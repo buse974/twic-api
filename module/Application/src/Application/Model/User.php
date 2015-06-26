@@ -7,6 +7,7 @@ use Application\Model\Base\User as BaseUser;
 class User extends BaseUser
 {
     protected $school;
+    protected $roles;
 
     public function exchangeArray(array &$data)
     {
@@ -30,5 +31,17 @@ class User extends BaseUser
     public function getSchool()
     {
         return $this->school;
+    }
+    
+    public function setRoles($roles)
+    {
+    	$this->roles = $roles;
+    
+    	return $this;
+    }
+    
+    public function getRoles()
+    {
+    	return $this->roles;
     }
 }
