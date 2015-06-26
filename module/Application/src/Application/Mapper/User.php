@@ -154,7 +154,7 @@ class User extends AbstractMapper
     public function getListByItemAssignment($item_assignment)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname'))
+        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
                ->join('item_assignment_user', 'item_assignment_user.user_id=user.id', array())
                ->where(array('item_assignment_user.item_assignment_id' => $item_assignment));
 
