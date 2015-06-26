@@ -22,6 +22,13 @@ class GradingPolicyGradeComment extends AbstractService
 		}
 		 
 		return $res_grading_policy_grade_comment;
-		
+	}
+	
+	/**
+	 * @return \Application\Service\Role
+	 */
+	public function getServiceRole()
+	{
+		return $this->getServiceLocator()->get('app_service_role');
 	}
 }
