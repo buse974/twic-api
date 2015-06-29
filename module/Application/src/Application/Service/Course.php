@@ -162,6 +162,7 @@ class Course extends AbstractService
         }
 
         $m_course = $res_couse->current();
+        
         $m_course->setMaterialDocument($this->getServiceMaterialDocument()
             ->getListByCourse($id));
         $m_course->setGrading($this->getServiceGrading()
