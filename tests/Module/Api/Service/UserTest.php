@@ -32,7 +32,7 @@ class UserTest extends AbstractService
 		));
 		
 		$this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 106); 
+        $this->assertEquals($data['result'] , 6); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0);
 		
@@ -48,7 +48,7 @@ class UserTest extends AbstractService
 		
 		$this->assertEquals(count($data) , 3);
 		$this->assertEquals(count($data['result']) , 10);
-		$this->assertEquals($data['result']['id'] , 106);
+		$this->assertEquals($data['result']['id'] , 6);
 		$this->assertEquals(!empty($data['result']['token']) , true);
 		$this->assertEquals($data['result']['created_date'] , null);
 		$this->assertEquals($data['result']['firstname'] , "Christophe");
@@ -59,8 +59,8 @@ class UserTest extends AbstractService
 		$this->assertEquals($data['result']['roles'][0] , "student");
 		$this->assertEquals(count($data['result']['school']) , 4);
 		$this->assertEquals($data['result']['school']['id'] , 1);
-		$this->assertEquals($data['result']['school']['name'] , "Tempor Limited");
-		$this->assertEquals($data['result']['school']['short_name'] , "ornare");
+		$this->assertEquals($data['result']['school']['name'] , "Morbi Corporation");
+		$this->assertEquals($data['result']['school']['short_name'] , "turpis");
 		$this->assertEquals($data['result']['school']['logo'] , null);
 		$this->assertEquals(!empty($data['result']['wstoken']) , true);
 		$this->assertEquals($data['id'] , 1);
@@ -86,8 +86,8 @@ class UserTest extends AbstractService
 	    $this->assertEquals($data['result']['roles'][0] , "academic");
 	    $this->assertEquals(count($data['result']['school']) , 4);
 	    $this->assertEquals($data['result']['school']['id'] , 1);
-	    $this->assertEquals($data['result']['school']['name'] , "Tempor Limited");
-	    $this->assertEquals($data['result']['school']['short_name'] , "ornare");
+	    $this->assertEquals($data['result']['school']['name'] , "Morbi Corporation");
+	    $this->assertEquals($data['result']['school']['short_name'] , "turpis");
 	    $this->assertEquals($data['result']['school']['logo'] , null);
 	    $this->assertEquals(!empty($data['result']['wstoken']) , true);
 	    $this->assertEquals($data['id'] , 1);
@@ -138,8 +138,8 @@ class UserTest extends AbstractService
 	    $this->assertEquals(count($data['result']) , 12);
 	    $this->assertEquals(count($data['result']['school']) , 4);
 	    $this->assertEquals($data['result']['school']['id'] , 1);
-	    $this->assertEquals($data['result']['school']['name'] , "Tempor Limited");
-	    $this->assertEquals($data['result']['school']['short_name'] , "ornare");
+	    $this->assertEquals($data['result']['school']['name'] , "Morbi Corporation");
+	    $this->assertEquals($data['result']['school']['short_name'] , "turpis");
 	    $this->assertEquals($data['result']['school']['logo'] , null);
 	    $this->assertEquals($data['result']['id'] , 1);
 	    $this->assertEquals($data['result']['firstname'] , "Jean");
@@ -154,25 +154,8 @@ class UserTest extends AbstractService
 	    $this->assertEquals(count($data['result']['roles']) , 1);
 	    $this->assertEquals($data['result']['roles'][0] , "super_admin");
 	    $this->assertEquals($data['id'] , 1);
-	    $this->assertEquals($data['jsonrpc'] , 2.0);	}
-	
-	/**
-	 * @depends testCanAddUser
-	 */
-	public function testAddPrrogram($id)
-	{
-	    $this->setIdentity(1);
-	     
-	    $data = $this->jsonRpc('user.addProgram', array('user' => 1, 'program' => 1));
-	
-	    $this->assertEquals(count($data) , 3);
-	    $this->assertEquals(count($data['result']) , 1);
-	    $this->assertEquals(count($data['result'][1]) , 1);
-	    $this->assertEquals($data['result'][1][1] , 1);
-	    $this->assertEquals($data['id'] , 1);
-	    $this->assertEquals($data['jsonrpc'] , 2.0);
+	    $this->assertEquals($data['jsonrpc'] , 2.0);	
 	}
-	
 	
 	
 	/**
