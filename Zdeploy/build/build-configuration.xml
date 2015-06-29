@@ -30,7 +30,6 @@
         	</fileset>
         </copy>
         <echo msg="Composer install" />
-    		<!-- composer command="clearcache" composer="/usr/bin/composer.phar" / -->
         	<composer command="update" composer="/usr/bin/composer.phar">
 				<arg value="--optimize-autoloader" />
 	   			<arg value="--working-dir=${tmp.basedir}" />

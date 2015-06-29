@@ -18,6 +18,10 @@
 	            	<property name="dbdeploy.passwordParam" value="" override="yes" />
 	            </then>
 	        </if>
+	    	<echo message="Remove sql addr" />
+	    		<move file="${project.basedir}/../data/db/08-addr-country.sql" todir="${project.basedir}/../data/_addr/" />
+	    		<move file="${project.basedir}/../data/db/09-addr-division.sql" todir="${project.basedir}/../data/_addr/" />
+	    		<move file="${project.basedir}/../data/db/10-addr-city.sql" todir="${project.basedir}/../data/_addr/" />
 	        <echo message="Database undo file ${build.dbdeploy.undofile}" />
 	    	<echo message="Parse ${project.basedir}/data/db/" />
 	        <dbdeploy
@@ -27,6 +31,11 @@
 	            dir="${project.basedir}/../data/db/"
 	            outputfile="${build.dbdeploy.deployfile}"
 	            undooutputfile="${build.dbdeploy.undofile}" />
+	    	
+	    	<echo message="restore sql addr" />
+	    		<move file="${project.basedir}/../data/_addr/08-addr-country.sql" todir="${project.basedir}/../data/db/" />
+	    		<move file="${project.basedir}/../data/_addr/09-addr-division.sql" todir="${project.basedir}/../data/db/" />
+	    		<move file="${project.basedir}/../data/_addr/10-addr-city.sql" todir="${project.basedir}/../data/db/" />
 	        <exec
 	            command="mysql --default-character-set=utf8 -h${dbdeploy.host} -u${dbdeploy.user} ${dbdeploy.passwordParam} ${dbdeploy.database} &lt; ${build.dbdeploy.deployfile}"
 	            dir="${project.basedir}"

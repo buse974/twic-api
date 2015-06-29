@@ -75,6 +75,7 @@ class Program extends AbstractService
     public function getList($filter = null, $search = null)
     {
         $res_program = $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
+        
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
             $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
