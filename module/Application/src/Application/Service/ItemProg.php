@@ -51,9 +51,7 @@ class ItemProg extends AbstractService
         $id = $this->getMapper()->getLastInsertValue();
         
         if ($users !== null) {
-            foreach($users as $user){
-                $this->addUser($id, $user);
-            }
+            $this->addUser($id, $users);            
         }
 
         return $id;
@@ -76,14 +74,11 @@ class ItemProg extends AbstractService
 
         $m_item_prog->setId($id)
             ->setStartDate($start_date);
-
+      
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
-            foreach ($users as $user) {
-                $this->addUser($id, $user);
-            }
+            $this->addUser($id, $users); 
         }
-       
 
         return $this->getMapper()->update($m_item_prog);
     }
@@ -102,7 +97,7 @@ class ItemProg extends AbstractService
         $this->getServiceItemAssignment()->deleteByItemProg($id);
         
 
-        $this->getMapper()->delete($this->getModel()->setId($id));
+        return $this->getMapper()->delete($this->getModel()->setId($id));
     }
 
     /**

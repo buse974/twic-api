@@ -80,12 +80,12 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         return ( (strpos($token, 'http://cdn.local')===0) || ( strlen($token)==40 ) );
     }
 
-    public function printCreateTest($datas, $name = "\$datas")
+    public function printCreateTest($data, $name = "\$data")
     {
-        if (is_object($datas) || is_array($datas)) {
-            print("\$this->assertEquals(count(" . $name . ") , " . count($datas) . "); \n");
-            foreach ($datas as $key => $val) {
-                $fkey = is_object($datas) ? "->" . $key :  ((is_numeric($key)) ?  "[" . $key . "]" : "['" . $key . "']");
+        if (is_object($data) || is_array($data)) {
+            print("\$this->assertEquals(count(" . $name . ") , " . count($data) . "); \n");
+            foreach ($data as $key => $val) {
+                $fkey = is_object($data) ? "->" . $key :  ((is_numeric($key)) ?  "[" . $key . "]" : "['" . $key . "']");
                 if (is_object($val) || is_array($val)) {
                     $this->printCreateTest($val,$name . $fkey);
                 } else {
@@ -102,12 +102,12 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
                 }
             }
         } else {
-            if (is_numeric($datas)) {
-                print("\$this->assertEquals(" . $name . " , " . $datas . "); \n");
-            } elseif (is_bool($datas)) {
-                print("\$this->assertEquals(" . $name . " , " . (($datas) ? "true" : "false") . "); \n");
+            if (is_numeric($data)) {
+                print("\$this->assertEquals(" . $name . " , " . $data . "); \n");
+            } elseif (is_bool($data)) {
+                print("\$this->assertEquals(" . $name . " , " . (($data) ? "true" : "false") . "); \n");
             } else {
-                print("\$this->assertEquals(" . $name . " , \"" . $datas . "\"); \n");
+                print("\$this->assertEquals(" . $name . " , \"" . $data . "\"); \n");
             }
         }
     }
