@@ -3,7 +3,27 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Zend\Db\Sql\Expression;
 
 class ItemAssignment extends AbstractMapper
 {
+    
+     public function get($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+
+        $select->columns(array('id','response', 'item_assignment$submit_date' => new Expression("DATE_FORMAT(submit_date, '%Y-%m-%dT%TZ') ")))
+        ->join('item_prog', 'item_prog.id=item_assignment.item_prog_id', array( 'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+        ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
+        ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
+        ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array(), $select::JOIN_LEFT)
+        ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
+        ->join('item','item.id=item_prog.item_id',array('id','title', 'describe', 'type'))
+        ->join('module','module.id=item.module_id',array('id','title'))
+        ->join('course','course.id=module.course_id',array('id','title'))
+        ->join('program','program.id=course.program_id',array('id','name'))
+        ->where(array('item_assignment.id' => $id));
+        
+        return $this->selectWith($select);
+    }
 }
