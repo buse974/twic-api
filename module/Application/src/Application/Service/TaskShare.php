@@ -4,6 +4,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
-class Calendar extends AbstractService
+class TaskShare extends AbstractService
 {
 }

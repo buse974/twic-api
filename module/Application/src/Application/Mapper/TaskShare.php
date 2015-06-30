@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class IntructorCourse extends AbstractMapper
+class TaskShare extends AbstractMapper
 {
 }

@@ -4,6 +4,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
-class IntructorCourse extends AbstractService
+class Task extends AbstractService
 {
 }
