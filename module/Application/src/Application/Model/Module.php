@@ -8,6 +8,7 @@ class Module extends BaseModule
 {
     protected $module_assignments;
     protected $material_document;
+    protected $items;
 
     public function setModuleAssignments($module_assignments)
     {
@@ -31,5 +32,17 @@ class Module extends BaseModule
     public function getMaterialDocument()
     {
         return $this->material_document;
+    }
+
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    public function getItems()
+    {
+        return $this->items;
     }
 }

@@ -9,6 +9,39 @@ use DateTimeZone;
 
 class ItemAssignment extends AbstractService
 {
+    
+    /**
+     * @invokable
+     *
+     * @param int $id
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function get($id)
+    {
+        $res_item_assignement = $this->getMapper()->get($id);
+
+        if ($res_item_assignement->count() == 0) {
+            throw new \Exception('no assignement with id: '.$id);
+        }
+
+        $m_item_assignment = $res_item_assignement->current();
+        $m_item_assignment->setStudents($this->getServiceUser()->getListByItemAssignment($id));
+        $m_item_assignment->setDocuments($this->getServiceItemAssignmentDocument()->getListByItemAssignment($id));
+        $m_item_assignment->setComments($this->getServiceItemAssignmentComment()->getListByItemAssignment($id));
+        $m_item = $m_item_assignment->getItemProg()->getItem();
+        $m_item->setMaterials($this->getServiceMaterialDocument()->getListByItem($m_item->getId()));
+        $m_course = $m_item->getCourse();
+        $m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
+       
+
+        return $m_item_assignment;
+    }
+
+    
+    
     /**
      * @invokable
      *
@@ -93,7 +126,7 @@ class ItemAssignment extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_assignment
+     * @param int $id
      *
      * @return int
      */
@@ -140,11 +173,29 @@ class ItemAssignment extends AbstractService
     }
 
     /**
+     * @return \Application\Service\ItemProg
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
+    }
+
+    /**
      * @return \Application\Service\ItemProgUser
      */
     public function getServiceItemProgUser()
     {
         return $this->getServiceLocator()->get('app_service_item_prog_user');
+    }
+    
+    
+
+    /**
+     * @return \Application\Service\MaterialDocument
+     */
+    public function getServiceMaterialDocument()
+    {
+        return $this->getServiceLocator()->get('app_service_material_document');
     }
 
     /**

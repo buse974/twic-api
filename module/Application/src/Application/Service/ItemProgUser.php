@@ -33,7 +33,7 @@ class ItemProgUser extends AbstractService
     }
 
     public function get($item_prog_id, $user_id)
-    {
+    { 
         return $this->getMapper()->select($this->getModel()->setItemProgId($item_prog_id)->setUserId($user_id));
     }
 

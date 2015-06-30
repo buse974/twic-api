@@ -184,7 +184,7 @@ class Item extends AbstractService
         $res_item = $mapper->usePaginator($filter)->getListGrade($program, $course, $type, $not_graded, $new_message, $filter);
 
         foreach ($res_item as $m_item) {
-            $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemAssignment()->getId()));
+            $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemProg()->getItem()->getItemAssignment()->getId()));
         }
 
         return array('count' => $mapper->count(), 'list' => $res_item);
@@ -205,6 +205,25 @@ class Item extends AbstractService
         }
 
         return $res_grading_policy;
+    }
+    
+    
+    /**
+     * @invokable
+     *
+     * @param int $module
+     * 
+     * @return array
+     */
+    public function getListByModule($module)
+    {
+        $res_items = $this->getMapper()->select($this->getModel()->setModuleId($module));
+
+        foreach ($res_items as $m_item) {
+            $m_item->setItemProg($this->getServiceItemProg()->getList($m_item->getId()));
+        }
+
+        return $res_items;
     }
 
     /**

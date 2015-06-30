@@ -428,8 +428,29 @@ class User extends AbstractService
         return $this->getServiceUserLanguage()->add($language_id, $language_level);
     }
 
-    public function getListByItemAssignment($item_assignment)
-    {
+    /**
+     * Get user list from item prog
+     *
+     * @invokable
+     *
+     * @param int   $item_prog
+     *
+     * @return array
+     */
+    public function getListByItemProg($item_prog){
+        return $this->getMapper()->getListByItemProg($item_prog);
+    }
+    
+       /**
+     * Get user list from item assignment
+     *
+     * @invokable
+     *
+     * @param int   $item_assignment
+     *
+     * @return array
+     */
+    public function getListByItemAssignment($item_assignment){
         return $this->getMapper()->getListByItemAssignment($item_assignment);
     }
 

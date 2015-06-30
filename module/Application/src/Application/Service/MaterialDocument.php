@@ -146,5 +146,17 @@ class MaterialDocument extends AbstractService
     public function getListByCourse($course_id)
     {
         return $this->getMapper()->select($this->getModel()->setCourseId($course_id)->setDeletedDate(new IsNull()));
+    }  
+    
+    /**
+     * Get List material document by item id.
+     *
+     * @param int $item
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByItem($item)
+    {
+        return $this->getMapper()->getListByItem($item);
     }
 }

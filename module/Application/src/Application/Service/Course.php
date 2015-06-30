@@ -193,7 +193,7 @@ class Course extends AbstractService
         }
 
         return array('count' => $mapper->count(), 'list' => $res_course);
-    }
+    }  
 
     /**
      * @return \Application\Service\MaterialDocument
