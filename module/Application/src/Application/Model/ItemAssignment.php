@@ -10,8 +10,8 @@ class ItemAssignment extends BaseItemAssignment
     protected $students;
     protected $documents;
     protected $comments;
-    
-     public function exchangeArray(array &$data)
+
+    public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 

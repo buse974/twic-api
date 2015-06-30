@@ -6,16 +6,15 @@ use Application\Model\Base\ItemProg as BaseItemProg;
 
 class ItemProg extends BaseItemProg
 {
-    
     protected $users;
     protected $item;
-    
-     public function exchangeArray(array &$data)
+
+    public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
             return;
         }
-        
+
         parent::exchangeArray($data);
 
         $this->item = new Item($this);

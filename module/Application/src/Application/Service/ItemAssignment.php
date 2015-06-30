@@ -9,7 +9,6 @@ use DateTimeZone;
 
 class ItemAssignment extends AbstractService
 {
-    
     /**
      * @invokable
      *
@@ -35,13 +34,10 @@ class ItemAssignment extends AbstractService
         $m_item->setMaterials($this->getServiceMaterialDocument()->getListByItem($m_item->getId()));
         $m_course = $m_item->getCourse();
         $m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
-       
 
         return $m_item_assignment;
     }
 
-    
-    
     /**
      * @invokable
      *
@@ -187,8 +183,6 @@ class ItemAssignment extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_item_prog_user');
     }
-    
-    
 
     /**
      * @return \Application\Service\MaterialDocument

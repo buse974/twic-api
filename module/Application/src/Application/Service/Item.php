@@ -206,13 +206,12 @@ class Item extends AbstractService
 
         return $res_grading_policy;
     }
-    
-    
+
     /**
      * @invokable
      *
      * @param int $module
-     * 
+     *
      * @return array
      */
     public function getListByModule($module)

@@ -9,18 +9,17 @@ class GradingPolicy extends BaseGradingPolicy
     protected $items;
     protected $nbr_comment;
     protected $grading_policy_grade;
-    
+
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
             return;
         }
-        
+
         parent::exchangeArray($data);
         $this->grading_policy_grade = new GradingPolicyGrade($this);
         $this->grading_policy_grade->exchangeArray($data);
     }
-	
 
     public function getItems()
     {

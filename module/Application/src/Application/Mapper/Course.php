@@ -40,7 +40,4 @@ class Course extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-    
-   
 }

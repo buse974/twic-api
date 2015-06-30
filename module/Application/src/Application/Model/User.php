@@ -32,16 +32,16 @@ class User extends BaseUser
     {
         return $this->school;
     }
-    
+
     public function setRoles($roles)
     {
-    	$this->roles = $roles;
-    
-    	return $this;
+        $this->roles = $roles;
+
+        return $this;
     }
-    
+
     public function getRoles()
     {
-    	return $this->roles;
+        return $this->roles;
     }
 }
