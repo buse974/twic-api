@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class Calendar extends AbstractMapper
+class Task extends AbstractMapper
 {
 }
