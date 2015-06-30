@@ -160,18 +160,18 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-    
+
     /**
-     * Get user list from item prog
+     * Get user list from item prog.
      *
      * @invokable
      *
-     * @param int   $item_prog
+     * @param int $item_prog
      *
      * @return array
      */
-    public function getListByItemProg($item_prog){
+    public function getListByItemProg($item_prog)
+    {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
                ->join('item_prog_user', 'item_prog_user.user_id=user.id', array())
@@ -179,5 +179,4 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
 }

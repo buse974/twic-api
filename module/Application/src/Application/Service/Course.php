@@ -162,7 +162,7 @@ class Course extends AbstractService
         }
 
         $m_course = $res_couse->current();
-        
+
         $m_course->setMaterialDocument($this->getServiceMaterialDocument()
             ->getListByCourse($id));
         $m_course->setGrading($this->getServiceGrading()
@@ -193,7 +193,7 @@ class Course extends AbstractService
         }
 
         return array('count' => $mapper->count(), 'list' => $res_course);
-    }  
+    }
 
     /**
      * @return \Application\Service\MaterialDocument

@@ -27,8 +27,9 @@ class ItemAssigmentDocument extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()->setItemAssigmentId($item_assigment));
     }
-    
-    public function getListByItemAssignment($item_assignment){
+
+    public function getListByItemAssignment($item_assignment)
+    {
         return $this->getMapper()->getListByItemAssignment($item_assignment);
     }
 }

@@ -48,7 +48,7 @@ class User extends AbstractService
             }
             $user['school'] = $this->get($id)['school'];
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
-            $user['wstoken'] = sha1($secret_key . $id);
+            $user['wstoken'] = sha1($secret_key.$id);
             $this->getCache()->setItem('identity_'.$id, $user);
         }
 
@@ -429,28 +429,30 @@ class User extends AbstractService
     }
 
     /**
-     * Get user list from item prog
+     * Get user list from item prog.
      *
      * @invokable
      *
-     * @param int   $item_prog
+     * @param int $item_prog
      *
      * @return array
      */
-    public function getListByItemProg($item_prog){
+    public function getListByItemProg($item_prog)
+    {
         return $this->getMapper()->getListByItemProg($item_prog);
     }
-    
-       /**
-     * Get user list from item assignment
+
+    /**
+     * Get user list from item assignment.
      *
      * @invokable
      *
-     * @param int   $item_assignment
+     * @param int $item_assignment
      *
      * @return array
      */
-    public function getListByItemAssignment($item_assignment){
+    public function getListByItemAssignment($item_assignment)
+    {
         return $this->getMapper()->getListByItemAssignment($item_assignment);
     }
 

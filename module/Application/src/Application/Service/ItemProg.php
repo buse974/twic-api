@@ -6,10 +6,6 @@ use Dal\Service\AbstractService;
 
 class ItemProg extends AbstractService
 {
-    
-    
-    
-    
     /**
      * @param int $item_assignment
      *
@@ -27,14 +23,14 @@ class ItemProg extends AbstractService
 
         return $res_item_prog->current();
     }
-    
+
     /**
      * Create Session Programmation.
      *
      * @invokable
      *
-     * @param int    $item
-     * @param string $start_date
+     * @param int       $item
+     * @param string    $start_date
      * @param int|array $users
      *
      * @throws \Exception
@@ -49,15 +45,15 @@ class ItemProg extends AbstractService
             throw new \Exception('error insert item prog');
         }
         $id = $this->getMapper()->getLastInsertValue();
-        
+
         if ($users !== null) {
-            $this->addUser($id, $users);            
+            $this->addUser($id, $users);
         }
 
         return $id;
     }
-    
-      /**
+
+    /**
      * Update User.
      *
      * @invokable
@@ -70,20 +66,19 @@ class ItemProg extends AbstractService
      */
     public function update($id, $start_date = null, $users = null)
     {
-        $m_item_prog = $this->getModel();      
+        $m_item_prog = $this->getModel();
 
         $m_item_prog->setId($id)
             ->setStartDate($start_date);
-      
+
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
-            $this->addUser($id, $users); 
+            $this->addUser($id, $users);
         }
 
         return $this->getMapper()->update($m_item_prog);
     }
-    
-    
+
     /**
      * @invokable
      *
@@ -95,7 +90,6 @@ class ItemProg extends AbstractService
     {
         $this->getServiceItemProgUser()->deleteByItemProg($id);
         $this->getServiceItemAssignment()->deleteByItemProg($id);
-        
 
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
@@ -124,12 +118,12 @@ class ItemProg extends AbstractService
 
         return $this->getServiceItemProgUser()->add($user, $item_prog);
     }
-    
+
     /**
      * @invokable
      *
      * @param int $item
-     * 
+     *
      * @return array
      */
     public function getList($item)
@@ -138,7 +132,7 @@ class ItemProg extends AbstractService
         foreach ($res_item_progs as $m_item_prog) {
             $m_item_prog->setUsers($this->getServiceUser()->getListByItemProg($m_item_prog->getId()));
         }
-        
+
         return $res_item_progs;
     }
 
@@ -177,6 +171,4 @@ class ItemProg extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
-    
 }

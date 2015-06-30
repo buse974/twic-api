@@ -19,7 +19,7 @@ class GradingPolicy extends AbstractMapper
                 ->where(array(' grading_policy_grade.user_id IS NULL ) '), Predicate::OP_OR)
                 ->where(array('grading_policy.course_id' => $course))
                 ->group('grading_policy.id');
-        
+
         return $this->selectWith($select);
     }
 }

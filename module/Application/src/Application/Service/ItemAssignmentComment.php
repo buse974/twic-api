@@ -22,38 +22,38 @@ class ItemAssignmentComment extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()->setItemAssignmentId($item_assignment));
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $item
-     * @param integer $user
+     *
+     * @param int $item
+     * @param int $user
      */
     public function getList($item, $user = null)
     {
-    	$res_item_assignment_comment = $this->getMapper()->getList($item, $user);
-    	
-    	foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
-    		$m_item_assignment_comment->getUser()->setRoles($this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId()));
-    	}
-    	
-    	return $res_item_assignment_comment;
+        $res_item_assignment_comment = $this->getMapper()->getList($item, $user);
+
+        foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
+            $m_item_assignment_comment->getUser()->setRoles($this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId()));
+        }
+
+        return $res_item_assignment_comment;
     }
-    
-     /**
+
+    /**
      * @invokable
-     * 
-     * @param integer $item_assignment
+     *
+     * @param int $item_assignment
      */
     public function getListByItemAssignment($item_assignment)
     {
-    	$res_item_assignment_comment = $this->getMapper()->getListByItemAssignment($item_assignment);
-    	
-    	foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
-    		$m_item_assignment_comment->getUser()->setRoles($this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId()));
-    	}
-    	
-    	return $res_item_assignment_comment;
+        $res_item_assignment_comment = $this->getMapper()->getListByItemAssignment($item_assignment);
+
+        foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
+            $m_item_assignment_comment->getUser()->setRoles($this->getServiceRole()->getRoleByUser($m_item_assignment_comment->getUser()->getId()));
+        }
+
+        return $res_item_assignment_comment;
     }
 
     /**
@@ -63,12 +63,12 @@ class ItemAssignmentComment extends AbstractService
     {
         return $this->getServiceLocator()->get('auth.service');
     }
-    
+
     /**
      * @return \Application\Service\Role
      */
     public function getServiceRole()
     {
-    	return $this->getServiceLocator()->get('app_service_role');
+        return $this->getServiceLocator()->get('app_service_role');
     }
 }
