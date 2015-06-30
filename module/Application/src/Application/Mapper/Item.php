@@ -19,7 +19,7 @@ class Item extends AbstractMapper
                            ->where(array('item_assignment_comment.item_assignment_id=item_assignment.id'))
                            ->where(array('item_assignment_comment.read_date IS NULL'));
 
-        $select->columns(array('title', 'item$new_message' => $select_new_message))
+        $select->columns(array('id','title', 'item$new_message' => $select_new_message))
                ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
                ->join('course', 'course.id=item.course_id', array('id', 'title'))
                ->join('program', 'program.id=course.program_id', array('id', 'name'))
@@ -120,4 +120,5 @@ class Item extends AbstractMapper
 
         return $this->selectWith($select);
     }
+
 }
