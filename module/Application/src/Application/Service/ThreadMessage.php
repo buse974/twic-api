@@ -20,7 +20,7 @@ class ThreadMessage extends AbstractService
      */
     public function add($message, $thread)
     {
-        $m_thread_message =  $this->getModel()
+        $m_thread_message = $this->getModel()
                                   ->setMessage($message)
                                   ->setThreadId($thread)
                                   ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))

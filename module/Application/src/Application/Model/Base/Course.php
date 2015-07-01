@@ -22,6 +22,7 @@ class Course extends AbstractModel
     protected $updated_date;
     protected $created_date;
     protected $version;
+    protected $picture;
     protected $video_link;
     protected $video_token;
     protected $program_id;
@@ -217,6 +218,18 @@ class Course extends AbstractModel
     public function setVersion($version)
     {
         $this->version = $version;
+
+        return $this;
+    }
+
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
 
         return $this;
     }

@@ -15,19 +15,21 @@ class Program extends AbstractService
      * @param int    $school_id
      * @param string $level
      * @param string $sis
+     * @param string $year
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($name, $school_id, $level = null, $sis = null)
+    public function add($name, $school_id, $level = null, $sis = null, $year = null)
     {
         $m_program = $this->getModel();
 
         $m_program->setName($name)
                   ->setSchoolId($school_id)
                   ->setLevel($level)
-                  ->setSis($sis);
+                  ->setSis($sis)
+                  ->setYear($year);
 
         if ($this->getMapper()->insert($m_program) <= 0) {
             throw new \Exception('error insert');
@@ -47,10 +49,11 @@ class Program extends AbstractService
      * @param string $school_id
      * @param string $level
      * @param string $sis
+     * @param string $year
      *
      * @return int
      */
-    public function update($id, $name = null, $school_id = null, $level = null, $sis = null)
+    public function update($id, $name = null, $school_id = null, $level = null, $sis = null, $year = null)
     {
         $m_program = $this->getModel();
 
@@ -58,7 +61,8 @@ class Program extends AbstractService
                   ->setName($name)
                   ->setSchoolId($school_id)
                   ->setLevel($level)
-                  ->setSis($sis);
+                  ->setSis($sis)
+                  ->setYear($year);
 
         return $this->getMapper()->update($m_program);
     }
@@ -70,7 +74,15 @@ class Program extends AbstractService
      */
     public function getList($filter = null, $search = null)
     {
-        return $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
+        $res_program = $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
+
+        foreach ($res_program['list'] as $m_program) {
+            $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
+            $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
+            $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId(), null, array('n' => 1, 'p' => 1))['count']);
+        }
+
+        return $res_program;
     }
 
     /**

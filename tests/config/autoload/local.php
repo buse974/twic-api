@@ -17,7 +17,7 @@ return array(
 		'adapters' => array(
 			'db-adapter' => array(
 				'driver' => 'pdo_Mysql',
-				'dsn' => 'mysql:dbname=thestudnettest;host=127.0.0.1',
+				'dsn' => 'mysql:dbname=apilms;host=127.0.0.1',
 				'username' =>  'root',
 				'password' =>  '',
 				'driver_options' => array(

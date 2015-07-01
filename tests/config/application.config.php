@@ -15,8 +15,6 @@ $return = array_replace_recursive(
 					  ),
         ),
     )
-		
-		
 );
 
 $return['module_listener_options']['config_glob_paths'] = array();

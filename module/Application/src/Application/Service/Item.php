@@ -40,14 +40,14 @@ class Item extends AbstractService
             throw new \Exception('error insert item');
         }
 
-        $item_id =  $this->getMapper()->getLastInsertValue();
+        $item_id = $this->getMapper()->getLastInsertValue();
         if ($parent !== null) {
             $this->updateParentId($item_id, $parent);
         }
-        if($materials !== null) {
-        	$this->getServiceItemMaterialDocumentRelation()->addByItem($item_id, $materials);
+        if ($materials !== null) {
+            $this->getServiceItemMaterialDocumentRelation()->addByItem($item_id, $materials);
         }
-        
+
         return $item_id;
     }
 
@@ -92,8 +92,8 @@ class Item extends AbstractService
         if ($parent !== null) {
             $this->updateParentId($id, $parent);
         }
-        if($materials !== null) {
-        	$this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
+        if ($materials !== null) {
+            $this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
         }
 
         return $this->getMapper()->update($m_item);
@@ -101,25 +101,26 @@ class Item extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $course
+     *
+     * @param int $course
+     *
      * @return array
      */
     public function getList($course)
     {
-    	$res_item = $this->getMapper()->select($this->getModel()->setCourseId($course));
-    	foreach ($res_item as $m_item) {
-    		$res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
-    		$ar_imdr = array();
-    		foreach ($res_imdr as $m_imdr) {
-    			$ar_imdr[] = $m_imdr->getMaterialDocumentId();
-    		}
-    		$m_item->setMaterials($ar_imdr);
-    	}
-    	
-    	return $res_item->toArrayParent();
+        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course));
+        foreach ($res_item as $m_item) {
+            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
+            $ar_imdr = array();
+            foreach ($res_imdr as $m_imdr) {
+                $ar_imdr[] = $m_imdr->getMaterialDocumentId();
+            }
+            $m_item->setMaterials($ar_imdr);
+        }
+
+        return $res_item->toArrayParent();
     }
-    
+
     /**
      * Get Item by Type.
      *
@@ -136,59 +137,141 @@ class Item extends AbstractService
 
         return $this->getMapper()->select($m_item);
     }
-    
+
     public function deleteByModuleId($module)
     {
-    	$nbr = 0;
-    	$res_item = $this->getMapper()->select($this->getModel()->setModuleId($module));
-    	
-    	if($res_item->count() > 0) {
-	    	foreach ($res_item as $m_item) {
-	    		$nbr += $this->delete($m_item->getId());
-	    	}
-    	}
-    	
-     	return $nbr;
+        $nbr = 0;
+        $res_item = $this->getMapper()->select($this->getModel()->setModuleId($module));
+
+        if ($res_item->count() > 0) {
+            foreach ($res_item as $m_item) {
+                $nbr += $this->delete($m_item->getId());
+            }
+        }
+
+        return $nbr;
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $id
-     * @return integer
+     *
+     * @param int $id
+     *
+     * @return int
      */
     public function delete($id)
     {
-    	$this->getServiceItemMaterialDocumentRelation()->deleteByItem($id);
-    	
-    	return $this->getMapper()->delete($this->getModel()->setId($id));
+        $this->getServiceItemMaterialDocumentRelation()->deleteByItem($id);
+        $this->getServiceItemProg()->deleteByItem($id);
+
+        return $this->getMapper()->delete($this->getModel()->setId($id));
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param array $programs
-     * @param array $courses
-     * @param boolean $individualWork
-     * @param boolean $groupWork
-     * @param boolean $notGraded
-     * @param boolean $newMessage
-     * @param array $filter
+     *
+     * @param array  $program
+     * @param array  $course
+     * @param string $type
+     * @param bool   $not_graded
+     * @param bool   $new_message
+     * @param array  $filter
      */
-    public function getListGrade($programs, $courses = null, $individualWork = null, $groupWork = null, $notGraded = null, $newMessage = null, $filter = null)
+    public function getListGrade($program, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null)
     {
-    	$mapper = $this->getMapper();
-    	
-    	$res_item = $mapper->usePaginator($filter)->getListGrade($programs, $courses, $type, $notgraded, $newMessage, $filter);
-    	
-    	return array('count' => $mapper->count(), 'list' => $res_item);
+        $mapper = $this->getMapper();
+
+        $res_item = $mapper->usePaginator($filter)->getListGrade($program, $course, $type, $not_graded, $new_message, $filter);
+
+        foreach ($res_item as $m_item) {
+            $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemProg()->getItem()->getItemAssignment()->getId()));
+        }
+
+        return array('count' => $mapper->count(), 'list' => $res_item);
     }
-    
+
+    /**
+     * @invokable
+     *
+     * @param int $course
+     * @param int $user
+     */
+    public function getListGradeDetail($course, $user)
+    {
+        $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
+
+        foreach ($res_grading_policy as $m_grading_policy) {
+            $m_grading_policy->setItems($this->getMapper()->getListGradeItem($m_grading_policy->getId(), $course, $user));
+        }
+
+        return $res_grading_policy;
+    }
+
+    /**
+     * @invokable
+     *
+     * @param int $module
+     *
+     * @return array
+     */
+    public function getListByModule($module)
+    {
+        $res_items = $this->getMapper()->select($this->getModel()->setModuleId($module));
+
+        foreach ($res_items as $m_item) {
+            $m_item->setItemProg($this->getServiceItemProg()->getList($m_item->getId()));
+        }
+
+        return $res_items;
+    }
+
+    /**
+     * @param int $item_prog
+     *
+     * @throws \Exception
+     *
+     * @return \Application\Model\Item
+     */
+    public function getByItemProg($item_prog)
+    {
+        $res_item = $this->getMapper()->getByItemProg($item_prog);
+
+        if ($res_item->count() <= 0) {
+            throw new \Exception('error select item by itemprog');
+        }
+
+        return $res_item->current();
+    }
+
     /**
      * @return \Application\Service\ItemMaterialDocumentRelation
      */
     public function getServiceItemMaterialDocumentRelation()
     {
-    	return $this->getServiceLocator()->get('app_service_item_material_document_relation');
+        return $this->getServiceLocator()->get('app_service_item_material_document_relation');
+    }
+
+    /**
+     * @return \Application\Service\ItemProg
+     */
+    public function getServiceItemProg()
+    {
+        return $this->getServiceLocator()->get('app_service_item_prog');
+    }
+
+    /**
+     * @return \Application\Service\GradingPolicy
+     */
+    public function getServiceGradingPolicy()
+    {
+        return $this->getServiceLocator()->get('app_service_grading_policy');
+    }
+
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }

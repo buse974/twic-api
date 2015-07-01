@@ -8,7 +8,6 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
@@ -26,22 +25,22 @@ class Module
             $permission = $e->getParams()['methode'];
             $authService = $event->getApplication()->getServiceManager()->get('auth.service');
             if ($authService->hasIdentity()) {
-             $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getCacheIdentity();
+                $identity = $event->getApplication()->getServiceManager()->get('app_service_user')->getIdentity();
             } else {
-             $identity['roles'] = Role::STR_GUEST;
+                $identity['roles'] = Role::STR_GUEST;
             }
             $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
-              
+
             if (!$rbacService->isGranted($identity['roles'], $permission)) {
                 if ($e->getTarget()->getServiceMap()->getService($permission) === false) {
                     throw new JrpcException('Method not found', -32028);
                 }
                 if (!$authService->hasIdentity()) {
-                	throw new JrpcException('No connected', -32027);
+                    throw new JrpcException('No connected', -32027);
                 }
                 throw new JrpcException('No authorization', -32029);
             }
-		});
+        });
 
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);

@@ -6,19 +6,19 @@ use Application\Model\Base\Role as BaseRole;
 
 class Role extends BaseRole
 {
-    const ROLE_SADMIN_ID     = 1;
-    const ROLE_ADMIN_ID      = 2;
-    const ROLE_ACADEMIC_ID   = 3;
-    const ROLE_STUDENT_ID    = 4;
+    const ROLE_SADMIN_ID = 1;
+    const ROLE_ADMIN_ID = 2;
+    const ROLE_ACADEMIC_ID = 3;
+    const ROLE_STUDENT_ID = 4;
     const ROLE_INSTRUCTOR_ID = 5;
-    const ROLE_RECRUTER_ID   = 6;
+    const ROLE_RECRUTER_ID = 6;
 
-    const ROLE_SADMIN_STR     = 'sadmin';
-    const ROLE_ADMIN_STR      = 'admin';
-    const ROLE_ACADEMIC_STR   = 'academic';
-    const ROLE_STUDENT_STR    = 'student';
+    const ROLE_SADMIN_STR = 'sadmin';
+    const ROLE_ADMIN_STR = 'admin';
+    const ROLE_ACADEMIC_STR = 'academic';
+    const ROLE_STUDENT_STR = 'student';
     const ROLE_INSTRUCTOR_STR = 'instructor';
-    const ROLE_RECRUTER_STR   = 'recruiter';
+    const ROLE_RECRUTER_STR = 'recruiter';
 
     public static $role = array(
         self::ROLE_SADMIN_ID => self::ROLE_SADMIN_STR,

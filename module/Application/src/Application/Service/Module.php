@@ -30,6 +30,7 @@ class Module extends AbstractService
 
     /**
      * Add Module.
+     *
      * @invokable
      *
      * @param int    $id
@@ -41,36 +42,38 @@ class Module extends AbstractService
     {
         return $this->getMapper()->update($this->getModel()->setId($id)->setTitle($title));
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $course
+     *
+     * @param int $course
+     *
      * @return array
      */
     public function getList($course)
     {
-    	return $this->getMapper()->select($this->getModel()->setCourseId($course));
+        return $this->getMapper()->select($this->getModel()->setCourseId($course));
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $id
-     * @return integer
+     *
+     * @param int $id
+     *
+     * @return int
      */
     public function delete($id)
     {
-    	$this->getServiceItem()->deleteByModuleId($id);
-    	
-    	return $this->getMapper()->delete($this->getModel()->setId($id));
+        $this->getServiceItem()->deleteByModuleId($id);
+
+        return $this->getMapper()->delete($this->getModel()->setId($id));
     }
-    
+
     /**
      * @return \Application\Service\Item
      */
     public function getServiceItem()
     {
-    	return $this->getServiceLocator()->get('app_service_item');
+        return $this->getServiceLocator()->get('app_service_item');
     }
 }

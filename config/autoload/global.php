@@ -14,17 +14,18 @@
 
 return array(
     'app-conf' => array(
-        'cache'   => 'storage_memcached',
+        'cache' => 'storage_memcached',
+        'secret_key' => 'toto',
     ),
     'dal-conf' => array(
         'adapter' => 'db-adapter',
-        'cache'   => 'storage_memcached',
-        'log'     => 'log-system',
+        'cache' => 'storage_memcached',
+        'log' => 'log-system',
         'namespace' => array(
             'app' => array(
                 'service' => 'Application\\Service',
-                'mapper'  => 'Application\\Mapper',
-                'model'   => 'Application\\Model',
+                'mapper' => 'Application\\Mapper',
+                'model' => 'Application\\Model',
             ),
         ),
     ),
@@ -37,7 +38,7 @@ return array(
     'json-rpc-server' => array(
         'cache' => 'storage_memcached',
         'log' => 'log-system',
-        'persistence' => false,
+        'persistence' => true,
         'services' => array(
             'app_service_user',
             'app_service_item',
@@ -57,7 +58,13 @@ return array(
             'app_service_message',
             'app_service_module',
             'app_service_module_assignments',
-        	'app_service_item_prog',
+            'app_service_item_assignment',
+            'app_service_item_assignment_user',
+            'app_service_item_prog',
+            'app_service_grading_policy_grade',
+            'app_service_grading_policy_grade_comment',
+            'app_service_item_assignment_comment',
+
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
@@ -75,7 +82,7 @@ return array(
         ),
         'transport' => array(
             'active' => true,
-            'type'   => 'sendmail'/*'smtp'*/,
+            'type' => 'sendmail'/*'smtp'*/,
             'options' => array(
                 /*'name'              => 'christophe',
     			'host'              => 'smtp.thestudnet.com',
@@ -88,10 +95,10 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key'     =>  '45105812',
-        'api_secret'  =>  '071024b92d648e39339d0bb891668401a2254bd4',
+        'api_key' => '45105812',
+        'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',
         'expire_time' => 60 * 60 * 24 * 30,
-        'adapter'     => 'http-adapter',
+        'adapter' => 'http-adapter',
     ),
     'dms-conf' => array(
             'size_allowed' => array(

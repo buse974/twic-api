@@ -21,28 +21,29 @@ return array(
         // namespace, the value of that key the specific path to that module's
         // Module class.
         'module_paths' => array(
-            'Dal'         => __DIR__.'/../vendor/buse974/dal',
-            'JRpc'        => __DIR__.'/../vendor/buse974/jrpc',
-            'Address'     => __DIR__.'/../vendor/buse974/address',
-            'Dms'         => __DIR__.'/../vendor/buse974/dms',
+            'Dal' => __DIR__.'/../vendor/buse974/dal',
+            'JRpc' => __DIR__.'/../vendor/buse974/jrpc',
+            'Address' => __DIR__.'/../vendor/buse974/address',
+            'Dms' => __DIR__.'/../vendor/buse974/dms',
             'Application' => __DIR__.'/../module/Application',
-            'Auth'        => __DIR__.'/../module/Auth',
-            'ZOpenTok'    => __DIR__.'/../vendor/buse974/zopentok',
-            'Mail'        => __DIR__.'/../module/Mail',
-            'Rbac'        => __DIR__.'/../module/Rbac',
+            'Auth' => __DIR__.'/../module/Auth',
+            'ZOpenTok' => __DIR__.'/../vendor/buse974/zopentok',
+            'Mail' => __DIR__.'/../module/Mail',
+            'Rbac' => __DIR__.'/../module/Rbac',
         ),
 
         // An array of paths from which to glob configuration files after
         // modules are loaded. These effectively override configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
-            'config/autoload/{,*.}{global,local}.php',
+            'config/autoload/global.php',
+            'config/autoload/local.php',
         ),
 
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
-        //'config_cache_enabled' => $booleanValue,
+        'config_cache_enabled' => true,
 
         // The key used to create the configuration cache file name.
         //'config_cache_key' => $stringKey,
@@ -50,18 +51,18 @@ return array(
         // Whether or not to enable a module class map cache.
         // If enabled, creates a module class map cache which will be used
         // by in future requests, to reduce the autoloading process.
-        //'module_map_cache_enabled' => $booleanValue,
+        'module_map_cache_enabled' => true,
 
         // The key used to create the class map cache file name.
         //'module_map_cache_key' => $stringKey,
 
         // The path in which to cache merged configuration.
-        //'cache_dir' => $stringPath,
+        'cache_dir' => 'data/cache/',
 
         // Whether or not to enable modules dependency checking.
         // Enabled by default, prevents usage of modules that depend on other modules
         // that weren't loaded.
-        // 'check_dependencies' => true,
+         'check_dependencies' => false,
     ),
 
     // Used to create an own service manager. May contain one or more child arrays.

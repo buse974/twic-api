@@ -30,30 +30,25 @@ class User extends AbstractService
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
 
-        $user = $result->getIdentity()->toArray();
-
-        $user['roles'] = array();
-        foreach ($this->getServiceRole()->getRoleByUser() as $role) {
-            $user['roles'][] = $role->getName();
-        }
-
-        return $user;
+        return $this->getIdentity(true);
     }
 
-    public function getCacheIdentity()
+    public function _getCacheIdentity($init = false)
     {
         $user = array();
-        $id = $this->getServiceAuth()
-            ->getIdentity()
-            ->getId();
+        $id = $this->getServiceAuth()->getIdentity()->getId();
 
-        if ($this->getCache()->hasItem('identity_'.$id)) {
+        if ($init === false && $this->getCache()->hasItem('identity_'.$id)) {
             $user = $this->getCache()->getItem('identity_'.$id);
         } else {
+            $user = $this->getServiceAuth()->getIdentity()->toArray();
             $user['roles'] = array();
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][] = $role->getName();
             }
+            $user['school'] = $this->get($id)['school'];
+            $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
+            $user['wstoken'] = sha1($secret_key.$id);
             $this->getCache()->setItem('identity_'.$id, $user);
         }
 
@@ -65,9 +60,9 @@ class User extends AbstractService
      *
      * @return \Auth\Authentication\Storage\Model\Identity|false
      */
-    public function getIdentity()
+    public function getIdentity($init = false)
     {
-        return $this->getServiceAuth()->getIdentity();
+        return $this->_getCacheIdentity($init);
     }
 
     /**
@@ -77,8 +72,7 @@ class User extends AbstractService
     {
         $auth = $this->getServiceAuth();
 
-        return $auth->getStorage()->getListSession($auth->getIdentity()
-            ->getId());
+        return $auth->getStorage()->getListSession($auth->getIdentity()->getId());
     }
 
     /**
@@ -112,13 +106,14 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function add($firstname, $lastname, $email, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
+    public function add($firstname, $lastname, $email, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
     {
         $m_user = $this->getModel();
 
         $m_user->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
+            ->setSis($sis)
             ->setPassword(md5($password))
             ->setBirthDate($birth_date)
             ->setPosition($position)
@@ -181,16 +176,16 @@ class User extends AbstractService
     {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList(
-        		$filter, 
-        		null, 
-        		$this->getServiceAuth()->getIdentity()->getId(), 
-        		$type, 
-        		$level, 
-        		$course, 
-        		$program, 
-        		$search, 
-        		$noprogram, 
-        		$nocourse);
+                $filter,
+                null,
+                $this->getServiceAuth()->getIdentity()->getId(),
+                $type,
+                $level,
+                $course,
+                $program,
+                $search,
+                $noprogram,
+                $nocourse);
 
         $res = $res->toArray();
 
@@ -306,7 +301,7 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function update($id = null, $firstname = null, $lastname = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
+    public function update($id = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
     {
         $m_user = $this->getModel();
 
@@ -320,6 +315,7 @@ class User extends AbstractService
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
+            ->setSis($sis)
             ->setBirthDate($birth_date)
             ->setPosition($position)
             ->setSchoolId($school_id)
@@ -430,6 +426,34 @@ class User extends AbstractService
         $language_id = $this->getServiceLanguage()->add($language);
 
         return $this->getServiceUserLanguage()->add($language_id, $language_level);
+    }
+
+    /**
+     * Get user list from item prog.
+     *
+     * @invokable
+     *
+     * @param int $item_prog
+     *
+     * @return array
+     */
+    public function getListByItemProg($item_prog)
+    {
+        return $this->getMapper()->getListByItemProg($item_prog);
+    }
+
+    /**
+     * Get user list from item assignment.
+     *
+     * @invokable
+     *
+     * @param int $item_assignment
+     *
+     * @return array
+     */
+    public function getListByItemAssignment($item_assignment)
+    {
+        return $this->getMapper()->getListByItemAssignment($item_assignment);
     }
 
     /**
