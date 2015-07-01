@@ -43,12 +43,22 @@ class Item extends AbstractMapper
             $select->where(array(' ( user.firstname LIKE ?' => $filter['search'].'%'))
                    ->where(array('user.lastname LIKE ? ) ' => $filter['search'].'%'), Predicate::OP_OR);
         }
-        if ($notgraded === true) {
-            $select->where(array('item_grading.id IS NULL'));
-        }
-        if ($newMessage === true) {
-            $select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
-                   ->where(array('item_assignment_comment.read_date IS NULL'));
+        
+        if($notgraded === true || $newMessage === true){
+            if ($newMessage === true) {
+                $select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
+                       ->where(array('( ( item_assignment_comment.id IS NOT NULL AND item_assignment_comment.read_date IS NULL) '));
+            }
+            else{
+                  $select->where(array('( 0'));
+            }
+            if ($notgraded === true) {
+                $select->where(array(' item_grading.id IS NULL )'), Predicate::OP_OR);
+            }
+            else{
+
+                $select->where(array(' 0 )'), Predicate::OP_OR);
+            }
         }
 
         return $this->selectWith($select);

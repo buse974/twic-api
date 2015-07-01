@@ -123,12 +123,15 @@ class ItemProg extends AbstractService
      * @invokable
      *
      * @param int $item
+     * @param string $start
+     * @param string $end
      *
      * @return array
      */
-    public function getList($item)
-    {
-        $res_item_progs = $this->getMapper()->getList($item);
+    public function getList($item = null, $start = null, $end = null)
+    {   
+ 
+        $res_item_progs = $this->getMapper()->getList($this->getServiceUser()->getIdentity() , $item, $start, $end);
         foreach ($res_item_progs as $m_item_prog) {
             $m_item_prog->setUsers($this->getServiceUser()->getListByItemProg($m_item_prog->getId()));
         }
@@ -165,10 +168,18 @@ class ItemProg extends AbstractService
     }
 
     /**
-     * @return \Application\Service\ItemAssignment
+     * @return \Application\Service\User
      */
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Zend\Authentication\AuthenticationService
+     */
+    public function getServiceAuth()
+    {
+        return $this->getServiceLocator()->get('auth.service');
     }
 }
