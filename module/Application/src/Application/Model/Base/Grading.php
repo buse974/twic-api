@@ -13,7 +13,7 @@ class Grading extends AbstractModel
     protected $grade;
     protected $description;
     protected $tpl;
-    protected $course_id;
+    protected $school_id;
 
     protected $prefix = 'grading';
 
@@ -101,14 +101,14 @@ class Grading extends AbstractModel
         return $this;
     }
 
-    public function getCourseId()
+    public function getSchoolId()
     {
-        return $this->course_id;
+        return $this->school_id;
     }
 
-    public function setCourseId($course_id)
+    public function setSchoolId($school_id)
     {
-        $this->course_id = $course_id;
+        $this->school_id = $school_id;
 
         return $this;
     }

@@ -131,4 +131,15 @@ class GradingPolicy extends AbstractService
 
         return true;
     }
+
+    /**
+     * Get the list of Grading policy by course id.
+     *
+     * @param int $course
+     * @param int $user
+     */
+    public function getListByCourse($course, $user)
+    {
+        return $this->getMapper()->getListByCourse($course, $user);
+    }
 }

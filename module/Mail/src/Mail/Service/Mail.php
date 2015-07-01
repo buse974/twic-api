@@ -25,7 +25,7 @@ class Mail implements ServiceManagerAwareInterface
     {
         $mail_conf = $this->servicemanager->get('config')['mail-conf'];
 
-        $fct_storage   = array_merge_recursive($mail_conf['storage'], array('user' => $login, 'password' => $password));
+        $fct_storage = array_merge_recursive($mail_conf['storage'], array('user' => $login, 'password' => $password));
         $fct_transport = array_merge_recursive($mail_conf['transport'], array('options' => array('connection_config' => array('username' => $login, 'password' => $password))));
 
         if ($fct_storage['active'] === true) {
@@ -110,7 +110,7 @@ class Mail implements ServiceManagerAwareInterface
 
     public function sendTpl($name, $to, $datas = array())
     {
-        $message =  $this->getMessage()->setBodyTpl($name, $datas)
+        $message = $this->getMessage()->setBodyTpl($name, $datas)
                                        ->setTo($to);
 
         $this->getTransport()->send($message);

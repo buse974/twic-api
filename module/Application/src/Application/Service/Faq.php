@@ -19,7 +19,7 @@ class Faq extends AbstractService
      */
     public function add($ask, $answer, $course)
     {
-        $res  = $this->getMapper()->insert($this->getModel()
+        $res = $this->getMapper()->insert($this->getModel()
                                                ->setAsk($ask)
                                                ->setAnswer($answer)
                                                ->setCourseId($course)

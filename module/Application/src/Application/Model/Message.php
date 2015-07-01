@@ -6,8 +6,8 @@ use Application\Model\Base\Message as BaseMessage;
 
 class Message extends BaseMessage
 {
-    const TYPE_DRAFT  = 'draft';
-    const TYPE_SENT   = 'sent';
+    const TYPE_DRAFT = 'draft';
+    const TYPE_SENT = 'sent';
     const TYPE_UNREAD = 'unread';
     const TYPE_DELETE = 'delete';
 

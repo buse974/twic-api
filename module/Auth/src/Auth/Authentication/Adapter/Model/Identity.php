@@ -130,12 +130,12 @@ class Identity  implements IdentityInterface
     public function toArray()
     {
         return array(
-            'id'              => $this->getId(),
-            'token'           => $this->token,
-            'created_date'    => $this->created_date,
-            'firstname'       => $this->firstname,
-            'lastname'        => $this->lastname,
-            'email'           => $this->email,
+            'id' => $this->getId(),
+            'token' => $this->token,
+            'created_date' => $this->created_date,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
             'expiration_date' => $this->expiration_date,
         );
     }

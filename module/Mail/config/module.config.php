@@ -9,15 +9,15 @@ return array(
         'storage' => array(
             'active' => true,
             'host' => 'imap.quicopro.ti1.fr',
-               'ssl'  => 'tls', ),
+               'ssl' => 'tls', ),
         'transport' => array(
             'active' => true,
-            'type'   => 'smtp',
+            'type' => 'smtp',
             'options' => array(
-                'name'              => 'christophe',
-                'host'              => '',
-                'port'              => 587,
-                'connection_class'  => 'plain',
+                'name' => 'christophe',
+                'host' => '',
+                'port' => 587,
+                'connection_class' => 'plain',
                 'connection_config' => array(
                     'ssl' => 'tls',
                 ),

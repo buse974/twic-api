@@ -49,11 +49,11 @@ class DbAdapter extends AbstractAdapter
     public function __construct(Adapter $db_adapter, $table, $identity_column, $credential_column, $hash = 'MD5(?)', $result = null)
     {
         $this->db_adapter = $db_adapter;
-        $this->table      = $table;
-        $this->identity_column   = $identity_column;
+        $this->table = $table;
+        $this->identity_column = $identity_column;
         $this->credential_column = $credential_column;
-        $this->result     = $result;
-        $this->hash       = $hash;
+        $this->result = $result;
+        $this->hash = $hash;
     }
 
     /**

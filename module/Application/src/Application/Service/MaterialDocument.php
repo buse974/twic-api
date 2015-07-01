@@ -70,13 +70,13 @@ class MaterialDocument extends AbstractService
      *
      * @return int
      */
-    
+
     /**
      * Update Material Document by Course Id.
      *
      * @invokable
-     * 
-     * @param integer $id
+     *
+     * @param int    $id
      * @param string $type
      * @param string $title
      * @param string $author
@@ -84,7 +84,8 @@ class MaterialDocument extends AbstractService
      * @param string $source
      * @param string $token
      * @param string $date
-     * @return integer
+     *
+     * @return int
      */
     public function update($id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
     {
@@ -145,5 +146,17 @@ class MaterialDocument extends AbstractService
     public function getListByCourse($course_id)
     {
         return $this->getMapper()->select($this->getModel()->setCourseId($course_id)->setDeletedDate(new IsNull()));
+    }
+
+    /**
+     * Get List material document by item id.
+     *
+     * @param int $item
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByItem($item)
+    {
+        return $this->getMapper()->getListByItem($item);
     }
 }

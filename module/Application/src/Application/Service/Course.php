@@ -31,12 +31,13 @@ class Course extends AbstractService
      *
      * @return int
      */
-    public function add($program_id, $title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
+    public function add($program_id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
         $m_course = $this->getModel()
             ->setTitle($title)
             ->setCreatorId($this->getServiceAuth()->getIdentity()->getId())
             ->setAbstract($abstract)
+            ->setPicture($picture)
             ->setDescription($description)
             ->setObjectives($objectives)
             ->setTeaching($teaching)
@@ -56,8 +57,6 @@ class Course extends AbstractService
         }
 
         $course_id = $this->getMapper()->getLastInsertValue();
-
-        $this->getServiceGrading()->initTpl($course_id);
         $this->getServiceGradingPolicy()->initTpl($course_id);
 
         foreach ($material_document as $md) {
@@ -96,12 +95,13 @@ class Course extends AbstractService
      *
      * @return int
      */
-    public function update($id, $title = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
+    public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
     {
         $m_course = $this->getModel()
             ->setId($id)
             ->setTitle($title)
             ->setAbstract($abstract)
+            ->setPicture($picture)
             ->setDescription($description)
             ->setObjectives($objectives)
             ->setTeaching($teaching)
@@ -162,10 +162,11 @@ class Course extends AbstractService
         }
 
         $m_course = $res_couse->current();
+
         $m_course->setMaterialDocument($this->getServiceMaterialDocument()
             ->getListByCourse($id));
         $m_course->setGrading($this->getServiceGrading()
-            ->get($id));
+            ->getByCourse($id));
         $m_course->setGradingPolicy($this->getServiceGradingPolicy()
             ->get($id));
 
@@ -175,12 +176,16 @@ class Course extends AbstractService
     /**
      * @invokable
      *
-     * @param unknown $program
+     * @param int    $program
+     * @param string $search
+     * @param array  $filter
+     *
+     * @return array
      */
-    public function getList($program, $search = null, $filter = null)
+    public function getList($program = null, $search = null, $filter = null)
     {
         $mapper = $this->getMapper();
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search);
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter);
 
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()->getListOnly('student', $m_course->getId()));

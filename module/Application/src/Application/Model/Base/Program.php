@@ -11,7 +11,9 @@ class Program extends AbstractModel
     protected $school_id;
     protected $level;
     protected $sis;
+    protected $year;
     protected $deleted_date;
+    protected $created_date;
 
     protected $prefix = 'program';
 
@@ -75,6 +77,18 @@ class Program extends AbstractModel
         return $this;
     }
 
+    public function getYear()
+    {
+        return $this->year;
+    }
+
+    public function setYear($year)
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
     public function getDeletedDate()
     {
         return $this->deleted_date;
@@ -83,6 +97,18 @@ class Program extends AbstractModel
     public function setDeletedDate($deleted_date)
     {
         $this->deleted_date = $deleted_date;
+
+        return $this;
+    }
+
+    public function getCreatedDate()
+    {
+        return $this->created_date;
+    }
+
+    public function setCreatedDate($created_date)
+    {
+        $this->created_date = $created_date;
 
         return $this;
     }

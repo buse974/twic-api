@@ -11,11 +11,11 @@ class Videoconf extends BaseVideoconf
     const NOTSTARTED = 'notstarted';
 
     const ARV_AVAILABLE = 'available';
-    const ARV_EXPIRED   = 'expired';
-    const ARV_FAILED    = 'failed';
-    const ARV_STARTED   = 'started';
-    const ARV_STOPPED   = 'stopped';
-    const ARV_UPLOAD    = 'uploaded';
+    const ARV_EXPIRED = 'expired';
+    const ARV_FAILED = 'failed';
+    const ARV_STARTED = 'started';
+    const ARV_STOPPED = 'stopped';
+    const ARV_UPLOAD = 'uploaded';
 
     protected $videoconf_entity;
     protected $videoconf_invitation;

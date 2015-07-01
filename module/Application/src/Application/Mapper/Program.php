@@ -9,7 +9,7 @@ class Program extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'name', 'level', 'sis'))
+        $select->columns(array('id', 'name', 'level', 'sis', 'year'))
             ->where(array('program.id' => $id));
 
         return $this->selectWith($select);
@@ -23,6 +23,7 @@ class Program extends AbstractMapper
             'name',
             'level',
             'sis',
+            'year',
         ));
 
         $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();
