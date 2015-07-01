@@ -1294,6 +1294,185 @@ class CourseTest extends AbstractService
     
     
     /**
+     * @depends testCanAddItemsProgUSer
+     */
+    public function testCanItemProgForCalendar($item_prog_user)
+    {
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('itemprog.getList', array(
+                'start' => '2015-06-01 00:00',
+                'end' => '2015-07-01 00:00')
+        );
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 1); 
+        $this->assertEquals(count($data['result'][0]) , 4); 
+        $this->assertEquals(count($data['result'][0]['users']) , 5); 
+        $this->assertEquals(count($data['result'][0]['users'][0]) , 4); 
+        $this->assertEquals($data['result'][0]['users'][0]['id'] , 1); 
+        $this->assertEquals($data['result'][0]['users'][0]['firstname'] , "Nicolas"); 
+        $this->assertEquals($data['result'][0]['users'][0]['lastname'] , "Maremmani"); 
+        $this->assertEquals($data['result'][0]['users'][0]['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['users'][1]) , 4); 
+        $this->assertEquals($data['result'][0]['users'][1]['id'] , 2); 
+        $this->assertEquals($data['result'][0]['users'][1]['firstname'] , "Xuan-Anh"); 
+        $this->assertEquals($data['result'][0]['users'][1]['lastname'] , "Hoang"); 
+        $this->assertEquals($data['result'][0]['users'][1]['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['users'][2]) , 4); 
+        $this->assertEquals($data['result'][0]['users'][2]['id'] , 3); 
+        $this->assertEquals($data['result'][0]['users'][2]['firstname'] , "Christophe"); 
+        $this->assertEquals($data['result'][0]['users'][2]['lastname'] , "Robert"); 
+        $this->assertEquals($data['result'][0]['users'][2]['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['users'][3]) , 4); 
+        $this->assertEquals($data['result'][0]['users'][3]['id'] , 4); 
+        $this->assertEquals($data['result'][0]['users'][3]['firstname'] , "Salim"); 
+        $this->assertEquals($data['result'][0]['users'][3]['lastname'] , "Bendacha"); 
+        $this->assertEquals($data['result'][0]['users'][3]['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['users'][4]) , 4); 
+        $this->assertEquals($data['result'][0]['users'][4]['id'] , 5); 
+        $this->assertEquals($data['result'][0]['users'][4]['firstname'] , "Sébastien"); 
+        $this->assertEquals($data['result'][0]['users'][4]['lastname'] , "Sayegh"); 
+        $this->assertEquals($data['result'][0]['users'][4]['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['item']) , 3); 
+        $this->assertEquals(count($data['result'][0]['item']['module']) , 2); 
+        $this->assertEquals($data['result'][0]['item']['module']['id'] , 1); 
+        $this->assertEquals($data['result'][0]['item']['module']['title'] , null); 
+        $this->assertEquals(count($data['result'][0]['item']['course']) , 3); 
+        $this->assertEquals(count($data['result'][0]['item']['course']['grading_policy']) , 2); 
+        $this->assertEquals($data['result'][0]['item']['course']['grading_policy']['name'] , "Live class"); 
+        $this->assertEquals($data['result'][0]['item']['course']['grading_policy']['type'] , "LC"); 
+        $this->assertEquals($data['result'][0]['item']['course']['id'] , 1); 
+        $this->assertEquals($data['result'][0]['item']['course']['title'] , "IMERIR"); 
+        $this->assertEquals($data['result'][0]['item']['id'] , 1); 
+        $this->assertEquals($data['result'][0]['id'] , 1); 
+        $this->assertEquals($data['result'][0]['start_date'] , "2015-06-01T12:10:00Z"); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+
+
+        return $data['result'];
+    }
+    
+    public function testCanAddTask(){
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('task.add', array('title' => 'TEST', 
+            'start' => '2015-06-01 12:00',
+            'end' => '2015-06-01 13:30',
+            'task_share' => array(1, 2)));
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 1); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+
+        return $data['result'];
+    }
+    
+    
+    
+    /**
+     * @depends testCanAddTask
+     */
+    public function testCanUpdateTask($task){
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('task.update', array('id' => $task, 'title' => 'TEST 2', 
+            'start' => '2015-06-02 12:00',
+            'end' => '2015-06-02 13:30',
+            'task_share' => array(1, 2, 3, 4)));
+        
+
+        return $data['result'];
+    }
+    
+    /**
+     * @depends testCanUpdateTask
+     */
+    public function testCanGetTask($task){
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('task.getList', 
+            array(
+                'start' => '2015-06-01 00:00',
+                'end' => '2015-07-01 00:00'
+            )
+        );
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 1); 
+        $this->assertEquals(count($data['result'][0]) , 8); 
+        $this->assertEquals($data['result'][0]['editable'] , 1); 
+        $this->assertEquals(count($data['result'][0]['user']) , 3); 
+        $this->assertEquals($data['result'][0]['user']['firstname'] , "Christophe"); 
+        $this->assertEquals($data['result'][0]['user']['lastname'] , "Robert"); 
+        $this->assertEquals($data['result'][0]['user']['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['task_share']) , 4); 
+        $this->assertEquals(count($data['result'][0]['task_share'][0]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][0]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][0]['user_id'] , 1); 
+        $this->assertEquals(count($data['result'][0]['task_share'][1]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][1]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][1]['user_id'] , 2); 
+        $this->assertEquals(count($data['result'][0]['task_share'][2]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][2]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][2]['user_id'] , 3); 
+        $this->assertEquals(count($data['result'][0]['task_share'][3]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][3]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][3]['user_id'] , 4); 
+        $this->assertEquals($data['result'][0]['id'] , 1); 
+        $this->assertEquals($data['result'][0]['title'] , "TEST 2"); 
+        $this->assertEquals($data['result'][0]['content'] , null); 
+        $this->assertEquals($data['result'][0]['start'] , "2015-06-02T12:00:00Z"); 
+        $this->assertEquals($data['result'][0]['end'] , "2015-06-02T13:30:00Z"); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);         
+
+        return $data['result'];
+    }
+    
+    /**
+     * @depends testCanUpdateTask
+     */
+    public function testCanGetSharedTask($task){
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('task.getList', 
+            array(
+                'start' => '2015-06-01 00:00',
+                'end' => '2015-07-01 00:00'
+            )
+        );
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 1); 
+        $this->assertEquals(count($data['result'][0]) , 8); 
+        $this->assertEquals($data['result'][0]['editable'] , 0); 
+        $this->assertEquals(count($data['result'][0]['user']) , 3); 
+        $this->assertEquals($data['result'][0]['user']['firstname'] , "Christophe"); 
+        $this->assertEquals($data['result'][0]['user']['lastname'] , "Robert"); 
+        $this->assertEquals($data['result'][0]['user']['avatar'] , null); 
+        $this->assertEquals(count($data['result'][0]['task_share']) , 4); 
+        $this->assertEquals(count($data['result'][0]['task_share'][0]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][0]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][0]['user_id'] , 1); 
+        $this->assertEquals(count($data['result'][0]['task_share'][1]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][1]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][1]['user_id'] , 2); 
+        $this->assertEquals(count($data['result'][0]['task_share'][2]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][2]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][2]['user_id'] , 3); 
+        $this->assertEquals(count($data['result'][0]['task_share'][3]) , 2); 
+        $this->assertEquals($data['result'][0]['task_share'][3]['task_id'] , 1); 
+        $this->assertEquals($data['result'][0]['task_share'][3]['user_id'] , 4); 
+        $this->assertEquals($data['result'][0]['id'] , 1); 
+        $this->assertEquals($data['result'][0]['title'] , "TEST 2"); 
+        $this->assertEquals($data['result'][0]['content'] , null); 
+        $this->assertEquals($data['result'][0]['start'] , "2015-06-02T12:00:00Z"); 
+        $this->assertEquals($data['result'][0]['end'] , "2015-06-02T13:30:00Z"); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);         
+
+        return $data['result'];
+    }
+    
+    
+    /**
      * @depends testAddModuleInCourse
      * @depends testCanAddItemsProgUSer
      */
@@ -1965,6 +2144,8 @@ class CourseTest extends AbstractService
 
         return $data['result'];
     }
+    
+    
 
     /**
      * @depends testAddThread
@@ -2162,6 +2343,37 @@ class CourseTest extends AbstractService
         $this->assertEquals($data['result'] , 1); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
+    }
+    
+     
+    /**
+     * @depends testCanAddTask
+     */
+    public function testCanDeleteTaskOfOther($task){
+        $this->setIdentity(4); 
+        $data = $this->jsonRpc('task.delete', array('id' => $task));
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 0); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+
+        
+    }
+    
+    /**
+     * @depends testCanAddTask
+     * @depends testCanDeleteTaskOfOther
+     */
+    public function testCanDeleteTask($task){
+        $this->setIdentity(3); 
+        $data = $this->jsonRpc('task.delete', array('id' => $task));
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 1); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        
     }
 
     /**
