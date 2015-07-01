@@ -27,4 +27,20 @@ class School extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    /**
+     * Get school list
+     * 
+     * @param string $school
+     * 
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
+    public function getList($filter = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+
+        $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'programme', 'backroung', 'phone'));
+        
+        return $this->selectWith($select);
+    }
 }
