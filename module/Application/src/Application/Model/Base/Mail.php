@@ -6,85 +6,84 @@ use Dal\Model\AbstractModel;
 
 class Mail extends AbstractModel
 {
- 	protected $id;
-	protected $mail_group_id;
-	protected $suject;
-	protected $content;
-	protected $created_date;
-	protected $draft;
+    protected $id;
+    protected $mail_group_id;
+    protected $suject;
+    protected $content;
+    protected $created_date;
+    protected $draft;
 
-	protected $prefix = 'mail';
+    protected $prefix = 'mail';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getMailGroupId()
-	{
-		return $this->mail_group_id;
-	}
+    public function getMailGroupId()
+    {
+        return $this->mail_group_id;
+    }
 
-	public function setMailGroupId($mail_group_id)
-	{
-		$this->mail_group_id = $mail_group_id;
+    public function setMailGroupId($mail_group_id)
+    {
+        $this->mail_group_id = $mail_group_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getSuject()
-	{
-		return $this->suject;
-	}
+    public function getSuject()
+    {
+        return $this->suject;
+    }
 
-	public function setSuject($suject)
-	{
-		$this->suject = $suject;
+    public function setSuject($suject)
+    {
+        $this->suject = $suject;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getContent()
-	{
-		return $this->content;
-	}
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	public function setContent($content)
-	{
-		$this->content = $content;
+    public function setContent($content)
+    {
+        $this->content = $content;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getCreatedDate()
-	{
-		return $this->created_date;
-	}
+    public function getCreatedDate()
+    {
+        return $this->created_date;
+    }
 
-	public function setCreatedDate($created_date)
-	{
-		$this->created_date = $created_date;
+    public function setCreatedDate($created_date)
+    {
+        $this->created_date = $created_date;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getDraft()
-	{
-		return $this->draft;
-	}
+    public function getDraft()
+    {
+        return $this->draft;
+    }
 
-	public function setDraft($draft)
-	{
-		$this->draft = $draft;
+    public function setDraft($draft)
+    {
+        $this->draft = $draft;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }
