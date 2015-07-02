@@ -4,15 +4,14 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class Message extends AbstractModel
+class MailDoc extends AbstractModel
 {
  	protected $id;
-	protected $text;
 	protected $token;
-	protected $conversation_id;
+	protected $mail_id;
 	protected $created_date;
 
-	protected $prefix = 'message';
+	protected $prefix = 'mail_doc';
 
 	public function getId()
 	{
@@ -22,18 +21,6 @@ class Message extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
-
-		return $this;
-	}
-
-	public function getText()
-	{
-		return $this->text;
-	}
-
-	public function setText($text)
-	{
-		$this->text = $text;
 
 		return $this;
 	}
@@ -50,14 +37,14 @@ class Message extends AbstractModel
 		return $this;
 	}
 
-	public function getConversationId()
+	public function getMailId()
 	{
-		return $this->conversation_id;
+		return $this->mail_id;
 	}
 
-	public function setConversationId($conversation_id)
+	public function setMailId($mail_id)
 	{
-		$this->conversation_id = $conversation_id;
+		$this->mail_id = $mail_id;
 
 		return $this;
 	}
