@@ -6,59 +6,58 @@ use Dal\Model\AbstractModel;
 
 class MailDoc extends AbstractModel
 {
- 	protected $id;
-	protected $token;
-	protected $mail_id;
-	protected $created_date;
+    protected $id;
+    protected $token;
+    protected $mail_id;
+    protected $created_date;
 
-	protected $prefix = 'mail_doc';
+    protected $prefix = 'mail_doc';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getToken()
-	{
-		return $this->token;
-	}
+    public function getToken()
+    {
+        return $this->token;
+    }
 
-	public function setToken($token)
-	{
-		$this->token = $token;
+    public function setToken($token)
+    {
+        $this->token = $token;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getMailId()
-	{
-		return $this->mail_id;
-	}
+    public function getMailId()
+    {
+        return $this->mail_id;
+    }
 
-	public function setMailId($mail_id)
-	{
-		$this->mail_id = $mail_id;
+    public function setMailId($mail_id)
+    {
+        $this->mail_id = $mail_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getCreatedDate()
-	{
-		return $this->created_date;
-	}
+    public function getCreatedDate()
+    {
+        return $this->created_date;
+    }
 
-	public function setCreatedDate($created_date)
-	{
-		$this->created_date = $created_date;
+    public function setCreatedDate($created_date)
+    {
+        $this->created_date = $created_date;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }
