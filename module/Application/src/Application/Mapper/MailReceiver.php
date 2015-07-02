@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class MessageReceiver extends AbstractMapper
+class MailReceiver extends AbstractMapper
 {
 }
