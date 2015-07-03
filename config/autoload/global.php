@@ -115,7 +115,7 @@ return array(
                     'tmp' => '/tmp/',
             ),
             'headers' => array(
-                    'Access-Control-Allow-Origin' => 'http://local.wow.in',
+                    'Access-Control-Allow-Origin' => 'http://wow.local',
                     'Access-Control-Allow-Credentials' => 'true',
             ),
     ),
