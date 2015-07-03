@@ -131,18 +131,11 @@ class School extends AbstractService
         }
         
         foreach ($id as $i) {
-            $m_school = $this->getModel();
-            
-            $ret[$i] = $this->getMapper()->delete($m_school);
+            $m_school = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($i);
+            $ret[$i] = $this->getMapper()->update($m_school);
         }
         
         return $ret;
-        /*
-        $m_school = $this->getModel();
-
-        $m_school->setId($id);
-
-        return $this->getMapper()->delete($m_school);*/
     }
 
     /**

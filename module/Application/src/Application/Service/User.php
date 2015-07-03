@@ -402,9 +402,7 @@ class User extends AbstractService
         }
 
         foreach ($id as $i) {
-            $m_user = $this->getModel();
-            $m_user->setId($i)->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+            $m_user = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($i);
             $ret[$i] = $this->getMapper()->update($m_user);
         }
 
