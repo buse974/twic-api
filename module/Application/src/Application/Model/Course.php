@@ -14,6 +14,8 @@ class Course extends BaseCourse
     protected $users;
     protected $student;
     protected $instructor;
+    protected $start_date;
+    protected $end_date;
 
     public function exchangeArray(array &$data)
     {
@@ -124,5 +126,37 @@ class Course extends BaseCourse
     public function getModule()
     {
         return $this->module;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * @param mixed $start_date
+     */
+    public function setStartDate($start_date)
+    {
+        $this->start_date = $start_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndDate()
+    {
+        return $this->end_date;
+    }
+
+    /**
+     * @param mixed $end_date
+     */
+    public function setEndDate($end_date)
+    {
+        $this->end_date = $end_date;
     }
 }

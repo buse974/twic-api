@@ -18,3 +18,5 @@ Zdeploy/properties/*.properties
 tests/_files/input.data
 test.properties
 upload/
+build/
+/tests/*.sql

@@ -6,98 +6,97 @@ use Dal\Model\AbstractModel;
 
 class Task extends AbstractModel
 {
- 	protected $id;
-	protected $title;
-	protected $content;
-	protected $start;
-	protected $end;
-	protected $creator_id;
-	protected $created_date;
+    protected $id;
+    protected $title;
+    protected $content;
+    protected $start;
+    protected $end;
+    protected $creator_id;
+    protected $created_date;
 
-	protected $prefix = 'task';
+    protected $prefix = 'task';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getTitle()
-	{
-		return $this->title;
-	}
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	public function setTitle($title)
-	{
-		$this->title = $title;
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getContent()
-	{
-		return $this->content;
-	}
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-	public function setContent($content)
-	{
-		$this->content = $content;
+    public function setContent($content)
+    {
+        $this->content = $content;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getStart()
-	{
-		return $this->start;
-	}
+    public function getStart()
+    {
+        return $this->start;
+    }
 
-	public function setStart($start)
-	{
-		$this->start = $start;
+    public function setStart($start)
+    {
+        $this->start = $start;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getEnd()
-	{
-		return $this->end;
-	}
+    public function getEnd()
+    {
+        return $this->end;
+    }
 
-	public function setEnd($end)
-	{
-		$this->end = $end;
+    public function setEnd($end)
+    {
+        $this->end = $end;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getCreatorId()
-	{
-		return $this->creator_id;
-	}
+    public function getCreatorId()
+    {
+        return $this->creator_id;
+    }
 
-	public function setCreatorId($creator_id)
-	{
-		$this->creator_id = $creator_id;
+    public function setCreatorId($creator_id)
+    {
+        $this->creator_id = $creator_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getCreatedDate()
-	{
-		return $this->created_date;
-	}
+    public function getCreatedDate()
+    {
+        return $this->created_date;
+    }
 
-	public function setCreatedDate($created_date)
-	{
-		$this->created_date = $created_date;
+    public function setCreatedDate($created_date)
+    {
+        $this->created_date = $created_date;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }
