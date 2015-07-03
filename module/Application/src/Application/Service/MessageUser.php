@@ -7,40 +7,54 @@ use Dal\Service\AbstractService;
 class MessageUser extends AbstractService
 {
     /**
-     * @param int $message_id
-     * @param int $user_id
-     * @param int $message_group_id
+     * Send message.
+     *
+     * @param int $message
+     * @param int $conversation
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($message_id, $user_id, $message_group_id)
+    public function send($message, $conversation)
     {
-        $m_messge_user = $this->getModel()->setMessageId($message_id)
-                         ->setUserId($user_id)
-                         ->setMessageGroupId($message_group_id)
-                         ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $res_conversation_user = $this->getServiceConversationUser()->getUserByConversation($conversation);
 
-        if ($this->getMapper()->insert($m_messge_user) <= 0) {
-            throw new \Exception('error insert message user');
+        foreach ($res_conversation_user as $m_conversation_user) {
+            $m_message_user = $this->getModel()
+            ->setMessageId($message)
+            ->setConversationId($conversation)
+            ->setFromId($me)
+            ->setUserId($m_conversation_user->getUserId())
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+
+            if ($this->getMapper()->insert($m_message_user) <= 0) {
+                throw new \Exception('error insert message to');
+            }
         }
 
         return $this->getMapper()->getLastInsertValue();
     }
 
-    /**
-     * Delete message.
-     *
-     * @param int $user
-     * @param int $id
-     *
-     * @return int
-     */
-    public function delete($user, $id)
+    public function getList($me, $message = null, $conversation = null)
     {
-        $m_message_user = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        return $this->getMapper()->getList($me, $message, $conversation);
+    }
 
-        return $this->getMapper()->update($m_message_user, array('user_id' => $user, 'message_id' => $id));
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
+    }
+
+    /**
+     * @return \Application\Service\ConversationUser
+     */
+    public function getServiceConversationUser()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_user');
     }
 }

@@ -4,21 +4,21 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class TaskShare extends AbstractModel
+class ConversationUser extends AbstractModel
 {
-    protected $task_id;
+    protected $conversation_id;
     protected $user_id;
 
-    protected $prefix = 'task_share';
+    protected $prefix = 'conversation_user';
 
-    public function getTaskId()
+    public function getConversationId()
     {
-        return $this->task_id;
+        return $this->conversation_id;
     }
 
-    public function setTaskId($task_id)
+    public function setConversationId($conversation_id)
     {
-        $this->task_id = $task_id;
+        $this->conversation_id = $conversation_id;
 
         return $this;
     }

@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class MessageGroup extends AbstractMapper
+class Conversation extends AbstractMapper
 {
 }
