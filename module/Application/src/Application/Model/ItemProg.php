@@ -8,6 +8,7 @@ class ItemProg extends BaseItemProg
 {
     protected $users;
     protected $item;
+    protected $editable;
 
     public function exchangeArray(array &$data)
     {
@@ -44,4 +45,16 @@ class ItemProg extends BaseItemProg
     {
         return $this->item;
     }
+    
+    public function getEditable(){
+        return $this->editable;
+    }
+    
+    public function setEditable($editable){
+        $this->editable = $editable;
+        
+        return $this;
+    }
+    
+   
 }
