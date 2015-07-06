@@ -8,6 +8,8 @@ nbproject
 .settings
 composer.lock
 vendor/bin
+config/
+Zdeploy/
 vendor
 composer.phar
 bin/*
@@ -16,3 +18,5 @@ Zdeploy/properties/*.properties
 tests/_files/input.data
 test.properties
 upload/
+build/
+/tests/*.sql

@@ -92,7 +92,7 @@ class ItemProg extends AbstractService
      * @param array  $users
      *
      * @return int
-     */
+  o   */
     public function update($id, $start_date = null, $users = null)
     {
         $m_item_prog = $this->getModel();

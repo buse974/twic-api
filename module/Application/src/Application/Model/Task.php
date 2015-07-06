@@ -6,6 +6,7 @@ use Application\Model\Base\Task as BaseTask;
 
 class Task extends BaseTask
 {
+
     
     protected $editable;
     protected $user;
@@ -49,3 +50,5 @@ class Task extends BaseTask
         return $this;
     }
 }
+
+

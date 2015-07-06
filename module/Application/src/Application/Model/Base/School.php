@@ -19,6 +19,7 @@ class School extends AbstractModel
     protected $contact;
     protected $contact_id;
     protected $address_id;
+    protected $deleted_date;
 
     protected $prefix = 'school';
 
@@ -174,6 +175,18 @@ class School extends AbstractModel
     public function setAddressId($address_id)
     {
         $this->address_id = $address_id;
+
+        return $this;
+    }
+
+    public function getDeletedDate()
+    {
+        return $this->deleted_date;
+    }
+
+    public function setDeletedDate($deleted_date)
+    {
+        $this->deleted_date = $deleted_date;
 
         return $this;
     }

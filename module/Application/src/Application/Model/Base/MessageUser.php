@@ -8,11 +8,12 @@ class MessageUser extends AbstractModel
 {
     protected $id;
     protected $message_id;
+    protected $conversation_id;
+    protected $from_id;
     protected $user_id;
-    protected $message_group_id;
-    protected $created_date;
-    protected $deleted_date;
     protected $read_date;
+    protected $deleted_date;
+    protected $created_date;
 
     protected $prefix = 'message_user';
 
@@ -40,6 +41,30 @@ class MessageUser extends AbstractModel
         return $this;
     }
 
+    public function getConversationId()
+    {
+        return $this->conversation_id;
+    }
+
+    public function setConversationId($conversation_id)
+    {
+        $this->conversation_id = $conversation_id;
+
+        return $this;
+    }
+
+    public function getFromId()
+    {
+        return $this->from_id;
+    }
+
+    public function setFromId($from_id)
+    {
+        $this->from_id = $from_id;
+
+        return $this;
+    }
+
     public function getUserId()
     {
         return $this->user_id;
@@ -52,26 +77,14 @@ class MessageUser extends AbstractModel
         return $this;
     }
 
-    public function getMessageGroupId()
+    public function getReadDate()
     {
-        return $this->message_group_id;
+        return $this->read_date;
     }
 
-    public function setMessageGroupId($message_group_id)
+    public function setReadDate($read_date)
     {
-        $this->message_group_id = $message_group_id;
-
-        return $this;
-    }
-
-    public function getCreatedDate()
-    {
-        return $this->created_date;
-    }
-
-    public function setCreatedDate($created_date)
-    {
-        $this->created_date = $created_date;
+        $this->read_date = $read_date;
 
         return $this;
     }
@@ -88,14 +101,14 @@ class MessageUser extends AbstractModel
         return $this;
     }
 
-    public function getReadDate()
+    public function getCreatedDate()
     {
-        return $this->read_date;
+        return $this->created_date;
     }
 
-    public function setReadDate($read_date)
+    public function setCreatedDate($created_date)
     {
-        $this->read_date = $read_date;
+        $this->created_date = $created_date;
 
         return $this;
     }
