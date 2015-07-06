@@ -26,11 +26,6 @@ class ConversationUser extends AbstractService
 
         return $conversation;
     }
-    
-    public function deleteByItemProg($item_prog)
-    {
-    	return $this->getMapper()->delete($this->getModel()->setItemProgId($item_prog));
-    }
 
     /**
      * @param int $conversation

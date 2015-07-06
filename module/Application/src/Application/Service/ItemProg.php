@@ -107,8 +107,8 @@ class ItemProg extends AbstractService
     {
         $this->getServiceItemProgUser()->deleteByItemProg($id);
         $this->getServiceItemAssignment()->deleteByItemProg($id);
-        $this->getServiceConversationUser()->deleteByItemProg($id);
-        $this->getServiceVideoconfConversation()->deleteByItemProg($id);
+        //$this->getServiceConversationUser()->deleteByItemProg($id);
+        //$this->getServiceVideoconfConversation()->deleteByItemProg($id);
 
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
