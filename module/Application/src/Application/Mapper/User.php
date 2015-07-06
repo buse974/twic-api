@@ -4,6 +4,8 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Select;
 
 class User extends AbstractMapper
 {
@@ -177,6 +179,65 @@ class User extends AbstractMapper
                ->join('item_prog_user', 'item_prog_user.user_id=user.id', array())
                ->where(array('item_prog_user.item_prog_id' => $item_prog));
 
+        return $this->selectWith($select);
+    }
+    
+    /**
+     * Get user list for item_prog and those available
+     *
+     * @param int $item_prog
+     * @param int $item
+     * @param int $course
+     *
+     * @return array
+     */
+    public function getListForItemProg($item_prog, $item, $course)
+    {
+        $select = $this->tableGateway->getSql()->select();
+            $select->columns(array(
+                'id', 
+                'firstname', 
+                'lastname', 
+                'avatar', 
+                'user$available' => new Expression('MIN(IF(item_prog_user.item_prog_id = '.$item_prog.' OR item_prog_user.item_prog_id IS NULL, 1, 0))'), 
+                'user$selected' => new Expression('MAX(IF(item_prog_user.item_prog_id = '.$item_prog.', 1, 0))')))  
+               ->join('course_user_relation', 'user.id = course_user_relation.user_id',array())
+               ->join('course','course.id = course_user_relation.course_id',array())
+               ->join('item','course.id = item.course_id',array())
+               ->join('item_prog','item.id = item_prog.item_id',array(), $select::JOIN_LEFT)    
+               ->join('item_prog_user','item_prog.id = item_prog_user.item_prog_id AND user.id = item_prog_user.user_id',array(), $select::JOIN_LEFT)             
+               ->join('user_role','user.id = user_role.user_id',array())                 
+               ->where(array('item.id ' => $item))               
+               ->where(array('course.id' => $course))          
+               ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID))
+               ->group(array('user.id'));
+        
+        return $this->selectWith($select);
+    }
+    
+    
+    /**
+     * Get all students for the instructor
+     *
+     *
+     * @param int $instructor
+     *
+     * @return array
+     */
+    public function getStudentList($instructor){
+        
+        $sub_select = new Select("course_user_relation");
+        $sub_select->columns(array("course_id"))  
+        ->where(array('course_user_relation.user_id'=>$instructor));
+        
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+        ->join('course_user_relation','user.id = course_user_relation.user_id', array())
+        ->join('user_role','user.id = user_role.user_id',array())     
+        ->where(array('course_user_relation.course_id IN ?' => $sub_select)) 
+        ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID))
+        ->quantifier('DISTINCT');
+       
         return $this->selectWith($select);
     }
 }
