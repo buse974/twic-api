@@ -217,6 +217,10 @@ class UserTest extends AbstractService
 		->method('getId')
 		->will($this->returnValue($id));
 	
+		$identityMock->expects($this->any())
+		->method('toArray')
+		->will($this->returnValue(array('id' => $id)));
+	
 		$authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
 		->disableOriginalConstructor()->getMock();
 	

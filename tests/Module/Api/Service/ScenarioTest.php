@@ -2076,7 +2076,9 @@ class CourseTest extends AbstractService
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals(count($data['result']['list']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]) , 13);
+        $this->assertEquals(count($data['result']['list'][0]) , 15);
+        $this->assertEquals($data['result']['list'][0]['start_date'] , "2015-06-01T12:10:00Z");
+        $this->assertEquals($data['result']['list'][0]['end_date'] , "2015-06-01T12:10:00Z");
         $this->assertEquals($data['result']['list'][0]['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['title'] , "IMERIR");
         $this->assertEquals($data['result']['list'][0]['abstract'] , "un_token");
@@ -2511,7 +2513,9 @@ class CourseTest extends AbstractService
     	$this->assertEquals(count($data['result']) , 2);
     	$this->assertEquals($data['result']['count'] , 1);
     	$this->assertEquals(count($data['result']['list']) , 1);
-    	$this->assertEquals(count($data['result']['list'][0]) , 13);
+    	$this->assertEquals(count($data['result']['list'][0]) , 15);
+    	$this->assertEquals($data['result']['list'][0]['start_date'] , null);
+    	$this->assertEquals($data['result']['list'][0]['end_date'] , null);
     	$this->assertEquals($data['result']['list'][0]['id'] , 1);
     	$this->assertEquals($data['result']['list'][0]['title'] , "IMERIR");
     	$this->assertEquals($data['result']['list'][0]['abstract'] , "un_token");
@@ -2520,9 +2524,9 @@ class CourseTest extends AbstractService
     	$this->assertEquals($data['result']['list'][0]['teaching'] , "teaching");
     	$this->assertEquals($data['result']['list'][0]['attendance'] , "attendance");
     	$this->assertEquals($data['result']['list'][0]['duration'] , 18);
-    	$this->assertEquals($data['result']['list'][0]['picture'] , "");
     	$this->assertEquals($data['result']['list'][0]['notes'] , "notes");
     	$this->assertEquals($data['result']['list'][0]['learning_outcomes'] , "learning_outcomes");
+    	$this->assertEquals($data['result']['list'][0]['picture'] , null);
     	$this->assertEquals($data['result']['list'][0]['video_link'] , "http://google.fr");
     	$this->assertEquals($data['result']['list'][0]['video_token'] , "video_token");
     	$this->assertEquals($data['id'] , 1);
@@ -2534,9 +2538,7 @@ class CourseTest extends AbstractService
      * @depends testAddCourse
      * @depends testCanAddProgram
      */
-    public
-    function testDeleteCourse($id
-    ) {
+    public function testDeleteCourse($id) {
         $this->setIdentity(1);
 
         $data = $this->jsonRpc('course.delete', array('id' => $id));
@@ -2550,34 +2552,38 @@ class CourseTest extends AbstractService
 
     public function setIdentity($id)
     {
-        $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
-        ->disableOriginalConstructor()->getMock();
-
-        $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
-        ->disableOriginalConstructor()->getMock();
-
-        $identityMock->expects($this->any())
-        ->method('getId')
-        ->will($this->returnValue($id));
-
-        $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
-        ->disableOriginalConstructor()->getMock();
-
-        $authMock->expects($this->any())
-        ->method('getIdentity')
-        ->will($this->returnValue($identityMock));
-
-        $authMock->expects($this->any())
-        ->method('hasIdentity')
-        ->will($this->returnValue(true));
-
-        $rbacMock->expects($this->any())
-        ->method('isGranted')
-        ->will($this->returnValue(true));
-
-        $serviceManager = $this->getApplicationServiceLocator();
-        $serviceManager->setAllowOverride(true);
-        $serviceManager->setService('auth.service', $authMock);
-        $serviceManager->setService('rbac.service', $rbacMock);
+    	$identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
+    	->disableOriginalConstructor()->getMock();
+    
+    	$rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
+    	->disableOriginalConstructor()->getMock();
+    
+    	$identityMock->expects($this->any())
+    	->method('getId')
+    	->will($this->returnValue($id));
+    
+    	$identityMock->expects($this->any())
+    	->method('toArray')
+    	->will($this->returnValue(array('id' => $id)));
+    
+    	$authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
+    	->disableOriginalConstructor()->getMock();
+    
+    	$authMock->expects($this->any())
+    	->method('getIdentity')
+    	->will($this->returnValue($identityMock));
+    
+    	$authMock->expects($this->any())
+    	->method('hasIdentity')
+    	->will($this->returnValue(true));
+    
+    	$rbacMock->expects($this->any())
+    	->method('isGranted')
+    	->will($this->returnValue(true));
+    
+    	$serviceManager = $this->getApplicationServiceLocator();
+    	$serviceManager->setAllowOverride(true);
+    	$serviceManager->setService('auth.service', $authMock);
+    	$serviceManager->setService('rbac.service', $rbacMock);
     }
 }
