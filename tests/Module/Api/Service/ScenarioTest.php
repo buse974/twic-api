@@ -3,7 +3,7 @@ namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
 
-class CourseTest extends AbstractService
+class ScenarioTest extends AbstractService
 {
     public static function setUpBeforeClass()
     {
@@ -1239,7 +1239,6 @@ class CourseTest extends AbstractService
                         'users' => array(1,2,3,4)
                      )
         );
-
 
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);

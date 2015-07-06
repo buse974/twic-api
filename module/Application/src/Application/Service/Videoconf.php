@@ -9,18 +9,24 @@ use Application\Model\Videoconf as CVF;
 
 class Videoconf extends AbstractService
 {
-    /**
-     * @invokable
-     *
-     * @param string $title
-     * @param string $description
-     * @param string $start_date
-     */
-    public function add($title, $description, $start_date)
+	/**
+	 * @invokable
+	 * 
+	 * @param string $title
+	 * @param string $description
+	 * @param string $start_date
+	 * @param integer $item_prog
+	 * @param integer $conversation
+	 * @throws \Exception
+	 * @return integer
+	 */
+    public function add($title, $description, $start_date, $item_prog = null, $conversation = null)
     {
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
                     ->setDescription($description)
+                    ->setItemProgId($item_prog)
+                    ->setConversationId($conversation)
                     ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
                     ->setToken($this->getServiceZOpenTok()->getSessionId())
                     ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -37,7 +43,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param integer $id
      */
     public function delete($id)
     {
@@ -275,6 +281,25 @@ class Videoconf extends AbstractService
     }
 
     /**
+     * @invokable
+     * 
+     * @param integer $videoconf
+     * @param array $users
+     */
+    public function addConversation($videoconf, $users)
+    {
+    	$conversation = $this->getServiceConversationUser()->createConversation($users);
+    	$this->getServiceVideoconfConversation()->add($conversation, $videoconf); 
+    	
+    	return $conversation;
+    }
+    
+    public function getByItemProg()
+    {
+    	
+    }
+    
+    /**
      * @return \Application\Service\VideoconfInvitation
      */
     public function getServiceVideoConfInvitation()
@@ -282,6 +307,22 @@ class Videoconf extends AbstractService
         return $this->getServiceLocator()->get('app_service_videoconf_invitation');
     }
 
+    /**
+     * @return \Application\Service\ConversationUser
+     */
+    public function getServiceConversationUser()
+    {
+    	return $this->getServiceLocator()->get('app_service_conversation_user');
+    }
+    
+    /**
+     * @return \Application\Service\VideoconfConversation
+     */
+    public function getServiceVideoconfConversation()
+    {
+    	return $this->getServiceLocator()->get('app_service_videoconf_conversation');
+    }
+    
     /**
      * @return \Application\Service\VideoconfAdmin
      */
