@@ -65,6 +65,7 @@ return array(
             'app_service_grading_policy_grade_comment',
             'app_service_item_assignment_comment',
             'app_service_mail',
+        	'app_service_conversation',
 
         ),
         'headers' => array(
@@ -96,8 +97,8 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key' => '45105812',
-        'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',
+        'api_key' => '45261282',
+        'api_secret' => '2de350b955b35f97be1b1e35b2f08ca4f6a6b318',
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
     ),
