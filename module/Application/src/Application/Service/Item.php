@@ -180,8 +180,9 @@ class Item extends AbstractService
     public function getListGrade($program, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null)
     {
         $mapper = $this->getMapper();
+        $user = $this->getServiceUser()->getIdentity();
 
-        $res_item = $mapper->usePaginator($filter)->getListGrade($program, $course, $type, $not_graded, $new_message, $filter);
+        $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter);
 
         foreach ($res_item as $m_item) {
             $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemProg()->getItem()->getItemAssignment()->getId()));
@@ -196,8 +197,12 @@ class Item extends AbstractService
      * @param int $course
      * @param int $user
      */
-    public function getListGradeDetail($course, $user)
+    public function getListGradeDetail($course, $user = null)
     {
+        $identity = $this->getServiceUser()->getIdentity();
+        if($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])){
+            $user = $identity['id'];
+        }
         $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
 
         foreach ($res_grading_policy as $m_grading_policy) {

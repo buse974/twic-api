@@ -131,6 +131,18 @@ class GradingPolicy extends AbstractService
 
         return true;
     }
+    
+    /**   
+     *   
+     * @param int  $user
+     * 
+     * @return array 
+     */
+    public function processGrade($user){
+        return $this->getMapper()->processGrade($user);
+    }
+    
+   
 
     /**
      * Get the list of Grading policy by course id.
@@ -141,5 +153,14 @@ class GradingPolicy extends AbstractService
     public function getListByCourse($course, $user)
     {
         return $this->getMapper()->getListByCourse($course, $user);
+    }
+    
+    
+       /**
+     * @return \Application\Service\GradingPolicyGrade
+     */
+    public function getServiceGradingPolicyGrade()
+    {
+        return $this->getServiceLocator()->get('app_service_grading_policy_grade');
     }
 }

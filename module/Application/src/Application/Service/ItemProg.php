@@ -3,9 +3,38 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use JRpc\Json\Server\Exception\JrpcException;
 
 class ItemProg extends AbstractService
 {
+    
+      /**
+     * @invokable
+     *
+     * @param int $id
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function getSubmission($user, $id)
+    {
+        
+        $res_item_prog = $this->getMapper()->getSubmission($user, $id);
+        if($res_item_prog->count() > 0){
+            $m_item_prog = $res_item_prog->current();
+            $m_item = $m_item_prog->getItem();
+            $m_item->setMaterials($this->getServiceMaterialDocument()->getListByItem($m_item->getId()));
+            $m_course = $m_item->getCourse();
+            $m_item_prog->setUsers(array($this->getServiceUser()->get($user)));
+            $m_course->setInstructor($this->getServiceUser()->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+
+            return array( 'item_prog' => $m_item_prog, 'students' => $m_item_prog->getUsers());
+        }
+        throw new JrpcException('No authorization', -32029);
+        
+    }
+
     /**
      * @param int $item_assignment
      *
@@ -181,5 +210,13 @@ class ItemProg extends AbstractService
     public function getServiceAuth()
     {
         return $this->getServiceLocator()->get('auth.service');
+    }
+
+    /**
+     * @return \Application\Service\MaterialDocument
+     */
+    public function getServiceMaterialDocument()
+    {
+        return $this->getServiceLocator()->get('app_service_material_document');
     }
 }
