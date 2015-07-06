@@ -31,14 +31,13 @@ class GradingPolicy extends AbstractMapper
      */
     public function processGrade($user){
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id' ,'grading_policy$processed_grade' => new Expression('CAST(AVG(item_grading.grade) AS INTEGER )' )))
+        $select->columns(array('id' ,'grading_policy$processed_grade' => new Expression('CAST(SUM(item_grading.grade * item.weight) / SUM(item.weight) AS INTEGER )' )))
                ->join('item', 'grading_policy.id = item.grading_policy_id',array())
                ->join('item_prog', 'item.id = item_prog.item_id',array())
                ->join('item_prog_user', 'item_prog.id = item_prog_user.item_prog_id ',array())
                ->join('item_grading', 'item_prog_user.id = item_grading.item_prog_user_id ',array())
                ->where(array('item_prog_user.user_id' => $user))
                ->group('grading_policy.id');
-        
         return $this->selectWith($select);
         
     }

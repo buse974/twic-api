@@ -132,6 +132,7 @@ class Item extends AbstractMapper
                ->where(array('item.course_id' => $course))
                ->where(array('item.grading_policy_id' => $grading_policy))
                ->where(array('item_prog_user.user_id' => $user))
+               ->where(array('( item_assignment.id IS NULL OR item_assignment_user.item_assignment_id IS NOT NULL)'))
                ->group('item.id');
         //exit($this->printSql($select));
         return $this->selectWith($select);
