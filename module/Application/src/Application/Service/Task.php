@@ -37,6 +37,7 @@ class Task extends AbstractService
      */
     public function add($title, $start, $end, $content = null, $task_share = null)
     {
+       
         $m_calendar = $this->getModel()
             ->setTitle($title)
             ->setStart($start)
@@ -147,7 +148,7 @@ class Task extends AbstractService
      * @return array
      */
     public function getList($start, $end)
-    { 
+    {   
         $res_tasks = $this->getMapper()->getList($start, $end, $this->getServiceUser()->getIdentity()["id"]);
 
         foreach ($res_tasks as $m_task) {
@@ -158,7 +159,7 @@ class Task extends AbstractService
 
     }
         
-    /**
+     /**
      * @return \Application\Service\User
      */
     public function getServiceUser()

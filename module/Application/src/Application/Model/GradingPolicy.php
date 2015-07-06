@@ -6,8 +6,16 @@ use Application\Model\Base\GradingPolicy as BaseGradingPolicy;
 
 class GradingPolicy extends BaseGradingPolicy
 {
+    
+    
+    const GP_INDIVIDUAL_ASSIGNEMENT = 'IA';
+    const GP_CAPSTONE_PROJECT = 'CP';
+    const GP_LIVE_CLASS = 'LC';
+    const GP_WORKGROUP = 'WG';
+    
     protected $items;
     protected $nbr_comment;
+    protected $processed_grade;
     protected $grading_policy_grade;
 
     public function exchangeArray(array &$data)
@@ -41,6 +49,18 @@ class GradingPolicy extends BaseGradingPolicy
     public function setNbrComment($nbr_comment)
     {
         $this->nbr_comment = $nbr_comment;
+
+        return $this;
+    } 
+    
+    public function getProcessedGrade()
+    {
+        return $this->processed_grade;
+    }
+
+    public function setProcessedGrade($processed_grade)
+    {
+        $this->processed_grade = $processed_grade;
 
         return $this;
     }

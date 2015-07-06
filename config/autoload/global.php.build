@@ -64,6 +64,8 @@ return array(
             'app_service_grading_policy_grade',
             'app_service_grading_policy_grade_comment',
             'app_service_item_assignment_comment',
+            'app_service_task',
+            'app_service_task_share',
         ),
         'headers' => array(
             'Access-Control-Allow-Origin' => '*',
