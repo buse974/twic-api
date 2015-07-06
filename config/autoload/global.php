@@ -66,6 +66,8 @@ return array(
             'app_service_item_assignment_comment',
             'app_service_task',
             'app_service_task_share',
+            'app_service_mail',
+
 
         ),
         'headers' => array(
@@ -116,7 +118,7 @@ return array(
                     'tmp' => '/tmp/',
             ),
             'headers' => array(
-                    'Access-Control-Allow-Origin' => 'http://local.wow.in',
+                    'Access-Control-Allow-Origin' => 'http://wow.local',
                     'Access-Control-Allow-Credentials' => 'true',
             ),
     ),
