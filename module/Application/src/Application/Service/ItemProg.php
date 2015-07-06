@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Item;
 
 class ItemProg extends AbstractService
 {
@@ -41,11 +42,26 @@ class ItemProg extends AbstractService
     {
         $m_item_prog = $this->getModel()->setItemId($item)->setStartDate($start_date);
         if ($this->getMapper()->insert($m_item_prog) <= 0) {
-            print_r($ret);
             throw new \Exception('error insert item prog');
         }
         $id = $this->getMapper()->getLastInsertValue();
 
+        $m_item = $this->getServiceItem()->get($item);
+        switch ($m_item->getType()) {
+        	case Item::TYPE_LIVE_CLASS :
+        		$conversation = $this->getServiceConversationUser()->createConversation($users);
+        		$videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
+        		$this->getServiceVideoconfConversation()->add($conversation, $videoconf);
+        	break;
+        	case Item::TYPE_WORKGROUP :
+        		$conversation = $this->getServiceConversationUser()->createConversation($users);
+        		$videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
+        		$this->getServiceVideoconfConversation()->add($conversation, $videoconf);
+        	break;
+        	
+        	default:
+        	break;
+        }
         if ($users !== null) {
             $this->addUser($id, $users);
         }
@@ -53,6 +69,7 @@ class ItemProg extends AbstractService
         return $id;
     }
 
+    
     /**
      * Update User.
      *
@@ -90,6 +107,8 @@ class ItemProg extends AbstractService
     {
         $this->getServiceItemProgUser()->deleteByItemProg($id);
         $this->getServiceItemAssignment()->deleteByItemProg($id);
+        $this->getServiceConversationUser()->deleteByItemProg($id);
+        $this->getServiceVideoconfConversation()->deleteByItemProg($id);
 
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
@@ -147,6 +166,22 @@ class ItemProg extends AbstractService
 
         $this->getMapper()->delete($this->getModel()->setItemId($item));
     }
+    
+    /**
+     * @return \Application\Service\Videoconf
+     */
+    public function getServiceVideoconf()
+    {
+    	return $this->getServiceLocator()->get('app_service_videoconf');
+    }
+    
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+    	return $this->getServiceLocator()->get('app_service_item');
+    }
 
     /**
      * @return \Application\Service\ItemProgUser
@@ -170,5 +205,21 @@ class ItemProg extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Application\Service\ConversationUser
+     */
+    public function getServiceConversationUser()
+    {
+    	return $this->getServiceLocator()->get('app_service_conversation_user');
+    }
+    
+    /**
+     * @return \Application\Service\VideoconfConversation
+     */
+    public function getServiceVideoconfConversation()
+    {
+    	return $this->getServiceLocator()->get('app_service_videoconf_conversation');
     }
 }

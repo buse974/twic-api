@@ -18,15 +18,17 @@ class ConversationUser extends AbstractMapper
 
         $select_sub = $this->tableGateway->getSql()->select();
         $select_sub->columns(array('conversation_id'))
-        ->group(array('conversation_id'))
-        ->having($having);
+        		   ->group(array('conversation_id'))
+                   ->having($having);
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('conversation_id'))
-        ->where(array('user_id' => $users))
-        ->where(array('conversation_id' => $select_sub))
-        ->group(array('conversation_id'))
-        ->having($having);
+        	   ->join('videoconf', 'videoconf.conversation_id=conversation_user.conversation_id', array(), $select::JOIN_LEFT)
+               ->where(array('user_id' => $users))
+               ->where(array('videoconf.id IS NULL'))
+               ->where(array('conversation_user.conversation_id' => $select_sub))
+               ->group(array('conversation_user.conversation_id'))
+               ->having($having);
 
         return $this->selectWith($select);
     }

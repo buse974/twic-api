@@ -26,6 +26,11 @@ class ConversationUser extends AbstractService
 
         return $conversation;
     }
+    
+    public function deleteByItemProg($item_prog)
+    {
+    	return $this->getMapper()->delete($this->getModel()->setItemProgId($item_prog));
+    }
 
     /**
      * @param int $conversation
@@ -58,8 +63,7 @@ class ConversationUser extends AbstractService
      */
     public function getByConversationUser($conversation, $user)
     {
-        $m_conversation_user = $this->getModel()->setConversationId($conversation)
-        ->setUserId($user);
+        $m_conversation_user = $this->getModel()->setConversationId($conversation)->setUserId($user);
 
         return $this->getMapper()->select($m_conversation_user);
     }

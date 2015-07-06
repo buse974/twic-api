@@ -242,6 +242,24 @@ class Item extends AbstractService
 
         return $res_item->current();
     }
+    
+    /**
+     * @param int $item
+     *
+     * @throws \Exception
+     *
+     * @return \Application\Model\Item
+     */
+    public function get($item)
+    {
+    	$res_item = $this->getMapper()->select($this->getModel()->setId($item));
+    
+    	if ($res_item->count() <= 0) {
+    		throw new \Exception('error select item');
+    	}
+    
+    	return $res_item->current();
+    }
 
     /**
      * @return \Application\Service\ItemMaterialDocumentRelation

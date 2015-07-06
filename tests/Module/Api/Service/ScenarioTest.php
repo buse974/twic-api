@@ -3,7 +3,7 @@ namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
 
-class CourseTest extends AbstractService
+class ScenarioTest extends AbstractService
 {
     public static function setUpBeforeClass()
     {
@@ -1240,7 +1240,6 @@ class CourseTest extends AbstractService
                      )
         );
 
-
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
@@ -1832,27 +1831,30 @@ class CourseTest extends AbstractService
                 ]
             )
         );
-
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals($data['result']['count'] , 1);
-        $this->assertEquals(count($data['result']['list']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]) , 13);
-        $this->assertEquals($data['result']['list'][0]['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['title'] , "IMERIR");
-        $this->assertEquals($data['result']['list'][0]['abstract'] , "un_token");
-        $this->assertEquals($data['result']['list'][0]['description'] , "description");
-        $this->assertEquals($data['result']['list'][0]['objectives'] , "objectives");
-        $this->assertEquals($data['result']['list'][0]['teaching'] , "teaching");
-        $this->assertEquals($data['result']['list'][0]['attendance'] , "attendance");
-        $this->assertEquals($data['result']['list'][0]['duration'] , 18);
-        $this->assertEquals($data['result']['list'][0]['notes'] , "notes");
-        $this->assertEquals($data['result']['list'][0]['learning_outcomes'] , "learning_outcomes");
-        $this->assertEquals($data['result']['list'][0]['picture'] , null);
-        $this->assertEquals($data['result']['list'][0]['video_link'] , "http://google.fr");
-        $this->assertEquals($data['result']['list'][0]['video_token'] , "video_token");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        $this->assertEquals(count($data) , 3); 
+		$this->assertEquals(count($data['result']) , 2); 
+		$this->assertEquals($data['result']['count'] , 1); 
+		$this->assertEquals(count($data['result']['list']) , 1); 
+		$this->assertEquals(count($data['result']['list'][0]) , 15); 
+		$this->assertEquals($data['result']['list'][0]['start_date'] , "2015-06-01T12:10:00Z"); 
+		$this->assertEquals($data['result']['list'][0]['end_date'] , "2015-06-01T12:10:00Z"); 
+		$this->assertEquals($data['result']['list'][0]['id'] , 1); 
+		$this->assertEquals($data['result']['list'][0]['title'] , "IMERIR"); 
+		$this->assertEquals($data['result']['list'][0]['abstract'] , "un_token"); 
+		$this->assertEquals($data['result']['list'][0]['description'] , "description"); 
+		$this->assertEquals($data['result']['list'][0]['objectives'] , "objectives"); 
+		$this->assertEquals($data['result']['list'][0]['teaching'] , "teaching"); 
+		$this->assertEquals($data['result']['list'][0]['attendance'] , "attendance"); 
+		$this->assertEquals($data['result']['list'][0]['duration'] , 18); 
+		$this->assertEquals($data['result']['list'][0]['notes'] , "notes"); 
+		$this->assertEquals($data['result']['list'][0]['learning_outcomes'] , "learning_outcomes"); 
+		$this->assertEquals($data['result']['list'][0]['picture'] , null); 
+		$this->assertEquals($data['result']['list'][0]['video_link'] , "http://google.fr"); 
+		$this->assertEquals($data['result']['list'][0]['video_token'] , "video_token"); 
+		$this->assertEquals($data['id'] , 1); 
+		$this->assertEquals($data['jsonrpc'] , 2.0);
+		        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
 
