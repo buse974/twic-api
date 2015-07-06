@@ -3,7 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Item;
+use Application\Model\Item as ModelItem;
 use JRpc\Json\Server\Exception\JrpcException;
 
 class ItemProg extends AbstractService
@@ -77,12 +77,12 @@ class ItemProg extends AbstractService
 
         $m_item = $this->getServiceItem()->get($item);
         switch ($m_item->getType()) {
-        	case Item::TYPE_LIVE_CLASS :
+        	case ModelItem::TYPE_LIVE_CLASS :
         		$conversation = $this->getServiceConversationUser()->createConversation($users);
         		$videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
         		$this->getServiceVideoconfConversation()->add($conversation, $videoconf);
         	break;
-        	case Item::TYPE_WORKGROUP :
+        	case ModelItem::TYPE_WORKGROUP :
         		$conversation = $this->getServiceConversationUser()->createConversation($users);
         		$videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
         		$this->getServiceVideoconfConversation()->add($conversation, $videoconf);

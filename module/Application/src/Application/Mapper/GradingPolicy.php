@@ -38,6 +38,7 @@ class GradingPolicy extends AbstractMapper
                ->join('item_grading', 'item_prog_user.id = item_grading.item_prog_user_id ',array())
                ->where(array('item_prog_user.user_id' => $user))
                ->group('grading_policy.id');
+        
         return $this->selectWith($select);
         
     }
