@@ -119,8 +119,9 @@ return array(
                     'tmp' => '/tmp/',
             ),
             'headers' => array(
-                    'Access-Control-Allow-Origin' => 'http://wow.local',
+                    'Access-Control-Allow-Origin' => 'http://lms.comdd',
                     'Access-Control-Allow-Credentials' => 'true',
+                    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
             ),
     ),
 );

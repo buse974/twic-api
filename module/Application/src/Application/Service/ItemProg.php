@@ -12,6 +12,7 @@ class ItemProg extends AbstractService
       /**
      * @invokable
      *
+     * @param int $user
      * @param int $id
      *
      * @throws \Exception

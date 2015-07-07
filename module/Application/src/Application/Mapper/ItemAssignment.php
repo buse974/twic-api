@@ -4,10 +4,11 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class ItemAssignment extends AbstractMapper
 {
-    public function get($id)
+    public function get($id, $user)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -19,9 +20,16 @@ class ItemAssignment extends AbstractMapper
         ->join('item', 'item.id=item_prog.item_id', array('id', 'title', 'describe', 'type'))
         ->join('module', 'module.id=item.module_id', array('id', 'title'))
         ->join('course', 'course.id=module.course_id', array('id', 'title'))
+        ->join('course_user_relation', 'course.id=course_user_relation.course_id', array())
+        ->join('user', 'user.id=course_user_relation.user_id', array())
+        ->join('user_role', 'user_role.user_id=user.id', array())
         ->join('program', 'program.id=course.program_id', array('id', 'name'))
-        ->where(array('item_assignment.id' => $id));
-
+        ->where(array('item_assignment.id' => $id))
+        ->where(array('( item_assignment_user.user_id = ? ' => $user))
+         ->where(array('( user_role.role_id = ? ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID), Predicate::OP_OR)
+         ->where(array(' course_user_relation.user_id = ? ))' => $user));
+        
+        //exit($this->printSql($select));
         return $this->selectWith($select);
     }
     
@@ -43,6 +51,7 @@ class ItemAssignment extends AbstractMapper
                 ->join('item_assignment_user', 'item_assignment.id=item_assignment_user.item_assignment_id', array())
                 ->where(array('item_assignment_user.user_id' => $user))
                 ->where(array('item_prog.id' => $item_prog));
+                //->where(array('item_prog.due_date <= CURRENT_TIMESTAMP()'));
         
         return $this->selectWith($select);
      
