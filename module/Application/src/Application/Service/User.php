@@ -242,15 +242,10 @@ class User extends AbstractService
     public function addCourse($user, $course)
     {
         if (!is_array($user)) {
-            $user = array(
-                    $user,
-            );
+            $user = array($user);
         }
-
         if (!is_array($course)) {
-            $course = array(
-                    $course,
-            );
+            $course = array($course);
         }
 
         return $this->getServiceCourseUserRelation()->add($user, $course);

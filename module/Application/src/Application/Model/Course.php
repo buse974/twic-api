@@ -16,7 +16,8 @@ class Course extends BaseCourse
     protected $instructor;
     protected $start_date;
     protected $end_date;
-
+    protected $items;
+    
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -32,6 +33,18 @@ class Course extends BaseCourse
         $this->creator->exchangeArray($data);
     }
 
+    public function getItems()
+    {
+    	return $this->items;
+    }
+    
+    public function setItems($items)
+    {
+    	$this->items = $items;
+    
+    	return $this;
+    }
+    
     public function setStudent($student)
     {
         $this->student = $student;
