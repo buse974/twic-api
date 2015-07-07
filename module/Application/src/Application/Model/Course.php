@@ -17,6 +17,7 @@ class Course extends BaseCourse
     protected $start_date;
     protected $end_date;
     protected $items;
+    protected $school;
     
     public function exchangeArray(array &$data)
     {
@@ -26,13 +27,27 @@ class Course extends BaseCourse
         $this->grading = new Grading($this);
         $this->creator = new User($this);
         $this->module = new Module($this);
-
+        $this->school = new School($this);
+        
         $this->module->exchangeArray($data);
         $this->grading_policy->exchangeArray($data);
         $this->grading->exchangeArray($data);
         $this->creator->exchangeArray($data);
+        $this->school->exchangeArray($data);
     }
 
+    public function getSchool()
+    {
+    	return $this->school;
+    }
+     
+    public function setSchool($school)
+    {
+    	$this->school = $school;
+    
+    	return $this;
+    }
+    
     public function getItems()
     {
     	return $this->items;
