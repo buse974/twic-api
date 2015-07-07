@@ -120,6 +120,17 @@ class Item extends AbstractService
 
         return $res_item->toArrayParent();
     }
+    
+    public function getListRecord($course, $user, $is_student)
+    {
+    	$res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
+    	
+    	foreach ($res_item as $m_item) {
+    		$m_item->setItemProg($this->getServiceItemProg()->getListRecord($m_item->getId(), $user, $is_student));
+    	}
+    	
+    	return $res_item;
+    }
 
     /**
      * Get Item by Type.

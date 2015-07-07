@@ -70,6 +70,23 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListRecord($course, $user, $is_student = false)
+    {
+    	$select = $this->tableGateway->getSql()->select();
+    	
+    	$select->columns(array('id', 'title'))
+    		->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
+    		->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
+    		->where(array('item.course_id' => $course));
+    	
+    	if($is_student!==false) {
+    		$select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)
+    		->where(array('item_prog_user.user_id' => $user));
+    	}
+    		
+    	return  $this->selectWith($select);
+    }
+    
     public function getByItemProg($item_prog)
     {
         $select = $this->tableGateway->getSql()->select();
