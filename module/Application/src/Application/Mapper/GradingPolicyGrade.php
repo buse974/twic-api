@@ -22,7 +22,7 @@ class GradingPolicyGrade extends AbstractMapper
         
         $select->columns(array(
                 'grading_policy_grade$user' => 'user_id',
-                'grading_policy_grade$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade) / SUM(grading_policy.grade) AS INTEGER )'),
+                'grading_policy_grade$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade) / SUM(grading_policy.grade) AS DECIMAL )'),
         ))
         ->join('grading_policy', 'grading_policy_grade.grading_policy_id=grading_policy.id', array('grading_policy_grade$course' => 'course_id'))
         ->join('course', 'course.id=grading_policy.course_id', array('grading_policy_grade$program' => 'program_id'))
@@ -83,6 +83,45 @@ class GradingPolicyGrade extends AbstractMapper
             $sel->where(array('user$id' => $user['id']));
         }
         return $this->selectBridge($sel);
+    }
+    
+    public function updateGrade($item_assignment, $user)
+    {
+    	$subselect = new Select('grading_policy');
+    	$subselect->columns(array('id'))
+    		->join('item', 'grading_policy.id = item.grading_policy_id',array())
+    		->join('item_prog', 'item.id = item_prog.item_id',array())
+    		->join('item_assignment', 'item_assignment.item_prog_id = item_prog.id',array())
+    		->where(array('item_assignment.id' => $item_assignment));
+    	
+    	$select = new Select('grading_policy');
+    	$select->columns(array('grade' => new Expression('SUM(item_grading.grade * item.weight) / SUM(item.weight)' )))
+    		->join('item', 'grading_policy.id = item.grading_policy_id',array())
+    		->join('item_prog', 'item.id = item_prog.item_id',array())
+    		->join('item_prog_user', 'item_prog.id = item_prog_user.item_prog_id ',array())
+    		->join('item_grading', 'item_prog_user.id = item_grading.item_prog_user_id ',array())
+    		->where(array('item_prog_user.user_id' => $user))
+    		->where(array('grading_policy.id' => $subselect));
+    	
+    	$update = $this->tableGateway->getSql()->update();
+    	$update->set(array('grade' => $select))
+    		->where(array('user_id' => $user))
+    		->where(array('grading_policy_id' => $subselect));
+    	
+    	$res = $this->updateWith($update);
+    	if($res <= 0) {
+	    	$insert = $this->tableGateway->getSql()->insert();
+	    	$insert->values(array(
+	    			'grade' => $select,
+	    			'user_id' => $user,
+	    			'grading_policy_id' => $subselect,
+	    			'created_date' => (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')
+	    	));
+	    	
+	    	$res = $this->insertWith($insert);
+    	}
+    	
+    	return $res;
     }
 
 }

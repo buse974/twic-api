@@ -13,14 +13,14 @@ class ItemProg extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
-        ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
-        ->join('item', 'item.id=item_prog.item_id', array('id', 'title', 'describe', 'type'))
-        ->join('module', 'module.id=item.module_id', array('id', 'title'))
-        ->join('course', 'course.id=module.course_id', array('id', 'title'))
-        ->join('program', 'program.id=course.program_id', array('id', 'name'))     
-        ->where(array('item_prog.id' => $id))
-        ->where(array('item_prog_user.user_id' => $user))
-        ->where(array('item.type' => array(\Application\Model\GradingPolicy::GP_CAPSTONE_PROJECT, \Application\Model\GradingPolicy::GP_INDIVIDUAL_ASSIGNEMENT)));
+        	->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
+        	->join('item', 'item.id=item_prog.item_id', array('id', 'title', 'describe', 'type'))
+        	->join('module', 'module.id=item.module_id', array('id', 'title'))
+        	->join('course', 'course.id=module.course_id', array('id', 'title'))
+        	->join('program', 'program.id=course.program_id', array('id', 'name'))     
+        	->where(array('item_prog.id' => $id))
+        	->where(array('item_prog_user.user_id' => $user))
+        	->where(array('item.type' => array(\Application\Model\GradingPolicy::GP_CAPSTONE_PROJECT, \Application\Model\GradingPolicy::GP_INDIVIDUAL_ASSIGNEMENT)));
         
         return $this->selectWith($select);
     }
