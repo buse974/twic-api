@@ -60,15 +60,19 @@ class ItemProg extends AbstractService
      *
      * @param int       $item
      * @param string    $start_date
+     * @param string    $due_date
      * @param int|array $users
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($item, $start_date, $users = null)
+    public function add($item, $start_date, $due_date = null, $users = null)
     {
-        $m_item_prog = $this->getModel()->setItemId($item)->setStartDate($start_date);
+        $m_item_prog = $this->getModel()
+        	->setItemId($item)
+        	->setDueDate($due_date)
+        	->setStartDate($start_date);
         if ($this->getMapper()->insert($m_item_prog) <= 0) {
             throw new \Exception('error insert item prog');
         }
@@ -105,15 +109,18 @@ class ItemProg extends AbstractService
      *
      * @param int    $id
      * @param string $start_date
+     * @param string    $due_date
      * @param array  $users
      *
      * @return int
      */
-    public function update($id, $start_date = null, $users = null)
+    public function update($id, $start_date = null, $due_date = null, $users = null)
     {
         $m_item_prog = $this->getModel();
 
-        $m_item_prog->setId($id)->setStartDate($start_date);
+        $m_item_prog->setId($id)
+        	->setStartDate($start_date)
+        	->setDueDate($due_date);
 
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
