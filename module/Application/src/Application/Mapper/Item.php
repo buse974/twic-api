@@ -27,11 +27,12 @@ class Item extends AbstractMapper
                ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id', 'submit_date'))
                ->join('item_assignment_user', 'item_assignment_user.item_assignment_id=item_assignment.id', array())
                ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id AND item_prog_user.user_id = item_assignment_user.user_id',array())
-               ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
+               ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade'), $select::JOIN_LEFT)
                ->join('grading', 'item_grading.grade BETWEEN grading.min AND grading.max', array('item_grading$letter' => 'letter'), $select::JOIN_LEFT)
                ->join('user', 'item_assignment_user.user_id=user.id', array())
                ->where(array('program.id' => $programs))
                ->where(array('item_assignment.submit_date IS NOT NULL'))
+               ->order(array('item_assignment.submit_date' => 'DESC'))
                ->quantifier('DISTINCT');
 
         if ($courses !== null) {
@@ -65,7 +66,7 @@ class Item extends AbstractMapper
             $select->join("course_user_relation", 'course_user_relation.course_id = course.id', array())
                    ->where(array("course_user_relation.user_id" => $user["id"]));                   
         }
-        //exit($this->printSql($select));
+        
         return $this->selectWith($select);
     }
 
@@ -122,7 +123,7 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS INTEGER )')))
+        $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS DECIMAL )')))
                ->join('item_prog', 'item_prog.item_id=item.id', array())
                ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
                ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
@@ -134,7 +135,7 @@ class Item extends AbstractMapper
                ->where(array('item_prog_user.user_id' => $user))
                ->where(array('( item_assignment.id IS NULL OR item_assignment_user.item_assignment_id IS NOT NULL)'))
                ->group('item.id');
-        //exit($this->printSql($select));
+        
         return $this->selectWith($select);
     }
 }
