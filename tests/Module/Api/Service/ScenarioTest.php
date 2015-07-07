@@ -403,6 +403,23 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testAddCourse
      */
+    public function testCanAddUserCourse($course)
+    {
+    	$this->setIdentity(1);
+    
+    	$data = $this->jsonRpc('user.addCourse', array('user' => 1, 'course' => $course));
+
+    	$this->assertEquals(count($data), 3);
+    	$this->assertEquals(count($data['result']), 1);
+    	$this->assertEquals(count($data['result'][1]), 1);
+    	$this->assertEquals($data['result'][1][1], 1);
+    	$this->assertEquals($data['id'], 1);
+    	$this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
     public function testAddMaterialDocument($course_id)
     {
         $this->setIdentity(3);
@@ -1289,7 +1306,41 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
 
+       
         return $data['result'];
+    }
+    
+    /**
+     * @depends testCanAddItemsProgUSer
+     */
+    public function testCanGetListRecord()
+    {
+    	$this->setIdentity(3);
+    	$data = $this->jsonRpc('course.getListRecord', array('user' => 1, 'is_student' => true));
+    	
+    	$this->assertEquals(count($data) , 3);
+    	$this->assertEquals(count($data['result']) , 1);
+    	$this->assertEquals(count($data['result'][0]) , 6);
+    	$this->assertEquals(count($data['result'][0]['items']) , 1);
+    	$this->assertEquals(count($data['result'][0]['items'][0]) , 3);
+    	$this->assertEquals(count($data['result'][0]['items'][0]['item_prog']) , 1);
+    	$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]) , 4);
+    	$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['videconf']) , 3);
+    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['id'] , 1);
+    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_token'] , null);
+    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_link'] , null);
+    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['id'] , 1);
+    	$this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['start_date']) , true);
+    	$this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['due_date']) , true);
+    	$this->assertEquals($data['result'][0]['items'][0]['id'] , 1);
+    	$this->assertEquals($data['result'][0]['items'][0]['title'] , "titl2e");
+    	$this->assertEquals($data['result'][0]['id'] , 1);
+    	$this->assertEquals($data['result'][0]['title'] , "IMERIR");
+    	$this->assertEquals($data['result'][0]['abstract'] , "un_token");
+    	$this->assertEquals($data['result'][0]['description'] , "description");
+    	$this->assertEquals($data['result'][0]['picture'] , null);
+    	$this->assertEquals($data['id'] , 1);
+    	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     
@@ -1990,23 +2041,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-
-    /**
-     * @depends testAddCourse
-     */
-    public function testCanAddUserCourse($course)
-    {
-        $this->setIdentity(1);
-
-        $data = $this->jsonRpc('user.addCourse', array('user' => 1, 'course' => $course));
-
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result'][1]), 1);
-        $this->assertEquals($data['result'][1][1], 1);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
     /**
