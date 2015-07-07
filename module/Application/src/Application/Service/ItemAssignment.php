@@ -6,6 +6,7 @@ use Dal\Service\AbstractService;
 use Application\Model\Item as CItem;
 use DateTime;
 use DateTimeZone;
+use JRpc\Json\Server\Exception\JrpcException;
 
 class ItemAssignment extends AbstractService
 {
@@ -13,18 +14,18 @@ class ItemAssignment extends AbstractService
       /**
      * @invokable
      *
-     * @param int $id     *
+     * @param int $item_prog     *
      *
      * @return array
      */
-    public function getSubmission($id)
+    public function getSubmission($item_prog)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
-        $res_item_assignment = $this->getFromItemProg($user, $id);
+        $res_item_assignment = $this->getFromItemProg($user, $item_prog);
         if($res_item_assignment->count() > 0){
             return $this->get($res_item_assignment->current()->getId());
         }
-        return $this->getServiceItemProg()->getSubmission($user, $id);
+        return $this->get($this->add($item_prog));
         
     }
     
@@ -39,10 +40,11 @@ class ItemAssignment extends AbstractService
      */
     public function get($id)
     {
-        $res_item_assignement = $this->getMapper()->get($id);
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $res_item_assignement = $this->getMapper()->get($id, $user);
 
         if ($res_item_assignement->count() == 0) {
-            throw new \Exception('no assignement with id: '.$id);
+            throw new JrpcException('No authorization', -32029);
         }
 
         $m_item_assignment = $res_item_assignement->current();
@@ -53,8 +55,9 @@ class ItemAssignment extends AbstractService
         $m_item->setMaterials($this->getServiceMaterialDocument()->getListByItem($m_item->getId()));
         $m_course = $m_item->getCourse();
         $m_course->setInstructor($this->getServiceUser()->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
-
-        return $m_item_assignment;
+           
+        return $m_item_assignment;        
+        
     }
     
     /**
@@ -148,13 +151,61 @@ class ItemAssignment extends AbstractService
         $item_prog_id = $this->getMapper()->select($this->getModel()->setId($item_assignment))->current()->getItemProgId();
 
         $res_item_assignment_user = $this->getServiceItemAssignmentUser()->getByItemAssignment($item_assignment);
-        foreach ($res_item_assignment_user as $m_item_assignment_user) {
+        foreach ($res_item_assignment_user as $m_item_assignment_user) 
+        {
             $item_prog_user_id = $this->getServiceItemProgUser()->get($item_prog_id, $m_item_assignment_user->getUserId())->current()->getId();
-            $this->getServiceItemGrading()->add($item_prog_user_id, $score);
+            $this->getServiceItemGrading()->add($item_prog_user_id, $score);          
             $this->getServiceGradingPolicyGrade()->process($m_item_assignment_user->getItemAssignmentId(), $m_item_assignment_user->getUserId());
         }
 
         return true;
+    } 
+    
+    /**
+     * @invokable
+     *
+     * @param int $id
+     *
+     * @return int
+     */
+    public function update($id, $documents = null,  $response = null, $submit = false)
+    {
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $students = $this->getServiceUser()->getListByItemAssignment($id);
+        $res_item_assignment = array();
+        foreach($students as $student){
+            if($student->getId() === $user){
+                $res_item_assignment = $this->getMapper()->select($this->getModel()->setId($id));
+                break;
+            }
+        }
+        $m_item_assignment = $res_item_assignment->current();
+        if($m_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull){
+            
+            if($response !== null){
+                $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr>'));
+            }
+            if (is_array($documents)){
+                $this->getServiceItemAssignmentDocument()->deleteByItemAssignment($id);
+                foreach ($documents as $d) {
+                    $type = isset($d['type']) ? $d['type'] : null;
+                    $title = isset($d['title']) ? $d['title'] : null;
+                    $author = isset($d['author']) ? $d['author'] : null;
+                    $link = isset($d['link']) ? $d['link'] : null;
+                    $source = isset($d['source']) ? $d['source'] : null;
+                    $token = isset($d['token']) ? $d['token'] : null;
+                    $date = isset($d['date']) ? $d['date'] : null;
+
+                    $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
+                }
+            }
+            if($submit){
+                $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            }
+
+            return $this->getMapper()->update($m_item_assignment);
+        }
+        return 0;
     }
 
     /**
@@ -166,7 +217,10 @@ class ItemAssignment extends AbstractService
      */
     public function submit($id)
     {
-        return $this->getMapper()->update($this->getModel()->setId($id)->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
+        
+        $m_item_assignement = $this->getModel()->setId($id)->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
+        return $this->getMapper()->update($m_item_assignement);
     }
 
     public function deleteByItemProg($item_prog)
@@ -263,7 +317,7 @@ class ItemAssignment extends AbstractService
     }
 
     /**
-     * @return \Application\Service\GradingPolicyGrade
+     * @return \Zend\Authentication\GradingPolicyGrade
      */
     public function getServiceGradingPolicyGrade()
     {

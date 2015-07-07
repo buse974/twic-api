@@ -1321,17 +1321,17 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['users'][2]['id'] , 3); 
         $this->assertEquals($data['result'][0]['users'][2]['firstname'] , "Christophe"); 
         $this->assertEquals($data['result'][0]['users'][2]['lastname'] , "Robert"); 
-        $this->assertEquals($data['result'][0]['users'][2]['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['users'][2]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png'); 
         $this->assertEquals(count($data['result'][0]['users'][3]) , 4); 
         $this->assertEquals($data['result'][0]['users'][3]['id'] , 4); 
         $this->assertEquals($data['result'][0]['users'][3]['firstname'] , "Salim"); 
         $this->assertEquals($data['result'][0]['users'][3]['lastname'] , "Bendacha"); 
-        $this->assertEquals($data['result'][0]['users'][3]['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['users'][3]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colsalim-e1424778081387.png'); 
         $this->assertEquals(count($data['result'][0]['users'][4]) , 4); 
         $this->assertEquals($data['result'][0]['users'][4]['id'] , 5); 
         $this->assertEquals($data['result'][0]['users'][4]['firstname'] , "Sébastien"); 
         $this->assertEquals($data['result'][0]['users'][4]['lastname'] , "Sayegh"); 
-        $this->assertEquals($data['result'][0]['users'][4]['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['users'][4]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colSeb-e1424787940281.jpg'); 
         $this->assertEquals(count($data['result'][0]['item']) , 5); 
         $this->assertEquals(count($data['result'][0]['item']['module']) , 2); 
         $this->assertEquals($data['result'][0]['item']['module']['id'] , 1); 
@@ -1412,7 +1412,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['user']) , 3); 
         $this->assertEquals($data['result'][0]['user']['firstname'] , "Christophe"); 
         $this->assertEquals($data['result'][0]['user']['lastname'] , "Robert"); 
-        $this->assertEquals($data['result'][0]['user']['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['user']['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png'); 
         $this->assertEquals(count($data['result'][0]['task_share']) , 4); 
         $this->assertEquals(count($data['result'][0]['task_share'][0]) , 2); 
         $this->assertEquals($data['result'][0]['task_share'][0]['task_id'] , 1); 
@@ -1455,7 +1455,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['user']) , 3); 
         $this->assertEquals($data['result'][0]['user']['firstname'] , "Christophe"); 
         $this->assertEquals($data['result'][0]['user']['lastname'] , "Robert"); 
-        $this->assertEquals($data['result'][0]['user']['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['user']['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png'); 
         $this->assertEquals(count($data['result'][0]['task_share']) , 4); 
         $this->assertEquals(count($data['result'][0]['task_share'][0]) , 2); 
         $this->assertEquals($data['result'][0]['task_share'][0]['task_id'] , 1); 
@@ -1511,17 +1511,17 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][2]['id'] , 3); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][2]['firstname'] , "Christophe"); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][2]['lastname'] , "Robert"); 
-        $this->assertEquals($data['result'][0]['item_prog'][0]['users'][2]['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['item_prog'][0]['users'][2]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png'); 
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['users'][3]) , 4); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][3]['id'] , 4); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][3]['firstname'] , "Salim"); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][3]['lastname'] , "Bendacha"); 
-        $this->assertEquals($data['result'][0]['item_prog'][0]['users'][3]['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['item_prog'][0]['users'][3]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colsalim-e1424778081387.png'); 
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['users'][4]) , 4); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][4]['id'] , 5); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][4]['firstname'] , "Sébastien"); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][4]['lastname'] , "Sayegh"); 
-        $this->assertEquals($data['result'][0]['item_prog'][0]['users'][4]['avatar'] , null); 
+        $this->assertEquals($data['result'][0]['item_prog'][0]['users'][4]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colSeb-e1424787940281.jpg'); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['id'] , 1); 
         $this->assertEquals($data['result'][0]['item_prog'][0]['start_date'] , "2015-06-01T12:10:00Z"); 
         $this->assertEquals($data['result'][0]['id'] , 1); 
@@ -1545,7 +1545,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCanAddItemAssigment($item_prog)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('itemassignment.add', array('item_prog' => $item_prog,
                 'response' => 'response',
                 'documents' => array(array('type' => 'type',
@@ -1570,7 +1570,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCanAddCommentItemAssigment($item_assignment)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('itemassignment.addComment', array('text' => 'text text text',
                 'item_assignment' => $item_assignment));
 
@@ -1585,7 +1585,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCanAddSubmitItemAssigment($item_assignment)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('itemassignment.submit', array('id' => $item_assignment,));
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
@@ -1649,17 +1649,17 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['users'][2]['id'] , 3);
         $this->assertEquals($data['result']['list'][0]['users'][2]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['users'][2]['lastname'] , "Robert");
-        $this->assertEquals($data['result']['list'][0]['users'][2]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['users'][2]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png');
         $this->assertEquals(count($data['result']['list'][0]['users'][3]) , 4);
         $this->assertEquals($data['result']['list'][0]['users'][3]['id'] , 4);
         $this->assertEquals($data['result']['list'][0]['users'][3]['firstname'] , "Salim");
         $this->assertEquals($data['result']['list'][0]['users'][3]['lastname'] , "Bendacha");
-        $this->assertEquals($data['result']['list'][0]['users'][3]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['users'][3]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colsalim-e1424778081387.png');
         $this->assertEquals(count($data['result']['list'][0]['users'][4]) , 4);
         $this->assertEquals($data['result']['list'][0]['users'][4]['id'] , 5);
         $this->assertEquals($data['result']['list'][0]['users'][4]['firstname'] , "Sébastien");
         $this->assertEquals($data['result']['list'][0]['users'][4]['lastname'] , "Sayegh");
-        $this->assertEquals($data['result']['list'][0]['users'][4]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['users'][4]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colSeb-e1424787940281.jpg');
         $this->assertEquals($data['result']['list'][0]['new_message'] , 1);
         $this->assertEquals($data['result']['list'][0]['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['title'] , "titl2e");
@@ -1751,17 +1751,17 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['users'][2]['id'] , 3);
         $this->assertEquals($data['result']['list'][0]['users'][2]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['users'][2]['lastname'] , "Robert");
-        $this->assertEquals($data['result']['list'][0]['users'][2]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['users'][2]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png');
         $this->assertEquals(count($data['result']['list'][0]['users'][3]) , 4);
         $this->assertEquals($data['result']['list'][0]['users'][3]['id'] , 4);
         $this->assertEquals($data['result']['list'][0]['users'][3]['firstname'] , "Salim");
         $this->assertEquals($data['result']['list'][0]['users'][3]['lastname'] , "Bendacha");
-        $this->assertEquals($data['result']['list'][0]['users'][3]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['users'][3]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colsalim-e1424778081387.png');
         $this->assertEquals(count($data['result']['list'][0]['users'][4]) , 4);
         $this->assertEquals($data['result']['list'][0]['users'][4]['id'] , 5);
         $this->assertEquals($data['result']['list'][0]['users'][4]['firstname'] , "Sébastien");
         $this->assertEquals($data['result']['list'][0]['users'][4]['lastname'] , "Sayegh");
-        $this->assertEquals($data['result']['list'][0]['users'][4]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['users'][4]['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colSeb-e1424787940281.jpg');
         $this->assertEquals($data['result']['list'][0]['new_message'] , 1);
         $this->assertEquals($data['result']['list'][0]['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['title'] , "titl2e");
@@ -2188,6 +2188,7 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddSubmitItemAssigment
      * @depends testCanGradedTwo
+     * @depends testCanAddUserCourse
      */
     public function testGetItemAssignment($assignment)
     {
