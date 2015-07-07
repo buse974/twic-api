@@ -1310,6 +1310,17 @@ class ScenarioTest extends AbstractService
         return $data['result'];
     }
     
+    public function testCanGetValidTransfertVideo()
+    {
+    	$this->setIdentity(3);
+    	$data = $this->jsonRpc('videoconf.validTransfertVideo', array('m_videoconf_id' => 1, 'url' => 'urlvideo'));
+    	
+		$this->assertEquals(count($data) , 3); 
+		$this->assertEquals($data['result'] , 1); 
+		$this->assertEquals($data['id'] , 1); 
+		$this->assertEquals($data['jsonrpc'] , 2.0); 
+    }
+    
     /**
      * @depends testCanAddItemsProgUSer
      */
@@ -1317,30 +1328,59 @@ class ScenarioTest extends AbstractService
     {
     	$this->setIdentity(3);
     	$data = $this->jsonRpc('course.getListRecord', array('user' => 1, 'is_student' => true));
-    	
-    	$this->assertEquals(count($data) , 3);
-    	$this->assertEquals(count($data['result']) , 1);
-    	$this->assertEquals(count($data['result'][0]) , 6);
-    	$this->assertEquals(count($data['result'][0]['items']) , 1);
-    	$this->assertEquals(count($data['result'][0]['items'][0]) , 3);
-    	$this->assertEquals(count($data['result'][0]['items'][0]['item_prog']) , 1);
-    	$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]) , 4);
-    	$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['videconf']) , 3);
-    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['id'] , 1);
-    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_token'] , null);
-    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_link'] , null);
-    	$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['id'] , 1);
-    	$this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['start_date']) , true);
-    	$this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['due_date']) , true);
-    	$this->assertEquals($data['result'][0]['items'][0]['id'] , 1);
-    	$this->assertEquals($data['result'][0]['items'][0]['title'] , "titl2e");
-    	$this->assertEquals($data['result'][0]['id'] , 1);
-    	$this->assertEquals($data['result'][0]['title'] , "IMERIR");
-    	$this->assertEquals($data['result'][0]['abstract'] , "un_token");
-    	$this->assertEquals($data['result'][0]['description'] , "description");
-    	$this->assertEquals($data['result'][0]['picture'] , null);
-    	$this->assertEquals($data['id'] , 1);
-    	$this->assertEquals($data['jsonrpc'] , 2.0);
+
+    	$this->assertEquals(count($data) , 3); 
+		$this->assertEquals(count($data['result']) , 1); 
+		$this->assertEquals(count($data['result'][0]) , 7); 
+		$this->assertEquals(count($data['result'][0]['school']) , 2); 
+		$this->assertEquals($data['result'][0]['school']['id'] , 2); 
+		$this->assertEquals($data['result'][0]['school']['logo'] , "token"); 
+		$this->assertEquals(count($data['result'][0]['items']) , 1); 
+		$this->assertEquals(count($data['result'][0]['items'][0]) , 3); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog']) , 1); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]) , 5); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['videconf']) , 3); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['id'] , 1); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_token'] , null); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_link'] , "urlvideo"); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users']) , 5); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][0]) , 4); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['id'] , 1); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['firstname'] , "Nicolas"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['lastname'] , "Maremmani"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['avatar'] , null); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][1]) , 4); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['id'] , 2); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['firstname'] , "Xuan-Anh"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['lastname'] , "Hoang"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['avatar'] , null); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][2]) , 4); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][2]['id'] , 3); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][2]['firstname'] , "Christophe"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][2]['lastname'] , "Robert"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][2]['avatar'] , null); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][3]) , 4); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][3]['id'] , 4); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][3]['firstname'] , "Salim"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][3]['lastname'] , "Bendacha"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][3]['avatar'] , null); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][4]) , 4); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][4]['id'] , 5); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][4]['firstname'] , "Sébastien"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][4]['lastname'] , "Sayegh"); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][4]['avatar'] , null); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['id'] , 1); 
+		$this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['start_date']) , true); 
+		$this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['due_date']) , true); 
+		$this->assertEquals($data['result'][0]['items'][0]['id'] , 1); 
+		$this->assertEquals($data['result'][0]['items'][0]['title'] , "titl2e"); 
+		$this->assertEquals($data['result'][0]['id'] , 1); 
+		$this->assertEquals($data['result'][0]['title'] , "IMERIR"); 
+		$this->assertEquals($data['result'][0]['abstract'] , "un_token"); 
+		$this->assertEquals($data['result'][0]['description'] , "description"); 
+		$this->assertEquals($data['result'][0]['picture'] , null); 
+		$this->assertEquals($data['id'] , 1); 
+		$this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     
