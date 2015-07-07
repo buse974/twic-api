@@ -21,7 +21,6 @@ class ItemProg extends AbstractService
      */
     public function getSubmission($user, $id)
     {
-        
         $res_item_prog = $this->getMapper()->getSubmission($user, $id);
         if($res_item_prog->count() > 0){
             $m_item_prog = $res_item_prog->current();
@@ -62,15 +61,19 @@ class ItemProg extends AbstractService
      *
      * @param int       $item
      * @param string    $start_date
+     * @param string    $due_date
      * @param int|array $users
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($item, $start_date, $users = null)
+    public function add($item, $start_date, $due_date = null, $users = null)
     {
-        $m_item_prog = $this->getModel()->setItemId($item)->setStartDate($start_date);
+        $m_item_prog = $this->getModel()
+        	->setItemId($item)
+        	->setDueDate($due_date)
+        	->setStartDate($start_date);
         if ($this->getMapper()->insert($m_item_prog) <= 0) {
             throw new \Exception('error insert item prog');
         }
@@ -107,16 +110,18 @@ class ItemProg extends AbstractService
      *
      * @param int    $id
      * @param string $start_date
+     * @param string    $due_date
      * @param array  $users
      *
      * @return int
-  o   */
-    public function update($id, $start_date = null, $users = null)
+     */
+    public function update($id, $start_date = null, $due_date = null, $users = null)
     {
         $m_item_prog = $this->getModel();
 
         $m_item_prog->setId($id)
-            ->setStartDate($start_date);
+        	->setStartDate($start_date)
+        	->setDueDate($due_date);
 
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
@@ -137,8 +142,6 @@ class ItemProg extends AbstractService
     {
         $this->getServiceItemProgUser()->deleteByItemProg($id);
         $this->getServiceItemAssignment()->deleteByItemProg($id);
-        //$this->getServiceConversationUser()->deleteByItemProg($id);
-        //$this->getServiceVideoconfConversation()->deleteByItemProg($id);
 
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
@@ -154,15 +157,10 @@ class ItemProg extends AbstractService
     public function addUser($item_prog, $user)
     {
         if (!is_array($user)) {
-            $user = array(
-                    $user,
-            );
+            $user = array($user);
         }
-
         if (!is_array($item_prog)) {
-            $item_prog = array(
-                    $item_prog,
-            );
+            $item_prog = array($item_prog);
         }
 
         return $this->getServiceItemProgUser()->add($user, $item_prog);
@@ -179,7 +177,6 @@ class ItemProg extends AbstractService
      */
     public function getList($item = null, $start = null, $end = null)
     {   
- 
         $res_item_progs = $this->getMapper()->getList($this->getServiceUser()->getIdentity() , $item, $start, $end);
         foreach ($res_item_progs as $m_item_prog) {
             $m_item_prog->setUsers($this->getServiceUser()->getListByItemProg($m_item_prog->getId()));
