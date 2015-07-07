@@ -155,7 +155,7 @@ class ItemAssignment extends AbstractService
         {
             $item_prog_user_id = $this->getServiceItemProgUser()->get($item_prog_id, $m_item_assignment_user->getUserId())->current()->getId();
             $this->getServiceItemGrading()->add($item_prog_user_id, $score);
-            $this->getServiceGradingPolicyGrade()->process($m_item_assignment_user->getUserId());
+            $this->getServiceGradingPolicyGrade()->process($m_item_assignment_user->getItemAssignmentId(), $m_item_assignment_user->getUserId());
         }
 
         return true;
@@ -316,7 +316,7 @@ class ItemAssignment extends AbstractService
     }
 
     /**
-     * @return \Zend\Authentication\GradingPolicyGrade
+     * @return \Application\Service\GradingPolicyGrade
      */
     public function getServiceGradingPolicyGrade()
     {
