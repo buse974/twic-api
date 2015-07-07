@@ -2030,7 +2030,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals(count($data['result']['list']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]) , 15);
+        $this->assertEquals(count($data['result']['list'][0]) , 16);
         $this->assertEquals($data['result']['list'][0]['start_date'] , "2015-06-01T12:10:00Z");
         $this->assertEquals($data['result']['list'][0]['end_date'] , "2015-06-01T12:10:00Z");
         $this->assertEquals($data['result']['list'][0]['id'] , 1);
@@ -2467,7 +2467,7 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals(count($data['result']) , 2);
     	$this->assertEquals($data['result']['count'] , 1);
     	$this->assertEquals(count($data['result']['list']) , 1);
-    	$this->assertEquals(count($data['result']['list'][0]) , 15);
+    	$this->assertEquals(count($data['result']['list'][0]) , 16);
     	$this->assertEquals($data['result']['list'][0]['start_date'] , null);
     	$this->assertEquals($data['result']['list'][0]['end_date'] , null);
     	$this->assertEquals($data['result']['list'][0]['id'] , 1);
