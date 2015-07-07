@@ -8,8 +8,7 @@ use JRpc\Json\Server\Exception\JrpcException;
 
 class ItemProg extends AbstractService
 {
-    
-      /**
+    /**
      * @invokable
      *
      * @param int $id
@@ -101,6 +100,10 @@ class ItemProg extends AbstractService
         return $id;
     }
 
+    public function getListRecord($item, $user, $is_student)
+    {
+    	return $this->getMapper()->getListRecord($item, $user, $is_student);
+    }
     
     /**
      * Update User.

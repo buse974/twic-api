@@ -194,6 +194,23 @@ class Course extends AbstractService
 
         return array('count' => $mapper->count(), 'list' => $res_course);
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $user
+     * @param boolean $is_student
+     */
+    public function getListRecord($user, $is_student)
+    {
+    	$res_course =  $this->getMapper()->getListRecord($user, $is_student);
+    	
+    	foreach ($res_course as $m_course) {
+    		$m_course->setItems($this->getServiceItem()->getListRecord($m_course->getId(), $user, $is_student));
+    	}
+    	
+    	return $res_course;
+    }
 
     /**
      * @return \Application\Service\MaterialDocument
@@ -227,6 +244,14 @@ class Course extends AbstractService
         return $this->getServiceLocator()->get('app_service_module');
     }
 
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+    	return $this->getServiceLocator()->get('app_service_item');
+    }
+    
     /**
      * @return \Application\Service\User
      */
