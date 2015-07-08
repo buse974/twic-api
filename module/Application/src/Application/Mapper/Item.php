@@ -25,13 +25,14 @@ class Item extends AbstractMapper
                ->join('course', 'course.id=item.course_id', array('id', 'title'))
                ->join('program', 'program.id=course.program_id', array('id', 'name'))
                ->join('item_prog', 'item_prog.item_id=item.id', array('item_prog$due_date' => new Expression('DATE_FORMAT(due_date, "%Y-%m-%dT%TZ")') ,'item_prog$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))
+               ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id',array())
                ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id', 'submit_date'), $select::JOIN_LEFT)
-               ->join('item_assignment_user', 'item_assignment_user.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
-               ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id AND item_prog_user.user_id = item_assignment_user.user_id',array())
+               ->join('item_assignment_user', 'item_assignment_user.item_assignment_id=item_assignment.id AND item_assignment_user.user_id=item_prog_user.user_id', array(), $select::JOIN_LEFT)
                ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade'), $select::JOIN_LEFT)
                ->join('grading', 'item_grading.grade BETWEEN grading.min AND grading.max', array('item_grading$letter' => 'letter'), $select::JOIN_LEFT)
                ->join('user', 'item_assignment_user.user_id=user.id', array(), $select::JOIN_LEFT)
                ->where(array('program.id' => $programs))
+               ->where(array('item_prog.start_date > UTC_TIMESTAMP'))
                ->order(array('item_assignment.submit_date' => 'DESC'))
                ->quantifier('DISTINCT');
 
@@ -60,7 +61,6 @@ class Item extends AbstractMapper
                 $select->where(array(' item_grading.id IS NULL )'), Predicate::OP_OR);
             }
             else{
-
                 $select->where(array(' 0 )'), Predicate::OP_OR);
             }
         }
