@@ -30,7 +30,7 @@ class Item extends AbstractMapper
                ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id AND item_prog_user.user_id = item_assignment_user.user_id',array())
                ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade'), $select::JOIN_LEFT)
                ->join('grading', 'item_grading.grade BETWEEN grading.min AND grading.max', array('item_grading$letter' => 'letter'), $select::JOIN_LEFT)
-               ->join('user', 'item_assignment_user.user_id=user.id', array())
+               ->join('user', 'item_assignment_user.user_id=user.id', array(), $select::JOIN_LEFT)
                ->where(array('program.id' => $programs))
                ->order(array('item_assignment.submit_date' => 'DESC'))
                ->quantifier('DISTINCT');
