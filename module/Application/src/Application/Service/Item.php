@@ -197,8 +197,10 @@ class Item extends AbstractService
         $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter);
 
         foreach ($res_item as $m_item) {
-        	$item_prog_id = $m_item->getItemProg()->getId();
-            $m_item->setUsers($this->getServiceUser()->getListByItemProg($item_prog_id));
+        	$item_assigment_id = $m_item->getItemProg()->getItem()->getItemAssignment()->getId();
+        	if($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
+            	$m_item->setUsers($this->getServiceUser()->getListByItemAssignment($item_assigment_id));
+        	}
         }
 
         return array('count' => $mapper->count(), 'list' => $res_item);
