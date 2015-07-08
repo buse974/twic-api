@@ -24,7 +24,7 @@ class Item extends AbstractMapper
                ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
                ->join('course', 'course.id=item.course_id', array('id', 'title'))
                ->join('program', 'program.id=course.program_id', array('id', 'name'))
-               ->join('item_prog', 'item_prog.item_id=item.id', array('item_prog$due_date' => new Expression('DATE_FORMAT(due_date, "%Y-%m-%dT%TZ")') ,'item_prog$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))
+               ->join('item_prog', 'item_prog.item_id=item.id', array('id', 'item_prog$due_date' => new Expression('DATE_FORMAT(due_date, "%Y-%m-%dT%TZ")') ,'item_prog$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))
                ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id',array())
                ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id', 'submit_date'), $select::JOIN_LEFT)
                ->join('item_assignment_user', 'item_assignment_user.item_assignment_id=item_assignment.id AND item_assignment_user.user_id=item_prog_user.user_id', array(), $select::JOIN_LEFT)
