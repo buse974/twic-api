@@ -9,6 +9,25 @@ use DateTimeZone;
 
 class ItemAssignment extends AbstractService
 {
+    
+      /**
+     * @invokable
+     *
+     * @param int $id     *
+     *
+     * @return array
+     */
+    public function getSubmission($id)
+    {
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $res_item_assignment = $this->getFromItemProg($user, $id);
+        if($res_item_assignment->count() > 0){
+            return $this->get($res_item_assignment->current()->getId());
+        }
+        return $this->getServiceItemProg()->getSubmission($user, $id);
+        
+    }
+    
     /**
      * @invokable
      *
@@ -33,10 +52,24 @@ class ItemAssignment extends AbstractService
         $m_item = $m_item_assignment->getItemProg()->getItem();
         $m_item->setMaterials($this->getServiceMaterialDocument()->getListByItem($m_item->getId()));
         $m_course = $m_item->getCourse();
-        $m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
+        $m_course->setInstructor($this->getServiceUser()->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
 
         return $m_item_assignment;
     }
+    
+    /**
+     * @invokable
+     *
+     * @param int $user
+     * @param int $item_prog
+     *
+     * @return array
+     */
+    public function getFromItemProg($user, $item_prog)
+    {
+        return $this->getMapper()->getFromItemProg($user, $item_prog);
+    }
+    
 
     /**
      * @invokable
@@ -44,10 +77,14 @@ class ItemAssignment extends AbstractService
      * @param int    $item_prog
      * @param string $response
      * @param array  $documents
+     * @param bool  $submit
      */
-    public function add($item_prog, $response = null, $documents = null)
+    public function add($item_prog, $response = null, $documents = null, $submit = false)
     {
         $m_item_assignment = $this->getModel()->setItemProgId($item_prog)->setResponse($response);
+        if($submit){
+                $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        }
 
         if ($this->getMapper()->insert($m_item_assignment) <= 0) {
             throw new \Exception('error insert item prog');
@@ -114,6 +151,7 @@ class ItemAssignment extends AbstractService
         foreach ($res_item_assignment_user as $m_item_assignment_user) {
             $item_prog_user_id = $this->getServiceItemProgUser()->get($item_prog_id, $m_item_assignment_user->getUserId())->current()->getId();
             $this->getServiceItemGrading()->add($item_prog_user_id, $score);
+            $this->getServiceGradingPolicyGrade()->process($m_item_assignment_user->getItemAssignmentId(), $m_item_assignment_user->getUserId());
         }
 
         return true;
@@ -185,6 +223,14 @@ class ItemAssignment extends AbstractService
     }
 
     /**
+     * @return \Application\Service\ItemProg
+     */
+    public function getServiceItemProg()
+    {
+        return $this->getServiceLocator()->get('app_service_item_prog');
+    }
+
+    /**
      * @return \Application\Service\MaterialDocument
      */
     public function getServiceMaterialDocument()
@@ -214,5 +260,13 @@ class ItemAssignment extends AbstractService
     public function getServiceAuth()
     {
         return $this->getServiceLocator()->get('auth.service');
+    }
+
+    /**
+     * @return \Application\Service\GradingPolicyGrade
+     */
+    public function getServiceGradingPolicyGrade()
+    {
+        return $this->getServiceLocator()->get('app_service_grading_policy_grade');
     }
 }

@@ -30,7 +30,11 @@ class ItemAssignmentComment extends AbstractService
      * @param int $user
      */
     public function getList($item, $user = null)
-    {
+    {  
+        $identity = $this->getServiceUser()->getIdentity();
+        if($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])){
+            $user = $identity['id'];
+        }
         $res_item_assignment_comment = $this->getMapper()->getList($item, $user);
 
         foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
@@ -47,6 +51,7 @@ class ItemAssignmentComment extends AbstractService
      */
     public function getListByItemAssignment($item_assignment)
     {
+        
         $res_item_assignment_comment = $this->getMapper()->getListByItemAssignment($item_assignment);
 
         foreach ($res_item_assignment_comment as $m_item_assignment_comment) {
@@ -70,5 +75,13 @@ class ItemAssignmentComment extends AbstractService
     public function getServiceRole()
     {
         return $this->getServiceLocator()->get('app_service_role');
+    }
+
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }

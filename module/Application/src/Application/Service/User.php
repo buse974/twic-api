@@ -44,7 +44,7 @@ class User extends AbstractService
             $user = $this->getServiceAuth()->getIdentity()->toArray();
             $user['roles'] = array();
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
-                $user['roles'][] = $role->getName();
+                $user['roles'][$role->getId()] = $role->getName();
             }
             $user['school'] = $this->get($id)['school'];
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
@@ -242,15 +242,10 @@ class User extends AbstractService
     public function addCourse($user, $course)
     {
         if (!is_array($user)) {
-            $user = array(
-                    $user,
-            );
+            $user = array($user);
         }
-
         if (!is_array($course)) {
-            $course = array(
-                    $course,
-            );
+            $course = array($course);
         }
 
         return $this->getServiceCourseUserRelation()->add($user, $course);
@@ -438,7 +433,44 @@ class User extends AbstractService
     public function getListByItemProg($item_prog)
     {
         return $this->getMapper()->getListByItemProg($item_prog);
+    }   
+    
+     /**
+     * Get user list for item_prog and those available
+     *
+     * @invokable
+     *
+     * @param int $item_prog
+     * @param int $item
+     * @param int $course
+     *
+     * @return array
+     */
+    public function getListForItemProg($item_prog, $item, $course)
+    {
+        return $this->getMapper()->getListForItemProg($item_prog, $item, $course);
     }
+    
+    /**
+     * Get all students for the instructor
+     *
+     * @invokable
+     *
+     * @return array
+     */
+    public function getStudentList()
+    {
+        
+        $instructor = $this->getServiceUser()->getIdentity();
+        if(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $instructor["roles"])){        
+            return $this->getMapper()->getStudentList($instructor["id"]);
+        }
+        return array();
+    }
+       
+    
+    
+   
 
     /**
      * Get user list from item assignment.
@@ -543,4 +575,14 @@ class User extends AbstractService
 
         return $this->getServiceLocator()->get($config['cache']);
     }
+    
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    
 }
