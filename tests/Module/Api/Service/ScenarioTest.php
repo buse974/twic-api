@@ -1326,8 +1326,8 @@ class ScenarioTest extends AbstractService
      */
     public function testCanGetListRecord()
     {
-    	$this->setIdentity(3);
-    	$data = $this->jsonRpc('course.getListRecord', array('user' => 1, 'is_student' => true));
+    	$this->setIdentity(1);
+    	$data = $this->jsonRpc('course.getListRecord', array('is_student' => true));
 
     	$this->assertEquals(count($data) , 3); 
 		$this->assertEquals(count($data['result']) , 1); 
@@ -1339,9 +1339,10 @@ class ScenarioTest extends AbstractService
 		$this->assertEquals(count($data['result'][0]['items'][0]) , 3); 
 		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog']) , 1); 
 		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]) , 5); 
-		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['videconf']) , 3); 
+		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['videconf']) , 4); 
 		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['id'] , 1); 
 		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_token'] , null); 
+		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['duration'] , null);
 		$this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_link'] , "urlvideo"); 
 		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users']) , 5); 
 		$this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][0]) , 4); 

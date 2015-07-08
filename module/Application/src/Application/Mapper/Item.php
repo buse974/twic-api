@@ -64,7 +64,7 @@ class Item extends AbstractMapper
         }
         if(in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles'])){
             $select->join("course_user_relation", 'course_user_relation.course_id = course.id', array())
-                   ->where(array("course_user_relation.user_id" => $user["id"]));                   
+                   ->where(array('course_user_relation.user_id' => $user['id']));                   
         }
         
         return $this->selectWith($select);
