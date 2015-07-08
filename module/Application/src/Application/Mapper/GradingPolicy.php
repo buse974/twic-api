@@ -12,7 +12,7 @@ class GradingPolicy extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'name', 'grade', 'grading_policy$nbr_comment' => new Expression('CAST(SUM(IF(grading_policy_grade_comment.id IS NOT NULL, 1, 0)) AS INTEGER )')))
+        $select->columns(array('id', 'name', 'grade', 'grading_policy$nbr_comment' => new Expression('CAST(SUM(IF(grading_policy_grade_comment.id IS NOT NULL, 1, 0)) AS DECIMAL )')))
                 ->join('grading_policy_grade', 'grading_policy_grade.grading_policy_id=grading_policy.id', array('grade'), $select::JOIN_LEFT)
                 ->join('grading_policy_grade_comment', 'grading_policy_grade_comment.grading_policy_grade_id=grading_policy_grade.id', array(), $select::JOIN_LEFT)
                 ->where(array(' ( grading_policy_grade.user_id = ? ' => $user))

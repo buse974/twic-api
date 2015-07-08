@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Item extends AbstractService
 {
@@ -120,6 +121,17 @@ class Item extends AbstractService
 
         return $res_item->toArrayParent();
     }
+    
+    public function getListRecord($course, $user, $is_student)
+    {
+    	$res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
+    	
+    	foreach ($res_item as $m_item) {
+    		$m_item->setItemProg($this->getServiceItemProg()->getListRecord($m_item->getId(), $user, $is_student));
+    	}
+    	
+    	return $res_item;
+    }
 
     /**
      * Get Item by Type.
@@ -180,11 +192,15 @@ class Item extends AbstractService
     public function getListGrade($program, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null)
     {
         $mapper = $this->getMapper();
+        $user = $this->getServiceUser()->getIdentity();
 
-        $res_item = $mapper->usePaginator($filter)->getListGrade($program, $course, $type, $not_graded, $new_message, $filter);
+        $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter);
 
         foreach ($res_item as $m_item) {
-            $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemProg()->getItem()->getItemAssignment()->getId()));
+        	$item_assigment_id = $m_item->getItemProg()->getItem()->getItemAssignment()->getId();
+        	if($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
+            	$m_item->setUsers($this->getServiceUser()->getListByItemAssignment($item_assigment_id));
+        	}
         }
 
         return array('count' => $mapper->count(), 'list' => $res_item);
@@ -196,8 +212,12 @@ class Item extends AbstractService
      * @param int $course
      * @param int $user
      */
-    public function getListGradeDetail($course, $user)
+    public function getListGradeDetail($course, $user = null)
     {
+        $identity = $this->getServiceUser()->getIdentity();
+        if($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])){
+            $user = $identity['id'];
+        }
         $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
 
         foreach ($res_grading_policy as $m_grading_policy) {
@@ -241,6 +261,24 @@ class Item extends AbstractService
         }
 
         return $res_item->current();
+    }
+    
+    /**
+     * @param int $item
+     *
+     * @throws \Exception
+     *
+     * @return \Application\Model\Item
+     */
+    public function get($item)
+    {
+    	$res_item = $this->getMapper()->select($this->getModel()->setId($item));
+    
+    	if ($res_item->count() <= 0) {
+    		throw new \Exception('error select item');
+    	}
+    
+    	return $res_item->current();
     }
 
     /**

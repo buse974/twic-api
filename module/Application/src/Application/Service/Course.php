@@ -5,6 +5,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use DateTime;
 use DateTimeZone;
+use Application\Model\Role as ModelRole;
 
 class Course extends AbstractService
 {
@@ -93,7 +94,7 @@ class Course extends AbstractService
      * @param string $video_link
      * @param string $video_token
      *
-     * @return int
+     * @return integer
      */
     public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
     {
@@ -194,6 +195,22 @@ class Course extends AbstractService
 
         return array('count' => $mapper->count(), 'list' => $res_course);
     }
+    
+    /**
+     * @invokable
+     */
+    public function getListRecord()
+    {
+    	$user = $this->getServiceUser()->getIdentity();
+    	$is_student = (array_key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) ? true:false;
+    	$res_course =  $this->getMapper()->getListRecord($user['id'], $is_student);
+    	
+    	foreach ($res_course as $m_course) {
+    		$m_course->setItems($this->getServiceItem()->getListRecord($m_course->getId(), $user['id'], $is_student));
+    	}
+    	
+    	return $res_course;
+    }
 
     /**
      * @return \Application\Service\MaterialDocument
@@ -227,6 +244,14 @@ class Course extends AbstractService
         return $this->getServiceLocator()->get('app_service_module');
     }
 
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+    	return $this->getServiceLocator()->get('app_service_item');
+    }
+    
     /**
      * @return \Application\Service\User
      */

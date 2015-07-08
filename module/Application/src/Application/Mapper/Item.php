@@ -7,10 +7,11 @@ use Zend\Db\Sql\Predicate\NotIn;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\Expression;
 use Dal\Db\Sql\Select;
+use Application\Model\Role as ModelRole;
 
 class Item extends AbstractMapper
 {
-    public function getListGrade($programs, $courses, $type, $notgraded, $newMessage, $filter)
+    public function getListGrade($user, $programs, $courses, $type, $notgraded, $newMessage, $filter)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -19,20 +20,24 @@ class Item extends AbstractMapper
                            ->where(array('item_assignment_comment.item_assignment_id=item_assignment.id'))
                            ->where(array('item_assignment_comment.read_date IS NULL'));
 
-        $select->columns(array('id', 'title', 'item$new_message' => $select_new_message))
+        $select->columns(array('id', 'title', 'item$new_message' => $select_new_message, 'submit_date' => new Expression('DATE_FORMAT(submit_date, "%Y-%m-%dT%TZ")')))
                ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
                ->join('course', 'course.id=item.course_id', array('id', 'title'))
                ->join('program', 'program.id=course.program_id', array('id', 'name'))
-               ->join('item_prog', 'item_prog.item_id=item.id', array('start_date'))
-               ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id', 'submit_date'))
-               ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array(), $select::JOIN_LEFT)
-               ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
+               ->join('item_prog', 'item_prog.item_id=item.id', array('id', 'item_prog$due_date' => new Expression('DATE_FORMAT(due_date, "%Y-%m-%dT%TZ")') ,'item_prog$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))
+               ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id',array())
+               ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array('id', 'submit_date'), $select::JOIN_LEFT)
+               ->join('item_assignment_user', 'item_assignment_user.item_assignment_id=item_assignment.id AND item_assignment_user.user_id=item_prog_user.user_id', array(), $select::JOIN_LEFT)
+               ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade'), $select::JOIN_LEFT)
                ->join('grading', 'item_grading.grade BETWEEN grading.min AND grading.max', array('item_grading$letter' => 'letter'), $select::JOIN_LEFT)
-               ->join('user', 'item_prog_user.user_id=user.id', array())
+               ->join('user', 'item_assignment_user.user_id=user.id', array(), $select::JOIN_LEFT)
                ->where(array('program.id' => $programs))
-               ->where(array('item_assignment.submit_date IS NOT NULL'))
+               ->where(array('item_prog.start_date < UTC_TIMESTAMP'))
+               ->order(array('item_assignment.submit_date' => 'DESC'))
                ->quantifier('DISTINCT');
 
+        
+        	
         if ($courses !== null) {
             $select->where(array('course.id' => $courses));
         }
@@ -43,17 +48,54 @@ class Item extends AbstractMapper
             $select->where(array(' ( user.firstname LIKE ?' => $filter['search'].'%'))
                    ->where(array('user.lastname LIKE ? ) ' => $filter['search'].'%'), Predicate::OP_OR);
         }
-        if ($notgraded === true) {
-            $select->where(array('item_grading.id IS NULL'));
+        
+        if($notgraded === true || $newMessage === true){
+            if ($newMessage === true) {
+                $select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
+                       ->where(array('( ( item_assignment_comment.id IS NOT NULL AND item_assignment_comment.read_date IS NULL) '));
+            }
+            else{
+                  $select->where(array('( 0'));
+            }
+            if ($notgraded === true) {
+                $select->where(array(' item_grading.id IS NULL )'), Predicate::OP_OR);
+            }
+            else{
+                $select->where(array(' 0 )'), Predicate::OP_OR);
+            }
         }
-        if ($newMessage === true) {
-            $select->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
-                   ->where(array('item_assignment_comment.read_date IS NULL'));
+        
+        if(!array_key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) {
+        	$select->where(array('item_assignment.submit_date IS NOT NULL'));
+        } else {
+        	$select->where(array('item_prog_user.user_id' => $user['id']));
         }
-
+        
+        if(array_key_exists(ModelRole::ROLE_INSTRUCTOR_ID, $user['roles'])){
+            $select->join("course_user_relation", 'course_user_relation.course_id = course.id', array())
+                   ->where(array('course_user_relation.user_id' => $user['id']));                   
+        }
+        
         return $this->selectWith($select);
     }
 
+    public function getListRecord($course, $user, $is_student = false)
+    {
+    	$select = $this->tableGateway->getSql()->select();
+    	
+    	$select->columns(array('id', 'title'))
+    		->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
+    		->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
+    		->where(array('item.course_id' => $course));
+    	
+    	if($is_student!==false) {
+    		$select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)
+    		->where(array('item_prog_user.user_id' => $user));
+    	}
+    		
+    	return  $this->selectWith($select);
+    }
+    
     public function getByItemProg($item_prog)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -107,17 +149,19 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS INTEGER )')))
+        $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS DECIMAL )')))
                ->join('item_prog', 'item_prog.item_id=item.id', array())
                ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
-               ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
+               ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
                ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id', array(), $select::JOIN_LEFT)
+               ->join('item_assignment_user', 'item_assignment_user.item_assignment_id=item_assignment.id AND item_assignment_user.user_id = item_prog_user.user_id', array(), $select::JOIN_LEFT)
                ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
                ->where(array('item.course_id' => $course))
                ->where(array('item.grading_policy_id' => $grading_policy))
                ->where(array('item_prog_user.user_id' => $user))
+               ->where(array('( item_assignment.id IS NULL OR item_assignment_user.item_assignment_id IS NOT NULL)'))
                ->group('item.id');
-
+        
         return $this->selectWith($select);
     }
 }

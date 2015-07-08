@@ -8,6 +8,8 @@ class User extends BaseUser
 {
     protected $school;
     protected $roles;
+    protected $available;
+    protected $selected;
 
     public function exchangeArray(array &$data)
     {
@@ -43,5 +45,32 @@ class User extends BaseUser
     public function getRoles()
     {
         return $this->roles;
+    }
+    
+    
+
+    public function setAvailable($available)
+    {
+        $this->available = $available;
+
+        return $this;
+    }
+
+    public function getAvailable()
+    {
+        return $this->available;
+    }
+    
+    
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+
+        return $this;
+    }
+
+    public function getSelected()
+    {
+        return $this->selected;
     }
 }
