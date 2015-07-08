@@ -40,7 +40,8 @@ class ItemProg extends AbstractMapper
 
         $select->columns(array(
             'id', 
-            'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")));
+            'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "),
+            'item_prog$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') ")));
         
         if($item !== null){
             $select->where(array('item_prog.item_id ' => $item));
@@ -52,12 +53,15 @@ class ItemProg extends AbstractMapper
                     ->join('program','program.id = course.program_id', array('id'))
                     ->join('module','module.id = item.module_id', array('id', 'title'))
                     ->join('grading_policy','grading_policy.id = item.grading_policy_id', array('name', 'type'))
-                     ->where(array('start_date BETWEEN ? AND ? ' => array($start ,$end)))
                      ->where(array('start_date BETWEEN ? AND ? ' => array($start ,$end)));
              
              if(in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR,$user['roles'])){
                 
-                $select->columns(array('id', 'item_prog$editable' => new Expression("1"), 'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")));
+                $select->columns(array(
+                        'id', 
+                        'item_prog$editable' => new Expression("1"), 
+                        'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "),
+                        'item_prog$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') ")));
                 $select->join('course_user_relation','course.id = course_user_relation.course_id',array())
                         ->where(array('course_user_relation.user_id' => $user['id']));
                 
@@ -68,7 +72,8 @@ class ItemProg extends AbstractMapper
                     array(
                         'id', 
                         'item_prog$editable' => new Expression("1"), 
-                        'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")
+                        'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "),
+                        'item_prog$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') ")
                     )
                 );
                 
@@ -77,7 +82,8 @@ class ItemProg extends AbstractMapper
             else{
                  $select->columns(array(
                         'id', 
-                        'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+                        'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "),
+                        'item_prog$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') ")))
                          ->join('item_prog_user','item_prog_user.item_prog_id = item_prog.id',array())
                          ->where(array('item_prog_user.user_id' => $user['id']));
             }
