@@ -97,7 +97,7 @@ class ItemProg extends AbstractMapper
     	$select = $this->tableGateway->getSql()->select();
     
     	$select->columns(array('id', 'start_date', 'due_date'))
-    		->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array('id', 'archive_link', 'archive_token'), $select::JOIN_INNER)
+    		->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array('id', 'archive_link', 'archive_token', 'duration'), $select::JOIN_INNER)
     		->where(array('item_prog.item_id' => $item));
     	 
     	if($is_student!==false) {

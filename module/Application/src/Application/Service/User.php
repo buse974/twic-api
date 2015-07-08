@@ -44,7 +44,7 @@ class User extends AbstractService
             $user = $this->getServiceAuth()->getIdentity()->toArray();
             $user['roles'] = array();
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
-                $user['roles'][] = $role->getName();
+                $user['roles'][$role->getId()] = $role->getName();
             }
             $user['school'] = $this->get($id)['school'];
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
