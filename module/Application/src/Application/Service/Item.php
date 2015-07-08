@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Item extends AbstractService
 {
@@ -196,7 +197,10 @@ class Item extends AbstractService
         $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter);
 
         foreach ($res_item as $m_item) {
-            $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemProg()->getItem()->getItemAssignment()->getId()));
+        	$item_assigment_id = $m_item->getItemProg()->getItem()->getItemAssignment()->getId();
+        	if($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
+            	$m_item->setUsers($this->getServiceUser()->getListByItemAssignment($item_assigment_id));
+        	}
         }
 
         return array('count' => $mapper->count(), 'list' => $res_item);
