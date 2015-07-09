@@ -183,7 +183,7 @@ class ItemAssignment extends AbstractService
         if($m_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull){
             
             if($response !== null){
-                $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr>'));
+                $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr><u><a><ol><ul><li>'));
             }
             if (is_array($documents)){
                 $this->getServiceItemAssignmentDocument()->deleteByItemAssignment($id);
