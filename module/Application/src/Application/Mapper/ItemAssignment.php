@@ -3,6 +3,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class ItemAssignment extends AbstractMapper
 {
@@ -14,7 +15,7 @@ class ItemAssignment extends AbstractMapper
         $select->columns(array('id','response','item_assignment$submit_date' => new Expression("DATE_FORMAT(submit_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())
             ->join('item_prog_user', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
-            ->join('item_prog', 'item_prog.id=item_prog_user.item_prog_id', array('item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+            ->join('item_prog', 'item_prog.id=item_prog_user.item_prog_id', array('item_prog$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') "), 'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade','created_date'), $select::JOIN_LEFT)
             ->join('item', 'item.id=item_prog.item_id', array('id','title','describe','type'))
             ->join('module', 'module.id=item.module_id', array('id','title'))
@@ -41,7 +42,7 @@ class ItemAssignment extends AbstractMapper
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())
             ->join('item_prog_user', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
             ->where(array('item_prog_user.user_id' => $user))
-            ->where(array('item_prog.id' => $item_prog));
+            ->where(array('item_prog_user.item_prog_id' => $item_prog));
         
         return $this->selectWith($select);
     }
