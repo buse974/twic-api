@@ -152,7 +152,7 @@ class UserTest extends AbstractService
 	    $this->assertEquals($data['result']['interest'] , "un interet new");
 	    $this->assertEquals($data['result']['avatar'] , "un_token_new");
 	    $this->assertEquals(count($data['result']['roles']) , 1);
-	    $this->assertEquals($data['result']['roles'][0] , "super_admin");
+	    $this->assertEquals($data['result']['roles'][0] , "admin");
 	    $this->assertEquals($data['id'] , 1);
 	    $this->assertEquals($data['jsonrpc'] , 2.0);	
 	}
