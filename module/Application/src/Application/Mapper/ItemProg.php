@@ -90,7 +90,7 @@ class ItemProg extends AbstractMapper
     {
     	$select = $this->tableGateway->getSql()->select();
     
-    	$select->columns(array('id', 'item_prog$start_date' => new Expression('DATE_FORMAT(MIN(start_date), "%Y-%m-%dT%TZ")'), 'due_date'))
+    	$select->columns(array('id', 'item_prog$start_date' => new Expression('DATE_FORMAT(MIN(item_prog.start_date), "%Y-%m-%dT%TZ")'), 'due_date'))
     		->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array('id', 'archive_link', 'archive_token', 'duration'), $select::JOIN_INNER)
     		->where(array('item_prog.item_id' => $item));
     	 
