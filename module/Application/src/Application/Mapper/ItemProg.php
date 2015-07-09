@@ -21,7 +21,7 @@ class ItemProg extends AbstractMapper
         	->where(array('item_prog.id' => $id))
         	->where(array('item_prog_user.user_id' => $user))
         	->where(array('item.type' => array(\Application\Model\GradingPolicy::GP_CAPSTONE_PROJECT, \Application\Model\GradingPolicy::GP_INDIVIDUAL_ASSIGNEMENT)));
-        
+       
         return $this->selectWith($select);
     }
     
@@ -89,6 +89,7 @@ class ItemProg extends AbstractMapper
             }
            
         }
+        
         return $this->selectWith($select);
     }
 
