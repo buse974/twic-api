@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -7,12 +6,13 @@ use Application\Model\Role as ModelRole;
 
 class Role extends AbstractService
 {
+
     /**
      * add role.
      *
      * @invokable
      *
-     * @param string $name
+     * @param string $name            
      *
      * @throws \Exception
      *
@@ -20,10 +20,11 @@ class Role extends AbstractService
      */
     public function add($name)
     {
-        if ($this->getMapper()->insert($this->getModel()->setName($name)) <= 0) {
+        if ($this->getMapper()->insert($this->getModel()
+            ->setName($name)) <= 0) {
             throw new \Exception('error insert');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -32,18 +33,17 @@ class Role extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $name
+     * @param int $id            
+     * @param string $name            
      *
      * @return int
      */
     public function update($id, $name)
     {
         $m_role = $this->getModel();
-
-        $m_role->setId($id)
-               ->setName($name);
-
+        
+        $m_role->setId($id)->setName($name);
+        
         return $this->getMapper()->update($m_role);
     }
 
@@ -52,13 +52,14 @@ class Role extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @return int
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()->setId($id));
+        return $this->getMapper()->delete($this->getModel()
+            ->setId($id));
     }
 
     /**
@@ -66,8 +67,8 @@ class Role extends AbstractService
      *
      * @invokable
      *
-     * @param int $role
-     * @param int $user
+     * @param int $role            
+     * @param int $user            
      *
      * @return bool
      */
@@ -77,14 +78,15 @@ class Role extends AbstractService
     }
 
     /**
-     *
      */
     public function getRoleByUser($id = null)
     {
         if ($id === null) {
-            $id = $this->getServiceAuth()->getIdentity()->getId();
+            $id = $this->getServiceAuth()
+                ->getIdentity()
+                ->getId();
         }
-
+        
         return $this->getMapper()->getRoleByUser($id);
     }
 
@@ -94,6 +96,7 @@ class Role extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\UserRole
      */
     public function getServiceUserRole()
@@ -102,6 +105,7 @@ class Role extends AbstractService
     }
 
     /**
+     *
      * @return \Zend\Authentication\AuthenticationService
      */
     public function getServiceAuth()
