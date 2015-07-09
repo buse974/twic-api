@@ -36,15 +36,25 @@ class ItemProgUser extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setItemProgId($item_prog_id)->setUserId($user_id));
     }
+    
+    public function getById($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id));
+    }
 
     /**
      * @param int $item_prog
+     * @param int $user
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListByItemProg($item_prog)
-    {
-        return $this->getMapper()->select($this->getModel()->setItemProgId($item_prog));
+    public function getListByItemProg($item_prog, $user = null)
+    {   
+        $m_item_prog_user = $this->getModel()->setItemProgId($item_prog);
+        if($user !== null){
+            $m_item_prog_user->setUserId($user);
+        }
+        return $this->getMapper()->select($m_item_prog_user);
     }
 
     /**
