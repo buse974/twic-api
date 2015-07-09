@@ -59,7 +59,6 @@ return array(
             'app_service_module',
             'app_service_module_assignments',
             'app_service_item_assignment',
-            'app_service_item_assignment_user',
             'app_service_item_prog',
             'app_service_grading_policy_grade',
             'app_service_grading_policy_grade_comment',
