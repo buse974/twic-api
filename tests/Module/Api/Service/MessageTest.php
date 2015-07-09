@@ -32,8 +32,8 @@ class MessageTest extends AbstractService
 		$this->assertEquals(!empty($data['result']['message']['created_date']) , true);
 		$this->assertEquals(count($data['result']['user']) , 4);
 		$this->assertEquals($data['result']['user']['id'] , 1);
-		$this->assertEquals($data['result']['user']['firstname'] , "Nicolas");
-		$this->assertEquals($data['result']['user']['lastname'] , "Maremmani");
+		$this->assertEquals($data['result']['user']['firstname'] , "Paul");
+		$this->assertEquals($data['result']['user']['lastname'] , "Boussekey");
 		$this->assertEquals($data['result']['user']['avatar'] , null);
 		$this->assertEquals($data['result']['id'] , 1);
 		$this->assertEquals($data['result']['conversation_id'] , 1);
@@ -130,7 +130,7 @@ class MessageTest extends AbstractService
 		$this->assertEquals($data['result'][1]['user']['id'] , 3);
 		$this->assertEquals($data['result'][1]['user']['firstname'] , "Christophe");
 		$this->assertEquals($data['result'][1]['user']['lastname'] , "Robert");
-		$this->assertEquals($data['result'][1]['user']['avatar'] , null);
+		$this->assertEquals($data['result'][1]['user']['avatar'] , 'http://thestudnet.com/wp-content/uploads/2014/10/colchristophe-e1424779179460.png');
 		$this->assertEquals($data['result'][1]['id'] , 6);
 		$this->assertEquals($data['result'][1]['conversation_id'] , 2);
 		$this->assertEquals($data['result'][1]['user_id'] , 2);
@@ -172,8 +172,8 @@ class MessageTest extends AbstractService
 		$this->assertEquals(!empty($data['result'][0]['message']['created_date']) , true);
 		$this->assertEquals(count($data['result'][0]['user']) , 4);
 		$this->assertEquals($data['result'][0]['user']['id'] , 1);
-		$this->assertEquals($data['result'][0]['user']['firstname'] , "Nicolas");
-		$this->assertEquals($data['result'][0]['user']['lastname'] , "Maremmani");
+		$this->assertEquals($data['result'][0]['user']['firstname'] , "Paul");
+		$this->assertEquals($data['result'][0]['user']['lastname'] , "Boussekey");
 		$this->assertEquals($data['result'][0]['user']['avatar'] , null);
 		$this->assertEquals($data['result'][0]['id'] , 2);
 		$this->assertEquals($data['result'][0]['conversation_id'] , 1);
