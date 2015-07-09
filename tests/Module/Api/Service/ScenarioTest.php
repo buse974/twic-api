@@ -1248,6 +1248,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(3);
         $data = $this->jsonRpc('itemprog.getList', array('start' => '2015-06-01 00:00','end' => '2015-07-01 00:00'));
+        
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals(count($data['result'][0]), 6);

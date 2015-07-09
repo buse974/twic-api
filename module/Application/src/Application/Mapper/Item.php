@@ -79,7 +79,8 @@ class Item extends AbstractMapper
         $select->columns(array('id','title', 'type'))
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
             ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
-            ->where(array('item.course_id' => $course));
+            ->where(array('item.course_id' => $course))
+            ->group('item.id');
         
         if ($is_student !== false) {
             $select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)->where(array('item_prog_user.user_id' => $user));
