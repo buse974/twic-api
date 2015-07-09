@@ -76,7 +76,7 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title'))
+        $select->columns(array('id','title', 'type'))
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
             ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
             ->where(array('item.course_id' => $course));
