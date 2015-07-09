@@ -13,22 +13,23 @@ class ItemAssignment extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog     *
-     *
+     * @param int $item_prog
+     *            *
+     *            
      * @return array
      */
     public function getSubmission($item_prog)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         $res_item_assignment = $this->getFromItemProg($user, $item_prog);
-        if($res_item_assignment->count() > 0){
-            return $this->get($res_item_assignment->current()->getId());
+        if ($res_item_assignment->count() > 0) {
+            return $this->get($res_item_assignment->current()
+                ->getId());
         }
         return $this->get($this->add($item_prog));
-        
     }
 
-    /** 
+    /**
      * @invokable
      *
      * @param int $id            
@@ -41,9 +42,9 @@ class ItemAssignment extends AbstractService
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         $res_item_assignement = $this->getMapper()->get($id, $user);
-
+        
         if ($res_item_assignement->count() == 0) {
-            throw new JrpcException('No authorization', -32029);
+            throw new JrpcException('No authorization', - 32029);
         }
         
         $m_item_assignment = $res_item_assignement->current();
@@ -57,10 +58,10 @@ class ItemAssignment extends AbstractService
         $m_item->setMaterials($this->getServiceMaterialDocument()
             ->getListByItem($m_item->getId()));
         $m_course = $m_item->getCourse();
-        $m_course->setInstructor($this->getServiceUser()->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
-           
-        return $m_item_assignment;        
+        $m_course->setInstructor($this->getServiceUser()
+            ->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
         
+        return $m_item_assignment;
     }
 
     /**
@@ -86,6 +87,14 @@ class ItemAssignment extends AbstractService
      */
     public function add($item_prog, $response = null, $documents = null, $submit = false)
     {
+        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+        
+        $datetime1 = new \DateTime($m_item_prog->getStartDate());
+        $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
+        if ($datetime1 > $datetime2) {
+            throw new \Exception('error date');
+        }
+        
         $m_item_assignment = $this->getModel()
             ->setItemProgId($item_prog)
             ->setResponse($response);
@@ -96,6 +105,7 @@ class ItemAssignment extends AbstractService
         if ($this->getMapper()->insert($m_item_assignment) <= 0) {
             throw new \Exception('error insert item assignment');
         }
+        
         $m_item = $this->getServiceItem()->getByItemProg($item_prog);
         $item_assigment_id = $this->getMapper()->getLastInsertValue();
         
@@ -125,12 +135,14 @@ class ItemAssignment extends AbstractService
                 $res_item_prog_user = $this->getServiceItemProgUser()->getListByItemProg($item_prog, $this->getServiceAuth()
                     ->getIdentity()
                     ->getId());
-
+                
                 if ($res_item_prog_user->count() <= 0) {
-                    $this->getMapper()->delete($this->getModel()->setId($item_assigment_id));
+                    $this->getMapper()->delete($this->getModel()
+                        ->setId($item_assigment_id));
                     throw new \Exception('error insert item assignment');
                 }
-                $this->getServiceItemAssignmentRelation()->add($res_item_prog_user->current()->getId(), $item_assigment_id);
+                $this->getServiceItemAssignmentRelation()->add($res_item_prog_user->current()
+                    ->getId(), $item_assigment_id);
                 break;
         }
         
@@ -172,33 +184,33 @@ class ItemAssignment extends AbstractService
         }
         
         return true;
-    } 
-    
+    }
+
     /**
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @return int
      */
-    public function update($id, $documents = null,  $response = null, $submit = false)
+    public function update($id, $documents = null, $response = null, $submit = false)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         $students = $this->getServiceUser()->getListByItemAssignment($id);
         $res_item_assignment = array();
-        foreach($students as $student){
-            if($student->getId() === $user){
-                $res_item_assignment = $this->getMapper()->select($this->getModel()->setId($id));
+        foreach ($students as $student) {
+            if ($student->getId() === $user) {
+                $res_item_assignment = $this->getMapper()->select($this->getModel()
+                    ->setId($id));
                 break;
             }
         }
         $m_item_assignment = $res_item_assignment->current();
-        if($m_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull){
-            
-            if($response !== null){
+        if ($m_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull) {
+            if ($response !== null) {
                 $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr><u><a><ol><ul><li>'));
             }
-            if (is_array($documents)){
+            if (is_array($documents)) {
                 $this->getServiceItemAssignmentDocument()->deleteByItemAssignment($id);
                 foreach ($documents as $d) {
                     $type = isset($d['type']) ? $d['type'] : null;
@@ -208,14 +220,14 @@ class ItemAssignment extends AbstractService
                     $source = isset($d['source']) ? $d['source'] : null;
                     $token = isset($d['token']) ? $d['token'] : null;
                     $date = isset($d['date']) ? $d['date'] : null;
-
+                    
                     $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
                 }
             }
-            if($submit){
+            if ($submit) {
                 $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             }
-
+            
             return $this->getMapper()->update($m_item_assignment);
         }
         return 0;
