@@ -37,6 +37,7 @@ class Contact extends AbstractService
         $m_contact = $this->getModel()->setAcceptedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         $this->getMapper()->update($m_contact, array('user_id' => $user,'contact_id' => $identity['id']));
+        
         return $this->getMapper()->update($m_contact, array('user_id' => $identity['id'],'contact_id' => $user));
     }
 
@@ -50,15 +51,26 @@ class Contact extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
         $m_contact = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
+        $this->getMapper()->update($m_contact, array('user_id' => $user,'contact_id' => $identity['id']));
+        
         return $this->getMapper()->update($m_contact, array('user_id' => $identity['id'],'contact_id' => $user));
     }
 
     public function addAcceptBySchool()
-    {}
+    {
+        
+    }
 
+    /**
+     * @invokable
+     * 
+     * @param string $all
+     */
     public function getListRequest($all = false)
     {
-        // getListRequest($all = false)
+        $identity = $this->getServiceUser()->getIdentity();
+        
+        return $this->getMapper()->getListRequest($identity['id']);
     }
 
     /**
