@@ -3,8 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use DateTime;
-use DateTimeZone;
 
 class GradingPolicyGrade extends AbstractService
 {
@@ -22,26 +20,24 @@ class GradingPolicyGrade extends AbstractService
 
         return array('count' => $mapper->count(),'list' => $res_gradingpolicygrade);
     }
-    
+
     /**
-     *
-     * @param int  $grading_policy
+     * @param int $grading_policy
      */
     public function deleteFromGradingPolicy($grading_policy)
     {
-        return $this->getMapper()->delete($this->getModel()->setGradingPolicyId($grading_policy));      
+        return $this->getMapper()->delete($this->getModel()->setGradingPolicyId($grading_policy));
     }
 
     /**
-     * 
-     * @param integer $item_assignment
-     * @param integer $user
+     * @param int $item_assignment
+     * @param int $user
      */
     public function process($item_assignment, $user)
     {
         return $this->getMapper()->updateGrade($item_assignment, $user);
     }
-    
+
     /**
      * @return \Application\Service\User
      */
@@ -49,7 +45,7 @@ class GradingPolicyGrade extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
+
     /**
      * @return \Application\Service\GradingPolicy
      */
@@ -57,6 +53,4 @@ class GradingPolicyGrade extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_grading_policy');
     }
-    
-   
 }

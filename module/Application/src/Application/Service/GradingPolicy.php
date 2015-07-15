@@ -142,9 +142,8 @@ class GradingPolicy extends AbstractService
     {
         return $this->getMapper()->getListByCourse($course, $user);
     }
-    
-    
-       /**
+
+    /**
      * @return \Application\Service\GradingPolicyGrade
      */
     public function getServiceGradingPolicyGrade()

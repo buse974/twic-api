@@ -92,25 +92,25 @@ class School extends AbstractService
 
         return $results->current();
     }
-    
+
     /**
      * Get school list.
-     * 
+     *
      * @param string $filter
-     * 
+     *
      * @invokable
-     * 
+     *
      * @return array
      */
     public function getList($filter = null)
-    {       
+    {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList();
-        
+
         //$res = $mapper->getList();
 
-        return array('list'=>$res,
-                    'count' => $mapper->count());
+        return array('list' => $res,
+                    'count' => $mapper->count(), );
     }
 
     /**
@@ -125,17 +125,17 @@ class School extends AbstractService
     public function delete($id)
     {
         $ret = array();
-        
-        if(!is_array($id)) {
+
+        if (!is_array($id)) {
             $id = array($id);
         }
-        
+
         foreach ($id as $i) {
             $m_school = $this->getModel();
-            
+
             $ret[$i] = $this->getMapper()->delete($m_school);
         }
-        
+
         return $ret;
         /*
         $m_school = $this->getModel();

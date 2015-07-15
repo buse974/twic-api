@@ -66,7 +66,7 @@ return array(
             'app_service_task',
             'app_service_task_share',
             'app_service_mail',
-        	'app_service_conversation',
+            'app_service_conversation',
             'app_service_contact',
         ),
         'headers' => array(
@@ -119,7 +119,7 @@ return array(
             'headers' => array(
                     'Access-Control-Allow-Origin' => 'http://lms.com',
                     'Access-Control-Allow-Credentials' => 'true',
-                    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+                    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
             ),
     ),
 );

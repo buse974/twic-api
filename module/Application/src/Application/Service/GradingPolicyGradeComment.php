@@ -13,9 +13,9 @@ class GradingPolicyGradeComment extends AbstractService
      * @param int $user
      */
     public function getList($grading_policy, $user = null)
-    { 
+    {
         $identity = $this->getServiceUser()->getIdentity();
-        if($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])){
+        if ($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])) {
             $user = $identity['id'];
         }
         $res_grading_policy_grade_comment = $this->getMapper()->getList($grading_policy, $user);

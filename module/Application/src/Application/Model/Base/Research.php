@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
@@ -22,7 +23,7 @@ class Research extends AbstractModel
     public function setRole($role)
     {
         $this->role = $role;
-        
+
         return $this;
     }
 
@@ -34,7 +35,7 @@ class Research extends AbstractModel
     public function setCategory($category)
     {
         $this->category = $category;
-        
+
         return $this;
     }
 
@@ -46,7 +47,7 @@ class Research extends AbstractModel
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
-        
+
         return $this;
     }
 
@@ -58,7 +59,7 @@ class Research extends AbstractModel
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-        
+
         return $this;
     }
 
@@ -70,7 +71,7 @@ class Research extends AbstractModel
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-        
+
         return $this;
     }
 
@@ -82,7 +83,7 @@ class Research extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
 }

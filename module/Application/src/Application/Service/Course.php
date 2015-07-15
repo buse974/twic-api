@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -9,24 +8,25 @@ use Application\Model\Role as ModelRole;
 
 class Course extends AbstractService
 {
+
     /**
      * Add course.
      *
      * @invokable
      *
-     * @param int    $program_id
-     * @param string $title
-     * @param string $abstract
-     * @param string $description
-     * @param string $objectives
-     * @param string $teaching
-     * @param string $attendance
-     * @param string $duration
-     * @param string $notes
-     * @param string $learning_outcomes
-     * @param string $video_link
-     * @param string $video_token
-     * @param array  $material_document
+     * @param int $program_id            
+     * @param string $title            
+     * @param string $abstract            
+     * @param string $description            
+     * @param string $objectives            
+     * @param string $teaching            
+     * @param string $attendance            
+     * @param string $duration            
+     * @param string $notes            
+     * @param string $learning_outcomes            
+     * @param string $video_link            
+     * @param string $video_token            
+     * @param array $material_document            
      *
      * @throws \Exception
      *
@@ -36,7 +36,9 @@ class Course extends AbstractService
     {
         $m_course = $this->getModel()
             ->setTitle($title)
-            ->setCreatorId($this->getServiceAuth()->getIdentity()->getId())
+            ->setCreatorId($this->getServiceAuth()
+            ->getIdentity()
+            ->getId())
             ->setAbstract($abstract)
             ->setPicture($picture)
             ->setDescription($description)
@@ -51,15 +53,15 @@ class Course extends AbstractService
             ->setVideoToken($video_token)
             ->setProgramId($program_id)
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+        
         $res = $this->getMapper()->insert($m_course);
         if ($res <= 0) {
             throw new \Exception('error insert course');
         }
-
+        
         $course_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceGradingPolicy()->initTpl($course_id);
-
+        
         foreach ($material_document as $md) {
             if (isset($md['type'])) {
                 $type = (isset($md['type']) ? $md['type'] : null);
@@ -72,7 +74,7 @@ class Course extends AbstractService
                 $this->getServiceMaterialDocument()->add($course_id, $type, $title, $author, $link, $source, $token, $date);
             }
         }
-
+        
         return $this->get($course_id);
     }
 
@@ -81,20 +83,20 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $title
-     * @param string $abstract
-     * @param string $description
-     * @param string $objectives
-     * @param string $teaching
-     * @param string $attendance
-     * @param string $duration
-     * @param string $notes
-     * @param string $learning_outcomes
-     * @param string $video_link
-     * @param string $video_token
+     * @param int $id            
+     * @param string $title            
+     * @param string $abstract            
+     * @param string $description            
+     * @param string $objectives            
+     * @param string $teaching            
+     * @param string $attendance            
+     * @param string $duration            
+     * @param string $notes            
+     * @param string $learning_outcomes            
+     * @param string $video_link            
+     * @param string $video_token            
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
     {
@@ -113,7 +115,7 @@ class Course extends AbstractService
             ->setVideoLink($video_link)
             ->setVideoToken($video_token)
             ->setUpdatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+        
         return $this->getMapper()->update($m_course);
     }
 
@@ -122,33 +124,33 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param array $id
+     * @param array $id            
      *
      * @return int
      */
     public function delete($id)
     {
         $ret = array();
-
-        if (!is_array($id)) {
+        
+        if (! is_array($id)) {
             $id = array($id);
         }
-
+        
         $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+        
         foreach ($id as $idc) {
             if ($ret[$idc] = $this->getMapper()->update($m_course, array('id' => $idc)) > 0) {
                 $this->getServiceMaterialDocument()->deleteByCourseId($idc);
             }
         }
-
+        
         return $ret;
     }
 
     /**
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @throws \Exception
      *
@@ -157,29 +159,30 @@ class Course extends AbstractService
     public function get($id)
     {
         $res_couse = $this->getMapper()->get($id);
-
+        
         if ($res_couse->count() == 0) {
-            throw new \Exception('no course with id: '.$id);
+            throw new \Exception('no course with id: ' . $id);
         }
-
+        
         $m_course = $res_couse->current();
-
         $m_course->setMaterialDocument($this->getServiceMaterialDocument()
             ->getListByCourse($id));
         $m_course->setGrading($this->getServiceGrading()
             ->getByCourse($id));
         $m_course->setGradingPolicy($this->getServiceGradingPolicy()
             ->get($id));
-
+        $m_course->setInstructor($this->getServiceUser()
+            ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+        
         return $m_course;
     }
 
     /**
      * @invokable
      *
-     * @param int    $program
-     * @param string $search
-     * @param array  $filter
+     * @param int $program            
+     * @param string $search            
+     * @param array $filter            
      *
      * @return array
      */
@@ -187,32 +190,36 @@ class Course extends AbstractService
     {
         $mapper = $this->getMapper();
         $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter);
-
+        
         foreach ($res_course as $m_course) {
-            $m_course->setStudent($this->getServiceUser()->getListOnly('student', $m_course->getId()));
-            $m_course->setInstructor($this->getServiceUser()->getListOnly('instructor', $m_course->getId()));
+            $m_course->setStudent($this->getServiceUser()
+                ->getListOnly(ModelRole::ROLE_STUDENT_STR, $m_course->getId()));
+            $m_course->setInstructor($this->getServiceUser()
+                ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
         }
-
-        return array('count' => $mapper->count(), 'list' => $res_course);
+        
+        return array('count' => $mapper->count(),'list' => $res_course);
     }
-    
+
     /**
      * @invokable
      */
     public function getListRecord()
     {
-    	$user = $this->getServiceUser()->getIdentity();
-    	$is_student = (array_key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) ? true:false;
-    	$res_course =  $this->getMapper()->getListRecord($user['id'], $is_student);
-    	
-    	foreach ($res_course as $m_course) {
-    		$m_course->setItems($this->getServiceItem()->getListRecord($m_course->getId(), $user['id'], $is_student));
-    	}
-    	
-    	return $res_course;
+        $user = $this->getServiceUser()->getIdentity();
+        $is_student = (array_key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) ? true : false;
+        $res_course = $this->getMapper()->getListRecord($user['id'], $is_student);
+        
+        foreach ($res_course as $m_course) {
+            $m_course->setItems($this->getServiceItem()
+                ->getListRecord($m_course->getId(), $user['id'], $is_student));
+        }
+        
+        return $res_course;
     }
 
     /**
+     *
      * @return \Application\Service\MaterialDocument
      */
     public function getServiceMaterialDocument()
@@ -221,6 +228,7 @@ class Course extends AbstractService
     }
 
     /**
+     *
      * @return \Zend\Authentication\AuthenticationService
      */
     public function getServiceAuth()
@@ -229,6 +237,7 @@ class Course extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Grading
      */
     public function getServiceGrading()
@@ -237,6 +246,7 @@ class Course extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Module
      */
     public function getServiceModule()
@@ -245,14 +255,16 @@ class Course extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Item
      */
     public function getServiceItem()
     {
-    	return $this->getServiceLocator()->get('app_service_item');
+        return $this->getServiceLocator()->get('app_service_item');
     }
-    
+
     /**
+     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -261,6 +273,7 @@ class Course extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\GradingPolicy
      */
     public function getServiceGradingPolicy()
