@@ -9,17 +9,19 @@ use Application\Model\Videoconf as CVF;
 
 class Videoconf extends AbstractService
 {
-	/**
-	 * @invokable
-	 * 
-	 * @param string $title
-	 * @param string $description
-	 * @param string $start_date
-	 * @param integer $item_prog
-	 * @param integer $conversation
-	 * @throws \Exception
-	 * @return integer
-	 */
+    /**
+     * @invokable
+     *
+     * @param string $title
+     * @param string $description
+     * @param string $start_date
+     * @param int    $item_prog
+     * @param int    $conversation
+     *
+     * @throws \Exception
+     *
+     * @return int
+     */
     public function add($title, $description, $start_date, $item_prog = null, $conversation = null)
     {
         $m_videoconf = $this->getModel();
@@ -43,7 +45,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param integer $id
+     * @param int $id
      */
     public function delete($id)
     {
@@ -282,23 +284,22 @@ class Videoconf extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $videoconf
+     *
+     * @param int   $videoconf
      * @param array $users
      */
     public function addConversation($videoconf, $users)
     {
-    	$conversation = $this->getServiceConversationUser()->createConversation($users);
-    	$this->getServiceVideoconfConversation()->add($conversation, $videoconf); 
-    	
-    	return $conversation;
+        $conversation = $this->getServiceConversationUser()->createConversation($users);
+        $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
+
+        return $conversation;
     }
-    
+
     public function getByItemProg()
     {
-    	
     }
-    
+
     /**
      * @return \Application\Service\VideoconfInvitation
      */
@@ -312,17 +313,17 @@ class Videoconf extends AbstractService
      */
     public function getServiceConversationUser()
     {
-    	return $this->getServiceLocator()->get('app_service_conversation_user');
+        return $this->getServiceLocator()->get('app_service_conversation_user');
     }
-    
+
     /**
      * @return \Application\Service\VideoconfConversation
      */
     public function getServiceVideoconfConversation()
     {
-    	return $this->getServiceLocator()->get('app_service_videoconf_conversation');
+        return $this->getServiceLocator()->get('app_service_videoconf_conversation');
     }
-    
+
     /**
      * @return \Application\Service\VideoconfAdmin
      */

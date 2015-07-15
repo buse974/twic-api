@@ -121,16 +121,16 @@ class Item extends AbstractService
 
         return $res_item->toArrayParent();
     }
-    
+
     public function getListRecord($course, $user, $is_student)
     {
-    	$res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
-    	
-    	foreach ($res_item as $m_item) {
-    		$m_item->setItemProg($this->getServiceItemProg()->getListRecord($m_item->getId(), $user, $is_student));
-    	}
-    	
-    	return $res_item;
+        $res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
+
+        foreach ($res_item as $m_item) {
+            $m_item->setItemProg($this->getServiceItemProg()->getListRecord($m_item->getId(), $user, $is_student));
+        }
+
+        return $res_item;
     }
 
     /**
@@ -197,10 +197,10 @@ class Item extends AbstractService
         $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter);
 
         foreach ($res_item as $m_item) {
-        	$item_assigment_id = $m_item->getItemProg()->getItemAssignment()->getId();
-        	if($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
-            	$m_item->setUsers($this->getServiceUser()->getListByItemAssignment($item_assigment_id));
-        	}
+            $item_assigment_id = $m_item->getItemProg()->getItemAssignment()->getId();
+            if ($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
+                $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($item_assigment_id));
+            }
         }
 
         return array('count' => $mapper->count(), 'list' => $res_item);
@@ -215,7 +215,7 @@ class Item extends AbstractService
     public function getListGradeDetail($course, $user = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        if($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])){
+        if ($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])) {
             $user = $identity['id'];
         }
         $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
@@ -262,7 +262,7 @@ class Item extends AbstractService
 
         return $res_item->current();
     }
-    
+
     /**
      * @param int $item
      *
@@ -272,13 +272,13 @@ class Item extends AbstractService
      */
     public function get($item)
     {
-    	$res_item = $this->getMapper()->select($this->getModel()->setId($item));
-    
-    	if ($res_item->count() <= 0) {
-    		throw new \Exception('error select item');
-    	}
-    
-    	return $res_item->current();
+        $res_item = $this->getMapper()->select($this->getModel()->setId($item));
+
+        if ($res_item->count() <= 0) {
+            throw new \Exception('error select item');
+        }
+
+        return $res_item->current();
     }
 
     /**

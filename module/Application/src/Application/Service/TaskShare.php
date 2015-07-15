@@ -6,14 +6,12 @@ use Dal\Service\AbstractService;
 
 class TaskShare extends AbstractService
 {
-    
-    
     /**
-     * Get all students for the instructor
+     * Get all students for the instructor.
      *
      * @invokable
      *
-     * @param int $task
+     * @param int       $task
      * @param int|array $users
      *
      * @return int|array
@@ -30,5 +28,4 @@ class TaskShare extends AbstractService
 
         return $ret;
     }
- 
 }

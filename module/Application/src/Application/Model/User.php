@@ -46,8 +46,6 @@ class User extends BaseUser
     {
         return $this->roles;
     }
-    
-    
 
     public function setAvailable($available)
     {
@@ -60,8 +58,7 @@ class User extends BaseUser
     {
         return $this->available;
     }
-    
-    
+
     public function setSelected($selected)
     {
         $this->selected = $selected;
