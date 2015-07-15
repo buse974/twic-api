@@ -236,6 +236,19 @@ class UserTest extends AbstractService
 	    $this->assertEquals($data['jsonrpc'] , 2.0);
 	}
 	
+	public function testAddContactSchool()
+	{
+	    $this->setIdentity(2);
+	
+	    $data = $this->jsonRpc('contact.addBySchool', array('school' => 1));
+	
+	    $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 14); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+	}
+	
+	
 	// DELETE
 	/**
 	 * @depends testCanAddUser

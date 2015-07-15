@@ -56,9 +56,14 @@ class Contact extends AbstractService
         return $this->getMapper()->update($m_contact, array('user_id' => $identity['id'],'contact_id' => $user));
     }
 
-    public function addAcceptBySchool()
+    /**
+     * @invokable
+     * 
+     * @param integer $school
+     */
+    public function addBySchool($school)
     {
-        
+        return $this->getMapper()->addBySchool($school) / 2;
     }
 
     /**
