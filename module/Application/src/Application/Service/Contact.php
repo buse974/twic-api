@@ -14,6 +14,11 @@ class Contact extends AbstractService
     public function add($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
+        
+        if($user == $identity['id']) {
+            throw new \Exception('error user equal myself');    
+        }
+        
         $m_contact = $this->getModel()
             ->setUserId($identity['id'])
             ->setContactId($user)
