@@ -2369,7 +2369,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['program_id'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
 
     /**
