@@ -19,7 +19,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null)
+    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $only_school = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar'))
@@ -30,7 +30,7 @@ class User extends AbstractMapper
             $select->where(array('school.id' => $school));
         }
 
-        if ($user_school) {
+        if ($user_school && $only_school===true) {
             $sub_select = $this->tableGateway->getSql()->select();
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user_school));
             $select->where(array('school.id' => $sub_select));
