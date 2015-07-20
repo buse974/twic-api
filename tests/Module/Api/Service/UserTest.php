@@ -188,10 +188,10 @@ class UserTest extends AbstractService
 	    $this->assertEquals(count($data['result']) , 1);
 	    $this->assertEquals(count($data['result'][0]) , 2);
 	    $this->assertEquals(count($data['result'][0]['contact']) , 4);
-	    $this->assertEquals($data['result'][0]['contact']['id'] , 2);
-	    $this->assertEquals($data['result'][0]['contact']['firstname'] , "Xuan-Anh");
-	    $this->assertEquals($data['result'][0]['contact']['lastname'] , "Hoang");
-	    $this->assertEquals($data['result'][0]['contact']['avatar'] , null);
+	    $this->assertEquals($data['result'][0]['contact']['id'] , 1);
+	    $this->assertEquals($data['result'][0]['contact']['firstname'] , "Jean");
+	    $this->assertEquals($data['result'][0]['contact']['lastname'] , "Paul");
+	    $this->assertEquals($data['result'][0]['contact']['avatar'] , "un_token_new");
 	    $this->assertEquals(!empty($data['result'][0]['request_date']) , true);
 	    $this->assertEquals($data['id'] , 1);
 	    $this->assertEquals($data['jsonrpc'] , 2.0);
