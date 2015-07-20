@@ -14,8 +14,8 @@ class Course extends AbstractMapper
         $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes'))
             ->join(array('course_user' => 'user'), 'course_user.id=course.creator_id', array('id','firstname','lastname','email'))
             ->join(array('course_user_school' => 'school'), 'course_user_school.id=course_user.school_id', array('id','name','logo'), $select::JOIN_LEFT)
-            ->join('program', 'program.id=course.program_id', array('id', 'name'), $select::JOIN_LEFT)
-            ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','name','logo'), $select::JOIN_LEFT)
+            ->join(array('course_program' => 'program'), 'course_program.id=course.program_id', array('id', 'name'))
+            ->join(array('course_school' => 'school'), 'course_program.school_id=course_school.id', array('id','name','logo'), $select::JOIN_LEFT)
             ->where(array('course.id' => $id));
         
         return $this->selectWith($select);
