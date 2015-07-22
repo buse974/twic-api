@@ -9,27 +9,41 @@ use Zend\Db\Sql\Select;
 
 class User extends AbstractMapper
 {
-    public function get($user)
+    public function get($user, $me)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar', 'school_id'))
+        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar', 'school_id', 'user$has_contact' => new Expression('IF(contact.accepted_date IS NOT NULL, 1, 0)')
+            ,'user$has_request' => new Expression('IF(contact.request_date IS NOT NULL AND contact.accepted_date IS NULL, 1, 0)')
+        ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
+            ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
+            ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
+            ->where(array('uu.id' => $me))
             ->where(array('user.id' => $user));
-
+            
         return $this->selectWith($select);
     }
 
     public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $only_school = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar', 'user$has_contact' => new Expression('IF(contact.accepted_date IS NOT NULL, 1, 0)')
+            ,'user$has_request' => new Expression('IF(contact.request_date IS NOT NULL AND contact.accepted_date IS NULL, 1, 0)')))
             ->join('school', 'school.id=user.school_id', array('name', 'short_name', 'logo'), $select::JOIN_LEFT)
+            ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
+            ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->quantifier('DISTINCT');
 
         if ($school !== null) {
             $select->where(array('school.id' => $school));
         }
+        
+        if ($user_school) {
+            $select->where(array('uu.id' => $user_school));
+        }
 
+        
+        
         if ($user_school && $only_school===true) {
             $sub_select = $this->tableGateway->getSql()->select();
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user_school));

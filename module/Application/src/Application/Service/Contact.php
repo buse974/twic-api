@@ -43,7 +43,7 @@ class Contact extends AbstractService
         $m_contact = $this->getModel()->setAcceptedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->update($m_contact, array('user_id' => $user,'contact_id' => $identity['id'],new IsNotNull('request_date'))) <= 0) {
-            throw new \Eception('Error accept user');
+            throw new \Exception('Error accept user');
         }
         
         return $this->getMapper()->update($m_contact, array('user_id' => $identity['id'],'contact_id' => $user));

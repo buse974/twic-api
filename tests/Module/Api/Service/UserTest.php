@@ -135,7 +135,9 @@ class UserTest extends AbstractService
 	    ));
 
 	    $this->assertEquals(count($data) , 3);
-	    $this->assertEquals(count($data['result']) , 12);
+	    $this->assertEquals(count($data['result']) , 14);
+	    $this->assertEquals($data['result']['has_request'] , 0);
+	    $this->assertEquals($data['result']['has_contact'] , 0);
 	    $this->assertEquals(count($data['result']['school']) , 4);
 	    $this->assertEquals($data['result']['school']['id'] , 1);
 	    $this->assertEquals($data['result']['school']['name'] , "Morbi Corporation");
@@ -154,7 +156,7 @@ class UserTest extends AbstractService
 	    $this->assertEquals(count($data['result']['roles']) , 1);
 	    $this->assertEquals($data['result']['roles'][0] , "admin");
 	    $this->assertEquals($data['id'] , 1);
-	    $this->assertEquals($data['jsonrpc'] , 2.0);	
+	    $this->assertEquals($data['jsonrpc'] , 2.0);
 	}
 	
 	

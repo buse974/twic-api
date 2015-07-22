@@ -10,6 +10,8 @@ class User extends BaseUser
     protected $roles;
     protected $available;
     protected $selected;
+    protected $has_contact;
+    protected $has_request;
 
     public function exchangeArray(array &$data)
     {
@@ -23,6 +25,30 @@ class User extends BaseUser
         $this->school->exchangeArray($data);
     }
 
+    public function getHasRequest()
+    {
+        return $this->has_request;
+    }
+    
+    public function setHasRequest($has_request)
+    {
+        $this->has_request = $has_request;
+    
+        return $this;
+    }
+    
+    public function getHasContact()
+    {
+        return $this->has_contact;
+    }
+    
+    public function setHasContact($has_contact)
+    {
+        $this->has_contact = $has_contact;
+    
+        return $this;
+    }
+    
     public function setSchool($school)
     {
         $this->school = $school;
