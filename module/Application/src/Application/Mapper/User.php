@@ -12,26 +12,32 @@ class User extends AbstractMapper
     public function get($user, $me)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar', 'school_id', 'user$has_contact' => new Expression('IF(contact.accepted_date IS NOT NULL, 1, 0)')
-            ,'user$has_request' => new Expression('IF(contact.request_date IS NOT NULL AND contact.accepted_date IS NULL, 1, 0)')
+        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar', 'school_id',
+            'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
+                . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
+            ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
             ->where(array('uu.id' => $me))
             ->where(array('user.id' => $user));
-            
+
+
         return $this->selectWith($select);
     }
 
     public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $only_school = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar', 'user$has_contact' => new Expression('IF(contact.accepted_date IS NOT NULL, 1, 0)')
-            ,'user$has_request' => new Expression('IF(contact.request_date IS NOT NULL AND contact.accepted_date IS NULL, 1, 0)')))
+        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar',
+            'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
+        . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
+        ))
             ->join('school', 'school.id=user.school_id', array('name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
+            ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
             ->quantifier('DISTINCT');
 
         if ($school !== null) {
