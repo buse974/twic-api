@@ -10,8 +10,10 @@ class User extends BaseUser
     protected $roles;
     protected $available;
     protected $selected;
-    protected $has_contact;
-    protected $has_request;
+    /**
+     * @var
+     */
+    protected $contact_state;
 
     public function exchangeArray(array &$data)
     {
@@ -25,26 +27,14 @@ class User extends BaseUser
         $this->school->exchangeArray($data);
     }
 
-    public function getHasRequest()
+    public function getContactState()
     {
-        return $this->has_request;
+        return $this->contact_state;
     }
-    
-    public function setHasRequest($has_request)
+
+    public function setContactState($contact_state)
     {
-        $this->has_request = $has_request;
-    
-        return $this;
-    }
-    
-    public function getHasContact()
-    {
-        return $this->has_contact;
-    }
-    
-    public function setHasContact($has_contact)
-    {
-        $this->has_contact = $has_contact;
+        $this->contact_state = $contact_state;
     
         return $this;
     }
