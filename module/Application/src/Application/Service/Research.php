@@ -8,17 +8,17 @@ class Research extends AbstractService
 {
     /**
      * @invokable
-     *
-     * @param string $filter              
-     *
+     *            
+     * @param string $string 
+     * 
      * @return array
      */
-    public function getList($filter = null)
+    public function getList($string, $filter = null)
     {
         $mapper = $this->getMapper();
-                
-        $res = $res->toArray();        
-       
-        return array('list' => $res,'count' => $mapper->count());
+        $res = $mapper->usePaginator($filter)->getList($string);
+        
+        return array('list'=>$res,
+                    'count' => $mapper->count());
     }    
 }

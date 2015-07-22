@@ -2,8 +2,8 @@
 
 namespace Application\Model;
 
-use Application\Model\Base\Contact as BaseContact;
+use Application\Model\Base\Research as BaseResearch;
 
-class Research extends BaseContact
+class Research extends BaseResearch
 {
 }
