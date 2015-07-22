@@ -36,16 +36,12 @@ class User extends AbstractService
     public function _getCacheIdentity($init = false)
     {
         $user = array();
-        $id = $this->getServiceAuth()
-            ->getIdentity()
-            ->getId();
+        $id = $this->getServiceAuth()->getIdentity()->getId();
 
         if ($init === false && $this->getCache()->hasItem('identity_'.$id)) {
             $user = $this->getCache()->getItem('identity_'.$id);
         } else {
-            $user = $this->getServiceAuth()
-                ->getIdentity()
-                ->toArray();
+            $user = $this->getServiceAuth()->getIdentity()->toArray();
             $user['roles'] = array();
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][$role->getId()] = $role->getName();
@@ -76,8 +72,7 @@ class User extends AbstractService
     {
         $auth = $this->getServiceAuth();
 
-        return $auth->getStorage()->getListSession($auth->getIdentity()
-            ->getId());
+        return $auth->getStorage()->getListSession($auth->getIdentity()->getId());
     }
 
     /**
@@ -145,7 +140,9 @@ class User extends AbstractService
         $id = $this->getMapper()->getLastInsertValue();
 
         if ($roles === null) {
-            $roles = array(ModelRole::ROLE_STUDENT_STR);
+            $roles = array(
+                ModelRole::ROLE_STUDENT_STR,
+            );
         }
         if (!is_array($roles)) {
             $roles = array($roles);
@@ -343,9 +340,7 @@ class User extends AbstractService
     public function get($id = null)
     {
         if ($id === null) {
-            $id = $this->getServiceAuth()
-                ->getIdentity()
-                ->getId();
+            $id = $this->getServiceAuth()->getIdentity()->getId();
         }
 
         $res_user = $this->getMapper()->get($id);
@@ -435,7 +430,7 @@ class User extends AbstractService
     {
         return $this->getMapper()->getListForItemProg($item_prog, $item, $course);
     }
-
+    
     /**
      * Get all students for the instructor.
      *
@@ -445,6 +440,7 @@ class User extends AbstractService
      */
     public function getStudentList()
     {
+        
         $instructor = $this->getServiceUser()->getIdentity();
         if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $instructor['roles'])) {
             return $this->getMapper()->getStudentList($instructor['id']);
@@ -452,6 +448,10 @@ class User extends AbstractService
 
         return array();
     }
+       
+    
+    
+   
 
     /**
      * Get user list from item assignment.
@@ -556,7 +556,7 @@ class User extends AbstractService
 
         return $this->getServiceLocator()->get($config['cache']);
     }
-
+    
     /**
      * @return \Application\Service\User
      */
@@ -564,4 +564,6 @@ class User extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
+    
+    
 }
