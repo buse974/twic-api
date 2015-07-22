@@ -107,8 +107,6 @@ class School extends AbstractService
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList();
         
-        //$res = $mapper->getList();
-
         return array('list'=>$res,
                     'count' => $mapper->count());
     }
