@@ -38,9 +38,9 @@ class School extends AbstractMapper
     public function getList($filter = null)
     {
         $select = $this->tableGateway->getSql()->select();
-
-        $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'programme', 'backroung', 'phone'));
-
+        $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'programme', 'backroung', 'phone'))
+                ->where('school.deleted_date IS NULL');
+        
         return $this->selectWith($select);
     }
 }
