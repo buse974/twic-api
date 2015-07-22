@@ -66,8 +66,9 @@ return array(
             'app_service_task',
             'app_service_task_share',
             'app_service_mail',
-        	'app_service_conversation',
-        	'app_service_contact',
+            'app_service_conversation',
+            'app_service_contact',
+            'app_service_research',
         ),
         'headers' => array(
             'Access-Control-Allow-Origin' => '*',
