@@ -31,8 +31,7 @@ class Contact extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('request_date'))
-            ->join('user', 'user.id=contact.user_id', array('id', 'firstname', 'lastname', 'avatar'), $select::JOIN_INNER)
+        $select->columns(array('request_date', 'user_id'))
             ->where(array('contact.contact_id' => $user))
             ->where(array('contact.accepted_date IS NULL'))
             ->where(array('contact.request_date IS NOT NULL'));
