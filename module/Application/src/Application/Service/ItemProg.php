@@ -91,7 +91,6 @@ class ItemProg extends AbstractService
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
                 break;
-
             default:
                 break;
         }

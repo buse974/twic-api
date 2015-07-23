@@ -10,16 +10,16 @@ class Message extends AbstractService
      * Send message.
      *
      * @invokable
-     *
-     * @param int        $to
-     * @param string|int $contentOrId
-     *
+     * 
+     * @param string    $text
+     * @param int   $to
+     * @param conversation  $conversation
+     * 
      * @throws \Exception
-     * @throws \Eception
      *
      * @return int
      */
-    public function send($contentOrId, $to = null, $conversation = null)
+    public function send($text, $to = null, $conversation = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
 
@@ -53,11 +53,11 @@ class Message extends AbstractService
             }
         }
 
-        if (empty($contentOrId)) {
+        if (empty($text)) {
             throw new \Exception('error content is empty');
         }
         $m_message = $this->getModel()
-            ->setText($contentOrId)
+            ->setText($text)
             ->setConversationId($conversation)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 

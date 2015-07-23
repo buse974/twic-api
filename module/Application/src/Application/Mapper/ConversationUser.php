@@ -33,3 +33,4 @@ class ConversationUser extends AbstractMapper
         return $this->selectWith($select);
     }
 }
+

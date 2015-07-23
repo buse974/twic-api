@@ -68,6 +68,7 @@ return array(
             'app_service_mail',
             'app_service_conversation',
             'app_service_contact',
+            'app_service_videoconf_doc',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
