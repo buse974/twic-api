@@ -20,21 +20,59 @@ class Videoconf extends BaseVideoconf
     protected $videoconf_entity;
     protected $videoconf_invitation;
     protected $videoconf_admin;
+    protected $conversations;
+    protected $users;
+    protected $docs;
 
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
-        $this->videoconf_invitation = new VideoconfInvitation($this);
-        $this->videoconf_invitation->exchangeArray($data);
-
-        $this->videoconf_entity = new VideoconfEntity($this);
-        $this->videoconf_entity->exchangeArray($data);
-
+        $this->videoconf_invitation = new VideoconfInvitation($this); 
         $this->videoconf_admin = new VideoconfAdmin($this);
+        $this->videoconf_entity = new VideoconfEntity($this);
+        
+        $this->videoconf_invitation->exchangeArray($data);
+        $this->videoconf_entity->exchangeArray($data);
         $this->videoconf_admin->exchangeArray($data);
     }
 
+    public function getDocs()
+    {
+        return $this->docs;
+    }
+    
+    public function setDocs($docs)
+    {
+        $this->docs = $docs;
+    
+        return $this;
+    }
+    
+    public function getUsers()
+    {
+        return $this->users;
+    }
+    
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    
+        return $this;
+    }
+    
+    public function getConversations()
+    {
+        return $this->conversations;
+    }
+     
+    public function setConversations($conversations)
+    {
+        $this->conversations = $conversations;
+    
+        return $this;
+    }
+    
     public function setVideoconfEntity($videoconf_entity)
     {
         $this->videoconf_entity = $videoconf_entity;

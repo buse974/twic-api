@@ -31,4 +31,14 @@ class VideoconfConversation extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()->setConversationId($conversation)->setVideoconfId($videoconf));
     }
+    
+    /**
+     * 
+     * @param integer $videoconf
+     * @param integer $user
+     */
+    public function getByVideoconfUser($videoconf, $user)
+    {
+        return $this->getMapper()->getByVideoconfUser($videoconf, $user);
+    }
 }

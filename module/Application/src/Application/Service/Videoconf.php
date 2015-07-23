@@ -1,22 +1,24 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use DateTimeZone;
 use DateTime;
 use Application\Model\Videoconf as CVF;
+use OpenTok\Role as OpenTokRole;
+use Application\Model\Role as ModelRole;
 
 class Videoconf extends AbstractService
 {
+
     /**
      * @invokable
      *
-     * @param string $title
-     * @param string $description
-     * @param string $start_date
-     * @param int    $item_prog
-     * @param int    $conversation
+     * @param string $title            
+     * @param string $description            
+     * @param string $start_date            
+     * @param int $item_prog            
+     * @param int $conversation            
      *
      * @throws \Exception
      *
@@ -26,17 +28,19 @@ class Videoconf extends AbstractService
     {
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
-                    ->setDescription($description)
-                    ->setItemProgId($item_prog)
-                    ->setConversationId($conversation)
-                    ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
-                    ->setToken($this->getServiceZOpenTok()->getSessionId())
-                    ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+            ->setDescription($description)
+            ->setItemProgId($item_prog)
+            ->setConversationId($conversation)
+            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))
+            ->format('Y-m-d H:i:s'))
+            ->setToken($this->getServiceZOpenTok()
+            ->getSessionId())
+            ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
         if ($this->getMapper()->insert($m_videoconf) === 0) {
             throw new \Exception('Error insert');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -45,21 +49,21 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      */
     public function delete($id)
     {
         $m_videoconf = $this->getModel()
-                            ->setId($id)
-                            ->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+            ->setId($id)
+            ->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
         return $this->getMapper()->update($m_videoconf);
     }
 
     /**
      * Get token videoconf by id.
      *
-     * @param int $id
+     * @param int $id            
      *
      * @throws \Exception
      *
@@ -68,11 +72,11 @@ class Videoconf extends AbstractService
     public function getToken($id)
     {
         $res_videoconf = $this->getMapper()->getToken($id);
-
+        
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
         }
-
+        
         return $res_videoconf->current()->getToken();
     }
 
@@ -81,7 +85,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @throws \Exception
      *
@@ -90,14 +94,16 @@ class Videoconf extends AbstractService
     public function get($id)
     {
         $res_videoconf = $this->getMapper()->get($id);
-
+        
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
         }
-
+        
         $m_videoconf = $res_videoconf->current();
-        $m_videoconf->setVideoconfInvitation($this->getServiceVideoConfInvitation()->getByVideoconfId($m_videoconf->getId())->toArray());
-
+        $m_videoconf->setVideoconfInvitation($this->getServiceVideoConfInvitation()
+            ->getByVideoconfId($m_videoconf->getId())
+            ->toArray());
+        
         return $m_videoconf;
     }
 
@@ -106,7 +112,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param string $token
+     * @param string $token            
      *
      * @throws \Exception
      *
@@ -115,11 +121,11 @@ class Videoconf extends AbstractService
     public function getRoom($token)
     {
         $res_videoconf = $this->getMapper()->getRoom($token);
-
+        
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
         }
-
+        
         return $res_videoconf->current();
     }
 
@@ -128,10 +134,10 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $title
-     * @param string $description
-     * @param string $start_date
+     * @param int $id            
+     * @param string $title            
+     * @param string $description            
+     * @param string $start_date            
      *
      * @return int
      */
@@ -140,25 +146,22 @@ class Videoconf extends AbstractService
         $m_videoconf_tmp = $this->get($id);
         $m_videoconf = $this->getModel();
         $m_videoconf->setId($id)
-                    ->setTitle($title)
-                    ->setDescription($description)
-                    ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'));
-
+            ->setTitle($title)
+            ->setDescription($description)
+            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))
+            ->format('Y-m-d H:i:s'));
+        
         if ($start_date !== null && $m_videoconf_tmp->getStartDate() !== $start_date) {
             $res_videoconf_invitation = $this->getServiceVideoConfInvitation()->getByVideoconfId($id);
             if ($res_videoconf_invitation->count() > 0) {
                 foreach ($res_videoconf_invitation as $m_videoconf_invitation) {
-                    $this->getServiceMail()->sendTpl('tpl1', $m_videoconf_invitation->getEmail(), array(
-                            'firstname' => $m_videoconf_invitation->getFirstname(),
-                            'lastname' => $m_videoconf_invitation->getLastname(),
-                            'link' => $this->getServiceLocator()->get('config')['path_videoconf_guest'].$m_videoconf_tmp->getToken(),
-                            'start_date' => (new DateTime($start_date, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone($m_videoconf_invitation->getUtc()))->format('Y-m-d H:i:s'),
-                        )
-                    );
+                    $this->getServiceMail()->sendTpl('tpl1', $m_videoconf_invitation->getEmail(), array('firstname' => $m_videoconf_invitation->getFirstname(),'lastname' => $m_videoconf_invitation->getLastname(),'link' => $this->getServiceLocator()
+                        ->get('config')['path_videoconf_guest'] . $m_videoconf_tmp->getToken(),'start_date' => (new DateTime($start_date, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone($m_videoconf_invitation->getUtc()))
+                        ->format('Y-m-d H:i:s')));
                 }
             }
         }
-
+        
         return $this->getMapper()->update($m_videoconf);
     }
 
@@ -167,19 +170,19 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
+     * @param array $filter            
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList(array $filter = array())
     {
         $m_videoconf = $this->getModel();
-
+        
         $mapper = $this->getMapper();
-
+        
         $res_videoconf = $mapper->usePaginator($filter)->select($m_videoconf);
-
-        return array('count' => $mapper->count(), 'results' => $res_videoconf);
+        
+        return array('count' => $mapper->count(),'results' => $res_videoconf);
     }
 
     /**
@@ -187,11 +190,74 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param string $token
+     * @param string $token            
      */
     public function join($id)
     {
-        return $this->get($id)->setVideoconfAdmin($this->getServiceVideoconfAdmin()->add($id));
+        return $this->get($id)->setVideoconfAdmin($this->getServiceVideoconfAdmin()
+            ->add($id));
+    }
+
+    /**
+     * Get videoconf.
+     *
+     * @invokable
+     *
+     * @param int $itm_prog            
+     *
+     * @throws \Exception
+     *
+     * @return \Application\Model\Videoconf
+     */
+    public function getByItemProg($itm_prog)
+    {
+        $res_videoconf = $this->getMapper()->getByItemProg($itm_prog);
+        
+        if ($res_videoconf->count() === 0) {
+            throw new \Exception('Error select');
+        }
+        
+        return $res_videoconf->current();
+    }
+
+    /**
+     * @invokable
+     *
+     * @param integer $id            
+     * @throws \Exception
+     * @return mixed
+     */
+    public function joinUser($id)
+    {
+        $identity = $this->getServiceUser()->getIdentity();
+        $res_videoconf = $this->getMapper()->get($id);
+        
+        if ($res_videoconf->count() === 0) {
+            throw new \Exception('Error select');
+        }
+        
+        $m_videoconf = $res_videoconf->current();
+        $optok = OpenTokRole::PUBLISHER;
+        if (! array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
+            $optok = OpenTokRole::MODERATOR;
+        }
+        
+        $res_videoconf_conversation = $this->getServiceVideoconfConversation()->getByVideoconfUser($m_videoconf->getId(), $identity['id']);
+            
+        $conversations = [];
+        foreach ($res_videoconf_conversation as $m_videoconf_conversation) {
+            $conversations[$m_videoconf_conversation->getConversationId()] = $this->getServiceConversation()->getConversation($m_videoconf_conversation->getConversationId());
+        }
+        
+        $res = $this->getServiceUser()->getListByItemProg($m_videoconf->getItemProgId())->toArray(array('id'));
+        
+        $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getItemProgId()));
+        $m_videoconf->setUsers($res);
+        $m_videoconf->setConversations($conversations);
+        $m_videoconf->setVideoconfAdmin($this->getServiceVideoconfAdmin()
+            ->add($id, $optok));
+        
+        return $m_videoconf;
     }
 
     /**
@@ -199,29 +265,29 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param string $token
+     * @param string $token            
      */
     public function record($token)
     {
         $res_videoconf = $this->getMapper()->getVideoconfTokenByTokenAdmin($token);
-
+        
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error no videoconf');
         }
-
+        
         $videoconf = $res_videoconf->current();
-
+        
         $arr_archive = $this->getServiceZOpenTok()->startArchive($videoconf->getToken());
-
+        
         if ($arr_archive['status'] == 'started') {
             $m_videoconf = $this->getModel();
             $m_videoconf->setId($videoconf->getId())
-                        ->setArchiveToken($arr_archive['id'])
-                        ->setArchiveStatus(CVF::ARV_STARTED);
-
+                ->setArchiveToken($arr_archive['id'])
+                ->setArchiveStatus(CVF::ARV_STARTED);
+            
             $this->getMapper()->update($m_videoconf);
         }
-
+        
         return true;
     }
 
@@ -235,20 +301,20 @@ class Videoconf extends AbstractService
     public function getListVideoUpload()
     {
         $ret[] = array();
-
+        
         $res_video_no_upload = $this->getMapper()->getListVideoUpload();
-
+        
         foreach ($res_video_no_upload as $m_video_conf) {
             try {
                 $archive = $this->getServiceZOpenTok()->getArchive($m_video_conf->getArchiveToken());
-
+                
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
                     $m_videoconf = $this->getModel();
                     $m_videoconf->setId($m_video_conf->getId())
-                                ->setArchiveStatus(CVF::ARV_UPLOAD)
-                                ->setDuration($archive['duration']);
+                        ->setArchiveStatus(CVF::ARV_UPLOAD)
+                        ->setDuration($archive['duration']);
                     $this->getMapper()->update($m_videoconf);
-
+                    
                     $arr = $m_video_conf->toArray();
                     $arr['url'] = $archive['url'];
                     $ret[] = $arr;
@@ -258,7 +324,7 @@ class Videoconf extends AbstractService
                 exit();
             }
         }
-
+        
         return $ret;
     }
 
@@ -267,8 +333,8 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int    $m_videoconf_id
-     * @param string $url
+     * @param int $m_videoconf_id            
+     * @param string $url            
      *
      * @return int
      */
@@ -276,31 +342,31 @@ class Videoconf extends AbstractService
     {
         $m_videoconf = $this->getModel();
         $m_videoconf->setId($m_videoconf_id)
-                    ->setArchiveStatus(CVF::ARV_AVAILABLE)
-                    ->setArchiveLink($url);
-
+            ->setArchiveStatus(CVF::ARV_AVAILABLE)
+            ->setArchiveLink($url);
+        
         return $this->getMapper()->update($m_videoconf);
     }
 
     /**
      * @invokable
      *
-     * @param int   $videoconf
-     * @param array $users
+     * @param int $videoconf            
+     * @param array $users            
      */
-    public function addConversation($videoconf, $users)
+    public function addConversation($videoconf, $users, $text)
     {
+        $user = $this->getServiceUser()->getIdentity();
+        $users[] = $user['id'];
+        
         $conversation = $this->getServiceConversationUser()->createConversation($users);
         $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
-
-        return $conversation;
-    }
-
-    public function getByItemProg()
-    {
+        
+        return $this->getServiceMessage()->send($text, null, $conversation);
     }
 
     /**
+     *
      * @return \Application\Service\VideoconfInvitation
      */
     public function getServiceVideoConfInvitation()
@@ -309,14 +375,34 @@ class Videoconf extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ConversationUser
      */
     public function getServiceConversationUser()
     {
         return $this->getServiceLocator()->get('app_service_conversation_user');
     }
+    
+    /**
+     *
+     * @return \Application\Service\Conversation
+     */
+    public function getServiceConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\VideoconfDoc
+     */
+    public function getServiceVideoconfDoc()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf_doc');
+    }
 
     /**
+     *
      * @return \Application\Service\VideoconfConversation
      */
     public function getServiceVideoconfConversation()
@@ -325,6 +411,7 @@ class Videoconf extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\VideoconfAdmin
      */
     public function getServiceVideoconfAdmin()
@@ -333,6 +420,25 @@ class Videoconf extends AbstractService
     }
 
     /**
+     *
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Message
+     */
+    public function getServiceMessage()
+    {
+        return $this->getServiceLocator()->get('app_service_message');
+    }
+
+    /**
+     *
      * @return \ZOpenTok\Service\OpenTok
      */
     public function getServiceZOpenTok()
@@ -341,6 +447,7 @@ class Videoconf extends AbstractService
     }
 
     /**
+     *
      * @return \Mail\Service\Mail
      */
     public function getServiceMail()

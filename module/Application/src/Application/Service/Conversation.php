@@ -21,4 +21,35 @@ class Conversation extends AbstractService
 
         return $this->getMapper()->getLastInsertValue();
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $conversation
+     */
+    public function getConversation($conversation)
+    {
+        $conv['users'] = $this->getServiceConversationUser()->getUserByConversation($conversation)->toArray(array('user_id'));
+        $conv['messages'] = $this->getServiceMessage()->getList($conversation);
+        
+        return $conv;
+    }
+    
+    /**
+     *
+     * @return \Application\Service\ConversationUser
+     */
+    public function getServiceConversationUser()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Message
+     */
+    public function getServiceMessage()
+    {
+        return $this->getServiceLocator()->get('app_service_message');
+    }
 }

@@ -20,7 +20,7 @@ class MessageTest extends AbstractService
 		
 		$data = $this->jsonRpc('message.send', array(
 				'to' => array(2,3),
-				'contentOrId' => 'super message qwerty'
+				'text' => 'super message qwerty'
 		));
 	
 		$this->assertEquals(count($data) , 3);
@@ -51,7 +51,7 @@ class MessageTest extends AbstractService
 		
 		$data = $this->jsonRpc('message.send', array(
 				'to' => 3,
-				'contentOrId' => 'super message deux qwerty 1'
+				'text' => 'super message deux qwerty 1'
 		));
 	
 		return $data['result'];
@@ -64,7 +64,7 @@ class MessageTest extends AbstractService
 		
 		$data = $this->jsonRpc('message.send', array(
 				'to' => 2,
-				'contentOrId' => 'super message un azerty 2'
+				'text' => 'super message un azerty 2'
 		));
 	}
 	
@@ -76,7 +76,7 @@ class MessageTest extends AbstractService
 		$this->setIdentity(2);
 		$data = $this->jsonRpc('message.send', array(
 				'conversation' => $conv['conversation_id'],
-				'contentOrId' => 'dernier message'
+				'text' => 'dernier message'
 		));
 	}
 	
@@ -86,7 +86,7 @@ class MessageTest extends AbstractService
 		
 		$data = $this->jsonRpc('message.send', array(
 				'to' => 5,
-				'contentOrId' => 'super message un azerty 2'
+				'text' => 'super message un azerty 2'
 		));
 	}
 	
