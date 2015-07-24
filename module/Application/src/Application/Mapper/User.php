@@ -27,7 +27,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $only_school = null)
+    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $only_school = null, $order = null, array $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar',
@@ -39,6 +39,19 @@ class User extends AbstractMapper
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
             ->quantifier('DISTINCT');
+
+        switch ($order) {
+            case 'firstname':
+                $select->order(['user.firstname' => 'ASC']);
+                break;
+            case 'random':
+                $select->order(new Expression('RAND()'));
+                break;
+        }
+
+        if ($exclude) {
+            $select->where->notIn('user.id',$exclude);
+        }
 
         if ($school !== null) {
             $select->where(array('school.id' => $school));
