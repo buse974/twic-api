@@ -55,8 +55,8 @@ class Course extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         
         $select->columns(array('id','title','abstract','description','picture'))
-            ->join('program', 'course.program_id=program.id', array(), $select::JOIN_INNER)
-            ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','logo'), $select::JOIN_INNER)
+            ->join('program', 'course.program_id=program.id', array('id', 'name'), $select::JOIN_INNER)
+            ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','logo', 'name'), $select::JOIN_INNER)
             ->join('course_user_relation', 'course_user_relation.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
