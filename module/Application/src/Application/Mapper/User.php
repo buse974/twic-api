@@ -27,18 +27,31 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $only_school = null)
+    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = true, $order = null, array $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
         . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
         ))
-            ->join('school', 'school.id=user.school_id', array('name', 'short_name', 'logo'), $select::JOIN_LEFT)
+            ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
             ->quantifier('DISTINCT');
+
+        switch ($order) {
+            case 'firstname':
+                $select->order(['user.firstname' => 'ASC']);
+                break;
+            case 'random':
+                $select->order(new Expression('RAND()'));
+                break;
+        }
+
+        if ($exclude) {
+            $select->where->notIn('user.id',$exclude);
+        }
 
         if ($school !== null) {
             $select->where(array('school.id' => $school));
@@ -50,10 +63,14 @@ class User extends AbstractMapper
 
         
         
-        if ($user_school && $only_school===true) {
+        if ($user_school && $schools===true) {
             $sub_select = $this->tableGateway->getSql()->select();
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user_school));
             $select->where(array('school.id' => $sub_select));
+        }
+
+        if (is_array($schools)) {
+            $select->where->in('school.id', $schools);
         }
 
         if ($type !== null) {
