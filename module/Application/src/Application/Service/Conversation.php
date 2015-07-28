@@ -31,7 +31,7 @@ class Conversation extends AbstractService
     {
         $conv['users'] = $this->getServiceConversationUser()->getUserByConversation($conversation)->toArray(array('user_id'));
         $conv['messages'] = $this->getServiceMessage()->getList($conversation);
-        
+        $conv['id'] = $conversation;
         return $conv;
     }
     

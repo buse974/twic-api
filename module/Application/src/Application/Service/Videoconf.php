@@ -357,7 +357,9 @@ class Videoconf extends AbstractService
     public function addConversation($videoconf, $users, $text)
     {
         $user = $this->getServiceUser()->getIdentity();
-        $users[] = $user['id'];
+        if( !in_array($user['id'], $users) ){
+            $users[] = $user['id'];
+        }
         
         $conversation = $this->getServiceConversationUser()->createConversation($users);
         $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
