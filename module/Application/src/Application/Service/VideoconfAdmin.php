@@ -23,7 +23,7 @@ class VideoconfAdmin extends AbstractService
         $m_identity = $this->getServiceAuth()->getIdentity();
         $token = $this->getServiceZOpenTok()->createToken($this->getServiceVideoconf()
             ->get($videoconf_id)
-            ->getToken(), '{"id":"' . htmlentities($m_identity->getId()) . '", "firstname":"' . htmlentities($m_identity->getFirstname()) . '", "lastname":"' . htmlentities($m_identity->getLastname()) . '"}', $role, null);
+            ->getToken(), '{"id":' . $m_identity->getId() . ', "firstname":"' . htmlentities($m_identity->getFirstname()) . '", "lastname":"' . htmlentities($m_identity->getLastname()) . '"}', $role, null);
         $m_videoconf_admin = $this->getModel();
         $m_videoconf_admin->setVideoconfId($videoconf_id)
             ->setUserId($m_identity->getId())
