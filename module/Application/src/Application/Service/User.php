@@ -194,7 +194,9 @@ class User extends AbstractService
 
     public function getListOnly($type, $course)
     {
-        return $this->getMapper()->getList(null, null, null, $type, null, $course);
+        return $this->getMapper()->getList(null, null, $this->getServiceAuth()
+            ->getIdentity()
+            ->getId(), $type, null, $course, null, null, null, null, false);
     }
 
     /**
@@ -340,7 +342,7 @@ class User extends AbstractService
     public function get($id = null)
     {
         $me = $this->getServiceAuth()->getIdentity()->getId();
-        
+
         if ($id === null) {
             $id = $me;
         }
