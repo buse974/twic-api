@@ -196,7 +196,7 @@ class User extends AbstractService
     {
         return $this->getMapper()->getList(null, null, $this->getServiceAuth()
             ->getIdentity()
-            ->getId(), $type, null, $course);
+            ->getId(), $type, null, $course, null, null, null, null, false);
     }
 
     /**
