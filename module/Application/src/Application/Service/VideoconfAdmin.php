@@ -21,9 +21,9 @@ class VideoconfAdmin extends AbstractService
     public function add($videoconf_id, $role = OpenTokRole::MODERATOR)
     {
         $m_identity = $this->getServiceAuth()->getIdentity();
-        $token = $this->getServiceZOpenTok()->createToken($this->getServiceVideoconf()
-            ->get($videoconf_id)
-            ->getToken(), '{"id":' . $m_identity->getId() . ', "firstname":"' . htmlentities($m_identity->getFirstname()) . '", "lastname":"' . htmlentities($m_identity->getLastname()) . '"}', $role, null);
+        $token = $this->getServiceZOpenTok()->createToken(
+            $this->getServiceVideoconf()->get($videoconf_id)->getToken(),
+            '{"id":'.$m_identity->getId() .',"firstname":"'.urlencode($m_identity->getFirstname()).'","lastname":"'.urlencode($m_identity->getLastname()).'","avatar":"'.$m_identity->getAvatar().'"}', $role, null);
         $m_videoconf_admin = $this->getModel();
         $m_videoconf_admin->setVideoconfId($videoconf_id)
             ->setUserId($m_identity->getId())
