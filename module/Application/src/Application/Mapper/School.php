@@ -31,15 +31,21 @@ class School extends AbstractMapper
     /**
      * Get school list.
      *
-     * @param string $school
+     * @param string $filter
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($filter = null)
+    public function getList($filter = null, $search = null)
     {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'programme', 'backroung', 'phone'))
-                ->where('school.deleted_date IS NULL');
+        $select = $this->tableGateway->getSql()->select()
+        ->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'programme', 'backroung', 'phone'));
+        
+        if (!empty($search)) {
+            $select->where(array('(school.name LIKE ? ' => '%'.$search.'%'))
+            ->where(array('school.short_name LIKE ? )' => '%'.$search.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR);
+        }        
+                
+        $select->where('school.deleted_date IS NULL');
         
         return $this->selectWith($select);
     }
