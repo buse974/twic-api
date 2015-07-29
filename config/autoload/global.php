@@ -69,6 +69,9 @@ return array(
             'app_service_conversation',
             'app_service_contact',
             'app_service_videoconf_doc',
+            'app_service_research',
+            'rbac_service_permission',
+            'rbac_service_role_permission',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
