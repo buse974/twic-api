@@ -29,7 +29,7 @@ class Conversation extends AbstractService
      */
     public function getConversation($conversation)
     {
-        $conv['users'] = $this->getServiceConversationUser()->getUserByConversation($conversation)->toArray(array('user_id'));
+        $conv['users'] = $this->getServiceUser()->getListByConversation($conversation);
         $conv['messages'] = $this->getServiceMessage()->getList($conversation);
         $conv['id'] = $conversation;
         return $conv;
@@ -42,6 +42,15 @@ class Conversation extends AbstractService
     public function getServiceConversationUser()
     {
         return $this->getServiceLocator()->get('app_service_conversation_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
     
     /**

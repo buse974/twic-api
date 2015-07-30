@@ -26,10 +26,9 @@ class ConversationUser extends AbstractMapper
                ->join('videoconf', 'videoconf.conversation_id=conversation_user.conversation_id', array(), $select::JOIN_LEFT)
                ->where(array('user_id' => $users))
                ->where(array('videoconf.id IS NULL'))
-               ->where(array('conversation_user.conversation_id' => $select_sub))
+               ->where(array('conversation_user.conversation_id IN ? ' => $select_sub))
                ->group(array('conversation_user.conversation_id'))
                ->having($having);
-
         return $this->selectWith($select);
     }
 }

@@ -450,6 +450,16 @@ class User extends AbstractService
 
         return array();
     }
+    
+      /**
+     * @param int $conversation
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByConversation($conversation)
+    {
+        return $this->getMapper()->getListByConversation($conversation);        
+    }
        
     
     

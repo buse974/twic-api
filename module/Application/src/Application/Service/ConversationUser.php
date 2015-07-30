@@ -6,6 +6,12 @@ use Dal\Service\AbstractService;
 
 class ConversationUser extends AbstractService
 {
+    
+    /**
+     * @invokable
+     * 
+     * @param array $users
+     */
     public function getConversationByUser(array $users)
     {
         $conversation = null;
