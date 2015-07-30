@@ -223,4 +223,19 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+     /**
+     * @param int $conversation
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByConversation($conversation)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id','firstname', 'lastname', 'avatar'))
+               ->join('conversation_user', 'conversation_user.user_id = user.id', array())
+               ->where(array('conversation_user.conversation_id' => $conversation));
+        return $this->selectWith($select);
+    }
+        
 }

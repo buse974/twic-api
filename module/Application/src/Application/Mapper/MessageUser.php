@@ -11,8 +11,8 @@ class MessageUser extends AbstractMapper
     public function getList($me, $message = null, $conversation = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'user_id', 'read_date', 'conversation_id', 'created_date'))
-               ->join(array('message_user_message' => 'message'), 'message_user_message.id=message_user.message_id', array('id', 'text', 'token', 'created_date'))
+        $select->columns(array('id', 'user_id', 'from_id', 'read_date', 'conversation_id', 'created_date'))
+               ->join(array('message_user_message' => 'message'), 'message_user_message.id=message_user.message_id', array('id', 'text', 'token', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")))
                ->join(array('message_user_from' => 'user'), 'message_user_from.id=message_user.from_id', array('id', 'firstname', 'lastname', 'avatar'))
                ->where(array('message_user.user_id' => $me))
                ->where(array('message_user.deleted_date IS NULL'))
