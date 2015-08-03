@@ -53,7 +53,7 @@ class Course extends AbstractMapper
     public function getListRecord($user, $is_student = false)
     {
         $select = $this->tableGateway->getSql()->select();
-        
+            
         $select->columns(array('id','title','abstract','description','picture'))
             ->join('program', 'course.program_id=program.id', array('id', 'name'), $select::JOIN_INNER)
             ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','logo', 'name'), $select::JOIN_INNER)
@@ -62,7 +62,7 @@ class Course extends AbstractMapper
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
             ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
             ->where(array('course_user_relation.user_id' => $user))
-            ->where(array('videoconf.archive_token IS NOT NULL'))
+            ->where(array('videoconf.archive_link IS NOT NULL'))
             ->group('course.id');
         
         if ($is_student !== false) {
