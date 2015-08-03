@@ -9,7 +9,7 @@
     "homepage": "https://github.com/buse974/ZendSkeletonApplication/",
     "require": {
         "php": ">=5.4",
-        "zendframework/zendframework": "2.4.*",
+        "zendframework/zendframework": "2.*",
         "buse974/dms":"dev-master",
         "buse974/dal":"dev-master",
         "buse974/address":"dev-master",

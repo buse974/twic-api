@@ -5,6 +5,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\Item as ModelItem;
 use JRpc\Json\Server\Exception\JrpcException;
+use Application\Model\Role as ModelRole;
 
 class ItemProg extends AbstractService
 {
@@ -80,8 +81,18 @@ class ItemProg extends AbstractService
         $id = $this->getMapper()->getLastInsertValue();
 
         $m_item = $this->getServiceItem()->get($item);
+        
+        if(null === $users) {
+            $users = [];
+        }
+        
+        $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
+        foreach ($instructors['list'] as $instructor) {
+            $users[] = $instructor['id'];
+        }
         switch ($m_item->getType()) {
             case ModelItem::TYPE_LIVE_CLASS:
+                
                 $conversation = $this->getServiceConversationUser()->createConversation($users);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
