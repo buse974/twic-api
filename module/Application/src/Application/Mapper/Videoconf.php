@@ -6,7 +6,6 @@ use Application\Model\Videoconf as CVF;
 
 class Videoconf extends AbstractMapper
 {
-
     public function getToken($id)
     {
         $select = $this->tableGateway->getSql()->select();

@@ -250,6 +250,11 @@ class Videoconf extends AbstractService
         }
         
         $res = $this->getServiceUser()->getListByItemProg($m_videoconf->getItemProgId())->toArray(array('id'));
+        $m_item = $this->getServiceItem()->getByItemProg($m_videoconf->getItemProgId());
+        $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
+        foreach ($instructors['list'] as $instructor) {
+            $res[] = $instructor;
+        }
         
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getItemProgId()));
         $m_videoconf->setUsers($res);
@@ -437,6 +442,15 @@ class Videoconf extends AbstractService
     public function getServiceMessage()
     {
         return $this->getServiceLocator()->get('app_service_message');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+        return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**
