@@ -85,14 +85,18 @@ class ItemProg extends AbstractService
         if(null === $users) {
             $users = [];
         }
+
+        if ($users !== null) {
+            $users = array_keys($this->addUser($id, $users)[$id], 1, true);
+        }
         
         $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
         foreach ($instructors['list'] as $instructor) {
             $users[] = $instructor['id'];
         }
+        
         switch ($m_item->getType()) {
             case ModelItem::TYPE_LIVE_CLASS:
-                
                 $conversation = $this->getServiceConversationUser()->createConversation($users);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
@@ -104,9 +108,6 @@ class ItemProg extends AbstractService
                 break;
             default:
                 break;
-        }
-        if ($users !== null) {
-            $this->addUser($id, $users);
         }
 
         return $id;

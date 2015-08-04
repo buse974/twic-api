@@ -16,6 +16,8 @@ return array(
     'app-conf' => array(
         'cache'   => 'storage_memcached',
         'secret_key' => 'toto',
+        'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
+        'secret_key_fb_debug' => true,
     ),
     'dal-conf' => array(
         'adapter' => 'db-adapter',

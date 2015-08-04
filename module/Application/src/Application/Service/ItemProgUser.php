@@ -14,7 +14,7 @@ class ItemProgUser extends AbstractService
         foreach ($user as $u) {
             foreach ($item_prog as $ip) {
                 $m_item_prog_user->setUserId($u)->setItemProgId($ip);
-                $ret[$ip][$u] = $this->getMapper()->insert($m_item_prog_user);
+                $ret[$ip][$u] = $this->getMapper()->insertStudent($u, $ip);
             }
         }
 
