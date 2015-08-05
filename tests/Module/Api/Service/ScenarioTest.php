@@ -1168,7 +1168,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(3);
         $data = $this->jsonRpc('itemprog.add', array('item' => $item,'start_date' => '2015-01-01 10:10','due_date' => '2016-01-01 10:10','users' => array(1,2,3,4)));
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
@@ -1183,8 +1183,8 @@ class ScenarioTest extends AbstractService
     public function testCanUpdateProgrmItem($item_prog)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemprog.update', array('id' => $item_prog,'start_date' => '2015-06-01 12:10','users' => array(5)));
-        
+        $data = $this->jsonRpc('itemprog.update', array('id' => $item_prog,'start_date' => '2015-06-01 12:10','users' => array(6)));
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
@@ -1199,14 +1199,14 @@ class ScenarioTest extends AbstractService
     public function testCanAddItemsProgUSer($item_prog)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemprog.addUser', array('item_prog' => $item_prog,'user' => array(1,2,3,4)));
+        $data = $this->jsonRpc('itemprog.addUser', array('item_prog' => $item_prog,'user' => array(1,2,6,4)));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals(count($data['result'][1]), 4);
         $this->assertEquals($data['result'][1][1], 0);
         $this->assertEquals($data['result'][1][2], 0);
-        $this->assertEquals($data['result'][1][3], 0);
+        $this->assertEquals($data['result'][1][6], 0);
         $this->assertEquals($data['result'][1][4], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
@@ -1216,7 +1216,7 @@ class ScenarioTest extends AbstractService
 
     public function testCanGetValidTransfertVideo()
     {
-        $this->setIdentity(3);
+        $this->setIdentity(4);
         $data = $this->jsonRpc('videoconf.validTransfertVideo', array('m_videoconf_id' => 1,'url' => 'urlvideo'));
         
         $this->assertEquals(count($data), 3);
@@ -1252,12 +1252,17 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['duration'] , null);
         $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_token'] , null);
         $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['videconf']['archive_link'] , "urlvideo");
-        $this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users']) , 1);
+        $this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users']) , 2);
         $this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][0]) , 4);
-        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['id'] , 4);
-        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['firstname'] , "Salim");
-        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['lastname'] , "Bendacha");
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['id'] , 6);
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['firstname'] , "Guillaume");
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['lastname'] , "Masmejean");
         $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][0]['avatar'] , null);
+        $this->assertEquals(count($data['result'][0]['items'][0]['item_prog'][0]['users'][1]) , 4);
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['id'] , 4);
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['firstname'] , "Salim");
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['lastname'] , "Bendacha");
+        $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['users'][1]['avatar'] , null);
         $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['id'] , 1);
         $this->assertEquals($data['result'][0]['items'][0]['item_prog'][0]['start_date'] , "2015-06-01T12:10:00Z");
         $this->assertEquals(!empty($data['result'][0]['items'][0]['item_prog'][0]['due_date']) , true);
@@ -1357,7 +1362,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['user']['firstname'] , "Salim");
         $this->assertEquals($data['result']['user']['lastname'] , "Bendacha");
         $this->assertEquals($data['result']['user']['avatar'] , null);
-        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['id'] , 3);
         $this->assertEquals($data['result']['conversation_id'] , 1);
         $this->assertEquals($data['result']['from_id'] , 4);
         $this->assertEquals($data['result']['user_id'] , 4);
@@ -1372,30 +1377,30 @@ class ScenarioTest extends AbstractService
      */
     public function testCanAddConversationInVideoconf($videoconf)
     {
-        $this->setIdentity(3);
-        $data = $this->jsonRpc('videoconf.addConversation', array('videoconf' => $videoconf,'users' => array(2),'text' => 'super text qui tue'));
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('videoconf.addConversation', array('videoconf' => $videoconf,'users' => array(6),'text' => 'super text qui tue'));
 
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 8);
-        $this->assertEquals(count($data['result']['message']), 4);
-        $this->assertEquals($data['result']['message']['id'], 2);
-        $this->assertEquals($data['result']['message']['text'], "super text qui tue");
-        $this->assertEquals($data['result']['message']['token'], null);
-        $this->assertEquals(! empty($data['result']['message']['created_date']), true);
-        $this->assertEquals(count($data['result']['user']), 4);
-        $this->assertEquals($data['result']['user']['id'], 3);
-        $this->assertEquals($data['result']['user']['firstname'], "Christophe");
-        $this->assertEquals($data['result']['user']['lastname'], "Robert");
-        $this->assertEquals($data['result']['user']['avatar'], null);
-        $this->assertEquals($data['result']['id'], 4);
-        $this->assertEquals($data['result']['conversation_id'], 2);
-        $this->assertEquals($data['result']['user_id'], 3);
-        $this->assertEquals($data['result']['from_id'], 3);
-        $this->assertEquals($data['result']['read_date'], null);
-        $this->assertEquals(! empty($data['result']['created_date']), true);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 8); 
+        $this->assertEquals(count($data['result']['message']) , 4); 
+        $this->assertEquals($data['result']['message']['id'] , 2); 
+        $this->assertEquals($data['result']['message']['text'] , "super text qui tue"); 
+        $this->assertEquals($data['result']['message']['token'] , null); 
+        $this->assertEquals(!empty($data['result']['message']['created_date']) , true); 
+        $this->assertEquals(count($data['result']['user']) , 4); 
+        $this->assertEquals($data['result']['user']['id'] , 4); 
+        $this->assertEquals($data['result']['user']['firstname'] , "Salim"); 
+        $this->assertEquals($data['result']['user']['lastname'] , "Bendacha"); 
+        $this->assertEquals($data['result']['user']['avatar'] , null); 
+        $this->assertEquals($data['result']['id'] , 5); 
+        $this->assertEquals($data['result']['conversation_id'] , 2); 
+        $this->assertEquals($data['result']['from_id'] , 4); 
+        $this->assertEquals($data['result']['user_id'] , 4); 
+        $this->assertEquals($data['result']['read_date'] , null); 
+        $this->assertEquals(!empty($data['result']['created_date']) , true); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+                
         return $data['result']['conversation_id'];
     }
 
@@ -1404,43 +1409,43 @@ class ScenarioTest extends AbstractService
      */
     public function testCanGetConversation($conv)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(6);
         $data = $this->jsonRpc('conversation.getConversation', array('conversation' => $conv));
-        
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 3);
-        $this->assertEquals(count($data['result']['users']), 2);
-        $this->assertEquals(count($data['result']['users'][2]), 4);
-        $this->assertEquals($data['result']['users'][2]['id'], 2);
-        $this->assertEquals($data['result']['users'][2]['firstname'], "Xuan-Anh");
-        $this->assertEquals($data['result']['users'][2]['lastname'], "Hoang");
-        $this->assertEquals($data['result']['users'][2]['avatar'], null);
-        $this->assertEquals(count($data['result']['users'][3]), 4);
-        $this->assertEquals($data['result']['users'][3]['id'], 3);
-        $this->assertEquals($data['result']['users'][3]['firstname'], "Christophe");
-        $this->assertEquals($data['result']['users'][3]['lastname'], "Robert");
-        $this->assertEquals($data['result']['users'][3]['avatar'], null);
-        $this->assertEquals(count($data['result']['messages']), 1);
-        $this->assertEquals(count($data['result']['messages'][0]), 8);
-        $this->assertEquals(count($data['result']['messages'][0]['message']), 4);
-        $this->assertEquals($data['result']['messages'][0]['message']['id'], 2);
-        $this->assertEquals($data['result']['messages'][0]['message']['text'], "super text qui tue");
-        $this->assertEquals($data['result']['messages'][0]['message']['token'], null);
-        $this->assertEquals(! empty($data['result']['messages'][0]['message']['created_date']), true);
-        $this->assertEquals(count($data['result']['messages'][0]['user']), 4);
-        $this->assertEquals($data['result']['messages'][0]['user']['id'], 3);
-        $this->assertEquals($data['result']['messages'][0]['user']['firstname'], "Christophe");
-        $this->assertEquals($data['result']['messages'][0]['user']['lastname'], "Robert");
-        $this->assertEquals($data['result']['messages'][0]['user']['avatar'], null);
-        $this->assertEquals($data['result']['messages'][0]['id'], 4);
-        $this->assertEquals($data['result']['messages'][0]['conversation_id'], 2);
-        $this->assertEquals($data['result']['messages'][0]['from_id'], 3);
-        $this->assertEquals($data['result']['messages'][0]['user_id'], 3);
-        $this->assertEquals($data['result']['messages'][0]['read_date'], null);
-        $this->assertEquals(! empty($data['result']['messages'][0]['created_date']), true);
-        $this->assertEquals($data['result']['id'], 2);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result']['users']) , 2);
+        $this->assertEquals(count($data['result']['users'][4]) , 4);
+        $this->assertEquals($data['result']['users'][4]['id'] , 4);
+        $this->assertEquals($data['result']['users'][4]['firstname'] , "Salim");
+        $this->assertEquals($data['result']['users'][4]['lastname'] , "Bendacha");
+        $this->assertEquals($data['result']['users'][4]['avatar'] , null);
+        $this->assertEquals(count($data['result']['users'][6]) , 4);
+        $this->assertEquals($data['result']['users'][6]['id'] , 6);
+        $this->assertEquals($data['result']['users'][6]['firstname'] , "Guillaume");
+        $this->assertEquals($data['result']['users'][6]['lastname'] , "Masmejean");
+        $this->assertEquals($data['result']['users'][6]['avatar'] , null);
+        $this->assertEquals(count($data['result']['messages']) , 1);
+        $this->assertEquals(count($data['result']['messages'][0]) , 8);
+        $this->assertEquals(count($data['result']['messages'][0]['message']) , 4);
+        $this->assertEquals($data['result']['messages'][0]['message']['id'] , 2);
+        $this->assertEquals($data['result']['messages'][0]['message']['text'] , "super text qui tue");
+        $this->assertEquals($data['result']['messages'][0]['message']['token'] , null);
+        $this->assertEquals(!empty($data['result']['messages'][0]['message']['created_date']) , true);
+        $this->assertEquals(count($data['result']['messages'][0]['user']) , 4);
+        $this->assertEquals($data['result']['messages'][0]['user']['id'] , 4);
+        $this->assertEquals($data['result']['messages'][0]['user']['firstname'] , "Salim");
+        $this->assertEquals($data['result']['messages'][0]['user']['lastname'] , "Bendacha");
+        $this->assertEquals($data['result']['messages'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['messages'][0]['id'] , 6);
+        $this->assertEquals($data['result']['messages'][0]['conversation_id'] , 2);
+        $this->assertEquals($data['result']['messages'][0]['from_id'] , 4);
+        $this->assertEquals($data['result']['messages'][0]['user_id'] , 6);
+        $this->assertEquals($data['result']['messages'][0]['read_date'] , null);
+        $this->assertEquals(!empty($data['result']['messages'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['id'] , 2);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
@@ -1448,7 +1453,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCanJoinUser($videoconf)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(4);
         $data = $this->jsonRpc('videoconf.joinUser', array('id' => $videoconf));
         
         print_r($data);
