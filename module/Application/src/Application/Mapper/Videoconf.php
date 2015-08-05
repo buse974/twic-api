@@ -20,7 +20,7 @@ class Videoconf extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title','description','conversation_id','item_prog_id' ,'duration','start_date','token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.id' => $id));
+        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration','start_date','token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.id' => $id));
         
         return $this->selectWith($select);
     }
@@ -29,7 +29,7 @@ class Videoconf extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title','description','conversation_id', 'item_prog_id', 'duration','start_date','token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.item_prog_id' => $item_prog));
+        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration','start_date','token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.item_prog_id' => $item_prog));
         
         return $this->selectWith($select);
     }

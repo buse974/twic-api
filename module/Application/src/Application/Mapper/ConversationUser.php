@@ -3,6 +3,10 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Zend\Db\Sql\Predicate\NotIn;
+use Dal\Db\Sql\Select;
+use Zend\Db\Sql\Predicate\Expression;
+use Dal\Db\TableGateway\TableGateway;
 
 class ConversationUser extends AbstractMapper
 {
@@ -30,6 +34,33 @@ class ConversationUser extends AbstractMapper
                ->group(array('conversation_user.conversation_id'))
                ->having($having);
         return $this->selectWith($select);
+    }
+    
+    public function deleteNotIn($conversation, $users)
+    {
+        $delete = $this->tableGateway->getSql()->delete();
+        $delete->where(array('conversation_id' => $conversation))
+                ->where( new NotIn('user_id', $users));
+        
+        return $this->deleteWith($delete);
+    }
+    
+    public function add($conversation, $user)
+    {
+        $sql = "INSERT INTO `conversation_user` (`user_id`, `conversation_id`)
+        SELECT :u AS `user_id`, :c AS `conversation_id` FROM DUAL
+        WHERE NOT EXISTS
+        
+        (SELECT `conversation_user`.*
+            FROM `conversation_user`
+            WHERE `user_id` = :u1 AND `conversation_id` = :c1)";
+        
+        return $this->requestPdo($sql, array(
+            ':u' => $user,
+            ':c' => $conversation,
+            ':u1' => $user,
+            ':c1' => $conversation,
+        ));
     }
 }
 
