@@ -10,7 +10,6 @@ use Firebase\Token\TokenGenerator;
 
 class User extends AbstractService
 {
-
     /**
      * Log user.
      *
@@ -26,7 +25,6 @@ class User extends AbstractService
         $auth->getAdapter()->setCredential($password);
         
         $result = $auth->authenticate();
-        
         if (! $result->isValid()) {
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
@@ -36,7 +34,7 @@ class User extends AbstractService
 
     public function _getCacheIdentity($init = false)
     {
-        $user = array();
+        $user = [];
         $id = $this->getServiceAuth()
             ->getIdentity()
             ->getId();
@@ -47,7 +45,7 @@ class User extends AbstractService
             $user = $this->getServiceAuth()
                 ->getIdentity()
                 ->toArray();
-            $user['roles'] = array();
+            $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][$role->getId()] = $role->getName();
             }
@@ -57,7 +55,9 @@ class User extends AbstractService
             $secret_key_fb = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb'];
             $secret_key_fb_debug = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb_debug'];
             $generator = new TokenGenerator($secret_key_fb);
-            $user['fbtoken'] = $generator->setData(array('uid' => (string)$id))->setOption('debug', $secret_key_fb_debug)->create();
+            $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
+                ->setOption('debug', $secret_key_fb_debug)
+                ->create();
             
             $this->getCache()->setItem('identity_' . $id, $user);
         }
@@ -106,6 +106,9 @@ class User extends AbstractService
      * @param string $firstname            
      * @param string $lastname            
      * @param string $email            
+     * @param string $gender            
+     * @param int $origin            
+     * @param int $nationality            
      * @param string $password            
      * @param string $birth_date            
      * @param string $position            
@@ -117,7 +120,7 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function add($firstname, $lastname, $email, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
+    public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
     {
         $m_user = $this->getModel();
         
@@ -125,6 +128,9 @@ class User extends AbstractService
             ->setLastname($lastname)
             ->setEmail($email)
             ->setSis($sis)
+            ->setOrigin($origin)
+            ->setGender($gender)
+            ->setNationality($nationality)
             ->setPassword(md5($password))
             ->setBirthDate($birth_date)
             ->setPosition($position)
@@ -139,24 +145,19 @@ class User extends AbstractService
             $user = $this->get();
             $m_user->setSchoolId($user['school_id']);
         }
-        
         if ($password !== null) {
             $m_user->setPassword(md5($password));
         }
-        
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
-        
         $id = $this->getMapper()->getLastInsertValue();
-        
         if ($roles === null) {
             $roles = array(ModelRole::ROLE_STUDENT_STR);
         }
         if (! is_array($roles)) {
             $roles = array($roles);
         }
-        
         foreach ($roles as $r) {
             $this->getServiceUserRole()->add($this->getServiceRole()
                 ->getIdByName($r), $id);
@@ -189,8 +190,8 @@ class User extends AbstractService
         $res = $res->toArray();
         
         foreach ($res as &$user) {
-            $user['roles'] = array();
-            $user['program'] = array();
+            $user['roles'] = [];
+            $user['program'] = [];
             
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
                 $user['roles'][] = $role->getName();
@@ -219,7 +220,6 @@ class User extends AbstractService
         if (! is_array($user)) {
             $user = array($user);
         }
-        
         if (! is_array($program)) {
             $program = array($program);
         }
@@ -277,6 +277,9 @@ class User extends AbstractService
      * @invokable
      *
      * @param int $id            
+     * @param string $gender            
+     * @param int $origin            
+     * @param int $nationality            
      * @param string $firstname            
      * @param string $lastname            
      * @param string $email            
@@ -290,7 +293,7 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function update($id = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
+    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
     {
         $m_user = $this->getModel();
         
@@ -304,6 +307,9 @@ class User extends AbstractService
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
+            ->setOrigin($origin)
+            ->setGender($gender)
+            ->setNationality($nationality)
             ->setSis($sis)
             ->setBirthDate($birth_date)
             ->setPosition($position)
@@ -384,7 +390,7 @@ class User extends AbstractService
      */
     public function delete($id)
     {
-        $ret = array();
+        $ret = [];
         if (! is_array($id)) {
             $id = array($id);
         }
@@ -455,12 +461,13 @@ class User extends AbstractService
      */
     public function getStudentList()
     {
+        $ret = [];
         $instructor = $this->getServiceUser()->getIdentity();
         if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $instructor['roles'])) {
-            return $this->getMapper()->getStudentList($instructor['id']);
+            $ret = $this->getMapper()->getStudentList($instructor['id']);
         }
         
-        return array();
+        return $ret;
     }
 
     /**
