@@ -6,21 +6,30 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Predicate\Expression;
 use Application\Model\Role as ModelRole;
+use Application\Model\Role;
 
 class ItemProgUser extends AbstractMapper
 {
     public function insertStudent($u, $ip)
     {
-        $select = new Select('user');
-        $select->columns(array('id', 'ip' => new Expression($ip)))
-            ->join('user_role', 'user_role.user_id=user.id', array())
-            ->where(array('user_role.role_id=' . ModelRole::ROLE_STUDENT_ID))
-            ->where(array('user_role.user_id' => $u));
+        $sql = "INSERT INTO `item_prog_user` (`user_id`, `item_prog_id`) 
+                SELECT 
+                    `user`.`id` AS `id`, :ip AS `ip`
+                FROM
+                    `user`
+                        INNER JOIN
+                    `user_role` ON `user_role`.`user_id` = `user`.`id`
+                WHERE
+                    user_role.role_id = :role
+                        AND `user_role`.`user_id` = :u 
+                	AND NOT EXISTS (SELECT * FROM `item_prog_user` WHERE `user_id` = :u1 AND `item_prog_id` = :ip1)";
         
-        $insert = $this->tableGateway->getSql()->insert();
-
-        $insert->columns(array('user_id', 'item_prog_id'))->select($select);
-        
-        return $this->insertWith($insert);
+        return $this->requestPdo($sql, array(
+            ':ip' => $ip,
+            ':role' => Role::ROLE_STUDENT_ID,
+            ':u' => $u,
+            ':u1' => $u,
+            ':ip1' => $ip,
+        ));
     }
 }

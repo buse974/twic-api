@@ -79,16 +79,13 @@ class ItemProg extends AbstractService
             throw new \Exception('error insert item prog');
         }
         $id = $this->getMapper()->getLastInsertValue();
-
         $m_item = $this->getServiceItem()->get($item);
         
         if(null === $users) {
             $users = [];
         }
 
-        if ($users !== null) {
-            $users = array_keys($this->addUser($id, $users)[$id], 1, true);
-        }
+        $users = array_keys($this->getServiceItemProgUser()->add($users, [$id])[$id], 1, true);
         
         $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
         foreach ($instructors['list'] as $instructor) {
@@ -96,7 +93,7 @@ class ItemProg extends AbstractService
         }
         
         switch ($m_item->getType()) {
-            case ModelItem::TYPE_LIVE_CLASS:
+            case ModelItem::TYPE_LIVE_CLASS :
                 $conversation = $this->getServiceConversationUser()->createConversation($users);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
@@ -147,6 +144,22 @@ class ItemProg extends AbstractService
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
             $this->addUser($id, $users);
+            $m_item = $this->getServiceItem()->getByItemProg($id);
+            switch ($m_item->getType()) {
+                case ModelItem::TYPE_LIVE_CLASS:
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($id);
+                    $this->getServiceConversationUser()->replace($m_videoconf->getConversationId(), $users);
+                    break;
+                case ModelItem::TYPE_WORKGROUP:
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($id);
+                    $this->getServiceConversationUser()->replace($m_videoconf->getConversationId(), $users);
+                    break;
+                default:
+                    break;
+            }
+            
+            
+            
         }
 
         return $this->getMapper()->update($m_item_prog);
@@ -185,6 +198,22 @@ class ItemProg extends AbstractService
             $item_prog = array($item_prog);
         }
 
+        foreach ($item_prog as $ip) {
+            $m_item = $this->getServiceItem()->getByItemProg($ip);
+            switch ($m_item->getType()) {
+                case ModelItem::TYPE_LIVE_CLASS:
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($ip);
+                    $conversation = $this->getServiceConversationUser()->add($m_videoconf->getConversationId(), $user);
+                    break;
+                case ModelItem::TYPE_WORKGROUP:
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($ip);
+                    $conversation = $this->getServiceConversationUser()->add($m_videoconf->getConversationId(), $user);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
         return $this->getServiceItemProgUser()->add($user, $item_prog);
     }
 
