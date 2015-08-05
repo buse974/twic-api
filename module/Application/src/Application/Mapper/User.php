@@ -43,10 +43,13 @@ class User extends AbstractMapper
 
         switch ($order) {
             case 'firstname':
-                $select->order(['user.firstname' => 'ASC']);
+                $select->order('user.firstname ASC');
                 break;
             case 'random':
                 $select->order(new Expression('RAND()'));
+                break;
+            case 'contact_state':
+                $select->order('user$contact_state DESC');
                 break;
         }
 
