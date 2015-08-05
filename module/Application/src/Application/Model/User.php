@@ -3,6 +3,7 @@
 namespace Application\Model;
 
 use Application\Model\Base\User as BaseUser;
+use Address\Model\Country;
 
 class User extends BaseUser
 {
@@ -10,11 +11,11 @@ class User extends BaseUser
     protected $roles;
     protected $available;
     protected $selected;
-    /**
-     * @var
-     */
     protected $contact_state;
-
+    protected $gender;
+    protected $nationality;
+    protected $origin;
+    
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
@@ -24,9 +25,48 @@ class User extends BaseUser
         parent::exchangeArray($data);
 
         $this->school = new School($this);
+        $this->nationality = new Country($this, 'nationality');
+        $this->origin = new Country($this, 'origin');
+        
         $this->school->exchangeArray($data);
+        $this->nationality->exchangeArray($data);
+        $this->origin->exchangeArray($data);
     }
 
+    public function getOrigin()
+    {
+        return $this->origin;
+    }
+    
+    public function setOrigin($origin)
+    {
+        $this->origin = $origin;
+    
+        return $this;
+    }
+    public function getNationality()
+    {
+        return $this->nationality;
+    }
+    
+    public function setNationality($nationality)
+    {
+        $this->nationality = $nationality;
+    
+        return $this;
+    }
+    public function getGender()
+    {
+        return $this->gender;
+    }
+    
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    
+        return $this;
+    }
+    
     public function getContactState()
     {
         return $this->contact_state;
