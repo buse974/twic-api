@@ -5,6 +5,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\Item as ModelItem;
 use JRpc\Json\Server\Exception\JrpcException;
+use Application\Model\Role as ModelRole;
 
 class ItemProg extends AbstractService
 {
@@ -78,10 +79,21 @@ class ItemProg extends AbstractService
             throw new \Exception('error insert item prog');
         }
         $id = $this->getMapper()->getLastInsertValue();
-
         $m_item = $this->getServiceItem()->get($item);
+        
+        if(null === $users) {
+            $users = [];
+        }
+
+        $users = array_keys($this->getServiceItemProgUser()->add($users, [$id])[$id], 1, true);
+        
+        $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
+        foreach ($instructors['list'] as $instructor) {
+            $users[] = $instructor['id'];
+        }
+        
         switch ($m_item->getType()) {
-            case ModelItem::TYPE_LIVE_CLASS:
+            case ModelItem::TYPE_LIVE_CLASS :
                 $conversation = $this->getServiceConversationUser()->createConversation($users);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
@@ -93,9 +105,6 @@ class ItemProg extends AbstractService
                 break;
             default:
                 break;
-        }
-        if ($users !== null) {
-            $this->addUser($id, $users);
         }
 
         return $id;
@@ -134,7 +143,30 @@ class ItemProg extends AbstractService
 
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
-            $this->addUser($id, $users);
+            $this->getServiceItemProgUser()->add($users, array($id));
+            
+            $m_item = $this->getServiceItem()->getByItemProg($id);
+            $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
+            foreach ($instructors['list'] as $instructor) {
+                $users[] = $instructor['id'];
+            }
+            
+            
+            switch ($m_item->getType()) {
+                case ModelItem::TYPE_LIVE_CLASS :
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($id);
+                    $this->getServiceConversationUser()->replace($m_videoconf->getConversationId(), $users);
+                    break;
+                case ModelItem::TYPE_WORKGROUP :
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($id);
+                    $this->getServiceConversationUser()->replace($m_videoconf->getConversationId(), $users);
+                    break;
+                default:
+                    break;
+            }
+            
+            
+            
         }
 
         return $this->getMapper()->update($m_item_prog);
@@ -173,7 +205,30 @@ class ItemProg extends AbstractService
             $item_prog = array($item_prog);
         }
 
-        return $this->getServiceItemProgUser()->add($user, $item_prog);
+        $this->getServiceItemProgUser()->add($user, $item_prog);
+        
+        $users = [];
+        foreach ($this->getServiceUser()->getListByItemProg($item_prog) as $u) {
+            $users[] = $u->getId();
+        }
+        
+        foreach ($item_prog as $ip) {
+            $m_item = $this->getServiceItem()->getByItemProg($ip);
+            switch ($m_item->getType()) {
+                case ModelItem::TYPE_LIVE_CLASS:
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($ip);
+                    $conversation = $this->getServiceConversationUser()->add($m_videoconf->getConversationId(), $users);
+                    break;
+                case ModelItem::TYPE_WORKGROUP:
+                    $m_videoconf = $this->getServiceVideoconf()->getByItemProg($ip);
+                    $conversation = $this->getServiceConversationUser()->add($m_videoconf->getConversationId(), $users);
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        return $users;
     }
 
     /**

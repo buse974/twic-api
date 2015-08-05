@@ -60,6 +60,23 @@ class ConversationUser extends AbstractService
         return $conversation_id;
     }
     
+    public function add($conversation, $users)
+    {
+        $ret = [];
+        foreach ($users as $user) {
+            $ret[$user] = $this->getMapper()->add($conversation, $user);
+        }
+        
+        return $ret;
+    }
+    
+    public function replace($conversation, $users)
+    {
+        $this->getMapper()->deleteNotIn($conversation, $users);
+
+        return $this->add($conversation, $users);
+    }
+    
     /**
      * @param int $conversation
      * @param int $user
