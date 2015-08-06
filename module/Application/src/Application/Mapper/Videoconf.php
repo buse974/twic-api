@@ -3,6 +3,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Application\Model\Videoconf as CVF;
+use Zend\Db\Sql\Predicate\Expression;
 
 class Videoconf extends AbstractMapper
 {
@@ -20,7 +21,9 @@ class Videoconf extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration','start_date','token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.id' => $id));
+        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration',
+            'videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")
+            ,'token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.id' => $id));
         
         return $this->selectWith($select);
     }
