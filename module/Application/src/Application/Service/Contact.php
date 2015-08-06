@@ -52,7 +52,7 @@ class Contact extends AbstractService
     /**
      * @invokable
      *
-     * @param int $user            
+     * @param int $user
      */
     public function remove($user)
     {
@@ -103,12 +103,20 @@ class Contact extends AbstractService
 
     /**
      * @invokable
+     *
+     * @param integer $user
      */
-    public function getList()
+    public function getList($user = null)
     {
-        $identity = $this->getServiceUser()->getIdentity();
-        
-        $listRequest = $this->getMapper()->getList($identity['id']);
+        if (!$user) {
+            $user = $this->getServiceUser()->getIdentity();
+        }
+
+        if(!$user['id']) {
+            throw new \Exception('user parameter without id');
+        }
+
+        $listRequest = $this->getMapper()->getList($user['id']);
 
         foreach ($listRequest as $request) {
             $request->setContact($this->getServiceUser()->get($request->getContactId()));
