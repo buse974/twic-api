@@ -301,11 +301,11 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param integer $videoconf
+     * @param integer $id
      */
-    public function startRecord($videoconf)
+    public function startRecord($id)
     {
-        $m_videoconf = $this->get($videoconf);
+        $m_videoconf = $this->get($id);
         
         $arr_archive = $this->getServiceZOpenTok()->startArchive($m_videoconf->getToken());
     
@@ -326,11 +326,11 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param integer $videoconf
+     * @param integer $id
      */
-    public function stopRecord($videoconf)
+    public function stopRecord($id)
     {
-        $m_videoconf = $this->get($videoconf);
+        $m_videoconf = $this->get($id);
         
         $arr_archive = $this->getServiceZOpenTok()->stopArchive($m_videoconf->getToken());
         
