@@ -9,10 +9,10 @@ class ItemProg extends BaseItemProg
     protected $users;
     protected $item;
     protected $editable;
-    protected $videoconf;
     protected $item_assignment;
     protected $item_grade;
-
+    protected $videoconf_archives;
+   
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
@@ -22,19 +22,24 @@ class ItemProg extends BaseItemProg
         parent::exchangeArray($data);
 
         $this->item = new Item($this);
-        $this->videoconf = new Videoconf($this);
         $this->item_assignment = new ItemAssignment($this);
         $this->item_grade = new ItemGrading($this);
 
-        $this->videoconf->exchangeArray($data);
         $this->item->exchangeArray($data);
         $this->item_assignment->exchangeArray($data);
         $this->item_grade->exchangeArray($data);
     }
 
-    public function getVideconf()
+    public function getVideoconfArchives()
     {
-        return $this->videoconf;
+        return $this->videoconf_archives;
+    }
+    
+    public function setVideoconfArchives($videoconf_archives)
+    {
+        $this->videoconf_archives = $videoconf_archives;
+    
+        return $this;
     }
 
     public function setItemAssignment($item_assignment)
@@ -59,13 +64,6 @@ class ItemProg extends BaseItemProg
     public function getItemGrade()
     {
         return $this->item_grade;
-    }
-
-    public function setVideconf($videoconf)
-    {
-        $this->videoconf = $videoconf;
-
-        return $this;
     }
 
     public function setUsers($users)

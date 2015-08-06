@@ -20,6 +20,7 @@ class Videoconf extends BaseVideoconf
     protected $videoconf_entity;
     protected $videoconf_invitation;
     protected $videoconf_admin;
+    protected $videoconf_archives;
     protected $conversations;
     protected $users;
     protected $docs;
@@ -37,6 +38,18 @@ class Videoconf extends BaseVideoconf
         $this->videoconf_admin->exchangeArray($data);
     }
 
+    public function getVideoconfArchives()
+    {
+        return $this->videoconf_archives;
+    }
+    
+    public function setVideoconfArchives($videoconf_archives)
+    {
+        $this->videoconf_archives = $videoconf_archives;
+    
+        return $this;
+    }
+    
     public function getDocs()
     {
         return $this->docs;

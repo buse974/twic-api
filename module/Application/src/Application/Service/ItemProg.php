@@ -114,8 +114,8 @@ class ItemProg extends AbstractService
     {
         $res_item_prog = $this->getMapper()->getListRecord($item, $user, $is_student);
         foreach ($res_item_prog as $m_item_prog) {
-            $m_item_prog->setUsers($this->getServiceUser()
-                ->getListByItemProg($m_item_prog->getId()));
+            $m_item_prog->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordByItemProg($m_item_prog->getId()));
+            $m_item_prog->setUsers($this->getServiceUser()->getListByItemProg($m_item_prog->getId()));
         }
 
         return $res_item_prog;
@@ -276,6 +276,15 @@ class ItemProg extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
+    /**
+     * @return \Application\Service\VideoconfArchive
+     */
+    public function getServiceVideoconfArchive()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf_archive');
+    }
+    
+    
     /**
      * @return \Application\Service\Videoconf
      */

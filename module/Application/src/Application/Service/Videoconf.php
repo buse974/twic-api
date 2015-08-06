@@ -213,11 +213,16 @@ class Videoconf extends AbstractService
     {
         $res_videoconf = $this->getMapper()->getByItemProg($itm_prog);
         
+        
+        
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
         }
         
-        return $res_videoconf->current();
+        $m_videoconf = $res_videoconf->current();
+        $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordByItemProg($itm_prog));
+        
+        return $m_videoconf;
     }
 
     /**
@@ -285,12 +290,7 @@ class Videoconf extends AbstractService
         $arr_archive = $this->getServiceZOpenTok()->startArchive($videoconf->getToken());
         
         if ($arr_archive['status'] == 'started') {
-            $m_videoconf = $this->getModel();
-            $m_videoconf->setId($videoconf->getId())
-                ->setArchiveToken($arr_archive['id'])
-                ->setArchiveStatus(CVF::ARV_STARTED);
-            
-            $this->getMapper()->update($m_videoconf);
+            $this->getServiceVideoconfArchive()->add($videoconf->getId(), $arr_archive['id']);
         }
         
         return true;
@@ -310,12 +310,7 @@ class Videoconf extends AbstractService
         $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_videoconf->getToken()));
     
         if ($arr_archive['status'] == 'started') {
-            $m_videoconf = $this->getModel();
-            $m_videoconf->setId($videoconf->getId())
-            ->setArchiveToken($arr_archive['id'])
-            ->setArchiveStatus(CVF::ARV_STARTED);
-    
-            $this->getMapper()->update($m_videoconf);
+            $this->getServiceVideoconfArchive()->add($videoconf->getId(), $arr_archive['id']);
         }
     
         return $arr_archive;
@@ -332,9 +327,7 @@ class Videoconf extends AbstractService
     {
         $m_videoconf = $this->get($id);
         
-        $arr_archive = $this->getServiceZOpenTok()->stopArchive($m_videoconf->getToken());
-        
-        return $arr_archive;
+        return $this->getServiceZOpenTok()->stopArchive($m_videoconf->getToken());
     }
     
     /**
@@ -348,20 +341,14 @@ class Videoconf extends AbstractService
     {
         $ret[] = array();
         
-        $res_video_no_upload = $this->getMapper()->getListVideoUpload();
+        $res_video_no_upload = $this->getServiceVideoconfArchive()->getListVideoUpload();
         
-        foreach ($res_video_no_upload as $m_video_conf) {
+        foreach ($res_video_no_upload as $m_videoconf_archive) {
             try {
-                $archive = $this->getServiceZOpenTok()->getArchive($m_video_conf->getArchiveToken());
-                
-                if ($archive['status'] == CVF::ARV_AVAILABLE) {
-                    $m_videoconf = $this->getModel();
-                    $m_videoconf->setId($m_video_conf->getId())
-                        ->setArchiveStatus(CVF::ARV_UPLOAD)
-                        ->setDuration($archive['duration']);
-                    $this->getMapper()->update($m_videoconf);
-                    
-                    $arr = $m_video_conf->toArray();
+                $archive = $this->getServiceZOpenTok()->getArchive($m_videoconf_archive->getArchiveToken());
+                if ($archive['status'] == CVF::ARV_AVAILABLE) { 
+                    $this->getServiceVideoconfArchive()->updateByArchiveToken($m_videoconf_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
+                    $arr = $m_videoconf_archive->toArray();
                     $arr['url'] = $archive['url'];
                     $ret[] = $arr;
                 }
@@ -379,19 +366,14 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $m_videoconf_id            
+     * @param integer $videoconf_archive            
      * @param string $url            
      *
      * @return int
      */
-    public function validTransfertVideo($m_videoconf_id, $url)
+    public function validTransfertVideo($videoconf_archive, $url)
     {
-        $m_videoconf = $this->getModel();
-        $m_videoconf->setId($m_videoconf_id)
-            ->setArchiveStatus(CVF::ARV_AVAILABLE)
-            ->setArchiveLink($url);
-        
-        return $this->getMapper()->update($m_videoconf);
+        return $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE,null, $url);
     }
 
     /**
@@ -411,6 +393,15 @@ class Videoconf extends AbstractService
         $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
         
         return $this->getServiceMessage()->send($text, null, $conversation);
+    }
+    
+    /**
+     *
+     * @return \Application\Service\VideoconfArchive
+     */
+    public function getServiceVideoconfArchive()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf_archive');
     }
 
     /**
