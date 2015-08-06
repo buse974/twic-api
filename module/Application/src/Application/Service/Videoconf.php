@@ -297,6 +297,47 @@ class Videoconf extends AbstractService
     }
 
     /**
+     * Start record video conf.
+     *
+     * @invokable
+     *
+     * @param integer $videoconf
+     */
+    public function startRecord($videoconf)
+    {
+        $m_videoconf = $this->get($videoconf);
+        
+        $arr_archive = $this->getServiceZOpenTok()->startArchive($m_videoconf->getToken());
+    
+        if ($arr_archive['status'] == 'started') {
+            $m_videoconf = $this->getModel();
+            $m_videoconf->setId($videoconf->getId())
+            ->setArchiveToken($arr_archive['id'])
+            ->setArchiveStatus(CVF::ARV_STARTED);
+    
+            $this->getMapper()->update($m_videoconf);
+        }
+    
+        return $arr_archive;
+    }
+    
+    /**
+     * Stop record video conf.
+     *
+     * @invokable
+     *
+     * @param integer $videoconf
+     */
+    public function stopRecord($videoconf)
+    {
+        $m_videoconf = $this->get($videoconf);
+        
+        $arr_archive = $this->getServiceZOpenTok()->stopArchive($m_videoconf->getToken());
+        
+        return $arr_archive;
+    }
+    
+    /**
      * Récupére la liste des videos a uploader.
      *
      * @invokable
