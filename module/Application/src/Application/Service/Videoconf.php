@@ -307,7 +307,7 @@ class Videoconf extends AbstractService
     {
         $m_videoconf = $this->get($id);
         
-        $arr_archive = $this->getServiceZOpenTok()->startArchive($m_videoconf->getToken());
+        $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_videoconf->getToken()));
     
         if ($arr_archive['status'] == 'started') {
             $m_videoconf = $this->getModel();
