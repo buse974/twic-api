@@ -61,8 +61,9 @@ class Course extends AbstractMapper
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
             ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
+            ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
             ->where(array('course_user_relation.user_id' => $user))
-            ->where(array('videoconf.archive_link IS NOT NULL'))
+            ->where(array('videoconf_archive.archive_link IS NOT NULL'))
             ->group('course.id');
         
         if ($is_student !== false) {
