@@ -68,7 +68,7 @@ class Message extends AbstractService
         $message_id = $this->getMapper()->getLastInsertValue();
         $message_user_id = $this->getServiceMessageUser()->send($message_id, $conversation);
 
-        return $this->getServiceMessageUser()->getList($me, $message_id)->current();
+        return $this->getServiceMessageUser()->getList($me, $message_id)['list']->current();
     }
 
     /**
@@ -78,12 +78,12 @@ class Message extends AbstractService
      *
      * @param int $conversation
      */
-    public function getList($conversation)
+    public function getList($conversation, $filter = array())
     {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
 
-        return $this->getServiceMessageUser()->getList($me, null, $conversation);
+        return $this->getServiceMessageUser()->getList($me, null, $conversation, $filter);
     }
 
     /**
