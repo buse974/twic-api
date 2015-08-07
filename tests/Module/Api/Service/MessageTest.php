@@ -233,8 +233,18 @@ class MessageTest extends AbstractService
 	    $this->assertEquals($data['result'] , 1);
 	    $this->assertEquals($data['id'] , 1);
 	    $this->assertEquals($data['jsonrpc'] , 2.0);
-	     
-	    exit();
+	}
+	
+	public function testCanDeleteConversation()
+	{
+	    $this->setIdentity(3);
+	
+	    $data = $this->jsonRpc('conversation.delete', array('conversation' => 1));
+	
+	    $this->assertEquals(count($data) , 3);
+	    $this->assertEquals($data['result'] , 1);
+	    $this->assertEquals($data['id'] , 1);
+	    $this->assertEquals($data['jsonrpc'] , 2.0);
 	}
 	
 	public function setIdentity($id)
