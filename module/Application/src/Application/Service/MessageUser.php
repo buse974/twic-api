@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class MessageUser extends AbstractService
 {
@@ -55,20 +56,20 @@ class MessageUser extends AbstractService
         
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
-        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me));
+        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNull('read_date')));
     }
     
     public function deleteByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
     
-        if(!is_array($mesage)) {
-            $mesage = [$mesage];
+        if(!is_array($conversation)) {
+            $conversation = [$conversation];
         }
     
-        $m_message_user = $this->getModel()->setDeleteDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        $m_message_user = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
     
-        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me));
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me, new IsNull('deleted_date')));
     }
     
     public function readByConversation($conversation)
@@ -81,7 +82,7 @@ class MessageUser extends AbstractService
     
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
     
-        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me));
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me,  new IsNull('read_date')));
     }
     
     /**
