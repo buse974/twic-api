@@ -36,6 +36,18 @@ class Conversation extends AbstractService
     }
     
     /**
+     * Read Message(s)
+     *
+     * @invokable
+     *
+     * @param integer|array $conversation
+     */
+    public function read($conversation)
+    {
+        return $this->getServiceMessageUser()->readByConversation($conversation);
+    }
+    
+    /**
      *
      * @return \Application\Service\ConversationUser
      */
@@ -51,6 +63,15 @@ class Conversation extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\MessageUser
+     */
+    public function getServiceMessageUser()
+    {
+        return $this->getServiceLocator()->get('app_service_message_user');
     }
     
     /**
