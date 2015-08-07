@@ -87,6 +87,18 @@ class Message extends AbstractService
     }
 
     /**
+     * Read Message(s)
+     * 
+     * @invokable
+     * 
+     * @param integer|array $mesage
+     */
+    public function read($mesage)
+    {
+        return $this->getServiceMessageUser()->readByMessage($mesage);
+    }
+    
+    /**
      * @invokable
      *
      * Get List Conversation

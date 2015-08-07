@@ -16,7 +16,7 @@ class MessageUser extends AbstractMapper
                ->join(array('message_user_from' => 'user'), 'message_user_from.id=message_user.from_id', array('id', 'firstname', 'lastname', 'avatar'))
                ->where(array('message_user.user_id' => $me))
                ->where(array('message_user.deleted_date IS NULL'))
-               ->order(array('message_user.id' => 'ASC'));
+               ->order(array('message_user.id' => 'DESC'));
 
         if (null !== $message) {
             $select->where(array('message_user_message.id' => $message));
