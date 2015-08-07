@@ -11,7 +11,7 @@ use Application\Model\Role as ModelRole;
 
 class Item extends AbstractMapper
 {
-    public function getListGrade($user, $programs, $courses, $type, $notgraded, $newMessage, $filter)
+    public function getListGrade($user, $programs, $courses, $type, $notgraded, $newMessage, $filter, $item_prog)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -68,7 +68,9 @@ class Item extends AbstractMapper
         if (array_key_exists(ModelRole::ROLE_INSTRUCTOR_ID, $user['roles'])) {
             $select->join('course_user_relation', 'course_user_relation.course_id = course.id', array())->where(array('course_user_relation.user_id' => $user['id']));
         }
-
+        if($item_prog !== null){            
+            $select->where(array('item_prog.id' => $item_prog));
+        }
         return $this->selectWith($select);
     }
 

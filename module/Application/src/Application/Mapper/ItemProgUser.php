@@ -3,10 +3,7 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Predicate\Expression;
 use Application\Model\Role as ModelRole;
-use Application\Model\Role;
 
 class ItemProgUser extends AbstractMapper
 {
@@ -26,7 +23,7 @@ class ItemProgUser extends AbstractMapper
         
         return $this->requestPdo($sql, array(
             ':ip' => $ip,
-            ':role' => Role::ROLE_STUDENT_ID,
+            ':role' => ModelRole::ROLE_STUDENT_ID,
             ':u' => $u,
             ':u1' => $u,
             ':ip1' => $ip,
