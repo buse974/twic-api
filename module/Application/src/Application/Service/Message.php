@@ -91,11 +91,11 @@ class Message extends AbstractService
      * 
      * @invokable
      * 
-     * @param integer|array $mesage
+     * @param integer|array $message
      */
-    public function read($mesage)
+    public function read($message)
     {
-        return $this->getServiceMessageUser()->readByMessage($mesage);
+        return $this->getServiceMessageUser()->readByMessage($message);
     }
     
     /**

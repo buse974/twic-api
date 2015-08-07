@@ -58,12 +58,25 @@ class MessageUser extends AbstractService
         return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me));
     }
     
+    public function deleteByConversation($conversation)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+    
+        if(!is_array($mesage)) {
+            $mesage = [$mesage];
+        }
+    
+        $m_message_user = $this->getModel()->setDeleteDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+    
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me));
+    }
+    
     public function readByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        if(!is_array($mesage)) {
-            $mesage = [$mesage];
+        if(!is_array($conversation)) {
+            $conversation = [$conversation];
         }
     
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
