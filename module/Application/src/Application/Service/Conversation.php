@@ -48,6 +48,18 @@ class Conversation extends AbstractService
     }
     
     /**
+     * Delete Message(s)
+     *
+     * @invokable
+     *
+     * @param integer|array $conversation
+     */
+    public function delete($conversation)
+    {
+        return $this->getServiceMessageUser()->deleteByConversation($conversation);
+    }
+    
+    /**
      *
      * @return \Application\Service\ConversationUser
      */
