@@ -184,13 +184,15 @@ class Message extends AbstractService
      * @invokable
      *
      * Get List Conversation
+     * @param string $filter
+     * 
      */
-    public function getListConversation()
+    public function getListConversation($filter = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
         
-        return $this->getServiceMessageUser()->getList($me);
+        return $this->getServiceMessageUser()->getList($me, null, null, $filter);
     }
 
     /**
