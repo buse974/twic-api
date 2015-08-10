@@ -126,15 +126,7 @@ class ItemAssignment extends AbstractService
         
         if (is_array($documents)) {
             foreach ($documents as $d) {
-                $type = isset($d['type']) ? $d['type'] : null;
-                $title = isset($d['title']) ? $d['title'] : null;
-                $author = isset($d['author']) ? $d['author'] : null;
-                $link = isset($d['link']) ? $d['link'] : null;
-                $source = isset($d['source']) ? $d['source'] : null;
-                $token = isset($d['token']) ? $d['token'] : null;
-                $date = isset($d['date']) ? $d['date'] : null;
-                
-                $this->getServiceItemAssignmentDocument()->add($item_assigment_id, $type, $title, $author, $link, $source, $token, $date);
+                $this->addDocument($item_assigment_id, $document);
             }
         }
         
@@ -164,6 +156,35 @@ class ItemAssignment extends AbstractService
         return $item_assigment_id;
     }
 
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param array $document
+     */
+    public function addDocument($id, $document)
+    {
+        $type = isset($document['type']) ? $document['type'] : null;
+        $title = isset($document['title']) ? $document['title'] : null;
+        $author = isset($document['author']) ? $document['author'] : null;
+        $link = isset($document['link']) ? $document['link'] : null;
+        $source = isset($document['source']) ? $document['source'] : null;
+        $token = isset($document['token']) ? $document['token'] : null;
+        $date = isset($document['date']) ? $document['date'] : null;
+
+        $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $document
+     */
+    public function removeDocument($document)
+    {
+        return $this->getServiceItemAssignmentDocument()->delete($document);
+    }
+    
     /**
      * @invokable
      *
