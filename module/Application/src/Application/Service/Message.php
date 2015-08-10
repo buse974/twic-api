@@ -11,10 +11,10 @@ class Message extends AbstractService
      *
      * @param string $title            
      * @param string $text            
-     * @param string $to            
-     * @param string $conversation            
-     * @param string $draft            
-     * @param string $id            
+     * @param array $to            
+     * @param integer $conversation            
+     * @param boolean $draft            
+     * @param integer $id            
      * @throws \Exception
      */
     public function sendMail($title = null, $text = null, $to = null, $conversation = null, $draft = false, $id = null)
