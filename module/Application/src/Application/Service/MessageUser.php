@@ -102,11 +102,24 @@ class MessageUser extends AbstractService
         return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me, new IsNull('deleted_date')));
     }
     
-    public function deleteByMessage($message)
+    public function hardDeleteByMessage($message)
     {
         $m_message_user = $this->getModel()->setMessageId($message);
     
         return $this->getMapper()->delete($m_message_user);
+    }
+    
+    public function deleteByMessage($message)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+    
+        if(!is_array($message)) {
+            $message = [$message];
+        }
+    
+        $m_message_user = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+    
+        return $this->getMapper()->update($m_message_user, array('message_id' => $message, 'user_id' => $me, new IsNull('deleted_date')));
     }
     
     public function readByConversation($conversation)

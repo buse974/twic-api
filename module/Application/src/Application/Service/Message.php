@@ -17,7 +17,7 @@ class Message extends AbstractService
      * @param integer $id            
      * @throws \Exception
      */
-    public function sendMail($title = null, $text = null, $to = null, $conversation = null, $draft = false, $id = null)
+    public function sendMail($title, $text, $to, $conversation = null, $draft = false, $id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         if (! is_array($to)) {
@@ -37,7 +37,7 @@ class Message extends AbstractService
             $m_message= $res_message->current();
             $message_id = $m_message->getId();
             $conversation = $m_message->getConversationId();
-            $this->getServiceMessageUser()->deleteByMessage($message_id);
+            $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
             
             $m_message = $this->getModel()
                 ->setId($message_id)
@@ -166,6 +166,18 @@ class Message extends AbstractService
     public function read($message)
     {
         return $this->getServiceMessageUser()->readByMessage($message);
+    }
+    
+    /**
+     * Delete Message(s)
+     *
+     * @invokable
+     *
+     * @param integer|array $id
+     */
+    public function delete($id)
+    {
+        return $this->getServiceMessageUser()->deleteByMessage($id);
     }
 
     /**
