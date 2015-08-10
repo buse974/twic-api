@@ -7,6 +7,7 @@ use Zend\Db\Sql\Predicate\In;
 
 class MessageUser extends AbstractMapper
 {
+
     public function getList($me, $message = null, $conversation = null, $tag = 'INBOX', $type = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -29,30 +30,37 @@ class MessageUser extends AbstractMapper
                 ->where(array('message_user.deleted_date IS NULL'))
                 ->group(array('message_user.conversation_id'));
             
-            if(null !== $type) {
+            if (null !== $type) {
                 $subselect->where(array('message.type' => $type));
             }
             
             switch ($tag) {
                 case 'INBOX':
                     $subselect->where(array('message_user.deleted_date IS NULL'))
-                        ->where(array('message_user.read_date IS NULL'))
-                        ->where(array('message.is_draft IS FALSE'));
+                        ->where(array('message_user_message.is_draft IS FALSE'))
+                        ->where(array('message_user.user_id<>message_user.from_id'));
                     break;
                 case 'SENT':
                     $subselect->where(array('message_user.deleted_date IS NULL'))
-                        ->where(array('message.is_draft IS FALSE'))
+                        ->where(array('message_user_message.is_draft IS FALSE'))
                         ->where(array('message_user.user_id=message_user.from_id'));
                     break;
                 case 'DRAFT':
                     $subselect->where(array('message_user.deleted_date IS NULL'))
-                        ->where(array('message.is_draft IS TRUE'))
+                        ->where(array('message_user_message.is_draft IS TRUE'))
                         ->where(array('message_user.user_id=message_user.from_id'));
+                    break;
+                case 'NOREAD':
+                    $subselect->where(array('message_user.deleted_date IS NULL'))
+                        ->where(array('message_user.read_date IS NULL'))
+                        ->where(array('message_user_message.is_draft IS FALSE'))
+                        ->where(array('message_user.user_id<>message_user.from_id'));
                     break;
                 default:
                     ;
                     break;
             }
+            
             $select->where(array(new In('message_user.id', $subselect)));
         }
         
