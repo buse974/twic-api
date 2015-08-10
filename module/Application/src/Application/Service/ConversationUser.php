@@ -42,7 +42,12 @@ class ConversationUser extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setConversationId($conversation));
     }
-
+    
+    /**
+     * @param array $users
+     * @param string $videoconf
+     * @return integer
+     */
     public function createConversation($users, $videoconf=null)
     {
         $conversation_id = $this->getServiceConversation()->create();
@@ -59,6 +64,8 @@ class ConversationUser extends AbstractService
         
         return $conversation_id;
     }
+    
+    
     
     public function add($conversation, $users)
     {
