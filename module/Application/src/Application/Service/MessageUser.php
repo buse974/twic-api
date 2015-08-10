@@ -68,10 +68,10 @@ class MessageUser extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
 
-    public function getList($me, $message = null, $conversation = null, $filter = null)
+    public function getList($me, $message = null, $conversation = null, $filter = null, $tag = null , $type = null)
     {
         $mapper = $this->getMapper();
-        $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation);
+        $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation, $tag, $type);
         
         return array('list' => $list, 'count' => $mapper->count());
     }
