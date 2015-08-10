@@ -24,6 +24,7 @@ class Videoconf extends BaseVideoconf
     protected $conversations;
     protected $users;
     protected $docs;
+    protected $item_assignment_id;
 
     public function exchangeArray(array &$data)
     {
@@ -38,6 +39,18 @@ class Videoconf extends BaseVideoconf
         $this->videoconf_admin->exchangeArray($data);
     }
 
+    public function getItemAssignmentId()
+    {
+        return $this->item_assignment_id;
+    }
+    
+    public function setItemAssignmentId($item_assignment_id)
+    {
+        $this->item_assignment_id = $item_assignment_id;
+    
+        return $this;
+    }
+    
     public function getVideoconfArchives()
     {
         return $this->videoconf_archives;

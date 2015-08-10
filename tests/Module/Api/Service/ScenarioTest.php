@@ -1488,7 +1488,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('videoconf.joinUser', array('id' => $videoconf));
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 17);
+        $this->assertEquals(count($data['result']) , 18);
         $this->assertEquals(count($data['result']['docs']) , 1);
         $this->assertEquals(count($data['result']['docs'][0]) , 5);
         $this->assertEquals($data['result']['docs'][0]['id'] , 1);
@@ -1614,6 +1614,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['archive_link'] , null);
         $this->assertEquals($data['result']['archive_status'] , null);
         $this->assertEquals($data['result']['conversation_id'] , 1);
+        $this->assertEquals($data['result']['item_assignment_id'] , 1);
         $this->assertEquals($data['result']['item_prog_id'] , 1);
         $this->assertEquals($data['result']['title'] , null);
         $this->assertEquals($data['result']['description'] , null);
@@ -1828,7 +1829,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('itemassignment.add', array('item_prog' => $item_prog,'response' => 'response','documents' => array(array('type' => 'type','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => 'date'))));
         
         $this->assertEquals(count($data), 3);
-        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['result'], 2);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
         
@@ -1889,7 +1890,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['course']['title'] , "IMERIR");
         $this->assertEquals(count($data['result']['list'][0]['item_prog']) , 5);
         $this->assertEquals(count($data['result']['list'][0]['item_prog']['item_assignment']) , 2);
-        $this->assertEquals($data['result']['list'][0]['item_prog']['item_assignment']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['item_prog']['item_assignment']['id'] , 2);
         $this->assertEquals(!empty($data['result']['list'][0]['item_prog']['item_assignment']['submit_date']) , true);
         $this->assertEquals(count($data['result']['list'][0]['item_prog']['item_grade']) , 2);
         $this->assertEquals($data['result']['list'][0]['item_prog']['item_grade']['letter'] , null);
@@ -1970,7 +1971,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['course']['title'] , "IMERIR");
         $this->assertEquals(count($data['result']['list'][0]['item_prog']) , 5);
         $this->assertEquals(count($data['result']['list'][0]['item_prog']['item_assignment']) , 2);
-        $this->assertEquals($data['result']['list'][0]['item_prog']['item_assignment']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['item_prog']['item_assignment']['id'] , 2);
         $this->assertEquals(!empty($data['result']['list'][0]['item_prog']['item_assignment']['submit_date']) , true);
         $this->assertEquals(count($data['result']['list'][0]['item_prog']['item_grade']) , 2);
         $this->assertEquals($data['result']['list'][0]['item_prog']['item_grade']['letter'] , "D-");
@@ -2375,6 +2376,7 @@ class ScenarioTest extends AbstractService
     }
 
     /**
+     * @depends testCanAddItemAssigment
      * @depends testCanAddSubmitItemAssigment
      * @depends testCanGradedTwo
      * @depends testCanAddUserCourse
@@ -2383,7 +2385,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('itemassignment.get', array('id' => $assignment));
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 7);
         $this->assertEquals(count($data['result']['item_prog']) , 3);
@@ -2447,7 +2449,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['documents']) , 1);
         $this->assertEquals(count($data['result']['documents'][0]) , 8);
         $this->assertEquals($data['result']['documents'][0]['id'] , 1);
-        $this->assertEquals($data['result']['documents'][0]['item_assigment_id'] , 1);
+        $this->assertEquals($data['result']['documents'][0]['item_assigment_id'] , 2);
         $this->assertEquals($data['result']['documents'][0]['type'] , "type");
         $this->assertEquals($data['result']['documents'][0]['title'] , "title");
         $this->assertEquals($data['result']['documents'][0]['author'] , "author");
@@ -2467,10 +2469,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['comments'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['comments'][0]['id'] , 1);
         $this->assertEquals($data['result']['comments'][0]['text'] , "text text text");
-        $this->assertEquals($data['result']['comments'][0]['item_assignment_id'] , 1);
+        $this->assertEquals($data['result']['comments'][0]['item_assignment_id'] , 2);
         $this->assertEquals(!empty($data['result']['comments'][0]['created_date']) , true);
         $this->assertEquals($data['result']['comments'][0]['read_date'] , null);
-        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['id'] , 2);
         $this->assertEquals($data['result']['response'] , "response");
         $this->assertEquals(!empty($data['result']['submit_date']) , true);
         $this->assertEquals($data['id'] , 1);
