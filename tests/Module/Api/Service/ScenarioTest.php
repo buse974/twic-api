@@ -1374,12 +1374,13 @@ class ScenarioTest extends AbstractService
     public function testCanSendMessageConversation()
     {
         $this->setIdentity(4);
-        $data = $this->jsonRpc('message.send', array('text' => 'Salut les copains','conversation' => 1));
+        $data = $this->jsonRpc('message.sendVideoConf', array('text' => 'Salut les copains','conversation' => 1));
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 8);
-        $this->assertEquals(count($data['result']['message']) , 4);
+        $this->assertEquals(count($data['result']['message']) , 5);
         $this->assertEquals($data['result']['message']['id'] , 1);
+        $this->assertEquals($data['result']['message']['type'], 3);
         $this->assertEquals($data['result']['message']['text'] , "Salut les copains");
         $this->assertEquals($data['result']['message']['token'] , null);
         $this->assertEquals(!empty($data['result']['message']['created_date']) , true);
@@ -1408,8 +1409,9 @@ class ScenarioTest extends AbstractService
 
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 8); 
-        $this->assertEquals(count($data['result']['message']) , 4); 
+        $this->assertEquals(count($data['result']['message']) , 5); 
         $this->assertEquals($data['result']['message']['id'] , 2); 
+        $this->assertEquals($data['result']['message']['type'], 3);
         $this->assertEquals($data['result']['message']['text'] , "super text qui tue"); 
         $this->assertEquals($data['result']['message']['token'] , null); 
         $this->assertEquals(!empty($data['result']['message']['created_date']) , true); 
@@ -1454,8 +1456,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']) , 2);
         $this->assertEquals(count($data['result']['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]) , 8);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']) , 4);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']) , 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['id'] , 2);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['type'] , 3);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['text'] , "super text qui tue");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['token'] , null);
         $this->assertEquals(!empty($data['result']['messages']['list'][0]['message']['created_date']) , true);
@@ -1544,8 +1547,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['conversations'][1]['messages']) , 2);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]) , 8);
-        $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']) , 4);
+        $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']) , 5);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['id'] , 1);
+        $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['type'] , 3);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['text'] , "Salut les copains");
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['token'] , null);
         $this->assertEquals(!empty($data['result']['conversations'][1]['messages']['list'][0]['message']['created_date']) , true);
@@ -1577,8 +1581,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['conversations'][2]['messages']) , 2);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]) , 8);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']) , 4);
+        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']) , 5);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['id'] , 2);
+        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['type'] , 3);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['text'] , "super text qui tue");
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['token'] , null);
         $this->assertEquals(!empty($data['result']['conversations'][2]['messages']['list'][0]['message']['created_date']) , true);

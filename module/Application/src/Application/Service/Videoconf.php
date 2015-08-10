@@ -392,7 +392,7 @@ class Videoconf extends AbstractService
         $conversation = $this->getServiceConversationUser()->createConversation($users);
         $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
         
-        return $this->getServiceMessage()->send($text, null, $conversation);
+        return $this->getServiceMessage()->sendVideoConf($text, null, $conversation);
     }
     
     /**

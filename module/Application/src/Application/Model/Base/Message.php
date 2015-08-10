@@ -11,6 +11,7 @@ class Message extends AbstractModel
 	protected $text;
 	protected $token;
 	protected $is_draft;
+	protected $type;
 	protected $conversation_id;
 	protected $created_date;
 
@@ -72,6 +73,18 @@ class Message extends AbstractModel
 	public function setIsDraft($is_draft)
 	{
 		$this->is_draft = $is_draft;
+
+		return $this;
+	}
+
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	public function setType($type)
+	{
+		$this->type = $type;
 
 		return $this;
 	}

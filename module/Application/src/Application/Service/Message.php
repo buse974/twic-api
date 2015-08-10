@@ -54,6 +54,7 @@ class Message extends AbstractService
             $m_message = $this->getModel()
                 ->setTitle($title)
                 ->setIsDraft($draft)
+                ->setType(1)
                 ->setText($text)
                 ->setConversationId($conversation)
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -73,6 +74,24 @@ class Message extends AbstractService
     }
 
     /**
+     * Send message for videoconf.
+     *
+     * @invokable
+     *
+     * @param string $text
+     * @param int $to
+     * @param conversation $conversation
+     *
+     * @throws \Exception
+     *
+     * @return int
+     */
+    public function sendVideoConf($text = null, $to = null, $conversation = null)
+    {
+        return $this->_send($text,$to,$conversation,3);
+    }
+    
+    /**
      * Send message.
      *
      * @invokable
@@ -86,6 +105,11 @@ class Message extends AbstractService
      * @return int
      */
     public function send($text = null, $to = null, $conversation = null)
+    {
+        return $this->_send($text,$to,$conversation,2);
+    }
+    
+    public function _send($text = null, $to = null, $conversation = null, $type = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         
@@ -126,6 +150,7 @@ class Message extends AbstractService
         }
         $m_message = $this->getModel()
             ->setText($text)
+            ->setType($type)
             ->setConversationId($conversation)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
@@ -174,7 +199,7 @@ class Message extends AbstractService
      * @invokable
      *
      * @param integer|array $id
-     */
+     */ 
     public function delete($id)
     {
         return $this->getServiceMessageUser()->deleteByMessage($id);
@@ -184,15 +209,18 @@ class Message extends AbstractService
      * @invokable
      *
      * Get List Conversation
+     * 
      * @param string $filter
+     * @param string $tag
+     * @param integer $type
      * 
      */
-    public function getListConversation($filter = null)
+    public function getListConversation($filter = null, $tag = null, $type = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
         
-        return $this->getServiceMessageUser()->getList($me, null, null, $filter);
+        return $this->getServiceMessageUser()->getList($me, null, null, $filter, $tag, $type);
     }
 
     /**
