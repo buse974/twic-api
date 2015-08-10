@@ -1835,6 +1835,41 @@ class ScenarioTest extends AbstractService
         
         return $data['result'];
     }
+    
+    /**
+     * @depends testCanAddItemAssigment
+     */
+    public function testCanAddItemAssigmentAddDocument($itemassignment)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('itemassignment.addDocument', array(
+            'id' => $itemassignment,
+            'document' => array('type' => 'type','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => 'date')
+        ));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 2);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+        return $data['result'];
+    }
+    
+    /**
+     * @depends testCanAddItemAssigmentAddDocument
+     */
+    public function testCanRemoveDocument($document)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('itemassignment.removeDocument', array(
+            'document' => $document
+         ));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
 
     /**
      * @depends testCanAddItemAssigment
