@@ -126,7 +126,7 @@ class ItemAssignment extends AbstractService
         
         if (is_array($documents)) {
             foreach ($documents as $d) {
-                $this->addDocument($item_assigment_id, $document);
+                $this->addDocument($item_assigment_id, $d);
             }
         }
         
@@ -172,7 +172,7 @@ class ItemAssignment extends AbstractService
         $token = isset($document['token']) ? $document['token'] : null;
         $date = isset($document['date']) ? $document['date'] : null;
 
-        $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
+        return $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
     }
     
     /**
