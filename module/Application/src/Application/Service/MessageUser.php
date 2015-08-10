@@ -37,6 +37,36 @@ class MessageUser extends AbstractService
         
         return $this->getMapper()->getLastInsertValue();
     }
+    
+    /**
+     * Send message.
+     *
+     * @param int $message
+     * @param int $conversation
+     *
+     * @throws \Exception
+     *
+     * @return int
+     */
+    public function sendByTo($message, $conversation, $to)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+    
+        foreach ($to as $user) {
+            $m_message_user = $this->getModel()
+            ->setMessageId($message)
+            ->setConversationId($conversation)
+            ->setFromId($me)
+            ->setUserId($user)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+    
+            if ($this->getMapper()->insert($m_message_user) <= 0) {
+                throw new \Exception('error insert message to');
+            }
+        }
+    
+        return $this->getMapper()->getLastInsertValue();
+    }
 
     public function getList($me, $message = null, $conversation = null, $filter = null)
     {
@@ -70,6 +100,13 @@ class MessageUser extends AbstractService
         $m_message_user = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
     
         return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me, new IsNull('deleted_date')));
+    }
+    
+    public function deleteByMessage($message)
+    {
+        $m_message_user = $this->getModel()->setMessageId($message);
+    
+        return $this->getMapper()->delete($m_message_user);
     }
     
     public function readByConversation($conversation)

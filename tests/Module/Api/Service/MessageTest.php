@@ -247,6 +247,71 @@ class MessageTest extends AbstractService
 	    $this->assertEquals($data['jsonrpc'] , 2.0);
 	}
 	
+	public function testCanAddNewConversation()
+	{
+	    $this->setIdentity(3);
+	
+	    $data = $this->jsonRpc('conversation.add', array('users' => array()));
+	
+	    $this->assertEquals(count($data) , 3);
+	    $this->assertEquals($data['result'] , 4);
+	    $this->assertEquals($data['id'] , 1);
+	    $this->assertEquals($data['jsonrpc'] , 2.0);
+	}
+	
+	public function testCanAddSendMail()
+	{
+	    $this->setIdentity(3);
+	
+	    $data = $this->jsonRpc('message.sendMail', array(
+	        'title' => 'objet mail',
+	        'to' => array(4,5),
+	        'text' => 'super message qwerty',
+	        'draft' => true,
+	    ));
+	    
+	    $this->assertEquals(count($data) , 3);
+	    $this->assertEquals(count($data['result']) , 8);
+	    $this->assertEquals(count($data['result']['message']) , 4);
+	    $this->assertEquals($data['result']['message']['id'] , 6);
+	    $this->assertEquals($data['result']['message']['text'] , "super message qwerty");
+	    $this->assertEquals($data['result']['message']['token'] , null);
+	    $this->assertEquals(!empty($data['result']['message']['created_date']) , true);
+	    $this->assertEquals(count($data['result']['user']) , 4);
+	    $this->assertEquals($data['result']['user']['id'] , 3);
+	    $this->assertEquals($data['result']['user']['firstname'] , "Christophe");
+	    $this->assertEquals($data['result']['user']['lastname'] , "Robert");
+	    $this->assertEquals($data['result']['user']['avatar'] , null);
+	    $this->assertEquals($data['result']['id'] , 14);
+	    $this->assertEquals($data['result']['conversation_id'] , 5);
+	    $this->assertEquals($data['result']['from_id'] , 3);
+	    $this->assertEquals($data['result']['user_id'] , 3);
+	    $this->assertEquals($data['result']['read_date'] , null);
+	    $this->assertEquals(!empty($data['result']['created_date']) , true);
+	    $this->assertEquals($data['id'] , 1);
+	    $this->assertEquals($data['jsonrpc'] , 2.0);
+	    
+	    return $data['result']['message']['id'];
+	}
+	
+	/**
+	 * @depends testCanAddSendMail
+	 */
+	public function testCanAddSendMailUpdate($message_id)
+	{
+	    $this->setIdentity(3);
+	
+	    $data = $this->jsonRpc('message.sendMail', array(
+	        'id' => $message_id,
+	        'to' => array(2,1),
+	        'title' => 'objet mail update',
+	        'text' => 'super message qwerty',
+	        'draft' => true,
+	    ));
+	     
+	    print_r($data);
+	}
+	
 	public function setIdentity($id)
 	{
 		$identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')

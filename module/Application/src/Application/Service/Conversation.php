@@ -23,6 +23,19 @@ class Conversation extends AbstractService
     }
     
     /**
+     * Create conversation
+     * 
+     * @invokable
+     * 
+     * @param array $users
+     * @return integer
+     */
+    public function add($users)
+    {
+        return $this->getServiceConversationUser()->createConversation($users);
+    }
+    
+    /**
      * @invokable
      * 
      * @param integer $conversation
