@@ -71,6 +71,7 @@ class Item extends AbstractMapper
         if($item_prog !== null){            
             $select->where(array('item_prog.id' => $item_prog));
         }
+        
         return $this->selectWith($select);
     }
 

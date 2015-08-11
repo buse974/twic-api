@@ -61,6 +61,18 @@ class Conversation extends AbstractService
     }
     
     /**
+     * UnRead Message(s)
+     *
+     * @invokable
+     *
+     * @param integer|array $conversation
+     */
+    public function unRead($conversation)
+    {
+        return $this->getServiceMessageUser()->unReadByConversation($conversation);
+    }
+    
+    /**
      * Delete Message(s)
      *
      * @invokable
