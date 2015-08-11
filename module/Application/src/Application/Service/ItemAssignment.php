@@ -107,11 +107,7 @@ class ItemAssignment extends AbstractService
         $datetime1 = new \DateTime($m_item_prog->getStartDate());
         $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
         
-        echo "\n" . $datetime1->format('c') . " >  ".  $datetime2->format('c') . "\n\n";
-        var_dump($datetime1 > $datetime2);
-        var_dump($datetime1 < $datetime2);
-        var_dump($datetime1 == $datetime2);
-        if ($datetime1 > $datetime2) {
+        if ($datetime1 < $datetime2) {
             throw new \Exception('error date');
         }
         
