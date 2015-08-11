@@ -35,9 +35,7 @@ class FeedComment extends AbstractService
 
     public function getList($id)
     {
-        $m_feed_comment = $this->getModel()->setFeedId($id)->setDeletedDate(new IsNull());
-        
-        return $this->getMapper()->select($m_feed_comment);
+        return $this->getMapper()->getList($id);
     }
     
     /**
