@@ -3,6 +3,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Zend\Db\Sql\Predicate\IsNotNull;
 
 class MessageUser extends AbstractService
 {
@@ -89,6 +90,20 @@ class MessageUser extends AbstractService
         return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNull('read_date')));
     }
     
+    public function UnReadByMessage($mesage)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+    
+        if(!is_array($mesage)) {
+            $mesage = [$mesage];
+        }
+    
+        $m_message_user = $this->getModel()->setReadDate(new IsNull());
+    
+        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNotNull('read_date')));
+    }
+    
+    
     public function deleteByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
@@ -133,6 +148,19 @@ class MessageUser extends AbstractService
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
     
         return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me,  new IsNull('read_date')));
+    }
+    
+    public function unReadByConversation($conversation)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+    
+        if(!is_array($conversation)) {
+            $conversation = [$conversation];
+        }
+    
+        $m_message_user = $this->getModel()->setReadDate(new IsNull());
+    
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me,  new IsNotNull('read_date')));
     }
     
     /**

@@ -194,6 +194,18 @@ class Message extends AbstractService
     }
     
     /**
+     * UnRead Message(s)
+     *
+     * @invokable
+     *
+     * @param integer|array $message
+     */
+    public function unRead($message)
+    {
+        return $this->getServiceMessageUser()->UnReadByMessage($message);
+    }
+    
+    /**
      * Delete Message(s)
      *
      * @invokable

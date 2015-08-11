@@ -75,6 +75,8 @@ return array(
             'app_service_research',
             'rbac_service_permission',
             'rbac_service_role_permission',
+            'app_service_feed',
+            'app_service_feed_comment',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
