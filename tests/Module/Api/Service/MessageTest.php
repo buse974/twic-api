@@ -430,6 +430,31 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+
+    public function testCanUnReadMessage()
+    {
+        $this->setIdentity(2);
+    
+        $data = $this->jsonRpc('message.unRead', array('message' => 1));
+    
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
+    public function testCanUnReadConversation()
+    {
+        $this->setIdentity(3);
+    
+        $data = $this->jsonRpc('conversation.unRead', array('conversation' => 1));
+    
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
