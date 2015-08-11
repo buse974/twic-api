@@ -35,7 +35,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['conversation_id'], 1);
         $this->assertEquals($data['result']['from_id'], 1);
         $this->assertEquals($data['result']['user_id'], 1);
-        $this->assertEquals($data['result']['read_date'], null);
+        $this->assertEquals(!empty($data['result']['read_date']), true);
         $this->assertEquals(! empty($data['result']['created_date']), true);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
@@ -101,7 +101,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['conversation_id'], 2);
         $this->assertEquals($data['result']['list'][0]['from_id'], 2);
         $this->assertEquals($data['result']['list'][0]['user_id'], 2);
-        $this->assertEquals($data['result']['list'][0]['read_date'], null);
+        $this->assertEquals(!empty($data['result']['list'][0]['read_date']), true);
         $this->assertEquals(! empty($data['result']['list'][0]['created_date']), true);
         $this->assertEquals(count($data['result']['list'][1]), 8);
         $this->assertEquals(count($data['result']['list'][1]['message']), 5);
@@ -137,7 +137,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][2]['conversation_id'], 2);
         $this->assertEquals($data['result']['list'][2]['from_id'], 2);
         $this->assertEquals($data['result']['list'][2]['user_id'], 2);
-        $this->assertEquals($data['result']['list'][2]['read_date'], null);
+        $this->assertEquals(!empty($data['result']['list'][2]['read_date']), true);
         $this->assertEquals(! empty($data['result']['list'][2]['created_date']), true);
         $this->assertEquals($data['result']['count'], 3);
         $this->assertEquals($data['id'], 1);
@@ -169,7 +169,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['conversation_id'], 2);
         $this->assertEquals($data['result']['list'][0]['from_id'], 2);
         $this->assertEquals($data['result']['list'][0]['user_id'], 2);
-        $this->assertEquals($data['result']['list'][0]['read_date'], null);
+        $this->assertEquals(!empty($data['result']['list'][0]['read_date']), true);
         $this->assertEquals(! empty($data['result']['list'][0]['created_date']), true);
         $this->assertEquals(count($data['result']['list'][1]), 8);
         $this->assertEquals(count($data['result']['list'][1]['message']), 5);
@@ -265,7 +265,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['conversation_id'], 5);
         $this->assertEquals($data['result']['from_id'], 3);
         $this->assertEquals($data['result']['user_id'], 3);
-        $this->assertEquals($data['result']['read_date'], null);
+        $this->assertEquals(!empty($data['result']['read_date']), true);
         $this->assertEquals(! empty($data['result']['created_date']), true);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
@@ -299,7 +299,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['conversation_id'], 5);
         $this->assertEquals($data['result']['from_id'], 3);
         $this->assertEquals($data['result']['user_id'], 3);
-        $this->assertEquals($data['result']['read_date'], null);
+        $this->assertEquals(!empty($data['result']['read_date']), true);
         $this->assertEquals(! empty($data['result']['created_date']), true);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
@@ -391,7 +391,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['conversation_id'] , 5);
         $this->assertEquals($data['result']['list'][0]['from_id'] , 3);
         $this->assertEquals($data['result']['list'][0]['user_id'] , 3);
-        $this->assertEquals($data['result']['list'][0]['read_date'] , null);
+        $this->assertEquals(!empty($data['result']['list'][0]['read_date']) , true);
         $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals($data['id'] , 1);
@@ -423,7 +423,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['conversation_id'] , 2);
         $this->assertEquals($data['result']['list'][0]['from_id'] , 3);
         $this->assertEquals($data['result']['list'][0]['user_id'] , 3);
-        $this->assertEquals($data['result']['list'][0]['read_date'] , null);
+        $this->assertEquals(!empty($data['result']['list'][0]['read_date']) , true);
         $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals($data['id'] , 1);

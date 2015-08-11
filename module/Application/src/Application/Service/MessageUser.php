@@ -31,6 +31,10 @@ class MessageUser extends AbstractService
                 ->setUserId($m_conversation_user->getUserId())
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
+            if($me==$m_conversation_user->getUserId()) {
+                $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            }
+            
             if ($this->getMapper()->insert($m_message_user) <= 0) {
                 throw new \Exception('error insert message to');
             }
@@ -38,12 +42,12 @@ class MessageUser extends AbstractService
         
         return $this->getMapper()->getLastInsertValue();
     }
-    
+
     /**
      * Send message.
      *
-     * @param int $message
-     * @param int $conversation
+     * @param int $message            
+     * @param int $conversation            
      *
      * @throws \Exception
      *
@@ -52,117 +56,120 @@ class MessageUser extends AbstractService
     public function sendByTo($message, $conversation, $to)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-    
+        
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
-            ->setMessageId($message)
-            ->setConversationId($conversation)
-            ->setFromId($me)
-            ->setUserId($user)
-            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-    
+                ->setMessageId($message)
+                ->setConversationId($conversation)
+                ->setFromId($me)
+                ->setUserId($user)
+                ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            
+            if($me==$user) {
+                $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            }
+            
             if ($this->getMapper()->insert($m_message_user) <= 0) {
                 throw new \Exception('error insert message to');
             }
         }
-    
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
-    public function getList($me, $message = null, $conversation = null, $filter = null, $tag = null , $type = null)
+    public function getList($me, $message = null, $conversation = null, $filter = null, $tag = null, $type = null)
     {
         $mapper = $this->getMapper();
         $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation, $tag, $type);
         
-        return array('list' => $list, 'count' => $mapper->count());
+        return array('list' => $list,'count' => $mapper->count());
     }
 
     public function readByMessage($mesage)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        if(!is_array($mesage)) {
+        if (! is_array($mesage)) {
             $mesage = [$mesage];
         }
         
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
-        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNull('read_date')));
+        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage,'user_id' => $me,new IsNull('read_date')));
     }
-    
+
     public function UnReadByMessage($mesage)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-    
-        if(!is_array($mesage)) {
+        
+        if (! is_array($mesage)) {
             $mesage = [$mesage];
         }
-    
+        
         $m_message_user = $this->getModel()->setReadDate(new IsNull());
-    
-        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNotNull('read_date')));
+        
+        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage,'user_id' => $me,new IsNotNull('read_date')));
     }
-    
-    
+
     public function deleteByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-    
-        if(!is_array($conversation)) {
+        
+        if (! is_array($conversation)) {
             $conversation = [$conversation];
         }
-    
+        
         $m_message_user = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-    
-        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me, new IsNull('deleted_date')));
+        
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation,'user_id' => $me,new IsNull('deleted_date')));
     }
-    
+
     public function hardDeleteByMessage($message)
     {
         $m_message_user = $this->getModel()->setMessageId($message);
-    
+        
         return $this->getMapper()->delete($m_message_user);
     }
-    
+
     public function deleteByMessage($message)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-    
-        if(!is_array($message)) {
+        
+        if (! is_array($message)) {
             $message = [$message];
         }
-    
+        
         $m_message_user = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-    
-        return $this->getMapper()->update($m_message_user, array('message_id' => $message, 'user_id' => $me, new IsNull('deleted_date')));
+        
+        return $this->getMapper()->update($m_message_user, array('message_id' => $message,'user_id' => $me,new IsNull('deleted_date')));
     }
-    
+
     public function readByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        if(!is_array($conversation)) {
+        if (! is_array($conversation)) {
             $conversation = [$conversation];
         }
-    
+        
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-    
-        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me,  new IsNull('read_date')));
+        
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation,'user_id' => $me,new IsNull('read_date')));
     }
-    
+
     public function unReadByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-    
-        if(!is_array($conversation)) {
+        
+        if (! is_array($conversation)) {
             $conversation = [$conversation];
         }
-    
+        
         $m_message_user = $this->getModel()->setReadDate(new IsNull());
-    
-        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation, 'user_id' => $me,  new IsNotNull('read_date')));
+        
+        return $this->getMapper()->update($m_message_user, array('conversation_id' => $conversation,'user_id' => $me,new IsNotNull('read_date')));
     }
-    
+
     /**
      *
      * @return \Application\Service\User
