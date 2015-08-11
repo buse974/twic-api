@@ -115,12 +115,8 @@ class Feed extends AbstractService
         foreach ($res_contact as $m_contact) {
             $user[] = $m_contact->getContact()['id'];
         }
-        
-        $m_feed = $this->getModel()
-            ->setUserId($user)
-            ->setDeletedDate(new IsNull());
-        
-        return $this->getMapper()->select($m_feed);
+
+        return $this->getMapper()->getList($user);
     }
 
     /**
