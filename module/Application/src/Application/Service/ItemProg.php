@@ -85,12 +85,13 @@ class ItemProg extends AbstractService
             $users = [];
         }
 
-        $ip = $this->getServiceItemProgUser()->add($users, [$id]);
-
-        if(isset($ip[$id])) {
-            $ip = $ip[$id];
+        if(null !== $users) {
+            $ip = $this->getServiceItemProgUser()->add($users, [$id]);
+            if(isset($ip[$id])) {
+                $ip = $ip[$id];
+            }
+            $users = array_keys($ip, 1, true);
         }
-        $users = array_keys($ip, 1, true);
         
         $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
         foreach ($instructors['list'] as $instructor) {
