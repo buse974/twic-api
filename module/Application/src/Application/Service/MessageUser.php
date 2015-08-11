@@ -77,11 +77,25 @@ class MessageUser extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
 
+    /**
+     * 
+     * @param integer $me
+     * @param string $message
+     * @param string $conversation
+     * @param string $filter
+     * @param string $tag
+     * @param string $type
+     */
     public function getList($me, $message = null, $conversation = null, $filter = null, $tag = null, $type = null)
     {
         $mapper = $this->getMapper();
         $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation, $tag, $type);
         
+        foreach ($list as $m_message_user) {
+            $m_message_user->getMessage()->setDocument($this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId()));
+        }
+        
+        $list->rewind();
         return array('list' => $list,'count' => $mapper->count());
     }
 
@@ -177,6 +191,15 @@ class MessageUser extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\MessageDoc
+     */
+    public function getServiceMessageDoc()
+    {
+        return $this->getServiceLocator()->get('app_service_message_doc');
     }
 
     /**

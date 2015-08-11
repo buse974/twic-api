@@ -14,10 +14,12 @@ class Message extends AbstractService
      * @param array $to            
      * @param integer $conversation            
      * @param boolean $draft            
-     * @param integer $id            
+     * @param integer $id
+     * @param array $document
+     *         
      * @throws \Exception
      */
-    public function sendMail($title, $text, $to, $conversation = null, $draft = false, $id = null)
+    public function sendMail($title, $text, $to, $conversation = null, $draft = false, $id = null, $document = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         if (! is_array($to)) {
@@ -37,7 +39,6 @@ class Message extends AbstractService
             $m_message= $res_message->current();
             $message_id = $m_message->getId();
             $conversation = $m_message->getConversationId();
-            $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
             
             $m_message = $this->getModel()
                 ->setId($message_id)
@@ -66,6 +67,8 @@ class Message extends AbstractService
             $message_id = $this->getMapper()->getLastInsertValue();
         }
         
+        $this->getServiceMessageDoc()->replace($message_id, $document);
+        $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
         
         return $this->getServiceMessageUser()
@@ -269,6 +272,15 @@ class Message extends AbstractService
     public function getServiceMessageUser()
     {
         return $this->getServiceLocator()->get('app_service_message_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\MessageDoc
+     */
+    public function getServiceMessageDoc()
+    {
+        return $this->getServiceLocator()->get('app_service_message_doc');
     }
 
     /**
