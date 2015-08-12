@@ -7,6 +7,7 @@ use DateTime;
 use Application\Model\Videoconf as CVF;
 use OpenTok\Role as OpenTokRole;
 use Application\Model\Role as ModelRole;
+use Application\Model\Item as ModelItem;
 
 class Videoconf extends AbstractService
 {
@@ -256,10 +257,13 @@ class Videoconf extends AbstractService
         $res = $this->getServiceUser()
             ->getListByItemProg($m_videoconf->getItemProgId())
             ->toArray(array('id'));
+        
         $m_item = $this->getServiceItem()->getByItemProg($m_videoconf->getItemProgId());
-        $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
-        foreach ($instructors['list'] as $instructor) {
-            $res[] = $instructor;
+        if(!$m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
+            $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
+            foreach ($instructors['list'] as $instructor) {
+                $res[] = $instructor;
+            }
         }
         
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()

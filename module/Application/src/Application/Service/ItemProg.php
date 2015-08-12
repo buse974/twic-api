@@ -93,8 +93,6 @@ class ItemProg extends AbstractService
             $users = array_keys($ip, 1, true);
         }
         
-        
-        
         switch ($m_item->getType()) {
             case ModelItem::TYPE_LIVE_CLASS :
                 $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
