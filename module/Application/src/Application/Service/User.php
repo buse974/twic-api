@@ -371,7 +371,9 @@ class User extends AbstractService
         
         $user = $res_user->current()->toArray();
         
-        $user['roles'] = array();
+        $user['roles'] = [];
+        $user['program'] = [];
+        $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
         foreach ($this->getServiceRole()->getRoleByUser($id) as $role) {
             $user['roles'][] = $role->getName();
         }
