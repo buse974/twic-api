@@ -101,12 +101,12 @@ class ItemProg extends AbstractService
                 foreach ($instructors['list'] as $instructor) {
                     $users[] = $instructor['id'];
                 }
-                $conversation = $this->getServiceConversationUser()->createConversation($users);
+                $conversation = $this->getServiceConversationUser()->createConversation($users, null, 3);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
                 break;
             case ModelItem::TYPE_WORKGROUP:
-                $conversation = $this->getServiceConversationUser()->createConversation($users);
+                $conversation = $this->getServiceConversationUser()->createConversation($users, null, 3);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
                 $this->getServiceItemAssignment()->add($id);
