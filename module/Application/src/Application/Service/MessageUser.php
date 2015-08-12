@@ -89,7 +89,7 @@ class MessageUser extends AbstractService
     public function getList($me, $message = null, $conversation = null, $filter = null, $tag = null, $type = null)
     {
         $mapper = $this->getMapper();
-        $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation, $tag, $type);
+        $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation, $tag, $type, $filter);
         
         foreach ($list as $m_message_user) {
             $m_message_user->getMessage()->setDocument($this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId()));
