@@ -49,7 +49,7 @@ class Message extends AbstractService
             $this->getMapper()->update($m_message);
         } else {
             if (null === $conversation) {
-                $conversation = $this->getServiceConversationUser()->createConversation($to);
+                $conversation = $this->getServiceConversationUser()->createConversation($to, null, 1);
             }
             
             $m_message = $this->getModel()
@@ -139,7 +139,7 @@ class Message extends AbstractService
             if (! in_array($me, $to)) {
                 $to[] = $me;
             }
-            $conversation = $this->getServiceConversationUser()->getConversationByUser($to);
+            $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type);
         } elseif ($conversation !== null) {
             if ($this->getServiceConversationUser()
                 ->getByConversationUser($conversation, $me)

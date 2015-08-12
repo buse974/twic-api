@@ -11,8 +11,10 @@ class ConversationUser extends AbstractService
      * @invokable
      * 
      * @param array $users
+     * @param integer $type
+     * 
      */
-    public function getConversationByUser(array $users)
+    public function getConversationByUser(array $users, $type = null)
     {
         $conversation = null;
         $identity = $this->getServiceUser()->getIdentity();
@@ -20,12 +22,12 @@ class ConversationUser extends AbstractService
             $users[] = $identity['id'];
         }
 
-        $res_conversation_user = $this->getMapper()->getConversationByUser($users);
+        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type);
 
         if ($res_conversation_user->count() === 1) {
             $conversation = $res_conversation_user->current()->getConversationId();
         } elseif ($res_conversation_user->count() === 0) {
-            $conversation = $this->createConversation($users);
+            $conversation = $this->createConversation($users, null, $type);
         } elseif ($res_conversation_user->count() > 1) {
             throw new \Exception('more of one conversation');
         }
@@ -48,9 +50,9 @@ class ConversationUser extends AbstractService
      * @param string $videoconf
      * @return integer
      */
-    public function createConversation($users, $videoconf=null)
+    public function createConversation($users, $videoconf = null, $type = null)
     {
-        $conversation_id = $this->getServiceConversation()->create();
+        $conversation_id = $this->getServiceConversation()->create($type);
 
         $m_conversation_user = $this->getModel()->setConversationId($conversation_id);
         foreach ($users as $user) {

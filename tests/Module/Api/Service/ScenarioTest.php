@@ -1393,7 +1393,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['conversation_id'], 1);
         $this->assertEquals($data['result']['from_id'], 4);
         $this->assertEquals($data['result']['user_id'], 4);
-        $this->assertEquals($data['result']['read_date'], null);
+        $this->assertEquals(!empty($data['result']['read_date']), true);
         $this->assertEquals(! empty($data['result']['created_date']), true);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
@@ -1424,7 +1424,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['conversation_id'], 2);
         $this->assertEquals($data['result']['from_id'], 4);
         $this->assertEquals($data['result']['user_id'], 4);
-        $this->assertEquals($data['result']['read_date'], null);
+        $this->assertEquals(!empty($data['result']['read_date']), true);
         $this->assertEquals(! empty($data['result']['created_date']), true);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
@@ -1562,7 +1562,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['conversation_id'], 1);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['from_id'], 4);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['user_id'], 4);
-        $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['read_date'], null);
+        $this->assertEquals(! empty($data['result']['conversations'][1]['messages']['list'][0]['read_date']), true);
         $this->assertEquals(! empty($data['result']['conversations'][1]['messages']['list'][0]['created_date']), true);
         $this->assertEquals($data['result']['conversations'][1]['messages']['count'], 1);
         $this->assertEquals($data['result']['conversations'][1]['id'], 1);
@@ -1596,7 +1596,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['conversation_id'], 2);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['from_id'], 4);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user_id'], 4);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['read_date'], null);
+        $this->assertEquals(! empty($data['result']['conversations'][2]['messages']['list'][0]['read_date']), true);
         $this->assertEquals(! empty($data['result']['conversations'][2]['messages']['list'][0]['created_date']), true);
         $this->assertEquals($data['result']['conversations'][2]['messages']['count'], 1);
         $this->assertEquals($data['result']['conversations'][2]['id'], 2);
