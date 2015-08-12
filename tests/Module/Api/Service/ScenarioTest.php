@@ -1420,7 +1420,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['user']['firstname'], "Salim");
         $this->assertEquals($data['result']['user']['lastname'], "Bendacha");
         $this->assertEquals($data['result']['user']['avatar'], null);
-        $this->assertEquals($data['result']['id'], 4);
+        $this->assertEquals($data['result']['id'], 3);
         $this->assertEquals($data['result']['conversation_id'], 2);
         $this->assertEquals($data['result']['from_id'], 4);
         $this->assertEquals($data['result']['user_id'], 4);
@@ -1467,7 +1467,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['user']['firstname'], "Salim");
         $this->assertEquals($data['result']['messages']['list'][0]['user']['lastname'], "Bendacha");
         $this->assertEquals($data['result']['messages']['list'][0]['user']['avatar'], null);
-        $this->assertEquals($data['result']['messages']['list'][0]['id'], 5);
+        $this->assertEquals($data['result']['messages']['list'][0]['id'], 4);
         $this->assertEquals($data['result']['messages']['list'][0]['conversation_id'], 2);
         $this->assertEquals($data['result']['messages']['list'][0]['from_id'], 4);
         $this->assertEquals($data['result']['messages']['list'][0]['user_id'], 6);
@@ -1528,17 +1528,12 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['users'][7]['program']), 0);
         $this->assertEquals(count($data['result']['conversations']), 2);
         $this->assertEquals(count($data['result']['conversations'][1]), 3);
-        $this->assertEquals(count($data['result']['conversations'][1]['users']), 3);
+        $this->assertEquals(count($data['result']['conversations'][1]['users']), 2);
         $this->assertEquals(count($data['result']['conversations'][1]['users'][4]), 4);
         $this->assertEquals($data['result']['conversations'][1]['users'][4]['id'], 4);
         $this->assertEquals($data['result']['conversations'][1]['users'][4]['firstname'], "Salim");
         $this->assertEquals($data['result']['conversations'][1]['users'][4]['lastname'], "Bendacha");
         $this->assertEquals($data['result']['conversations'][1]['users'][4]['avatar'], null);
-        $this->assertEquals(count($data['result']['conversations'][1]['users'][5]), 4);
-        $this->assertEquals($data['result']['conversations'][1]['users'][5]['id'], 5);
-        $this->assertEquals($data['result']['conversations'][1]['users'][5]['firstname'], "Sébastien");
-        $this->assertEquals($data['result']['conversations'][1]['users'][5]['lastname'], "Sayegh");
-        $this->assertEquals($data['result']['conversations'][1]['users'][5]['avatar'], null);
         $this->assertEquals(count($data['result']['conversations'][1]['users'][6]), 4);
         $this->assertEquals($data['result']['conversations'][1]['users'][6]['id'], 6);
         $this->assertEquals($data['result']['conversations'][1]['users'][6]['firstname'], "Guillaume");
@@ -1592,7 +1587,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['firstname'], "Salim");
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['lastname'], "Bendacha");
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['avatar'], null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['id'], 4);
+        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['id'], 3);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['conversation_id'], 2);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['from_id'], 4);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user_id'], 4);

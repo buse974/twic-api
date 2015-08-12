@@ -8,7 +8,7 @@ use Zend\Db\Sql\Predicate\In;
 class MessageUser extends AbstractMapper
 {
 
-    public function getList($me, $message = null, $conversation = null, $tag = 'INBOX', $type = null)
+    public function getList($me, $message = null, $conversation = null, $tag = 'INBOX', $type = null, $filter = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','user_id','from_id','read_date','conversation_id','created_date'))
