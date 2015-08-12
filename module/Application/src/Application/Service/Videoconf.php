@@ -259,7 +259,7 @@ class Videoconf extends AbstractService
             ->toArray(array('id'));
         
         $m_item = $this->getServiceItem()->getByItemProg($m_videoconf->getItemProgId());
-        if(!$m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
+        if($m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
             $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
             foreach ($instructors['list'] as $instructor) {
                 $res[] = $instructor;
