@@ -41,6 +41,34 @@ class Feed extends AbstractService
     }
 
     /**
+     * Add feed
+     *
+     * @invokable
+     *
+     * @param integer $id            
+     * @param string $content            
+     * @param string $link            
+     * @param string $video            
+     * @param string $picture            
+     * @param string $document            
+     *
+     * @return integer
+     */
+    public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null)
+    {
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        
+        $m_feed = $this->getModel()
+            ->setContent($content)
+            ->setLink($link)
+            ->setVideo($video)
+            ->setPicture($picture)
+            ->setDocument($document);
+        
+        return $this->getMapper()->update($m_feed, array('user_id' => $user, 'id' => $id));
+    }
+
+    /**
      * Delete Feed
      *
      * @invokable
@@ -55,7 +83,7 @@ class Feed extends AbstractService
         
         $m_feed = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
-        return $this->getMapper()->update($m_feed, array('user_id' => $user, 'id' => $id));
+        return $this->getMapper()->update($m_feed, array('user_id' => $user,'id' => $id));
     }
 
     /**
@@ -92,19 +120,18 @@ class Feed extends AbstractService
      *
      * @invokable
      *
-     * @param integer $id
+     * @param integer $id            
      *
      */
     public function GetListComment($id)
     {
         return $this->getServiceFeedComment()->getList($id);
     }
-    
+
     /**
      * GetList Feed
      *
-     * @invokable          
-     *
+     * @invokable
      */
     public function getList()
     {
@@ -115,7 +142,7 @@ class Feed extends AbstractService
         foreach ($res_contact as $m_contact) {
             $user[] = $m_contact->getContact()['id'];
         }
-
+        
         return $this->getMapper()->getList($user);
     }
 
@@ -127,7 +154,7 @@ class Feed extends AbstractService
     {
         return $this->serviceLocator->get('app_service_feed_comment');
     }
-    
+
     /**
      *
      * @return \Application\Service\Contact
@@ -136,7 +163,7 @@ class Feed extends AbstractService
     {
         return $this->serviceLocator->get('app_service_contact');
     }
-    
+
     /**
      *
      * @return \Application\Service\User
