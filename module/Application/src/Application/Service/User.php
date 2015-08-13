@@ -180,10 +180,10 @@ class User extends AbstractService
      *
      * @return array
      */
-    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null)
+    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $feed = null)
     {
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($filter, null, $this->getServiceAuth()
+        $res = $mapper->usePaginator($filter)->getList($filter, null, $feed,$this->getServiceAuth()
             ->getIdentity()
             ->getId(), $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude);
         
@@ -204,7 +204,7 @@ class User extends AbstractService
 
     public function getListOnly($type, $course)
     {
-        return $this->getMapper()->getList(null, null, $this->getServiceAuth()
+        return $this->getMapper()->getList(null, null, null, $this->getServiceAuth()
             ->getIdentity()
             ->getId(), $type, null, $course, null, null, null, null, false);
     }

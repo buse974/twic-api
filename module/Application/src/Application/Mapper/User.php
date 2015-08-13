@@ -28,7 +28,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = true, $order = null, array $exclude = null)
+    public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = true, $order = null, array $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar',
@@ -65,7 +65,10 @@ class User extends AbstractMapper
             $select->where(array('uu.id' => $user_school));
         }
 
-        
+        if(null !== $feed) {
+            $select->join('like', 'like.user_id=user.id', array())
+                   ->where(array('like.feed_id' => $feed));
+        }
         
         if ($user_school && $schools===true) {
             $sub_select = $this->tableGateway->getSql()->select();
