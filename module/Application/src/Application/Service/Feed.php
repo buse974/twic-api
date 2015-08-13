@@ -143,7 +143,7 @@ class Feed extends AbstractService
             $user[] = $m_contact->getContact()['id'];
         }
         
-        return $this->getMapper()->getList($user);
+        return $this->getMapper()->getList($user,$me);
     }
 
     /**
