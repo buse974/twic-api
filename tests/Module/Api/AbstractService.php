@@ -70,9 +70,12 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     ///////////////////////////////////////////////////////////////////////////////
     public function validateDate($date, $format = 'Y-m-d H:i:s')
     {
-        $d = \DateTime::createFromFormat($format, $date);
+        $d1 = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $date ,new \DateTimeZone('UTC'));
+        $d2 = \DateTime::createFromFormat('Y-m-d H:i:s', $date,new \DateTimeZone('UTC') );
 
-        return $d && $d->format($format) == $date;
+        $d = ($d1!=false) ? $d1 : (($d2!=false) ? $d2 : false);
+
+        return $d && ($d->format('Y-m-d\TH:i:s\Z') == $date || $d->format('Y-m-d H:i:s') == $date);
     }
 
     public function validateToken($token)

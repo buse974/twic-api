@@ -31,7 +31,8 @@ class User extends AbstractMapper
     public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = true, $order = null, array $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'birth_date', 'position', 'interest', 'avatar',
+        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")')
+            , 'position', 'interest', 'avatar',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
         . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
         ))
