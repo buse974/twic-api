@@ -41,7 +41,7 @@ class Feed extends AbstractService
     }
 
     /**
-     * Add feed
+     * Update feed
      *
      * @invokable
      *
