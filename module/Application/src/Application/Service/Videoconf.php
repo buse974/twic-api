@@ -7,6 +7,7 @@ use DateTime;
 use Application\Model\Videoconf as CVF;
 use OpenTok\Role as OpenTokRole;
 use Application\Model\Role as ModelRole;
+use Application\Model\Item as ModelItem;
 
 class Videoconf extends AbstractService
 {
@@ -213,14 +214,13 @@ class Videoconf extends AbstractService
     {
         $res_videoconf = $this->getMapper()->getByItemProg($itm_prog);
         
-        
-        
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
         }
         
         $m_videoconf = $res_videoconf->current();
-        $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordByItemProg($itm_prog));
+        $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()
+            ->getListRecordByItemProg($itm_prog));
         
         return $m_videoconf;
     }
@@ -248,23 +248,31 @@ class Videoconf extends AbstractService
         }
         
         $res_videoconf_conversation = $this->getServiceVideoconfConversation()->getByVideoconfUser($m_videoconf->getId(), $identity['id']);
-            
+        
         $conversations = [];
         foreach ($res_videoconf_conversation as $m_videoconf_conversation) {
             $conversations[$m_videoconf_conversation->getConversationId()] = $this->getServiceConversation()->getConversation($m_videoconf_conversation->getConversationId());
         }
         
-        $res = $this->getServiceUser()->getListByItemProg($m_videoconf->getItemProgId())->toArray(array('id'));
+        $res = $this->getServiceUser()
+            ->getListByItemProg($m_videoconf->getItemProgId())
+            ->toArray(array('id'));
+        
         $m_item = $this->getServiceItem()->getByItemProg($m_videoconf->getItemProgId());
-        $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
-        foreach ($instructors['list'] as $instructor) {
-            $res[] = $instructor;
+        if($m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
+            $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
+            foreach ($instructors['list'] as $instructor) {
+                $res[] = $instructor;
+            }
         }
         
-        $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getItemProgId()));
-        $m_videoconf->setUsers($res);
-        $m_videoconf->setConversations($conversations);
-        $m_videoconf->setVideoconfAdmin($this->getServiceVideoconfAdmin()
+        $m_videoconf->setDocs($this->getServiceVideoconfDoc()
+            ->getListByVideoconf($m_videoconf->getItemProgId()))
+            ->setUsers($res)
+            ->setConversations($conversations)
+            ->setItemAssignmentId($this->getServiceItemAssignment()
+            ->getIdByItemProg($m_videoconf->getItemProgId()))
+            ->setVideoconfAdmin($this->getServiceVideoconfAdmin()
             ->add($id, $optok));
         
         return $m_videoconf;
@@ -301,27 +309,27 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param integer $id
+     * @param integer $id            
      */
     public function startRecord($id)
     {
         $m_videoconf = $this->get($id);
         
-        $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_videoconf->getToken()));
-    
+        $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_videoconf->getToken()), true);
+        
         if ($arr_archive['status'] == 'started') {
             $this->getServiceVideoconfArchive()->add($videoconf->getId(), $arr_archive['id']);
         }
-    
+        
         return $arr_archive;
     }
-    
+
     /**
      * Stop record video conf.
      *
      * @invokable
      *
-     * @param integer $id
+     * @param integer $id            
      */
     public function stopRecord($id)
     {
@@ -329,7 +337,7 @@ class Videoconf extends AbstractService
         
         return $this->getServiceZOpenTok()->stopArchive($m_videoconf->getToken());
     }
-    
+
     /**
      * Récupére la liste des videos a uploader.
      *
@@ -346,7 +354,7 @@ class Videoconf extends AbstractService
         foreach ($res_video_no_upload as $m_videoconf_archive) {
             try {
                 $archive = $this->getServiceZOpenTok()->getArchive($m_videoconf_archive->getArchiveToken());
-                if ($archive['status'] == CVF::ARV_AVAILABLE) { 
+                if ($archive['status'] == CVF::ARV_AVAILABLE) {
                     $this->getServiceVideoconfArchive()->updateByArchiveToken($m_videoconf_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
                     $arr = $m_videoconf_archive->toArray();
                     $arr['url'] = $archive['url'];
@@ -373,7 +381,7 @@ class Videoconf extends AbstractService
      */
     public function validTransfertVideo($videoconf_archive, $url)
     {
-        return $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE,null, $url);
+        return $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
     }
 
     /**
@@ -385,16 +393,16 @@ class Videoconf extends AbstractService
     public function addConversation($videoconf, $users, $text)
     {
         $user = $this->getServiceUser()->getIdentity();
-        if( !in_array($user['id'], $users) ){
+        if (! in_array($user['id'], $users)) {
             $users[] = $user['id'];
         }
         
         $conversation = $this->getServiceConversationUser()->createConversation($users);
         $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
         
-        return $this->getServiceMessage()->send($text, null, $conversation);
+        return $this->getServiceMessage()->sendVideoConf($text, null, $conversation);
     }
-    
+
     /**
      *
      * @return \Application\Service\VideoconfArchive
@@ -421,7 +429,7 @@ class Videoconf extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_conversation_user');
     }
-    
+
     /**
      *
      * @return \Application\Service\Conversation
@@ -430,7 +438,7 @@ class Videoconf extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
-    
+
     /**
      *
      * @return \Application\Service\VideoconfDoc
@@ -466,7 +474,7 @@ class Videoconf extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
+
     /**
      *
      * @return \Application\Service\Message
@@ -475,7 +483,16 @@ class Videoconf extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_message');
     }
-    
+
+    /**
+     *
+     * @return \Application\Service\ItemAssignment
+     */
+    public function getServiceItemAssignment()
+    {
+        return $this->getServiceLocator()->get('app_service_item_assignment');
+    }
+
     /**
      *
      * @return \Application\Service\Item
