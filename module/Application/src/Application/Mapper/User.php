@@ -12,7 +12,7 @@ class User extends AbstractMapper
     public function get($user, $me)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'birth_date', 'position', 'interest', 'avatar', 'school_id',
+        $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar', 'school_id',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
                 . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
         ))
