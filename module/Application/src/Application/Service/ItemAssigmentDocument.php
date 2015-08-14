@@ -20,7 +20,9 @@ class ItemAssigmentDocument extends AbstractService
                                                        ->setDate($date)
                                                        ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        return $this->getMapper()->insert($m_item_assigment_document);
+        $this->getMapper()->insert($m_item_assigment_document);
+        
+        return $this->getMapper()->getLastInsertValue();
     }
 
     public function deleteByItemAssignment($item_assigment)
@@ -28,6 +30,11 @@ class ItemAssigmentDocument extends AbstractService
         return $this->getMapper()->delete($this->getModel()->setItemAssigmentId($item_assigment));
     }
 
+    public function delete($id)
+    {
+        return $this->getMapper()->delete($this->getModel()->setId($id));
+    }
+    
     public function getListByItemAssignment($item_assignment)
     {
         return $this->getMapper()->getListByItemAssignment($item_assignment);

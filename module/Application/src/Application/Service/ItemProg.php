@@ -85,23 +85,29 @@ class ItemProg extends AbstractService
             $users = [];
         }
 
-        $users = array_keys($this->getServiceItemProgUser()->add($users, [$id])[$id], 1, true);
-        
-        $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
-        foreach ($instructors['list'] as $instructor) {
-            $users[] = $instructor['id'];
+        if(null !== $users) {
+            $ip = $this->getServiceItemProgUser()->add($users, [$id]);
+            if(isset($ip[$id])) {
+                $ip = $ip[$id];
+            }
+            $users = array_keys($ip, 1, true);
         }
         
         switch ($m_item->getType()) {
             case ModelItem::TYPE_LIVE_CLASS :
-                $conversation = $this->getServiceConversationUser()->createConversation($users);
+                $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
+                foreach ($instructors['list'] as $instructor) {
+                    $users[] = $instructor['id'];
+                }
+                $conversation = $this->getServiceConversationUser()->createConversation($users, null, 3);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
                 break;
             case ModelItem::TYPE_WORKGROUP:
-                $conversation = $this->getServiceConversationUser()->createConversation($users);
+                $conversation = $this->getServiceConversationUser()->createConversation($users, null, 3);
                 $videoconf = $this->getServiceVideoconf()->add('', '', $start_date, $id, $conversation);
                 $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
+                $this->getServiceItemAssignment()->add($id);
                 break;
             default:
                 break;
@@ -146,14 +152,15 @@ class ItemProg extends AbstractService
             $this->getServiceItemProgUser()->add($users, array($id));
             
             $m_item = $this->getServiceItem()->getByItemProg($id);
-            $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
-            foreach ($instructors['list'] as $instructor) {
-                $users[] = $instructor['id'];
-            }
+            
             
             
             switch ($m_item->getType()) {
                 case ModelItem::TYPE_LIVE_CLASS :
+                    $instructors = $this->getServiceUser()->getList(null,ModelRole::ROLE_INSTRUCTOR_STR,null,$m_item->getCourseId());
+                    foreach ($instructors['list'] as $instructor) {
+                        $users[] = $instructor['id'];
+                    }
                     $m_videoconf = $this->getServiceVideoconf()->getByItemProg($id);
                     $this->getServiceConversationUser()->replace($m_videoconf->getConversationId(), $users);
                     break;

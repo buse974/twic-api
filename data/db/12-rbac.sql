@@ -100,6 +100,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_perm
 INSERT INTO `permission` (`libelle`) VALUES ('user.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('user.add');
@@ -135,10 +136,6 @@ SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('program.update');
-SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
-
-INSERT INTO `permission` (`libelle`) VALUES ('message.send');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 
@@ -291,8 +288,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemassignment.get');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('grading.getBySchool');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -475,5 +471,93 @@ SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('country.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('message.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('conversation.read');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('message.read');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('message.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('conversation.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('conversation.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('message.sendMail');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('message.getListConversation');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('itemassignment.removeDocument');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('itemassignment.addDocument');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('conversation.unRead');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('message.unRead');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.addComment');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.deleteComment');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.getListComment');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('like.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('like.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('like.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('feed.update');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
