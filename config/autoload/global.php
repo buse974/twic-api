@@ -79,6 +79,7 @@ return array(
             'app_service_feed',
             'app_service_feed_comment',
             'app_service_like',
+            'app_service_resume',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
