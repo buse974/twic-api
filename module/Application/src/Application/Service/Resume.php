@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\Expression;
 
 class Resume extends AbstractService
 {
@@ -48,17 +49,17 @@ class Resume extends AbstractService
      * Update experience.
      *
      * @invokable
-     * 
-     * @param integer $id
-     * @param string $start_date
-     * @param string $end_date
-     * @param string $address
-     * @param string $logo
-     * @param string $title
-     * @param string $subtitle
-     * @param string $description
-     * @param string $type
-     * 
+     *
+     * @param integer $id            
+     * @param string $start_date            
+     * @param string $end_date            
+     * @param string $address            
+     * @param string $logo            
+     * @param string $title            
+     * @param string $subtitle            
+     * @param string $description            
+     * @param string $type            
+     *
      * @return integer
      */
     public function update($id, $start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null)
@@ -97,6 +98,23 @@ class Resume extends AbstractService
             ->getIdentity()['id']);
         
         return $this->getMapper()->delete($m_education);
+    }
+
+    /**
+     * Get Resume.
+     *
+     * @invokable
+     *
+     * @param integer $user            
+     *
+     */
+    public function get($user)
+    {
+        $m_education = $this->getModel();
+        
+        $m_education->setUserId($user);
+        
+        return $this->getMapper()->select($m_education, array(new Expression('ISNULL(end_date) DESC'),'end_date DESC'));
     }
 
     /**
