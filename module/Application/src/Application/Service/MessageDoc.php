@@ -19,9 +19,9 @@ class MessageDoc extends AbstractService
             
             $m_message_doc->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             foreach ($document as $d) {
-                $m_message_doc->setToken($d);
+                $m_message_doc->setToken($d['token'])->setName($d['name']);
                 
-                $ret[$d] = $this->getMapper()->insert($m_message_doc);
+                $ret[$d['token']] = $this->getMapper()->insert($m_message_doc);
             }
         }
         
