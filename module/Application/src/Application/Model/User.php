@@ -15,7 +15,7 @@ class User extends BaseUser
     protected $gender;
     protected $nationality;
     protected $origin;
-    
+
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
@@ -32,7 +32,7 @@ class User extends BaseUser
         $this->nationality->exchangeArray($data);
         $this->origin->exchangeArray($data);
     }
-
+    
     public function getOrigin()
     {
         return $this->origin;
