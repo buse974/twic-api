@@ -10,8 +10,9 @@ class Resume extends AbstractModel
 	protected $start_date;
 	protected $end_date;
 	protected $address;
-	protected $logo;
 	protected $title;
+	protected $subtitle;
+	protected $logo;
 	protected $description;
 	protected $type;
 	protected $user_id;
@@ -66,18 +67,6 @@ class Resume extends AbstractModel
 		return $this;
 	}
 
-	public function getLogo()
-	{
-		return $this->logo;
-	}
-
-	public function setLogo($logo)
-	{
-		$this->logo = $logo;
-
-		return $this;
-	}
-
 	public function getTitle()
 	{
 		return $this->title;
@@ -86,6 +75,30 @@ class Resume extends AbstractModel
 	public function setTitle($title)
 	{
 		$this->title = $title;
+
+		return $this;
+	}
+
+	public function getSubtitle()
+	{
+		return $this->subtitle;
+	}
+
+	public function setSubtitle($subtitle)
+	{
+		$this->subtitle = $subtitle;
+
+		return $this;
+	}
+
+	public function getLogo()
+	{
+		return $this->logo;
+	}
+
+	public function setLogo($logo)
+	{
+		$this->logo = $logo;
 
 		return $this;
 	}
