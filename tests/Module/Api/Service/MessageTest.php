@@ -21,9 +21,10 @@ class MessageTest extends AbstractService
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 8);
-        $this->assertEquals(count($data['result']['message']), 6);
+        $this->assertEquals(count($data['result']['message']), 7);
         $this->assertEquals($data['result']['message']['id'], 1);
         $this->assertEquals($data['result']['message']['type'], 2);
+        $this->assertEquals($data['result']['message']['title'], null);
         $this->assertEquals($data['result']['message']['is_draft'], 0);
         $this->assertEquals($data['result']['message']['text'], "super message qwerty");
         $this->assertEquals($data['result']['message']['token'], null);
@@ -88,8 +89,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 3);
         $this->assertEquals(count($data['result']['list'][0]), 8);
-        $this->assertEquals(count($data['result']['list'][0]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][0]['message']), 7);
         $this->assertEquals($data['result']['list'][0]['message']['id'], 4);
+        $this->assertEquals($data['result']['list'][0]['message']['title'], null);
         $this->assertEquals($data['result']['list'][0]['message']['text'], "dernier message");
         $this->assertEquals($data['result']['list'][0]['message']['token'], null);
         $this->assertEquals($data['result']['list'][0]['message']['is_draft'], 0);
@@ -107,8 +109,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(! empty($data['result']['list'][0]['read_date']), true);
         $this->assertEquals(! empty($data['result']['list'][0]['created_date']), true);
         $this->assertEquals(count($data['result']['list'][1]), 8);
-        $this->assertEquals(count($data['result']['list'][1]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][1]['message']), 7);
         $this->assertEquals($data['result']['list'][1]['message']['id'], 3);
+        $this->assertEquals($data['result']['list'][1]['message']['title'], null);
         $this->assertEquals($data['result']['list'][1]['message']['text'], "super message un azerty 2");
         $this->assertEquals($data['result']['list'][1]['message']['token'], null);
         $this->assertEquals($data['result']['list'][1]['message']['is_draft'], 0);
@@ -126,8 +129,9 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['read_date'], null);
         $this->assertEquals(! empty($data['result']['list'][1]['created_date']), true);
         $this->assertEquals(count($data['result']['list'][2]), 8);
-        $this->assertEquals(count($data['result']['list'][2]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][2]['message']), 7);
         $this->assertEquals($data['result']['list'][2]['message']['id'], 2);
+        $this->assertEquals($data['result']['list'][2]['message']['title'], null);
         $this->assertEquals($data['result']['list'][2]['message']['text'], "super message deux qwerty 1");
         $this->assertEquals($data['result']['list'][2]['message']['token'], null);
         $this->assertEquals($data['result']['list'][2]['message']['is_draft'], 0);
@@ -159,8 +163,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 2);
         $this->assertEquals(count($data['result']['list'][0]), 8);
-        $this->assertEquals(count($data['result']['list'][0]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][0]['message']), 7);
         $this->assertEquals($data['result']['list'][0]['message']['id'], 4);
+        $this->assertEquals($data['result']['list'][0]['message']['title'], null);
         $this->assertEquals($data['result']['list'][0]['message']['text'], "dernier message");
         $this->assertEquals($data['result']['list'][0]['message']['token'], null);
         $this->assertEquals($data['result']['list'][0]['message']['is_draft'], 0);
@@ -178,8 +183,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(! empty($data['result']['list'][0]['read_date']), true);
         $this->assertEquals(! empty($data['result']['list'][0]['created_date']), true);
         $this->assertEquals(count($data['result']['list'][1]), 8);
-        $this->assertEquals(count($data['result']['list'][1]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][1]['message']), 7);
         $this->assertEquals($data['result']['list'][1]['message']['id'], 1);
+        $this->assertEquals($data['result']['list'][1]['message']['title'], null);
         $this->assertEquals($data['result']['list'][1]['message']['text'], "super message qwerty");
         $this->assertEquals($data['result']['list'][1]['message']['token'], null);
         $this->assertEquals($data['result']['list'][1]['message']['is_draft'], 0);
@@ -257,7 +263,7 @@ class MessageTest extends AbstractService
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 8);
-        $this->assertEquals(count($data['result']['message']), 7);
+        $this->assertEquals(count($data['result']['message']), 8);
         $this->assertEquals(count($data['result']['message']['document']), 2);
         $this->assertEquals(count($data['result']['message']['document'][0]), 5);
         $this->assertEquals($data['result']['message']['document'][0]['id'], 1);
@@ -272,6 +278,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['document'][1]['message_id'], 6);
         $this->assertEquals(! empty($data['result']['message']['document'][1]['created_date']), true);
         $this->assertEquals($data['result']['message']['id'], 6);
+        $this->assertEquals($data['result']['message']['title'], 'objet mail');
         $this->assertEquals($data['result']['message']['text'], "super message qwerty");
         $this->assertEquals($data['result']['message']['token'], null);
         $this->assertEquals($data['result']['message']['is_draft'], 1);
@@ -305,7 +312,7 @@ class MessageTest extends AbstractService
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 8);
-        $this->assertEquals(count($data['result']['message']), 7);
+        $this->assertEquals(count($data['result']['message']), 8);
         $this->assertEquals(count($data['result']['message']['document']), 2);
         $this->assertEquals(count($data['result']['message']['document'][0]), 5);
         $this->assertEquals($data['result']['message']['document'][0]['id'], 1);
@@ -320,6 +327,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['document'][1]['message_id'], 6);
         $this->assertEquals(! empty($data['result']['message']['document'][1]['created_date']), true);
         $this->assertEquals($data['result']['message']['id'], 6);
+        $this->assertEquals($data['result']['message']['title'], 'objet mail update');
         $this->assertEquals($data['result']['message']['text'], "super message qwerty");
         $this->assertEquals($data['result']['message']['token'], null);
         $this->assertEquals($data['result']['message']['is_draft'], 1);
@@ -362,8 +370,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 2);
         $this->assertEquals(count($data['result']['list'][0]), 8);
-        $this->assertEquals(count($data['result']['list'][0]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][0]['message']), 7);
         $this->assertEquals($data['result']['list'][0]['message']['id'], 3);
+        $this->assertEquals($data['result']['list'][0]['message']['title'], null);
         $this->assertEquals($data['result']['list'][0]['message']['text'], "super message un azerty 2");
         $this->assertEquals($data['result']['list'][0]['message']['token'], null);
         $this->assertEquals($data['result']['list'][0]['message']['is_draft'], 0);
@@ -381,8 +390,9 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['read_date'], null);
         $this->assertEquals(! empty($data['result']['list'][0]['created_date']), true);
         $this->assertEquals(count($data['result']['list'][1]), 8);
-        $this->assertEquals(count($data['result']['list'][1]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][1]['message']), 7);
         $this->assertEquals($data['result']['list'][1]['message']['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['message']['title'], null);
         $this->assertEquals($data['result']['list'][1]['message']['text'], "super message qwerty");
         $this->assertEquals($data['result']['list'][1]['message']['token'], null);
         $this->assertEquals($data['result']['list'][1]['message']['is_draft'], 0);
@@ -414,7 +424,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 1);
         $this->assertEquals(count($data['result']['list'][0]), 8);
-        $this->assertEquals(count($data['result']['list'][0]['message']), 7);
+        $this->assertEquals(count($data['result']['list'][0]['message']), 8);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']), 2);
         $this->assertEquals(count($data['result']['list'][0]['message']['document'][0]), 5);
         $this->assertEquals($data['result']['list'][0]['message']['document'][0]['id'], 1);
@@ -429,6 +439,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['document'][1]['message_id'], 6);
         $this->assertEquals(! empty($data['result']['list'][0]['message']['document'][1]['created_date']), true);
         $this->assertEquals($data['result']['list'][0]['message']['id'], 6);
+        $this->assertEquals($data['result']['list'][0]['message']['title'], 'objet mail update');
         $this->assertEquals($data['result']['list'][0]['message']['text'], "super message qwerty");
         $this->assertEquals($data['result']['list'][0]['message']['token'], null);
         $this->assertEquals($data['result']['list'][0]['message']['is_draft'], 1);
@@ -460,8 +471,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 1);
         $this->assertEquals(count($data['result']['list'][0]), 8);
-        $this->assertEquals(count($data['result']['list'][0]['message']), 6);
+        $this->assertEquals(count($data['result']['list'][0]['message']), 7);
         $this->assertEquals($data['result']['list'][0]['message']['id'], 3);
+        $this->assertEquals($data['result']['list'][0]['message']['title'], null);
         $this->assertEquals($data['result']['list'][0]['message']['text'], "super message un azerty 2");
         $this->assertEquals($data['result']['list'][0]['message']['token'], null);
         $this->assertEquals($data['result']['list'][0]['message']['is_draft'], 0);
