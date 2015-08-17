@@ -20,7 +20,7 @@ class Feed extends AbstractService
      *
      * @return integer
      */
-    public function add($content = null, $link = null, $video = null, $picture = null, $document = null)
+    public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         
@@ -31,6 +31,8 @@ class Feed extends AbstractService
             ->setVideo($video)
             ->setPicture($picture)
             ->setDocument($document)
+            ->setNamePicture($name_picture)
+            ->setNameDocument($name_document)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_feed) <= 0) {
@@ -54,7 +56,7 @@ class Feed extends AbstractService
      *
      * @return integer
      */
-    public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null)
+    public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         
@@ -63,6 +65,8 @@ class Feed extends AbstractService
             ->setLink($link)
             ->setVideo($video)
             ->setPicture($picture)
+            ->setNamePicture($name_picture)
+            ->setNameDocument($name_document)
             ->setDocument($document);
         
         return $this->getMapper()->update($m_feed, array('user_id' => $user, 'id' => $id));
