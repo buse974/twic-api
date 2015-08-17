@@ -28,7 +28,9 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = true, $order = null, array $exclude = null)
+    public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, 
+        $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, 
+        $schools = true, $order = null, array $exclude = null, $message = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")')
@@ -140,6 +142,13 @@ class User extends AbstractMapper
             $select->where(array('program.level' => $level));
         }
 
+        if($message) {
+            $select->join('message_user', 'message_user.user_id=user.id', array(), $select::JOIN_LEFT)
+                   ->join('message', 'message_user.message_id=message.id', array(), $select::JOIN_LEFT)
+                   ->where(array('message.id' => $message))
+                   ->where(array('message_user.user_id <> message_user.from_id'));
+        }
+        
         if (!empty($search)) {
             $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'));
             $select->where(array('user.firstname LIKE ? ' => ''.$search.'%'), Predicate::OP_OR);
