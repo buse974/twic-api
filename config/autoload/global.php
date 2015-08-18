@@ -74,6 +74,7 @@ return array(
             'app_service_research',
             'app_service_videoconf_doc',
             'app_service_research',
+            'app_service_country',
             'rbac_service_permission',
             'rbac_service_role_permission',
             'app_service_feed',

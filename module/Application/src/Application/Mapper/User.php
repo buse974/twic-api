@@ -12,13 +12,13 @@ class User extends AbstractMapper
     public function get($user, $me)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'birth_date', 'position', 'interest', 'avatar', 'school_id',
+        $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar', 'school_id',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
                 . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
-            ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'name'), $select::JOIN_LEFT)
-            ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'name'), $select::JOIN_LEFT)
+            ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
+            ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'short_name'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
