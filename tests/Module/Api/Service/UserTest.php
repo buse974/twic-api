@@ -38,7 +38,7 @@ class UserTest extends AbstractService
     public function testLogin()
     {
         $data = $this->jsonRpc('user.login', array('user' => 'crobertr@thestudnet.com','password' => 'studnet'));
-        
+       
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 11);
         $this->assertEquals($data['result']['id'] , 7);
@@ -110,6 +110,19 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
+    /**
+     * @depends testCanAddUser
+     */
+    public function testLostPassword($id)
+    {
+        $data = $this->jsonRpc('user.lostPassword', array('email' => 'jpaul@thestudnet.com'));
+    
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
     /**
      * @depends testCanAddUser
      */
