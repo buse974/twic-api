@@ -12,14 +12,15 @@ class Country extends AbstractService
      * @invokable       
      *
      * @throws \Exception
+     * @param string $string 
      *
      * @return array
      */
-    public function getList($filter=null)
+    public function getList($string = null)
     {
         $country = $this->getMapper();
         
-        $res = $country->usePaginator($filter)->getList($filter);
+        $res = $country->getList($string);
 
         return array('list' => $res,
                     'count' => $country->count());
