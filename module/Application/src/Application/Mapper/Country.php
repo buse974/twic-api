@@ -10,14 +10,16 @@ class Country extends AbstractMapper
      * Get Country list.
      *
      * @param string $filter
+     * @param string $string
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($filter = null)
+    public function getList($string)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','short_name'));
-        syslog(1,$select);
+        $select->columns(array('id','short_name'))
+                ->where(array('short_name LIKE ?' => '%' .$string . '%'));
+
         return $this->selectWith($select);
     }
 }
