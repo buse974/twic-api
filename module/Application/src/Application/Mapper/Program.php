@@ -47,7 +47,6 @@ class Program extends AbstractMapper
         }
 
         $select->where(array('program.deleted_date IS NULL'));
-
         return $this->selectWith($select);
     }
 
