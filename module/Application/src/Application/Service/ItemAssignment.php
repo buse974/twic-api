@@ -107,9 +107,10 @@ class ItemAssignment extends AbstractService
         $datetime1 = new \DateTime($m_item_prog->getStartDate());
         $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
         
-        if ($datetime1 > $datetime2) {
+        // condition a voir
+        /*if ($datetime1 > $datetime2) {
             throw new \Exception('error date');
-        }
+        }*/
         
         $m_item_assignment = $this->getModel()
             ->setItemProgId($item_prog)
