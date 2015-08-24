@@ -12,6 +12,7 @@ class User extends AbstractModel
 	protected $status;
 	protected $email;
 	protected $password;
+	protected $new_password;
 	protected $birth_date;
 	protected $position;
 	protected $school_id;
@@ -93,6 +94,18 @@ class User extends AbstractModel
 	public function setPassword($password)
 	{
 		$this->password = $password;
+
+		return $this;
+	}
+
+	public function getNewPassword()
+	{
+		return $this->new_password;
+	}
+
+	public function setNewPassword($new_password)
+	{
+		$this->new_password = $new_password;
 
 		return $this;
 	}
