@@ -124,7 +124,8 @@ return array(
                     array('width' => 80, 'height' => 80),
                     array('width' => 300),
             ),
-            'default_path' => 'upload/',
+            'check_size_allowed' => false,
+            'default_path' => '/home/buse974/workspace/apiwow/upload/',
             'adapter' => 'http-adapter',
             'convert' => array(
                     'tmp' => '/tmp/',
