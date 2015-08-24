@@ -111,8 +111,8 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key' => '45289892',
-        'api_secret' => 'c6fcfecd74ec557c2c44fdd5d7a099d28b18f06f',
+        'api_key' => '45320592',
+        'api_secret' => '1fbccf5abfd6db77cf70665215c558e70db66787',
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
     ),
