@@ -21,37 +21,50 @@ class Message extends AbstractService
      */
     public function sendMail($title, $text, $to, $conversation = null, $draft = false, $id = null, $document = null)
     {
+        // Fetches sender id
         $me = $this->getServiceUser()->getIdentity()['id'];
+
         if (! is_array($to)) {
             $to = array($to);
         }
+        // Adds sender to list of receivers
         if (! in_array($me, $to)) {
             $to[] = $me;
         }
         
+        // Id is set => update
         if (null !== $id) {
             $m_message = $this->getModel()->setId($id);
             $res_message = $this->getMapper()->select($m_message);
             
+            // Throws an error if the message does not exist
             if($res_message->count() <= 0) {
                 throw new \Exception('error select message with id :' . $id);
             }
-            $m_message= $res_message->current();
+            // Fetches the entity and stores the message and conversation ids
+            $m_message = $res_message->current();
             $message_id = $m_message->getId();
             $conversation = $m_message->getConversationId();
-            
+
+            // Applies the changes and update
             $m_message = $this->getModel()
                 ->setId($message_id)
                 ->setTitle($title)
                 ->setIsDraft($draft)
-                ->setText($text);
+                ->setText($text)
+                ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
             $this->getMapper()->update($m_message);
-        } else {
+        }
+
+        // Id is not set => insert
+        else {
+            // Conversation is not set => create it and stores the conversation id
             if (null === $conversation) {
                 $conversation = $this->getServiceConversationUser()->createConversation($to, null, 1);
             }
-            
+
+            // Applies the params to a new model
             $m_message = $this->getModel()
                 ->setTitle($title)
                 ->setIsDraft($draft)
@@ -60,14 +73,17 @@ class Message extends AbstractService
                 ->setConversationId($conversation)
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
+            // Inserts it or throws an error
             if ($this->getMapper()->insert($m_message) <= 0) {
                 throw new \Exception('error insert message');
             }
-            
+
+            // Stores the new message id
             $message_id = $this->getMapper()->getLastInsertValue();
         }
-        
+   
         $this->getServiceMessageDoc()->replace($message_id, $document);
+        // Delete all users and inserts them again
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
         
