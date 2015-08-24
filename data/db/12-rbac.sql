@@ -25,6 +25,10 @@ INSERT INTO `permission` (`libelle`) VALUES ('mail.getListTpl');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
 
+INSERT INTO `permission` (`libelle`) VALUES ('user.lostPassword');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
+
 INSERT INTO `permission` (`libelle`) VALUES ('user.login');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
@@ -470,6 +474,10 @@ INSERT INTO `permission` (`libelle`) VALUES ('videoconf.stopRecord');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
+INSERT INTO `permission` (`libelle`) VALUES ('country.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
 INSERT INTO `permission` (`libelle`) VALUES ('message.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
@@ -571,6 +579,10 @@ SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('resume.get');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('user.updatePassword');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 

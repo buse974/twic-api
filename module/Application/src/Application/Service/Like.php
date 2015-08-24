@@ -28,8 +28,6 @@ class Like extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
     
-     
-
     /**
      * @invokable
      *

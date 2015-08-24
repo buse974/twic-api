@@ -12,13 +12,13 @@ class User extends AbstractMapper
     public function get($user, $me)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'birth_date', 'position', 'interest', 'avatar', 'school_id',
+        $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar', 'school_id',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
                 . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
-            ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'name'), $select::JOIN_LEFT)
-            ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'name'), $select::JOIN_LEFT)
+            ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
+            ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'short_name'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
@@ -28,7 +28,9 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = true, $order = null, array $exclude = null)
+    public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, 
+        $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, 
+        $schools = true, $order = null, array $exclude = null, $message = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")')
@@ -140,6 +142,13 @@ class User extends AbstractMapper
             $select->where(array('program.level' => $level));
         }
 
+        if($message) {
+            $select->join('message_user', 'message_user.user_id=user.id', array(), $select::JOIN_LEFT)
+                   ->join('message', 'message_user.message_id=message.id', array(), $select::JOIN_LEFT)
+                   ->where(array('message.id' => $message))
+                   ->where(array('message_user.user_id <> message_user.from_id'));
+        }
+        
         if (!empty($search)) {
             $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'));
             $select->where(array('user.firstname LIKE ? ' => ''.$search.'%'), Predicate::OP_OR);
