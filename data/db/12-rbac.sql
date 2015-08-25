@@ -372,11 +372,11 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_perm
 INSERT INTO `permission` (`libelle`) VALUES ('school.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-
+/*
 INSERT INTO `permission` (`libelle`) VALUES ('school.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
-
+*/
 INSERT INTO `permission` (`libelle`) VALUES ('school.update');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
@@ -590,3 +590,51 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_perm
 INSERT INTO `permission` (`libelle`) VALUES ('feed.linkPreview');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('address.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('address.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('address.update');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('address.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('city.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('city.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('city.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('city.update');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('division.add');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('division.getList');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('division.delete');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('division.update');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
