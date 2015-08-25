@@ -300,6 +300,43 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    public function testgetListByIds()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('feed.getList', array('ids' => array(1)));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['list']) , 1);
+        $this->assertEquals(count($data['result']['list'][0]) , 13);
+        $this->assertEquals($data['result']['list'][0]['is_like'] , 1);
+        $this->assertEquals($data['result']['list'][0]['nb_like'] , 3);
+        $this->assertEquals(count($data['result']['list'][0]['user']) , 5);
+        $this->assertEquals(count($data['result']['list'][0]['user']['school']) , 4);
+        $this->assertEquals($data['result']['list'][0]['user']['school']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['school']['name'] , "Morbi Corporation");
+        $this->assertEquals($data['result']['list'][0]['user']['school']['short_name'] , "turpis");
+        $this->assertEquals($data['result']['list'][0]['user']['school']['logo'] , null);
+        $this->assertEquals($data['result']['list'][0]['user']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['list'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['list'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['content'] , "UN FEED");
+        $this->assertEquals($data['result']['list'][0]['user_id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['link'] , "link");
+        $this->assertEquals($data['result']['list'][0]['video'] , "token");
+        $this->assertEquals($data['result']['list'][0]['picture'] , "tokenp");
+        $this->assertEquals($data['result']['list'][0]['name_picture'] , "tokenp name");
+        $this->assertEquals($data['result']['list'][0]['document'] , "tokend");
+        $this->assertEquals($data['result']['list'][0]['name_document'] , "tokend name");
+        $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['count'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     /**
      * @depends testAdd
      */
