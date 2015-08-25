@@ -7,7 +7,7 @@ use Dal\Mapper\AbstractMapper;
 class Address extends AbstractMapper
 {
     /**
-     * Get school list.
+     * Get address list.
      *
      * @param string $filter
      *
@@ -21,8 +21,7 @@ class Address extends AbstractMapper
                ->join(array('address_division' => 'division'), 'address_division.id=address.division_id', array('id', 'name'),  $select::JOIN_LEFT)
                ->join(array('address_city' => 'city'), 'address_city.id=address.city_id', array('id', 'name'),  $select::JOIN_LEFT)
                ->join(array('address_country' => 'country'), 'address_country.id=address.country_id', array('id', 'short_name', 'name'),  $select::JOIN_LEFT);
-                
-        $select->where('school.deleted_date IS NULL');
+              
         return $this->selectWith($select);
     }
 }
