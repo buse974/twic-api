@@ -335,26 +335,44 @@ class User extends AbstractService
     }
 
     /**
-     * 
+     *
      * Lost Password
-     * 
+     *
      * @invokable
      *
-     * @param string $email
+     * @param string $email            
      */
     public function lostPassword($email)
     {
-        $cars="azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
-        $long=strlen($cars);
-        srand((double)microtime()*1000000);
-        $password='';
-        for($i=0;$i<8;$i++) {
-            $password.=substr($cars,rand(0,$long-1),1);
+        $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
+        $long = strlen($cars);
+        srand((double) microtime() * 1000000);
+        $password = '';
+        for ($i = 0; $i < 8; $i ++) {
+            $password .= substr($cars, rand(0, $long - 1), 1);
         }
         
-        syslog(1, $password);
-        return $this->getMapper()->update($this->getModel()
+        $ret = $this->getMapper()->update($this->getModel()
             ->setNewPassword(md5($password)), array('email' => $email));
+        
+        if ($ret > 0) {
+            $user = $this->getMapper()
+                ->select($this->getModel()
+                ->setEmail($email))
+                ->current();
+            
+            try {
+            $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, array(
+                'password' => $password,
+                'email' => $email,
+                'lastname' => $user->getLastname(),
+                'firstname' => $user->getFirstname()));
+            } catch (\Exception $e) {
+                syslog(1, 'Model name does not exist <> password is : ' . $password);
+            }
+        }
+        
+        return $ret;
     }
 
     /**
@@ -626,5 +644,14 @@ class User extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+
+    /**
+     *
+     * @return \Mail\Service\Mail
+     */
+    public function getServiceMail()
+    {
+        return $this->getServiceLocator()->get('mail.service');
     }
 }
