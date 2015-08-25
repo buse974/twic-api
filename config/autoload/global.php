@@ -80,6 +80,7 @@ return array(
             'app_service_feed_comment',
             'app_service_like',
             'app_service_resume',
+            'app_service_address'
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
