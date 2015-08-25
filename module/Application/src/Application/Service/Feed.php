@@ -162,7 +162,12 @@ class Feed extends AbstractService
      */
     public function linkPreview($url)
     {
-        return $this->getServiceSimplePageCrawler()->get($url)->getImages()->toArray();
+        $page = $this->getServiceSimplePageCrawler()->get($url);
+        
+        $return = $page->getMeta()->toArray();
+        $return['images'] = $page->getImages()->getImages();
+        
+        return $return;
     }
     
     /**
