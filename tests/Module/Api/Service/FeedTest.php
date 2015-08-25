@@ -300,6 +300,51 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    public function testLinkPreview() 
+    {
+        $this->setIdentity(1);
+        
+        $data = $this->jsonRpc('feed.linkPreview', array('url' => 'http://www.lapresse.ca/international/etats-unis/201508/23/01-4894779-manifestation-seins-nus-sur-times-square.php'));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['icons']) , 0);
+        $this->assertEquals(count($data['result']['images']) , 31);
+        $this->assertEquals($data['result']['images'][0] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359720/0/-1/ADTECH;loc=100;alias=lapresse_international_974x125_1;key=etats-unis;size=974x125");
+        $this->assertEquals($data['result']['images'][1] , "http://static.lpcdn.ca/lpweb/img/visa/maPresseLogo.png");
+        $this->assertEquals($data['result']['images'][2] , "http://static.lpcdn.ca/lpweb/img/visa/defaultAvatarTransparent.png");
+        $this->assertEquals($data['result']['images'][3] , "http://static.lpcdn.ca/lpweb/img/visa/ou.png");
+        $this->assertEquals($data['result']['images'][4] , "http://static.lpcdn.ca/lpweb/img/visa/fbInitiale.png");
+        $this->assertEquals($data['result']['images'][5] , "http://static.lpcdn.ca/lpweb/img/visa/close.png");
+        $this->assertEquals($data['result']['images'][6] , "http://static.lpcdn.ca/lpweb/img/visa/tuto1.png");
+        $this->assertEquals($data['result']['images'][7] , "http://static.lpcdn.ca/lpweb/img/visa/tuto2.png");
+        $this->assertEquals($data['result']['images'][8] , "http://static.lpcdn.ca/lpweb/img/visa/tuto3.png");
+        $this->assertEquals($data['result']['images'][9] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359761/0/-1/ADTECH;loc=100;alias=lapresse_international_728x90_1;key=etats-unis;size=728x90");
+        $this->assertEquals($data['result']['images'][10] , "http://static.lpcdn.ca/lpweb/img/meteo/icone_une/h.png");
+        $this->assertEquals($data['result']['images'][11] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359706/0/-1/ADTECH;loc=100;alias=lapresse_international_954x30_1;key=etats-unis;size=954x30");
+        $this->assertEquals($data['result']['images'][12] , "http://images.lpcdn.ca/641x427/201508/23/1048015-porte-parole-evenement-rachel-jessee.jpg");
+        $this->assertEquals($data['result']['images'][13] , "http://static.lpcdn.ca/lpweb/img/actionBox/logoMaPresse.png");
+        $this->assertEquals($data['result']['images'][14] , "http://static.lpcdn.ca/lpweb/img/actionBox/icoAdd.png");
+        $this->assertEquals($data['result']['images'][15] , "http://static.lpcdn.ca/lpweb/img/actionBox/icoMail.png");
+        $this->assertEquals($data['result']['images'][16] , "http://static.lpcdn.ca/lpweb/img/actionBox/icoFontsize.png");
+        $this->assertEquals($data['result']['images'][17] , "http://static.lpcdn.ca/lpweb/img/actionBox/icoPrint.png");
+        $this->assertEquals($data['result']['images'][18] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359863/0/-1/ADTECH;loc=100;alias=lapresse_international_160x90_1;key=etats-unis;size=160x90");
+        $this->assertEquals($data['result']['images'][19] , "http://images.lpcdn.ca/130x87/201508/21/1047268.jpg");
+        $this->assertEquals($data['result']['images'][20] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359795/0/-1/ADTECH;loc=100;alias=lapresse_international_634x90_1;key=etats-unis;size=634x90");
+        $this->assertEquals($data['result']['images'][21] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359779/0/-1/ADTECH;loc=100;alias=lapresse_international_300x250_1;key=etats-unis;size=300x250");
+        $this->assertEquals($data['result']['images'][22] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2360108/0/-1/ADTECH;loc=100;alias=lapresse_international_300x125_1;key=etats-unis;size=300x125");
+        $this->assertEquals($data['result']['images'][23] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359810/0/-1/ADTECH;loc=100;alias=lapresse_international_300x250_2;key=etats-unis;size=300x250");
+        $this->assertEquals($data['result']['images'][24] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2360018/0/-1/ADTECH;loc=100;alias=lapresse_international_300x225_1;key=etats-unis;size=300x225");
+        $this->assertEquals($data['result']['images'][25] , "http://adserver.adtechus.com/adserv/3.0/5214.1/3431600/0/-1/ADTECH;loc=100;alias=lapresse_international_140x140_1;key=etats-unis;size=140x140");
+        $this->assertEquals($data['result']['images'][26] , "http://images.lpcdn.ca/130x87/201508/24/1048355-etude-neurobiologiste-salah-el-mestikawy.jpg");
+        $this->assertEquals($data['result']['images'][27] , "http://images.lpcdn.ca/130x87/201508/25/1048491-traitement-entraineur-chef-tom-higgins.png");
+        $this->assertEquals($data['result']['images'][28] , "http://images.lpcdn.ca/130x87/201508/25/1048511.jpg");
+        $this->assertEquals($data['result']['images'][29] , "http://images.lpcdn.ca/130x87/201508/25/1048453-panique-toujours-pire-conseiller-pour.cpt635760101149706088");
+        $this->assertEquals($data['result']['images'][30] , "http://images.lpcdn.ca/130x87/201508/25/1048515-owen-wilson-incarne-pere-famille.jpg");
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     public function testgetListByIds()
     {
         $this->setIdentity(1);

@@ -155,6 +155,17 @@ class Feed extends AbstractService
     }
 
     /**
+     * 
+     * @invokable 
+     * 
+     * @param string $url
+     */
+    public function linkPreview($url)
+    {
+        return $this->getServiceSimplePageCrawler()->get($url)->getImages()->toArray();
+    }
+    
+    /**
      *
      * @return \Application\Service\FeedComment
      */
@@ -179,5 +190,14 @@ class Feed extends AbstractService
     public function getServiceUser()
     {
         return $this->serviceLocator->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \SimplePageCrawler\PageCrawler
+     */
+    public function getServiceSimplePageCrawler()
+    {
+        return $this->serviceLocator->get('SimplePageCrawler');
     }
 }
