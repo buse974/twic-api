@@ -74,13 +74,15 @@ return array(
             'app_service_research',
             'app_service_videoconf_doc',
             'app_service_research',
-            'app_service_country',
             'rbac_service_permission',
             'rbac_service_role_permission',
             'app_service_feed',
             'app_service_feed_comment',
             'app_service_like',
             'app_service_resume',
+            'app_service_address',
+            'app_service_city',
+            'app_service_division'
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
