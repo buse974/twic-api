@@ -149,8 +149,7 @@ class Videoconf extends AbstractService
         $m_videoconf->setId($id)
             ->setTitle($title)
             ->setDescription($description)
-            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))
-            ->format('Y-m-d H:i:s'));
+            ->setStartDate($start_date);
         
         if ($start_date !== null && $m_videoconf_tmp->getStartDate() !== $start_date) {
             $res_videoconf_invitation = $this->getServiceVideoConfInvitation()->getByVideoconfId($id);
@@ -164,6 +163,24 @@ class Videoconf extends AbstractService
         }
         
         return $this->getMapper()->update($m_videoconf);
+    }
+
+    /**
+     * Update Video Conf.
+     *
+     * @invokable
+     *
+     * @param int $item_prog            
+     * @param string $start_date            
+     *
+     * @return int
+     */
+    public function updateByItemProg($item_prog, $start_date)
+    {
+        $m_videoconf = $this->getModel();
+        $m_videoconf->setStartDate($start_date);
+        
+        return $this->getMapper()->update($m_videoconf, array('item_prog_id' => $item_prog));
     }
 
     /**
@@ -259,7 +276,7 @@ class Videoconf extends AbstractService
             ->toArray(array('id'));
         
         $m_item = $this->getServiceItem()->getByItemProg($m_videoconf->getItemProgId());
-        if($m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
+        if ($m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
             $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
             foreach ($instructors['list'] as $instructor) {
                 $res[] = $instructor;
