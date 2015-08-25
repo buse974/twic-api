@@ -110,8 +110,8 @@ return array(
         ),
     ),
     'zopentok-conf' => array(
-        'api_key' => '45289892',
-        'api_secret' => 'c6fcfecd74ec557c2c44fdd5d7a099d28b18f06f',
+        'api_key' => '45320592',
+        'api_secret' => '1fbccf5abfd6db77cf70665215c558e70db66787',
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
     ),
@@ -123,7 +123,8 @@ return array(
                     array('width' => 80, 'height' => 80),
                     array('width' => 300),
             ),
-            'default_path' => 'upload/',
+            'check_size_allowed' => false,
+            'default_path' => '/home/buse974/workspace/apiwow/upload/',
             'adapter' => 'http-adapter',
             'convert' => array(
                     'tmp' => '/tmp/',
