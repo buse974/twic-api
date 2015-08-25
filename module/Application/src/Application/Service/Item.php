@@ -264,6 +264,8 @@ class Item extends AbstractService
     }
 
     /**
+     * @invokable
+     * 
      * @param int $item
      *
      * @throws \Exception
