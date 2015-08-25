@@ -117,15 +117,6 @@ return array(
         'adapter' => 'http-adapter',
     ),
     'dms-conf' => array(
-            'size_allowed' => array(
-                    array('width' => 300, 'height' => 200),
-                    array('width' => 300, 'height' => 300),
-                    array('width' => 150, 'height' => 100),
-                    array('width' => 80, 'height' => 80),
-                    array('width' => 300),
-            ),
-            'check_size_allowed' => false,
-            'default_path' => '/home/buse974/workspace/apiwow/upload/',
             'adapter' => 'http-adapter',
             'convert' => array(
                     'tmp' => '/tmp/',

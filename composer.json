@@ -9,6 +9,7 @@
     "homepage": "https://github.com/buse974/ZendSkeletonApplication/",
     "require": {
         "php": ">=5.4",
+	"blanchonvincent/simple-page-crawler":"dev-master",
         "zendframework/zendframework": "2.*",
         "buse974/dms":"dev-master",
         "firebase/token-generator":"2.*",
