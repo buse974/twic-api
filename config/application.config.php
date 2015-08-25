@@ -12,6 +12,7 @@ return array(
         'Auth',
         'Mail',
         'Rbac',
+        'SimplePageCrawler',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
@@ -30,6 +31,7 @@ return array(
             'ZOpenTok' => __DIR__.'/../vendor/buse974/zopentok',
             'Mail' => __DIR__.'/../module/Mail',
             'Rbac' => __DIR__.'/../module/Rbac',
+            'SimplePageCrawler' => __DIR__.'/../vendor/blanchonvincent/simple-page-crawler',
         ),
 
         // An array of paths from which to glob configuration files after
