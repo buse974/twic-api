@@ -8,6 +8,7 @@ return array(
                 'table' => 'user',
                 'identity' => 'email',
                 'credential' => 'password',
+                'lost' => 'new_password',
                 'hash' => 'MD5(?)',
             ),
         ),

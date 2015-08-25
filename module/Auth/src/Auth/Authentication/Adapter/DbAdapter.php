@@ -8,6 +8,7 @@ use Zend\Db\Sql\Sql as DbSql;
 use Auth\Authentication\Adapter\Model\Identity;
 use Zend\Math\Rand;
 use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class DbAdapter extends AbstractAdapter
 {
@@ -79,8 +80,9 @@ class DbAdapter extends AbstractAdapter
         $select = $sql->select();
         $select->from($this->table)
             ->columns(array('*'))
-            ->where(array($this->table . '.' . $this->credential_column . ' = MD5(?) ' => $this->credential))
-            ->where(array($this->table . '.' . $this->identity_column . ' = ? ' => $this->identity));
+            ->where(array(' ( user.password = MD5(?) ' => $this->credential))
+            ->where(array('user.new_password = MD5(?) )' => $this->credential), Predicate::OP_OR)
+            ->where(array('user.' . $this->identity_column . ' = ? ' => $this->identity));
         
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
