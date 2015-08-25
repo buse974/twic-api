@@ -16,11 +16,11 @@ class Address extends AbstractMapper
     public function getList($filter = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'programme', 'backroung', 'phone'))
-               ->join(array('school_address' => 'address'), 'school.address_id = school_address.id', array('id', 'street_no', 'street_type', 'street_name', 'floor', 'door', 'apartment', 'building', 'longitude', 'latitude', 'timezone'),  $select::JOIN_LEFT)
-               ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('id', 'name'),  $select::JOIN_LEFT)
-               ->join(array('school_address_city' => 'city'), 'school_address_city.id=school_address.city_id', array('id', 'name'),  $select::JOIN_LEFT)
-               ->join(array('school_address_country' => 'country'), 'school_address_country.id=school_address.country_id', array('id', 'short_name', 'name'),  $select::JOIN_LEFT);
+        $select->columns(array('id', 'street_no', 'street_type', 'street_name', 'floor', 'door', 'apartment', 'building', 'city_id', 'division_id', 'country_id', 'longitude', 'latitude', 'timezone'))
+       
+               ->join(array('address_division' => 'division'), 'address_division.id=address.division_id', array('id', 'name'),  $select::JOIN_LEFT)
+               ->join(array('address_city' => 'city'), 'address_city.id=address.city_id', array('id', 'name'),  $select::JOIN_LEFT)
+               ->join(array('address_country' => 'country'), 'address_country.id=address.country_id', array('id', 'short_name', 'name'),  $select::JOIN_LEFT);
                 
         $select->where('school.deleted_date IS NULL');
         return $this->selectWith($select);
