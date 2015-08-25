@@ -121,7 +121,7 @@ class School extends AbstractModel
 
     public function getBackground()
     {
-        return $this->backroung;
+        return $this->background;
     }
 
     public function setBackground($background)

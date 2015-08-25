@@ -29,7 +29,7 @@ class School extends AbstractService
                  ->setDescribe($describe)
                  ->setWebsite($website)
                  ->setProgramme($programme)
-                 ->setBackroung($background)
+                 ->setBackground($background)
                  ->setPhone($phone)
                  ->setContact($contact)
                  ->setContactId($contact_id);

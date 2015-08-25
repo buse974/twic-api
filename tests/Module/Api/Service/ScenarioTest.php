@@ -17,7 +17,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(1);
         
-        $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','backroung' => 'backroung','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
+        $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','background' => 'background','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 14);
@@ -61,7 +61,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['describe'], "une description");
         $this->assertEquals($data['result']['website'], "www.ium.com");
         $this->assertEquals($data['result']['programme'], "super programme");
-        $this->assertEquals($data['result']['backroung'], "backroung");
+        $this->assertEquals($data['result']['background'], "background");
         $this->assertEquals($data['result']['phone'], + 33480547852);
         $this->assertEquals($data['result']['contact'], "contact@ium.com");
         $this->assertEquals($data['result']['address_id'], 1);
