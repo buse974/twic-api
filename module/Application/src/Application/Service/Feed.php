@@ -138,8 +138,9 @@ class Feed extends AbstractService
      * @invokable
      * 
      * @param string $filter
+     * @param string $ids
      */
-    public function getList($filter = null)
+    public function getList($filter = null, $ids = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $res_contact = $this->getServiceContact()->getList();
@@ -150,7 +151,7 @@ class Feed extends AbstractService
         }
         $mapper = $this->getMapper();
         
-        return array('list' => $mapper->getList($user,$me), 'count' => $mapper->count());
+        return array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
     }
 
     /**

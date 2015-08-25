@@ -3,11 +3,12 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Ddl\Column\Integer;
 
 
 class Feed extends AbstractMapper
 {
-    public function getList($user, $me)
+    public function getList($user, $me, $ids = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','content','user_id','link','video','picture','document','name_picture','name_document',
@@ -22,6 +23,9 @@ class Feed extends AbstractMapper
             ->group('feed.id')
             ->order(array('feed.id DESC'));
         
+            if($ids) {
+                $select->where(array('feed.id' => $ids));
+            }
         return $this->selectWith($select);
     }
 }
