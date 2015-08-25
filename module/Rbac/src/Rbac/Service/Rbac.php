@@ -63,41 +63,46 @@ class Rbac implements ServiceLocatorAwareInterface
     public function getRbac()
     {
         if ($this->rbac === null) {
-            if (!$this->getCache()->hasItem('rbac')) {
-                $roles = $this->getServiceRole()->getAll()->toArray();
-                $rbac = new ZRBac();
-                foreach ($roles as $role) {
-                    $ar_child = array();
-                    if (isset($role['parent'])) {
-                        foreach ($role['parent'] as $parent) {
-                            if (!$rbac->hasRole($parent['name'])) {
-                                $rbac->addRole(new Role($parent['name']));
-                            }
-                            $ar_child[] = $rbac->getRole($parent['name']);
-                        }
-                    }
-                    if (!$rbac->hasRole($role['name'])) {
-                        $rbac->addRole(new Role($role['name']));
-                    }
-                    $r = $rbac->getRole($role['name']);
-                    $rbac->addRole($r, $ar_child);
-                    if (isset($role['permission'])) {
-                        foreach ($role['permission'] as $p) {
-                            $r->addPermission($p['libelle']);
-                        }
-                    }
-                }
-                $this->getCache()->setItem('rbac', $rbac);
-            } else {
-                $rbac = $this->getCache()->getItem('rbac');
-            }
-
-            $this->rbac = $rbac;
+            $this->rbac = (!$this->getCache()->hasItem('rbac')) ? 
+                $this->createRbac() : $this->getCache()->getItem('rbac');
         }
 
         return $this->rbac;
     }
 
+    public function createRbac()
+    {
+        $roles = $this->getServiceRole()->getAll()->toArray();
+        $rbac = new ZRBac();
+        foreach ($roles as $role) {
+            $ar_child = array();
+            if (isset($role['parent'])) {
+                foreach ($role['parent'] as $parent) {
+                    if (!$rbac->hasRole($parent['name'])) {
+                        $rbac->addRole(new Role($parent['name']));
+                    }
+                    $ar_child[] = $rbac->getRole($parent['name']);
+                }
+            }
+            if (!$rbac->hasRole($role['name'])) {
+                $rbac->addRole(new Role($role['name']));
+            }
+            $r = $rbac->getRole($role['name']);
+            $rbac->addRole($r, $ar_child);
+            if (isset($role['permission'])) {
+                foreach ($role['permission'] as $p) {
+                    $r->addPermission($p['libelle']);
+                }
+            }
+        }
+        
+        $this->rbac = $rbac;
+        
+        $this->getCache()->setItem('rbac', $rbac);
+        
+        return $this->rbac;
+    }
+    
     /**
      * @return \Rbac\Db\Service\Role
      */
