@@ -19,7 +19,7 @@ class School extends AbstractService
      * @return int
      */
     public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null,
-            $programme = null, $backroung = null, $phone = null, $contact = null, $contact_id = null, $address = null)
+            $programme = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null)
     {
         $m_school = $this->getModel();
         $m_school->setName($name)
@@ -29,7 +29,7 @@ class School extends AbstractService
                  ->setDescribe($describe)
                  ->setWebsite($website)
                  ->setProgramme($programme)
-                 ->setBackroung($backroung)
+                 ->setBackroung($background)
                  ->setPhone($phone)
                  ->setContact($contact)
                  ->setContactId($contact_id);
