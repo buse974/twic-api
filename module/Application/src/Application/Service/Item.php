@@ -266,15 +266,15 @@ class Item extends AbstractService
     /**
      * @invokable
      * 
-     * @param int $item
+     * @param int $id
      *
      * @throws \Exception
      *
      * @return \Application\Model\Item
      */
-    public function get($item)
+    public function get($id)
     {
-        $res_item = $this->getMapper()->select($this->getModel()->setId($item));
+        $res_item = $this->getMapper()->get($id);
 
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item');
