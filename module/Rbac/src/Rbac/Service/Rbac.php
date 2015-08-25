@@ -98,7 +98,11 @@ class Rbac implements ServiceLocatorAwareInterface
         
         $this->rbac = $rbac;
         
-        $this->getCache()->setItem('rbac', $rbac);
+        if($this->getCache()->hasItem('rbac')) {
+            $this->getCache()->replaceItem('rbac', $rbac);
+        } else {
+            $this->getCache()->setItem('rbac', $rbac);
+        }
         
         return $this->rbac;
     }
