@@ -9,6 +9,7 @@ use Auth\Authentication\Adapter\Model\Identity;
 use Zend\Math\Rand;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\Predicate\IsNotNull;
 
 class DbAdapter extends AbstractAdapter
 {
@@ -104,13 +105,11 @@ class DbAdapter extends AbstractAdapter
             $identity = $this->getResult()->exchangeArray($arrayIdentity);
             $identity->setToken($identity->getId() . md5($identity->getId() . $identity->getEmail() . Rand::getBytes(10) . time()));
             
-            if ($arrayIdentity['new_password'] === md5($this->credential)) {
-                $update = $sql->update('user');
+            $update = $sql->update('user');
                 
-                $update->set(array('password' => md5($this->credential),'new_password' => null))->where(array('id' => $arrayIdentity['id']));
-                $statement = $sql->prepareStatementForSqlObject($update);
-                $statement->execute();
-            }
+            $update->set(array('password' => md5($this->credential),'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));
+            $statement = $sql->prepareStatementForSqlObject($update);
+            $statement->execute();
         }
         
         return new Result($code, $identity, $message);
