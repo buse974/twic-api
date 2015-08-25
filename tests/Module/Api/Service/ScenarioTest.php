@@ -447,6 +447,42 @@ class ScenarioTest extends AbstractService
     }
 
     /**
+     * @depends testAddItem
+     */
+    public function testGetItem($id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('item.get', array('id' => $id,));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 13);
+        $this->assertEquals(count($data['result']['module']) , 2);
+        $this->assertEquals($data['result']['module']['id'] , 1);
+        $this->assertEquals($data['result']['module']['title'] , null);
+        $this->assertEquals(count($data['result']['program']) , 2);
+        $this->assertEquals($data['result']['program']['id'] , 1);
+        $this->assertEquals($data['result']['program']['name'] , "program name upd");
+        $this->assertEquals(count($data['result']['course']) , 2);
+        $this->assertEquals($data['result']['course']['id'] , 1);
+        $this->assertEquals($data['result']['course']['title'] , "IMERIR");
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['title'] , "title");
+        $this->assertEquals($data['result']['describe'] , "description");
+        $this->assertEquals($data['result']['duration'] , 234);
+        $this->assertEquals($data['result']['type'] , "WG");
+        $this->assertEquals($data['result']['weight'] , 1);
+        $this->assertEquals($data['result']['course_id'] , 1);
+        $this->assertEquals($data['result']['parent_id'] , null);
+        $this->assertEquals($data['result']['grading_policy_id'] , 6);
+        $this->assertEquals($data['result']['module_id'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+    }
+    
+    
+    /**
      * @depends testAddCourse
      * @depends testAddItem
      */
@@ -1996,9 +2032,6 @@ class ScenarioTest extends AbstractService
         
         $this->setIdentity(3);
         $data = $this->jsonRpc('item.getListGrade', array('program' => $program,'course' => $course,'type' => array("IA","CP","WG","LC"),"new_message" => true,"filter" => array("n" => 10,"p" => 1)));
-        
-        
-        
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
