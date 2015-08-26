@@ -197,11 +197,11 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('item.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('module.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('module.update');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -221,7 +221,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('materialdocument.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('materialdocument.delete');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -325,11 +325,6 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_perm
 INSERT INTO `permission` (`libelle`) VALUES ('videoconf.addConversation');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
-
-INSERT INTO `permission` (`libelle`) VALUES ('module.getList');
-SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('task.delete');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;

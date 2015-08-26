@@ -245,14 +245,20 @@ class Videoconf extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id            
+     * @param integer $id
+     * @param integer $item_prog
      * @throws \Exception
-     * @return mixed
      */
-    public function joinUser($id)
+    public function joinUser($id = null, $item_prog = null)
     {
+        if(null!==$id) {
+            $res_videoconf = $this->getMapper()->get($id);
+        } elseif(null!==$item_prog){
+            $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
+        }
+        
         $identity = $this->getServiceUser()->getIdentity();
-        $res_videoconf = $this->getMapper()->get($id);
+        
         
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
@@ -290,7 +296,7 @@ class Videoconf extends AbstractService
             ->setItemAssignmentId($this->getServiceItemAssignment()
             ->getIdByItemProg($m_videoconf->getItemProgId()))
             ->setVideoconfAdmin($this->getServiceVideoconfAdmin()
-            ->add($id, $optok));
+            ->add($m_videoconf->getId(), $optok));
         
         return $m_videoconf;
     }

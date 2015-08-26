@@ -27,14 +27,15 @@ class Videoconf extends AbstractMapper
         
         return $this->selectWith($select);
     }
-
+    
     public function getByItemProg($item_prog)
     {
         $select = $this->tableGateway->getSql()->select();
-        
-        $select->columns(array('id','title','description','conversation_id','item_prog_id','start_date','token','created_date','deleted_date'))
-        ->where(array('videoconf.item_prog_id' => $item_prog));
-        
+    
+        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration',
+            'videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")
+            ,'token','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.item_prog_id' => $item_prog));
+    
         return $this->selectWith($select);
     }
 
