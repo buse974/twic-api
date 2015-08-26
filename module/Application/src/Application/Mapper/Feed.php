@@ -8,7 +8,7 @@ use Zend\Db\Sql\Ddl\Column\Integer;
 
 class Feed extends AbstractMapper
 {
-    public function getList($user, $me, $ids = null)
+    public function getList($contact, $me, $ids = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','content','user_id','link','video','picture','document','name_picture','name_document',
@@ -19,13 +19,15 @@ class Feed extends AbstractMapper
                 'feed$is_like' => new Expression('MAX(IF(like.user_id = '.$me.', 1, 0))')), $select::JOIN_LEFT)
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo'), $select::JOIN_LEFT)
             ->where(array('feed.deleted_date IS NULL'))
-            ->where(array('feed.user_id' => $user))
             ->group('feed.id')
             ->order(array('feed.id DESC'));
         
-            if($ids) {
+            if(null !== $ids) {
                 $select->where(array('feed.id' => $ids));
+            } else {
+                $select->where(array('feed.user_id' => $contact));
             }
+            
         return $this->selectWith($select);
     }
 }

@@ -330,9 +330,6 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result']['open_graph']['url'] , "http://www.lapresse.ca/international/etats-unis/201508/23/01-4894779-manifestation-seins-nus-sur-times-square.php");
         $this->assertEquals($data['result']['open_graph']['image'] , "http://images.lpcdn.ca/924x615/201508/23/1048015-porte-parole-evenement-rachel-jessee.jpg");
         $this->assertEquals(count($data['result']['images']) , 31);
-        $this->assertEquals($data['result']['images'][0] , "http://adserver.adtechus.com/adserv/3.0/5214.1/2359720/0/-1/ADTECH;loc=100;alias=lapresse_international_974x125_1;key=etats-unis;size=974x125");
-        $this->assertEquals($data['result']['images'][29] , "http://images.lpcdn.ca/130x87/201508/25/1048453-panique-toujours-pire-conseiller-pour.cpt635760101149706088");
-        $this->assertEquals($data['result']['images'][30] , "http://images.lpcdn.ca/130x87/201508/25/1048515-owen-wilson-incarne-pere-famille.jpg");
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
