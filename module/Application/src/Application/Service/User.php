@@ -318,6 +318,14 @@ class User extends AbstractService
             ->setInterest($interest)
             ->setAvatar($avatar);
         
+        if(null !== $origin && isset($origin['id'])) {
+            $m_user->setOrigin($origin['id']);
+        }
+        
+        if(null !== $nationality && isset($nationality['id'])) {
+            $m_user->setNationality($nationality['id']);
+        }
+        
         if ($roles !== null) {
             foreach ($roles as $r) {
                 $this->getServiceUserRole()->deleteByUser($id);
