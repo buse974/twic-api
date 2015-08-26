@@ -150,8 +150,9 @@ class Feed extends AbstractService
             $user[] = $m_contact->getContact()['id'];
         }
         $mapper = $this->getMapper();
+        //$mapper = $mapper->usePaginator($filter);
         
-        return array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
+        return $mapper->getList($user,$me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
     }
 
     /**
