@@ -7,7 +7,7 @@ use Dal\Model\AbstractModel;
 class Questionnaire extends AbstractModel
 {
  	protected $id;
-	protected $item_prog_id;
+	protected $item_id;
 	protected $created_date;
 	protected $max_duration;
 	protected $max_time;
@@ -26,14 +26,14 @@ class Questionnaire extends AbstractModel
 		return $this;
 	}
 
-	public function getItemProgId()
+	public function getItemId()
 	{
-		return $this->item_prog_id;
+		return $this->item_id;
 	}
 
-	public function setItemProgId($item_prog_id)
+	public function setItemId($item_id)
 	{
-		$this->item_prog_id = $item_prog_id;
+		$this->item_id = $item_id;
 
 		return $this;
 	}
