@@ -45,6 +45,7 @@ class bootstrap
         ));
         
         $autolader = new Zend\Loader\StandardAutoloader(array('namespaces' => array('Zend' => __DIR__ . '/ZendMock')));
+        
         spl_autoload_register(array($autolader,'autoload'), true, true);
         
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
