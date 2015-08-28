@@ -21,6 +21,20 @@ class QuestionnaireQuestion extends AbstractService
     }
     
     /**
+     * 
+     * @param integer $questionnaire
+     * @param integer $question
+     * 
+     * @return \Application\Model\QuestionnaireQuestion
+     */
+    public function getByQuestion($questionnaire, $question)
+    {
+        $m_questionnaire_question = $this->getModel()->setQuestionnaireId($questionnaire)->setQuestionId($question);
+
+        return $this->getMapper()->select($m_questionnaire_question)->current();
+    }
+   
+    /**
      * @return \Application\Service\Component
      */
     public function getServiceComponent()

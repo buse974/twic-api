@@ -15,6 +15,8 @@ class Feed extends AbstractModel
 	protected $name_picture;
 	protected $document;
 	protected $name_document;
+	protected $link_title;
+	protected $link_desc;
 	protected $created_date;
 	protected $deleted_date;
 
@@ -124,6 +126,30 @@ class Feed extends AbstractModel
 	public function setNameDocument($name_document)
 	{
 		$this->name_document = $name_document;
+
+		return $this;
+	}
+
+	public function getLinkTitle()
+	{
+		return $this->link_title;
+	}
+
+	public function setLinkTitle($link_title)
+	{
+		$this->link_title = $link_title;
+
+		return $this;
+	}
+
+	public function getLinkDesc()
+	{
+		return $this->link_desc;
+	}
+
+	public function setLinkDesc($link_desc)
+	{
+		$this->link_desc = $link_desc;
 
 		return $this;
 	}

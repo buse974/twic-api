@@ -67,7 +67,7 @@ class FeedTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result'][0]) , 13);
+        $this->assertEquals(count($data['result'][0]) , 15);
         $this->assertEquals($data['result'][0]['is_like'] , 0);
         $this->assertEquals($data['result'][0]['nb_like'] , 0);
         $this->assertEquals(count($data['result'][0]['user']) , 5);
@@ -89,8 +89,10 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result'][0]['name_picture'] , "namep2");
         $this->assertEquals($data['result'][0]['document'] , "tokend2");
         $this->assertEquals($data['result'][0]['name_document'] , "named2");
+        $this->assertEquals($data['result'][0]['link_title'] , null);
+        $this->assertEquals($data['result'][0]['link_desc'] , null);
         $this->assertEquals(!empty($data['result'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result'][1]) , 13);
+        $this->assertEquals(count($data['result'][1]) , 15);
         $this->assertEquals($data['result'][1]['is_like'] , 0);
         $this->assertEquals($data['result'][1]['nb_like'] , 0);
         $this->assertEquals(count($data['result'][1]['user']) , 5);
@@ -112,9 +114,11 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result'][1]['name_picture'] , "tokenp name");
         $this->assertEquals($data['result'][1]['document'] , "tokend");
         $this->assertEquals($data['result'][1]['name_document'] , "tokend name");
+        $this->assertEquals($data['result'][1]['link_title'] , null);
+        $this->assertEquals($data['result'][1]['link_desc'] , null);
         $this->assertEquals(!empty($data['result'][1]['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals($data['jsonrpc'] , 2.0);    
     }
 
     /**
@@ -246,7 +250,7 @@ class FeedTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result'][0]) , 13);
+        $this->assertEquals(count($data['result'][0]) , 15);
         $this->assertEquals($data['result'][0]['is_like'] , 0);
         $this->assertEquals($data['result'][0]['nb_like'] , 0);
         $this->assertEquals(count($data['result'][0]['user']) , 5);
@@ -268,8 +272,10 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result'][0]['name_picture'] , "namep2UPT");
         $this->assertEquals($data['result'][0]['document'] , "tokend2UPT");
         $this->assertEquals($data['result'][0]['name_document'] , "named2UPT");
+        $this->assertEquals($data['result'][0]['link_title'] , null);
+        $this->assertEquals($data['result'][0]['link_desc'] , null);
         $this->assertEquals(!empty($data['result'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result'][1]) , 13);
+        $this->assertEquals(count($data['result'][1]) , 15);
         $this->assertEquals($data['result'][1]['is_like'] , 1);
         $this->assertEquals($data['result'][1]['nb_like'] , 3);
         $this->assertEquals(count($data['result'][1]['user']) , 5);
@@ -291,6 +297,8 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result'][1]['name_picture'] , "tokenp name");
         $this->assertEquals($data['result'][1]['document'] , "tokend");
         $this->assertEquals($data['result'][1]['name_document'] , "tokend name");
+        $this->assertEquals($data['result'][1]['link_title'] , null);
+        $this->assertEquals($data['result'][1]['link_desc'] , null);
         $this->assertEquals(!empty($data['result'][1]['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
@@ -338,7 +346,7 @@ class FeedTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 13);
+        $this->assertEquals(count($data['result'][0]) , 15);
         $this->assertEquals($data['result'][0]['is_like'] , 1);
         $this->assertEquals($data['result'][0]['nb_like'] , 3);
         $this->assertEquals(count($data['result'][0]['user']) , 5);
@@ -360,6 +368,8 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result'][0]['name_picture'] , "tokenp name");
         $this->assertEquals($data['result'][0]['document'] , "tokend");
         $this->assertEquals($data['result'][0]['name_document'] , "tokend name");
+        $this->assertEquals($data['result'][0]['link_title'] , null);
+        $this->assertEquals($data['result'][0]['link_desc'] , null);
         $this->assertEquals(!empty($data['result'][0]['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);

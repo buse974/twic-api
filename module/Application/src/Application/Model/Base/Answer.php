@@ -9,6 +9,7 @@ class Answer extends AbstractModel
  	protected $id;
 	protected $questionnaire_user_id;
 	protected $questionnaire_question_id;
+	protected $question_id;
 	protected $scale_id;
 	protected $created_date;
 
@@ -46,6 +47,18 @@ class Answer extends AbstractModel
 	public function setQuestionnaireQuestionId($questionnaire_question_id)
 	{
 		$this->questionnaire_question_id = $questionnaire_question_id;
+
+		return $this;
+	}
+
+	public function getQuestionId()
+	{
+		return $this->question_id;
+	}
+
+	public function setQuestionId($question_id)
+	{
+		$this->question_id = $question_id;
 
 		return $this;
 	}

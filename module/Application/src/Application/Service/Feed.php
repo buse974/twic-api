@@ -12,16 +12,20 @@ class Feed extends AbstractService
      * Add feed
      *
      * @invokable
-     *
-     * @param string $content            
-     * @param string $link            
-     * @param string $video            
-     * @param string $picture            
-     * @param string $document            
-     *
+     * 
+     * @param string $content
+     * @param string $link
+     * @param string $video
+     * @param string $picture
+     * @param string $document
+     * @param string $name_picture
+     * @param string $name_document
+     * @param string $link_desc
+     * @param string $link_title
+     * 
      * @return integer
      */
-    public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null)
+    public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null, $link_desc = null, $link_title = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         
@@ -31,6 +35,8 @@ class Feed extends AbstractService
             ->setLink($link)
             ->setVideo($video)
             ->setPicture($picture)
+            ->setLinkTitle($link_title)
+            ->setLinkDesc($link_desc)
             ->setDocument($document)
             ->setNamePicture($name_picture)
             ->setNameDocument($name_document)
@@ -48,16 +54,20 @@ class Feed extends AbstractService
      *
      * @invokable
      *
-     * @param integer $id            
-     * @param string $content            
-     * @param string $link            
-     * @param string $video            
-     * @param string $picture            
-     * @param string $document            
-     *
+     * @param integer $id
+     * @param string $content
+     * @param string $link
+     * @param string $video
+     * @param string $picture
+     * @param string $document
+     * @param string $name_picture
+     * @param string $name_document
+     * @param string $link_desc
+     * @param string $link_title
+     * 
      * @return integer
      */
-    public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null)
+    public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null, $link_desc = null, $link_title = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         
@@ -66,6 +76,8 @@ class Feed extends AbstractService
             ->setLink($link)
             ->setVideo($video)
             ->setPicture($picture)
+            ->setLinkTitle($link_title)
+            ->setLinkDesc($link_desc)
             ->setNamePicture($name_picture)
             ->setNameDocument($name_document)
             ->setDocument($document);
