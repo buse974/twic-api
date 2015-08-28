@@ -376,7 +376,7 @@ class User extends AbstractService
                 'lastname' => $user->getLastname(),
                 'firstname' => $user->getFirstname()));
             } catch (\Exception $e) {
-                syslog(1, 'Model name does not exist <> password is : ' . $password);
+                syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
             }
         }
         
