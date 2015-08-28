@@ -1256,7 +1256,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('questionnaire.getByItemProg', array('item_prog' => $item_prog));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 5);
+        $this->assertEquals(count($data['result']) , 6);
         $this->assertEquals(count($data['result']['questions']) , 11);
         $this->assertEquals(count($data['result']['questions'][0]) , 2);
         $this->assertEquals(is_numeric($data['result']['questions'][10]['id']) , true);
@@ -1267,7 +1267,25 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['max_time'] , 10);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        return $data['result']['questions'];
     }
+    
+    /**
+     * @depends testCanAddProgrmItem
+     * @depends testGetQuestionaire
+     */
+    public function testGetQuestionaireAnswer($item_prog, $questions)
+    {
+        $this->setIdentity(4);
+        
+        $data = $this->jsonRpc('questionnaire.answer', array('item_prog' => $item_prog, 'user' => 6, 'question' => $questions[1], 'scale' => 3));
+        
+        print_r($data);
+    }
+    
+    
+    
     
     public function testCanGetValidTransfertVideo()
     {

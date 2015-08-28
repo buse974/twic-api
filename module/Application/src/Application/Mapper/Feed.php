@@ -11,7 +11,7 @@ class Feed extends AbstractMapper
     public function getList($contact, $me, $ids = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','content','user_id','link','video','picture','document','name_picture','name_document',
+        $select->columns(array('id','content','user_id','link','link_title','link_desc','video','picture','document','name_picture','name_document',
             'feed$created_date' => new Expression('DATE_FORMAT(feed.created_date, "%Y-%m-%dT%TZ")')
         ))
             ->join('user', 'user.id=feed.user_id', array('id','firstname','lastname','avatar'))
