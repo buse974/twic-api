@@ -15,4 +15,9 @@ class Question extends AbstractService
     {
         return $this->getMapper()->selectRand($component)->current();
     }
+    
+    public function getList($questionnaire)
+    {
+        return $this->getMapper()->getList($questionnaire);
+    }
 }

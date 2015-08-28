@@ -13,6 +13,8 @@ class QuestionnaireQuestion extends AbstractService
         foreach ($res_component as $m_component) {
             $m_question = $this->getServiceQuestion()->getRand($m_component->getId());
             $m_questionnaire_question->setQuestionId($m_question->getId());
+            
+            $this->getMapper()->insert($m_questionnaire_question);
         }
         
         return true;
