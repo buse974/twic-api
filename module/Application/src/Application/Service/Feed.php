@@ -3,6 +3,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Zend\Http\Client;
 
 class Feed extends AbstractService
 {
@@ -163,7 +164,11 @@ class Feed extends AbstractService
      */
     public function linkPreview($url)
     {
-        $page = $this->getServiceSimplePageCrawler()->get($url);
+        $sm = $this->getServiceLocator();
+        $client = new Client();
+        $client->setOptions($sm->get('Config')['http-adapter']);
+        
+        $page = $this->getServiceSimplePageCrawler()->setHttpClient($client)->get($url);
         
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
