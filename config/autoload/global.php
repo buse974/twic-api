@@ -82,7 +82,8 @@ return array(
             'app_service_resume',
             'app_service_address',
             'app_service_city',
-            'app_service_division'
+            'app_service_division',
+            'app_service_questionnaire'
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
