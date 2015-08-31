@@ -243,16 +243,15 @@ class ItemProg extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item            
-     * @param string $start            
-     * @param string $end            
-     *
-     * @return array
+     * @param integer $item
+     * @param string $start
+     * @param string $end
+     * @param integer $course
      */
-    public function getList($item = null, $start = null, $end = null)
+    public function getList($item = null, $start = null, $end = null, $course = null)
     {
         $res_item_progs = $this->getMapper()->getList($this->getServiceUser()
-            ->getIdentity(), $item, $start, $end);
+            ->getIdentity(), $item, $start, $end, $course);
         foreach ($res_item_progs as $m_item_prog) {
             $m_item_prog->setUsers($this->getServiceUser()
                 ->getListByItemProg($m_item_prog->getId()));
