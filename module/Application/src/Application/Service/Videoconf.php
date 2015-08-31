@@ -255,6 +255,8 @@ class Videoconf extends AbstractService
             $res_videoconf = $this->getMapper()->get($id);
         } elseif(null!==$item_prog){
             $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
+        } else {
+            throw new \Exception('Error params joinUser');
         }
         
         $identity = $this->getServiceUser()->getIdentity();
@@ -376,7 +378,8 @@ class Videoconf extends AbstractService
         
         foreach ($res_video_no_upload as $m_videoconf_archive) {
             try {
-                $archive = $this->getServiceZOpenTok()->getArchive($m_videoconf_archive->getArchiveToken());
+                $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_videoconf_archive->getArchiveToken()), true);
+                
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
                     $this->getServiceVideoconfArchive()->updateByArchiveToken($m_videoconf_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
                     $arr = $m_videoconf_archive->toArray();
