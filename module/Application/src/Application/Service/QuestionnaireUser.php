@@ -23,6 +23,8 @@ class QuestionnaireUser extends AbstractService
         $res_questionnaire_user = $this->getMapper()->select($m_questionnaire_user);
         
         if ($res_questionnaire_user->count() <= 0) {
+            
+            $m_questionnaire_user->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             if ($this->getMapper()->insert($m_questionnaire_user) <= 0) {
                 throw new \Exception('Error insert questionnaire user');
             }

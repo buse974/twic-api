@@ -50,13 +50,13 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * 
+     *
      * @invokable
-     * 
-     * @param integer $item_prog
-     * @param integer $user
-     * @param integer $question
-     * @param integer $scale
+     *
+     * @param integer $item_prog            
+     * @param integer $user            
+     * @param integer $question            
+     * @param integer $scale            
      */
     public function answer($item_prog, $user, $question, $scale)
     {
@@ -69,7 +69,39 @@ class Questionnaire extends AbstractService
         
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
         
-        return $this->getServiceAnswer()->add($question, $m_questionnaire_user->getId(), $m_questionnaire_question->getId(), $user, $scale);
+        return $this->getServiceAnswer()->add(
+            $question, 
+            $m_questionnaire_user->getId(), 
+            $m_questionnaire_question->getId(), 
+            $user, 
+            $scale);
+    }
+
+    /**
+     *
+     * @invokable
+     *
+     * @param integer $item_prog            
+     * @param integer $user            
+     */
+    public function getAnswer($item_prog, $user = null)
+    {
+        if (null === $user) {
+            $user = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
+        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+        $m_questionnaire = $this->getModel()->setItemId($m_item_prog->getItem());
+        $m_questionnaire = $this->getMapper()
+            ->select($m_questionnaire)
+            ->current();
+        
+        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
+        
+        $m_questionnaire_user->setAnswers($this->getServiceAnswer()
+            ->getByQuestionnaireUser($m_questionnaire_user->getId()));
+        
+        return $m_questionnaire_user;
     }
 
     /**

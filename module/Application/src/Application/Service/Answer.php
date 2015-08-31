@@ -5,16 +5,18 @@ use Dal\Service\AbstractService;
 
 class Answer extends AbstractService
 {
+
     /**
-     * @param integer $question
-     * @param integer $questionnaire_user
-     * @param integer $scale
-     * 
+     *
+     * @param integer $question            
+     * @param integer $questionnaire_user            
+     * @param integer $scale            
+     *
      * @throws \Exception
-     * 
+     *
      * @return integer
      */
-    public function add($question, $questionnaire_user, $questionnaire_question, $peer,$scale)
+    public function add($question, $questionnaire_user, $questionnaire_question, $peer, $scale)
     {
         $m_answer = $this->getModel()
             ->setQuestionId($question)
@@ -22,6 +24,7 @@ class Answer extends AbstractService
             ->setQuestionnaireUserId($questionnaire_user)
             ->setScaleId($scale)
             ->setPeerId($peer)
+            ->setType((($peer==$this->getServiceUser()->getIdentity()['id']) ? 'SELF': 'PEER'))
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_answer) <= 0) {
@@ -29,5 +32,31 @@ class Answer extends AbstractService
         }
         
         return $this->getMapper()->getLastInsertValue();
+    }
+
+    /**
+     *
+     * @param integer $question            
+     * @param integer $questionnaire_user            
+     * @param integer $scale            
+     *
+     * @throws \Exception
+     *
+     * @return integer
+     */
+    public function getByQuestionnaireUser($questionnaire_user)
+    {
+        $m_answer = $this->getModel()->setQuestionnaireUserId($questionnaire_user);
+
+        return $this->getMapper()->select($m_answer);
+    }
+    
+    /**
+     *
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }

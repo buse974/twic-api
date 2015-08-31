@@ -12,7 +12,6 @@ class QuestionnaireUser extends AbstractModel
 	protected $state;
 	protected $created_date;
 	protected $end_date;
-	protected $type;
 
 	protected $prefix = 'questionnaire_user';
 
@@ -84,18 +83,6 @@ class QuestionnaireUser extends AbstractModel
 	public function setEndDate($end_date)
 	{
 		$this->end_date = $end_date;
-
-		return $this;
-	}
-
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	public function setType($type)
-	{
-		$this->type = $type;
 
 		return $this;
 	}

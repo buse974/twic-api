@@ -1271,6 +1271,7 @@ class ScenarioTest extends AbstractService
         return $data['result']['questions'];
     }
     
+    
     /**
      * @depends testCanAddProgrmItem
      * @depends testGetQuestionaire
@@ -1287,8 +1288,19 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
+    /**
+     * @depends testCanAddProgrmItem
+     */
+    public function testGetAnswer($item_prog)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('questionnaire.getAnswer', array('item_prog' => $item_prog));
     
+        print_r($data);
+        $this->printCreateTest($data);
     
+        exit();
+    }
     
     public function testCanGetValidTransfertVideo()
     {
