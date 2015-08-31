@@ -8,7 +8,6 @@ class QuestionnaireUser extends AbstractModel
 {
  	protected $id;
 	protected $user_id;
-	protected $peer_id;
 	protected $questionnaire_id;
 	protected $state;
 	protected $created_date;
@@ -37,18 +36,6 @@ class QuestionnaireUser extends AbstractModel
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
-
-		return $this;
-	}
-
-	public function getPeerId()
-	{
-		return $this->peer_id;
-	}
-
-	public function setPeerId($peer_id)
-	{
-		$this->peer_id = $peer_id;
 
 		return $this;
 	}
