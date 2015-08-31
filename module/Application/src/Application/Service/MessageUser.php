@@ -28,6 +28,7 @@ class MessageUser extends AbstractService
                 ->setMessageId($message)
                 ->setConversationId($conversation)
                 ->setFromId($me)
+                ->setType((($m_conversation_user->getUserId()==$me)?'S':'R'))
                 ->setUserId($m_conversation_user->getUserId())
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
@@ -57,12 +58,18 @@ class MessageUser extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
+        $for_me = (in_array($me, $to));
+        if(!$for_me) {
+            $to[] = $me;
+        }
+        
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
                 ->setMessageId($message)
                 ->setConversationId($conversation)
                 ->setFromId($me)
                 ->setUserId($user)
+                ->setType((($to==$me)? (($for_me) ? 'RS':'S'):'R'))
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
             if($me==$user) {

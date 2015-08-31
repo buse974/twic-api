@@ -27,10 +27,6 @@ class Message extends AbstractService
         if (! is_array($to)) {
             $to = array($to);
         }
-        // Adds sender to list of receivers
-        if (! in_array($me, $to)) {
-            $to[] = $me;
-        }
         
         // Id is set => update
         if (null !== $id) {
@@ -61,7 +57,9 @@ class Message extends AbstractService
         else {
             // Conversation is not set => create it and stores the conversation id
             if (null === $conversation) {
-                $conversation = $this->getServiceConversationUser()->createConversation($to, null, 1);
+                $tmp = $to;
+                $tmp[] = $me;
+                $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, 1);
             }
 
             // Applies the params to a new model
@@ -83,7 +81,7 @@ class Message extends AbstractService
         }
    
         $this->getServiceMessageDoc()->replace($message_id, $document);
-        // Delete all users and inserts them again
+        // Delete all users and inserts them again 
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
         
