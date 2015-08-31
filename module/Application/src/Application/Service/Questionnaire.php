@@ -65,11 +65,11 @@ class Questionnaire extends AbstractService
         $m_questionnaire = $this->getMapper()
             ->select($m_questionnaire)
             ->current();
-        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($user, $m_questionnaire->getId());
+        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
         
-        return $this->getServiceAnswer()->add($question, $m_questionnaire_user->getId(), $m_questionnaire_question->getId(), $scale);
+        return $this->getServiceAnswer()->add($question, $m_questionnaire_user->getId(), $m_questionnaire_question->getId(), $user, $scale);
     }
 
     /**

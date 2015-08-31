@@ -14,13 +14,14 @@ class Answer extends AbstractService
      * 
      * @return integer
      */
-    public function add($question, $questionnaire_user, $questionnaire_question, $scale)
+    public function add($question, $questionnaire_user, $questionnaire_question, $peer,$scale)
     {
         $m_answer = $this->getModel()
             ->setQuestionId($question)
             ->setQuestionnaireQuestionId($questionnaire_question)
             ->setQuestionnaireUserId($questionnaire_user)
             ->setScaleId($scale)
+            ->setPeerId($peer)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_answer) <= 0) {
