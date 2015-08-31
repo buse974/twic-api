@@ -3,6 +3,7 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Application\Model\Videoconf as CVF;
 
 class VideoconfArchive extends AbstractMapper
 {
