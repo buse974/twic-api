@@ -44,7 +44,7 @@ class ItemProg extends AbstractMapper
             $select->where(array('item_prog.item_id ' => $item));
         }
         
-        $select->join('item', 'item.id = item_prog.item_id', array('id','title'))
+        $select->join('item', 'item.id = item_prog.item_id', array('id','title', 'type'))
             ->join('course', 'course.id = item.course_id', array('id','title'))
             ->join('program', 'program.id = course.program_id', array('id'))
             ->join('module', 'module.id = item.module_id', array('id','title'))
