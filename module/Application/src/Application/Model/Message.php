@@ -8,6 +8,19 @@ class Message extends BaseMessage
 {
     protected $document;
     protected $to;
+    protected $from;
+    
+    public function getFrom() 
+    {
+        return $this->from;
+    }
+     
+    public function setFrom($from) 
+    {
+        $this->from = $from;
+        
+        return $this;
+    }
 
     public function getDocument() 
     {

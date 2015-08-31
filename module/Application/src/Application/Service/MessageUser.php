@@ -100,7 +100,8 @@ class MessageUser extends AbstractService
         
         foreach ($list as $m_message_user) {
             $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
-            $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null,null,null,null,null,null,null,null,null,null,null,null,$m_message_user->getMessage()->getId())['list']);
+            $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null,null,null,null,null,null,null,null,null,null,null,null,array('R',$m_message_user->getMessage()->getId()))['list']);
+            $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null,null,null,null,null,null,null,null,null,null,null,null,array('S', $m_message_user->getMessage()->getId()))['list']);
             $m_message_user->getMessage()->setDocument((($d->count() !== 0)?$d:array()));
         }
         

@@ -142,11 +142,12 @@ class User extends AbstractMapper
             $select->where(array('program.level' => $level));
         }
 
-        if($message) {
+        if(null !== $message) {
             $select->join('message_user', 'message_user.user_id=user.id', array(), $select::JOIN_LEFT)
                    ->join('message', 'message_user.message_id=message.id', array(), $select::JOIN_LEFT)
-                   ->where(array('message.id' => $message))
-                   ->where(array('message_user.user_id <> message_user.from_id'));
+                   ->where(array('message.id' => $message[1]))
+                   ->where(array(' ( message_user.type = ? ' => $message[0]))
+                   ->where(array(' message_user.type = ? ) ' => 'RS'), Predicate::OP_OR);
         }
         
         if (!empty($search)) {
