@@ -4,6 +4,7 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Predicate\In;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class MessageUser extends AbstractMapper
 {
@@ -38,12 +39,14 @@ class MessageUser extends AbstractMapper
                 case 'INBOX':
                     $subselect->where(array('message_user.deleted_date IS NULL'))
                         ->where(array('message_user_message.is_draft IS FALSE'))
-                        ->where(array('message_user.user_id<>message_user.from_id'));
+                        ->where(array(' (message_user.type = ? ' => 'R'))
+                        ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;
                 case 'SENT':
                     $subselect->where(array('message_user.deleted_date IS NULL'))
                         ->where(array('message_user_message.is_draft IS FALSE'))
-                        ->where(array('message_user.user_id=message_user.from_id'));
+                        ->where(array(' ( message_user.type = ? ' => 'S'))
+                        ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;
                 case 'DRAFT':
                     $subselect->where(array('message_user.deleted_date IS NULL'))
@@ -54,7 +57,8 @@ class MessageUser extends AbstractMapper
                     $subselect->where(array('message_user.deleted_date IS NULL'))
                         ->where(array('message_user.read_date IS NULL'))
                         ->where(array('message_user_message.is_draft IS FALSE'))
-                        ->where(array('message_user.user_id<>message_user.from_id'));
+                        ->where(array(' (message_user.type = ? ' => 'R'))
+                        ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;
                 default:
                     ;
