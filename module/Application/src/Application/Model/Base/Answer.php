@@ -12,6 +12,7 @@ class Answer extends AbstractModel
 	protected $question_id;
 	protected $peer_id;
 	protected $scale_id;
+	protected $type;
 	protected $created_date;
 
 	protected $prefix = 'answer';
@@ -84,6 +85,18 @@ class Answer extends AbstractModel
 	public function setScaleId($scale_id)
 	{
 		$this->scale_id = $scale_id;
+
+		return $this;
+	}
+
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	public function setType($type)
+	{
+		$this->type = $type;
 
 		return $this;
 	}
