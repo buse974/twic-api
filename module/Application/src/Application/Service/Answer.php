@@ -20,8 +20,8 @@ class Answer extends AbstractService
             ->setQuestionId($question)
             ->setQuestionnaireQuestionId($questionnaire_question)
             ->setQuestionnaireUserId($questionnaire_user)
-            ->setScale($scale)
-            ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            ->setScaleId($scale)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_answer) <= 0) {
             throw new \Exception('Error insert add answer');
