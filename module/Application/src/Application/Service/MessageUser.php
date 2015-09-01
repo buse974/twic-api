@@ -69,7 +69,7 @@ class MessageUser extends AbstractService
                 ->setConversationId($conversation)
                 ->setFromId($me)
                 ->setUserId($user)
-                ->setType((($to==$me)? (($for_me) ? 'RS':'S'):'R'))
+                ->setType((($user==$me)?(($for_me) ? 'RS':'S'):'R'))
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
             if($me==$user) {
