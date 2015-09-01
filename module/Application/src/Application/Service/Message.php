@@ -14,16 +14,16 @@ class Message extends AbstractService
      * @param array $to            
      * @param integer $conversation            
      * @param boolean $draft            
-     * @param integer $id
-     * @param array $document
-     *         
+     * @param integer $id            
+     * @param array $document            
+     *
      * @throws \Exception
      */
     public function sendMail($title, $text, $to, $conversation = null, $draft = false, $id = null, $document = null)
     {
         // Fetches sender id
         $me = $this->getServiceUser()->getIdentity()['id'];
-
+        
         if (! is_array($to)) {
             $to = array($to);
         }
@@ -34,14 +34,14 @@ class Message extends AbstractService
             $res_message = $this->getMapper()->select($m_message);
             
             // Throws an error if the message does not exist
-            if($res_message->count() <= 0) {
+            if ($res_message->count() <= 0) {
                 throw new \Exception('error select message with id :' . $id);
             }
             // Fetches the entity and stores the message and conversation ids
             $m_message = $res_message->current();
             $message_id = $m_message->getId();
             $conversation = $m_message->getConversationId();
-
+            
             // Applies the changes and update
             $m_message = $this->getModel()
                 ->setId($message_id)
@@ -51,21 +51,21 @@ class Message extends AbstractService
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
             $this->getMapper()->update($m_message);
-        }
+        }         
 
         // Id is not set => insert
         else {
             // Conversation is not set => create it and stores the conversation id
             if (null === $conversation) {
                 $tmp = $to;
-		if (!in_array($me, $tmp)) {
+                if (! in_array($me, $tmp)) {
                     $tmp[] = $me;
-		}
-		$x = print_r($tmp, true);
-		syslog(0, $x);
+                }
+                //$x = print_r($tmp, true);
+                //syslog(0, $x);
                 $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, 1);
             }
-
+            
             // Applies the params to a new model
             $m_message = $this->getModel()
                 ->setTitle($title)
@@ -79,13 +79,13 @@ class Message extends AbstractService
             if ($this->getMapper()->insert($m_message) <= 0) {
                 throw new \Exception('error insert message');
             }
-
+            
             // Stores the new message id
             $message_id = $this->getMapper()->getLastInsertValue();
         }
-   
+        
         $this->getServiceMessageDoc()->replace($message_id, $document);
-        // Delete all users and inserts them again 
+        // Delete all users and inserts them again
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
         
@@ -99,9 +99,9 @@ class Message extends AbstractService
      *
      * @invokable
      *
-     * @param string $text
-     * @param int $to
-     * @param conversation $conversation
+     * @param string $text            
+     * @param int $to            
+     * @param conversation $conversation            
      *
      * @throws \Exception
      *
@@ -109,9 +109,9 @@ class Message extends AbstractService
      */
     public function sendVideoConf($text = null, $to = null, $conversation = null)
     {
-        return $this->_send($text,$to,$conversation,3);
+        return $this->_send($text, $to, $conversation, 3);
     }
-    
+
     /**
      * Send message.
      *
@@ -127,9 +127,9 @@ class Message extends AbstractService
      */
     public function send($text = null, $to = null, $conversation = null)
     {
-        return $this->_send($text,$to,$conversation,2);
+        return $this->_send($text, $to, $conversation, 2);
     }
-    
+
     public function _send($text = null, $to = null, $conversation = null, $type = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
@@ -213,26 +213,26 @@ class Message extends AbstractService
     {
         return $this->getServiceMessageUser()->readByMessage($message);
     }
-    
+
     /**
      * UnRead Message(s)
      *
      * @invokable
      *
-     * @param integer|array $message
+     * @param integer|array $message            
      */
     public function unRead($message)
     {
         return $this->getServiceMessageUser()->UnReadByMessage($message);
     }
-    
+
     /**
      * Delete Message(s)
      *
      * @invokable
      *
-     * @param integer|array $id
-     */ 
+     * @param integer|array $id            
+     */
     public function delete($id)
     {
         return $this->getServiceMessageUser()->deleteByMessage($id);
@@ -242,11 +242,11 @@ class Message extends AbstractService
      * @invokable
      *
      * Get List Conversation
-     * 
-     * @param string $filter
-     * @param string $tag
-     * @param integer $type
-     * 
+     *
+     * @param string $filter            
+     * @param string $tag            
+     * @param integer $type            
+     *
      */
     public function getListConversation($filter = null, $tag = null, $type = null)
     {
@@ -291,7 +291,7 @@ class Message extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_message_user');
     }
-    
+
     /**
      *
      * @return \Application\Service\MessageDoc
