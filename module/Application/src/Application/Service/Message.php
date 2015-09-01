@@ -58,7 +58,11 @@ class Message extends AbstractService
             // Conversation is not set => create it and stores the conversation id
             if (null === $conversation) {
                 $tmp = $to;
-                $tmp[] = $me;
+		if (!in_array($me, $tmp)) {
+                    $tmp[] = $me;
+		}
+		$x = print_r($tmp, true);
+		syslog(0, $x);
                 $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, 1);
             }
 
