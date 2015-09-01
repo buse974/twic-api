@@ -5,7 +5,6 @@ use Dal\Service\AbstractService;
 
 class Questionnaire extends AbstractService
 {
-
     private function create($item)
     {
         $m_questionnaire = $this->getModel()
@@ -37,7 +36,7 @@ class Questionnaire extends AbstractService
         $res_questionnaire = $this->getMapper()->select($m_questionnaire);
         
         if ($res_questionnaire->count() <= 0) {
-            $this->create($m_item_prog->getItem());
+            $this->create($m_item_prog->getItemId());
             $res_questionnaire = $this->getMapper()->select($m_questionnaire);
         }
         
@@ -91,9 +90,10 @@ class Questionnaire extends AbstractService
         }
         
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+        
         $m_questionnaire = $this->getModel()->setItemId($m_item_prog->getItem());
         $m_questionnaire = $this->getMapper()
-            ->select($m_questionnaire)
+            ->select($m_questionnaire->getItemId())
             ->current();
         
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());

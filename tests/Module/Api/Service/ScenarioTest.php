@@ -1317,6 +1317,60 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+
+    /**
+     * @depends testCanAddProgrmItem
+     */
+    public function testGetListAnswerItemprog($item_prog)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('answer.getList', array('item_prog' => $item_prog));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals($data['result'][0]['origin_name'] , null);
+        $this->assertEquals($data['result'][0]['origin'] , null);
+        $this->assertEquals($data['result'][0]['nationality_name'] , null);
+        $this->assertEquals($data['result'][0]['nationality'] , null);
+        $this->assertEquals($data['result'][0]['gender'] , null);
+        $this->assertEquals($data['result'][0]['dimension'] , 1);
+        $this->assertEquals($data['result'][0]['component'] , 2);
+        $this->assertEquals($data['result'][0]['scale'] , 3);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['peer_id'] , 6);
+        $this->assertEquals($data['result'][0]['type'] , "PEER");
+        $this->assertEquals(!empty($data['result'][0]['created_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanAddProgrmItem
+     */
+    public function testGetListAnswerPeer($item_prog)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('answer.getList', array('peer' => 6));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals($data['result'][0]['origin_name'] , null);
+        $this->assertEquals($data['result'][0]['origin'] , null);
+        $this->assertEquals($data['result'][0]['nationality_name'] , null);
+        $this->assertEquals($data['result'][0]['nationality'] , null);
+        $this->assertEquals($data['result'][0]['gender'] , null);
+        $this->assertEquals($data['result'][0]['dimension'] , 1);
+        $this->assertEquals($data['result'][0]['component'] , 2);
+        $this->assertEquals($data['result'][0]['scale'] , 3);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['peer_id'] , 6);
+        $this->assertEquals($data['result'][0]['type'] , "PEER");
+        $this->assertEquals(!empty($data['result'][0]['created_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
     
     public function testCanGetValidTransfertVideo()
     {

@@ -7,14 +7,14 @@ class Answer extends AbstractService
 {
 
     /**
-     *
-     * @param integer $question            
-     * @param integer $questionnaire_user            
-     * @param integer $scale            
-     *
+     * 
+     * @param integer $question
+     * @param integer $questionnaire_user
+     * @param integer $questionnaire_question
+     * @param integer $peer
+     * @param integer $scale
      * @throws \Exception
-     *
-     * @return integer
+     * @return number
      */
     public function add($question, $questionnaire_user, $questionnaire_question, $peer, $scale)
     {
@@ -35,14 +35,21 @@ class Answer extends AbstractService
     }
 
     /**
-     *
-     * @param integer $question            
-     * @param integer $questionnaire_user            
-     * @param integer $scale            
-     *
-     * @throws \Exception
-     *
-     * @return integer
+     * @invokable
+     * 
+     * @param integer $item_prog
+     * @param integer $peer
+     */
+    public function getList($item_prog = null, $peer = null)
+    {
+        return $this->getMapper()->getList($item_prog, $peer);    
+    }
+
+    /**
+     * 
+     * @param integer $questionnaire_user
+     * 
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByQuestionnaireUser($questionnaire_user)
     {
