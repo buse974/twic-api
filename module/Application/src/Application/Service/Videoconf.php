@@ -195,9 +195,7 @@ class Videoconf extends AbstractService
     public function getList(array $filter = array())
     {
         $m_videoconf = $this->getModel();
-        
         $mapper = $this->getMapper();
-        
         $res_videoconf = $mapper->usePaginator($filter)->select($m_videoconf);
         
         return array('count' => $mapper->count(),'results' => $res_videoconf);
@@ -245,22 +243,21 @@ class Videoconf extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id
-     * @param integer $item_prog
+     * @param integer $id            
+     * @param integer $item_prog            
      * @throws \Exception
      */
     public function joinUser($id = null, $item_prog = null)
     {
-        if(null!==$id) {
+        if (null !== $id) {
             $res_videoconf = $this->getMapper()->get($id);
-        } elseif(null!==$item_prog){
+        } elseif (null !== $item_prog) {
             $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
         } else {
             throw new \Exception('Error params joinUser');
         }
         
         $identity = $this->getServiceUser()->getIdentity();
-        
         
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
@@ -342,7 +339,6 @@ class Videoconf extends AbstractService
         
         $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_videoconf->getToken()), true);
         
-       
         if ($arr_archive['status'] == 'started') {
             $this->getServiceVideoconfArchive()->add($m_videoconf->getId(), $arr_archive['id']);
         }
