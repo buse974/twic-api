@@ -132,7 +132,6 @@ class User extends AbstractService
             ->setOrigin($origin)
             ->setGender($gender)
             ->setNationality($nationality)
-            ->setPassword(md5($password))
             ->setBirthDate($birth_date)
             ->setPosition($position)
             ->setSchoolId($school_id)
@@ -146,12 +145,26 @@ class User extends AbstractService
             $user = $this->get();
             $m_user->setSchoolId($user['school_id']);
         }
-        if ($password !== null) {
-            $m_user->setPassword(md5($password));
+        
+        if (null === $password) {
+            $password = '';
+            for ($i = 0; $i < 8; $i ++) {
+                $password .= substr($cars, rand(0, $long - 1), 1);
+            }
         }
+        
+        $m_user->setPassword(md5($password));
+        
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
+        
+        try {
+            $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));
+        } catch (\Exception $e) {
+            syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
+        }
+        
         $id = $this->getMapper()->getLastInsertValue();
         if ($roles === null) {
             $roles = array(ModelRole::ROLE_STUDENT_STR);
@@ -318,11 +331,11 @@ class User extends AbstractService
             ->setInterest($interest)
             ->setAvatar($avatar);
         
-        if(null !== $origin && isset($origin['id'])) {
+        if (null !== $origin && isset($origin['id'])) {
             $m_user->setOrigin($origin['id']);
         }
         
-        if(null !== $nationality && isset($nationality['id'])) {
+        if (null !== $nationality && isset($nationality['id'])) {
             $m_user->setNationality($nationality['id']);
         }
         
@@ -370,11 +383,7 @@ class User extends AbstractService
                 ->current();
             
             try {
-            $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, array(
-                'password' => $password,
-                'email' => $email,
-                'lastname' => $user->getLastname(),
-                'firstname' => $user->getFirstname()));
+                $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, array('password' => $password,'email' => $email,'lastname' => $user->getLastname(),'firstname' => $user->getFirstname()));
             } catch (\Exception $e) {
                 syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
             }
