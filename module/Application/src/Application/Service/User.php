@@ -146,7 +146,7 @@ class User extends AbstractService
             $m_user->setSchoolId($user['school_id']);
         }
         
-        if (null === $password) {
+        if (empty($password)) {
             $password = '';
             for ($i = 0; $i < 8; $i ++) {
                 $password .= substr($cars, rand(0, $long - 1), 1);

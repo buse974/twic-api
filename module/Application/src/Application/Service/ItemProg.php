@@ -242,16 +242,17 @@ class ItemProg extends AbstractService
 
     /**
      * @invokable
-     *
+     * 
      * @param integer $item
      * @param string $start
      * @param string $end
      * @param integer $course
+     * @param integer $id
      */
-    public function getList($item = null, $start = null, $end = null, $course = null)
+    public function getList($item = null, $start = null, $end = null, $course = null, $id = null)
     {
-        $res_item_progs = $this->getMapper()->getList($this->getServiceUser()
-            ->getIdentity(), $item, $start, $end, $course);
+        $me = $this->getServiceUser()->getIdentity();
+        $res_item_progs = $this->getMapper()->getList($me, $item, $start, $end, $course, $id);
         foreach ($res_item_progs as $m_item_prog) {
             $m_item_prog->setUsers($this->getServiceUser()
                 ->getListByItemProg($m_item_prog->getId()));
@@ -260,6 +261,18 @@ class ItemProg extends AbstractService
         return $res_item_progs;
     }
 
+    /**
+     * @param integer $id
+     * @throws \Exception
+     * @return \Application\Model\ItemProg
+     */
+    public function get($id)
+    {
+        $m_item_prog = $this->getModel()->setId($id);
+        
+        return $this->getMapper()->select($m_item_prog)->current();
+    }
+    
     public function deleteByItem($item)
     {
         $res_item_prog = $this->getMapper()->select($this->getModel()
@@ -272,20 +285,6 @@ class ItemProg extends AbstractService
         
         $this->getMapper()->delete($this->getModel()
             ->setItemId($item));
-    }
-
-    /**
-     *
-     * @param int $id            
-     *
-     * @return \Application\Model\ItemProg
-     */
-    public function get($id)
-    {
-        return $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id))
-            ->current();
     }
 
     /**

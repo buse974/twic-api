@@ -1990,7 +1990,7 @@ class ScenarioTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 6);
+        $this->assertEquals(count($data['result'][0]) , 7);
         $this->assertEquals(count($data['result'][0]['users']) , 2);
         $this->assertEquals(count($data['result'][0]['users'][0]) , 4);
         $this->assertEquals($data['result'][0]['users'][0]['id'] , 6);
@@ -2006,8 +2006,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['item']['module']) , 2);
         $this->assertEquals($data['result'][0]['item']['module']['id'] , 1);
         $this->assertEquals($data['result'][0]['item']['module']['title'] , null);
-        $this->assertEquals(count($data['result'][0]['item']['program']) , 1);
+        $this->assertEquals(count($data['result'][0]['item']['program']) , 2);
         $this->assertEquals($data['result'][0]['item']['program']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item']['program']['name'] , "program name upd");
         $this->assertEquals(count($data['result'][0]['item']['course']) , 3);
         $this->assertEquals(count($data['result'][0]['item']['course']['grading_policy']) , 2);
         $this->assertEquals($data['result'][0]['item']['course']['grading_policy']['name'] , "Live class");
@@ -2019,6 +2020,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['item']['type'] , "WG");
         $this->assertEquals($data['result'][0]['editable'] , 1);
         $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_id'] , 1);
         $this->assertEquals(!empty($data['result'][0]['start_date']) , true);
         $this->assertEquals(!empty($data['result'][0]['due_date']) , true);
         $this->assertEquals($data['id'] , 1);
@@ -2146,7 +2148,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 11);
         $this->assertEquals(count($data['result'][0]['item_prog']) , 1);
-        $this->assertEquals(count($data['result'][0]['item_prog'][0]) , 6);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]) , 7);
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['users']) , 2);
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['users'][0]) , 4);
         $this->assertEquals($data['result'][0]['item_prog'][0]['users'][0]['id'] , 6);
@@ -2162,8 +2164,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['module']) , 2);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['module']['id'] , 1);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['module']['title'] , null);
-        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['program']) , 1);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['program']) , 2);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['program']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['program']['name'] , "program name upd");
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['course']) , 3);
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['course']['grading_policy']) , 2);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['course']['grading_policy']['name'] , "Live class");
@@ -2175,6 +2178,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['type'] , "WG");
         $this->assertEquals($data['result'][0]['item_prog'][0]['editable'] , 1);
         $this->assertEquals($data['result'][0]['item_prog'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item_id'] , 1);
         $this->assertEquals(!empty($data['result'][0]['item_prog'][0]['start_date']) , true);
         $this->assertEquals(!empty($data['result'][0]['item_prog'][0]['due_date']) , true);
         $this->assertEquals($data['result'][0]['id'] , 1);
