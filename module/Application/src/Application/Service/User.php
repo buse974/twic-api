@@ -147,6 +147,9 @@ class User extends AbstractService
         }
         
         if (empty($password)) {
+            $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
+            $long = strlen($cars);
+            srand((double) microtime() * 1000000);
             $password = '';
             for ($i = 0; $i < 8; $i ++) {
                 $password .= substr($cars, rand(0, $long - 1), 1);
