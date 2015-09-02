@@ -2676,7 +2676,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(1);
         
-        $data = $this->jsonRpc('thread.add', array('title' => 'un titre','course' => $course));
+        $data = $this->jsonRpc('thread.add', array('title' => 'un titre','course' => $course, 'message' => 'super messge'));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
@@ -2708,20 +2708,35 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('thread.getList', array('course' => $course));
-        
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result'][0]), 5);
-        $this->assertEquals(count($data['result'][0]['user']), 3);
-        $this->assertEquals($data['result'][0]['user']['id'], 1);
-        $this->assertEquals($data['result'][0]['user']['firstname'], "Paul");
-        $this->assertEquals($data['result'][0]['user']['lastname'], "Boussekey");
-        $this->assertEquals($data['result'][0]['id'], 1);
-        $this->assertEquals($data['result'][0]['title'], "un titre update");
-        $this->assertEquals(! empty($data['result'][0]['created_date']), true);
-        $this->assertEquals($data['result'][0]['deleted_date'], null);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['count'] , 1);
+        $this->assertEquals(count($data['result']['list']) , 1);
+        $this->assertEquals(count($data['result']['list'][0]) , 7);
+        $this->assertEquals(count($data['result']['list'][0]['message']) , 4);
+        $this->assertEquals(count($data['result']['list'][0]['message']['user']) , 4);
+        $this->assertEquals($data['result']['list'][0]['message']['user']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['message']['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['list'][0]['message']['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['list'][0]['message']['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['message']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['message']['message'] , "super messge");
+        $this->assertEquals(!empty($data['result']['list'][0]['message']['created_date']) , true);
+        $this->assertEquals($data['result']['list'][0]['nb_message'] , 1);
+        $this->assertEquals(count($data['result']['list'][0]['user']) , 5);
+        $this->assertEquals(count($data['result']['list'][0]['user']['roles']) , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['roles'][0] , "admin");
+        $this->assertEquals($data['result']['list'][0]['user']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['list'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['list'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['title'] , "un titre update");
+        $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['list'][0]['deleted_date'] , null);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
@@ -2734,7 +2749,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('threadmessage.add', array('message' => 'un super message','thread' => $thread));
         
         $this->assertEquals(count($data), 3);
-        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['result'], 2);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
         
@@ -2766,18 +2781,72 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('threadmessage.getList', array('thread' => $thread));
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result'][0]), 4);
-        $this->assertEquals(count($data['result'][0]['user']), 3);
-        $this->assertEquals($data['result'][0]['user']['id'], 2);
-        $this->assertEquals($data['result'][0]['user']['firstname'], "Xuan-Anh");
-        $this->assertEquals($data['result'][0]['user']['lastname'], "Hoang");
-        $this->assertEquals($data['result'][0]['id'], 1);
-        $this->assertEquals($data['result'][0]['message'], "un super message update");
-        $this->assertEquals(! empty($data['result'][0]['created_date']), true);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['count'] , 2);
+        $this->assertEquals(count($data['result']['list']) , 2);
+        $this->assertEquals(count($data['result']['list'][0]) , 4);
+        $this->assertEquals(count($data['result']['list'][0]['user']) , 5);
+        $this->assertEquals(count($data['result']['list'][0]['user']['roles']) , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['roles'][0] , "admin");
+        $this->assertEquals($data['result']['list'][0]['user']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['list'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['list'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['message'] , "super messge");
+        $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
+        $this->assertEquals(count($data['result']['list'][1]) , 4);
+        $this->assertEquals(count($data['result']['list'][1]['user']) , 5);
+        $this->assertEquals(count($data['result']['list'][1]['user']['roles']) , 1);
+        $this->assertEquals($data['result']['list'][1]['user']['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][1]['user']['id'] , 2);
+        $this->assertEquals($data['result']['list'][1]['user']['firstname'] , "Xuan-Anh");
+        $this->assertEquals($data['result']['list'][1]['user']['lastname'] , "Hoang");
+        $this->assertEquals($data['result']['list'][1]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][1]['id'] , 2);
+        $this->assertEquals($data['result']['list'][1]['message'] , "un super message update");
+        $this->assertEquals(!empty($data['result']['list'][1]['created_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
+    public function testGetThreadTwo($course)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('thread.getList', array('course' => $course));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['count'] , 1);
+        $this->assertEquals(count($data['result']['list']) , 1);
+        $this->assertEquals(count($data['result']['list'][0]) , 7);
+        $this->assertEquals(count($data['result']['list'][0]['message']) , 4);
+        $this->assertEquals(count($data['result']['list'][0]['message']['user']) , 4);
+        $this->assertEquals($data['result']['list'][0]['message']['user']['id'] , 2);
+        $this->assertEquals($data['result']['list'][0]['message']['user']['firstname'] , "Xuan-Anh");
+        $this->assertEquals($data['result']['list'][0]['message']['user']['lastname'] , "Hoang");
+        $this->assertEquals($data['result']['list'][0]['message']['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['message']['id'] , 2);
+        $this->assertEquals($data['result']['list'][0]['message']['message'] , "un super message update");
+        $this->assertEquals(!empty($data['result']['list'][0]['message']['created_date']) , true);
+        $this->assertEquals($data['result']['list'][0]['nb_message'] , 2);
+        $this->assertEquals(count($data['result']['list'][0]['user']) , 5);
+        $this->assertEquals(count($data['result']['list'][0]['user']['roles']) , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['roles'][0] , "admin");
+        $this->assertEquals($data['result']['list'][0]['user']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['list'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['list'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['title'] , "un titre update");
+        $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['list'][0]['deleted_date'] , null);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**

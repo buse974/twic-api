@@ -71,19 +71,46 @@ class ThreadMessage extends AbstractService
      * Get list thread message.
      *
      * @invokable
-     *
-     * @param int $thread
+     * 
+     * @param integer $thread
+     * @param string $filter
      */
-    public function getList($thread)
+    public function getList($thread, $filter = null)
     {
-        return $this->getMapper()->getList($thread);
+        $mapper = $this->getMapper();
+        
+        $res_thread_message = $mapper->usePaginator($filter)->getList($thread);
+        
+        foreach ($res_thread_message as $m_thread_message) {
+            $roles = [];
+            foreach ($this->getServiceRole()->getRoleByUser($m_thread_message->getUser()->getId()) as $role) {
+                $roles[] = $role->getName();
+            }
+            $m_thread_message->getUser()->setRoles($roles);
+        }
+        
+        return array('count' => $mapper->count(), 'list' => $res_thread_message);
     }
 
+    public function getLast($thread)
+    {
+        return $this->getMapper()->getLast($thread);
+    }
+    
     /**
      * @return \Auth\Service\AuthService
      */
     public function getServiceAuth()
     {
         return $this->getServiceLocator()->get('auth.service');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Role
+     */
+    public function getServiceRole()
+    {
+        return $this->getServiceLocator()->get('app_service_role');
     }
 }
