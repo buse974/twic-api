@@ -83,7 +83,8 @@ class DbAdapter extends AbstractAdapter
             ->columns(array('*'))
             ->where(array(' ( user.password = MD5(?) ' => $this->credential))
             ->where(array('user.new_password = MD5(?) )' => $this->credential), Predicate::OP_OR)
-            ->where(array('user.' . $this->identity_column . ' = ? ' => $this->identity));
+            ->where(array('user.' . $this->identity_column . ' = ? ' => $this->identity))
+            ->where(array('user.deleted_date IS NULL'));
         
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
