@@ -139,7 +139,8 @@ class User extends AbstractService
             ->setAvatar($avatar);
         
         /*
-         * @TODO schoolid vérifier que si il n'est pas admin le school id est automatiquement celui de la personne qui add le user.
+         * @TODO schoolid vérifier que si il n'est pas admin le school id est 
+         * automatiquement celui de la personne qui add le user.
          */
         if ($school_id === null) {
             $user = $this->get();
@@ -147,8 +148,6 @@ class User extends AbstractService
             
             $school_id = $user['school_id'];
         } 
-        
-        $this->getServiceContact()->addBySchool($school_id);
         
         if (empty($password)) {
             $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
@@ -165,6 +164,8 @@ class User extends AbstractService
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
+        
+        $this->getServiceContact()->addBySchool($school_id);
         
         try {
             $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));

@@ -108,7 +108,7 @@ class Contact extends AbstractService
      */
     public function getList($user = null)
     {
-        if (!$user) {
+        if (null === $user) {
             $user = $this->getServiceUser()->getIdentity();
         }
 
