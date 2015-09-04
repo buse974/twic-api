@@ -144,7 +144,11 @@ class User extends AbstractService
         if ($school_id === null) {
             $user = $this->get();
             $m_user->setSchoolId($user['school_id']);
-        }
+            
+            $school_id = $user['school_id'];
+        } 
+        
+        $this->getServiceContact()->addBySchool($school_id);
         
         if (empty($password)) {
             $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
@@ -664,6 +668,15 @@ class User extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Contact
+     */
+    public function getServiceContact()
+    {
+        return $this->getServiceLocator()->get('app_service_contact');
     }
 
     /**
