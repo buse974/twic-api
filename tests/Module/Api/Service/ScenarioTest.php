@@ -1782,8 +1782,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('videoconf.joinUser', array('id' => $videoconf));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 18);
-        $this->assertEquals($data['result']['item_assignment_id'] , 1);
+        $this->assertEquals(count($data['result']) , 17);
         $this->assertEquals(count($data['result']['docs']) , 1);
         $this->assertEquals(count($data['result']['docs'][0]) , 5);
         $this->assertEquals($data['result']['docs'][0]['id'] , 1);
