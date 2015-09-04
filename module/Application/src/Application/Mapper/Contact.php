@@ -53,6 +53,7 @@ class Contact extends AbstractMapper
                ->where(array('contact.id IS NULL'))
                ->where(array('user.school_id' => $school));
 
+        
         $insert->columns(['accepted_date', 'contact_id', 'user_id'])
                ->select($select);
 
