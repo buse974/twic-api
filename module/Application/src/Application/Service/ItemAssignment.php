@@ -50,7 +50,7 @@ class ItemAssignment extends AbstractService
      *
      * @throws \Exception
      *
-     * @return array
+     * @return \Application\Model\ItemAssignment
      */
     public function get($id)
     {
@@ -195,7 +195,11 @@ class ItemAssignment extends AbstractService
      */
     public function addComment($text, $item_assignment)
     {
-        return $this->getServiceItemAssignmentComment()->add($item_assignment, $text);
+        $item_assignment_comment = $this->getServiceItemAssignmentComment()->add($item_assignment, $text);
+        
+        $this->getServiceNotification()->assignmentCommented($item_assignment, $item_assignment_comment);
+        
+        return $item_assignment_comment;
     }
 
     /**
@@ -281,6 +285,8 @@ class ItemAssignment extends AbstractService
      */
     public function submit($id)
     {
+        $this->getServiceNotification()->studentSubmitAssignment($id);
+        
         return $this->getMapper()->update($this->getModel()
             ->setId($id)
             ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
@@ -382,6 +388,15 @@ class ItemAssignment extends AbstractService
         return $this->getServiceLocator()->get('app_service_item_assignment_relation');
     }
 
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
+    }
+    
     /**
      *
      * @return \Zend\Authentication\AuthenticationService

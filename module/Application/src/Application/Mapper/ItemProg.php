@@ -24,6 +24,17 @@ class ItemProg extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function get($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+    
+        $select->columns(array('id','item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+            ->join('item', 'item.id=item_prog.item_id', array('id','title','type'))
+            ->where(array('item_prog.id' => $id));
+        
+        return $this->selectWith($select);
+    }
+    
     /**
      * @param integer $user
      * @param integer $item

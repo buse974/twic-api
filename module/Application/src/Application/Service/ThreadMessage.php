@@ -29,8 +29,13 @@ class ThreadMessage extends AbstractService
         if ($this->getMapper()->insert($m_thread_message) <= 0) {
             throw new \Exception('error insert thread');
         }
-
-        return $this->getMapper()->getLastInsertValue();
+        
+        
+        $thread_message_id = $this->getMapper()->getLastInsertValue();
+        
+        $this->getServiceNotification()->threadMessage($thread_message_id);
+        
+        return $thread_message_id;
     }
 
     /**
@@ -95,6 +100,25 @@ class ThreadMessage extends AbstractService
     public function getLast($thread)
     {
         return $this->getMapper()->getLast($thread);
+    }
+    
+    /**
+     * 
+     * @param ineteger $thread_message
+     * 
+     * @return \Application\Model\ThreadMessage
+     */
+    public function get($thread_message)
+    {
+        return $this->getMapper()->getList(null, $thread_message)->current();
+    }
+    
+    /**
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
     }
     
     /**

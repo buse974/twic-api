@@ -239,6 +239,20 @@ class Videoconf extends AbstractService
         
         return $m_videoconf;
     }
+    
+    /**
+     * Get videoconf by videoconf archive.
+
+     * @param integer $videoconf_archive
+     *
+     * @throws \Exception
+     *
+     * @return \Application\Model\Videoconf
+     */
+    public function getByVideoconfArchive($videoconf_archive)
+    {
+        return $this->getMapper()->getByVideoconfArchive($videoconf_archive)->current();
+    }
 
     /**
      * @invokable
@@ -402,7 +416,13 @@ class Videoconf extends AbstractService
      */
     public function validTransfertVideo($videoconf_archive, $url)
     {
-        return $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
+        $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
+        
+        $this->getServiceNotification()->recordAvailable(
+            $this->getByVideoconfArchive($videoconf_archive)->getItemProgId(),
+            $videoconf_archive);
+        
+        return $ret;
     }
 
     /**
@@ -494,6 +514,15 @@ class Videoconf extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
     }
 
     /**

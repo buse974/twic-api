@@ -31,11 +31,11 @@ class Questionnaire extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
 
-        $res_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItemId());
+        $res_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId());
         
         if ($res_questionnaire->count() <= 0) {
-            $this->create($m_item_prog->getItemId());
-            $res_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItemId());
+            $this->create($m_item_prog->getItem()->getId());
+            $res_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId());
         }
         
         $m_questionnaire = $res_questionnaire->current();
@@ -58,10 +58,14 @@ class Questionnaire extends AbstractService
     public function answer($item_prog, $user, $question, $scale)
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        $m_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItemId())->current();
+        $m_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId())->current();
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
         
+        /**
+         * Check la fin ici
+         */
+       
         return $this->getServiceAnswer()->add(
             $question, 
             $m_questionnaire_user->getId(), 
@@ -84,7 +88,7 @@ class Questionnaire extends AbstractService
         }
         
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        $m_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItemId())->current();
+        $m_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId())->current();
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         
         $m_questionnaire_user->setAnswers($this->getServiceAnswer()

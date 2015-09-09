@@ -165,6 +165,7 @@ class User extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+            ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join('item_prog_user', 'item_prog_user.user_id=user.id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
             ->where(array('item_assignment_relation.item_assignment_id' => $item_assignment));
