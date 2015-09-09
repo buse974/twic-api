@@ -42,7 +42,11 @@ class Resume extends AbstractService
             throw new \Exception('error insert experience');
         }
         
-        return $this->getMapper()->getLastInsertValue();
+        $resume = $this->getMapper()->getLastInsertValue();
+        
+        $this->getServiceNotification()->profileNewresume($resume);
+        
+        return $resume;
     }
 
     /**
@@ -88,7 +92,7 @@ class Resume extends AbstractService
      *
      * @param int $id            
      *
-     * @return int
+     * @return integer
      */
     public function delete($id)
     {
@@ -103,20 +107,45 @@ class Resume extends AbstractService
     /**
      * Get Resume.
      *
+     * @param integer $id    
+     *         
+     * @return \Application\Model\Resume
+     */
+    public function getById($id)
+    {
+        $m_education = $this->getModel();
+        
+        $m_education->setId($id);
+        
+        return $this->getMapper()->select($m_education)->current();
+    }
+    
+    /**
+     * Get Resume.
+     *
      * @invokable
      *
-     * @param integer $user            
+     * @param integer $user
      *
      */
     public function get($user)
     {
         $m_education = $this->getModel();
-        
+    
         $m_education->setUserId($user);
-        
+    
         return $this->getMapper()->select($m_education, array(new Expression('ISNULL(end_date) DESC'),'end_date DESC'));
     }
 
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
+    }
+    
     /**
      *
      * @return \Application\Service\User

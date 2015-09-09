@@ -29,7 +29,13 @@ class Contact extends AbstractService
             ->setUserId($user)
             ->setContactId($identity['id']);
         
-        return $this->getMapper()->insert($m_contact);
+        $ret = $this->getMapper()->insert($m_contact);
+        
+        if($ret > 1) {
+            $this->getServiceNotification()->userRequestconnection($user);
+        }
+        
+        return $ret;
     }
 
     /**
@@ -140,6 +146,15 @@ class Contact extends AbstractService
         return $ret;
     }
 
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
+    }
+    
     /**
      *
      * @return \Application\Service\User
