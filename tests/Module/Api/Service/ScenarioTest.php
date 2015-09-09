@@ -1328,7 +1328,9 @@ class ScenarioTest extends AbstractService
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals(count($data['result'][0]) , 14);
+        $this->assertEquals($data['result'][0]['course'] , 1);
+        $this->assertEquals($data['result'][0]['item'] , 1);
         $this->assertEquals($data['result'][0]['origin_name'] , null);
         $this->assertEquals($data['result'][0]['origin'] , null);
         $this->assertEquals($data['result'][0]['nationality_name'] , null);
@@ -1355,7 +1357,9 @@ class ScenarioTest extends AbstractService
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals(count($data['result'][0]) , 14);
+        $this->assertEquals($data['result'][0]['course'] , 1);
+        $this->assertEquals($data['result'][0]['item'] , 1);
         $this->assertEquals($data['result'][0]['origin_name'] , null);
         $this->assertEquals($data['result'][0]['origin'] , null);
         $this->assertEquals($data['result'][0]['nationality_name'] , null);

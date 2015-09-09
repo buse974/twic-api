@@ -14,6 +14,32 @@ class Answer extends BaseAnswer
     protected $nationality_name;
     protected $origin;
     protected $origin_name;
+    protected $item;
+    protected $course;
+
+    public function getCourse() 
+    {
+        return $this->course;
+    }
+
+    public function setCourse($course) 
+    {
+        $this->course = $course;
+        
+        return $this;
+    }
+
+    public function getItem()
+    {
+        return $this->item;
+    }
+    
+    public function setItem($item)
+    {
+        $this->item = $item;
+    
+        return $this;
+    }
     
     public function getOriginName() 
     {
