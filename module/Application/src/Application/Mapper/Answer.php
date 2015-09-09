@@ -16,6 +16,9 @@ class Answer extends AbstractMapper
             ->join('user', 'user.id=questionnaire_user.user_id', array('answer$gender' => 'gender'))
             ->join('country', 'country.id=user.nationality', array('answer$nationality' => 'id','answer$nationality_name' => 'short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('answer$origin' => 'id','answer$origin_name' => 'short_name'), $select::JOIN_LEFT)
+            ->join('questionnaire', 'questionnaire.id=questionnaire_user.questionnaire_id', array())
+            ->join('item', 'item.id=questionnaire.item_id', array('answer$item' => 'id', 'answer$course' => 'course_id'))
+            ->join('item_prog', 'item_prog.item_id=item.id', array())
             ->where(array('scale.value <> 0'));
         
         if (null !== $peer) {
@@ -23,9 +26,7 @@ class Answer extends AbstractMapper
         }
         
         if (null !== $item_prog) {
-            $select->join('questionnaire', 'questionnaire.id=questionnaire_user.questionnaire_id', array())
-                ->join('item_prog', 'item_prog.item_id=questionnaire.item_id', array())
-                ->where(array('item_prog.id' => $item_prog));
+            $select->where(array('item_prog.id' => $item_prog));
         }
         
         return $this->selectWith($select);
