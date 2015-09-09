@@ -12,7 +12,8 @@ class ItemProg extends BaseItemProg
     protected $item_assignment;
     protected $item_grade;
     protected $videoconf_archives;
-   
+    protected $item_prog_user;
+
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
@@ -30,6 +31,18 @@ class ItemProg extends BaseItemProg
         $this->item_grade->exchangeArray($data);
     }
 
+    public function getItemProgUser()
+    {
+        return $this->item_prog_user;
+    }
+    
+    public function setItemProgUser($item_prog_user)
+    {
+        $this->item_prog_user = $item_prog_user;
+    
+        return $this;
+    }
+    
     public function getVideoconfArchives()
     {
         return $this->videoconf_archives;

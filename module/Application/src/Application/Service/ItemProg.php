@@ -254,8 +254,12 @@ class ItemProg extends AbstractService
         $me = $this->getServiceUser()->getIdentity();
         $res_item_progs = $this->getMapper()->getList($me, $item, $start, $end, $course, $id);
         foreach ($res_item_progs as $m_item_prog) {
-            $m_item_prog->setUsers($this->getServiceUser()
-                ->getListByItemProg($m_item_prog->getId()));
+            $m_item_prog->setUsers($this->getServiceUser()->getListByItemProg($m_item_prog->getId()));
+            if (in_array(ModelRole::ROLE_STUDENT_STR, $me['roles'])) {
+                $m_item_prog->setItemProgUser($this->getServiceItemProgUser()->getListByItemProg($m_item_prog->getId(), $me['id'])->current());
+            } else {
+                $m_item_prog->setItemProgUser($this->getServiceItemProgUser()->getListByItemProg($m_item_prog->getId()));
+            }
         }
         
         return $res_item_progs;
