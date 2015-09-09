@@ -142,12 +142,17 @@ class User extends AbstractService
          * @TODO schoolid vérifier que si il n'est pas admin le school id est 
          * automatiquement celui de la personne qui add le user.
          */
-        if ($school_id === null) {
+        
+        if ($school_id === null && !in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
             $user = $this->get();
             $m_user->setSchoolId($user['school_id']);
             
             $school_id = $user['school_id'];
         } 
+        
+        if ($school_id !== null) {
+            $this->getServiceContact()->addBySchool($school_id);
+        }
         
         if (empty($password)) {
             $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
@@ -164,8 +169,6 @@ class User extends AbstractService
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
-        
-        $this->getServiceContact()->addBySchool($school_id);
         
         try {
             $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));
@@ -367,7 +370,13 @@ class User extends AbstractService
             $this->addProgram($id, $programs);
         }
         
-        return $this->getMapper()->update($m_user);
+        $ret = $this->getMapper()->update($m_user);
+        
+        if($ret > 0) {
+            $this->getServiceNotification()->profileUpdated($id, $m_user->toArray());
+        }
+        
+        return $ret;
     }
 
     /**
@@ -538,7 +547,7 @@ class User extends AbstractService
     public function getStudentList()
     {
         $ret = [];
-        $instructor = $this->getServiceUser()->getIdentity();
+        $instructor = $this->getIdentity();
         if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $instructor['roles'])) {
             $ret = $this->getMapper()->getStudentList($instructor['id']);
         }
@@ -679,14 +688,14 @@ class User extends AbstractService
         
         return $this->getServiceLocator()->get($config['cache']);
     }
-
+    
     /**
      *
-     * @return \Application\Service\User
+     * @return \Application\Service\Notification
      */
-    public function getServiceUser()
+    public function getServiceNotification()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->getServiceLocator()->get('app_service_notification');
     }
     
     /**

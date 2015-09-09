@@ -60,19 +60,31 @@ class Notification extends AbstractService
     
     
     // notification 
-    public function userPublication($feed, $users)
+    public function userPublication($feed)
     {
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $users);
+        return $this->create(
+            'user.publication', 
+            $this->getDataUser(), 
+            $this->getDataFeed($feed), 
+            $this->getDataUserContact());
     }
     
     public function userLike($feed, $users)
     {
-        return $this->create('user.like', $this->getDataUser(), $this->getDataFeed($feed), $users);
+        return $this->create(
+            'user.like', 
+            $this->getDataUser(), 
+            $this->getDataFeed($feed), 
+            $users);
     }
 
     public function userAddConnection($user, $users)
     {
-        return $this->create('user.addconnection', $this->getDataUser(), $this->getDataUser($user), $users);
+        return $this->create(
+            'user.addconnection', 
+            $this->getDataUser(), 
+            $this->getDataUser($user), 
+            $users);
     }
     
     public function studentSubmitAssignment($item_assignment)
@@ -88,7 +100,8 @@ class Notification extends AbstractService
         
         return $this->create('student.submit.assignment', 
             $this->getDataUser(), 
-            $this->getDataAssignment($m_item_assignment), $users);
+            $this->getDataAssignment($m_item_assignment), 
+            $users);
     }
 
     public function assignmentGraded($item_assignment)
@@ -177,14 +190,147 @@ class Notification extends AbstractService
             $this->getDataUserByItemProg($m_item_prog->getId()));
     }
     
+    public function courseUpdated($course, $dataupdated)
+    {
+        return $this->create(
+            'course.updated',
+            $this->getDataUser(),
+            $this->getDataCourseUpdate($course, $dataupdated),
+            $this->getDataUserByCourse($course));
+    }
     
+    public function courseMaterialAdded($course, $material)
+    {
+        return $this->create(
+            'course.material_added',
+            $this->getDataUser(),
+            $this->getDataCourseAddMaterial($course, $material),
+            $this->getDataUserByCourse($course));
+    }
     
+    public function programmationNew($item_prog)
+    {
+        return $this->create(
+            'programmation.new',
+            $this->getDataUser(),
+            $this->getDataProgrammation($item_prog),
+            $this->getDataUserByItemProg($item_prog));
+    }
     
+    public function programmationUpdated($item_prog)
+    {
+        return $this->create(
+            'programmation.updated',
+            $this->getDataUser(),
+            $this->getDataProgrammation($item_prog),
+            $this->getDataUserByItemProg($item_prog));
+    }
     
-    
-    
-
+    public function profileUpdated($user, $dataprofile)
+    {
+        return $this->create(
+            'profile.updated',
+            $this->getDataUser(),
+            $this->getDataUpdateProfile($user, $dataprofile),
+            $this->getDataUserContact());
+    }
+        
+        
+     /*  
+            object:{
+                id:'USER_ID'
+                    name:'user',
+                    data:{
+                    updated:['avatar', ...] // updated rows
+                }
+            }
+     }*/
+     
     // ------------- DATA OBJECT -------------------
+    public function getDataUpdateProfile($user, $dataupdated)
+    {
+        if(isset($dataupdated['id'])) {
+            unset($dataupdated['id']);
+        }
+        
+        return [
+            'id' => $user,
+            'name' => 'user',
+            'data' => [
+                'updated' => array_keys($dataupdated)
+            ]
+        ];
+    }
+    
+    
+    public function getDataProgrammation($item_prog)
+    {
+        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+
+        return [
+            'id' => $m_item_prog->getId(),
+            'name' => 'programmation',
+            'data' => [
+                'start_date' =>  $m_item_prog->getStartDate(),
+                'due_date' => $m_item_prog->getDueDate(),
+                'item' => [
+                    'id' => $m_item_prog->getItem()->getId(),
+                    'title' => $m_item_prog->getItem()->getTitle(),
+                    'type' => $m_item_prog->getItem()->getType(),
+                    'duration' => $m_item_prog->getItem()->getDuration(),
+                    'course' => [
+                        'id' => $m_item_prog->getItem()->getCourse()->getId(),
+                        'title' => $m_item_prog->getItem()->getCourse()->getId(),
+                    ]
+                ],
+            ],
+        ];
+    }
+    
+    
+    public function getDataCourseAddMaterial($course, $material)
+    {
+        $m_course = $this->getServiceCourse()->get($course);
+        $m_material_document = $this->getServiceMaterialDocument()->get($material);
+
+        return [
+            'id' => $course,
+            'name' => 'course',
+            'data' => [
+                'title' =>  $m_course->getTitle(),
+                'picture' => $m_course->getPicture(),
+                'material' => [
+                    'type' => $m_material_document->getType(),
+                    'title' => $m_material_document->getTitle(),
+                    'author' => $m_material_document->getAuthor(),
+                    'link' => $m_material_document->getLink(),
+                    'source' => $m_material_document->getSource(),
+                    'token' => $m_material_document->getToken(),
+                ],
+            ],
+        ];
+    }
+    
+    public function getDataCourseUpdate($course, $dataupdated)
+    {
+        $m_course = $this->getServiceCourse()->get($course);
+        
+        if(isset($dataupdated['id'])) {
+            unset($dataupdated['id']);
+        }
+        
+        return [
+            'id' => $course,
+            'name' => 'course',
+            'data' => [
+                'title' =>  $m_course->getTitle(),
+                'picture' => $m_course->getPicture(),
+                'updated' => array_keys($dataupdated)
+             ]
+        ];
+    }
+    
+    
     public function getDataVideoArchive(\Application\Model\VideoconfArchive $m_videoconf_archive)
     {
         return [
@@ -238,6 +384,11 @@ class Notification extends AbstractService
                 ],
             ],
         ];
+    }
+    
+    public function getDataUserContact()
+    {
+        return $this->getServiceContact()->getListId();
     }
     
     public function getDataUserByCourse($course)
@@ -442,6 +593,15 @@ class Notification extends AbstractService
     
     /**
      *
+     * @return \Application\Service\MaterialDocument
+     */
+    public function getServiceMaterialDocument()
+    {
+        return $this->getServiceLocator()->get('app_service_material_document');
+    }
+    
+    /**
+     *
      * @return \Application\Service\Thread
      */
     public function getServiceThread()
@@ -510,6 +670,15 @@ class Notification extends AbstractService
     public function getServiceCourse()
     {
         return $this->getServiceLocator()->get('app_service_course');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Contact
+     */
+    public function getServiceContact()
+    {
+        return $this->getServiceLocator()->get('app_service_contact');
     }
     
     /**

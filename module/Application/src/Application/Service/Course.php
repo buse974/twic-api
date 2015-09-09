@@ -116,7 +116,15 @@ class Course extends AbstractService
             ->setVideoToken($video_token)
             ->setUpdatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
-        return $this->getMapper()->update($m_course);
+        $ret = $this->getMapper()->update($m_course);
+        
+        if($ret > 0) {
+            $ar_course = $m_course->toArray();
+            unset($ar_course['updated_date']);
+            $this->getServiceNotification()->courseUpdated($id, $ar_course);
+        }
+        
+        return $ret;
     }
 
     /**
@@ -154,7 +162,7 @@ class Course extends AbstractService
      *
      * @throws \Exception
      *
-     * @return array
+     * @return \Application\Model\Course
      */
     public function get($id)
     {
@@ -280,4 +288,14 @@ class Course extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_grading_policy');
     }
+    
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
+    }
+    
 }

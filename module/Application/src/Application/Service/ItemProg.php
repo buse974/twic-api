@@ -114,6 +114,8 @@ class ItemProg extends AbstractService
                 break;
         }
         
+        $this->getServiceNotification()->programmationNew($id);
+
         return $id;
     }
 
@@ -178,7 +180,10 @@ class ItemProg extends AbstractService
             $this->getServiceVideoconf()->updateByItemProg($id, $start_date);
         }
         
-        return $this->getMapper()->update($m_item_prog);
+        $ret = $this->getMapper()->update($m_item_prog);
+        $this->getServiceNotification()->programmationUpdated($id);
+        
+        return $ret;
     }
 
     /**
@@ -341,6 +346,15 @@ class ItemProg extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
     }
 
     /**
