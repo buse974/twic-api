@@ -14,7 +14,7 @@ class MaterialDocument extends AbstractService
      *
      * @invokable
      *
-     * @param int    $course_id
+     * @param integer    $course_id
      * @param string $type
      * @param string $title
      * @param string $autor
@@ -25,7 +25,7 @@ class MaterialDocument extends AbstractService
      *
      * @throws \Exception
      *
-     * @return int
+     * @return integer
      */
     public function add($course_id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
     {
@@ -44,7 +44,10 @@ class MaterialDocument extends AbstractService
             throw new \Exception('error insert Material document');
         }
 
-        return $this->getMapper()->getLastInsertValue();
+        $material_document = $this->getMapper()->getLastInsertValue();
+        $this->getServiceNotification()->courseMaterialAdded($course_id, $material_document);
+
+        return $material_document;
     }
 
     /**
@@ -66,17 +69,7 @@ class MaterialDocument extends AbstractService
      *
      * @invokable
      *
-     * @param int $course_id
-     *
-     * @return int
-     */
-
-    /**
-     * Update Material Document by Course Id.
-     *
-     * @invokable
-     *
-     * @param int    $id
+     * @param integer    $id
      * @param string $type
      * @param string $title
      * @param string $author
@@ -85,36 +78,21 @@ class MaterialDocument extends AbstractService
      * @param string $token
      * @param string $date
      *
-     * @return int
+     * @return integer
      */
     public function update($id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
     {
         $m_material_document = $this->getModel()
                                     ->setId($id)
-                                    ->setUpdatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
-        if (null !== $type) {
-            $m_material_document->setType($type);
-        }
-        if (null !== $title) {
-            $m_material_document->setTitle($title);
-        }
-        if (null !== $author) {
-            $m_material_document->setAuthor($author);
-        }
-        if (null !== $link) {
-            $m_material_document->setLink($link);
-        }
-        if (null !== $source) {
-            $m_material_document->setSource($source);
-        }
-        if (null !== $token) {
-            $m_material_document->setToken($token);
-        }
-        if (null !== $date) {
-            $m_material_document->setDate($date);
-        }
-
+                                    ->setUpdatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+                                    ->setType($type)
+                                    ->setTitle($title)
+                                    ->setAuthor($author)
+                                    ->setLink($link)
+                                    ->setSource($source)
+                                    ->setToken($token)
+                                    ->setDate($date);
+        
         return $this->getMapper()->update($m_material_document);
     }
 
@@ -125,7 +103,7 @@ class MaterialDocument extends AbstractService
      *
      * @param delete $id
      *
-     * @return int
+     * @return integer
      */
     public function delete($id)
     {
@@ -147,6 +125,18 @@ class MaterialDocument extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setCourseId($course_id)->setDeletedDate(new IsNull()));
     }
+    
+    /**
+     * Get material document.
+     *
+     * @param integrer $id
+     *
+     * @return \Application\Model\MaterialDocument
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
 
     /**
      * Get List material document by item id.
@@ -158,5 +148,13 @@ class MaterialDocument extends AbstractService
     public function getListByItem($item)
     {
         return $this->getMapper()->getListByItem($item);
+    }
+    
+    /**
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
     }
 }
