@@ -44,6 +44,16 @@ class VideoconfArchive extends AbstractService
         return $this->getMapper()->update($m_videoconf_archive);
     }
 
+    /**
+     * 
+     * @param integer $id
+     * @return \Application\Model\VideoconfArchive
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+    
     public function getListVideoUpload()
     {
         return $this->getMapper()->getListVideoUpload();

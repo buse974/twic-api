@@ -263,14 +263,12 @@ class ItemProg extends AbstractService
 
     /**
      * @param integer $id
-     * @throws \Exception
+     * 
      * @return \Application\Model\ItemProg
      */
     public function get($id)
     {
-        $m_item_prog = $this->getModel()->setId($id);
-        
-        return $this->getMapper()->select($m_item_prog)->current();
+        return $this->getMapper()->get($id)->current();
     }
     
     public function deleteByItem($item)

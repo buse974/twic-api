@@ -46,7 +46,14 @@ class Feed extends AbstractService
             new \Exception('error insert feed');
         }
         
-        return $this->getMapper()->getLastInsertValue();
+        $feed_id = $this->getMapper()->getLastInsertValue();
+        
+        $this->getServiceNotification()->userPublication(
+            $feed_id, 
+            $this->getServiceContact()->getListId()
+            );
+        
+        return $feed_id;
     }
 
     /**
@@ -167,6 +174,18 @@ class Feed extends AbstractService
         
         return $mapper->getList($user,$me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
     }
+    
+    /**
+     * 
+     * @param integer $id
+     * @return \Application\Model\Feed
+     */
+    public function get($id)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+       
+        return $this->getMapper()->getList(null,$me, $id)->current();
+    }
 
     /**
      * 
@@ -222,5 +241,14 @@ class Feed extends AbstractService
     public function getServiceSimplePageCrawler()
     {
         return $this->serviceLocator->get('SimplePageCrawler');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->serviceLocator->get('app_service_notification');
     }
 }

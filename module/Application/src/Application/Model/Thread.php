@@ -9,6 +9,30 @@ class Thread extends BaseThread
     protected $user;
     protected $nb_message;
     protected $message;
+    protected $course;
+    
+    public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
+    
+        $this->user = new User($this);
+        $this->course = new Course($this);
+        
+        $this->course->exchangeArray($data);
+        $this->user->exchangeArray($data);
+    }
+    
+    public function getCourse() 
+    {
+        return $this->course;
+    }
+
+    public function setCourse($course) 
+    {
+        $this->course = $course;
+        
+        return $this;
+    }
 
     public function getMessage() 
     {
@@ -32,14 +56,6 @@ class Thread extends BaseThread
         $this->nb_message = $nb_message;
         
         return $this;
-    }
-
-    public function exchangeArray(array &$data)
-    {
-        parent::exchangeArray($data);
-        
-        $this->user = new User($this);
-        $this->user->exchangeArray($data);
     }
 
     public function setUser($user)

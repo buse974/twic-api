@@ -38,6 +38,8 @@ class Thread extends AbstractService
             $id = $this->getServiceThreadMessage()->add($message, $id);
         }
         
+        $this->getServiceNotification()->threadNew($id);
+        
         return $id;
     }
 
@@ -98,6 +100,17 @@ class Thread extends AbstractService
     }
 
     /**
+     * 
+     * @param integer $thread
+     * 
+     * @return \Application\Model\Thread
+     */
+    public function get($thread) 
+    {
+        return $this->getMapper()->getList(null, $thread)->current();
+    }
+    
+    /**
      * delete thread.
      *
      * @invokable
@@ -121,6 +134,15 @@ class Thread extends AbstractService
         return $this->getServiceLocator()->get('auth.service');
     }
 
+    /**
+     *
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
+    }
+    
     /**
      *
      * @return \Application\Service\Role

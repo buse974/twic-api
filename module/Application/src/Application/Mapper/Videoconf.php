@@ -21,21 +21,28 @@ class Videoconf extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration',
-            'videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")
-            ,'token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.id' => $id));
+        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration','videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "),'token','duration','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.id' => $id));
         
         return $this->selectWith($select);
     }
-    
+
     public function getByItemProg($item_prog)
     {
         $select = $this->tableGateway->getSql()->select();
-    
-        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration',
-            'videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")
-            ,'token','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.item_prog_id' => $item_prog));
-    
+        
+        $select->columns(array('id','title','description','conversation_id','item_prog_id','duration','videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "),'token','archive_token','archive_link','archive_status','created_date','deleted_date'))->where(array('videoconf.item_prog_id' => $item_prog));
+        
+        return $this->selectWith($select);
+    }
+
+    public function getByVideoconfArchive($videoconf_archive)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        
+        $select->columns(array('id','item_prog_id'))
+            ->join('videoconf_archive', 'videoconf_archive.videoconf_id=videoconf.id', array())
+            ->where(array('videoconf_archive.id' => $videoconf_archive));
+        
         return $this->selectWith($select);
     }
 

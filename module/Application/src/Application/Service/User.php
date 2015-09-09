@@ -230,6 +230,13 @@ class User extends AbstractService
             ->getIdentity()
             ->getId(), $type, null, $course, null, null, null, null, false);
     }
+    
+    public function getListUserBycourse($course)
+    {
+        return $this->getMapper()->getList(null, null, null, $this->getServiceAuth()
+            ->getIdentity()
+            ->getId(), null, null, $course, null, null, null, null, false);
+    }
 
     /**
      * @invokable
@@ -557,11 +564,22 @@ class User extends AbstractService
      *
      * @param int $item_assignment            
      *
-     * @return array
+     * @return \Application\Service\User
      */
     public function getListByItemAssignment($item_assignment)
     {
-        return $this->getMapper()->getListByItemAssignment($item_assignment);
+        $res_user = $this->getMapper()->getListByItemAssignment($item_assignment);
+        
+        
+        foreach ($res_user as $m_user) {
+            $roles=[];
+            foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {
+                $roles[] = $role->getName();
+            }
+            $m_user->setRoles($roles);
+        }
+        
+        return $res_user;
     }
 
     /**

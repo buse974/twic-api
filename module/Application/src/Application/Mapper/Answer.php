@@ -15,7 +15,7 @@ class Answer extends AbstractMapper
             ->join('questionnaire_user', 'questionnaire_user.id=answer.questionnaire_user_id', array())
             ->join('user', 'user.id=questionnaire_user.user_id', array('answer$gender' => 'gender'))
             ->join('country', 'country.id=user.nationality', array('answer$nationality' => 'id','answer$nationality_name' => 'short_name'), $select::JOIN_LEFT)
-            ->join(array('origin' => 'country'), 'country.id=user.origin', array('answer$origin' => 'id','answer$origin_name' => 'short_name'), $select::JOIN_LEFT)
+            ->join(array('origin' => 'country'), 'origin.id=user.origin', array('answer$origin' => 'id','answer$origin_name' => 'short_name'), $select::JOIN_LEFT)
             ->where(array('scale.value <> 0'));
         
         if (null !== $peer) {

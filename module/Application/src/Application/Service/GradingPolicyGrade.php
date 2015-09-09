@@ -35,6 +35,8 @@ class GradingPolicyGrade extends AbstractService
      */
     public function process($item_assignment, $user)
     {
+        $this->getServiceNotification()->assignmentGraded($item_assignment);
+        
         return $this->getMapper()->updateGrade($item_assignment, $user);
     }
 
@@ -44,6 +46,14 @@ class GradingPolicyGrade extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Application\Service\Notification
+     */
+    public function getServiceNotification()
+    {
+        return $this->getServiceLocator()->get('app_service_notification');
     }
 
     /**

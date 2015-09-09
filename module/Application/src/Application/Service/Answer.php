@@ -14,7 +14,7 @@ class Answer extends AbstractService
      * @param integer $peer
      * @param integer $scale
      * @throws \Exception
-     * @return number
+     * @return integer
      */
     public function add($question, $questionnaire_user, $questionnaire_question, $peer, $scale)
     {
