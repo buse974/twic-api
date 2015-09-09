@@ -11,6 +11,7 @@ class Notification extends AbstractModel
 	protected $date;
 	protected $event;
 	protected $object;
+	protected $target;
 
 	protected $prefix = 'notification';
 
@@ -70,6 +71,18 @@ class Notification extends AbstractModel
 	public function setObject($object)
 	{
 		$this->object = $object;
+
+		return $this;
+	}
+
+	public function getTarget()
+	{
+		return $this->target;
+	}
+
+	public function setTarget($target)
+	{
+		$this->target = $target;
 
 		return $this;
 	}

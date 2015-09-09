@@ -5,7 +5,10 @@ use Dal\Service\AbstractService;
 
 class Notification extends AbstractService
 {
-
+    const TARGET_TYPE_USER = 'user';
+    const TARGET_TYPE_GLOBAL = 'global';
+    const TARGET_TYPE_SCHOOL = 'school';
+    
     /**
      * create notification
      *
@@ -16,12 +19,13 @@ class Notification extends AbstractService
      * @throws \Exception
      * @return integer
      */
-    public function create($event, $source, $object, $user)
+    public function create($event, $source, $object, $user, $target)
     {
         $m_notification = $this->getModel()
             ->setEvent($event)
             ->setSource(json_encode($source))
             ->setObject(json_encode($object))
+            ->setTarget($target)
             ->setDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_notification) <= 0) {
@@ -47,18 +51,6 @@ class Notification extends AbstractService
         return ['list' => $res_notification,'count' => $mapper->count()];
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     // notification 
     public function userPublication($feed)
     {
@@ -66,7 +58,8 @@ class Notification extends AbstractService
             'user.publication', 
             $this->getDataUser(), 
             $this->getDataFeed($feed), 
-            $this->getDataUserContact());
+            $this->getDataUserContact(),
+            self::TARGET_TYPE_USER);
     }
     
     public function userLike($feed, $users)
@@ -75,7 +68,8 @@ class Notification extends AbstractService
             'user.like', 
             $this->getDataUser(), 
             $this->getDataFeed($feed), 
-            $users);
+            $users,
+            self::TARGET_TYPE_USER);
     }
 
     public function userAddConnection($user, $users)
@@ -84,7 +78,8 @@ class Notification extends AbstractService
             'user.addconnection', 
             $this->getDataUser(), 
             $this->getDataUser($user), 
-            $users);
+            $users, 
+            self::TARGET_TYPE_USER);
     }
     
     public function studentSubmitAssignment($item_assignment)
@@ -101,7 +96,8 @@ class Notification extends AbstractService
         return $this->create('student.submit.assignment', 
             $this->getDataUser(), 
             $this->getDataAssignment($m_item_assignment), 
-            $users);
+            $users, 
+            self::TARGET_TYPE_USER);
     }
 
     public function assignmentGraded($item_assignment)
@@ -118,7 +114,8 @@ class Notification extends AbstractService
             'assignment.graded', 
             $this->getDataUser(), 
             $this->getDataAssignmentGrade($m_item_assignment), 
-            $users);
+            $users, 
+            self::TARGET_TYPE_USER);
     }
     
     public function assignmentCommented($item_assignment, $item_assignment_comment)
@@ -136,7 +133,8 @@ class Notification extends AbstractService
             'assignment.commented',
             $this->getDataUser(),
             $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment),
-            $users);
+            $users, 
+            self::TARGET_TYPE_USER);
     }
     
     public function threadNew($thread)
@@ -150,7 +148,8 @@ class Notification extends AbstractService
             'thread.new',
             $this->getDataUser(),
             $this->getDataThread($m_thread),
-            $users);
+            $users, 
+            self::TARGET_TYPE_USER);
     }
     
     public function threadMessage($thread_message)
@@ -163,7 +162,8 @@ class Notification extends AbstractService
             'thread.message',
             $this->getDataUser(),
             $this->getDataThreadMessage($m_thread_message),
-            $users);
+            $users, 
+            self::TARGET_TYPE_USER);
     }
 
     public function recordAvailable($item_prog, $videoconf_archive)
@@ -175,7 +175,8 @@ class Notification extends AbstractService
             'record.available',
             $this->getDataItemProg($m_item_prog),
             $this->getDataVideoArchive($m_videoconf_archive),
-            $this->getDataUserByItemProg($m_item_prog->getId()));
+            $this->getDataUserByItemProg($m_item_prog->getId()), 
+            self::TARGET_TYPE_USER);
     }
     
     public function eqcqAvailable($item_prog, $videoconf_archive)
@@ -187,7 +188,8 @@ class Notification extends AbstractService
             'eqcq.available',
             $this->getDataItemProgWihtUser($m_item_prog),
             [],
-            $this->getDataUserByItemProg($m_item_prog->getId()));
+            $this->getDataUserByItemProg($m_item_prog->getId()), 
+            self::TARGET_TYPE_USER);
     }
     
     public function courseUpdated($course, $dataupdated)
@@ -196,7 +198,8 @@ class Notification extends AbstractService
             'course.updated',
             $this->getDataUser(),
             $this->getDataCourseUpdate($course, $dataupdated),
-            $this->getDataUserByCourse($course));
+            $this->getDataUserByCourse($course),
+            self::TARGET_TYPE_USER);
     }
     
     public function courseMaterialAdded($course, $material)
@@ -205,7 +208,8 @@ class Notification extends AbstractService
             'course.material_added',
             $this->getDataUser(),
             $this->getDataCourseAddMaterial($course, $material),
-            $this->getDataUserByCourse($course));
+            $this->getDataUserByCourse($course), 
+            self::TARGET_TYPE_USER);
     }
     
     public function programmationNew($item_prog)
@@ -214,7 +218,8 @@ class Notification extends AbstractService
             'programmation.new',
             $this->getDataUser(),
             $this->getDataProgrammation($item_prog),
-            $this->getDataUserByItemProg($item_prog));
+            $this->getDataUserByItemProg($item_prog),
+            self::TARGET_TYPE_USER);
     }
     
     public function programmationUpdated($item_prog)
@@ -223,7 +228,8 @@ class Notification extends AbstractService
             'programmation.updated',
             $this->getDataUser(),
             $this->getDataProgrammation($item_prog),
-            $this->getDataUserByItemProg($item_prog));
+            $this->getDataUserByItemProg($item_prog),
+            self::TARGET_TYPE_USER);
     }
     
     public function profileUpdated($user, $dataprofile)
@@ -232,21 +238,77 @@ class Notification extends AbstractService
             'profile.updated',
             $this->getDataUser(),
             $this->getDataUpdateProfile($user, $dataprofile),
-            $this->getDataUserContact());
+            $this->getDataUserContact(),
+            self::TARGET_TYPE_USER);
+    }
+    
+    public function profileNewresume($resume)
+    {
+        return $this->create(
+            'profile.newresume',
+            $this->getDataUser(),
+            $this->getDataResume($resume),
+            $this->getDataUserContact(),
+            self::TARGET_TYPE_USER);
     }
         
-        
-     /*  
-            object:{
-                id:'USER_ID'
-                    name:'user',
-                    data:{
-                    updated:['avatar', ...] // updated rows
-                }
-            }
-     }*/
+    public function userRequestconnection($user)
+    {
+        return $this->create(
+            'user.requestconnection',
+            $this->getDataUser(),
+            $this->getDataUser($user),
+            [$user],
+            self::TARGET_TYPE_USER);
+    }
+    
+    public function schoolNew($school)
+    {
+        return $this->create(
+            'school.new',
+            [],
+            $this->getDataSchool($school),
+            [],
+            self::TARGET_TYPE_GLOBAL);
+    }
      
     // ------------- DATA OBJECT -------------------
+    public function getDataSchool($school) 
+    {
+        $m_school = $this->getServiceSchool()->get($school);
+        
+        return [
+            'id' => $m_school->getId(),
+            'name' => 'school',
+            'data' => [
+                'id' => $m_school->getId(),
+                'name' => $m_school->getName(),
+                'short_name' => $m_school->getShortName(),
+                'logo' => $m_school->getLogo(),
+            ]
+        ];
+    }
+    
+    public function getDataResume($resume)
+    {
+        $m_resume = $this->getServiceResume()->getById($resume);
+    
+        return [
+            'id' => $resume,
+            'name' => 'resume',
+            'data' => [
+                'start_date' => $m_resume->getStartDate(),
+                'end_date' => $m_resume->getEndDate(),
+                'address' => $m_resume->getAddress(),
+                'title' => $m_resume->getTitle(),
+                'subtitle' => $m_resume->getSubtitle(),
+                'logo' => $m_resume->getLogo(),
+                'description' => $m_resume->getDescription(),
+                'type' => $m_resume->getType(),
+            ]
+        ];
+    }
+    
     public function getDataUpdateProfile($user, $dataupdated)
     {
         if(isset($dataupdated['id'])) {
@@ -582,6 +644,31 @@ class Notification extends AbstractService
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      *
      * @return \Application\Service\ThreadMessage
@@ -670,6 +757,24 @@ class Notification extends AbstractService
     public function getServiceCourse()
     {
         return $this->getServiceLocator()->get('app_service_course');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Resume
+     */
+    public function getServiceResume()
+    {
+        return $this->getServiceLocator()->get('app_service_resume');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\School
+     */
+    public function getServiceSchool()
+    {
+        return $this->getServiceLocator()->get('app_service_school');
     }
     
     /**

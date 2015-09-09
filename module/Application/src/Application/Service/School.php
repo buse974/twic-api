@@ -80,7 +80,7 @@ class School extends AbstractService
      *
      * @param int $id
      *
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return \Application\Model\School
      */
     public function get($id)
     {
