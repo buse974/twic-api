@@ -17,7 +17,7 @@ class Videoconf extends AbstractService
      *
      * @param string $title            
      * @param string $description            
-     * @param string $start_date            
+     * @param string $start_date
      * @param int $item_prog            
      * @param int $conversation            
      *
