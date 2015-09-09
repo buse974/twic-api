@@ -10,6 +10,10 @@ class ComponentScale extends AbstractService
     {
         $m_component_scale = $this->getModel()->setComponentId($component_id);
 
-        return $this->getMapper()->select($m_component_scale);
+        $result = $this->getMapper()->select($m_component_scale);
+        if (!$result->count()) {
+            return [];
+        }
+        return $result;
     }
 }
