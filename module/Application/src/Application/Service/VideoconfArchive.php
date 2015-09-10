@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Videoconf as CVF;
 
 class VideoconfArchive extends AbstractService
 {
