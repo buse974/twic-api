@@ -138,9 +138,11 @@ class Contact extends AbstractService
         return $listRequest;
     }
 
-    public function getListId()
+    public function getListId($user = null)
     {
-        $user = $this->getServiceUser()->getIdentity()['id'];
+        if(null === $user) {
+            $user = $this->getServiceUser()->getIdentity()['id'];
+        }
 
         $listRequest = $this->getMapper()->getList($user);
     
