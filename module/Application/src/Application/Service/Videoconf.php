@@ -300,11 +300,11 @@ class Videoconf extends AbstractService
             foreach ($instructors['list'] as $instructor) {
                 $res[] = $instructor;
             }
+        } else {
             $m_videoconf->setItemAssignmentId($this->getServiceItemAssignment()->getIdByItemProg($m_videoconf->getItemProgId()));
         }
         
-        $m_videoconf->setDocs($this->getServiceVideoconfDoc()
-            ->getListByVideoconf($m_videoconf->getItemProgId()))
+        $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getItemProgId()))
             ->setUsers($res)
             ->setConversations($conversations)
             ->setVideoconfAdmin($this->getServiceVideoconfAdmin()->add($m_videoconf->getId(), $optok));

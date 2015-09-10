@@ -101,9 +101,15 @@ class Event extends AbstractService
         return $this->create('user.like', $this->getDataUser(), $this->getDataFeed($feed), $users, self::TARGET_TYPE_USER);
     }
 
-    public function userAddConnection($user, $users)
+    public function userAddConnection($user, $contact)
     {
-        return $this->create('user.addconnection', $this->getDataUser(), $this->getDataUser($user), $users, self::TARGET_TYPE_USER);
+        return $this->create(
+            'user.addconnection', 
+            $this->getDataUser($contact), 
+            $this->getDataUser($user), 
+            $this->getDataUserContact(), 
+            self::TARGET_TYPE_USER
+        );
     }
 
     public function studentSubmitAssignment($item_assignment)
