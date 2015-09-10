@@ -105,9 +105,9 @@ class Event extends AbstractService
     {
         return $this->create(
             'user.addconnection', 
-            $this->getDataUser($contact), 
             $this->getDataUser($user), 
-            $this->getDataUserContact(), 
+            $this->getDataUser($contact), 
+            $this->getDataUserContact($user), 
             self::TARGET_TYPE_USER
         );
     }
@@ -308,9 +308,9 @@ class Event extends AbstractService
         return ['id' => $m_item_prog->getId(),'name' => 'thread.message','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()]]];
     }
 
-    public function getDataUserContact()
+    public function getDataUserContact($user = null)
     {
-        return $this->getServiceContact()->getListId();
+        return $this->getServiceContact()->getListId($user);
     }
 
     public function getDataUserByCourse($course)
