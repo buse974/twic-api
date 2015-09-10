@@ -114,7 +114,7 @@ class ItemProg extends AbstractService
                 break;
         }
         
-        $this->getServiceNotification()->programmationNew($id);
+        $this->getServiceEvent()->programmationNew($id);
 
         return $id;
     }
@@ -181,7 +181,7 @@ class ItemProg extends AbstractService
         }
         
         $ret = $this->getMapper()->update($m_item_prog);
-        $this->getServiceNotification()->programmationUpdated($id);
+        $this->getServiceEvent()->programmationUpdated($id);
         
         return $ret;
     }
@@ -350,11 +350,11 @@ class ItemProg extends AbstractService
     
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**

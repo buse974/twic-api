@@ -25,7 +25,7 @@ class Like extends AbstractService
             throw new \Exception('error add like');
         }
         
-        $this->getServiceNotification()->userLike(
+        $this->getServiceEvent()->userLike(
             $feed,
             $this->getServiceContact()->getListId()
         );
@@ -88,10 +88,10 @@ class Like extends AbstractService
 
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->serviceLocator->get('app_service_notification');
+        return $this->serviceLocator->get('app_service_event');
     }
 }

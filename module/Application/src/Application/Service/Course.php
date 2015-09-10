@@ -121,7 +121,7 @@ class Course extends AbstractService
         if($ret > 0) {
             $ar_course = $m_course->toArray();
             unset($ar_course['updated_date']);
-            $this->getServiceNotification()->courseUpdated($id, $ar_course);
+            $this->getServiceEvent()->courseUpdated($id, $ar_course);
         }
         
         return $ret;
@@ -291,11 +291,11 @@ class Course extends AbstractService
     
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
 }

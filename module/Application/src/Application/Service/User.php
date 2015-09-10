@@ -373,7 +373,7 @@ class User extends AbstractService
         $ret = $this->getMapper()->update($m_user);
         
         if($ret > 0) {
-            $this->getServiceNotification()->profileUpdated($id, $m_user->toArray());
+            $this->getServiceEvent()->profileUpdated($id, $m_user->toArray());
         }
         
         return $ret;
@@ -691,11 +691,11 @@ class User extends AbstractService
     
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
     /**

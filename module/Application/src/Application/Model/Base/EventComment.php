@@ -4,15 +4,16 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class Like extends AbstractModel
+class EventComment extends AbstractModel
 {
  	protected $id;
-	protected $is_like;
+	protected $content;
 	protected $user_id;
 	protected $event_id;
 	protected $created_date;
+	protected $deleted_date;
 
-	protected $prefix = 'like';
+	protected $prefix = 'event_comment';
 
 	public function getId()
 	{
@@ -26,14 +27,14 @@ class Like extends AbstractModel
 		return $this;
 	}
 
-	public function getIsLike()
+	public function getContent()
 	{
-		return $this->is_like;
+		return $this->content;
 	}
 
-	public function setIsLike($is_like)
+	public function setContent($content)
 	{
-		$this->is_like = $is_like;
+		$this->content = $content;
 
 		return $this;
 	}
@@ -70,6 +71,18 @@ class Like extends AbstractModel
 	public function setCreatedDate($created_date)
 	{
 		$this->created_date = $created_date;
+
+		return $this;
+	}
+
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
+
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
 		return $this;
 	}

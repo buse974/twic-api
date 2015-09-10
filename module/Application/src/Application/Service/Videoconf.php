@@ -418,7 +418,7 @@ class Videoconf extends AbstractService
     {
         $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
         
-        $this->getServiceNotification()->recordAvailable(
+        $this->getServiceEvent()->recordAvailable(
             $this->getByVideoconfArchive($videoconf_archive)->getItemProgId(),
             $videoconf_archive);
         
@@ -518,11 +518,11 @@ class Videoconf extends AbstractService
     
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**

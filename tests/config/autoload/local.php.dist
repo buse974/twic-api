@@ -29,6 +29,9 @@ return array(
 			),
 		)
 	),
+	'node' => array(
+        'addr' => 'http://192.168.1.36:8282'
+    ),
 	'log' => array(
 		'log-system' => array(
 			'writers' => array(

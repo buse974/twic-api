@@ -197,7 +197,7 @@ class ItemAssignment extends AbstractService
     {
         $item_assignment_comment = $this->getServiceItemAssignmentComment()->add($item_assignment, $text);
         
-        $this->getServiceNotification()->assignmentCommented($item_assignment, $item_assignment_comment);
+        $this->getServiceEvent()->assignmentCommented($item_assignment, $item_assignment_comment);
         
         return $item_assignment_comment;
     }
@@ -285,7 +285,7 @@ class ItemAssignment extends AbstractService
      */
     public function submit($id)
     {
-        $this->getServiceNotification()->studentSubmitAssignment($id);
+        $this->getServiceEvent()->studentSubmitAssignment($id);
         
         return $this->getMapper()->update($this->getModel()
             ->setId($id)
@@ -390,11 +390,11 @@ class ItemAssignment extends AbstractService
 
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
     /**

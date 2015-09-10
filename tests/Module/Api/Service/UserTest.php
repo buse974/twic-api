@@ -226,7 +226,7 @@ class UserTest extends AbstractService
     public function testLogin()
     {
         $data = $this->jsonRpc('user.login', array('user' => 'crobertr@thestudnet.com','password' => 'studnet'));
-       
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 11);
         $this->assertEquals($data['result']['id'] , 7);

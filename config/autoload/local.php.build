@@ -29,6 +29,9 @@ return array(
 			),
 		),	
 	),
+    'node' => array(
+        'addr' => 'http://192.168.1.36:8282'
+    ),
     'dms-conf' => array(
         'size_allowed' => array(
             array('width' => 300, 'height' => 200),

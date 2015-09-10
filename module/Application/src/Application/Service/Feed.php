@@ -48,7 +48,7 @@ class Feed extends AbstractService
         
         $feed_id = $this->getMapper()->getLastInsertValue();
         
-        $this->getServiceNotification()->userPublication($feed_id);
+        $this->getServiceEvent()->userPublication($feed_id);
         
         return $feed_id;
     }
@@ -242,10 +242,10 @@ class Feed extends AbstractService
     
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->serviceLocator->get('app_service_notification');
+        return $this->serviceLocator->get('app_service_event');
     }
 }
