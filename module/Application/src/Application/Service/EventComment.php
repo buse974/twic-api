@@ -4,6 +4,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
-class NotificationUser extends AbstractService
+class EventComment extends AbstractService
 {
 }

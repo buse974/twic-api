@@ -32,7 +32,7 @@ class Contact extends AbstractService
         $ret = $this->getMapper()->insert($m_contact);
         
         if($ret > 1) {
-            $this->getServiceNotification()->userRequestconnection($user);
+            $this->getServiceEvent()->userRequestconnection($user);
         }
         
         return $ret;
@@ -148,11 +148,11 @@ class Contact extends AbstractService
 
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
     /**

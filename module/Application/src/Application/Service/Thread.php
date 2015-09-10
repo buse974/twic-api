@@ -38,7 +38,7 @@ class Thread extends AbstractService
             $id = $this->getServiceThreadMessage()->add($message, $id);
         }
         
-        $this->getServiceNotification()->threadNew($id);
+        $this->getServiceEvent()->threadNew($id);
         
         return $id;
     }
@@ -136,11 +136,11 @@ class Thread extends AbstractService
 
     /**
      *
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
     /**

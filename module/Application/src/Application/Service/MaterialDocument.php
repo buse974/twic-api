@@ -45,7 +45,7 @@ class MaterialDocument extends AbstractService
         }
 
         $material_document = $this->getMapper()->getLastInsertValue();
-        $this->getServiceNotification()->courseMaterialAdded($course_id, $material_document);
+        $this->getServiceEvent()->courseMaterialAdded($course_id, $material_document);
 
         return $material_document;
     }
@@ -151,10 +151,10 @@ class MaterialDocument extends AbstractService
     }
     
     /**
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
 }

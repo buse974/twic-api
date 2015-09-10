@@ -33,7 +33,7 @@ class ThreadMessage extends AbstractService
         
         $thread_message_id = $this->getMapper()->getLastInsertValue();
         
-        $this->getServiceNotification()->threadMessage($thread_message_id);
+        $this->getServiceEvent()->threadMessage($thread_message_id);
         
         return $thread_message_id;
     }
@@ -114,11 +114,11 @@ class ThreadMessage extends AbstractService
     }
     
     /**
-     * @return \Application\Service\Notification
+     * @return \Application\Service\Event
      */
-    public function getServiceNotification()
+    public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_notification');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
     /**
