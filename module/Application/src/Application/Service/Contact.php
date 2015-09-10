@@ -31,7 +31,7 @@ class Contact extends AbstractService
         
         $ret = $this->getMapper()->insert($m_contact);
         
-        if($ret > 1) {
+        if($ret > 0) {
             $this->getServiceEvent()->userRequestconnection($user);
         }
         
@@ -52,7 +52,14 @@ class Contact extends AbstractService
             throw new \Exception('Error accept user');
         }
         
-        return $this->getMapper()->update($m_contact, array('user_id' => $identity['id'],'contact_id' => $user));
+        $ret = $this->getMapper()->update($m_contact, array('user_id' => $identity['id'],'contact_id' => $user));
+        
+        if($ret > 0) {
+            $this->getServiceEvent()->userAddConnection($user, $identity['id']);
+            $this->getServiceEvent()->userAddConnection($identity['id'], $user);
+        } 
+        
+        return $ret;
     }
 
     /**
