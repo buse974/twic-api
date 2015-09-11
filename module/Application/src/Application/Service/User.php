@@ -149,10 +149,6 @@ class User extends AbstractService
             $school_id = $user['school_id'];
         } 
         
-        if ($school_id !== null) {
-            $this->getServiceContact()->addBySchool($school_id);
-        }
-        
         if (empty($password)) {
             $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
             $long = strlen($cars);
@@ -167,6 +163,10 @@ class User extends AbstractService
         
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
+        }
+        
+        if ($school_id !== null) {
+            $this->getServiceContact()->addBySchool($school_id);
         }
         
         try {

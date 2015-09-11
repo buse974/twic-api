@@ -121,6 +121,28 @@ class Item extends AbstractService
 
         return $res_item->toArrayParent();
     }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $user
+     *
+     * @return array
+     */
+    public function getListByUser($user)
+    {
+        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course));
+        foreach ($res_item as $m_item) {
+            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
+            $ar_imdr = array();
+            foreach ($res_imdr as $m_imdr) {
+                $ar_imdr[] = $m_imdr->getMaterialDocumentId();
+            }
+            $m_item->setMaterials($ar_imdr);
+        }
+    
+        return $res_item->toArrayParent();
+    }
 
     public function getListRecord($course, $user, $is_student)
     {

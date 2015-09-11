@@ -63,7 +63,12 @@ class Event extends AbstractService
         ->setVersion('2.0');
         
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
-        $client->doRequest($request);
+        
+        try {
+            $client->doRequest($request);
+        } catch (\Exception $e) {
+            syslog(1,$e->getMessage());
+        }
     }
     
     /**
