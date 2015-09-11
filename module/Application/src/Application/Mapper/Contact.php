@@ -21,11 +21,9 @@ class Contact extends AbstractMapper
             ->where(array('contact.deleted_date IS NULL'));
         
         if ($exclude) {
-		syslog(0, '...');
             $select->where->notIn(array('contact.contact_id' => $exclude));
         }
         
-        syslog(0, $this->printSql($select));
 
         return $this->selectWith($select);
     }
