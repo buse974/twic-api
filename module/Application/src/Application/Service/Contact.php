@@ -118,9 +118,11 @@ class Contact extends AbstractService
      * @invokable
      *
      * @param integer $user
+     * @param array $exclude
      */
-    public function getList($user = null)
+    public function getList($user = null, $exclude = array())
     {
+	syslog(0, print_r(func_get_args(), true));
         if (null === $user) {
             $user = $this->getServiceUser()->getIdentity();
         }
@@ -129,7 +131,7 @@ class Contact extends AbstractService
             throw new \Exception('user parameter without id');
         }
 
-        $listRequest = $this->getMapper()->getList($user['id']);
+        $listRequest = $this->getMapper()->getList($user['id'], $exclude);
 
         foreach ($listRequest as $request) {
             $request->setContact($this->getServiceUser()->get($request->getContactId()));
