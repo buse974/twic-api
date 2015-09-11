@@ -2045,17 +2045,17 @@ class ScenarioTest extends AbstractService
         
         return $data['result'];
     }
-
+    
     public function testCanAddTask()
     {
-        $this->setIdentity(3);
+        $this->setIdentity(4);
         $data = $this->jsonRpc('task.add', array('title' => 'TEST','start' => '2015-06-01 12:00','end' => '2015-06-01 13:30','task_share' => array(1,2)));
-        
+    
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
-        
+    
         return $data['result'];
     }
 
@@ -2066,11 +2066,42 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(3);
         $data = $this->jsonRpc('task.update', array('id' => $task,'title' => 'TEST 2','start' => '2015-06-02 12:00','end' => '2015-06-02 13:30','task_share' => array(1,2,3,4)));
-        
+    
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
+    /**
+     * 
+     * @depends testCanAddProgrmItem
+     */
+    public function testCanVideoconfStart($item_prog)
+    {
+        $this->setIdentity(4);
+        
+        $data = $this->jsonRpc('videoconf.start', array('item_prog' => $item_prog));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanAddProgrmItem
+     */
+    public function testCanVideoconfEnd($item_prog)
+    {
+        $this->setIdentity(4);
+    
+        $data = $this->jsonRpc('videoconf.end', array('item_prog' => $item_prog));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
@@ -2171,8 +2202,8 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][0]['id'] , 3);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][0]['user_id'] , 4);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][0]['item_prog_id'] , 1);
-        $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][0]['started_date'] , null);
-        $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][0]['finished_date'] , null);
+        $this->assertEquals(!empty($data['result'][0]['item_prog'][0]['item_prog_user'][0]['started_date']) , true);
+        $this->assertEquals(!empty($data['result'][0]['item_prog'][0]['item_prog_user'][0]['finished_date']) , true);
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['item_prog_user'][1]) , 5);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][1]['id'] , 2);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item_prog_user'][1]['user_id'] , 6);
@@ -3080,6 +3111,7 @@ class ScenarioTest extends AbstractService
     public function testCanDeleteTaskOfOther($task)
     {
         $this->setIdentity(4);
+        
         $data = $this->jsonRpc('task.delete', array('id' => $task));
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 0);
@@ -3093,7 +3125,8 @@ class ScenarioTest extends AbstractService
      */
     public function testCanDeleteTask($task)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(4);
+        
         $data = $this->jsonRpc('task.delete', array('id' => $task));
         
         $this->assertEquals(count($data), 3);

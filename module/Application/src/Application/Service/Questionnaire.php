@@ -2,7 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Item;
+use Application\Model\Item as CI;
 
 class Questionnaire extends AbstractService
 {
@@ -32,7 +32,7 @@ class Questionnaire extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
 
-        if($m_item_prog->getItem()->getType() !== Item::TYPE_WORKGROUP) {
+        if($m_item_prog->getItem()->getType() !== CI::TYPE_WORKGROUP) {
             throw new  \Exception("No Workgroup");
         }
         
