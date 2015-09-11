@@ -85,6 +85,7 @@ class Event extends AbstractService
     {
         $mapper = $this->getMapper();
         $me = $this->getServiceUser()->getIdentity()['id'];
+      
         $res_event = $mapper->usePaginator($filter)->getList($me);
         
         return ['list' => $res_event,'count' => $mapper->count()];

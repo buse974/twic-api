@@ -84,7 +84,10 @@ return array(
             'app_service_city',
             'app_service_division',
             'app_service_questionnaire',
-            'app_service_answer'
+            'app_service_answer',
+            'app_service_component',
+            'app_service_country',
+            'app_service_event'
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
