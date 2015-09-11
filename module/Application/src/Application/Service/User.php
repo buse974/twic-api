@@ -338,24 +338,16 @@ class User extends AbstractService
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
-            ->setOrigin($origin['id'])
+            ->setOrigin($origin)
             ->setGender($gender)
-            ->setNationality($nationality['id'])
+            ->setNationality($nationality)
             ->setSis($sis)
             ->setBirthDate($birth_date)
             ->setPosition($position)
             ->setSchoolId($school_id)
             ->setInterest($interest)
             ->setAvatar($avatar);
-        
-        if (null !== $origin && isset($origin['id'])) {
-            $m_user->setOrigin($origin['id']);
-        }
-        
-        if (null !== $nationality && isset($nationality['id'])) {
-            $m_user->setNationality($nationality['id']);
-        }
-        
+
         if ($roles !== null) {
             foreach ($roles as $r) {
                 $this->getServiceUserRole()->deleteByUser($id);
