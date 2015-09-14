@@ -268,10 +268,13 @@ class ItemAssignment extends AbstractService
             }
             if ($submit) {
                 $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+                $this->getServiceEvent()->studentSubmitAssignment($id);
             }
             
             return $this->getMapper()->update($m_item_assignment);
         }
+        
+        
         
         return 0;
     }
@@ -288,10 +291,6 @@ class ItemAssignment extends AbstractService
         $ret = $this->getMapper()->update($this->getModel()
             ->setId($id)
             ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
-        
-        if($ret) {
-            $this->getServiceEvent()->studentSubmitAssignment($id);
-        }
         
         return $ret;
     }
