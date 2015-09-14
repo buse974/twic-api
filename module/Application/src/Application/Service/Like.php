@@ -42,7 +42,7 @@ class Like extends AbstractService
         $m_like = $this->getModel()
             ->setEventId($event)
             ->setUserId($me);
-        
+                
         return $this->getMapper()->delete($m_like);
     }
 
