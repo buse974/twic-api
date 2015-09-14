@@ -86,6 +86,8 @@ return array(
             'app_service_questionnaire',
             'app_service_answer',
             'app_service_item_prog_user',
+            'app_service_component',
+	    'app_service_country',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
