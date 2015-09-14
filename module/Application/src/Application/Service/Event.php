@@ -10,9 +10,7 @@ class Event extends AbstractService
     static private $id=0;
     
     const TARGET_TYPE_USER = 'user';
-
     const TARGET_TYPE_GLOBAL = 'global';
-
     const TARGET_TYPE_SCHOOL = 'school';
 
     /**
@@ -46,18 +44,19 @@ class Event extends AbstractService
         $this->sendRequest($user, array(
             'event' => $event,
             'source' => $source,
-            'date' => $date,
+            'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
             'object' => $object
-        ));
+        ), $target);
         return $event_id;
     }
 
-    public function sendRequest($users, $notification)
+    public function sendRequest($users, $notification, $target)
     {
         $request = new Request();
         $request->setMethod('notification.publish')->setParams(array(
             'notification' => $notification,
             'users' => $users,
+            'type' => $target
         ))
         ->setId(++self::$id)
         ->setVersion('2.0');
@@ -86,13 +85,35 @@ class Event extends AbstractService
     /**
      * @invokable
      */
-    public function getList($filter = null)
+    public function getList($filter = null, $events = null, $user = null)
     {
         $mapper = $this->getMapper();
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $res_event = $mapper->usePaginator($filter)->getList($me);
+        if(null === $user){
+            $user = $this->getServiceUser()->getIdentity()['id'];            
+        }
+      
+        $res_event = $mapper->usePaginator($filter)->getList($user, $events);
+        $ar_event = $res_event->toArray();
+        foreach($ar_event as &$event){
+            $event['source'] = json_decode($event['source']);
+            $event['object'] = json_decode($event['object']);
+        }
+        return ['list' => $ar_event,'count' => $mapper->count()];
+    }
+    
+    /**
+     * 
+     * @param unknown $id
+     * @return \Application\Model\Event
+     */
+    public function get($id)
+    {
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $m_event = $this->getMapper()->getList($user, null, $id)->current();
+        $m_event->setSource(json_decode($m_event->getSource()));
+        $m_event->setObject(json_decode($m_event->getObject()));
         
-        return ['list' => $res_event,'count' => $mapper->count()];
+        return $m_event;
     }
     
     // event
@@ -101,9 +122,9 @@ class Event extends AbstractService
         return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserContact(), self::TARGET_TYPE_USER);
     }
 
-    public function userLike($feed, $users)
+    public function userLike($event)
     {
-        return $this->create('user.like', $this->getDataUser(), $this->getDataFeed($feed), $users, self::TARGET_TYPE_USER);
+        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event), $this->getDataUserContact(), self::TARGET_TYPE_USER);
     }
 
     public function userAddConnection($user, $contact)
@@ -128,7 +149,7 @@ class Event extends AbstractService
         
         $users = [];
         foreach ($res_user as $m_user) {
-            $users = $m_user->getId();
+            $users[] = $m_user->getId();
         }
         
         return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER);
@@ -141,7 +162,7 @@ class Event extends AbstractService
         $res_user = $m_item_assignment->getStudents();
         $users = [];
         foreach ($res_user as $m_user) {
-            $users = $m_user->getId();
+            $users[] = $m_user->getId();
         }
         
         return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER);
@@ -155,7 +176,7 @@ class Event extends AbstractService
         $res_user = $m_item_assignment->getStudents();
         $users = [];
         foreach ($res_user as $m_user) {
-            $users = $m_user->getId();
+            $users[] = $m_user->getId();
         }
         
         return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), $users, self::TARGET_TYPE_USER);
@@ -310,7 +331,7 @@ class Event extends AbstractService
 
     public function getDataItemProg(\Application\Model\ItemProg $m_item_prog)
     {
-        return ['id' => $m_item_prog->getId(),'name' => 'thread.message','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()]]];
+        return ['id' => $m_item_prog->getId(),'name' => 'programming','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()]]];
     }
 
     public function getDataUserContact($user = null)
@@ -362,40 +383,68 @@ class Event extends AbstractService
         return ['id' => $feed,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
     }
 
+    public function getDataEvent($event)
+    {
+        $m_event = $this->get($event);
+    
+        return [
+            'id' => $event,
+            'name' => 'event',
+            'data' => $m_event->toArray()
+        ];
+    }
+    
+    
+    
     public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
     {
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType()],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle()]],'comment' => ['id' => $m_comment->getId(),'text' => $m_comment->getText()]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'item_prog' => [
+                    'id' => $m_item_assignment->getItemProg()->getId(),
+                ],
+                'item' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                    'type' => $m_item_assignment->getItemProg()->getItem()->getType()
+                ],
+                'module' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
+                    'course' => [
+                        'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
+                    ]
+                ],
+                'comment' => [
+                    'id' => $m_comment->getId(),
+                    'text' => $m_comment->getText()
+                ]
+            ]
+        ];
     }
 
     public function getDataAssignmentGrade(\Application\Model\ItemAssignment $m_item_assignment)
     {
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType()],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle()]]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'item_prog' => [
+                    'id' =>  $m_item_assignment->getItemProg()->getId()
+                ],
+                'item' => 
+                    ['title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                     'type' => $m_item_assignment->getItemProg()->getItem()->getType()],
+                     'module' => [
+                         'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
+                         'course' => [
+                             'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                             'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
+                         ]
+                     ]
+                ]
+        ];
     }
 
     public function getDataAssignment(\Application\Model\ItemAssignment $m_item_assignment)

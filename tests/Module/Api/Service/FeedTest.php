@@ -269,6 +269,36 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    /**
+     * @depends testgetListByIds
+     */
+    public function testCanAddLikeEvent()
+    {
+        $this->setIdentity(1);
+        
+        $data = $this->jsonRpc('like.add', array('event' =>1));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testgetListByIds
+     */
+    public function testCanDeleteLikeEvent()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('like.delete', array('event' =>1));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+   
+    }
     // DELETE
     
     
@@ -287,6 +317,8 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
+    
+    
     
     public function setIdentity($id)
     {
