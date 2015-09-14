@@ -2130,6 +2130,35 @@ class ScenarioTest extends AbstractService
     }
     
     /**
+     *
+     * @depends testCanVideoconfStart
+     */
+    public function testCanGetStartedConference()
+    {
+        $this->setIdentity(4);
+    
+        $data = $this->jsonRpc('itemproguser.getStartedConference', array());
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 3);
+        $this->assertEquals(count($data['result'][0]['questionnaire']) , 2);
+        $this->assertEquals($data['result'][0]['questionnaire']['id'] , 1);
+        $this->assertEquals(!empty($data['result'][0]['questionnaire']['created_date']) , true);
+        $this->assertEquals(count($data['result'][0]['item_prog']) , 4);
+        $this->assertEquals(count($data['result'][0]['item_prog']['item']) , 2);
+        $this->assertEquals($data['result'][0]['item_prog']['item']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog']['item']['type'] , "WG");
+        $this->assertEquals($data['result'][0]['item_prog']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog']['item_id'] , 1);
+        $this->assertEquals(!empty($data['result'][0]['item_prog']['start_date']) , true);
+        $this->assertEquals(!empty($data['result'][0]['started_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     *
      * @depends testCanAddProgrmItem
      */
     public function testCanVideoconfEnd($item_prog)
