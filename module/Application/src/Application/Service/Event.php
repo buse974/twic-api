@@ -87,13 +87,20 @@ class Event extends AbstractService
     /**
      * @invokable
      */
-    public function getList($filter = null)
+    public function getList($filter = null, $events = null, $user = null)
     {
         $mapper = $this->getMapper();
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $res_event = $mapper->usePaginator($filter)->getList($me);
-        
-        return ['list' => $res_event,'count' => $mapper->count()];
+        if(null === $user){
+            $user = $this->getServiceUser()->getIdentity()['id'];            
+        }
+      
+        $res_event = $mapper->usePaginator($filter)->getList($user, $events);
+        $ar_event = $res_event->toArray();
+        foreach($ar_event as &$event){
+            $event['source'] = json_decode($event['source']);
+            $event['object'] = json_decode($event['object']);
+        }
+        return ['list' => $ar_event,'count' => $mapper->count()];
     }
     
     // event
