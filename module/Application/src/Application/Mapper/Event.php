@@ -4,6 +4,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate;
 
 class Event extends AbstractMapper
 {
@@ -11,8 +12,9 @@ class Event extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select()
             ->columns(array("id", "source", "object", "event", 'event$date' => new Expression("DATE_FORMAT(date, '%Y-%m-%dT%TZ') ")))
-            ->join('event_user', 'event.id=event_user.event_id', array())
-            ->where(array('event_user.user_id' => $me))
+            ->join('event_user', 'event.id=event_user.event_id', array(),  $select::JOIN_LEFT)
+            ->where(array('( event_user.user_id' => $me))
+            ->where(array(' event.target = "global")'), Predicate::OP_OR)
             ->order(array('event.id' => 'DESC'));
         
         if(null !== $events){
