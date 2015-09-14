@@ -135,7 +135,7 @@ class Event extends AbstractService
         
         $users = [];
         foreach ($res_user as $m_user) {
-            $users = $m_user->getId();
+            $users[] = $m_user->getId();
         }
         
         return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER);
@@ -148,7 +148,7 @@ class Event extends AbstractService
         $res_user = $m_item_assignment->getStudents();
         $users = [];
         foreach ($res_user as $m_user) {
-            $users = $m_user->getId();
+            $users[] = $m_user->getId();
         }
         
         return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER);
@@ -162,7 +162,7 @@ class Event extends AbstractService
         $res_user = $m_item_assignment->getStudents();
         $users = [];
         foreach ($res_user as $m_user) {
-            $users = $m_user->getId();
+            $users[] = $m_user->getId();
         }
         
         return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), $users, self::TARGET_TYPE_USER);
