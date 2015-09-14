@@ -329,9 +329,7 @@ class User extends AbstractService
         $m_user = $this->getModel();
         
         if ($id === null) {
-            $id = $this->getServiceAuth()
-                ->getIdentity()
-                ->getId();
+            $id = $this->getIdentity()['id'];
         }
         
         $m_user->setId($id)

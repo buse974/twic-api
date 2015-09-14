@@ -70,6 +70,15 @@ class ItemProgUser extends AbstractService
     }
 
     /**
+     * @invokable
+     */
+    public function getStartedConference()
+    {
+        return $this->getMapper()->getStartedConference($this->getServiceUser()
+                ->getIdentity()['id']);
+    }
+    
+    /**
      *
      * @param int $item_prog            
      * @param int $user            
