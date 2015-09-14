@@ -372,38 +372,53 @@ class Event extends AbstractService
 
     public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
     {
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType()],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle()]],'comment' => ['id' => $m_comment->getId(),'text' => $m_comment->getText()]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'item_prog' => [
+                    'id' => $m_item_assignment->getItemProg()->getId(),
+                ],
+                'item' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                    'type' => $m_item_assignment->getItemProg()->getItem()->getType()
+                ],
+                'module' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
+                    'course' => [
+                        'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
+                    ]
+                ],
+                'comment' => [
+                    'id' => $m_comment->getId(),
+                    'text' => $m_comment->getText()
+                ]
+            ]
+        ];
     }
 
     public function getDataAssignmentGrade(\Application\Model\ItemAssignment $m_item_assignment)
     {
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType()],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle()]]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'item_prog' => [
+                    'id' =>  $m_item_assignment->getItemProg()->getId()
+                ],
+                'item' => 
+                    ['title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                     'type' => $m_item_assignment->getItemProg()->getItem()->getType()],
+                     'module' => [
+                         'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
+                         'course' => [
+                             'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                             'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
+                         ]
+                     ]
+                ]
+        ];
     }
 
     public function getDataAssignment(\Application\Model\ItemAssignment $m_item_assignment)

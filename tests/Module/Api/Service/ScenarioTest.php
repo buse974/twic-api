@@ -2997,7 +2997,8 @@ class ScenarioTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 7);
-        $this->assertEquals(count($data['result']['item_prog']) , 3);
+        $this->assertEquals(count($data['result']['item_prog']) , 4);
+        $this->assertEquals($data['result']['item_prog']['id'] , 1);
         $this->assertEquals(count($data['result']['item_prog']['item']) , 9);
         $this->assertEquals(count($data['result']['item_prog']['item']['materials']) , 1);
         $this->assertEquals(count($data['result']['item_prog']['item']['materials'][0]) , 8);
