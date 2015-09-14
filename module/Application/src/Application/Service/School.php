@@ -144,7 +144,7 @@ class School extends AbstractService
      */
     public function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('addr_service_event');
+        return $this->getServiceLocator()->get('app_service_event');
     }
     
     /**

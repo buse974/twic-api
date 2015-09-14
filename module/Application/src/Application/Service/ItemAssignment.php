@@ -285,11 +285,15 @@ class ItemAssignment extends AbstractService
      */
     public function submit($id)
     {
-        $this->getServiceEvent()->studentSubmitAssignment($id);
-        
-        return $this->getMapper()->update($this->getModel()
+        $ret = $this->getMapper()->update($this->getModel()
             ->setId($id)
             ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
+        
+        if($ret) {
+            $this->getServiceEvent()->studentSubmitAssignment($id);
+        }
+        
+        return $ret;
     }
 
     public function deleteByItemProg($item_prog)
