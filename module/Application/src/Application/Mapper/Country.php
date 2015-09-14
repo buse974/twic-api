@@ -9,7 +9,6 @@ class Country extends AbstractMapper
     /**
      * Get Country list.
      *
-     * @param string $filter
      * @param string $string
      *
      * @return \Zend\Db\ResultSet\ResultSet
