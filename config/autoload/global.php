@@ -88,6 +88,9 @@ return array(
             'app_service_item_prog_user',
             'app_service_component',
 	    'app_service_country',
+            'app_service_component',
+            'app_service_country',
+            'app_service_event'
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
