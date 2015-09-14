@@ -102,9 +102,9 @@ class Event extends AbstractService
         return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserContact(), self::TARGET_TYPE_USER);
     }
 
-    public function userLike($feed, $users)
+    public function userLike($event)
     {
-        return $this->create('user.like', $this->getDataUser(), $this->getDataFeed($feed), $users, self::TARGET_TYPE_USER);
+        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event), $this->getDataUserContact(), self::TARGET_TYPE_USER);
     }
 
     public function userAddConnection($user, $contact)
@@ -363,6 +363,15 @@ class Event extends AbstractService
         return ['id' => $feed,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
     }
 
+    public function getDataEvent($event)
+    {
+        $m_event = $this->getL
+    
+        return ['id' => $feed,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
+    }
+    
+    
+    
     public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
     {
         return [
