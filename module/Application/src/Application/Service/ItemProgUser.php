@@ -53,7 +53,13 @@ class ItemProgUser extends AbstractService
             ->getIdentity()['id'],'item_prog_id' => $item_prog));
     }
     
-    public function updateStartDate($item_prog)
+    /**
+     * @invokable
+     * 
+     * @param integer $item_prog
+     * @return integer
+     */
+    public function start($item_prog)
     {
         return $this->getMapper()->update($this->getModel()
             ->setStartedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
@@ -61,7 +67,13 @@ class ItemProgUser extends AbstractService
                 ->getIdentity()['id'],'item_prog_id' => $item_prog));
     }
     
-    public function updateEndDate($item_prog)
+    /**
+     * @invokable
+     *
+     * @param integer $item_prog
+     * @return integer
+     */
+    public function end($item_prog)
     {
         return $this->getMapper()->update($this->getModel()
             ->setFinishedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))

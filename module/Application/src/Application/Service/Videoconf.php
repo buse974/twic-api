@@ -451,7 +451,7 @@ class Videoconf extends AbstractService
      */
     public function start($item_prog)
     {
-        return $this->getServiceItemProgUser()->updateStartDate($item_prog);
+        return $this->getServiceItemProgUser()->start($item_prog);
     }
     
     /**
@@ -460,7 +460,7 @@ class Videoconf extends AbstractService
      */
     public function end($item_prog)
     {   
-        return $this->getServiceItemProgUser()->updateEndDate($item_prog);
+        return $this->getServiceItemProgUser()->end($item_prog);
     }
     
     /**

@@ -2121,7 +2121,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(4);
     
-        $data = $this->jsonRpc('videoconf.start', array('item_prog' => $item_prog));
+        $data = $this->jsonRpc('itemproguser.start', array('item_prog' => $item_prog));
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , 1);
@@ -2165,7 +2165,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(4);
     
-        $data = $this->jsonRpc('videoconf.end', array('item_prog' => $item_prog));
+        $data = $this->jsonRpc('itemproguser.end', array('item_prog' => $item_prog));
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , 1);
