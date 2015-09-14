@@ -6,6 +6,9 @@ use Dal\Service\AbstractService;
 
 class UserLanguage extends AbstractService
 {
+    /**
+     * @invokable
+     */
     public function add($language, $language_level)
     {
         $m_user_language = $this->getModel();
@@ -21,6 +24,8 @@ class UserLanguage extends AbstractService
     }
 
     /**
+     * @invokable
+     *
      * @param int $id
      *
      * @return int
