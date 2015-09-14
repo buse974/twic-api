@@ -311,7 +311,7 @@ class Event extends AbstractService
 
     public function getDataItemProg(\Application\Model\ItemProg $m_item_prog)
     {
-        return ['id' => $m_item_prog->getId(),'name' => 'thread.message','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()]]];
+        return ['id' => $m_item_prog->getId(),'name' => 'programming','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()]]];
     }
 
     public function getDataUserContact($user = null)
