@@ -10,9 +10,7 @@ class Event extends AbstractService
     static private $id=0;
     
     const TARGET_TYPE_USER = 'user';
-
     const TARGET_TYPE_GLOBAL = 'global';
-
     const TARGET_TYPE_SCHOOL = 'school';
 
     /**
@@ -46,7 +44,7 @@ class Event extends AbstractService
         $this->sendRequest($user, array(
             'event' => $event,
             'source' => $source,
-            'date' => $date,
+            'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
             'object' => $object
         ));
         return $event_id;
