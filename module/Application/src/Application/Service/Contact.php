@@ -120,9 +120,8 @@ class Contact extends AbstractService
      * @param integer $user
      * @param array $exclude
      */
-    public function getList($user = null, $exclude = array())
+    public function getList($user = null, $exclude = null)
     {
-	     syslog(1, ">>>>> ".print_r(func_get_args(), true));
         if (null === $user) {
             $user = $this->getServiceUser()->getIdentity();
         }
