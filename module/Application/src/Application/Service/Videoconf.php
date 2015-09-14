@@ -445,6 +445,34 @@ class Videoconf extends AbstractService
     }
 
     /**
+     * @invokable
+     * 
+     * @param integer $item_prog
+     */
+    public function start($item_prog)
+    {
+        return $this->getServiceItemProgUser()->start($item_prog);
+    }
+    
+    /**
+     * @invokable
+     * @param integer $item_prog
+     */
+    public function end($item_prog)
+    {   
+        return $this->getServiceItemProgUser()->end($item_prog);
+    }
+    
+    /**
+     *
+     * @return \Application\Service\ItemProgUser
+     */
+    public function getServiceItemProgUser()
+    {
+        return $this->getServiceLocator()->get('app_service_item_prog_user');
+    }
+    
+    /**
      *
      * @return \Application\Service\VideoconfArchive
      */

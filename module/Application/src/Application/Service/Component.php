@@ -6,13 +6,29 @@ use Dal\Service\AbstractService;
 class Component extends AbstractService
 {
 
+    public function getList($dimension = null)
+    {
+        return (null !== $dimension) ?
+        $this->getMapper()->select($this->getModel()->setDimensionId($dimension)) :
+        $this->getMapper()->fetchAll();
+    }
+
     /**
      * @invokable
      */
-    public function getList($dimension = null)
+    public function getListWithScale()
     {
-        $m_component = $this->getModel()->setDimensionId($dimension);
-        
-        return $this->getMapper()->select($m_component);
+        $components = $this->getMapper()->fetchAll();
+
+        foreach ($components as $component) {
+        $component->setComponentScales($this->getServiceComponentScale()->getList($component->getId()));
+        }
+
+        return $components;
+    }
+
+    public function getServiceComponentScale()
+    {
+        return $this->getServiceLocator()->get('app_service_component_scale');
     }
 }

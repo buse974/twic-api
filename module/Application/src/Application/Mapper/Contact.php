@@ -11,7 +11,7 @@ class Contact extends AbstractMapper
     /**
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($user)
+    public function getList($user, $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -19,7 +19,11 @@ class Contact extends AbstractMapper
             ->where(array('contact.user_id' => $user))
             ->where(array('contact.accepted_date IS NOT NULL'))
             ->where(array('contact.deleted_date IS NULL'));
-
+        
+        if ($exclude) {
+            $select->where->notIn(array('contact.contact_id' => $exclude));
+        }
+        
         return $this->selectWith($select);
     }
 

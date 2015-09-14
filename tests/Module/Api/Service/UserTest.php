@@ -329,7 +329,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['nationality']['id'] , null);
         $this->assertEquals($data['result']['nationality']['short_name'] , null);
         $this->assertEquals($data['result']['gender'] , "m");
-        $this->assertEquals($data['result']['contact_state'] , 0);
+        $this->assertEquals($data['result']['contact_state'] , 3);
         $this->assertEquals(count($data['result']['school']) , 4);
         $this->assertEquals($data['result']['school']['id'] , 1);
         $this->assertEquals($data['result']['school']['name'] , "Morbi Corporation");
