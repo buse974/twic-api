@@ -66,8 +66,6 @@ class Event extends AbstractService
         try {
             $client->doRequest($request);
         } catch (\Exception $e) {
-            /*syslog(1,json_encode($notification));
-            syslog(1,json_encode($users));*/
             syslog(1,$e->getMessage());
         }
     }
@@ -101,6 +99,21 @@ class Event extends AbstractService
             $event['object'] = json_decode($event['object']);
         }
         return ['list' => $ar_event,'count' => $mapper->count()];
+    }
+    
+    /**
+     * 
+     * @param unknown $id
+     * @return \Application\Model\Event
+     */
+    public function get($id)
+    {
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $m_event = $mapper->usePaginator($filter)->getList($user, null, $id)->current();
+        $m_event->setSource(json_decode($m_event->getSource()));
+        $m_event->setObject(json_decode($m_event->getObject()));
+        
+        return $m_event;
     }
     
     // event
@@ -372,9 +385,13 @@ class Event extends AbstractService
 
     public function getDataEvent($event)
     {
-        $m_event = $this->getL
+        $m_event = $this->get($event);
     
-        return ['id' => $feed,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
+        return [
+            'id' => $event,
+            'name' => 'event',
+            'data' => $m_event->toArray()
+        ];
     }
     
     

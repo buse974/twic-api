@@ -33,14 +33,14 @@ class Like extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $feed            
+     * @param integer $event            
      */
-    public function delete($feed)
+    public function delete($event)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
         $m_like = $this->getModel()
-            ->setFeedId($feed)
+            ->setEventId($event)
             ->setUserId($me);
         
         return $this->getMapper()->delete($m_like);

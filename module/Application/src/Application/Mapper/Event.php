@@ -7,7 +7,7 @@ use Zend\Db\Sql\Expression;
 
 class Event extends AbstractMapper
 {
-     public function getList($me, $events = null, $ids = null)
+     public function getList($me, $events = null, $id = null)
     {
         $select = $this->tableGateway->getSql()->select()
             ->columns(array("id", "source", "object", "event", 'event$date' => new Expression("DATE_FORMAT(date, '%Y-%m-%dT%TZ') ")))
@@ -18,8 +18,11 @@ class Event extends AbstractMapper
         if(null !== $events){
             $select->where(array('event.event' => $events));
         }
-        //exit($this->printSql($select));
-            
+        
+        if(null !== $ids){
+            $select->where(array('event.id' => $id));
+        }
+        
         return $this->selectWith($select);
     }
 }
