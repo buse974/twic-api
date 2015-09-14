@@ -86,29 +86,51 @@ class Thread extends AbstractService
         }
         
         foreach ($res_thread as $m_thread) {
-           $m_thread->setMessage($this->getServiceThreadMessage()->getLast($m_thread->getId()));
-           
-           $roles = [];
-           foreach ($this->getServiceRole()->getRoleByUser($m_thread->getUser()->getId()) as $role) {
-               $roles[] = $role->getName();
-           }
-           $m_thread->getUser()->setRoles($roles);
+            $m_thread->setMessage($this->getServiceThreadMessage()
+                ->getLast($m_thread->getId()));
+            
+            $roles = [];
+            foreach ($this->getServiceRole()->getRoleByUser($m_thread->getUser()
+                ->getId()) as $role) {
+                $roles[] = $role->getName();
+            }
+            $m_thread->getUser()->setRoles($roles);
         }
         
-        return array('count' => $mapper->count(), 'list' => $res_thread);
+        return array('count' => $mapper->count(),'list' => $res_thread);
     }
 
     /**
-     * 
-     * @param integer $thread
+     * @invokable
+     *
+     * @param integer $id            
+     * @throws \Exception
      * 
      * @return \Application\Model\Thread
      */
-    public function get($thread) 
+    public function get($id)
     {
-        return $this->getMapper()->getList(null, $thread)->current();
+        $mapper = $this->getMapper();
+        
+        $res_thread = $mapper->getList(null, $id);
+        
+        if ($res_thread->count() <= 0) {
+            throw new \Exception('not thread with course id: ' . $course);
+        }
+        
+        $m_thread = $res_thread->current();
+        $m_thread->setMessage($this->getServiceThreadMessage()
+            ->getLast($m_thread->getId()));
+        $roles = [];
+        foreach ($this->getServiceRole()->getRoleByUser($m_thread->getUser()
+            ->getId()) as $role) {
+            $roles[] = $role->getName();
+        }
+        $m_thread->getUser()->setRoles($roles);
+        
+        return $m_thread;
     }
-    
+
     /**
      * delete thread.
      *
@@ -141,7 +163,7 @@ class Thread extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
-    
+
     /**
      *
      * @return \Application\Service\Role
@@ -150,7 +172,7 @@ class Thread extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_role');
     }
-    
+
     /**
      *
      * @return \Application\Service\ThreadMessage
