@@ -46,16 +46,17 @@ class Event extends AbstractService
             'source' => $source,
             'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
             'object' => $object
-        ));
+        ), $target);
         return $event_id;
     }
 
-    public function sendRequest($users, $notification)
+    public function sendRequest($users, $notification, $target)
     {
         $request = new Request();
         $request->setMethod('notification.publish')->setParams(array(
             'notification' => $notification,
             'users' => $users,
+            'type' => $target
         ))
         ->setId(++self::$id)
         ->setVersion('2.0');
