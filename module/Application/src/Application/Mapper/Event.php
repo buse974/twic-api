@@ -12,14 +12,15 @@ class Event extends AbstractMapper
         $select = $this->tableGateway->getSql()->select()
             ->columns(array("id", "source", "object", "event", 'event$date' => new Expression("DATE_FORMAT(date, '%Y-%m-%dT%TZ') ")))
             ->join('event_user', 'event.id=event_user.event_id', array())
-            ->where(array('event_user.user_id' => $me))
+            
             ->order(array('event.id' => 'DESC'));
         
         if(null !== $events){
-            $select->where(array('event.event' => $events));
+            $select->where(array('event.event' => $events))
+            ->where(array('event_user.user_id' => $me));
         }
         
-        if(null !== $ids){
+        if(null !== $id){
             $select->where(array('event.id' => $id));
         }
         

@@ -109,7 +109,7 @@ class Event extends AbstractService
     public function get($id)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
-        $m_event = $mapper->usePaginator($filter)->getList($user, null, $id)->current();
+        $m_event = $this->getMapper()->getList($user, null, $id)->current();
         $m_event->setSource(json_decode($m_event->getSource()));
         $m_event->setObject(json_decode($m_event->getObject()));
         
