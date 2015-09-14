@@ -34,11 +34,10 @@ class Thread extends AbstractService
         }
         
         $id = $this->getMapper()->getLastInsertValue();
+        $this->getServiceEvent()->threadNew($id);
         if (null !== $message) {
             $id = $this->getServiceThreadMessage()->add($message, $id);
         }
-        
-        $this->getServiceEvent()->threadNew($id);
         
         return $id;
     }
