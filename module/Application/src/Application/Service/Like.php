@@ -9,14 +9,14 @@ class Like extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $feed            
+     * @param integer $event            
      */
-    public function add($feed)
+    public function add($event)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
         $m_like = $this->getModel()
-            ->setFeedId($feed)
+            ->setEventId($event)
             ->setUserId($me)
             ->setIsLike(true)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -25,10 +25,7 @@ class Like extends AbstractService
             throw new \Exception('error add like');
         }
         
-        $this->getServiceEvent()->userLike(
-            $feed,
-            $this->getServiceContact()->getListId()
-        );
+        $this->getServiceEvent()->userLike($event);
         
         return $this->getMapper()->getLastInsertValue();
     }
@@ -36,16 +33,16 @@ class Like extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $feed            
+     * @param integer $event            
      */
-    public function delete($feed)
+    public function delete($event)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
         $m_like = $this->getModel()
-            ->setFeedId($feed)
+            ->setEventId($event)
             ->setUserId($me);
-        
+                
         return $this->getMapper()->delete($m_like);
     }
 
@@ -76,7 +73,7 @@ class Like extends AbstractService
     {
         return $this->serviceLocator->get('app_service_feed');
     }
-    
+
     /**
      *
      * @return \Application\Service\Contact

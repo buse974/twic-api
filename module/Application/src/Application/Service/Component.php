@@ -8,9 +8,9 @@ class Component extends AbstractService
 
     public function getList($dimension = null)
     {
-        $m_component = $this->getModel()->setDimensionId($dimension);
-        
-        return $this->getMapper()->select($m_component);
+        return (null !== $dimension) ?
+        $this->getMapper()->select($this->getModel()->setDimensionId($dimension)) :
+        $this->getMapper()->fetchAll();
     }
 
     /**
