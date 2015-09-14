@@ -65,6 +65,8 @@ class Event extends AbstractService
         try {
             $client->doRequest($request);
         } catch (\Exception $e) {
+            syslog(1,json_encode($notification));
+            syslog(1,json_encode($users));
             syslog(1,$e->getMessage());
         }
     }
