@@ -686,6 +686,15 @@ INSERT INTO `permission` (`libelle`) VALUES ('component.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
+INSERT INTO `permission` (`libelle`) VALUES ('itemproguser.start');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('itemproguser.end');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('itemproguser.getStartedConference');
 INSERT INTO `permission` (`libelle`) VALUES ('event.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);

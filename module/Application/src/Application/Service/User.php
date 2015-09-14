@@ -149,10 +149,6 @@ class User extends AbstractService
             $school_id = $user['school_id'];
         } 
         
-        if ($school_id !== null) {
-            $this->getServiceContact()->addBySchool($school_id);
-        }
-        
         if (empty($password)) {
             $cars = "azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....";
             $long = strlen($cars);
@@ -167,6 +163,10 @@ class User extends AbstractService
         
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
+        }
+        
+        if ($school_id !== null) {
+            $this->getServiceContact()->addBySchool($school_id);
         }
         
         try {
@@ -329,33 +329,23 @@ class User extends AbstractService
         $m_user = $this->getModel();
         
         if ($id === null) {
-            $id = $this->getServiceAuth()
-                ->getIdentity()
-                ->getId();
+            $id = $this->getIdentity()['id'];
         }
         
         $m_user->setId($id)
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
-            ->setOrigin($origin['id'])
+            ->setOrigin($origin)
             ->setGender($gender)
-            ->setNationality($nationality['id'])
+            ->setNationality($nationality)
             ->setSis($sis)
             ->setBirthDate($birth_date)
             ->setPosition($position)
             ->setSchoolId($school_id)
             ->setInterest($interest)
             ->setAvatar($avatar);
-        
-        if (null !== $origin && isset($origin['id'])) {
-            $m_user->setOrigin($origin['id']);
-        }
-        
-        if (null !== $nationality && isset($nationality['id'])) {
-            $m_user->setNationality($nationality['id']);
-        }
-        
+
         if ($roles !== null) {
             foreach ($roles as $r) {
                 $this->getServiceUserRole()->deleteByUser($id);
