@@ -34,9 +34,8 @@ class ItemProgUser extends AbstractMapper
             ->join('item', 'item_prog.item_id=item.id', array('id','type'))
             ->join('questionnaire', 'questionnaire.item_id=item_prog.item_id', array('id','created_date'), $select::JOIN_LEFT)
             ->where(array('item_prog_user.user_id' => $user))
+            ->where(array('( item.type = "WG" OR item.type = "LC" ) '))
             ->where(array('item_prog_user.finished_date IS NULL'));
-        
-        //echo $this->printSql($select);
         
         return $this->selectWith($select);
     }
