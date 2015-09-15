@@ -94,8 +94,8 @@ class Event extends AbstractService
         $res_event = $mapper->usePaginator($filter)->getList($user, $events);
         $ar_event = $res_event->toArray();
         foreach($ar_event as &$event){
-            $event['source'] = json_decode($event['source']);
-            $event['object'] = json_decode($event['object']);
+            $event['source'] = json_decode($event['source'], true);
+            $event['object'] = json_decode($event['object'], true);
         }
         return ['list' => $ar_event,'count' => $mapper->count()];
     }
@@ -109,8 +109,8 @@ class Event extends AbstractService
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
         $m_event = $this->getMapper()->getList($user, null, $id)->current();
-        $m_event->setSource(json_decode($m_event->getSource()));
-        $m_event->setObject(json_decode($m_event->getObject()));
+        $m_event->setSource(json_decode($m_event->getSource(), true));
+        $m_event->setObject(json_decode($m_event->getObject(), true));
         
         return $m_event;
     }
@@ -393,7 +393,7 @@ class Event extends AbstractService
     public function getDataEvent($event)
     {
         $m_event = $this->get($event);
-    
+
         return [
             'id' => $event,
             'name' => 'event',
