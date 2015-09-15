@@ -28,7 +28,10 @@ class ItemProg extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
     
-        $select->columns(array('id','item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+        $select->columns(array('id',
+            'item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),
+            'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")
+        ))
             ->join('item', 'item.id=item_prog.item_id', array('id','title','type'))
             ->where(array('item_prog.id' => $id));
         
