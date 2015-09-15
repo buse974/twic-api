@@ -128,11 +128,12 @@ class Event extends AbstractService
 
     public function userAddConnection($user, $contact)
     {
+        $users = array_unique(array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)));
         return $this->create(
             'user.addconnection', 
             $this->getDataUser($user), 
             $this->getDataUser($contact), 
-            $this->getDataUserContact($user), 
+            $users, 
             self::TARGET_TYPE_USER
         );
     }
