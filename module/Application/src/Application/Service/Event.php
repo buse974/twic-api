@@ -286,11 +286,24 @@ class Event extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         
-        return ['id' => $m_item_prog->getId(),'name' => 'programmation','data' => ['start_date' => $m_item_prog->getStartDate(),'due_date' => $m_item_prog->getDueDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType(),'duration' => $m_item_prog->getItem()->getDuration(),'course' => ['id' => $m_item_prog->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_prog->getItem()
-            ->getCourse()
-            ->getId()]]]];
+        return [
+            'id' => $m_item_prog->getId(),
+            'name' => 'programmation',
+            'data' => [
+                'start_date' => $m_item_prog->getStartDate(),
+                'due_date' => $m_item_prog->getDueDate(),
+                'item' => [
+                    'id' => $m_item_prog->getItem()->getId(),
+                    'title' => $m_item_prog->getItem()->getTitle(),
+                    'type' => $m_item_prog->getItem()->getType(),
+                    'duration' => $m_item_prog->getItem()->getDuration(),
+                    'course' => [
+                        'id' => $m_item_prog->getItem()->getCourse()->getId(),
+                        'title' => $m_item_prog->getItem()->getCourse()>getId()
+                    ],
+                ],
+            ],
+        ];
     }
 
     public function getDataCourseAddMaterial($course, $material)
