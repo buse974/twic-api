@@ -56,8 +56,7 @@ class Contact extends AbstractService
         
         if($ret > 0) {
             $this->getServiceEvent()->userAddConnection($user, $identity['id']);
-            $this->getServiceEvent()->userAddConnection($identity['id'], $user);
-        } 
+        }
         
         return $ret;
     }
