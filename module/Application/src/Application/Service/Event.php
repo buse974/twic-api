@@ -368,7 +368,7 @@ class Event extends AbstractService
         $m_thread = $this->getServiceThread()->get($m_thread_message->getThread()
             ->getId());
         
-        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)]];
+        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)["data"]]];
     }
 
     public function getDataThread(\Application\Model\Thread $m_thread)
