@@ -299,7 +299,7 @@ class Event extends AbstractService
                     'duration' => $m_item_prog->getItem()->getDuration(),
                     'course' => [
                         'id' => $m_item_prog->getItem()->getCourse()->getId(),
-                        'title' => $m_item_prog->getItem()->getCourse()>getId()
+                        'title' => $m_item_prog->getItem()->getCourse()->getTitle()
                     ],
                 ],
             ],
