@@ -38,7 +38,6 @@ class Event extends AbstractService
         }
         
         $event_id = $this->getMapper()->getLastInsertValue();
-        
         $this->getServiceEventUser()->add($user, $event_id);
         
         $this->sendRequest($user, array(
@@ -129,11 +128,12 @@ class Event extends AbstractService
 
     public function userAddConnection($user, $contact)
     {
+        $users = array_unique(array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)));
         return $this->create(
             'user.addconnection', 
             $this->getDataUser($user), 
             $this->getDataUser($contact), 
-            $this->getDataUserContact($user), 
+            $users, 
             self::TARGET_TYPE_USER
         );
     }
@@ -336,7 +336,14 @@ class Event extends AbstractService
 
     public function getDataUserContact($user = null)
     {
-        return $this->getServiceContact()->getListId($user);
+        $ret = $this->getServiceContact()->getListId($user);
+        
+        if(null === $user) {
+            $user = $this->getServiceUser()->getIdentity()['id'];
+        }
+        $ret[] = $user;
+        
+        return $ret;
     }
 
     public function getDataUserByCourse($course)
