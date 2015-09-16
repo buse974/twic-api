@@ -40,6 +40,7 @@ class Permission extends AbstractService
         }
         
         $this->getServiceRbac()->createRbac();
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
