@@ -33,9 +33,13 @@ class RolePermission extends AbstractService
         $p_role = $this->getModel();
         $p_role->setRoleId($role_id)->setPermissionId($permission_id);
         
-        $this->getServiceRbac()->createRbac();
+        $ret = $this->getMapper()->insert($p_role);
         
-        return $this->getMapper()->insert($p_role);
+        if ($ret > 0) {
+            $this->getServiceRbac()->createRbac();
+        }
+        
+        return $ret;
     }
 
     /**
