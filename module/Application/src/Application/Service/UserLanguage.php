@@ -28,12 +28,11 @@ class UserLanguage extends AbstractService
     /**
      * @invokable
      */
-    public function update($id, $language_level, $language)
+    public function update($id, $language_level)
     {
         $m_user_language = $this->getModel()
             ->setId($id)
-            ->setLanguageLevelId($language_level)
-            ->setLanguageId($language);
+            ->setLanguageLevelId($language_level);
         
         return $this->getMapper()->update($m_user_language);
     }
