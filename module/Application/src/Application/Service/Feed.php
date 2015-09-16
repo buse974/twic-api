@@ -156,17 +156,20 @@ class Feed extends AbstractService
      * 
      * @param string $filter
      * @param string $ids
+     * @param integer $user
      */
-    public function getList($filter = null, $ids = null)
+    public function getList($filter = null, $ids = null, $user = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $res_contact = $this->getServiceContact()->getList();
         
-        $user = [$me];
-        foreach ($res_contact as $m_contact) {
-            $user[] = $m_contact->getContact()['id'];
+        if(null===$user) {
+            $user = [$me];
+            foreach ($res_contact as $m_contact) {
+                $user[] = $m_contact->getContact()['id'];
+            }
+            $mapper = $this->getMapper();
         }
-        $mapper = $this->getMapper();
         //$mapper = $mapper->usePaginator($filter);
         
         return $mapper->getList($user,$me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
