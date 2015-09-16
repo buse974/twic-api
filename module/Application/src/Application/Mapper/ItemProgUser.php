@@ -7,7 +7,6 @@ use Zend\Db\Sql\Predicate\Expression;
 
 class ItemProgUser extends AbstractMapper
 {
-
     public function insertStudent($u, $ip)
     {
         $sql = "INSERT INTO `item_prog_user` (`user_id`, `item_prog_id`) 
@@ -35,7 +34,8 @@ class ItemProgUser extends AbstractMapper
             ->join('questionnaire', 'questionnaire.item_id=item_prog.item_id', array('id','created_date'), $select::JOIN_LEFT)
             ->where(array('item_prog_user.user_id' => $user))
             ->where(array('( item.type = "WG" OR item.type = "LC" ) '))
-            ->where(array('item_prog_user.finished_date IS NULL'));
+            ->where(array('item_prog_user.finished_date IS NULL'))
+            ->where(array('item_prog_user.started_date IS NOT NULL'));
         
         return $this->selectWith($select);
     }
