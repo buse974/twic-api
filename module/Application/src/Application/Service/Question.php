@@ -19,10 +19,7 @@ class Question extends AbstractService
             ->current();
     }
 
-    public function getList($questionnaire)
-    {
-        return $this->getMapper()->getList($questionnaire);
-    }
+
 
     /**
      * @invokable
@@ -75,6 +72,15 @@ class Question extends AbstractService
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         return $this->getMapper()->update($m_component);
+    }
+    
+    /**
+     * @invokable
+     *
+     */
+    public function getList($questionnaire = null)
+    {
+        return $this->getMapper()->getList($questionnaire);
     }
 }
 
