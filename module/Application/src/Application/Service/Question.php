@@ -20,4 +20,34 @@ class Question extends AbstractService
     {
         return $this->getMapper()->getList($questionnaire);
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param string $text
+     * @param string $component
+     * 
+     */
+    public function add($text, $component)
+    {
+        $m_component = $this->getModel()->setText($text)->setComponentId($component);
+        
+        return $this->getMapper()->select($m_component);
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param string $id
+     * @param string $text
+     * @param string $component
+     *
+     */
+    public function delete($id, $text, $component)
+    {
+        $m_component = $this->getModel()->setId($id)->setText($text)->setComponentId($component);
+    
+        return $this->getMapper()->update($m_component);
+    }
 }
+
