@@ -11,6 +11,7 @@ class ComponentScale extends AbstractModel
 	protected $min;
 	protected $max;
 	protected $describe;
+	protected $recommandation;
 
 	protected $prefix = 'component_scale';
 
@@ -70,6 +71,18 @@ class ComponentScale extends AbstractModel
 	public function setDescribe($describe)
 	{
 		$this->describe = $describe;
+
+		return $this;
+	}
+
+	public function getRecommandation()
+	{
+		return $this->recommandation;
+	}
+
+	public function setRecommandation($recommandation)
+	{
+		$this->recommandation = $recommandation;
 
 		return $this;
 	}

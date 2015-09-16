@@ -1,38 +1,41 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class UserLanguage extends AbstractService
 {
+
     /**
      * @invokable
      */
     public function add($language, $language_level)
     {
         $m_user_language = $this->getModel();
-        $m_user_language->setUserId($this->getServiceAuth()->getIdentity()->getId())
-                        ->setLanguageId($language)
-                        ->setLanguageLevelId($language_level);
-
+        $m_user_language->setUserId($this->getServiceAuth()
+            ->getIdentity()
+            ->getId())
+            ->setLanguageId($language)
+            ->setLanguageLevelId($language_level);
+        
         if ($this->getMapper()->insert($m_user_language) <= 0) {
             throw new \Exception('Error insert');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
-
 
     /**
      * @invokable
      */
-    public function update($id, $language_level)
+    public function update($id, $language_level, $language)
     {
-        $m_user_language = $this->getModel();
-        $m_user_language->setLanguageLevelId($language_level);
-
-        return $this->getMapper()->update($m_user_language, array('id' => $id));
+        $m_user_language = $this->getModel()
+            ->setId($id)
+            ->setLanguageLevelId($language_level)
+            ->setLanguageId($language);
+        
+        return $this->getMapper()->update($m_user_language);
     }
 
     /**
@@ -42,7 +45,7 @@ class UserLanguage extends AbstractService
     {
         $m_user_langage = $this->getModel();
         $m_user_langage->setUserId($user);
-
+        
         $languages = $this->getMapper()->select($m_user_langage);
         foreach ($languages as $language) {
             $m_language = $this->getServiceLanguage()->getModel();
@@ -52,28 +55,30 @@ class UserLanguage extends AbstractService
             $language->setLanguage($this->getServiceLanguage()
                 ->getMapper()
                 ->select($m_language)
-                ->current()
-            );
+                ->current());
             $language->setLevel($this->getServiceLanguageLevel()
                 ->getMapper()
                 ->select($m_level)
-                ->current()
-            );
+                ->current());
         }
-
+        
         return $languages;
     }
 
     /**
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @return int
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()->setId($id)->setUserId($this->getServiceAuth()->getIdentity()->getId()));
+        return $this->getMapper()->delete($this->getModel()
+            ->setId($id)
+            ->setUserId($this->getServiceAuth()
+            ->getIdentity()
+            ->getId()));
     }
 
     public function getServiceLanguage()
@@ -87,6 +92,7 @@ class UserLanguage extends AbstractService
     }
 
     /**
+     *
      * @return \Auth\Service\AuthService
      */
     public function getServiceAuth()
