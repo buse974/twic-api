@@ -13,7 +13,6 @@ class Dimension extends BaseDimension
         parent::exchangeArray($data);
     
         $this->component = new Component($this);
-    
         $this->component->exchangeArray($data);
     }
     
