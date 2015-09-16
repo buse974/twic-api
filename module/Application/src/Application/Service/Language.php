@@ -6,6 +6,13 @@ use Dal\Service\AbstractService;
 
 class Language extends AbstractService
 {
+    /**
+     * @invokable
+     */
+    public function getList() {
+        return $this->getMapper()->fetchAll();
+    }
+
     public function add($array)
     {
         if (!is_array($array)) {
