@@ -7,6 +7,7 @@ use Dal\Model\AbstractModel;
 class Event extends AbstractModel
 {
  	protected $id;
+	protected $user_id;
 	protected $source;
 	protected $date;
 	protected $event;
@@ -23,6 +24,18 @@ class Event extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
+
+		return $this;
+	}
+
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
+
+	public function setUserId($user_id)
+	{
+		$this->user_id = $user_id;
 
 		return $this;
 	}
