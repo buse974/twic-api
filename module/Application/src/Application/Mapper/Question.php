@@ -18,12 +18,16 @@ class Question extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($questionnaire)
+    public function getList($questionnaire = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','text'))
-            ->join('questionnaire_question', 'questionnaire_question.question_id=question.id')
+        $select->columns(array('id','text'));
+            
+            
+        if(null !== $questionnaire) {
+            $select->join('questionnaire_question', 'questionnaire_question.question_id=question.id')
             ->where(array('questionnaire_question.questionnaire_id' => $questionnaire));
+        }
         
         return $this->selectWith($select);
     }
