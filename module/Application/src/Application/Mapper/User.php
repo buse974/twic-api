@@ -70,7 +70,7 @@ class User extends AbstractMapper
 
         if(null !== $event) {
             $select->join('like', 'like.user_id=user.id', array())
-                   ->where(array('like.event_id' => $feed));
+                   ->where(array('like.event_id' => $event));
         }
         
         if ($user_school && $schools===true) {
