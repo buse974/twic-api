@@ -384,8 +384,8 @@ DROP TABLE IF EXISTS `resume` ;
 
 CREATE TABLE IF NOT EXISTS `resume` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `start_date` DATE NULL DEFAULT NULL,
-  `end_date` DATE NULL,
+  `start_date` INT NULL DEFAULT NULL,
+  `end_date` INT NULL,
   `address` VARCHAR(255) NULL DEFAULT NULL,
   `title` VARCHAR(255) NULL DEFAULT NULL,
   `subtitle` VARCHAR(255) NULL,
