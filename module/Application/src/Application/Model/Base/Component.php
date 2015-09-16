@@ -10,6 +10,7 @@ class Component extends AbstractModel
 	protected $name;
 	protected $dimension_id;
 	protected $describe;
+	protected $deleted_date;
 
 	protected $prefix = 'component';
 
@@ -57,6 +58,18 @@ class Component extends AbstractModel
 	public function setDescribe($describe)
 	{
 		$this->describe = $describe;
+
+		return $this;
+	}
+
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
+
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
 		return $this;
 	}

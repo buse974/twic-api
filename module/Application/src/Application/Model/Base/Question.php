@@ -10,6 +10,7 @@ class Question extends AbstractModel
 	protected $text;
 	protected $component_id;
 	protected $created_date;
+	protected $deleted_date;
 
 	protected $prefix = 'question';
 
@@ -57,6 +58,18 @@ class Question extends AbstractModel
 	public function setCreatedDate($created_date)
 	{
 		$this->created_date = $created_date;
+
+		return $this;
+	}
+
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
+
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
 		return $this;
 	}
