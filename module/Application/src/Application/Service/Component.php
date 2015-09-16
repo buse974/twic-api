@@ -8,9 +8,9 @@ class Component extends AbstractService
 
     public function getList($dimension = null)
     {
-        return (null !== $dimension) ?
-        $this->getMapper()->select($this->getModel()->setDimensionId($dimension)) :
-        $this->getMapper()->fetchAll();
+        return ((is_numeric($dimension)) ?
+        $this->getMapper()->select($this->getModel()->setDimensionId($dimension)->setComponentScales(null)) :
+        $this->getMapper()->fetchAll());
     }
 
     /**
@@ -27,6 +27,9 @@ class Component extends AbstractService
         return $components;
     }
 
+    /**
+     * @return \Application\Service\ComponentScale
+     */
     public function getServiceComponentScale()
     {
         return $this->getServiceLocator()->get('app_service_component_scale');
