@@ -41,6 +41,7 @@ class Event extends AbstractService
         $this->getServiceEventUser()->add($user, $event_id);
         
         $this->sendRequest($user, array(
+            'id' => $event_id,
             'event' => $event,
             'source' => $source,
             'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
