@@ -11,6 +11,7 @@ class User extends BaseUser
     protected $available;
     protected $selected;
     protected $contact_state;
+    protected $contacts_count;
     protected $gender;
     protected $nationality;
     protected $origin;
@@ -71,6 +72,18 @@ class User extends BaseUser
     {
         $this->contact_state = $contact_state;
     
+        return $this;
+    }
+
+    public function getContactsCount()
+    {
+        return $this->contacts_count;
+    }
+
+    public function setContactsCount($contacts_count)
+    {
+        $this->contacts_count = $contacts_count;
+
         return $this;
     }
     
