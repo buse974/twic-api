@@ -86,14 +86,14 @@ class Event extends AbstractService
     /**
      * @invokable
      */
-    public function getList($filter = null, $events = null, $user = null, $source = null)
+    public function getList($filter = null, $events = null, $user = null, $source = null, $id = null)
     {
         $mapper = $this->getMapper();
         if(null === $user){
             $user = $this->getServiceUser()->getIdentity()['id'];            
         }
       
-        $res_event = $mapper->usePaginator($filter)->getList($user, $events, null, $source);
+        $res_event = $mapper->usePaginator($filter)->getList($user, $events, $id, $source);
         $ar_event = $res_event->toArray();
         foreach($ar_event as &$event){
             $event['source'] = json_decode($event['source'], true);
@@ -394,7 +394,7 @@ class Event extends AbstractService
         $m_thread = $this->getServiceThread()->get($m_thread_message->getThread()
             ->getId());
         
-        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)]];
+        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)["data"]]];
     }
 
     public function getDataThread(\Application\Model\Thread $m_thread)
