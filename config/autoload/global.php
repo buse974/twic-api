@@ -90,6 +90,8 @@ return array(
             'app_service_component',
             'app_service_country',
             'app_service_user_language',
+            'app_service_language',
+            'app_service_language_level',
             'app_service_event',
             'app_service_dimension',
             'app_service_question',
