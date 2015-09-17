@@ -28,7 +28,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $feed = null,$user_school = null, $type = null, 
+    public function getList($filter = null, $school = null, $event = null,$user_school = null, $type = null, 
         $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, 
         $schools = true, $order = null, array $exclude = null, $message = null)
     {
@@ -68,9 +68,9 @@ class User extends AbstractMapper
             $select->where(array('uu.id' => $user_school));
         }
 
-        if(null !== $feed) {
+        if(null !== $event) {
             $select->join('like', 'like.user_id=user.id', array())
-                   ->where(array('like.feed_id' => $feed));
+                   ->where(array('like.event_id' => $event));
         }
         
         if ($user_school && $schools===true) {

@@ -163,7 +163,7 @@ class Item extends AbstractMapper
             ->join('item_prog', 'item_prog.item_id=item.id', array())
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
-            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array(), $select::JOIN_LEFT)
+            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id'), $select::JOIN_LEFT)
             ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade','created_date'))
             ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
             ->where(array('item.course_id' => $course))

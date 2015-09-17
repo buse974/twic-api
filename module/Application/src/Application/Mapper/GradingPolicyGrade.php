@@ -20,6 +20,12 @@ class GradingPolicyGrade extends AbstractMapper
         ->join('user_role', 'user.id = user_role.user_id', array())
         ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID));
 
+        if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles']) ) {
+            $selectProgram
+            ->join(array('course_instructor_relation'=>'course_user_relation'), 'course.id = course_instructor_relation.course_id', array())
+            ->where(array('course_instructor_relation.user_id' => $user['id']));
+        }
+        
         $select->columns(array(
                 'grading_policy_grade$user' => 'user_id',
                 'grading_policy_grade$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade) / SUM(grading_policy.grade) AS DECIMAL )'),
@@ -80,7 +86,7 @@ class GradingPolicyGrade extends AbstractMapper
         if (in_array(\Application\Model\Role::ROLE_STUDENT_STR, $user['roles'])) {
             $sel->where(array('user$id' => $user['id']));
         }
-
+        
         return $this->selectBridge($sel);
     }
 
