@@ -152,8 +152,8 @@ class User extends AbstractMapper
         
         if (!empty($search)) {
             $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'));
-            $select->where(array('user.firstname LIKE ? ' => ''.$search.'%'), Predicate::OP_OR);
-            $select->where(array('user.lastname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
+            $select->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR);
+            $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
 
         $select->where('user.deleted_date IS NULL')->order(array('user.id' => 'DESC'));
