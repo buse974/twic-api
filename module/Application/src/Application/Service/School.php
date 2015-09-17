@@ -53,24 +53,32 @@ class School extends AbstractService
         return $this->get($school_id);
     }
 
+
     /**
      * Update school.
      *
      * @invokable
      *
-     * @param int    $id
+     * @param integer $id
      * @param string $name
      * @param string $logo
-     *
-     * @return int
+     * @param string $describe
+     * @param string $website
+     * @param string $short_name
+     * @param string $phone
+     * @return integer
      */
-    public function update($id, $name, $logo)
+    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null)
     {
         $m_school = $this->getModel();
 
         $m_school->setId($id)
                  ->setName($name)
-                 ->setLogo($logo);
+                 ->setLogo($logo)
+                 ->setDescribe($describe)
+                 ->setWebsite($website)
+                 ->setShortName($short_name)
+                 ->setPhone($phone);
 
         return $this->getMapper()->update($m_school);
     }
