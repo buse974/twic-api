@@ -347,6 +347,7 @@ class User extends AbstractService
             ->setAvatar($avatar);
 
         if ($roles !== null) {
+            if(!is_array($roles)) {$roles = [$roles];}
             foreach ($roles as $r) {
                 $this->getServiceUserRole()->deleteByUser($id);
                 $this->getServiceUserRole()->add($this->getServiceRole()
