@@ -163,13 +163,15 @@ class Feed extends AbstractService
         $me = $this->getServiceUser()->getIdentity()['id'];
         $res_contact = $this->getServiceContact()->getList();
         
+        $mapper = $this->getMapper();
+        
         if(null===$user) {
             $user = [$me];
             foreach ($res_contact as $m_contact) {
                 $user[] = $m_contact->getContact()['id'];
             }
-            $mapper = $this->getMapper();
         }
+        
         //$mapper = $mapper->usePaginator($filter);
         
         return $mapper->getList($user,$me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
