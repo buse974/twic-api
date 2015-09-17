@@ -13,11 +13,8 @@ class ItemProgUser extends BaseItemProgUser
     {
         parent::exchangeArray($data);
     
-        $this->item_prog = new ItemProg($this);
-        $this->questionnaire = new Questionnaire($this);
-    
-        $this->item_prog->exchangeArray($data);
-        $this->questionnaire->exchangeArray($data);
+        $this->item_prog = $this->requireModel('app_model_item_prog', $data);
+        $this->questionnaire = $this->requireModel('app_model_questionnaire', $data);
     }
     
     public function getQuestionnaire()

@@ -33,6 +33,7 @@ class ItemProg extends AbstractMapper
             'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")
         ))
             ->join('item', 'item.id=item_prog.item_id', array('id','title','type'))
+            ->join('course', 'course.id=item.course_id', array('id','title'))
             ->where(array('item_prog.id' => $id));
         
         return $this->selectWith($select);

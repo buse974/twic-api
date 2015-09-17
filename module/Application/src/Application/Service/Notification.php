@@ -5,5 +5,4 @@ use Dal\Service\AbstractService;
 
 class Notification extends AbstractService
 {
-    
 }

@@ -437,6 +437,8 @@ class User extends AbstractService
         }
         
         $res_user = $this->getMapper()->get($id, $me);
+        
+        
         if ($res_user->count() <= 0) {
             throw new \Exception('error get user:' . $id);
         }

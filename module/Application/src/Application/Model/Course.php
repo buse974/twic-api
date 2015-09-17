@@ -24,20 +24,12 @@ class Course extends BaseCourse
     {
         parent::exchangeArray($data);
 
-        $this->grading_policy = new GradingPolicy($this);
-        $this->grading = new Grading($this);
-        $this->creator = new User($this);
-        $this->module = new Module($this);
-        $this->school = new School($this);
-        $this->program = new Program($this);
-
-        $this->program->exchangeArray($data);
-        $this->module->exchangeArray($data);
-        $this->grading_policy->exchangeArray($data);
-        $this->grading->exchangeArray($data);
-        $this->creator->exchangeArray($data);
-        $this->school->exchangeArray($data);
-        
+        $this->grading_policy   = $this->requireModel('app_model_grading_policy', $data);
+        $this->grading          = $this->requireModel('app_model_grading', $data);
+        $this->creator          = $this->requireModel('app_model_user', $data);
+        $this->module           = $this->requireModel('app_model_module', $data);
+        $this->school           = $this->requireModel('app_model_school', $data);
+        $this->program          = $this->requireModel('app_model_program', $data);
     }
 
     public function getProgram()

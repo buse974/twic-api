@@ -3,7 +3,6 @@
 namespace Application\Model;
 
 use Application\Model\Base\User as BaseUser;
-use Address\Model\Country;
 
 class User extends BaseUser
 {
@@ -24,13 +23,9 @@ class User extends BaseUser
 
         parent::exchangeArray($data);
 
-        $this->school = new School($this);
-        $this->nationality = new Country($this, 'nationality');
-        $this->origin = new Country($this, 'origin');
-        
-        $this->school->exchangeArray($data);
-        $this->nationality->exchangeArray($data);
-        $this->origin->exchangeArray($data);
+        $this->school       = $this->requireModel('app_model_school', $data);
+        $this->nationality  = $this->requireModel('addr_model_country', $data, 'nationality');
+        $this->origin       = $this->requireModel('addr_model_country', $data, 'origin');
     }
     
     public function getOrigin()

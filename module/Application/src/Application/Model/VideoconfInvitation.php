@@ -12,8 +12,7 @@ class VideoconfInvitation extends BaseVideoconfInvitation
     {
         parent::exchangeArray($data);
 
-        $this->videoconf_entity = new VideoconfEntity($this);
-        $this->videoconf_entity->exchangeArray($data);
+        $this->videoconf_entity = $this->requireModel('app_model_videoconf_entity', $data);
     }
 
     public function setVideoconfEntity($videoconf_entity)

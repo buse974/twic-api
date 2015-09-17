@@ -12,9 +12,7 @@ class Contact extends BaseContact
     {
         parent::exchangeArray($data);
 
-        $this->contact = new User($this);
-
-        $this->contact->exchangeArray($data);
+        $this->contact = $this->requireModel('app_model_user', $data);
     }
 
     public function getContact()

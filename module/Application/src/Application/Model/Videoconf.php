@@ -30,13 +30,9 @@ class Videoconf extends BaseVideoconf
     {
         parent::exchangeArray($data);
 
-        $this->videoconf_invitation = new VideoconfInvitation($this); 
-        $this->videoconf_admin = new VideoconfAdmin($this);
-        $this->videoconf_entity = new VideoconfEntity($this);
-        
-        $this->videoconf_invitation->exchangeArray($data);
-        $this->videoconf_entity->exchangeArray($data);
-        $this->videoconf_admin->exchangeArray($data);
+        $this->videoconf_invitation = $this->requireModel('app_model_videoconf_invitation', $data);
+        $this->videoconf_admin = $this->requireModel('app_model_videoconf_admin', $data);
+        $this->videoconf_entity = $this->requireModel('app_model_videoconf_entity', $data);
     }
 
     public function getItemAssignmentId()

@@ -503,7 +503,21 @@ class Event extends AbstractService
         }
         
         $m_user = $this->getServiceUser()->get($id);
-        return ['id' => $id,'name' => 'user','data' => ['firstname' => $m_user['firstname'],'lastname' => $m_user['lastname'],'avatar' => $m_user['avatar'],'school' => ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' => $m_user['school']['logo']],'user_roles' => $m_user['roles']]];
+        return [
+            'id' => $id,
+            'name' => 'user',
+            'data' => [
+                'firstname' => $m_user['firstname'],
+                'lastname' => $m_user['lastname'],
+                'avatar' => $m_user['avatar'],
+                'school' => [
+                    'id' => $m_user['school']['id'],
+                    'short_name' => $m_user['school']['short_name'],
+                    'logo' => $m_user['school']['logo']
+                ],
+                'user_roles' => $m_user['roles']
+            ],
+        ];
     }
 
     /**

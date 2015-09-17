@@ -15,11 +15,9 @@ class Thread extends BaseThread
     {
         parent::exchangeArray($data);
     
-        $this->user = new User($this);
-        $this->course = new Course($this);
         
-        $this->course->exchangeArray($data);
-        $this->user->exchangeArray($data);
+        $this->user = $this->requireModel('app_model_user', $data);
+        $this->course = $this->requireModel('app_model_course', $data);
     }
     
     public function getCourse() 

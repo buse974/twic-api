@@ -13,11 +13,8 @@ class MessageUser extends BaseMessageUser
     {
         parent::exchangeArray($data);
 
-        $this->message = new Message($this);
-        $this->user = new User($this, 'from');
-
-        $this->user->exchangeArray($data);
-        $this->message->exchangeArray($data);
+        $this->message = $this->requireModel('app_model_message', $data);
+        $this->user = $this->requireModel('app_model_user', $data, 'from');
     }
 
     public function getMessage()
