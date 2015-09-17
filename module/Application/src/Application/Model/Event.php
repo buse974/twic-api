@@ -8,6 +8,7 @@ class Event extends BaseEvent
 {
     protected $nb_like;
     protected $is_like;
+    protected $read_date;
     
     public function getIsLike() 
     {
@@ -29,6 +30,18 @@ class Event extends BaseEvent
     public function setNbLike($nb_like) 
     {
         $this->nb_like = $nb_like;
+        
+        return $this;
+    }
+
+    public function getReadDate() 
+    {
+        return $this->read_date;
+    }
+
+    public function setReadDate($read_date) 
+    {
+        $this->read_date = $read_date;
         
         return $this;
     }
