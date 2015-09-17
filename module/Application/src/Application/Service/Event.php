@@ -23,10 +23,11 @@ class Event extends AbstractService
      * @throws \Exception
      * @return integer
      */
-    public function create($event, $source, $object, $user, $target)
+    public function create($event, $source, $object, $user, $target, $src = null)
     {
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $m_event = $this->getModel()
+            ->setUserId($src)
             ->setEvent($event)
             ->setSource(json_encode($source))
             ->setObject(json_encode($object))
@@ -85,14 +86,14 @@ class Event extends AbstractService
     /**
      * @invokable
      */
-    public function getList($filter = null, $events = null, $user = null)
+    public function getList($filter = null, $events = null, $user = null, $source = null)
     {
         $mapper = $this->getMapper();
         if(null === $user){
             $user = $this->getServiceUser()->getIdentity()['id'];            
         }
       
-        $res_event = $mapper->usePaginator($filter)->getList($user, $events);
+        $res_event = $mapper->usePaginator($filter)->getList($user, $events, null, $source);
         $ar_event = $res_event->toArray();
         foreach($ar_event as &$event){
             $event['source'] = json_decode($event['source'], true);
@@ -119,12 +120,12 @@ class Event extends AbstractService
     // event
     public function userPublication($feed)
     {
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserContact(), self::TARGET_TYPE_USER);
+        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function userLike($event)
     {
-        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event), $this->getDataUserContact(), self::TARGET_TYPE_USER);
+        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function userAddConnection($user, $contact)
@@ -153,7 +154,7 @@ class Event extends AbstractService
             $users[] = $m_user->getId();
         }
         
-        return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER);
+        return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function assignmentGraded($item_assignment)
@@ -166,7 +167,7 @@ class Event extends AbstractService
             $users[] = $m_user->getId();
         }
         
-        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER);
+        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function assignmentCommented($item_assignment, $item_assignment_comment)
@@ -180,17 +181,16 @@ class Event extends AbstractService
             $users[] = $m_user->getId();
         }
         
-        return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), $users, self::TARGET_TYPE_USER);
+        return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function threadNew($thread)
     {
         $m_thread = $this->getServiceThread()->get($thread);
         
-        $users = $this->getDataUserByCourse($m_thread->getCourse()
-            ->getId());
+        $users = $this->getDataUserByCourse($m_thread->getCourse()->getId());
         
-        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $users, self::TARGET_TYPE_USER);
+        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function threadMessage($thread_message)
@@ -200,7 +200,7 @@ class Event extends AbstractService
         $users = $this->getDataUserByCourse($m_thread_message->getThread()
             ->getCourseId());
         
-        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $users, self::TARGET_TYPE_USER);
+        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function recordAvailable($item_prog, $videoconf_archive)
@@ -221,37 +221,42 @@ class Event extends AbstractService
 
     public function courseUpdated($course, $dataupdated)
     {
-        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER);
+        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+    }
+    
+    public function courseParticipation($course, $dataupdated)
+    {
+        return $this->create('course.participation', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function courseMaterialAdded($course, $material)
     {
-        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER);
+        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function programmationNew($item_prog)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getDataUserByItemProg($item_prog), self::TARGET_TYPE_USER);
+        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getDataUserByItemProg($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function programmationUpdated($item_prog)
     {
-        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getDataUserByItemProg($item_prog), self::TARGET_TYPE_USER);
+        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getDataUserByItemProg($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function profileUpdated($user, $dataprofile)
     {
-        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user, $dataprofile), $this->getDataUserContact(), self::TARGET_TYPE_USER);
+        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user, $dataprofile), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function profileNewresume($resume)
     {
-        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $this->getDataUserContact(), self::TARGET_TYPE_USER);
+        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function userRequestconnection($user)
     {
-        return $this->create('user.requestconnection', $this->getDataUser(), $this->getDataUser($user), [$user], self::TARGET_TYPE_USER);
+        return $this->create('user.requestconnection', $this->getDataUser(), $this->getDataUser($user), [$user], self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function schoolNew($school)
