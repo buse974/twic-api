@@ -93,6 +93,7 @@ return array(
             'app_service_language',
             'app_service_language_level',
             'app_service_event',
+            'app_service_event_user',
             'app_service_dimension',
             'app_service_question',
         ),
