@@ -14,11 +14,8 @@ class School extends BaseSchool
     {
         parent::exchangeArray($data);
 
-        $this->address = new Address($this);
-        $this->contact_user = new User($this);
-
-        $this->contact_user->exchangeArray($data);
-        $this->address->exchangeArray($data);
+        $this->address = $this->requireModel('addr_model_address', $data);
+        $this->contact_user = $this->requireModel('app_model_user', $data);
     }
 
     public function setAddress($address)

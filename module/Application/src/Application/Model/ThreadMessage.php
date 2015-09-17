@@ -9,18 +9,12 @@ class ThreadMessage extends BaseThreadMessage
     protected $user;
     protected $thread;
 
-  
-    
-
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
-        $this->user = new User($this);
-        $this->thread = new Thread($this);
-        
-        $this->thread->exchangeArray($data);
-        $this->user->exchangeArray($data);
+        $this->user = $this->requireModel('app_model_user', $data);
+        $this->thread = $this->requireModel('app_model_thread', $data);
     }
 
     public function getThread()

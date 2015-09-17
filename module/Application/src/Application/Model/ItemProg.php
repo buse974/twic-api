@@ -22,13 +22,9 @@ class ItemProg extends BaseItemProg
 
         parent::exchangeArray($data);
 
-        $this->item = new Item($this);
-        $this->item_assignment = new ItemAssignment($this);
-        $this->item_grade = new ItemGrading($this);
-
-        $this->item->exchangeArray($data);
-        $this->item_assignment->exchangeArray($data);
-        $this->item_grade->exchangeArray($data);
+        $this->item = $this->requireModel('app_model_item', $data);
+        $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
+        $this->item_grade = $this->requireModel('app_model_item_grading', $data);
     }
 
     public function getItemProgUser()

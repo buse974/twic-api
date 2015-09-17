@@ -23,8 +23,8 @@ class GradingPolicy extends BaseGradingPolicy
         }
 
         parent::exchangeArray($data);
-        $this->grading_policy_grade = new GradingPolicyGrade($this);
-        $this->grading_policy_grade->exchangeArray($data);
+        
+        $this->grading_policy_grade = $this->requireModel('app_model_grading_policy_grade', $data);
     }
 
     public function getItems()

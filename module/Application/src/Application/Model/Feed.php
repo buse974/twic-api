@@ -14,10 +14,8 @@ class Feed extends BaseFeed
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
-    
-        $this->user = new User($this);
-        
-        $this->user->exchangeArray($data);
+
+        $this->user = $this->requireModel('app_model_user', $data);
     }
     
     public function getIsLike()
