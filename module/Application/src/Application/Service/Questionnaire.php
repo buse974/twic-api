@@ -3,6 +3,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Item as CI;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Questionnaire extends AbstractService
 {
@@ -67,8 +68,6 @@ class Questionnaire extends AbstractService
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
         
-
-        //if fini
         if($this->getNbrQuestionNoCompleted($item_prog) === 0) {
             $this->getServiceItemProgUser()->end($item_prog);
         }
@@ -84,8 +83,7 @@ class Questionnaire extends AbstractService
     /**
      * 
      * @param integer $item_prog
-     * @param unknown $user
-     * @return NULL
+     * @return NULL|integer
      */
     public function getNbrQuestionNoCompleted($item_prog)
     {
@@ -95,10 +93,12 @@ class Questionnaire extends AbstractService
         
         if($res_questionnaire->count() > 0) {
             $nbr = $res_questionnaire->current()->getNbNoCompleted();
+            if($nbr instanceof IsNull) {
+                $nbr = null;
+            }
         }
         
         return $nbr;
-        
     }
     
     /**
