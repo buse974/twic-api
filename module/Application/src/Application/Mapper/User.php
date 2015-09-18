@@ -15,7 +15,7 @@ class User extends AbstractMapper
         $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar', 'school_id',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
                 . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
-            'user$contacts_count' => new Expression('COUNT(connections.id)')
+            'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NOT NULL, 1, 0))')
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
@@ -25,7 +25,10 @@ class User extends AbstractMapper
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('connections' => 'contact'), 'connections.user_id = user.id')
             ->where(array('uu.id' => $me))
+            ->where('connections.accepted_date IS NOT NULL')
             ->where(array('user.id' => $user));
+
+        syslog(1, $this->printSql($select));
 
         return $this->selectWith($select);
     }
@@ -38,13 +41,18 @@ class User extends AbstractMapper
         $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")')
             , 'position', 'interest', 'avatar',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
-            . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)')
+            . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
+            'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NULL, 0, 1))')
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
+            ->join(array('connections' => 'contact'), 'connections.user_id = user.id', array(), $select::JOIN_LEFT)
+            ->group('user.id')
             ->quantifier('DISTINCT');
+
+        
 
         switch ($order) {
             case 'firstname':
@@ -158,6 +166,7 @@ class User extends AbstractMapper
             $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
 
+        syslog(1, $this->printSql($select));
         $select->where('user.deleted_date IS NULL')->order(array('user.id' => 'DESC'));
 
         return $this->selectWith($select);
