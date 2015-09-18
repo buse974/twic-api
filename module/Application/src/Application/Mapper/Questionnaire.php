@@ -18,7 +18,7 @@ class Questionnaire extends AbstractMapper
     public function getNbrQuestionNoCompleted($item_prog, $user)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('questionnaire$nb_no_completed' => new Expression('SUM(IF(answer.scale_id IS NULL, 0,1)) - COUNT(1)')))
+        $select->columns(array('questionnaire$nb_no_completed' => new Expression('COUNT(1) - SUM(IF(answer.scale_id IS NULL, 0,1))')))
             ->join('questionnaire_question', 'questionnaire_question.questionnaire_id = questionnaire.id', array())
             ->join('question', 'questionnaire_question.question_id = question.id', array())
             ->join('item_prog', 'item_prog.item_id = questionnaire.item_id', array())
