@@ -78,6 +78,7 @@ class Questionnaire extends AbstractService
         
         if(is_numeric($this->getNbrQuestionNoCompleted($item_prog)) && $this->getNbrQuestionNoCompleted($item_prog) == 0) {
             $this->getServiceItemProgUser()->end($item_prog);
+            $this->getServiceEvent()->eqcqAvailable($item_prog);
         }
         
         return $ret;
@@ -188,6 +189,15 @@ class Questionnaire extends AbstractService
     public function getServiceAnswer()
     {
         return $this->getServiceLocator()->get('app_service_answer');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Event
+     */
+    public function getServiceEvent()
+    {
+        return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**

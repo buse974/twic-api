@@ -211,10 +211,9 @@ class Event extends AbstractService
         return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), $this->getDataUserByItemProg($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
-    public function eqcqAvailable($item_prog, $videoconf_archive)
+    public function eqcqAvailable($item_prog)
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        $m_videoconf_archive = $this->getServiceVideoconfArchive()->get($videoconf_archive);
         
         return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getDataUserByItemProg($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
