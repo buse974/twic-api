@@ -68,16 +68,19 @@ class Questionnaire extends AbstractService
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
         
-        if($this->getNbrQuestionNoCompleted($item_prog) === 0) {
-            $this->getServiceItemProgUser()->end($item_prog);
-        }
-        
-        return $this->getServiceAnswer()->add(
+        $ret = $this->getServiceAnswer()->add(
             $question, 
             $m_questionnaire_user->getId(), 
             $m_questionnaire_question->getId(), 
             $user, 
             $scale);
+        
+        
+        if($this->getNbrQuestionNoCompleted($item_prog) === 0) {
+            $this->getServiceItemProgUser()->end($item_prog);
+        }
+        
+        return $ret;
     }
 
     /**
