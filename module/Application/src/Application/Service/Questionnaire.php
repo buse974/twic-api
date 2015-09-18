@@ -76,7 +76,7 @@ class Questionnaire extends AbstractService
             $scale);
         
         
-        if($this->getNbrQuestionNoCompleted($item_prog) === 0) {
+        if(is_numeric($this->getNbrQuestionNoCompleted($item_prog)) && $this->getNbrQuestionNoCompleted($item_prog) == 0) {
             $this->getServiceItemProgUser()->end($item_prog);
         }
         
