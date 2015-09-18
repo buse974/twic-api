@@ -67,10 +67,11 @@ class Questionnaire extends AbstractService
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
         
-        /**
-         * Check la fin ici
-         */
-        //$this->getServiceItemProgUser()->end($m_item_assignment->getItemProdId());
+
+        //if fini
+        if($this->getNbrQuestionNoCompleted($item_prog) === 0) {
+            $this->getServiceItemProgUser()->end($item_prog);
+        }
         
         return $this->getServiceAnswer()->add(
             $question, 
@@ -80,6 +81,26 @@ class Questionnaire extends AbstractService
             $scale);
     }
 
+    /**
+     * 
+     * @param integer $item_prog
+     * @param unknown $user
+     * @return NULL
+     */
+    public function getNbrQuestionNoCompleted($item_prog)
+    {
+        $nbr = null;
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $res_questionnaire = $this->getMapper()->getNbrQuestionNoCompleted($item_prog, $user);
+        
+        if($res_questionnaire->count() > 0) {
+            $nbr = $res_questionnaire->current()->getNbNoCompleted();
+        }
+        
+        return $nbr;
+        
+    }
+    
     /**
      *
      * @invokable
@@ -147,7 +168,16 @@ class Questionnaire extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_questionnaire_user');
     }
-
+    
+    /**
+     *
+     * @return \Application\Service\ItemProgUser
+     */
+    public function getServiceItemProgUser()
+    {
+        return $this->getServiceLocator()->get('app_service_item_prog_user');
+    }
+    
     /**
      *
      * @return \Application\Service\Answer
