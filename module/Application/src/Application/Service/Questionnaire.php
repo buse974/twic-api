@@ -70,7 +70,8 @@ class Questionnaire extends AbstractService
         /**
          * Check la fin ici
          */
-       
+        //$this->getServiceItemProgUser()->end($m_item_assignment->getItemProdId());
+        
         return $this->getServiceAnswer()->add(
             $question, 
             $m_questionnaire_user->getId(), 

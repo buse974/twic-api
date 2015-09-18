@@ -64,7 +64,7 @@ class ItemProgUser extends AbstractService
         return $this->getMapper()->update($this->getModel()
             ->setStartedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             , array('user_id' => $this->getServiceUser()
-                ->getIdentity()['id'],'item_prog_id' => $item_prog));
+                ->getIdentity()['id'],'item_prog_id' => $item_prog,  'started_date IS NULL'));
     }
     
     /**

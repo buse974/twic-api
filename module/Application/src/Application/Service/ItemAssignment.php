@@ -14,7 +14,6 @@ class ItemAssignment extends AbstractService
      * @invokable
      *
      * @param int $item_prog
-     *            *
      *            
      * @return array
      */
@@ -266,10 +265,18 @@ class ItemAssignment extends AbstractService
                     $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
                 }
             }
+            if($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
+                $this->getServiceItemProgUser()->start($m_item_assignment->getItemProdId());
+            }
             if ($submit) {
                 $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
                 $this->getServiceEvent()->studentSubmitAssignment($id);
+                if($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
+                    $this->getServiceItemProgUser()->end($m_item_assignment->getItemProdId());
+                }
             }
+            
+            $m_item = $this->getServiceItem()->getByItemProg($m_item_assignment->getItemProdId());
             
             return $this->getMapper()->update($m_item_assignment);
         }
