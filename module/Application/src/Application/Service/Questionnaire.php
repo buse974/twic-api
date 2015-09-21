@@ -49,6 +49,8 @@ class Questionnaire extends AbstractService
         $m_questionnaire->setQuestions($this->getServiceQuestion()
             ->getList($m_questionnaire->getId()));
         
+        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
+        
         return $m_questionnaire;
     }
 
