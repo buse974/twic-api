@@ -303,8 +303,8 @@ class ItemAssignment extends AbstractService
     public function submitByItemProg($item_prog)
     {
         $ret = $this->getMapper()->update($this->getModel()
-            ->setItemProgId($item_prog)
-            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
+            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')),
+            array('item_prog_id' => $item_prog));
     
         return $ret;
     }
