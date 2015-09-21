@@ -28,8 +28,6 @@ class User extends AbstractMapper
             ->where('connections.accepted_date IS NOT NULL')
             ->where(array('user.id' => $user));
 
-        syslog(1, $this->printSql($select));
-
         return $this->selectWith($select);
     }
 
@@ -166,7 +164,6 @@ class User extends AbstractMapper
             $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
 
-        syslog(1, $this->printSql($select));
         $select->where('user.deleted_date IS NULL')->order(array('user.id' => 'DESC'));
 
         return $this->selectWith($select);
