@@ -281,8 +281,6 @@ class ItemAssignment extends AbstractService
             return $this->getMapper()->update($m_item_assignment);
         }
         
-        
-        
         return 0;
     }
 
@@ -299,6 +297,15 @@ class ItemAssignment extends AbstractService
             ->setId($id)
             ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
         
+        return $ret;
+    }
+    
+    public function submitByItemProg($item_prog)
+    {
+        $ret = $this->getMapper()->update($this->getModel()
+            ->setItemProgId($item_prog)
+            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
+    
         return $ret;
     }
 

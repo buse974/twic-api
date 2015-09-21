@@ -52,33 +52,48 @@ class ItemProgUser extends AbstractService
             ->setFinishedDate($finished_date), array('user_id' => $this->getServiceUser()
             ->getIdentity()['id'],'item_prog_id' => $item_prog));
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $item_prog
+     *
+     * @param integer $item_prog            
      * @return integer
      */
     public function start($item_prog)
     {
         return $this->getMapper()->update($this->getModel()
-            ->setStartedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            , array('user_id' => $this->getServiceUser()
-                ->getIdentity()['id'],'item_prog_id' => $item_prog,  'started_date IS NULL'));
+            ->setStartedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
+            ->getIdentity()['id'],'item_prog_id' => $item_prog,'started_date IS NULL'));
     }
-    
+
     /**
      * @invokable
      *
-     * @param integer $item_prog
+     * @param integer $item_prog            
      * @return integer
      */
     public function end($item_prog)
     {
         return $this->getMapper()->update($this->getModel()
-            ->setFinishedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            , array('user_id' => $this->getServiceUser()
-                ->getIdentity()['id'],'item_prog_id' => $item_prog));
+            ->setFinishedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
+            ->getIdentity()['id'],'item_prog_id' => $item_prog));
+    }
+
+    /**
+     *
+     * @param integer $item_prog            
+     * @return boolean
+     */
+    public function checkAllFinish($item_prog)
+    {
+        $m_item_prog_user = $this->getModel()
+            ->setFinishedDate(new IsNull())
+            ->setStartedDate(new IsNotNull())
+            ->setItemProgId($item_prog);
+        
+        $res_item_prog_user = $this->getMapper()->select($m_item_prog_user);
+       
+        return ($res_item_prog_user->count() === 0) ? true : false;
     }
 
     /**
@@ -87,9 +102,9 @@ class ItemProgUser extends AbstractService
     public function getStartedConference()
     {
         return $this->getMapper()->getStartedConference($this->getServiceUser()
-                ->getIdentity()['id']);
+            ->getIdentity()['id']);
     }
-    
+
     /**
      *
      * @param int $item_prog            
