@@ -80,7 +80,6 @@ class Questionnaire extends AbstractService
         $nbrq = $this->getNbrQuestionNoCompleted($item_prog);
         if(is_numeric($nbrq) && $nbrq == 0) {
             $this->getServiceItemProgUser()->end($item_prog);
-            
             $has_all_finish = $this->getServiceItemProgUser()->checkAllFinish($item_prog);
             if($has_all_finish) {
                 $this->getServiceItemAssignment()->submitByItemProg($item_prog);
