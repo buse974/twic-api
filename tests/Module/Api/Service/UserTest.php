@@ -36,7 +36,7 @@ class UserTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals(count($data['result'][0]['contact']) , 16);
+        $this->assertEquals(count($data['result'][0]['contact']) , 17);
         $this->assertEquals(count($data['result'][0]['contact']['origin']) , 2);
         $this->assertEquals($data['result'][0]['contact']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['contact']['origin']['short_name'] , null);
@@ -45,6 +45,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact']['nationality']['short_name'] , null);
         $this->assertEquals($data['result'][0]['contact']['gender'] , null);
         $this->assertEquals($data['result'][0]['contact']['contact_state'] , 2);
+        $this->assertEquals($data['result'][0]['contact']['contacts_count'] , 1);
         $this->assertEquals(count($data['result'][0]['contact']['school']) , 4);
         $this->assertEquals($data['result'][0]['contact']['school']['id'] , 1);
         $this->assertEquals($data['result'][0]['contact']['school']['name'] , "Morbi Corporation");
@@ -89,7 +90,7 @@ class UserTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals(count($data['result'][0]['contact']) , 16);
+        $this->assertEquals(count($data['result'][0]['contact']) , 17);
         $this->assertEquals(count($data['result'][0]['contact']['origin']) , 2);
         $this->assertEquals($data['result'][0]['contact']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['contact']['origin']['short_name'] , null);
@@ -98,6 +99,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact']['nationality']['short_name'] , null);
         $this->assertEquals($data['result'][0]['contact']['gender'] , null);
         $this->assertEquals($data['result'][0]['contact']['contact_state'] , 3);
+        $this->assertEquals($data['result'][0]['contact']['contacts_count'] , 2);
         $this->assertEquals(count($data['result'][0]['contact']['school']) , 4);
         $this->assertEquals($data['result'][0]['contact']['school']['id'] , 1);
         $this->assertEquals($data['result'][0]['contact']['school']['name'] , "Morbi Corporation");
@@ -130,7 +132,7 @@ class UserTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals(count($data['result'][0]['contact']) , 16);
+        $this->assertEquals(count($data['result'][0]['contact']) , 17);
         $this->assertEquals(count($data['result'][0]['contact']['origin']) , 2);
         $this->assertEquals($data['result'][0]['contact']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['contact']['origin']['short_name'] , null);
@@ -139,6 +141,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact']['nationality']['short_name'] , null);
         $this->assertEquals($data['result'][0]['contact']['gender'] , null);
         $this->assertEquals($data['result'][0]['contact']['contact_state'] , 0);
+        $this->assertEquals($data['result'][0]['contact']['contacts_count'] , 1);
         $this->assertEquals(count($data['result'][0]['contact']['school']) , 4);
         $this->assertEquals($data['result'][0]['contact']['school']['id'] , 1);
         $this->assertEquals($data['result'][0]['contact']['school']['name'] , "Morbi Corporation");
@@ -159,7 +162,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact_id'] , 2);
         $this->assertEquals(!empty($data['result'][0]['accepted_date']) , true);
         $this->assertEquals(count($data['result'][1]) , 3);
-        $this->assertEquals(count($data['result'][1]['contact']) , 16);
+        $this->assertEquals(count($data['result'][1]['contact']) , 17);
         $this->assertEquals(count($data['result'][1]['contact']['origin']) , 2);
         $this->assertEquals($data['result'][1]['contact']['origin']['id'] , null);
         $this->assertEquals($data['result'][1]['contact']['origin']['short_name'] , null);
@@ -168,6 +171,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][1]['contact']['nationality']['short_name'] , null);
         $this->assertEquals($data['result'][1]['contact']['gender'] , null);
         $this->assertEquals($data['result'][1]['contact']['contact_state'] , 0);
+        $this->assertEquals($data['result'][1]['contact']['contacts_count'] , 1);
         $this->assertEquals(count($data['result'][1]['contact']['school']) , 4);
         $this->assertEquals($data['result'][1]['contact']['school']['id'] , 1);
         $this->assertEquals($data['result'][1]['contact']['school']['name'] , "Morbi Corporation");
@@ -321,7 +325,7 @@ class UserTest extends AbstractService
         $data = $this->jsonRpc('user.get', array('id' => $id));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 16);
+        $this->assertEquals(count($data['result']) , 17);
         $this->assertEquals(count($data['result']['origin']) , 2);
         $this->assertEquals($data['result']['origin']['id'] , null);
         $this->assertEquals($data['result']['origin']['short_name'] , null);
@@ -330,6 +334,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['nationality']['short_name'] , null);
         $this->assertEquals($data['result']['gender'] , "m");
         $this->assertEquals($data['result']['contact_state'] , 3);
+        $this->assertEquals($data['result']['contacts_count'] , 6);
         $this->assertEquals(count($data['result']['school']) , 4);
         $this->assertEquals($data['result']['school']['id'] , 1);
         $this->assertEquals($data['result']['school']['name'] , "Morbi Corporation");

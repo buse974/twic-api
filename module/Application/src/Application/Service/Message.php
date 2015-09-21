@@ -61,8 +61,7 @@ class Message extends AbstractService
                 if (! in_array($me, $tmp)) {
                     $tmp[] = $me;
                 }
-                //$x = print_r($tmp, true);
-                //syslog(0, $x);
+
                 $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, 1);
             }
             
