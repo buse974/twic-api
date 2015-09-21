@@ -7,6 +7,7 @@ use DateTime;
 use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Role as ModelRole;
 use Firebase\Token\TokenGenerator;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class User extends AbstractService
 {
@@ -342,10 +343,16 @@ class User extends AbstractService
             ->setSis($sis)
             ->setBirthDate($birth_date)
             ->setPosition($position)
-            ->setSchoolId($school_id)
             ->setInterest($interest)
             ->setAvatar($avatar);
-
+        
+        if($school_id !== null) {
+            if($school_id === 'null') {
+                $school_id = new IsNull();
+            }
+            $m_user->setSchoolId($school_id);
+        }
+        
         if ($roles !== null) {
             if(!is_array($roles)) {$roles = [$roles];}
             foreach ($roles as $r) {
