@@ -164,7 +164,9 @@ class User extends AbstractMapper
             $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
 
-        $select->where('user.deleted_date IS NULL')->order(array('user.id' => 'DESC'));
+        $select->where('user.deleted_date IS NULL')
+               ->where('school.deleted_date IS NULL')
+               ->order(array('user.id' => 'DESC'));
 
         return $this->selectWith($select);
     }
@@ -194,7 +196,7 @@ class User extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
-            ->join('item_prog_user', 'item_prog_user.user_id=user.id', array())
+            ->join('item_prog_user', 'item_prog_user.user_id=user.id', array('started_date', 'finished_date'))
             ->where(array('item_prog_user.item_prog_id' => $item_prog));
 
         return $this->selectWith($select);
