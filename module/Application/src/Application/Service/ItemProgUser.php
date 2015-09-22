@@ -88,14 +88,7 @@ class ItemProgUser extends AbstractService
      */
     public function checkAllFinish($item_prog)
     {
-        $m_item_prog_user = $this->getModel()
-            ->setFinishedDate(new IsNull())
-            ->setStartedDate(new IsNotNull())
-            ->setItemProgId($item_prog);
-        
-        $res_item_prog_user = $this->getMapper()->select($m_item_prog_user);
-       
-        return ($res_item_prog_user->count() === 0) ? true : false;
+        return $this->getMapper()->checkAllFinish($item_prog);
     }
 
     /**

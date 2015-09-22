@@ -11,7 +11,6 @@ use Zend\Db\Sql\Predicate\IsNull;
 
 class User extends AbstractService
 {
-
     /**
      * Log user.
      *
@@ -348,7 +347,7 @@ class User extends AbstractService
         
         if($school_id !== null) {
             if($school_id === 'null') {
-                $school_id = new IsNull();
+                $school_id = new IsNull('school_id');
             }
             $m_user->setSchoolId($school_id);
         }
