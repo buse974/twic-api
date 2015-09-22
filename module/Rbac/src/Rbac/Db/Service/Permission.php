@@ -44,7 +44,7 @@ class Permission extends AbstractService
 
     /**
      * Delete Permission by libelle
-     * 
+     *
      * @invokable
      *
      * @param string $libelle            
@@ -71,18 +71,20 @@ class Permission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $id
-     * @param integer $permission
-     * 
+     *
+     * @param integer $id            
+     * @param integer $permission            
+     *
      */
     public function update($id, $permission)
     {
-        $m_permission = $this->getModel()->setId($id)->setLibelle($permission);
-
+        $m_permission = $this->getModel()
+            ->setId($id)
+            ->setLibelle($permission);
+        
         $ret = $this->getMapper()->update($m_permission);
         
-        if($ret > 0) {
+        if ($ret > 0) {
             $this->getServiceRbac()->createRbac();
         }
         
@@ -112,8 +114,9 @@ class Permission extends AbstractService
         
         return array('list' => $res,'count' => $mapper->count());
     }
-    
+
     /**
+     *
      * @return \Rbac\Service\Rbac
      */
     public function getServiceRbac()
