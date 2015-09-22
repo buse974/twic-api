@@ -3,6 +3,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Resume extends AbstractService
 {
@@ -69,6 +70,14 @@ class Resume extends AbstractService
     public function update($id, $start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null)
     {
         $m_education = $this->getModel();
+        
+        
+        if($end_date==='null') {
+            $end_date = new IsNull();
+        }
+        if($start_date==='null') {
+            $start_date = new IsNull();
+        }
         
         $m_education->setAddress($address)
             ->setLogo($logo)
