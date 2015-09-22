@@ -61,7 +61,7 @@ class User extends AbstractService
             
             $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
                 ->setOption('debug', $secret_key_fb_debug)
-                ->setOption('notBefore', 1506096687)
+                ->setOption('expires', 1506096687)
                 ->create();
             
             $this->getCache()->setItem('identity_' . $id, $user);
