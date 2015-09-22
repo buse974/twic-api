@@ -239,13 +239,18 @@ class ItemAssignment extends AbstractService
         $user = $this->getServiceUser()->getIdentity()['id'];
         $students = $this->getServiceUser()->getListByItemAssignment($id);
         $res_item_assignment = array();
-        foreach ($students as $student) {
+        
+        /*foreach ($students as $student) {
+            
             if ($student->getId() === $user) {
-                $res_item_assignment = $this->getMapper()->select($this->getModel()
-                    ->setId($id));
+                
                 break;
             }
-        }
+            
+        }*/
+        
+        $res_item_assignment = $this->getMapper()->select($this->getModel()->setId($id));
+        
         $m_item_assignment = $res_item_assignment->current();
         if ($m_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull) {
             if ($response !== null) {
