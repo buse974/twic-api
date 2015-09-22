@@ -23,17 +23,16 @@ class RolePermission extends AbstractService
      *
      * @invokable
      *
-     * @param int $role_id            
-     * @param int $permission_id            
+     * @param integer $role_id            
+     * @param integer $permission_id            
      *
-     * @return int
+     * @return integer
      */
     public function add($role_id, $permission_id)
     {
-        $p_role = $this->getModel();
-        $p_role->setRoleId($role_id)->setPermissionId($permission_id);
+        $m_role_permission = $this->getModel()->setRoleId($role_id)->setPermissionId($permission_id);
         
-        $ret = $this->getMapper()->insert($p_role);
+        $ret = $this->getMapper()->insert($m_role_permission);
         
         if ($ret > 0) {
             $this->getServiceRbac()->createRbac();
@@ -46,8 +45,8 @@ class RolePermission extends AbstractService
      * Delete role permission
      * @invokable
      *
-     * @param int $permission_id            
-     * @return int
+     * @param integer $permission_id            
+     * @return integer
      */
     public function delete($permission_id)
     {
@@ -67,12 +66,19 @@ class RolePermission extends AbstractService
         return $ret;
     }
 
+
     /**
      * @invokable
+     * 
+     * @param integer $id
+     * @param integer $role_id
+     * @param integer $permission_id
      */
-    public function update($permission)
+    public function update($id, $role_id, $permission_id)
     {
-        $ret = $this - getMapper()->update($permission);
+        $m_role_permission = $this->getModel($id)->setId()->setRoleId($role_id)->setPermissionId($permission_id);
+        
+        $ret = $this->getMapper()->update($m_role_permission);
         
         if ($ret > 0) {
             $this->getServiceRbac()->createRbac();
@@ -80,9 +86,9 @@ class RolePermission extends AbstractService
         
         return $ret;
     }
-    
 
     /**
+     *
      * @return \Rbac\Service\Rbac
      */
     public function getServiceRbac()
