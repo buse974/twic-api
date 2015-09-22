@@ -80,7 +80,7 @@ class Permission extends AbstractService
     {
         $m_permission = $this->getModel()->setId($id)->setLibelle($permission);
 
-        $ret = $this->getMapper()->update($mPermission);
+        $ret = $this->getMapper()->update($m_permission);
         
         if($ret > 0) {
             $this->getServiceRbac()->createRbac();
