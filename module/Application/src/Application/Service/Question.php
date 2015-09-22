@@ -19,8 +19,6 @@ class Question extends AbstractService
             ->current();
     }
 
-
-
     /**
      * @invokable
      *
@@ -73,14 +71,24 @@ class Question extends AbstractService
         
         return $this->getMapper()->update($m_component);
     }
-    
+
     /**
      * @invokable
-     *
+     * 
+     * @param string $filter
+     * @param string $questionnaire
+     * @param string $dimension
+     * @param string $search
      */
-    public function getList($questionnaire = null)
+    public function getList($questionnaire = null, $filter = null, $dimension = null, $search = null)
     {
-        return $this->getMapper()->getList($questionnaire);
+        $mapper = $this->getMapper();
+        
+        $res_question = $mapper->usePaginator($filter)->getList($questionnaire, $dimension, $search);
+        
+        return (null !== $filter) ? 
+            array('count' => $mapper->count(),'list' => $res_question) : 
+            $res_question;
     }
 }
 

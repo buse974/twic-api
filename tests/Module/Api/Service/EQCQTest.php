@@ -214,7 +214,7 @@ class EQCQTest extends AbstractService
             );
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 52);
+        $this->assertEquals(count($data['result']) , 51);
         $this->assertEquals(count($data['result'][0]) , 2);
         $this->assertEquals($data['result'][0]['id'] , 1);
         $this->assertEquals($data['result'][0]['text'] , "I am aware of the type of specific cultural knowledge which is required to interact with people from different cultural contexts.");
@@ -368,14 +368,45 @@ class EQCQTest extends AbstractService
         $this->assertEquals(count($data['result'][50]) , 2);
         $this->assertEquals($data['result'][50]['id'] , 51);
         $this->assertEquals($data['result'][50]['text'] , "I present myself in a way that makes a good impression on others.");
-        $this->assertEquals(count($data['result'][51]) , 2);
-        $this->assertEquals($data['result'][51]['id'] , 52);
-        $this->assertEquals($data['result'][51]['text'] , "super texte de fou deux");
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-
+    /**
+     * @depends testAddQuestion
+     */
+    public function testGetListQuestionDeux($question)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'question.getList', array(
+                'filter' => ['n'=>5,'p'=>2], 
+                'dimension' => 'CQ', 
+                'search' => 'know'
+            )
+        );
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['count'] , 9);
+        $this->assertEquals(count($data['result']['list']) , 4);
+        $this->assertEquals(count($data['result']['list'][0]) , 2);
+        $this->assertEquals($data['result']['list'][0]['id'] , 6);
+        $this->assertEquals($data['result']['list'][0]['text'] , "I know foreign languages.");
+        $this->assertEquals(count($data['result']['list'][1]) , 2);
+        $this->assertEquals($data['result']['list'][1]['id'] , 7);
+        $this->assertEquals($data['result']['list'][1]['text'] , "I know other cultures religions and values.");
+        $this->assertEquals(count($data['result']['list'][2]) , 2);
+        $this->assertEquals($data['result']['list'][2]['id'] , 8);
+        $this->assertEquals($data['result']['list'][2]['text'] , "I know the artistic heritage and craft of other cultures.");
+        $this->assertEquals(count($data['result']['list'][3]) , 2);
+        $this->assertEquals($data['result']['list'][3]['id'] , 9);
+        $this->assertEquals($data['result']['list'][3]['text'] , "I know the rules of non-verbal communication in other cultures.");
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+    }
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
