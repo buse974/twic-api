@@ -56,8 +56,12 @@ class User extends AbstractService
             $secret_key_fb = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb'];
             $secret_key_fb_debug = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb_debug'];
             $generator = new TokenGenerator($secret_key_fb);
+
+           
+            
             $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
                 ->setOption('debug', $secret_key_fb_debug)
+                ->setOption('notBefore', (new \DateTime('2018-08-21 15:00:00'))->getTimestamp())
                 ->create();
             
             $this->getCache()->setItem('identity_' . $id, $user);
