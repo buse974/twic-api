@@ -44,6 +44,7 @@ class Item extends AbstractMapper
             ->join('grading', 'item_item_prog_item_grading.grade BETWEEN grading.min AND grading.max', array('item_item_prog_item_grading$letter' => 'letter'), $select::JOIN_LEFT)
             ->join('user', 'item_prog_user.user_id=user.id', array(), $select::JOIN_LEFT)
             ->where(array('program.id' => $programs))
+            ->where(array("item.type <> 'LC'"))
             ->where(array('item_prog.start_date < UTC_TIMESTAMP'))
             ->order(array('item_item_prog_item_assignment.submit_date' => 'DESC'))
             ->quantifier('DISTINCT');
