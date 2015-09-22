@@ -5,7 +5,7 @@ use Application\Model\Base\Component as BaseComponent;
 
 class Component extends BaseComponent
 {
-    protected $component_scales = array();
+    protected $component_scales;
 
     public function setComponentScales($component_scales)
     {

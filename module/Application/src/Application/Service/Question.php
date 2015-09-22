@@ -28,11 +28,11 @@ class Question extends AbstractService
      */
     public function add($text, $component)
     {
-        $m_component = $this->getModel()
+        $m_question = $this->getModel()
             ->setText($text)
             ->setComponentId($component);
         
-        if ($this->getMapper()->insert($m_component) <= 0) {
+        if ($this->getMapper()->insert($m_question) <= 0) {
             throw new \Eception('error insert question');
         }
         
@@ -49,12 +49,12 @@ class Question extends AbstractService
      */
     public function update($id, $text, $component)
     {
-        $m_component = $this->getModel()
+        $m_question = $this->getModel()
             ->setId($id)
             ->setText($text)
             ->setComponentId($component);
         
-        return $this->getMapper()->update($m_component);
+        return $this->getMapper()->update($m_question);
     }
 
     /**
@@ -65,11 +65,11 @@ class Question extends AbstractService
      */
     public function delete($id)
     {
-        $m_component = $this->getModel()
+        $m_question = $this->getModel()
             ->setId($id)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
-        return $this->getMapper()->update($m_component);
+        return $this->getMapper()->update($m_question);
     }
 
     /**
