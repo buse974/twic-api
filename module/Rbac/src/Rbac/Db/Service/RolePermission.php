@@ -76,7 +76,7 @@ class RolePermission extends AbstractService
      */
     public function update($id, $role_id, $permission_id)
     {
-        $m_role_permission = $this->getModel($id)->setId()->setRoleId($role_id)->setPermissionId($permission_id);
+        $m_role_permission = $this->getModel($id)->setId($id)->setRoleId($role_id)->setPermissionId($permission_id);
         
         $ret = $this->getMapper()->update($m_role_permission);
         
