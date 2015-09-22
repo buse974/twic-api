@@ -13,8 +13,8 @@ class ItemAssignment extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog
-     *            
+     * @param int $item_prog            
+     *
      * @return array
      */
     public function getSubmission($item_prog)
@@ -69,7 +69,8 @@ class ItemAssignment extends AbstractService
             ->getListByItemAssignment($id));
         
         $m_item = $m_item_assignment->getItemProg()->getItem();
-        $m_item->setMaterials($this->getServiceMaterialDocument()->getListByItem($m_item->getId()));
+        $m_item->setMaterials($this->getServiceMaterialDocument()
+            ->getListByItem($m_item->getId()));
         
         $m_course = $m_item->getCourse();
         $m_course->setInstructor($this->getServiceUser()
@@ -107,9 +108,11 @@ class ItemAssignment extends AbstractService
         $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
         
         // condition a voir
-        /*if ($datetime1 > $datetime2) {
-            throw new \Exception('error date');
-        }*/
+        /*
+         * if ($datetime1 > $datetime2) {
+         * throw new \Exception('error date');
+         * }
+         */
         
         $m_item_assignment = $this->getModel()
             ->setItemProgId($item_prog)
@@ -159,9 +162,9 @@ class ItemAssignment extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $id
-     * @param array $document
+     *
+     * @param integer $id            
+     * @param array $document            
      */
     public function addDocument($id, $document)
     {
@@ -172,20 +175,20 @@ class ItemAssignment extends AbstractService
         $source = isset($document['source']) ? $document['source'] : null;
         $token = isset($document['token']) ? $document['token'] : null;
         $date = isset($document['date']) ? $document['date'] : null;
-
+        
         return $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $document
+     *
+     * @param integer $document            
      */
     public function removeDocument($document)
     {
         return $this->getServiceItemAssignmentDocument()->delete($document);
     }
-    
+
     /**
      * @invokable
      *
@@ -236,23 +239,15 @@ class ItemAssignment extends AbstractService
      */
     public function update($id, $documents = null, $response = null, $submit = false)
     {
-        $user = $this->getServiceUser()->getIdentity()['id'];
-        $students = $this->getServiceUser()->getListByItemAssignment($id);
-        $res_item_assignment = array();
+        $m_item_assignment = $this->getMapper()
+            ->select($this->getModel()
+            ->setId($id))
+            ->current();
         
-        /*foreach ($students as $student) {
-            
-            if ($student->getId() === $user) {
-                
-                break;
-            }
-            
-        }*/
-        
-        $res_item_assignment = $this->getMapper()->select($this->getModel()->setId($id));
-        
-        $m_item_assignment = $res_item_assignment->current();
         if ($m_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull) {
+            
+            $m_item = $this->getServiceItem()->getByItemProg($m_item_assignment->getItemProdId());
+            
             if ($response !== null) {
                 $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr><u><a><ol><ul><li>'));
             }
@@ -270,18 +265,16 @@ class ItemAssignment extends AbstractService
                     $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
                 }
             }
-            if($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
+            if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
                 $this->getServiceItemProgUser()->start($m_item_assignment->getItemProdId());
             }
             if ($submit) {
                 $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
                 $this->getServiceEvent()->studentSubmitAssignment($id);
-                if($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
+                if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
                     $this->getServiceItemProgUser()->end($m_item_assignment->getItemProdId());
                 }
             }
-            
-            $m_item = $this->getServiceItem()->getByItemProg($m_item_assignment->getItemProdId());
             
             return $this->getMapper()->update($m_item_assignment);
         }
@@ -304,13 +297,12 @@ class ItemAssignment extends AbstractService
         
         return $ret;
     }
-    
+
     public function submitByItemProg($item_prog)
     {
         $ret = $this->getMapper()->update($this->getModel()
-            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')),
-            array('item_prog_id' => $item_prog));
-    
+            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('item_prog_id' => $item_prog));
+        
         return $ret;
     }
 
@@ -418,7 +410,7 @@ class ItemAssignment extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
-    
+
     /**
      *
      * @return \Zend\Authentication\AuthenticationService
