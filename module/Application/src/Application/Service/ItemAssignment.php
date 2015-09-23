@@ -266,13 +266,13 @@ class ItemAssignment extends AbstractService
                 }
             }
             if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
-                $this->getServiceItemProgUser()->start($m_item_assignment->getItemProdId());
+                $this->getServiceItemProgUser()->start($m_item_assignment->getItemProgId());
             }
             if ($submit) {
                 $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
                 $this->getServiceEvent()->studentSubmitAssignment($id);
                 if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
-                    $this->getServiceItemProgUser()->end($m_item_assignment->getItemProdId());
+                    $this->getServiceItemProgUser()->end($m_item_assignment->getItemProgId());
                 }
             }
             
