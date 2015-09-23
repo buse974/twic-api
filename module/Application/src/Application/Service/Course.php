@@ -197,13 +197,19 @@ class Course extends AbstractService
     public function getList($program = null, $search = null, $filter = null)
     {
         $mapper = $this->getMapper();
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter);
+        
+        $user = $this->getServiceUser()->getIdentity();
+        $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $user['roles'])) ? true : false;
+        
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $is_academic);
         
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()
                 ->getListOnly(ModelRole::ROLE_STUDENT_STR, $m_course->getId()));
             $m_course->setInstructor($this->getServiceUser()
                 ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+            $m_course->setMaterialDocument($this->getServiceMaterialDocument()
+                ->getListByCourse($m_course->getId()));
         }
         
         return array('count' => $mapper->count(),'list' => $res_course);

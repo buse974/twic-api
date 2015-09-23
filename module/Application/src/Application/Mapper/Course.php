@@ -14,14 +14,14 @@ class Course extends AbstractMapper
         $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes'))
             ->join(array('course_user' => 'user'), 'course_user.id=course.creator_id', array('id','firstname','lastname','email'))
             ->join(array('course_user_school' => 'school'), 'course_user_school.id=course_user.school_id', array('id','name','logo'), $select::JOIN_LEFT)
-            ->join(array('course_program' => 'program'), 'course_program.id=course.program_id', array('id', 'name'))
+            ->join(array('course_program' => 'program'), 'course_program.id=course.program_id', array('id','name'))
             ->join(array('course_school' => 'school'), 'course_program.school_id=course_school.id', array('id','name','logo'), $select::JOIN_LEFT)
             ->where(array('course.id' => $id));
         
         return $this->selectWith($select);
     }
 
-    public function getList($program = null, $search = null, $filter = null)
+    public function getList($program = null, $search = null, $filter = null, $is_academic = false)
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -35,7 +35,7 @@ class Course extends AbstractMapper
             $select->where(array('course.program_id' => $program));
         }
         
-        if (null !== $filter && array_key_exists('user', $filter)) {
+        if (null !== $filter && array_key_exists('user', $filter) && $is_academic === false) {
             $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $filter['user']]);
         }
         
@@ -53,10 +53,10 @@ class Course extends AbstractMapper
     public function getListRecord($user, $is_student = false)
     {
         $select = $this->tableGateway->getSql()->select();
-            
+        
         $select->columns(array('id','title','abstract','description','picture'))
-            ->join('program', 'course.program_id=program.id', array('id', 'name'), $select::JOIN_INNER)
-            ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','logo', 'name'), $select::JOIN_INNER)
+            ->join('program', 'course.program_id=program.id', array('id','name'), $select::JOIN_INNER)
+            ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','logo','name'), $select::JOIN_INNER)
             ->join('course_user_relation', 'course_user_relation.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
