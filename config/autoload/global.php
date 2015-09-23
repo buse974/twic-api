@@ -96,6 +96,7 @@ return array(
             'app_service_event_user',
             'app_service_dimension',
             'app_service_question',
+            'app_service_activity',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
