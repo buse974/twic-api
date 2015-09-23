@@ -57,8 +57,6 @@ class User extends AbstractService
             $secret_key_fb_debug = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb_debug'];
             $generator = new TokenGenerator($secret_key_fb);
 
-           
-            
             $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
                 ->setOption('debug', $secret_key_fb_debug)
                 ->setOption('expires', 1506096687)

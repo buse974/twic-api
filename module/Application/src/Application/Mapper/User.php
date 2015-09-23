@@ -264,6 +264,7 @@ class User extends AbstractMapper
         $select->columns(array('id','firstname', 'lastname', 'avatar'))
                ->join('conversation_user', 'conversation_user.user_id = user.id', array())
                ->where(array('conversation_user.conversation_id' => $conversation));
+        
         return $this->selectWith($select);
     }
         
