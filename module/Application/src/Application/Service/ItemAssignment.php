@@ -22,8 +22,7 @@ class ItemAssignment extends AbstractService
         $user = $this->getServiceUser()->getIdentity()['id'];
         $res_item_assignment = $this->getFromItemProg($user, $item_prog);
         if ($res_item_assignment->count() > 0) {
-            return $this->get($res_item_assignment->current()
-                ->getId());
+            return $this->get($res_item_assignment->current()->getId());
         }
         
         return $this->get($this->add($item_prog));
