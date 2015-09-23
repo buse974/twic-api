@@ -138,7 +138,6 @@ class ActivityTest extends AbstractService
     }
     
     
-    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
