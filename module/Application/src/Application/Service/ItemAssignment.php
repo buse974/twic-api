@@ -103,11 +103,12 @@ class ItemAssignment extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         
+        /*
         $datetime1 = new \DateTime($m_item_prog->getStartDate());
         $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
         
-        // condition a voir
-        /*
+         condition a voir
+        
          * if ($datetime1 > $datetime2) {
          * throw new \Exception('error date');
          * }
