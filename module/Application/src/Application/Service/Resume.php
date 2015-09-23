@@ -24,7 +24,8 @@ class Resume extends AbstractService
      *
      * @throws \Exception
      */
-    public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null)
+    public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null,
+        $cause = null, $study = null, $grade = null)
     {
         $m_education = $this->getModel();
         
@@ -36,6 +37,11 @@ class Resume extends AbstractService
             ->setSubtitle($subtitle)
             ->setDescription($description)
             ->setType($type)
+            ->setPublisher($publisher)
+            ->setUrl($url)
+            ->setCause($cause)
+            ->setStudy($study)
+            ->setGrade($grade)
             ->setUserId($this->getServiceUser()
             ->getIdentity()['id']);
         
@@ -67,7 +73,8 @@ class Resume extends AbstractService
      *
      * @return integer
      */
-    public function update($id, $start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null)
+        public function update($id, $start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null,
+        $cause = null, $study = null, $grade = null)
     {
         $m_education = $this->getModel();
         
@@ -87,6 +94,11 @@ class Resume extends AbstractService
             ->setSubtitle($subtitle)
             ->setDescription($description)
             ->setType($type)
+            ->setPublisher($publisher)
+            ->setUrl($url)
+            ->setCause($cause)
+            ->setStudy($study)
+            ->setGrade($grade)
             ->setUserId($this->getServiceUser()
             ->getIdentity()['id']);
         
