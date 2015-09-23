@@ -17,6 +17,7 @@ class Activity extends AbstractModel
 	protected $target_id;
 	protected $target_name;
 	protected $target_data;
+	protected $date;
 
 	protected $prefix = 'activity';
 
@@ -148,6 +149,18 @@ class Activity extends AbstractModel
 	public function setTargetData($target_data)
 	{
 		$this->target_data = $target_data;
+
+		return $this;
+	}
+
+	public function getDate()
+	{
+		return $this->date;
+	}
+
+	public function setDate($date)
+	{
+		$this->date = $date;
 
 		return $this;
 	}
