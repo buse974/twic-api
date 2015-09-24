@@ -194,10 +194,12 @@ class ItemAssignment extends AbstractService
      *
      * @param string $text            
      * @param int $item_assignment            
+     * @param string $file
+     * @param string $file_name
      */
-    public function addComment($text, $item_assignment)
+    public function addComment($text, $item_assignment, $file = null, $file_name = null)
     {
-        $item_assignment_comment = $this->getServiceItemAssignmentComment()->add($item_assignment, $text);
+        $item_assignment_comment = $this->getServiceItemAssignmentComment()->add($item_assignment, $text, $file, $file_name);
         
         $this->getServiceEvent()->assignmentCommented($item_assignment, $item_assignment_comment);
         
