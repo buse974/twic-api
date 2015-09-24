@@ -8,7 +8,7 @@ use DateTimeZone;
 
 class ItemAssignmentComment extends AbstractService
 {
-    public function add($item_assignment_id, $text, $file, $file_name)
+    public function add($item_assignment_id, $text, $file = null, $file_name = null)
     {
         $m_item_assignment_comment = $this->getModel()->setItemAssignmentId($item_assignment_id)
                                                       ->setText($text)
