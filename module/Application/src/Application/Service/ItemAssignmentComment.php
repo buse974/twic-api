@@ -8,10 +8,12 @@ use DateTimeZone;
 
 class ItemAssignmentComment extends AbstractService
 {
-    public function add($item_assignment_id, $text)
+    public function add($item_assignment_id, $text, $file, $file_name)
     {
         $m_item_assignment_comment = $this->getModel()->setItemAssignmentId($item_assignment_id)
                                                       ->setText($text)
+                                                      ->setFile($file)
+                                                      ->setFileName($file_name)
                                                       ->setUserId($this->getServiceAuth()->getIdentity()->getId())
                                                       ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
