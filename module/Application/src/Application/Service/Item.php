@@ -211,7 +211,7 @@ class Item extends AbstractService
      * @param bool   $new_message
      * @param array  $filter
      */
-    public function getListGrade($program, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $item_prog = null)
+    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $item_prog = null)
     {
         $mapper = $this->getMapper();
         $user = $this->getServiceUser()->getIdentity();
