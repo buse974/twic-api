@@ -26,7 +26,6 @@ class Answer extends AbstractMapper
         }
         
         if (null !== $item_prog) {
-            
             $select->join('item_prog_user', 'item_prog.id = item_prog_user.item_prog_id AND item_prog_user.user_id = user.id', array())
                 ->where(array('item_prog.id' => $item_prog));
         }
