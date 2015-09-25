@@ -18,9 +18,10 @@ class ActivityTest extends AbstractService
     public function testCanAdd()
     {
         $this->setIdentity(1);
-        
+
         $data = $this->jsonRpc('activity.add', [
-            'activities' => [[
+            'activities' => [
+                [
                 'source' => [
                     'id' => 3,
                     'name' => 'namesource',
@@ -36,12 +37,30 @@ class ActivityTest extends AbstractService
                     'name' => 'nametarget',
                     'data' => 'datatarget'
                 ]
-            ]]
+            ],[
+                'source' => [
+                    'id' => 3,
+                    'name' => 'namesource',
+                    'data' => 'datasource'],
+                'date' => '2005-01-02',
+                'event' => 'event',
+                'object' => [
+                    'id' => 3,
+                    'name' => 'nameobj',
+                    'data' => 'dataobj'],
+                'target' => [
+                    'id' => 3,
+                    'name' => 'nametarget',
+                    'data' => 'datatarget'
+                ]
+            ]
+            ]
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals($data['result'][0] , 1);
+        $this->assertEquals($data['result'][1] , 2);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -70,7 +89,11 @@ class ActivityTest extends AbstractService
             ]],
         ]);
         
-        $this->printCreateTest($data);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][0] , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     public function testCanGetList()
@@ -79,36 +102,50 @@ class ActivityTest extends AbstractService
         
         $data = $this->jsonRpc('activity.getList', array());
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 2);
-        $this->assertEquals(count($data['result'][0]), 12);
-        $this->assertEquals($data['result'][0]['id'], 1);
-        $this->assertEquals($data['result'][0]['source_id'], 3);
-        $this->assertEquals($data['result'][0]['source_name'], "namesource");
-        $this->assertEquals($data['result'][0]['source_data'], "datasource");
-        $this->assertEquals($data['result'][0]['event'], "event");
-        $this->assertEquals($data['result'][0]['object_id'], 3);
-        $this->assertEquals($data['result'][0]['object_name'], "nameobj");
-        $this->assertEquals($data['result'][0]['object_data'], "dataobj");
-        $this->assertEquals($data['result'][0]['target_id'], 3);
-        $this->assertEquals($data['result'][0]['target_name'], "nametarget");
-        $this->assertEquals($data['result'][0]['target_data'], "datatarget");
-        $this->assertEquals(! empty($data['result'][0]['date']), true);
-        $this->assertEquals(count($data['result'][1]), 12);
-        $this->assertEquals($data['result'][1]['id'], 2);
-        $this->assertEquals($data['result'][1]['source_id'], 3);
-        $this->assertEquals($data['result'][1]['source_name'], "namesource");
-        $this->assertEquals($data['result'][1]['source_data'], "datasource");
-        $this->assertEquals($data['result'][1]['event'], "eventdeux");
-        $this->assertEquals($data['result'][1]['object_id'], 3);
-        $this->assertEquals($data['result'][1]['object_name'], "nameobj");
-        $this->assertEquals($data['result'][1]['object_data'], "dataobj");
-        $this->assertEquals($data['result'][1]['target_id'], 3);
-        $this->assertEquals($data['result'][1]['target_name'], "nametarget");
-        $this->assertEquals($data['result'][1]['target_data'], "datatarget");
-        $this->assertEquals(! empty($data['result'][1]['date']), true);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['source_id'] , 3);
+        $this->assertEquals($data['result'][0]['source_name'] , "namesource");
+        $this->assertEquals($data['result'][0]['source_data'] , '"datasource"');
+        $this->assertEquals($data['result'][0]['event'] , "event");
+        $this->assertEquals($data['result'][0]['object_id'] , 3);
+        $this->assertEquals($data['result'][0]['object_name'] , "nameobj");
+        $this->assertEquals($data['result'][0]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][0]['target_id'] , 3);
+        $this->assertEquals($data['result'][0]['target_name'] , "nametarget");
+        $this->assertEquals($data['result'][0]['target_data'] , '"datatarget"');
+        $this->assertEquals(!empty($data['result'][0]['date']) , true);
+        $this->assertEquals(count($data['result'][1]) , 12);
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['source_id'] , 3);
+        $this->assertEquals($data['result'][1]['source_name'] , "namesource");
+        $this->assertEquals($data['result'][1]['source_data'] , '"datasource"');
+        $this->assertEquals($data['result'][1]['event'] , "event");
+        $this->assertEquals($data['result'][1]['object_id'] , 3);
+        $this->assertEquals($data['result'][1]['object_name'] , "nameobj");
+        $this->assertEquals($data['result'][1]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][1]['target_id'] , 3);
+        $this->assertEquals($data['result'][1]['target_name'] , "nametarget");
+        $this->assertEquals($data['result'][1]['target_data'] , '"datatarget"');
+        $this->assertEquals(!empty($data['result'][1]['date']) , true);
+        $this->assertEquals(count($data['result'][2]) , 12);
+        $this->assertEquals($data['result'][2]['id'] , 3);
+        $this->assertEquals($data['result'][2]['source_id'] , 3);
+        $this->assertEquals($data['result'][2]['source_name'] , "namesource");
+        $this->assertEquals($data['result'][2]['source_data'] , '"datasource"');
+        $this->assertEquals($data['result'][2]['event'] , "eventdeux");
+        $this->assertEquals($data['result'][2]['object_id'] , 3);
+        $this->assertEquals($data['result'][2]['object_name'] , "nameobj");
+        $this->assertEquals($data['result'][2]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][2]['target_id'] , 3);
+        $this->assertEquals($data['result'][2]['target_name'] , "nametarget");
+        $this->assertEquals($data['result'][2]['target_data'] , '"datatarget"');
+        $this->assertEquals(!empty($data['result'][2]['date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
 
     public function testCanGetListDeux()
@@ -117,23 +154,36 @@ class ActivityTest extends AbstractService
         
         $data = $this->jsonRpc('activity.getList', array('event' => 'event'));
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result'][0]), 12);
-        $this->assertEquals($data['result'][0]['id'], 1);
-        $this->assertEquals($data['result'][0]['source_id'], 3);
-        $this->assertEquals($data['result'][0]['source_name'], "namesource");
-        $this->assertEquals($data['result'][0]['source_data'], "datasource");
-        $this->assertEquals($data['result'][0]['event'], "event");
-        $this->assertEquals($data['result'][0]['object_id'], 3);
-        $this->assertEquals($data['result'][0]['object_name'], "nameobj");
-        $this->assertEquals($data['result'][0]['object_data'], "dataobj");
-        $this->assertEquals($data['result'][0]['target_id'], 3);
-        $this->assertEquals($data['result'][0]['target_name'], "nametarget");
-        $this->assertEquals($data['result'][0]['target_data'], "datatarget");
-        $this->assertEquals(! empty($data['result'][0]['date']), true);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['source_id'] , 3);
+        $this->assertEquals($data['result'][0]['source_name'] , "namesource");
+        $this->assertEquals($data['result'][0]['source_data'] , '"datasource"');
+        $this->assertEquals($data['result'][0]['event'] , "event");
+        $this->assertEquals($data['result'][0]['object_id'] , 3);
+        $this->assertEquals($data['result'][0]['object_name'] , "nameobj");
+        $this->assertEquals($data['result'][0]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][0]['target_id'] , 3);
+        $this->assertEquals($data['result'][0]['target_name'] , "nametarget");
+        $this->assertEquals($data['result'][0]['target_data'] , '"datatarget"');
+        $this->assertEquals(!empty($data['result'][0]['date']) , true);
+        $this->assertEquals(count($data['result'][1]) , 12);
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['source_id'] , 3);
+        $this->assertEquals($data['result'][1]['source_name'] , "namesource");
+        $this->assertEquals($data['result'][1]['source_data'] , '"datasource"');
+        $this->assertEquals($data['result'][1]['event'] , "event");
+        $this->assertEquals($data['result'][1]['object_id'] , 3);
+        $this->assertEquals($data['result'][1]['object_name'] , "nameobj");
+        $this->assertEquals($data['result'][1]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][1]['target_id'] , 3);
+        $this->assertEquals($data['result'][1]['target_name'] , "nametarget");
+        $this->assertEquals($data['result'][1]['target_data'] , '"datatarget"');
+        $this->assertEquals(!empty($data['result'][1]['date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     public function setIdentity($id)

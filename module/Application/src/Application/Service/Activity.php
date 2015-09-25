@@ -55,7 +55,7 @@ class Activity extends AbstractService
                 $m_activity->setSourceName($source['name']);
             }
             if(isset($source['data'])) {
-                $m_activity->setSourceData($source['data']);
+                $m_activity->setSourceData(json_encode($source['data']));
             }
         }
         if(null !== $object) {
@@ -66,7 +66,7 @@ class Activity extends AbstractService
                 $m_activity->setObjectName($object['name']);
             }
             if(isset($object['data'])) {
-                $m_activity->setObjectData($object['data']);
+                $m_activity->setObjectData(json_encode($object['data']));
             }
         }
         if(null !== $target) {
@@ -77,7 +77,7 @@ class Activity extends AbstractService
                 $m_activity->setTargetName($target['name']);
             }
             if(isset($target['data'])) {
-                $m_activity->setTargetData($target['data']);
+                $m_activity->setTargetData(json_encode($target['data']));
             }
         }
         
