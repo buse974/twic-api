@@ -21,6 +21,7 @@ class Resume extends AbstractModel
 	protected $cause;
 	protected $study;
 	protected $grade;
+	protected $note;
 
 	protected $prefix = 'resume';
 
@@ -200,6 +201,18 @@ class Resume extends AbstractModel
 	public function setGrade($grade)
 	{
 		$this->grade = $grade;
+
+		return $this;
+	}
+
+	public function getNote()
+	{
+		return $this->note;
+	}
+
+	public function setNote($note)
+	{
+		$this->note = $note;
 
 		return $this;
 	}
