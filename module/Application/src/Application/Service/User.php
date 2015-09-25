@@ -322,12 +322,14 @@ class User extends AbstractService
      * @param string $interest            
      * @param string $avatar            
      * @param array $roles            
-     * @param array $programs            
+     * @param array $programs   
+     * @param array $resetpassword         
      *
      * @return int
      */
-    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null)
+    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null)
     {
+        
         $m_user = $this->getModel();
         
         if ($id === null) {
@@ -372,6 +374,10 @@ class User extends AbstractService
         
         if($ret > 0) {
             $this->getServiceEvent()->profileUpdated($id, $m_user->toArray());
+        }
+        
+        if($resetpassword) {
+            $this->lostPassword($this->get($id)['email']);
         }
         
         return $ret;
