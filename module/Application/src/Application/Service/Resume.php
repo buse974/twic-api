@@ -29,6 +29,13 @@ class Resume extends AbstractService
     {
         $m_education = $this->getModel();
         
+        if($end_date==='null') {
+            $end_date = new IsNull();
+        }
+        if($start_date==='null') {
+            $start_date = new IsNull();
+        }
+
         $m_education->setAddress($address)
             ->setLogo($logo)
             ->setStartDate($start_date)
