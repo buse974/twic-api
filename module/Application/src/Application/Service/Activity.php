@@ -17,21 +17,20 @@ class Activity extends AbstractService
     public function add($activities)
     {
         $ret = [];
+        $user = $this->getServiceUser()->getIdentity()['id'];        
         foreach ($activities as $activity) {
-            $source = (isset($activity['source'])) ? $activity['source']:null;
             $date   = (isset($activity['date']))   ? $activity['date']  :null;
             $event  = (isset($activity['event']))  ? $activity['event'] :null;
             $object = (isset($activity['object'])) ? $activity['object']:null;
             $target = (isset($activity['target'])) ? $activity['target']:null;
             
-            $ret[] = $this->_add($source, $date, $event, $object, $target);
+            $ret[] = $this->_add($date, $event, $object, $target, $user);
         }
         
         return $ret;
     }
     
     /**
-     * @param array $source
      * @param string $date
      * @param string $event
      * @param array $object
@@ -41,26 +40,19 @@ class Activity extends AbstractService
      * @return integer
      *
      */
-    public function _add($source = null, $date = null, $event = null, $object = null, $target = null)
+    public function _add($date = null, $event = null, $object = null, $target = null, $user = null)
     {
         $m_activity = $this->getModel();
         $m_activity->setEvent($event);
         $m_activity->setDate($date);
+        $m_activity->setUserId($user);
         
-        if(null !== $source) {
-            if(isset($source['id'])) {
-                $m_activity->setSourceId($source['id']);
-            }
-            if(isset($source['name'])) {
-                $m_activity->setSourceName($source['name']);
-            }
-            if(isset($source['data'])) {
-                $m_activity->setSourceData(json_encode($source['data']));
-            }
-        }
         if(null !== $object) {
             if(isset($object['id'])) {
                 $m_activity->setObjectId($object['id']);
+            }
+            if(isset($object['value'])) {
+                $m_activity->setObjectValue($object['value']);
             }
             if(isset($object['name'])) {
                 $m_activity->setObjectName($object['name']);
@@ -91,33 +83,24 @@ class Activity extends AbstractService
     /**
      * @invokable
      * 
-     * @param array $source
      * @param string $date
      * @param string $event
      * @param array $object
      * @param array $target
+     * @param array $user
+     * 
      * @throws \Exception
      * 
      * @return integer
      * 
      */
-    public function getList($source = null, $date = null, $event = null, $object = null, $target = null)
+    public function getList($date = null, $event = null, $object = null, $target = null, $user = null)
     {
         $m_activity = $this->getModel();
-        $m_activity->setEvent($event);
-        $m_activity->setDate($date);
+        $m_activity->setEvent($event)
+                   ->setDate($date)
+                   ->setUserId($user);
         
-        if(null !== $source) {
-            if(isset($source['id'])) {
-                $m_activity->setSourceId($source['id']);
-            }
-            if(isset($source['name'])) {
-                $m_activity->setSourceName($source['name']);
-            }
-            if(isset($source['data'])) {
-                $m_activity->setSourceData($source['data']);
-            }
-        }
         if(null !== $object) {
             if(isset($object['id'])) {
                 $m_activity->setObjectId($object['id']);
@@ -142,5 +125,13 @@ class Activity extends AbstractService
         }
         
         return $this->getMapper()->select($m_activity);
+    }
+    
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }

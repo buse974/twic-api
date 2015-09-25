@@ -7,17 +7,16 @@ use Dal\Model\AbstractModel;
 class Activity extends AbstractModel
 {
  	protected $id;
-	protected $source_id;
-	protected $source_name;
-	protected $source_data;
 	protected $event;
 	protected $object_id;
 	protected $object_name;
+	protected $object_value;
 	protected $object_data;
 	protected $target_id;
 	protected $target_name;
 	protected $target_data;
 	protected $date;
+	protected $user_id;
 
 	protected $prefix = 'activity';
 
@@ -29,42 +28,6 @@ class Activity extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
-
-		return $this;
-	}
-
-	public function getSourceId()
-	{
-		return $this->source_id;
-	}
-
-	public function setSourceId($source_id)
-	{
-		$this->source_id = $source_id;
-
-		return $this;
-	}
-
-	public function getSourceName()
-	{
-		return $this->source_name;
-	}
-
-	public function setSourceName($source_name)
-	{
-		$this->source_name = $source_name;
-
-		return $this;
-	}
-
-	public function getSourceData()
-	{
-		return $this->source_data;
-	}
-
-	public function setSourceData($source_data)
-	{
-		$this->source_data = $source_data;
 
 		return $this;
 	}
@@ -101,6 +64,18 @@ class Activity extends AbstractModel
 	public function setObjectName($object_name)
 	{
 		$this->object_name = $object_name;
+
+		return $this;
+	}
+
+	public function getObjectValue()
+	{
+		return $this->object_value;
+	}
+
+	public function setObjectValue($object_value)
+	{
+		$this->object_value = $object_value;
 
 		return $this;
 	}
@@ -161,6 +136,18 @@ class Activity extends AbstractModel
 	public function setDate($date)
 	{
 		$this->date = $date;
+
+		return $this;
+	}
+
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
+
+	public function setUserId($user_id)
+	{
+		$this->user_id = $user_id;
 
 		return $this;
 	}
