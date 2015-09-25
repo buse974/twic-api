@@ -127,6 +127,30 @@ class Activity extends AbstractService
         return $this->getMapper()->select($m_activity);
     }
     
+
+    
+    /**
+     * @invokable
+     * 
+     * @param array|string $event
+     * @param integer $user
+     * @param integer $object_id
+     * @param string $object_name
+     */
+    public function aggregate($event, $user, $object_id, $object_name)
+    {
+        $ret = [];
+        if(!is_array($event)) {
+            $event = array($event);
+        }
+        
+        foreach ($event as $e) {
+            $ret[] = $this->getMapper()->aggregate($e, $user, $object_id, $object_name)->current();
+        }
+        
+        return $ret;
+    }
+    
     /**
      * @return \Application\Service\User
      */
