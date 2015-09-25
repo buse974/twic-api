@@ -9,17 +9,39 @@ class Activity extends AbstractService
     /**
      * @invokable
      * 
+     * @param array $activities
+     * 
+     * @return array
+     * 
+     */
+    public function add($activities)
+    {
+        $ret = [];
+        foreach ($activities as $activity) {
+            $source = (isset($activity['source'])) ? $activity['source']:null;
+            $date   = (isset($activity['date']))   ? $activity['date']  :null;
+            $event  = (isset($activity['event']))  ? $activity['event'] :null;
+            $object = (isset($activity['object'])) ? $activity['object']:null;
+            $target = (isset($activity['target'])) ? $activity['target']:null;
+            
+            $ret[] = $this->_add($source, $date, $event, $object, $target);
+        }
+        
+        return $ret;
+    }
+    
+    /**
      * @param array $source
      * @param string $date
      * @param string $event
      * @param array $object
      * @param array $target
      * @throws \Exception
-     * 
+     *
      * @return integer
-     * 
+     *
      */
-    public function add($source = null, $date = null, $event = null, $object = null, $target = null)
+    public function _add($source = null, $date = null, $event = null, $object = null, $target = null)
     {
         $m_activity = $this->getModel();
         $m_activity->setEvent($event);

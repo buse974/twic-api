@@ -170,6 +170,12 @@ class ItemProg extends AbstractService
                 case ModelItem::TYPE_WORKGROUP:
                     $m_videoconf = $this->getServiceVideoconf()->getByItemProg($id);
                     $this->getServiceConversationUser()->replace($m_videoconf->getConversationId(), $users);
+                    $item_assignment = $this->getServiceItemAssignment()->getIdByItemProg($id);
+                    $this->getServiceItemAssignmentRelation()->deleteByItemAssignment($item_assignment);
+                    $res_item_prog_user = $this->getServiceItemProgUser()->getListByItemProg($id);
+                    foreach ($res_item_prog_user as $m_item_prog_user) {
+                        $this->getServiceItemAssignmentRelation()->add($m_item_prog_user->getId(), $item_assignment);
+                    }
                     break;
                 default:
                     break;
@@ -391,5 +397,14 @@ class ItemProg extends AbstractService
     public function getServiceMaterialDocument()
     {
         return $this->getServiceLocator()->get('app_service_material_document');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\ItemAssignmentRelation
+     */
+    public function getServiceItemAssignmentRelation()
+    {
+        return $this->getServiceLocator()->get('app_service_item_assignment_relation');
     }
 }
