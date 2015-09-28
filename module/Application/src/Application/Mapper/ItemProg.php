@@ -87,6 +87,19 @@ class ItemProg extends AbstractMapper
         
         return $this->selectWith($select);
     }
+    
+    public function getListByUserAndCourse($course, $user)
+    {
+        $select = $this->tableGateway->getSql()->select();
+    
+        $select->columns(array('id','item_id'))   
+            ->join('item', 'item.id = item_prog.item_id', array())
+            ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array())
+            ->where(array('item_prog_user.user_id' => $user))
+            ->where(array('item.course_id' => $course));
+       
+        return $this->selectWith($select);
+    }
 
     public function getListRecord($item, $user, $is_student = false)
     {

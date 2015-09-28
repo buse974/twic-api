@@ -19,7 +19,9 @@ class Course extends BaseCourse
     protected $items;
     protected $school;
     protected $program;
-    
+    protected $avg;
+    protected $item_prog;
+
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -32,6 +34,18 @@ class Course extends BaseCourse
         $this->program          = $this->requireModel('app_model_program', $data);
     }
 
+    public function getAvg()
+    {
+        return $this->avg;
+    }
+    
+    public function setAvg($avg)
+    {
+        $this->avg = $avg;
+    
+        return $this;
+    }
+    
     public function getProgram()
     {
         return $this->program;
@@ -194,5 +208,17 @@ class Course extends BaseCourse
     public function setEndDate($end_date)
     {
         $this->end_date = $end_date;
+    }
+    
+    public function getItemProg()
+    {
+        return $this->item_prog;
+    }
+    
+    public function setItemProg($item_prog)
+    {
+        $this->item_prog = $item_prog;
+    
+        return $this;
     }
 }
