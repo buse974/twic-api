@@ -160,8 +160,7 @@ class Event extends AbstractService
     public function assignmentGraded($item_assignment, $user)
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
-        
-        $res_user = $m_item_assignment->getStudents();
+
         return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), [$user], self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
