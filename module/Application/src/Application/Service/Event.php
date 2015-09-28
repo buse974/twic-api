@@ -157,17 +157,12 @@ class Event extends AbstractService
         return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
-    public function assignmentGraded($item_assignment)
+    public function assignmentGraded($item_assignment, $user)
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
         
         $res_user = $m_item_assignment->getStudents();
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), [$user], self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function assignmentCommented($item_assignment, $item_assignment_comment)
