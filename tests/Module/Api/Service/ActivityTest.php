@@ -102,10 +102,10 @@ class ActivityTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals($data['result'][0]['value_total'] , 12);
-        $this->assertEquals($data['result'][0]['value_user'] , 12);
-        $this->assertEquals($data['result'][0]['event'] , "event");
+        $this->assertEquals(count($data['result']['event']) , 3);
+        $this->assertEquals($data['result']['event']['value_total'] , 12);
+        $this->assertEquals($data['result']['event']['value_user'] , 12);
+        $this->assertEquals($data['result']['event']['event'] , "event");
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         

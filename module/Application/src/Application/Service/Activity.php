@@ -145,7 +145,7 @@ class Activity extends AbstractService
         }
         
         foreach ($event as $e) {
-            $ret[] = $this->getMapper()->aggregate($e, $user, $object_id, $object_name)->current();
+            $ret[$e] = $this->getMapper()->aggregate($e, $user, $object_id, $object_name)->current();
         }
         
         return $ret;
