@@ -222,9 +222,7 @@ class ItemAssignment extends AbstractService
         
         $res_item_assignment_relation = $this->getServiceItemAssignmentRelation()->getByItemAssignment($item_assignment);
         foreach ($res_item_assignment_relation as $m_item_assignment_relation) {
-            $m_item_prog_user = $this->getServiceItemProgUser()
-                ->getById($m_item_assignment_relation->getItemProgUserId())
-                ->current();
+            $m_item_prog_user = $this->getServiceItemProgUser()->getById($m_item_assignment_relation->getItemProgUserId())->current();
             $this->getServiceItemGrading()->add($m_item_assignment_relation->getItemProgUserId(), $score);
             $this->getServiceGradingPolicyGrade()->process($m_item_assignment_relation->getItemAssignmentId(), $m_item_prog_user->getUserId());
         }
