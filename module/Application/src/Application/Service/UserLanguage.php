@@ -12,9 +12,7 @@ class UserLanguage extends AbstractService
     public function add($language, $language_level)
     {
         $m_user_language = $this->getModel();
-        $m_user_language->setUserId($this->getServiceAuth()
-            ->getIdentity()
-            ->getId())
+        $m_user_language->setUserId($this->getServiceUser()->getIdentity()['id'])
             ->setLanguageId($language)
             ->setLanguageLevelId($language_level);
         
@@ -31,10 +29,9 @@ class UserLanguage extends AbstractService
     public function update($id, $language_level)
     {
         $m_user_language = $this->getModel()
-            ->setId($id)
             ->setLanguageLevelId($language_level);
         
-        return $this->getMapper()->update($m_user_language);
+        return $this->getMapper()->update($m_user_language, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
     }
 
     /**
@@ -75,9 +72,7 @@ class UserLanguage extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()
             ->setId($id)
-            ->setUserId($this->getServiceAuth()
-            ->getIdentity()
-            ->getId()));
+            ->setUserId($this->getServiceUser()->getIdentity()['id']));
     }
 
     public function getServiceLanguage()
@@ -92,10 +87,10 @@ class UserLanguage extends AbstractService
 
     /**
      *
-     * @return \Auth\Service\AuthService
+     * @return \Application\Service\User
      */
-    public function getServiceAuth()
+    public function getServiceUser()
     {
-        return $this->getServiceLocator()->get('auth.service');
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }
