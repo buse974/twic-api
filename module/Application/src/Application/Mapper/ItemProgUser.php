@@ -37,7 +37,8 @@ class ItemProgUser extends AbstractMapper
             ->where(array('item_prog_user.user_id' => $user))
             ->where(array('( item.type = "WG" OR item.type = "LC" ) '))
             ->where(array('item_prog_user.finished_date IS NULL'))
-            ->where(array('item_prog_user.started_date IS NOT NULL'));
+            ->where(array('item_prog_user.started_date IS NOT NULL'))
+            ->where(array('(questionnaire_user.id IS NULL OR questionnaire.id IS NOT NULL)'));
         
         return $this->selectWith($select);
     }
