@@ -233,6 +233,25 @@ class Course extends AbstractService
     }
 
     /**
+     * @invokable
+     * 
+     * @param integer $user
+     */
+    public function getListDetail($user)
+    {
+        $me = $this->getServiceUser()->getIdentity();
+        $res_course = $this->getMapper()->getListDetail($user,$me);
+        
+        foreach ($res_course as $m_course) {
+            $m_course->setMaterialDocument($this->getServiceMaterialDocument()
+                ->getListByCourse($m_course->getId()));
+            $m_course->setItemProg($this->getServiceItemProg()->getListByUserAndCourse($m_course->getId(), $user));
+        }
+        
+        return $res_course;
+    }
+    
+    /**
      *
      * @return \Application\Service\MaterialDocument
      */
@@ -277,6 +296,15 @@ class Course extends AbstractService
         return $this->getServiceLocator()->get('app_service_item');
     }
 
+    /**
+     *
+     * @return \Application\Service\ItemProg
+     */
+    public function getServiceItemProg()
+    {
+        return $this->getServiceLocator()->get('app_service_item_prog');
+    }
+    
     /**
      *
      * @return \Application\Service\User

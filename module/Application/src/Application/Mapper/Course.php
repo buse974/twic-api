@@ -50,6 +50,34 @@ class Course extends AbstractMapper
      *
      * @param int $user            
      */
+    public function getListDetail($user, $me)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        
+        $select->columns(array('id','title','abstract','description','picture'))
+            ->join('program', 'course.program_id=program.id', array('id','name'), $select::JOIN_INNER)
+            ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
+            ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
+            ->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)
+            ->join('grading_policy', 'grading_policy.course_id=course.id', array(), $select::JOIN_LEFT)
+            ->join('grading_policy_grade', 'grading_policy.id=grading_policy_grade.grading_policy_id AND grading_policy_grade.user_id=item_prog_user.user_id', array('course$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade)/SUM(IF(grading_policy_grade.grade IS NULL,0, grading_policy.grade)) AS DECIMAL )')), $select::JOIN_LEFT)
+            ->where(array('item_prog_user.user_id' => $user))
+            ->group('course.id');
+        
+        if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $me['roles'])) {
+            $select->join('course_user_relation', 'course.id = course_user_relation.course_id', array())
+            ->where(array('course_user_relation.user_id' => $me['id']));
+        } elseif (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $me['roles'])) {
+            $select->where(array('program.school_id ' => $me['school']['id']));
+        }
+        
+        return $this->selectWith($select);
+    }
+
+    /**
+     *
+     * @param int $user            
+     */
     public function getListRecord($user, $is_student = false)
     {
         $select = $this->tableGateway->getSql()->select();

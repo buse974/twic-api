@@ -1197,7 +1197,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-
+    
     /**
      * @depends testAddItem
      */
@@ -2611,6 +2611,71 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][5]['id'] , 11);
         $this->assertEquals($data['result'][5]['name'] , "toto");
         $this->assertEquals($data['result'][5]['grade'] , 60);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testCanGetListDetail()
+    {
+        $this->setIdentity(5);
+        $data = $this->jsonRpc('course.getListDetail', array('user' => 4));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 9);
+        $this->assertEquals($data['result'][0]['avg'] , 60);
+        $this->assertEquals(count($data['result'][0]['program']) , 2);
+        $this->assertEquals($data['result'][0]['program']['id'] , 1);
+        $this->assertEquals($data['result'][0]['program']['name'] , "program name upd");
+        $this->assertEquals(count($data['result'][0]['material_document']) , 3);
+        $this->assertEquals(count($data['result'][0]['material_document'][0]) , 12);
+        $this->assertEquals($data['result'][0]['material_document'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['material_document'][0]['course_id'] , 1);
+        $this->assertEquals($data['result'][0]['material_document'][0]['type'] , "link");
+        $this->assertEquals($data['result'][0]['material_document'][0]['title'] , "title");
+        $this->assertEquals($data['result'][0]['material_document'][0]['author'] , "author");
+        $this->assertEquals($data['result'][0]['material_document'][0]['link'] , "link");
+        $this->assertEquals($data['result'][0]['material_document'][0]['source'] , "source");
+        $this->assertEquals($data['result'][0]['material_document'][0]['token'] , "token");
+        $this->assertEquals($data['result'][0]['material_document'][0]['date'] , "2011-01-01");
+        $this->assertEquals(!empty($data['result'][0]['material_document'][0]['created_date']) , true);
+        $this->assertEquals($data['result'][0]['material_document'][0]['deleted_date'] , null);
+        $this->assertEquals($data['result'][0]['material_document'][0]['updated_date'] , null);
+        $this->assertEquals(count($data['result'][0]['material_document'][1]) , 12);
+        $this->assertEquals($data['result'][0]['material_document'][1]['id'] , 2);
+        $this->assertEquals($data['result'][0]['material_document'][1]['course_id'] , 1);
+        $this->assertEquals($data['result'][0]['material_document'][1]['type'] , "updatetype");
+        $this->assertEquals($data['result'][0]['material_document'][1]['title'] , "updatetitle");
+        $this->assertEquals($data['result'][0]['material_document'][1]['author'] , "updateauthor");
+        $this->assertEquals($data['result'][0]['material_document'][1]['link'] , "updatelink");
+        $this->assertEquals($data['result'][0]['material_document'][1]['source'] , "updatesrc");
+        $this->assertEquals($data['result'][0]['material_document'][1]['token'] , "updatetoken");
+        $this->assertEquals($data['result'][0]['material_document'][1]['date'] , "2015-01-10");
+        $this->assertEquals(!empty($data['result'][0]['material_document'][1]['created_date']) , true);
+        $this->assertEquals($data['result'][0]['material_document'][1]['deleted_date'] , null);
+        $this->assertEquals(!empty($data['result'][0]['material_document'][1]['updated_date']) , true);
+        $this->assertEquals(count($data['result'][0]['material_document'][2]) , 12);
+        $this->assertEquals($data['result'][0]['material_document'][2]['id'] , 3);
+        $this->assertEquals($data['result'][0]['material_document'][2]['course_id'] , 1);
+        $this->assertEquals($data['result'][0]['material_document'][2]['type'] , "type2");
+        $this->assertEquals($data['result'][0]['material_document'][2]['title'] , "title2");
+        $this->assertEquals($data['result'][0]['material_document'][2]['author'] , "author2");
+        $this->assertEquals($data['result'][0]['material_document'][2]['link'] , "link2");
+        $this->assertEquals($data['result'][0]['material_document'][2]['source'] , "src2");
+        $this->assertEquals($data['result'][0]['material_document'][2]['token'] , "token2");
+        $this->assertEquals($data['result'][0]['material_document'][2]['date'] , "2015-01-02");
+        $this->assertEquals(!empty($data['result'][0]['material_document'][2]['created_date']) , true);
+        $this->assertEquals($data['result'][0]['material_document'][2]['deleted_date'] , null);
+        $this->assertEquals($data['result'][0]['material_document'][2]['updated_date'] , null);
+        $this->assertEquals(count($data['result'][0]['item_prog']) , 1);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]) , 2);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item_id'] , 1);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['title'] , "IMERIR");
+        $this->assertEquals($data['result'][0]['abstract'] , "un_token");
+        $this->assertEquals($data['result'][0]['description'] , "description");
+        $this->assertEquals($data['result'][0]['picture'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

@@ -138,7 +138,7 @@ class ResumeTest extends AbstractService
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 5);
-        $this->assertEquals(count($data['result'][0]) , 15);
+        $this->assertEquals(count($data['result'][0]) , 16);
         $this->assertEquals($data['result'][0]['id'] , 4);
         $this->assertEquals($data['result'][0]['start_date'] , "2013-03-02");
         $this->assertEquals($data['result'][0]['end_date'] , null);
@@ -154,7 +154,8 @@ class ResumeTest extends AbstractService
         $this->assertEquals($data['result'][0]['cause'] , null);
         $this->assertEquals($data['result'][0]['study'] , null);
         $this->assertEquals($data['result'][0]['grade'] , null);
-        $this->assertEquals(count($data['result'][1]) , 15);
+        $this->assertEquals($data['result'][0]['note'] , null);
+        $this->assertEquals(count($data['result'][1]) , 16);
         $this->assertEquals($data['result'][1]['id'] , 5);
         $this->assertEquals($data['result'][1]['start_date'] , "2013-03-02");
         $this->assertEquals($data['result'][1]['end_date'] , null);
@@ -170,7 +171,8 @@ class ResumeTest extends AbstractService
         $this->assertEquals($data['result'][1]['cause'] , null);
         $this->assertEquals($data['result'][1]['study'] , null);
         $this->assertEquals($data['result'][1]['grade'] , null);
-        $this->assertEquals(count($data['result'][2]) , 15);
+        $this->assertEquals($data['result'][1]['note'] , null);
+        $this->assertEquals(count($data['result'][2]) , 16);
         $this->assertEquals($data['result'][2]['id'] , 3);
         $this->assertEquals($data['result'][2]['start_date'] , "2013-03-02");
         $this->assertEquals($data['result'][2]['end_date'] , "2015-04-02");
@@ -186,7 +188,8 @@ class ResumeTest extends AbstractService
         $this->assertEquals($data['result'][2]['cause'] , null);
         $this->assertEquals($data['result'][2]['study'] , null);
         $this->assertEquals($data['result'][2]['grade'] , null);
-        $this->assertEquals(count($data['result'][3]) , 15);
+        $this->assertEquals($data['result'][2]['note'] , null);
+        $this->assertEquals(count($data['result'][3]) , 16);
         $this->assertEquals($data['result'][3]['id'] , 2);
         $this->assertEquals($data['result'][3]['start_date'] , "2013-03-02");
         $this->assertEquals($data['result'][3]['end_date'] , "2015-03-02");
@@ -202,7 +205,8 @@ class ResumeTest extends AbstractService
         $this->assertEquals($data['result'][3]['cause'] , null);
         $this->assertEquals($data['result'][3]['study'] , null);
         $this->assertEquals($data['result'][3]['grade'] , null);
-        $this->assertEquals(count($data['result'][4]) , 15);
+        $this->assertEquals($data['result'][3]['note'] , null);
+        $this->assertEquals(count($data['result'][4]) , 16);
         $this->assertEquals($data['result'][4]['id'] , 1);
         $this->assertEquals($data['result'][4]['start_date'] , "2013-01-09");
         $this->assertEquals($data['result'][4]['end_date'] , "2015-01-09");
@@ -218,6 +222,7 @@ class ResumeTest extends AbstractService
         $this->assertEquals($data['result'][4]['cause'] , null);
         $this->assertEquals($data['result'][4]['study'] , null);
         $this->assertEquals($data['result'][4]['grade'] , null);
+        $this->assertEquals($data['result'][4]['note'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

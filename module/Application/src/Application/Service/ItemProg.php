@@ -275,6 +275,11 @@ class ItemProg extends AbstractService
         
         return $res_item_progs;
     }
+    
+    public function getListByUserAndCourse($course, $user)
+    {
+        return $this->getMapper()->getListByUserAndCourse($course, $user);
+    }
 
     /**
      * @param integer $id
