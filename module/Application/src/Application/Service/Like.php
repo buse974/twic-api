@@ -13,21 +13,31 @@ class Like extends AbstractService
      */
     public function add($event)
     {
+        $res = null;
         $me = $this->getServiceUser()->getIdentity()['id'];
         
         $m_like = $this->getModel()
             ->setEventId($event)
-            ->setUserId($me)
-            ->setIsLike(true)
-            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            ->setUserId($me);
         
-        if ($this->getMapper()->insert($m_like) <= 0) {
-            throw new \Exception('error add like');
+        if ($this->getMapper()
+            ->select($m_like)
+            ->count() > 0) {
+            $m_like->setIsLike(true);
+            $res = $this->getMapper()->update($m_like, ['event_id' => $event,'user_id' => $me]);
+        } else {
+            $m_like->setIsLike(true)->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            
+            if ($this->getMapper()->insert($m_like) <= 0) {
+                throw new \Exception('error add like');
+            }
+            
+            $this->getServiceEvent()->userLike($event);
+            
+            $res = $this->getMapper()->getLastInsertValue();
         }
         
-        $this->getServiceEvent()->userLike($event);
-        
-        return $this->getMapper()->getLastInsertValue();
+        return $res;
     }
 
     /**
@@ -39,11 +49,8 @@ class Like extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        $m_like = $this->getModel()
-            ->setEventId($event)
-            ->setUserId($me);
-                
-        return $this->getMapper()->delete($m_like);
+        return $this->getMapper()->update($this->getModel()
+            ->setIsLike(false), ['event_id' => $event,'user_id' => $me]);
     }
 
     /**
