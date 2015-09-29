@@ -44,14 +44,14 @@ class ComponentScale extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $id
+     *
+     * @param integer $id            
      * @param integer $component            
      * @param integer $min            
      * @param integer $max            
      * @param string $describe            
-     * @param string $recommandation 
-     *  
+     * @param string $recommandation            
+     *
      * @return integer
      */
     public function update($id, $component, $min, $max, $describe, $recommandation)
@@ -68,16 +68,15 @@ class ComponentScale extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $component_id
-     * @param array $filter
+     * @param integer $component_id            
+     * @param array $filter            
      */
     public function getList($component_id = null, $filter = null)
     {
         $mapper = $this->getMapper();
-        $res_component_scale = ($component_id!==null) ?
-              $mapper->select($this->getModel()->setComponentId($component_id)) : $mapper->usePaginator($filter)->fetchAll();
-
+        $res_component_scale = ($component_id !== null) ? $mapper->select($this->getModel()
+            ->setComponentId($component_id)) : $mapper->usePaginator($filter)->fetchAll();
+        
         return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_component_scale] : $res_component_scale;
     }
-
 }

@@ -1,18 +1,18 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class DimensionScale extends AbstractService
 {
+
     /**
      * @invokable
-     * 
-     * @param integer $dimension
-     * @param integer $min
-     * @param integer $max
-     * @param string $describe
+     *
+     * @param integer $dimension            
+     * @param integer $min            
+     * @param integer $max            
+     * @param string $describe            
      */
     public function add($dimension, $min, $max, $describe)
     {
@@ -21,16 +21,16 @@ class DimensionScale extends AbstractService
             ->setMin($min)
             ->setMax($max)
             ->setDescribe($describe)) <= 0) {
-                throw new \Exception('error insert scale');
-            }
+            throw new \Exception('error insert scale');
+        }
         
-            return $this->getMapper()->getLastInsertValue();
+        return $this->getMapper()->getLastInsertValue();
     }
-    
+
     /**
      * @invokable
      *
-     * @param integer $id
+     * @param integer $id            
      *
      * @return integer
      */
@@ -39,16 +39,16 @@ class DimensionScale extends AbstractService
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $id
-     * @param integer $dimension
-     * @param integer $min
-     * @param integer $max
-     * @param string $describe
-     * 
+     *
+     * @param integer $id            
+     * @param integer $dimension            
+     * @param integer $min            
+     * @param integer $max            
+     * @param string $describe            
+     *
      * @return integer
      */
     public function update($id, $dimension, $min, $max, $describe)
@@ -60,17 +60,17 @@ class DimensionScale extends AbstractService
             ->setMax($max)
             ->setDescribe($describe));
     }
-    
+
     /**
      * @invokable
      *
-     * @param array $filter
+     * @param array $filter            
      */
     public function getList($filter = null)
     {
         $mapper = $this->getMapper();
         $res_dimension_scale = $mapper->usePaginator($filter)->fetchAll();
-    
+        
         return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_dimension_scale] : $res_dimension_scale;
     }
 }
