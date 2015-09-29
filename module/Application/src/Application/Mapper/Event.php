@@ -12,7 +12,10 @@ class Event extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array("id","source","object","event",'event$date' => new Expression("DATE_FORMAT(date, '%Y-%m-%dT%TZ') ")))
-            ->join('like', 'event.id=like.event_id', array('event$nb_like' => new Expression('COUNT(like.event_id)'),'event$is_like' => new Expression('MAX(IF(like.user_id = ' . $me . ', 1, 0))')), $select::JOIN_LEFT)
+            ->join('like', 'event.id=like.event_id', 
+                array('event$nb_like' => new Expression('SUM(IF(like.is_true IS TRUE, 1,0))'),
+                    'event$is_like' => new Expression('MAX(IF(like.user_id = ' . $me . ' AND like.is_true IS TRUE, 1, 0))')), 
+                $select::JOIN_LEFT)
             ->group('event.id')
             ->order(array('event.id' => 'DESC'));
         if (null === $id || $source === null) {
