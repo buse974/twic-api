@@ -78,7 +78,8 @@ class User extends AbstractMapper
 
         if(null !== $event) {
             $select->join('like', 'like.user_id=user.id', array())
-                   ->where(array('like.event_id' => $event));
+                   ->where(array('like.event_id' => $event))
+                   ->where(array('like.is_like IS TRUE'));
         }
         
         if ($user_school && $schools===true) {
