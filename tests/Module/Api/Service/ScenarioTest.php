@@ -2393,7 +2393,7 @@ class ScenarioTest extends AbstractService
     {
          system('phing -q test-dateitemprog');
         
-        $this->setIdentity(3);
+        $this->setIdentity(4);
         $data = $this->jsonRpc('item.getListGrade', array('program' => $program,'course' => $course,'type' => array("IA","CP","WG","LC"),"new_message" => true,"filter" => array("n" => 10,"p" => 1)));
         
         $this->assertEquals(count($data) , 3);
@@ -2487,7 +2487,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCangetListGradeTwo($program)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(4);
         
         $data = $this->jsonRpc('item.getListGrade', array('program' => $program));
         
@@ -2668,7 +2668,18 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['material_document'][2]['deleted_date'] , null);
         $this->assertEquals($data['result'][0]['material_document'][2]['updated_date'] , null);
         $this->assertEquals(count($data['result'][0]['item_prog']) , 1);
-        $this->assertEquals(count($data['result'][0]['item_prog'][0]) , 2);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]) , 3);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']) , 5);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['materials']) , 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['materials'][0] , 3);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['module']) , 2);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['module']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['module']['title'] , null);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['item_grade']) , 2);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['item_grade']['id'] , 2);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['item_grade']['grade'] , 60);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['title'] , "titl2e");
         $this->assertEquals($data['result'][0]['item_prog'][0]['id'] , 1);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item_id'] , 1);
         $this->assertEquals($data['result'][0]['id'] , 1);

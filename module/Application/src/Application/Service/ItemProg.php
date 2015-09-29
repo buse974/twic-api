@@ -278,7 +278,18 @@ class ItemProg extends AbstractService
     
     public function getListByUserAndCourse($course, $user)
     {
-        return $this->getMapper()->getListByUserAndCourse($course, $user);
+        $res_item_prog = $this->getMapper()->getListByUserAndCourse($course, $user);
+        
+        foreach ($res_item_prog as $m_item_prog) {
+            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item_prog->getItem()->getId());
+            $ar_imdr = array();
+            foreach ($res_imdr as $m_imdr) {
+                $ar_imdr[] = $m_imdr->getMaterialDocumentId();
+            }
+            $m_item_prog->getItem()->setMaterials($ar_imdr);
+        }
+        
+        return $res_item_prog;
     }
 
     /**
@@ -402,6 +413,15 @@ class ItemProg extends AbstractService
     public function getServiceMaterialDocument()
     {
         return $this->getServiceLocator()->get('app_service_material_document');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\ItemMaterialDocumentRelation
+     */
+    public function getServiceItemMaterialDocumentRelation()
+    {
+        return $this->getServiceLocator()->get('app_service_item_material_document_relation');
     }
     
     /**
