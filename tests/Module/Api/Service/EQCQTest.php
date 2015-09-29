@@ -589,6 +589,148 @@ class EQCQTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    
+    ///////////////////////
+    
+    
+    public function testDimensionScaleAdd()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'dimensionscale.add', array(
+                'dimension' => 1,
+                'min' => 110,
+                'max' => 120,
+                'describe' => 'describe'
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 6);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testDimensionScaleAddTwo()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'dimensionscale.add', array(
+                'dimension' => 2,
+                'min' => 120,
+                'max' => 130,
+                'describe' => 'describe2'
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 7);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+        return $data['result'];
+    }
+    
+    /**
+     *
+     * @depends testDimensionScaleAddTwo
+     */
+    public function testDimensionScaleUpdate($id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'dimensionscale.update', array(
+                'id' => $id,
+                'dimension' => 3,
+                'min' => 140,
+                'max' => 150,
+                'describe' => 'describe2updt'
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testDimensionScaleGetList($filter = null)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('dimensionscale.getList', []);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 7);
+        $this->assertEquals(count($data['result'][0]) , 5);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['dimension_id'] , 1);
+        $this->assertEquals($data['result'][0]['min'] , 0);
+        $this->assertEquals($data['result'][0]['max'] , 50);
+        $this->assertEquals($data['result'][0]['describe'] , "describe min0 max50 CQ");
+        $this->assertEquals(count($data['result'][1]) , 5);
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['dimension_id'] , 1);
+        $this->assertEquals($data['result'][1]['min'] , 50);
+        $this->assertEquals($data['result'][1]['max'] , 100);
+        $this->assertEquals($data['result'][1]['describe'] , "describe min50 max100 CQ");
+        $this->assertEquals(count($data['result'][2]) , 5);
+        $this->assertEquals($data['result'][2]['id'] , 3);
+        $this->assertEquals($data['result'][2]['dimension_id'] , 2);
+        $this->assertEquals($data['result'][2]['min'] , 0);
+        $this->assertEquals($data['result'][2]['max'] , 30);
+        $this->assertEquals($data['result'][2]['describe'] , "describe min0 max30 EQ");
+        $this->assertEquals(count($data['result'][3]) , 5);
+        $this->assertEquals($data['result'][3]['id'] , 4);
+        $this->assertEquals($data['result'][3]['dimension_id'] , 2);
+        $this->assertEquals($data['result'][3]['min'] , 30);
+        $this->assertEquals($data['result'][3]['max'] , 66);
+        $this->assertEquals($data['result'][3]['describe'] , "describe min30 max66 EQ");
+        $this->assertEquals(count($data['result'][4]) , 5);
+        $this->assertEquals($data['result'][4]['id'] , 5);
+        $this->assertEquals($data['result'][4]['dimension_id'] , 2);
+        $this->assertEquals($data['result'][4]['min'] , 66);
+        $this->assertEquals($data['result'][4]['max'] , 100);
+        $this->assertEquals($data['result'][4]['describe'] , "describe min66 max100 EQ");
+        $this->assertEquals(count($data['result'][5]) , 5);
+        $this->assertEquals($data['result'][5]['id'] , 6);
+        $this->assertEquals($data['result'][5]['dimension_id'] , 1);
+        $this->assertEquals($data['result'][5]['min'] , 110);
+        $this->assertEquals($data['result'][5]['max'] , 120);
+        $this->assertEquals($data['result'][5]['describe'] , "describe");
+        $this->assertEquals(count($data['result'][6]) , 5);
+        $this->assertEquals($data['result'][6]['id'] , 7);
+        $this->assertEquals($data['result'][6]['dimension_id'] , 3);
+        $this->assertEquals($data['result'][6]['min'] , 140);
+        $this->assertEquals($data['result'][6]['max'] , 150);
+        $this->assertEquals($data['result'][6]['describe'] , "describe2updt");
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+        
+    /**
+     *
+     * @depends testDimensionScaleAddTwo
+     */
+    public function testDimensionScaleDeltete($id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'dimensionscale.delete', array(
+                'id' => $id
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+      
     /**
      * @depends testAddComponent
      */
