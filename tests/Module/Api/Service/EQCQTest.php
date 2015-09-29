@@ -464,6 +464,131 @@ class EQCQTest extends AbstractService
     }
     
     
+    public function testScaleAdd()
+    {
+        $this->setIdentity(1);
+        
+        $data = $this->jsonRpc(
+            'scale.add', array(
+                'name' => 'name',
+                'value' => 55
+            )
+        );
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 7);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testScaleAddTwo()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'scale.add', array(
+                'name' => 'name2',
+                'value' => 552
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 8); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        return $data['result'];
+    }
+
+    /**
+     *
+     * @depends testScaleAddTwo
+     */
+    public function testScaleUpdate($id)
+    {
+        $this->setIdentity(1);
+        
+        $data = $this->jsonRpc(
+            'scale.update', array(
+                'id' => $id,
+                'name' => 'name2updt',
+                'value' => 999
+            )
+        );
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 1); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testScaleGetList($filter = null)
+    {
+        $this->setIdentity(1);
+        
+        $data = $this->jsonRpc(
+            'scale.getList', array(
+            )
+        );
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 8); 
+        $this->assertEquals(count($data['result'][0]) , 3); 
+        $this->assertEquals($data['result'][0]['id'] , 1); 
+        $this->assertEquals($data['result'][0]['name'] , "Strongly disagree"); 
+        $this->assertEquals($data['result'][0]['value'] , 1); 
+        $this->assertEquals(count($data['result'][1]) , 3); 
+        $this->assertEquals($data['result'][1]['id'] , 2); 
+        $this->assertEquals($data['result'][1]['name'] , "Disagree"); 
+        $this->assertEquals($data['result'][1]['value'] , 2); 
+        $this->assertEquals(count($data['result'][2]) , 3); 
+        $this->assertEquals($data['result'][2]['id'] , 3); 
+        $this->assertEquals($data['result'][2]['name'] , "Neither agree, nor disagree"); 
+        $this->assertEquals($data['result'][2]['value'] , 3); 
+        $this->assertEquals(count($data['result'][3]) , 3); 
+        $this->assertEquals($data['result'][3]['id'] , 4); 
+        $this->assertEquals($data['result'][3]['name'] , "Agree"); 
+        $this->assertEquals($data['result'][3]['value'] , 4); 
+        $this->assertEquals(count($data['result'][4]) , 3); 
+        $this->assertEquals($data['result'][4]['id'] , 5); 
+        $this->assertEquals($data['result'][4]['name'] , "Strongly agree"); 
+        $this->assertEquals($data['result'][4]['value'] , 5); 
+        $this->assertEquals(count($data['result'][5]) , 3); 
+        $this->assertEquals($data['result'][5]['id'] , 6); 
+        $this->assertEquals($data['result'][5]['name'] , "I don't Know"); 
+        $this->assertEquals($data['result'][5]['value'] , 0); 
+        $this->assertEquals(count($data['result'][6]) , 3); 
+        $this->assertEquals($data['result'][6]['id'] , 7); 
+        $this->assertEquals($data['result'][6]['name'] , "name"); 
+        $this->assertEquals($data['result'][6]['value'] , 55); 
+        $this->assertEquals(count($data['result'][7]) , 3); 
+        $this->assertEquals($data['result'][7]['id'] , 8); 
+        $this->assertEquals($data['result'][7]['name'] , "name2updt"); 
+        $this->assertEquals($data['result'][7]['value'] , 999); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * 
+     * @depends testScaleAddTwo
+     */
+    public function testScaleDeltete($id)
+    {
+        $this->setIdentity(1);
+        
+        $data = $this->jsonRpc(
+            'scale.delete', array(
+                'id' => $id
+            )
+        );
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
     /**
      * @depends testAddComponent
      */

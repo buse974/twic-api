@@ -10,7 +10,6 @@ class Scale extends AbstractService
      *
      * @param string $name            
      * @param string $value            
-     * @throws \Exception
      *
      * @return integer
      */
@@ -32,10 +31,10 @@ class Scale extends AbstractService
      *
      * @return integer
      */
-    public function deltete($id)
+    public function delete($id)
     {
         return $this->getMapper()->delete($this->getModel()
-            ->steId($id));
+            ->setId($id));
     }
 
     /**
@@ -50,7 +49,7 @@ class Scale extends AbstractService
     public function update($id, $name, $value)
     {
         return $this->getMapper()->update($this->getModel()
-            ->steId($id)
+            ->setId($id)
             ->setName($name)
             ->setValue($value));
     }
@@ -58,7 +57,7 @@ class Scale extends AbstractService
     /**
      * @invokable
      *
-     * @param array|null $filter            
+     * @param array $filter         
      */
     public function getList($filter = null)
     {
