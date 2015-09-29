@@ -244,7 +244,7 @@ class Course extends AbstractService
         
         foreach ($res_course as $m_course) {
             $m_course->setMaterialDocument($this->getServiceMaterialDocument()
-                ->getListByCourse($m_course->getId()));
+                ->getListByCourse($m_course->getId())->toArray(array('id')));
             $m_course->setItemProg($this->getServiceItemProg()->getListByUserAndCourse($m_course->getId(), $user));
         }
         

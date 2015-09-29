@@ -93,7 +93,7 @@ class ItemProg extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
     
         $select->columns(array('id','item_id'))   
-            ->join('item', 'item.id = item_prog.item_id', array('id', 'title'))
+            ->join('item', 'item.id = item_prog.item_id', array('id', 'title', 'type'))
             ->join('module', 'module.id = item.module_id', array('id', 'title'), $select::JOIN_LEFT)
             ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array())
             ->join('item_grading', 'item_grading.item_prog_user_id = item_prog_user.id', array('id', 'grade'), $select::JOIN_LEFT)
