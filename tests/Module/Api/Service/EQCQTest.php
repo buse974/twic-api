@@ -995,8 +995,6 @@ class EQCQTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    
-    //////////////////////////////////
     /**
      * @depends testAddComponent
      */
