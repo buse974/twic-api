@@ -72,7 +72,7 @@ class MessageUser extends AbstractService
                 ->setType((($user==$me)?(($for_me) ? 'RS':'S'):'R'))
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             
-            if($me==$user) {
+            if($me==$user && !$for_me) {
                 $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             }
             
