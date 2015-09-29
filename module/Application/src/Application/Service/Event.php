@@ -85,15 +85,20 @@ class Event extends AbstractService
 
     /**
      * @invokable
+     * 
+     * @param string $filter
+     * @param string $events
+     * @param string $user
+     * @param integer $id
      */
-    public function getList($filter = null, $events = null, $user = null, $source = null, $id = null)
+    public function getList($filter = null, $events = null, $user = null, $id = null)
     {
         $mapper = $this->getMapper();
         if(null === $user){
             $user = $this->getServiceUser()->getIdentity()['id'];            
         }
       
-        $res_event = $mapper->usePaginator($filter)->getList($user, $events, $id, $source);
+        $res_event = $mapper->usePaginator($filter)->getList($user, $events, $id);
         $ar_event = $res_event->toArray();
         foreach($ar_event as &$event){
             $event['source'] = json_decode($event['source'], true);
