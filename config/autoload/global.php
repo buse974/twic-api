@@ -97,6 +97,7 @@ return array(
             'app_service_dimension',
             'app_service_question',
             'app_service_activity',
+            'app_service_scale',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
