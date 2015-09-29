@@ -6,23 +6,71 @@ use Dal\Service\AbstractService;
 
 class DimensionScale extends AbstractService
 {
-    public function add($dimension_id, $min, $max, $describe)
+    /**
+     * @invokable
+     * 
+     * @param integer $dimension
+     * @param integer $min
+     * @param integer $max
+     * @param string $describe
+     */
+    public function add($dimension, $min, $max, $describe)
     {
+        if ($this->getMapper()->insert($this->getModel()
+            ->setDimensionId($dimension)
+            ->setMin($min)
+            ->setMax($max)
+            ->setDescribe($describe)) <= 0) {
+                throw new \Exception('error insert scale');
+            }
         
+            return $this->getMapper()->getLastInsertValue();
     }
     
-    public function deltete($id)
+    /**
+     * @invokable
+     *
+     * @param integer $id
+     *
+     * @return integer
+     */
+    public function delete($id)
     {
-        
+        return $this->getMapper()->delete($this->getModel()
+            ->setId($id));
     }
     
-    public function update($id, $dimension_id, $min, $max, $describe)
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param integer $dimension
+     * @param integer $min
+     * @param integer $max
+     * @param string $describe
+     * 
+     * @return integer
+     */
+    public function update($id, $dimension, $min, $max, $describe)
     {
-        
+        return $this->getMapper()->update($this->getModel()
+            ->setId($id)
+            ->setDimensionId($dimension)
+            ->setMin($min)
+            ->setMax($max)
+            ->setDescribe($describe));
     }
     
-    public function getList()
+    /**
+     * @invokable
+     *
+     * @param array $filter
+     */
+    public function getList($filter = null)
     {
-        
+        $mapper = $this->getMapper();
+        $res_dimension_scale = $mapper->usePaginator($filter)->fetchAll();
+    
+        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_dimension_scale] : $res_dimension_scale;
     }
 }
