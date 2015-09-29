@@ -295,7 +295,7 @@ class ItemAssignment extends AbstractService
             ->setId($id)
             ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
         
-        $this->getServiceEvent()->studentSubmitAssignment($item_prog);
+        $this->getServiceEvent()->studentSubmitAssignment($id);
         
         return $ret;
     }
@@ -305,7 +305,7 @@ class ItemAssignment extends AbstractService
         $ret = $this->getMapper()->update($this->getModel()
             ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('item_prog_id' => $item_prog));
         
-        $this->getServiceEvent()->studentSubmitAssignment($item_prog);
+        $this->getServiceEvent()->studentSubmitAssignment($this->getIdByItemProg($item_prog));
         
         return $ret;
     }
@@ -405,7 +405,7 @@ class ItemAssignment extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_item_assignment_relation');
     }
-
+    
     /**
      *
      * @return \Application\Service\Event
