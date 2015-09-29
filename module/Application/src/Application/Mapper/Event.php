@@ -15,9 +15,8 @@ class Event extends AbstractMapper
             ->join('like', 'event.id=like.event_id', array('event$nb_like' => new Expression('COUNT(like.event_id)'),'event$is_like' => new Expression('MAX(IF(like.user_id = ' . $me . ', 1, 0))')), $select::JOIN_LEFT)
             ->group('event.id')
             ->order(array('event.id' => 'DESC'));
-        if(null === $id || $source === null){
-            $select
-                ->join('event_user', 'event.id=event_user.event_id', array('event$read_date' => 'read_date'), $select::JOIN_LEFT)
+        if (null === $id || $source === null) {
+            $select->join('event_user', 'event.id=event_user.event_id', array('event$read_date' => 'read_date'), $select::JOIN_LEFT)
                 ->where(array(' (event_user.user_id = ?' => $me))
                 ->where(array(' event.target =  ?)' => "global"), Predicate::OP_OR);
         }
@@ -27,8 +26,11 @@ class Event extends AbstractMapper
         if (null !== $id) {
             $select->where(array('event.id' => $id));
         }
-        if(null !== $source) {
-            $select->where(array('event.user_id' => $source));
+        if (null !== $source) {
+            $select->where(array(' ( ( event.user_id = ? ' => $source))
+                ->where(array(' event.target =  ? ) ' => "user"))
+                ->where(array(' ( event_user.user_id = ?' => $source), Predicate::OP_OR)
+                ->where(array(' event.target <>  ? ) )' => "user"));
         }
         return $this->selectWith($select);
     }
