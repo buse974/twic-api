@@ -589,10 +589,6 @@ class EQCQTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
-    
-    ///////////////////////
-    
-    
     public function testDimensionScaleAdd()
     {
         $this->setIdentity(1);
@@ -731,6 +727,276 @@ class EQCQTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
       
+    ////////////////////////////////////////////////////////////::
+    public function testComponentScaleAdd()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'componentscale.add', array(
+                'component' => 1,
+                'min' => 110,
+                'max' => 120,
+                'describe' => 'describe',
+                'recommandation' => 'recommandation'
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 23);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testComponentScaleAddTwo()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'componentscale.add', array(
+                'component' => 2,
+                'min' => 130,
+                'max' => 140,
+                'describe' => 'describe2',
+                'recommandation' => 'recommandation2'
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 24);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+        return $data['result'];
+    }
+    
+    /**
+     *
+     * @depends testComponentScaleAddTwo
+     */
+    public function testComponentScaleUpdate($id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'componentscale.update', array(
+                'id' => $id,
+                'component' => 3,
+                'min' => 140,
+                'max' => 150,
+                'describe' => 'describe updt',
+                'recommandation' => 'recommandation updt'
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testComponentScaleGetList($filter = null)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('componentscale.getList', []);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 24);
+        $this->assertEquals(count($data['result'][0]) , 6);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['component_id'] , 1);
+        $this->assertEquals($data['result'][0]['min'] , 0);
+        $this->assertEquals($data['result'][0]['max'] , 50);
+        $this->assertEquals($data['result'][0]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][0]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][1]) , 6);
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['component_id'] , 1);
+        $this->assertEquals($data['result'][1]['min'] , 50);
+        $this->assertEquals($data['result'][1]['max'] , 100);
+        $this->assertEquals($data['result'][1]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][1]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][2]) , 6);
+        $this->assertEquals($data['result'][2]['id'] , 3);
+        $this->assertEquals($data['result'][2]['component_id'] , 2);
+        $this->assertEquals($data['result'][2]['min'] , 0);
+        $this->assertEquals($data['result'][2]['max'] , 50);
+        $this->assertEquals($data['result'][2]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][2]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][3]) , 6);
+        $this->assertEquals($data['result'][3]['id'] , 4);
+        $this->assertEquals($data['result'][3]['component_id'] , 2);
+        $this->assertEquals($data['result'][3]['min'] , 50);
+        $this->assertEquals($data['result'][3]['max'] , 100);
+        $this->assertEquals($data['result'][3]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][3]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][4]) , 6);
+        $this->assertEquals($data['result'][4]['id'] , 5);
+        $this->assertEquals($data['result'][4]['component_id'] , 3);
+        $this->assertEquals($data['result'][4]['min'] , 0);
+        $this->assertEquals($data['result'][4]['max'] , 50);
+        $this->assertEquals($data['result'][4]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][4]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][5]) , 6);
+        $this->assertEquals($data['result'][5]['id'] , 6);
+        $this->assertEquals($data['result'][5]['component_id'] , 3);
+        $this->assertEquals($data['result'][5]['min'] , 50);
+        $this->assertEquals($data['result'][5]['max'] , 100);
+        $this->assertEquals($data['result'][5]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][5]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][6]) , 6);
+        $this->assertEquals($data['result'][6]['id'] , 7);
+        $this->assertEquals($data['result'][6]['component_id'] , 4);
+        $this->assertEquals($data['result'][6]['min'] , 0);
+        $this->assertEquals($data['result'][6]['max'] , 50);
+        $this->assertEquals($data['result'][6]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][6]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][7]) , 6);
+        $this->assertEquals($data['result'][7]['id'] , 8);
+        $this->assertEquals($data['result'][7]['component_id'] , 4);
+        $this->assertEquals($data['result'][7]['min'] , 50);
+        $this->assertEquals($data['result'][7]['max'] , 100);
+        $this->assertEquals($data['result'][7]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][7]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][8]) , 6);
+        $this->assertEquals($data['result'][8]['id'] , 9);
+        $this->assertEquals($data['result'][8]['component_id'] , 5);
+        $this->assertEquals($data['result'][8]['min'] , 0);
+        $this->assertEquals($data['result'][8]['max'] , 50);
+        $this->assertEquals($data['result'][8]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][8]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][9]) , 6);
+        $this->assertEquals($data['result'][9]['id'] , 10);
+        $this->assertEquals($data['result'][9]['component_id'] , 5);
+        $this->assertEquals($data['result'][9]['min'] , 50);
+        $this->assertEquals($data['result'][9]['max'] , 100);
+        $this->assertEquals($data['result'][9]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][9]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][10]) , 6);
+        $this->assertEquals($data['result'][10]['id'] , 11);
+        $this->assertEquals($data['result'][10]['component_id'] , 6);
+        $this->assertEquals($data['result'][10]['min'] , 0);
+        $this->assertEquals($data['result'][10]['max'] , 50);
+        $this->assertEquals($data['result'][10]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][10]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][11]) , 6);
+        $this->assertEquals($data['result'][11]['id'] , 12);
+        $this->assertEquals($data['result'][11]['component_id'] , 6);
+        $this->assertEquals($data['result'][11]['min'] , 50);
+        $this->assertEquals($data['result'][11]['max'] , 100);
+        $this->assertEquals($data['result'][11]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][11]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][12]) , 6);
+        $this->assertEquals($data['result'][12]['id'] , 13);
+        $this->assertEquals($data['result'][12]['component_id'] , 7);
+        $this->assertEquals($data['result'][12]['min'] , 0);
+        $this->assertEquals($data['result'][12]['max'] , 50);
+        $this->assertEquals($data['result'][12]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][12]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][13]) , 6);
+        $this->assertEquals($data['result'][13]['id'] , 14);
+        $this->assertEquals($data['result'][13]['component_id'] , 7);
+        $this->assertEquals($data['result'][13]['min'] , 50);
+        $this->assertEquals($data['result'][13]['max'] , 100);
+        $this->assertEquals($data['result'][13]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][13]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][14]) , 6);
+        $this->assertEquals($data['result'][14]['id'] , 15);
+        $this->assertEquals($data['result'][14]['component_id'] , 8);
+        $this->assertEquals($data['result'][14]['min'] , 0);
+        $this->assertEquals($data['result'][14]['max'] , 50);
+        $this->assertEquals($data['result'][14]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][14]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][15]) , 6);
+        $this->assertEquals($data['result'][15]['id'] , 16);
+        $this->assertEquals($data['result'][15]['component_id'] , 8);
+        $this->assertEquals($data['result'][15]['min'] , 50);
+        $this->assertEquals($data['result'][15]['max'] , 100);
+        $this->assertEquals($data['result'][15]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][15]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][16]) , 6);
+        $this->assertEquals($data['result'][16]['id'] , 17);
+        $this->assertEquals($data['result'][16]['component_id'] , 9);
+        $this->assertEquals($data['result'][16]['min'] , 0);
+        $this->assertEquals($data['result'][16]['max'] , 50);
+        $this->assertEquals($data['result'][16]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][16]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][17]) , 6);
+        $this->assertEquals($data['result'][17]['id'] , 18);
+        $this->assertEquals($data['result'][17]['component_id'] , 9);
+        $this->assertEquals($data['result'][17]['min'] , 50);
+        $this->assertEquals($data['result'][17]['max'] , 100);
+        $this->assertEquals($data['result'][17]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][17]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][18]) , 6);
+        $this->assertEquals($data['result'][18]['id'] , 19);
+        $this->assertEquals($data['result'][18]['component_id'] , 10);
+        $this->assertEquals($data['result'][18]['min'] , 0);
+        $this->assertEquals($data['result'][18]['max'] , 50);
+        $this->assertEquals($data['result'][18]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][18]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][19]) , 6);
+        $this->assertEquals($data['result'][19]['id'] , 20);
+        $this->assertEquals($data['result'][19]['component_id'] , 10);
+        $this->assertEquals($data['result'][19]['min'] , 50);
+        $this->assertEquals($data['result'][19]['max'] , 100);
+        $this->assertEquals($data['result'][19]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][19]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][20]) , 6);
+        $this->assertEquals($data['result'][20]['id'] , 21);
+        $this->assertEquals($data['result'][20]['component_id'] , 11);
+        $this->assertEquals($data['result'][20]['min'] , 0);
+        $this->assertEquals($data['result'][20]['max'] , 50);
+        $this->assertEquals($data['result'][20]['describe'] , "describe component 0-50");
+        $this->assertEquals($data['result'][20]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][21]) , 6);
+        $this->assertEquals($data['result'][21]['id'] , 22);
+        $this->assertEquals($data['result'][21]['component_id'] , 11);
+        $this->assertEquals($data['result'][21]['min'] , 50);
+        $this->assertEquals($data['result'][21]['max'] , 100);
+        $this->assertEquals($data['result'][21]['describe'] , "describe component 50-100");
+        $this->assertEquals($data['result'][21]['recommandation'] , null);
+        $this->assertEquals(count($data['result'][22]) , 6);
+        $this->assertEquals($data['result'][22]['id'] , 23);
+        $this->assertEquals($data['result'][22]['component_id'] , 1);
+        $this->assertEquals($data['result'][22]['min'] , 110);
+        $this->assertEquals($data['result'][22]['max'] , 120);
+        $this->assertEquals($data['result'][22]['describe'] , "describe");
+        $this->assertEquals($data['result'][22]['recommandation'] , "recommandation");
+        $this->assertEquals(count($data['result'][23]) , 6);
+        $this->assertEquals($data['result'][23]['id'] , 24);
+        $this->assertEquals($data['result'][23]['component_id'] , 3);
+        $this->assertEquals($data['result'][23]['min'] , 140);
+        $this->assertEquals($data['result'][23]['max'] , 150);
+        $this->assertEquals($data['result'][23]['describe'] , "describe updt");
+        $this->assertEquals($data['result'][23]['recommandation'] , "recommandation updt");
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     *
+     * @depends testComponentScaleAddTwo
+     */
+    public function testComponentScaleDeltete($id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc(
+            'componentscale.delete', array(
+                'id' => $id
+            )
+        );
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    
+    //////////////////////////////////
     /**
      * @depends testAddComponent
      */
