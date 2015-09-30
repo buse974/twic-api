@@ -84,6 +84,11 @@ class Program extends AbstractService
 
         return $res_program;
     }
+    
+    public function getListBySchool($school)
+    {
+        return $this->getMapper()->select($this->getModel()->setSchoolId($school));        
+    }
 
     /**
      * @invokable

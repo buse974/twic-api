@@ -9,6 +9,7 @@ class School extends BaseSchool
 {
     protected $address;
     protected $contact_user;
+    protected $program;
 
     public function exchangeArray(array &$data)
     {
@@ -18,6 +19,18 @@ class School extends BaseSchool
         $this->contact_user = $this->requireModel('app_model_user', $data);
     }
 
+    public function getProgram()
+    {
+        return $this->program;
+    }
+    
+    public function setProgram($program)
+    {
+        $this->program = $program;
+    
+        return $this;
+    }
+    
     public function setAddress($address)
     {
         $this->address = $address;
