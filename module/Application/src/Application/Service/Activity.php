@@ -128,8 +128,12 @@ class Activity extends AbstractService
         
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
-            $m_activity->setObjectData(json_decode($m_activity->getObjectData(), true));
+            if($m_activity->getObjectData() !== null) {
+                $m_activity->setObjectData(json_decode($m_activity->getObjectData(), true));
+            }
+            if($m_activity->getTargetData()!== null) {
             $m_activity->setTargetData(json_decode($m_activity->getTargetData(), true));
+            }
         }
         
         return $res_activity;

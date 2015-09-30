@@ -39,7 +39,7 @@ class GradingPolicyGrade extends AbstractService
         $mapper = $this->getMapper();
         $res_gradingpolicygrade = $mapper->usePaginator($filter)->getList($avg, $filter, $search, $this->getServiceUser()->getIdentity());
 
-        return array('count' => $mapper->count(),'list' => $res_gradingpolicygrade);
+        return ['count' => $mapper->count(),'list' => $res_gradingpolicygrade];
     }
 
     /**
