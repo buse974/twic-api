@@ -16,9 +16,11 @@ class Contact extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('accepted_date', 'contact_id'))
+            ->join('user', 'user.id=contact.contact_id', array())
             ->where(array('contact.user_id' => $user))
             ->where(array('contact.accepted_date IS NOT NULL'))
-            ->where(array('contact.deleted_date IS NULL'));
+            ->where(array('contact.deleted_date IS NULL'))
+            ->where(array('user.deleted_date IS NULL'));
         
         if ($exclude) {
             $select->where->notIn('contact.contact_id', $exclude);
