@@ -116,10 +116,14 @@ class School extends AbstractService
     public function getList($filter = null, $search = null)
     {
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($filter, $search);
+        $res_school = $mapper->usePaginator($filter)->getList($filter, $search);
 
-        return array('list' => $res,
-                    'count' => $mapper->count());
+        foreach ($res_school as $m_school) {
+            $program = $this->getServiceProgram()->getListBySchool($m_school->getId());     
+            $m_school->setProgram(($program->count()>0)?$program:[]);
+        }
+        
+        return ['count' => $mapper->count(), 'list' => $res_school];
     }
 
     /**
@@ -161,6 +165,14 @@ class School extends AbstractService
     public function getServiceAddress()
     {
         return $this->getServiceLocator()->get('addr_service_address');
+    }
+    
+    /**
+     * @return \Application\Service\Program
+     */
+    public function getServiceProgram()
+    {
+        return $this->getServiceLocator()->get('app_service_program');
     }
 
     /**

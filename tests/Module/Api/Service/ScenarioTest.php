@@ -106,6 +106,103 @@ class ScenarioTest extends AbstractService
     }
 
     /**
+     * @depends testCanAddSchool
+     *
+     */
+    public function testCanGetListSchool()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('school.getList', array());
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['count'] , 2);
+        $this->assertEquals(count($data['result']['list']) , 2);
+        $this->assertEquals(count($data['result']['list'][0]) , 12);
+        $this->assertEquals(count($data['result']['list'][0]['program']) , 0);
+        $this->assertEquals(count($data['result']['list'][0]['address']) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['address']['city']) , 2);
+        $this->assertEquals($data['result']['list'][0]['address']['city']['id'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['city']['name'] , null);
+        $this->assertEquals(count($data['result']['list'][0]['address']['division']) , 2);
+        $this->assertEquals($data['result']['list'][0]['address']['division']['id'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['division']['name'] , null);
+        $this->assertEquals(count($data['result']['list'][0]['address']['country']) , 3);
+        $this->assertEquals($data['result']['list'][0]['address']['country']['id'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['country']['short_name'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['country']['name'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['id'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['street_no'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['street_type'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['street_name'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['longitude'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['latitude'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['door'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['building'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['apartment'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['floor'] , null);
+        $this->assertEquals($data['result']['list'][0]['address']['timezone'] , null);
+        $this->assertEquals($data['result']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['name'] , "Morbi Corporation");
+        $this->assertEquals($data['result']['list'][0]['next_name'] , "Dolor Dolor Foundation");
+        $this->assertEquals($data['result']['list'][0]['short_name'] , "turpis");
+        $this->assertEquals($data['result']['list'][0]['logo'] , null);
+        $this->assertEquals($data['result']['list'][0]['describe'] , "vel, mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et libero. Proin mi. Aliquam gravida mauris ut mi. Duis risus odio, auctor vitae, aliquet nec, imperdiet nec, leo. Morbi neque tellus, imperdiet non,");
+        $this->assertEquals($data['result']['list'][0]['website'] , "http://");
+        $this->assertEquals($data['result']['list'][0]['programme'] , "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur");
+        $this->assertEquals($data['result']['list'][0]['background'] , null);
+        $this->assertEquals($data['result']['list'][0]['phone'] , "04 17 21 41 32");
+        $this->assertEquals(count($data['result']['list'][1]) , 12);
+        $this->assertEquals(count($data['result']['list'][1]['program']) , 1);
+        $this->assertEquals(count($data['result']['list'][1]['program'][0]) , 8);
+        $this->assertEquals($data['result']['list'][1]['program'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][1]['program'][0]['name'] , "program name");
+        $this->assertEquals($data['result']['list'][1]['program'][0]['school_id'] , 2);
+        $this->assertEquals($data['result']['list'][1]['program'][0]['level'] , "emba");
+        $this->assertEquals($data['result']['list'][1]['program'][0]['sis'] , "sis");
+        $this->assertEquals($data['result']['list'][1]['program'][0]['year'] , null);
+        $this->assertEquals($data['result']['list'][1]['program'][0]['deleted_date'] , null);
+        $this->assertEquals($data['result']['list'][1]['program'][0]['created_date'] , null);
+        $this->assertEquals(count($data['result']['list'][1]['address']) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['address']['city']) , 2);
+        $this->assertEquals($data['result']['list'][1]['address']['city']['id'] , 1);
+        $this->assertEquals($data['result']['list'][1]['address']['city']['name'] , "Monaco");
+        $this->assertEquals(count($data['result']['list'][1]['address']['division']) , 2);
+        $this->assertEquals($data['result']['list'][1]['address']['division']['id'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['division']['name'] , null);
+        $this->assertEquals(count($data['result']['list'][1]['address']['country']) , 3);
+        $this->assertEquals($data['result']['list'][1]['address']['country']['id'] , 1);
+        $this->assertEquals($data['result']['list'][1]['address']['country']['short_name'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['country']['name'] , "Monaco");
+        $this->assertEquals($data['result']['list'][1]['address']['id'] , 1);
+        $this->assertEquals($data['result']['list'][1]['address']['street_no'] , 12);
+        $this->assertEquals($data['result']['list'][1]['address']['street_type'] , "rue");
+        $this->assertEquals($data['result']['list'][1]['address']['street_name'] , "du stade");
+        $this->assertEquals($data['result']['list'][1]['address']['longitude'] , 11.6412744);
+        $this->assertEquals($data['result']['list'][1]['address']['latitude'] , 48.1420667);
+        $this->assertEquals($data['result']['list'][1]['address']['door'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['building'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['apartment'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['floor'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['timezone'] , "Europe/Berlin");
+        $this->assertEquals($data['result']['list'][1]['id'] , 2);
+        $this->assertEquals($data['result']['list'][1]['name'] , "université de monaco");
+        $this->assertEquals($data['result']['list'][1]['next_name'] , "buisness school");
+        $this->assertEquals($data['result']['list'][1]['short_name'] , "IUM");
+        $this->assertEquals($data['result']['list'][1]['logo'] , "token");
+        $this->assertEquals($data['result']['list'][1]['describe'] , "une description");
+        $this->assertEquals($data['result']['list'][1]['website'] , "www.ium.com");
+        $this->assertEquals($data['result']['list'][1]['programme'] , "super programme");
+        $this->assertEquals($data['result']['list'][1]['background'] , "background");
+        $this->assertEquals($data['result']['list'][1]['phone'] , +33480547852);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        
+    }
+    
+    /**
      * @depends testCanAddProgram
      *
      * @param integer $program_id            
