@@ -100,6 +100,7 @@ return array(
             'app_service_scale',
             'app_service_dimension_scale',
             'app_service_component_scale',
+            'app_service_guidelines',
         ),
         'headers' => array(
            /* 'Access-Control-Allow-Origin' => '*',
