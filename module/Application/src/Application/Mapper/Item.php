@@ -23,7 +23,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListGrade($user, $programs, $courses, $type, $notgraded, $newMessage, $filter, $item_prog)
+    public function getListGrade($me, $programs, $courses, $type, $notgraded, $newMessage, $filter, $item_prog, $user)
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -73,19 +73,22 @@ class Item extends AbstractMapper
             }
         }
         
-        if (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) {
+        if (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
             $select->where(array('item_item_prog_item_assignment.submit_date IS NOT NULL'));
         } else {
-            $select->where(array('item_prog_user.user_id' => $user['id']));
+            $select->where(array('item_prog_user.user_id' => $me['id']));
         }
-        if (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $user['roles'])) {
-            $select->where(array('program.school_id' => $user['school']['id']));
+        if (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $me['roles'])) {
+            $select->where(array('program.school_id' => $me['school']['id']));
         }
-        if (array_key_exists(ModelRole::ROLE_INSTRUCTOR_ID, $user['roles'])) {
-            $select->join('course_user_relation', 'course_user_relation.course_id = course.id', array())->where(array('course_user_relation.user_id' => $user['id']));
+        if (array_key_exists(ModelRole::ROLE_INSTRUCTOR_ID, $me['roles'])) {
+            $select->join('course_user_relation', 'course_user_relation.course_id = course.id', array())->where(array('course_user_relation.user_id' => $me['id']));
         }
         if ($item_prog !== null) {
             $select->where(array('item_prog.id' => $item_prog));
+        }
+        if ($user !== null) {
+            $select->where(array('item_prog_user.user_id' => $user));
         }
         
 
