@@ -92,10 +92,15 @@ class ItemProg extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
     
-        $select->columns(array('id','item_id'))   
+        $select->columns(array('id','item_id', 'item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),
+            'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")))   
             ->join('item', 'item.id = item_prog.item_id', array('id', 'title', 'type'))
             ->join('module', 'module.id = item.module_id', array('id', 'title'), $select::JOIN_LEFT)
             ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array())
+            ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
+            ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id AND item_assignment_relation.item_assignment_id=item_assignment.id ', array('id', 
+                'item_assignment$submit_date' => new Expression("DATE_FORMAT(item_assignment.submit_date, '%Y-%m-%dT%TZ') ")
+            ))
             ->join('item_grading', 'item_grading.item_prog_user_id = item_prog_user.id', array('id', 'grade'), $select::JOIN_LEFT)
             ->where(array('item_prog_user.user_id' => $user))
             ->where(array('item.course_id' => $course));
