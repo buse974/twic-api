@@ -21,7 +21,11 @@ class GradingPolicyGrade extends AbstractMapper
             ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID));
         
         if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles'])) {
-            $selectProgram->join(array('course_instructor_relation' => 'course_user_relation'), 'course.id = course_instructor_relation.course_id', array())->where(array('course_instructor_relation.user_id' => $user['id']));
+            $selectProgram->join(array('course_instructor_relation' => 'course_user_relation'), 'course.id = course_instructor_relation.course_id', array())
+            ->where(array('course_instructor_relation.user_id' => $user['id']));
+        }
+        if (array_key_exists(\Application\Model\Role::ROLE_ACADEMIC_ID, $user['roles'])) {
+            $selectProgram->where(array('program.school_id' => $user['school']['id']));
         }
         
          $select->columns(array('grading_policy_grade$user' => 'user_id','grading_policy_grade$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade) / SUM(grading_policy.grade) AS DECIMAL )')))
