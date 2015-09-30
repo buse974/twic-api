@@ -2620,6 +2620,8 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(5);
         $data = $this->jsonRpc('course.getListDetail', array('user' => 4));
     
+        $this->printCreateTest($data);
+        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 9);
