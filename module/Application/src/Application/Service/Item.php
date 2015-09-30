@@ -211,12 +211,12 @@ class Item extends AbstractService
      * @param bool   $new_message
      * @param array  $filter
      */
-    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $item_prog = null)
+    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $item_prog = null, $user = null)
     {
         $mapper = $this->getMapper();
-        $user = $this->getServiceUser()->getIdentity();
+        $me = $this->getServiceUser()->getIdentity();
 
-        $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter, $item_prog);
+        $res_item = $mapper->usePaginator($filter)->getListGrade($me, $program, $course, $type, $not_graded, $new_message, $filter, $item_prog, $user);
 
         foreach ($res_item as $m_item) {
             $item_assigment_id = $m_item->getItemProg()->getItemAssignment()->getId();
