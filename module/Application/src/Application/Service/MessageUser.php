@@ -131,7 +131,7 @@ class MessageUser extends AbstractService
             $mesage = [$mesage];
         }
         
-        $m_message_user = $this->getModel()->setReadDate(new IsNull());
+        $m_message_user = $this->getModel()->setReadDate(new IsNull('read_date'));
         
         return $this->getMapper()->update($m_message_user, array('message_id' => $mesage,'user_id' => $me,new IsNotNull('read_date')));
     }

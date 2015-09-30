@@ -3,6 +3,8 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
+use Zend\Db\Sql\Predicate\Between;
 
 class Activity extends AbstractService
 {
@@ -94,13 +96,16 @@ class Activity extends AbstractService
      * @return integer
      * 
      */
-    public function getList($date = null, $event = null, $object = null, $target = null, $user = null)
+    public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null)
     {
         $m_activity = $this->getModel();
         $m_activity->setEvent($event)
                    ->setDate($date)
                    ->setUserId($user);
         
+        if(null !== $start_date && null !== $end_date) {
+            $m_activity->setDate(new Between('date', $start_date, $end_date));
+        }
         if(null !== $object) {
             if(isset($object['id'])) {
                 $m_activity->setObjectId($object['id']);
@@ -128,11 +133,13 @@ class Activity extends AbstractService
         
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
-            if($m_activity->getObjectData() !== null) {
-                $m_activity->setObjectData(json_decode($m_activity->getObjectData(), true));
+            $o_data = $m_activity->getObjectData();
+            if(is_string($o_data)) {
+                $m_activity->setObjectData(json_decode($o_data, true));
             }
-            if($m_activity->getTargetData()!== null) {
-            $m_activity->setTargetData(json_decode($m_activity->getTargetData(), true));
+            $o_target = $m_activity->getTargetData();
+            if(is_string($o_target)) {
+            $m_activity->setTargetData(json_decode($o_target, true));
             }
         }
         
