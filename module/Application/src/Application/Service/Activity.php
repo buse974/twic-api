@@ -124,7 +124,15 @@ class Activity extends AbstractService
             }
         }
         
-        return $this->getMapper()->select($m_activity);
+        $res_activity =  $this->getMapper()->select($m_activity);
+        
+        foreach ($res_activity as $m_activity) {
+            $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
+            $m_activity->setObjectData(json_decode($m_activity->getObjectData(), true));
+            $m_activity->setTargetData(json_decode($m_activity->getTargetData(), true));
+        }
+        
+        return $res_activity;
     }
     
 
