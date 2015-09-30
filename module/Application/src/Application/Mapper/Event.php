@@ -34,7 +34,7 @@ class Event extends AbstractMapper
                 ->where(array(' ( ( event.user_id = ? ' => $source))
                 ->where(array(' event.target =  ? ) ' => "user"))
                 ->where(array(' ( event_user.user_id = ?' => $source), Predicate::OP_OR)
-                ->where(array(' event.target <>  ? ) )' => "user"));
+                ->where(array(' event.user_id IS NULL ) )'));
         }
         return $this->selectWith($select);
     }
