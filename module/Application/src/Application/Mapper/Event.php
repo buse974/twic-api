@@ -30,11 +30,13 @@ class Event extends AbstractMapper
             $select->where(array('event.id' => $id));
         }
         if (null !== $source) {
-            $select->where(array(' ( ( event.user_id = ? ' => $source))
+            $select->join('event_user', 'event.id=event_user.event_id', array('event$read_date' => 'read_date'), $select::JOIN_LEFT)
+                ->where(array(' ( ( event.user_id = ? ' => $source))
                 ->where(array(' event.target =  ? ) ' => "user"))
                 ->where(array(' ( event_user.user_id = ?' => $source), Predicate::OP_OR)
                 ->where(array(' event.target <>  ? ) )' => "user"));
         }
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 }
