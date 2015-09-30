@@ -125,10 +125,10 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][0]['object_id'] , 3);
         $this->assertEquals($data['result'][0]['object_name'] , "item_prog");
         $this->assertEquals($data['result'][0]['object_value'] , 7);
-        $this->assertEquals($data['result'][0]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][0]['object_data'] , 'dataobj');
         $this->assertEquals($data['result'][0]['target_id'] , 3);
         $this->assertEquals($data['result'][0]['target_name'] , "nametarget");
-        $this->assertEquals($data['result'][0]['target_data'] , '"datatarget"');
+        $this->assertEquals($data['result'][0]['target_data'] , 'datatarget');
         $this->assertEquals(!empty($data['result'][0]['date']) , true);
         $this->assertEquals($data['result'][0]['user_id'] , 1);
         $this->assertEquals(count($data['result'][1]) , 11);
@@ -137,10 +137,10 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][1]['object_id'] , 3);
         $this->assertEquals($data['result'][1]['object_name'] , "item_prog");
         $this->assertEquals($data['result'][1]['object_value'] , 5);
-        $this->assertEquals($data['result'][1]['object_data'] , '"dataobj"');
+        $this->assertEquals($data['result'][1]['object_data'] , 'dataobj');
         $this->assertEquals($data['result'][1]['target_id'] , 3);
         $this->assertEquals($data['result'][1]['target_name'] , "nametarget");
-        $this->assertEquals($data['result'][1]['target_data'] , '"datatarget"');
+        $this->assertEquals($data['result'][1]['target_data'] , 'datatarget');
         $this->assertEquals(!empty($data['result'][1]['date']) , true);
         $this->assertEquals($data['result'][1]['user_id'] , 1);
         $this->assertEquals($data['id'] , 1);
