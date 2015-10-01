@@ -202,11 +202,16 @@ class Feed extends AbstractService
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
         
-        foreach ($return['meta'] as $k => $v) {
-            $return['meta'][$k] = utf8_decode($v);
+        if(isset($return['meta'])) {
+            foreach ($return['meta'] as $k => $v) {
+                $return['meta'][$k] = utf8_decode($v);
+            }
         }
-        foreach ($return['open_graph'] as $k => $v) {
-            $return['open_graph'][$k] = utf8_decode($v);
+        
+        if(isset($return['open_graph'])) {
+            foreach ($return['open_graph'] as $k => $v) {
+                $return['open_graph'][$k] = utf8_decode($v);
+            }
         }
         
         
