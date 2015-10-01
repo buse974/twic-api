@@ -62,16 +62,17 @@ class Guidelines extends AbstractService
     {
         $res_guidelines = $this->getMapper()->select($this->getModel()->setState($state));
         
+        $ret = [];
         foreach ($res_guidelines as $m_guidelines) {
             $data = $m_guidelines->getData();
             if(is_string($data)) {
-                $m_guidelines->setData(json_decode($data,true));
+                $ret[] = json_decode($data,true);
             }
         }
         
         $this->getServiceGuidelinesView()->add($state);
         
-        return $res_guidelines;
+        return $ret;
     }
 
     /**

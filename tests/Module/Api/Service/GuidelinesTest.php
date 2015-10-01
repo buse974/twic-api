@@ -128,15 +128,12 @@ class GuidelinesTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['state'] , "state");
-        $this->assertEquals(count($data['result'][0]['data']) , 2);
-        $this->assertEquals($data['result'][0]['data']['toto'] , "toto");
-        $this->assertEquals(count($data['result'][0]['data']['titi']) , 3);
-        $this->assertEquals($data['result'][0]['data']['titi'][0] , 1);
-        $this->assertEquals($data['result'][0]['data']['titi'][1] , 2);
-        $this->assertEquals($data['result'][0]['data']['titi'][2] , 3);
+        $this->assertEquals(count($data['result'][0]) , 2);
+        $this->assertEquals($data['result'][0]['toto'] , "toto");
+        $this->assertEquals(count($data['result'][0]['titi']) , 3);
+        $this->assertEquals($data['result'][0]['titi'][0] , 1);
+        $this->assertEquals($data['result'][0]['titi'][1] , 2);
+        $this->assertEquals($data['result'][0]['titi'][2] , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

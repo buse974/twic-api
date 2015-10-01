@@ -9,7 +9,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 class MessageUser extends AbstractMapper
 {
 
-    public function getList($me, $message = null, $conversation = null, $tag = 'INBOX', $type = null, $filter = null)
+    public function getList($me, $message = null, $conversation = null, $tag = 'INBOX', $type = null, $filter = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','user_id','from_id','read_date','conversation_id','created_date'))
@@ -23,6 +23,13 @@ class MessageUser extends AbstractMapper
             $select->where(array('message_user_message.id' => $message));
         } elseif (null !== $conversation) {
             $select->where(array('message_user.conversation_id' => $conversation));
+            if (null !== $search) {
+                $select->join('message_doc', 'message_doc.message_id=message.id', array(), $select::JOIN_LEFT)
+                    ->where(array('( message_user_message.title LIKE ? ' => '%'.$search.'%'))
+                    ->where(array('CONCAT(message_user_from.firstname," ",message_user_from.lastname) LIKE ? ' =>  '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array('CONCAT(message_user_from.lastname," ",message_user_from.firstname) LIKE ? ' =>  '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array('message_doc.name LIKE ? ) ' =>  '%'.$search.'%'), Predicate::OP_OR);
+            }
         } else {
             $subselect = $this->tableGateway->getSql()->select();
             $subselect->columns(array('message_user.id' => new Expression('MAX(message_user.id)')))
@@ -33,6 +40,15 @@ class MessageUser extends AbstractMapper
             
             if (null !== $type) {
                 $subselect->where(array('message.type' => $type));
+            }
+            
+            if (null !== $search) {
+                $subselect->join('message_doc', 'message_doc.message_id=message.id', array(), $select::JOIN_LEFT)
+                    ->join('user', 'user.id=message_user.from_id', array())
+                    ->where(array('( message.title LIKE ? ' =>  '%'.$search.'%'))
+                    ->where(array('CONCAT(user.firstname," ",user.lastname) LIKE ? ' =>  '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array('CONCAT(user.lastname," ",user.firstname) LIKE ? ' =>  '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array('message_doc.name LIKE ? ) ' =>  '%'.$search.'%'), Predicate::OP_OR);
             }
             
             switch ($tag) {
@@ -64,6 +80,7 @@ class MessageUser extends AbstractMapper
                     ;
                     break;
             }
+            
             
             $select->where(array(new In('message_user.id', $subselect)));
         }
