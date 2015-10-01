@@ -6,12 +6,11 @@ use Dal\Service\AbstractService;
 
 class GradingPolicyGrade extends AbstractService
 {
-    
     /**
      * @invokable
      *
-     * @param int  $grading_policy
-     * @param int  $user
+     * @param int $grading_policy
+     * @param int $user
      * @param int $grade
      */
     public function setGrade($grading_policy, $user, $grade)
@@ -19,12 +18,13 @@ class GradingPolicyGrade extends AbstractService
         $mapper = $this->getMapper();
         $model = $this->getModel()->setGradingPolicyId($grading_policy)->setUserId($user);
         $res_grading_policy_grade = $mapper->select($model);
-        if($res_grading_policy_grade->count() > 0){            
+        if ($res_grading_policy_grade->count() > 0) {
             $this->getMapper()->update($res_grading_policy_grade->current()->setGrade($grade));
+
             return $res_grading_policy_grade->current()->getId();
         }
-        return $this->getMapper()->insert($model->setGrade($grade));        
 
+        return $this->getMapper()->insert($model->setGrade($grade));
     }
     /**
      * @invokable
@@ -35,7 +35,6 @@ class GradingPolicyGrade extends AbstractService
      */
     public function getList($avg = array(), $filter = array(), $search = null)
     {
-        
         $mapper = $this->getMapper();
         $res_gradingpolicygrade = $mapper->usePaginator($filter)->getList($avg, $filter, $search, $this->getServiceUser()->getIdentity());
 
@@ -57,9 +56,9 @@ class GradingPolicyGrade extends AbstractService
     public function process($item_assignment, $user)
     {
         $ret = $this->getMapper()->updateGrade($item_assignment, $user);
-        
+
         $this->getServiceEvent()->assignmentGraded($item_assignment, $user);
-        
+
         return $ret;
     }
 
@@ -70,7 +69,7 @@ class GradingPolicyGrade extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
+
     /**
      * @return \Application\Service\Event
      */

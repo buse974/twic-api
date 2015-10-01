@@ -1,4 +1,5 @@
 <?php
+
 namespace Auth\Authentication\Adapter;
 
 use Zend\Authentication\Adapter\AbstractAdapter;
@@ -13,7 +14,6 @@ use Zend\Db\Sql\Predicate\IsNotNull;
 
 class DbAdapter extends AbstractAdapter
 {
-
     /**
      * Bdd Adapter.
      *
@@ -22,31 +22,26 @@ class DbAdapter extends AbstractAdapter
     protected $db_adapter;
 
     /**
-     *
      * @var string
      */
     protected $table;
 
     /**
-     *
      * @var \Auth\Auth\Authentication\Adapter\Model\IdentityInterface
      */
     protected $result;
 
     /**
-     *
      * @var string
      */
     protected $hash;
 
     /**
-     *
      * @var string
      */
     protected $identity_column;
 
     /**
-     *
      * @var string
      */
     protected $credential_column;
@@ -76,19 +71,19 @@ class DbAdapter extends AbstractAdapter
         $code = Result::FAILURE;
         $message = array();
         $identity = null;
-        
+
         $sql = new DbSql($this->db_adapter);
         $select = $sql->select();
         $select->from($this->table)
             ->columns(array('*'))
             ->where(array(' ( user.password = MD5(?) ' => $this->credential))
             ->where(array('user.new_password = MD5(?) )' => $this->credential), Predicate::OP_OR)
-            ->where(array('user.' . $this->identity_column . ' = ? ' => $this->identity))
+            ->where(array('user.'.$this->identity_column.' = ? ' => $this->identity))
             ->where(array('user.deleted_date IS NULL'));
-        
+
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
-        
+
         if ($results->count() < 1) {
             $code = Result::FAILURE_IDENTITY_NOT_FOUND;
             $message[] = 'A record with the supplied identity could not be found.';
@@ -98,26 +93,25 @@ class DbAdapter extends AbstractAdapter
         } else {
             $code = Result::SUCCESS;
             $message[] = 'Authentication successful.';
-            
+
             $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
-            
+
             $arrayIdentity = current($arrayIdentity);
-            
+
             $identity = $this->getResult()->exchangeArray($arrayIdentity);
-            $identity->setToken($identity->getId() . md5($identity->getId() . $identity->getEmail() . Rand::getBytes(10) . time()));
-            
+            $identity->setToken($identity->getId().md5($identity->getId().$identity->getEmail().Rand::getBytes(10).time()));
+
             $update = $sql->update('user');
-                
-            $update->set(array('password' => md5($this->credential),'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));
+
+            $update->set(array('password' => md5($this->credential), 'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));
             $statement = $sql->prepareStatementForSqlObject($update);
             $statement->execute();
         }
-        
+
         return new Result($code, $identity, $message);
     }
 
     /**
-     *
      * @return \Auth\Auth\Authentication\Adapter\Model\IdentityInterface
      */
     public function getResult()
@@ -125,7 +119,7 @@ class DbAdapter extends AbstractAdapter
         if (null === $this->result) {
             $this->result = new Identity();
         }
-        
+
         return $this->result;
     }
 }

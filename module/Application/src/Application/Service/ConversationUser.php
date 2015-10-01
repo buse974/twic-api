@@ -6,13 +6,11 @@ use Dal\Service\AbstractService;
 
 class ConversationUser extends AbstractService
 {
-    
     /**
      * @invokable
      * 
      * @param array $users
-     * @param integer $type
-     * 
+     * @param int   $type
      */
     public function getConversationByUser(array $users, $type = null)
     {
@@ -44,11 +42,12 @@ class ConversationUser extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setConversationId($conversation));
     }
-    
+
     /**
-     * @param array $users
+     * @param array  $users
      * @param string $videoconf
-     * @return integer
+     *
+     * @return int
      */
     public function createConversation($users, $videoconf = null, $type = null)
     {
@@ -60,32 +59,30 @@ class ConversationUser extends AbstractService
             $this->getMapper()->insert($m_conversation_user);
         }
 
-        if($videoconf!==null) {
+        if ($videoconf !== null) {
             $this->getServiceVideoconfConversation()->add($conversation_id, $videoconf);
         }
-        
+
         return $conversation_id;
     }
-    
-    
-    
+
     public function add($conversation, $users)
     {
         $ret = [];
         foreach ($users as $user) {
             $ret[$user] = $this->getMapper()->add($conversation, $user);
         }
-        
+
         return $ret;
     }
-    
+
     public function replace($conversation, $users)
     {
         $this->getMapper()->deleteNotIn($conversation, $users);
 
         return $this->add($conversation, $users);
     }
-    
+
     /**
      * @param int $conversation
      * @param int $user

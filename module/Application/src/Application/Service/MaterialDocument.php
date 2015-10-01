@@ -14,7 +14,7 @@ class MaterialDocument extends AbstractService
      *
      * @invokable
      *
-     * @param integer    $course_id
+     * @param int    $course_id
      * @param string $type
      * @param string $title
      * @param string $autor
@@ -25,7 +25,7 @@ class MaterialDocument extends AbstractService
      *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function add($course_id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
     {
@@ -69,7 +69,7 @@ class MaterialDocument extends AbstractService
      *
      * @invokable
      *
-     * @param integer    $id
+     * @param int    $id
      * @param string $type
      * @param string $title
      * @param string $author
@@ -78,7 +78,7 @@ class MaterialDocument extends AbstractService
      * @param string $token
      * @param string $date
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
     {
@@ -92,7 +92,7 @@ class MaterialDocument extends AbstractService
                                     ->setSource($source)
                                     ->setToken($token)
                                     ->setDate($date);
-        
+
         return $this->getMapper()->update($m_material_document);
     }
 
@@ -103,7 +103,7 @@ class MaterialDocument extends AbstractService
      *
      * @param delete $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {
@@ -125,7 +125,7 @@ class MaterialDocument extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setCourseId($course_id)->setDeletedDate(new IsNull()));
     }
-    
+
     /**
      * Get material document.
      *
@@ -149,7 +149,7 @@ class MaterialDocument extends AbstractService
     {
         return $this->getMapper()->getListByItem($item);
     }
-    
+
     /**
      * @return \Application\Service\Event
      */

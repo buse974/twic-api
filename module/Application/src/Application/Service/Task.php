@@ -104,8 +104,7 @@ class Task extends AbstractService
 
             $res = $this->getMapper()->update($m_calendar);
 
-            if ($task_share !== null) 
-            {
+            if ($task_share !== null) {
                 $this->getServiceTaskShare()->getMapper()->delete($this->getServiceTaskShare()->getModel()->setTaskId($id));
                 $this->addSharing($id, $task_share);
             }

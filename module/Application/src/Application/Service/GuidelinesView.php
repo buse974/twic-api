@@ -1,11 +1,11 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class GuidelinesView extends AbstractService
 {
-
     public function add($state)
     {
         return $this->getMapper()->view($state, $this->getServiceUser()
@@ -23,7 +23,6 @@ class GuidelinesView extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()

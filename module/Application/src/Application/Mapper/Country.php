@@ -16,8 +16,8 @@ class Country extends AbstractMapper
     public function getList($string)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','short_name'))
-                ->where(array('short_name LIKE ?' => '%' .$string . '%'));
+        $select->columns(array('id', 'short_name'))
+                ->where(array('short_name LIKE ?' => '%'.$string.'%'));
 
         return $this->selectWith($select);
     }

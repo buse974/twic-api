@@ -23,14 +23,14 @@ class School extends BaseSchool
     {
         return $this->program;
     }
-    
+
     public function setProgram($program)
     {
         $this->program = $program;
-    
+
         return $this;
     }
-    
+
     public function setAddress($address)
     {
         $this->address = $address;

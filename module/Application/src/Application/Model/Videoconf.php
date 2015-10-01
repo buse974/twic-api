@@ -39,62 +39,62 @@ class Videoconf extends BaseVideoconf
     {
         return $this->item_assignment_id;
     }
-    
+
     public function setItemAssignmentId($item_assignment_id)
     {
         $this->item_assignment_id = $item_assignment_id;
-    
+
         return $this;
     }
-    
+
     public function getVideoconfArchives()
     {
         return $this->videoconf_archives;
     }
-    
+
     public function setVideoconfArchives($videoconf_archives)
     {
         $this->videoconf_archives = $videoconf_archives;
-    
+
         return $this;
     }
-    
+
     public function getDocs()
     {
         return $this->docs;
     }
-    
+
     public function setDocs($docs)
     {
         $this->docs = $docs;
-    
+
         return $this;
     }
-    
+
     public function getUsers()
     {
         return $this->users;
     }
-    
+
     public function setUsers($users)
     {
         $this->users = $users;
-    
+
         return $this;
     }
-    
+
     public function getConversations()
     {
         return $this->conversations;
     }
-     
+
     public function setConversations($conversations)
     {
         $this->conversations = $conversations;
-    
+
         return $this;
     }
-    
+
     public function setVideoconfEntity($videoconf_entity)
     {
         $this->videoconf_entity = $videoconf_entity;

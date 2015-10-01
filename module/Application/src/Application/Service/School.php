@@ -46,27 +46,27 @@ class School extends AbstractService
         }
 
         $school_id = $this->getMapper()->getLastInsertValue();
-        
+
         $this->getServiceEvent()->schoolNew($school_id);
         $this->getServiceGrading()->initTpl($school_id);
 
         return $this->get($school_id);
     }
 
-
     /**
      * Update school.
      *
      * @invokable
      *
-     * @param integer $id
+     * @param int    $id
      * @param string $name
      * @param string $logo
      * @param string $describe
      * @param string $website
      * @param string $short_name
      * @param string $phone
-     * @return integer
+     *
+     * @return int
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null)
     {
@@ -119,10 +119,10 @@ class School extends AbstractService
         $res_school = $mapper->usePaginator($filter)->getList($filter, $search);
 
         foreach ($res_school as $m_school) {
-            $program = $this->getServiceProgram()->getListBySchool($m_school->getId());     
-            $m_school->setProgram(($program->count()>0)?$program:[]);
+            $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
+            $m_school->setProgram(($program->count() > 0) ? $program : []);
         }
-        
+
         return ['count' => $mapper->count(), 'list' => $res_school];
     }
 
@@ -158,7 +158,7 @@ class School extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
-    
+
     /**
      * @return \Address\Service\Address
      */
@@ -166,7 +166,7 @@ class School extends AbstractService
     {
         return $this->getServiceLocator()->get('addr_service_address');
     }
-    
+
     /**
      * @return \Application\Service\Program
      */

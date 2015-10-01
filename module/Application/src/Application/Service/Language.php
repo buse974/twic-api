@@ -9,7 +9,8 @@ class Language extends AbstractService
     /**
      * @invokable
      */
-    public function getList() {
+    public function getList()
+    {
         return $this->getMapper()->fetchAll();
     }
 

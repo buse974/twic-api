@@ -42,7 +42,7 @@ class Address extends AbstractModel
 
     public function setStreetNo($street_no)
     {
-        $this->street_no= $street_no;
+        $this->street_no = $street_no;
 
         return $this;
     }
@@ -58,7 +58,7 @@ class Address extends AbstractModel
 
         return $this;
     }
-        
+
     public function getStreetName()
     {
         return $this->street_name;
@@ -82,8 +82,7 @@ class Address extends AbstractModel
 
         return $this;
     }
-    
-    
+
     public function getDoor()
     {
         return $this->door;
@@ -119,12 +118,12 @@ class Address extends AbstractModel
 
         return $this;
     }
-    
+
     public function getCityId()
     {
         return $this->city_id;
     }
-    
+
     public function getDivisionId()
     {
         return $this->division_id;
@@ -136,26 +135,26 @@ class Address extends AbstractModel
 
         return $this;
     }
-    
+
     public function getCountryId()
     {
         return $this->country_id;
     }
-    
+
     public function setCountryId($country_id)
     {
         $this->country_id = $country_id;
-                
+
         return $this;
     }
-    
+
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
 
         return $this;
     }
-    
+
     public function getLongitude()
     {
         return $this->longitude;
@@ -167,7 +166,7 @@ class Address extends AbstractModel
 
         return $this;
     }
-    
+
     public function getLatitude()
     {
         return $this->latitude;
