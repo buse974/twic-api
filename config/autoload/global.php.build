@@ -12,36 +12,36 @@
  * file.
  */
 
-return array(
-    'app-conf' => array(
+return [
+    'app-conf' => [
         'cache'   => 'storage_memcached',
         'secret_key' => 'toto',
         'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
         'secret_key_fb_debug' => false,
-    ),
-    'dal-conf' => array(
+    ],
+    'dal-conf' => [
         'adapter' => 'db-adapter',
         'cache'   => 'storage_memcached',
         'log'     => 'log-system',
-        'namespace' => array(
-            'app' => array(
+        'namespace' => [
+            'app' => [
                 'service' => 'Application\\Service',
                 'mapper'  => 'Application\\Mapper',
                 'model'   => 'Application\\Model',
-            ),
-        ),
-    ),
-    'rbac-conf' => array(
-        'cache' => array(
+            ],
+        ],
+    ],
+    'rbac-conf' => [
+        'cache' => [
             'name' => 'storage_memcached',
             'enable' => true,
-        ),
-    ),
-    'json-rpc-server' => array(
+        ],
+    ],
+    'json-rpc-server' => [
         'cache' => 'storage_memcached',
         'log' => 'log-system',
         'persistence' => true,
-        'services' => array(
+        'services' => [
             'app_service_user',
             'app_service_item',
             'app_service_school',
@@ -101,49 +101,56 @@ return array(
             'app_service_dimension_scale',
             'app_service_component_scale',
             'app_service_guidelines',
-        ),
-        'headers' => array(
+            [
+                'class' => 'addr_service_address',
+                'methods' => [
+                    'getAddress'
+                ],
+                'namespace' => 'addr'
+            ]
+        ],
+        'headers' => [
             'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-        ),
-    ),
-    'mail-conf' => array(
-        'template' => array(
+        ],
+    ],
+    'mail-conf' => [
+        'template' => [
             'storage' => 'Mail\Template\Storage\FsStorage',
             'path' => __DIR__.'/../../../tpl/',
-        ),
-        'storage' => array(
+        ],
+        'storage' => [
             'active' => false,
-        ),
-        'transport' => array(
+        ],
+        'transport' => [
             'active' => true,
             'type'   => 'sendmail'/*'smtp'*/,
-            'options' => array(
+            'options' => [
                 /*'name'              => 'christophe',
     			'host'              => 'smtp.thestudnet.com',
     			'port'              => 587,
     			'connection_class'  => 'plain',
-    			'connection_config' => array(
+    			'connection_config' => [
     				'ssl' => 'tls',
-    			),*/
-            ),
-        ),
-    ),
-    'zopentok-conf' => array(
+    			],*/
+            ],
+        ],
+    ],
+    'zopentok-conf' => [
         'api_key'     =>  '${opentok.apikey}',
         'api_secret'  =>  '${opentok.apisecret}',
         'expire_time' => 60*60*24*30,
         'adapter'     => 'http-adapter',
-    ),
-    'dms-conf' => array(
+    ],
+    'dms-conf' => [
             'adapter' => 'http-adapter',
-            'convert' => array(
+            'convert' => [
                     'tmp' => '/tmp',
-            ),
-            'headers' => array(
+            ],
+            'headers' => [
                     'Access-Control-Allow-Origin' => 'http://local.wow.in',
                     'Access-Control-Allow-Credentials' => 'true',
-            ),
-    ),
-);
+            ],
+    ],
+];
