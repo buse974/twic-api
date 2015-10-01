@@ -1,20 +1,21 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class VideoconfDoc extends AbstractService
 {
-
     /**
      * @invokable
      * 
-     * @param string $name            
-     * @param string $token            
-     * @param integer $videoconf            
+     * @param string $name
+     * @param string $token
+     * @param int    $videoconf
+     *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function add($name, $token, $videoconf)
     {
@@ -23,40 +24,39 @@ class VideoconfDoc extends AbstractService
             ->setName($name)
             ->setVideoconfId($videoconf)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         if ($this->getMapper()->insert($m_videoconf_doc) <= 0) {
             throw new \Exception('Error insert');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      * 
-     * @param integer $videoconf            
+     * @param int $videoconf
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByVideoconf($videoconf)
     {
         $m_videoconf_doc = $this->getModel()->setVideoconfId($videoconf);
-        
+
         return $this->getMapper()->select($m_videoconf_doc);
     }
 
     /**
-     *
      * @invokable
      * 
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {
         $m_videoconf_doc = $this->getModel()->setId($videoconf);
-        
+
         return $this->getMapper()->delete($m_videoconf_doc);
     }
 }

@@ -1,18 +1,18 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class ThreadMessage extends AbstractService
 {
-
     /**
      * Add message in thread.
      *
      * @invokable
      *
-     * @param string $message            
-     * @param int $thread            
+     * @param string $message
+     * @param int    $thread
      *
      * @throws \Exception
      *
@@ -27,17 +27,17 @@ class ThreadMessage extends AbstractService
             ->setUserId($this->getServiceAuth()
             ->getIdentity()
             ->getId());
-        
+
         if ($this->getMapper()->insert($m_thread_message) <= 0) {
             throw new \Exception('error insert thread');
         }
-        
+
         $thread_message_id = $this->getMapper()->getLastInsertValue();
-        
-        if (! $is_new) {
+
+        if (!$is_new) {
             $this->getServiceEvent()->threadMessage($thread_message_id);
         }
-        
+
         return $thread_message_id;
     }
 
@@ -48,8 +48,8 @@ class ThreadMessage extends AbstractService
      *
      * @TODO set UpdateDate value
      *
-     * @param string $message            
-     * @param int $id            
+     * @param string $message
+     * @param int    $id
      *
      * @throws \Exception
      *
@@ -61,7 +61,7 @@ class ThreadMessage extends AbstractService
         return $this->getMapper()->update($this->getModel()
             ->setMessage($message), array('user_id' => $this->getServiceAuth()
             ->getIdentity()
-            ->getId(),'id' => $id));
+            ->getId(), 'id' => $id, ));
     }
 
     /**
@@ -69,14 +69,14 @@ class ThreadMessage extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      */
     public function delete($id)
     {
         return $this->getMapper()->update($this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceAuth()
             ->getIdentity()
-            ->getId(),'id' => $id));
+            ->getId(), 'id' => $id, ));
     }
 
     /**
@@ -84,15 +84,15 @@ class ThreadMessage extends AbstractService
      *
      * @invokable
      *
-     * @param integer $thread            
-     * @param string $filter            
+     * @param int    $thread
+     * @param string $filter
      */
     public function getList($thread, $filter = null)
     {
         $mapper = $this->getMapper();
-        
+
         $res_thread_message = $mapper->usePaginator($filter)->getList($thread);
-        
+
         foreach ($res_thread_message as $m_thread_message) {
             $roles = [];
             foreach ($this->getServiceRole()->getRoleByUser($m_thread_message->getUser()
@@ -101,7 +101,7 @@ class ThreadMessage extends AbstractService
             }
             $m_thread_message->getUser()->setRoles($roles);
         }
-        
+
         return array('count' => $mapper->count(),'list' => $res_thread_message);
     }
 
@@ -111,8 +111,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     *
-     * @param ineteger $thread_message            
+     * @param ineteger $thread_message
      *
      * @return \Application\Model\ThreadMessage
      */
@@ -124,7 +123,6 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()
@@ -133,7 +131,6 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     *
      * @return \Auth\Service\AuthService
      */
     public function getServiceAuth()
@@ -142,7 +139,6 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Role
      */
     public function getServiceRole()

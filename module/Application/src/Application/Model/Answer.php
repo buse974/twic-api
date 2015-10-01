@@ -17,15 +17,15 @@ class Answer extends BaseAnswer
     protected $item;
     protected $course;
 
-    public function getCourse() 
+    public function getCourse()
     {
         return $this->course;
     }
 
-    public function setCourse($course) 
+    public function setCourse($course)
     {
         $this->course = $course;
-        
+
         return $this;
     }
 
@@ -33,107 +33,107 @@ class Answer extends BaseAnswer
     {
         return $this->item;
     }
-    
+
     public function setItem($item)
     {
         $this->item = $item;
-    
+
         return $this;
     }
-    
-    public function getOriginName() 
+
+    public function getOriginName()
     {
         return $this->origin_name;
     }
 
-    public function setOriginName($origin_name) 
+    public function setOriginName($origin_name)
     {
         $this->origin_name = $origin_name;
-        
+
         return $this;
     }
-    
-    public function getOrigin() 
+
+    public function getOrigin()
     {
         return $this->origin;
     }
-     
-    public function setOrigin($origin) 
+
+    public function setOrigin($origin)
     {
         $this->origin = $origin;
-        
+
         return $this;
     }
 
-    public function getNationalityName() 
+    public function getNationalityName()
     {
         return $this->nationality_name;
     }
-     
-    public function setNationalityName($nationality_name) 
+
+    public function setNationalityName($nationality_name)
     {
         $this->nationality_name = $nationality_name;
-        
+
         return $this;
     }
 
-    public function getNationality() 
+    public function getNationality()
     {
         return $this->nationality;
     }
-     
-    public function setNationality($nationality) 
+
+    public function setNationality($nationality)
     {
         $this->nationality = $nationality;
-        
+
         return $this;
     }
-    
-    public function getGender() 
+
+    public function getGender()
     {
         return $this->gender;
     }
 
-    public function setGender($gender) 
+    public function setGender($gender)
     {
         $this->gender = $gender;
-        
-        return $this;
-    }
-    
-    public function getDimension() 
-    {
-        return $this->dimension;
-    }
-     
-    public function setDimension($dimension) 
-    {
-        $this->dimension = $dimension;
-        
+
         return $this;
     }
 
-    public function getComponent() 
+    public function getDimension()
+    {
+        return $this->dimension;
+    }
+
+    public function setDimension($dimension)
+    {
+        $this->dimension = $dimension;
+
+        return $this;
+    }
+
+    public function getComponent()
     {
         return $this->component;
     }
-     
-    public function setComponent($component) 
+
+    public function setComponent($component)
     {
         $this->component = $component;
-        
+
         return $this;
     }
-    
-    public function getScale() 
+
+    public function getScale()
     {
         return $this->scale;
     }
-     
-    public function setScale($scale) 
+
+    public function setScale($scale)
     {
         $this->scale = $scale;
-        
+
         return $this;
     }
 }

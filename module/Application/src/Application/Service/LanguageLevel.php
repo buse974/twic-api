@@ -6,10 +6,11 @@ use Dal\Service\AbstractService;
 
 class LanguageLevel extends AbstractService
 {
-	/**
-	 * @invokable
-	 */
-	public function getList() {
-		return $this->getMapper()->fetchAll();
-	}
+    /**
+     * @invokable
+     */
+    public function getList()
+    {
+        return $this->getMapper()->fetchAll();
+    }
 }

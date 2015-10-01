@@ -1,15 +1,14 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Http\Client;
 
 class Feed extends AbstractService
 {
-
     /**
-     * Add feed
+     * Add feed.
      *
      * @invokable
      * 
@@ -23,12 +22,12 @@ class Feed extends AbstractService
      * @param string $link_desc
      * @param string $link_title
      * 
-     * @return integer
+     * @return int
      */
     public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null, $link_desc = null, $link_title = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_feed = $this->getModel()
             ->setContent($content)
             ->setUserId($user)
@@ -41,24 +40,24 @@ class Feed extends AbstractService
             ->setNamePicture($name_picture)
             ->setNameDocument($name_document)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         if ($this->getMapper()->insert($m_feed) <= 0) {
             new \Exception('error insert feed');
         }
-        
+
         $feed_id = $this->getMapper()->getLastInsertValue();
-        
+
         $this->getServiceEvent()->userPublication($feed_id);
-        
+
         return $feed_id;
     }
 
     /**
-     * Update feed
+     * Update feed.
      *
      * @invokable
      *
-     * @param integer $id
+     * @param int    $id
      * @param string $content
      * @param string $link
      * @param string $video
@@ -69,12 +68,12 @@ class Feed extends AbstractService
      * @param string $link_desc
      * @param string $link_title
      * 
-     * @return integer
+     * @return int
      */
     public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null, $link_desc = null, $link_title = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_feed = $this->getModel()
             ->setContent($content)
             ->setLink($link)
@@ -85,37 +84,37 @@ class Feed extends AbstractService
             ->setNamePicture($name_picture)
             ->setNameDocument($name_document)
             ->setDocument($document);
-        
+
         return $this->getMapper()->update($m_feed, array('user_id' => $user, 'id' => $id));
     }
 
     /**
-     * Delete Feed
+     * Delete Feed.
      *
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_feed = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
-        return $this->getMapper()->update($m_feed, array('user_id' => $user,'id' => $id));
+
+        return $this->getMapper()->update($m_feed, array('user_id' => $user, 'id' => $id));
     }
 
     /**
-     * Add Comment Feed
+     * Add Comment Feed.
      *
      * @invokable
      *
-     * @param integer $id            
-     * @param string $content            
+     * @param int    $id
+     * @param string $content
      *
-     * @return integer
+     * @return int
      */
     public function addComment($id, $content)
     {
@@ -123,13 +122,13 @@ class Feed extends AbstractService
     }
 
     /**
-     * Delete Comment Feed
+     * Delete Comment Feed.
      *
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function deleteComment($id)
     {
@@ -137,12 +136,11 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get List Comment Feed
+     * Get List Comment Feed.
      *
      * @invokable
      *
-     * @param integer $id            
-     *
+     * @param int $id
      */
     public function GetListComment($id)
     {
@@ -150,46 +148,45 @@ class Feed extends AbstractService
     }
 
     /**
-     * GetList Feed
+     * GetList Feed.
      *
      * @invokable
      * 
      * @param string $filter
      * @param string $ids
-     * @param integer $user
+     * @param int    $user
      */
     public function getList($filter = null, $ids = null, $user = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $res_contact = $this->getServiceContact()->getList();
-        
+
         $mapper = $this->getMapper();
-        if(null===$user) {
+        if (null === $user) {
             $user = [$me];
             foreach ($res_contact as $m_contact) {
                 $user[] = $m_contact->getContact()['id'];
             }
         }
-        
+
         //$mapper = $mapper->usePaginator($filter);
 
-        return $mapper->getList($user,$me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
+        return $mapper->getList($user, $me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
     }
-    
+
     /**
-     * 
-     * @param integer $id
+     * @param int $id
+     *
      * @return \Application\Model\Feed
      */
     public function get($id)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-       
-        return $this->getMapper()->getList(null,$me, $id)->current();
+
+        return $this->getMapper()->getList(null, $me, $id)->current();
     }
 
     /**
-     * 
      * @invokable 
      * 
      * @param string $url
@@ -199,17 +196,16 @@ class Feed extends AbstractService
         $sm = $this->getServiceLocator();
         $client = new Client();
         $client->setOptions($sm->get('Config')['http-adapter']);
-        
+
         $page = $this->getServiceSimplePageCrawler()->setHttpClient($client)->get($url);
-        
+
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
-        
+
         return $return;
     }
-    
+
     /**
-     *
      * @return \Application\Service\FeedComment
      */
     public function getServiceFeedComment()
@@ -218,7 +214,6 @@ class Feed extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Contact
      */
     public function getServiceContact()
@@ -227,25 +222,22 @@ class Feed extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
     {
         return $this->serviceLocator->get('app_service_user');
     }
-    
+
     /**
-     *
      * @return \SimplePageCrawler\PageCrawler
      */
     public function getServiceSimplePageCrawler()
     {
         return $this->serviceLocator->get('SimplePageCrawler');
     }
-    
+
     /**
-     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()

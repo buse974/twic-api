@@ -1,18 +1,18 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class DimensionScale extends AbstractService
 {
-
     /**
      * @invokable
      *
-     * @param integer $dimension            
-     * @param integer $min            
-     * @param integer $max            
-     * @param string $describe            
+     * @param int    $dimension
+     * @param int    $min
+     * @param int    $max
+     * @param string $describe
      */
     public function add($dimension, $min, $max, $describe)
     {
@@ -23,16 +23,16 @@ class DimensionScale extends AbstractService
             ->setDescribe($describe)) <= 0) {
             throw new \Exception('error insert scale');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {
@@ -43,13 +43,13 @@ class DimensionScale extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param integer $dimension            
-     * @param integer $min            
-     * @param integer $max            
-     * @param string $describe            
+     * @param int    $id
+     * @param int    $dimension
+     * @param int    $min
+     * @param int    $max
+     * @param string $describe
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $dimension, $min, $max, $describe)
     {
@@ -64,13 +64,13 @@ class DimensionScale extends AbstractService
     /**
      * @invokable
      *
-     * @param array $filter            
+     * @param array $filter
      */
     public function getList($filter = null)
     {
         $mapper = $this->getMapper();
         $res_dimension_scale = $mapper->usePaginator($filter)->fetchAll();
-        
+
         return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_dimension_scale] : $res_dimension_scale;
     }
 }

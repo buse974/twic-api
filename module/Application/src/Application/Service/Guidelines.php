@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -9,9 +10,9 @@ class Guidelines extends AbstractService
      * @invokable
      * 
      * @param string $state
-     * @param mixed $data
+     * @param mixed  $data
      * 
-     * @return integer
+     * @return int
      */
     public function add($state, $data)
     {
@@ -20,23 +21,23 @@ class Guidelines extends AbstractService
             ->setData(json_encode($data))) <= 0) {
             throw new \Exception('error insert guidelines');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      * 
-     * @param integer $id
+     * @param int    $id
      * @param string $state
      * @param string $data
      */
     public function update($id, $state = null, $data = null)
     {
-        if(null!==$data) {
+        if (null !== $data) {
             $data = json_encode($data);
         }
-        
+
         return $this->getMapper()->update($this->getModel()
             ->setState($state)
             ->setId($id)
@@ -46,7 +47,7 @@ class Guidelines extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $id
+     * @param int $id
      */
     public function delete($id)
     {
@@ -61,17 +62,17 @@ class Guidelines extends AbstractService
     public function getList($state)
     {
         $res_guidelines = $this->getMapper()->select($this->getModel()->setState($state));
-        
+
         $ret = [];
         foreach ($res_guidelines as $m_guidelines) {
             $data = $m_guidelines->getData();
-            if(is_string($data)) {
-                $ret[] = json_decode($data,true);
+            if (is_string($data)) {
+                $ret[] = json_decode($data, true);
             }
         }
-        
+
         $this->getServiceGuidelinesView()->add($state);
-        
+
         return $ret;
     }
 
@@ -84,8 +85,7 @@ class Guidelines extends AbstractService
     {
         return $this->getServiceGuidelinesView()->exist($state);
     }
-    
-    
+
     /**
      * @return \Application\Service\GuidelinesView
      */
@@ -93,5 +93,4 @@ class Guidelines extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_guidelines_view');
     }
-    
 }

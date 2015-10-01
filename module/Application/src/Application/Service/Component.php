@@ -1,50 +1,50 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class Component extends AbstractService
 {
-    
     /**
      * @invokable
      * 
-     * @param integer $dimension
-     * @param array $filter
+     * @param int    $dimension
+     * @param array  $filter
      * @param string $search
      */
     public function getList($dimension = null, $filter = null, $search = null)
     {
         $mapper = $this->getMapper();
-        
+
         $res_component = $mapper->usePaginator($filter)->getList($dimension, $search);
-        
+
         return (null !== $filter) ?
             array('count' => $mapper->count(),'list' => $res_component) :
             $res_component;
     }
-    
+
     /**
      * @invokable
      */
     public function getListWithScale()
     {
         $components = $this->getMapper()->fetchAll();
-        
+
         foreach ($components as $component) {
             $component->setComponentScales($this->getServiceComponentScale()
                 ->getList($component->getId()));
         }
-        
+
         return $components;
     }
 
     /**
      * @invokable
      *
-     * @param string $name            
-     * @param string $dimension            
-     * @param string $describe            
+     * @param string $name
+     * @param string $dimension
+     * @param string $describe
      */
     public function add($name, $dimension, $describe)
     {
@@ -53,21 +53,21 @@ class Component extends AbstractService
             ->setDimensionId($dimension)
             ->setComponentScales(null)
             ->setDescribe($describe);
-        
+
         if ($this->getMapper()->insert($m_component) <= 0) {
             throw new \Exception('error insert component');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param string $name            
-     * @param string $dimension            
-     * @param string $describe            
+     * @param int    $id
+     * @param string $name
+     * @param string $dimension
+     * @param string $describe
      */
     public function update($id, $name, $dimension, $describe)
     {
@@ -77,14 +77,14 @@ class Component extends AbstractService
             ->setDimensionId($dimension)
             ->setComponentScales(null)
             ->setDescribe($describe);
-        
+
         return $this->getMapper()->update($m_component);
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      */
     public function delete($id)
     {
@@ -92,12 +92,11 @@ class Component extends AbstractService
             ->setId($id)
             ->setComponentScales(null)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         return $this->getMapper()->update($m_component);
     }
-    
+
     /**
-     *
      * @return \Application\Service\ComponentScale
      */
     public function getServiceComponentScale()

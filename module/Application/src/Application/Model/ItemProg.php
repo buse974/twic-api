@@ -31,23 +31,23 @@ class ItemProg extends BaseItemProg
     {
         return $this->item_prog_user;
     }
-    
+
     public function setItemProgUser($item_prog_user)
     {
         $this->item_prog_user = $item_prog_user;
-    
+
         return $this;
     }
-    
+
     public function getVideoconfArchives()
     {
         return $this->videoconf_archives;
     }
-    
+
     public function setVideoconfArchives($videoconf_archives)
     {
         $this->videoconf_archives = $videoconf_archives;
-    
+
         return $this;
     }
 

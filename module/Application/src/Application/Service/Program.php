@@ -42,7 +42,6 @@ class Program extends AbstractService
      * Update Program.
      *
      * @invokable
-
      *
      * @param int    $id
      * @param string $name
@@ -84,10 +83,10 @@ class Program extends AbstractService
 
         return $res_program;
     }
-    
+
     public function getListBySchool($school)
     {
-        return $this->getMapper()->select($this->getModel()->setSchoolId($school));        
+        return $this->getMapper()->select($this->getModel()->setSchoolId($school));
     }
 
     /**

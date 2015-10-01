@@ -21,11 +21,11 @@ class Contact extends AbstractMapper
             ->where(array('contact.accepted_date IS NOT NULL'))
             ->where(array('contact.deleted_date IS NULL'))
             ->where(array('user.deleted_date IS NULL'));
-        
+
         if ($exclude) {
             $select->where->notIn('contact.contact_id', $exclude);
         }
-        
+
         return $this->selectWith($select);
     }
 
@@ -59,7 +59,6 @@ class Contact extends AbstractMapper
                ->where(array('contact.id IS NULL'))
                ->where(array('user.school_id' => $school));
 
-        
         $insert->columns(['accepted_date', 'contact_id', 'user_id'])
                ->select($select);
 

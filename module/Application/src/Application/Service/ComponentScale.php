@@ -1,19 +1,19 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class ComponentScale extends AbstractService
 {
-
     /**
      * @invokable
      *
-     * @param integer $component            
-     * @param integer $min            
-     * @param integer $max            
-     * @param string $describe            
-     * @param string $recommandation            
+     * @param int    $component
+     * @param int    $min
+     * @param int    $max
+     * @param string $describe
+     * @param string $recommandation
      */
     public function add($component, $min, $max, $describe, $recommandation)
     {
@@ -25,16 +25,16 @@ class ComponentScale extends AbstractService
             ->setRecommandation($recommandation)) <= 0) {
             throw new \Exception('error insert component scale');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {
@@ -45,14 +45,14 @@ class ComponentScale extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param integer $component            
-     * @param integer $min            
-     * @param integer $max            
-     * @param string $describe            
-     * @param string $recommandation            
+     * @param int    $id
+     * @param int    $component
+     * @param int    $min
+     * @param int    $max
+     * @param string $describe
+     * @param string $recommandation
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $component, $min, $max, $describe, $recommandation)
     {
@@ -68,15 +68,15 @@ class ComponentScale extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $component_id            
-     * @param array $filter            
+     * @param int   $component_id
+     * @param array $filter
      */
     public function getList($component_id = null, $filter = null)
     {
         $mapper = $this->getMapper();
         $res_component_scale = ($component_id !== null) ? $mapper->select($this->getModel()
             ->setComponentId($component_id)) : $mapper->usePaginator($filter)->fetchAll();
-        
+
         return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_component_scale] : $res_component_scale;
     }
 }

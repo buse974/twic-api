@@ -1,4 +1,5 @@
 <?php
+
 namespace Rbac\Db\Model\Base;
 
 use Dal\Model\AbstractModel;
@@ -18,14 +19,14 @@ class RolePermission extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
 
     public function setRoleId($role_id)
     {
         $this->role_id = $role_id;
-        
+
         return $this;
     }
 
@@ -37,7 +38,7 @@ class RolePermission extends AbstractModel
     public function setPermissionId($permission_id)
     {
         $this->permission_id = $permission_id;
-        
+
         return $this;
     }
 
