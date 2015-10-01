@@ -244,15 +244,16 @@ class Message extends AbstractService
      *
      * @param string $filter            
      * @param string $tag            
-     * @param integer $type            
+     * @param integer $type    
+     * @param string $search         
      *
      */
-    public function getListConversation($filter = null, $tag = null, $type = null)
+    public function getListConversation($filter = null, $tag = null, $type = null, $search = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
         
-        return $this->getServiceMessageUser()->getList($me, null, null, $filter, $tag, $type);
+        return $this->getServiceMessageUser()->getList($me, null, null, $filter, $tag, $type, $search);
     }
 
     /**
