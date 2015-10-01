@@ -1,11 +1,11 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class Conversation extends AbstractService
 {
-
     /**
      * Create Conversation.
      *
@@ -18,21 +18,22 @@ class Conversation extends AbstractService
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setType($type);
-        
+
         if ($this->getMapper()->insert($m_conversation) <= 0) {
             throw new \Exception('Error create conversation');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Create conversation
+     * Create conversation.
      *
      * @invokable
      *
-     * @param array $users            
-     * @return integer
+     * @param array $users
+     *
+     * @return int
      */
     public function add($users)
     {
@@ -42,25 +43,25 @@ class Conversation extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $conversation            
+     * @param int $conversation
      */
     public function getConversation($conversation, $filter = null)
     {
         $conv['users'] = $this->getServiceUser()
             ->getListByConversation($conversation)
             ->toArray(array('id'));
-        ;
         $conv['messages'] = $this->getServiceMessage()->getList($conversation, $filter);
         $conv['id'] = $conversation;
+
         return $conv;
     }
 
     /**
-     * Read Message(s)
+     * Read Message(s).
      *
      * @invokable
      *
-     * @param integer|array $conversation            
+     * @param int|array $conversation
      */
     public function read($conversation)
     {
@@ -68,11 +69,11 @@ class Conversation extends AbstractService
     }
 
     /**
-     * UnRead Message(s)
+     * UnRead Message(s).
      *
      * @invokable
      *
-     * @param integer|array $conversation            
+     * @param int|array $conversation
      */
     public function unRead($conversation)
     {
@@ -80,11 +81,11 @@ class Conversation extends AbstractService
     }
 
     /**
-     * Delete Message(s)
+     * Delete Message(s).
      *
      * @invokable
      *
-     * @param integer|array $conversation            
+     * @param int|array $conversation
      */
     public function delete($conversation)
     {
@@ -92,7 +93,6 @@ class Conversation extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\ConversationUser
      */
     public function getServiceConversationUser()
@@ -101,7 +101,6 @@ class Conversation extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -110,7 +109,6 @@ class Conversation extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\MessageUser
      */
     public function getServiceMessageUser()
@@ -119,7 +117,6 @@ class Conversation extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Message
      */
     public function getServiceMessage()

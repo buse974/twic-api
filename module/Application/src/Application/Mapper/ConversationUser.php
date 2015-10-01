@@ -34,33 +34,33 @@ class ConversationUser extends AbstractMapper
                ->where(array('conversation_user.conversation_id IN ? ' => $select_sub))
                ->group(array('conversation_user.conversation_id'))
                ->having($having);
-        
-        if(null !== $type) {
+
+        if (null !== $type) {
             $select->where(array('conversation.type' => $type));
         }
-        
+
         return $this->selectWith($select);
     }
-    
+
     public function deleteNotIn($conversation, $users)
     {
         $delete = $this->tableGateway->getSql()->delete();
         $delete->where(array('conversation_id' => $conversation))
-                ->where( new NotIn('user_id', $users));
-        
+                ->where(new NotIn('user_id', $users));
+
         return $this->deleteWith($delete);
     }
-    
+
     public function add($conversation, $user)
     {
-        $sql = "INSERT INTO `conversation_user` (`user_id`, `conversation_id`)
+        $sql = 'INSERT INTO `conversation_user` (`user_id`, `conversation_id`)
         SELECT :u AS `user_id`, :c AS `conversation_id` FROM DUAL
         WHERE NOT EXISTS
         
         (SELECT `conversation_user`.*
             FROM `conversation_user`
-            WHERE `user_id` = :u1 AND `conversation_id` = :c1)";
-        
+            WHERE `user_id` = :u1 AND `conversation_id` = :c1)';
+
         return $this->requestPdo($sql, array(
             ':u' => $user,
             ':c' => $conversation,
@@ -69,4 +69,3 @@ class ConversationUser extends AbstractMapper
         ));
     }
 }
-

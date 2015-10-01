@@ -1,23 +1,21 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Zend\Db\Sql\Predicate\IsNotNull;
-use Zend\Db\Sql\Predicate\IsNull;
 
 class ItemProgUser extends AbstractService
 {
-
     public function add($user, $item_prog)
     {
         $ret = array();
-        
+
         foreach ($user as $u) {
             foreach ($item_prog as $ip) {
                 $ret[$ip][$u] = $this->getMapper()->insertStudent($u, $ip);
             }
         }
-        
+
         return $ret;
     }
 
@@ -25,11 +23,11 @@ class ItemProgUser extends AbstractService
     {
         $res_item_prog_user = $this->getMapper()->select($this->getModel()
             ->setItemProgId($item_prog));
-        
+
         foreach ($res_item_prog_user as $m_item_prog_user) {
             $this->getServiceItemGrading()->deleteByItemProgUser($m_item_prog_user->getId());
         }
-        
+
         return $this->getMapper()->delete($this->getModel()
             ->setItemProgId($item_prog));
     }
@@ -52,39 +50,41 @@ class ItemProgUser extends AbstractService
         return $this->getMapper()->update($this->getModel()
             ->setStartedDate($started_date)
             ->setFinishedDate($finished_date), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'],'item_prog_id' => $item_prog));
+            ->getIdentity()['id'], 'item_prog_id' => $item_prog, ));
     }
 
     /**
      * @invokable
      *
-     * @param integer $item_prog            
-     * @return integer
+     * @param int $item_prog
+     *
+     * @return int
      */
     public function start($item_prog)
     {
         return $this->getMapper()->update($this->getModel()
             ->setStartedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'],'item_prog_id' => $item_prog,'started_date IS NULL'));
+            ->getIdentity()['id'], 'item_prog_id' => $item_prog, 'started_date IS NULL', ));
     }
 
     /**
      * @invokable
      *
-     * @param integer $item_prog            
-     * @return integer
+     * @param int $item_prog
+     *
+     * @return int
      */
     public function end($item_prog)
     {
         return $this->getMapper()->update($this->getModel()
             ->setFinishedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'],'item_prog_id' => $item_prog));
+            ->getIdentity()['id'], 'item_prog_id' => $item_prog, ));
     }
 
     /**
+     * @param int $item_prog
      *
-     * @param integer $item_prog            
-     * @return boolean
+     * @return bool
      */
     public function checkAllFinish($item_prog)
     {
@@ -101,9 +101,8 @@ class ItemProgUser extends AbstractService
     }
 
     /**
-     *
-     * @param int $item_prog            
-     * @param int $user            
+     * @param int $item_prog
+     * @param int $user
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -113,12 +112,11 @@ class ItemProgUser extends AbstractService
         if ($user !== null) {
             $m_item_prog_user->setUserId($user);
         }
-        
+
         return $this->getMapper()->select($m_item_prog_user);
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -127,7 +125,6 @@ class ItemProgUser extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\ItemGrading
      */
     public function getServiceItemGrading()

@@ -25,8 +25,8 @@ class ItemGrading extends BaseItemGrading
     {
         return $this->assignmentId;
     }
-    
-     public function setAssignmentId($assignmentId)
+
+    public function setAssignmentId($assignmentId)
     {
         $this->assignmentId = $assignmentId;
 

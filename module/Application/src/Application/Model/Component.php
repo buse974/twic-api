@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Model;
 
 use Application\Model\Base\Component as BaseComponent;
@@ -10,7 +11,7 @@ class Component extends BaseComponent
     public function setComponentScales($component_scales)
     {
         $this->component_scales = $component_scales;
-        
+
         return $this;
     }
 

@@ -52,7 +52,7 @@ class City extends AbstractModel
 
         return $this;
     }
-        
+
     public function getCode()
     {
         return $this->street_name;
@@ -75,26 +75,26 @@ class City extends AbstractModel
 
         return $this;
     }
-    
+
     public function getCountryId()
     {
         return $this->country_id;
     }
-    
+
     public function setCountryId($country_id)
     {
         $this->country_id = $country_id;
-                
+
         return $this;
-    }  
-    
+    }
+
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
 
         return $this;
     }
-    
+
     public function getLongitude()
     {
         return $this->longitude;
@@ -106,7 +106,7 @@ class City extends AbstractModel
 
         return $this;
     }
-    
+
     public function getLatitude()
     {
         return $this->latitude;

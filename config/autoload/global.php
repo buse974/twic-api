@@ -12,36 +12,36 @@
  * file.
  */
 
-return array(
-    'app-conf' => array(
+return [
+    'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
         'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
         'secret_key_fb_debug' => false,
-    ),
-    'dal-conf' => array(
+    ],
+    'dal-conf' => [
         'adapter' => 'db-adapter',
         'cache' => 'storage_memcached',
         'log' => 'log-system',
-        'namespace' => array(
-            'app' => array(
+        'namespace' => [
+            'app' => [
                 'service' => 'Application\\Service',
                 'mapper' => 'Application\\Mapper',
                 'model' => 'Application\\Model',
-            ),
-        ),
-    ),
-    'rbac-conf' => array(
-        'cache' => array(
+            ],
+        ],
+    ],
+    'rbac-conf' => [
+        'cache' => [
             'name' => 'storage_memcached',
             'enable' => true,
-        ),
-    ),
-    'json-rpc-server' => array(
+        ],
+    ],
+    'json-rpc-server' => [
         'cache' => 'storage_memcached',
         'log' => 'log-system',
         'persistence' => true,
-        'services' => array(
+        'services' => [
             'app_service_user',
             'app_service_item',
             'app_service_school',
@@ -80,13 +80,12 @@ return array(
             'app_service_feed_comment',
             'app_service_like',
             'app_service_resume',
-            'app_service_address',
             'app_service_city',
             'app_service_division',
             'app_service_questionnaire',
             'app_service_answer',
             'app_service_item_prog_user',
-	        'app_service_country',
+            'app_service_country',
             'app_service_component',
             'app_service_country',
             'app_service_user_language',
@@ -101,50 +100,57 @@ return array(
             'app_service_dimension_scale',
             'app_service_component_scale',
             'app_service_guidelines',
-        ),
-        'headers' => array(
+            [
+                'class' => 'addr_service_address',
+                'methods' => [
+                    'getAddress',
+                ],
+                'namespace' => 'addr',
+            ],
+        ],
+        'headers' => [
            /* 'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Credentials' => 'true',
             'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',*/
-        ),
-    ),
-    'mail-conf' => array(
-        'template' => array(
+        ],
+    ],
+    'mail-conf' => [
+        'template' => [
             'storage' => 'Mail\Template\Storage\FsStorage',
             'path' => __DIR__.'/../../../tpl/',
-        ),
-        'storage' => array(
+        ],
+        'storage' => [
             'active' => false,
-        ),
-        'transport' => array(
+        ],
+        'transport' => [
             'active' => true,
             'type' => 'sendmail'/*'smtp'*/,
-            'options' => array(
+            'options' => [
                 /*'name'              => 'christophe',
     			'host'              => 'smtp.thestudnet.com',
     			'port'              => 587,
     			'connection_class'  => 'plain',
-    			'connection_config' => array(
+    			'connection_config' => [
     				'ssl' => 'tls',
-    			),*/
-            ),
-        ),
-    ),
-    'zopentok-conf' => array(
+    			],*/
+            ],
+        ],
+    ],
+    'zopentok-conf' => [
         'api_key' => '45105812',
         'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
-    ),
-    'dms-conf' => array(
+    ],
+    'dms-conf' => [
             'adapter' => 'http-adapter',
-            'convert' => array(
+            'convert' => [
                     'tmp' => '/tmp/',
-            ),
-            'headers' => array(
+            ],
+            'headers' => [
                     'Access-Control-Allow-Origin' => 'http://lms.com',
                     'Access-Control-Allow-Credentials' => 'true',
                     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-            ),
-    ),
-);
+            ],
+    ],
+];

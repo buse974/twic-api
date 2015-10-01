@@ -43,13 +43,14 @@ class School extends AbstractMapper
                ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('id', 'name'),  $select::JOIN_LEFT)
                ->join(array('school_address_city' => 'city'), 'school_address_city.id=school_address.city_id', array('id', 'name'),  $select::JOIN_LEFT)
                ->join(array('school_address_country' => 'country'), 'school_address_country.id=school_address.country_id', array('id', 'short_name', 'name'),  $select::JOIN_LEFT);
-        
+
         if (!empty($search)) {
             $select->where(array('(school.name LIKE ? ' => '%'.$search.'%'))
             ->where(array('school.short_name LIKE ? )' => '%'.$search.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR);
-        }        
-                
+        }
+
         $select->where('school.deleted_date IS NULL');
+
         return $this->selectWith($select);
     }
 }

@@ -1,11 +1,11 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class UserLanguage extends AbstractService
 {
-
     /**
      * @invokable
      */
@@ -15,11 +15,11 @@ class UserLanguage extends AbstractService
         $m_user_language->setUserId($this->getServiceUser()->getIdentity()['id'])
             ->setLanguageId($language)
             ->setLanguageLevelId($language_level);
-        
+
         if ($this->getMapper()->insert($m_user_language) <= 0) {
             throw new \Exception('Error insert');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -30,7 +30,7 @@ class UserLanguage extends AbstractService
     {
         $m_user_language = $this->getModel()
             ->setLanguageLevelId($language_level);
-        
+
         return $this->getMapper()->update($m_user_language, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
     }
 
@@ -41,7 +41,7 @@ class UserLanguage extends AbstractService
     {
         $m_user_langage = $this->getModel();
         $m_user_langage->setUserId($user);
-        
+
         $languages = $this->getMapper()->select($m_user_langage);
         foreach ($languages as $language) {
             $m_language = $this->getServiceLanguage()->getModel();
@@ -57,14 +57,14 @@ class UserLanguage extends AbstractService
                 ->select($m_level)
                 ->current());
         }
-        
+
         return $languages;
     }
 
     /**
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return int
      */
@@ -86,7 +86,6 @@ class UserLanguage extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()

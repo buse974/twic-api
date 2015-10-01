@@ -13,7 +13,7 @@ class EventUser extends AbstractMapper
                 RIGHT JOIN event ON event.id=event_user.event_id
                 WHERE event.target <> 'user' AND
                 event_user.read_date IS NULL";
-        
+
         return $this->requestPdo($sql, ['user' => $me, 'read_date' => $date]);
     }
 }

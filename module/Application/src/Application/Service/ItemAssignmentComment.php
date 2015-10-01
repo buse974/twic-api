@@ -17,10 +17,10 @@ class ItemAssignmentComment extends AbstractService
                                                       ->setUserId($this->getServiceAuth()->getIdentity()->getId())
                                                       ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        if($this->getMapper()->insert($m_item_assignment_comment) <= 0) {
+        if ($this->getMapper()->insert($m_item_assignment_comment) <= 0) {
             throw new \Exception('error insert comment');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -49,10 +49,9 @@ class ItemAssignmentComment extends AbstractService
 
         return $res_item_assignment_comment;
     }
-    
+
     /**
-     * 
-     * @param integer $item_assignment_comment
+     * @param int $item_assignment_comment
      * 
      * @return \Application\Model\ItemAssignmentComment
      */
