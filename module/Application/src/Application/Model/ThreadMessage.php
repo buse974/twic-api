@@ -21,14 +21,14 @@ class ThreadMessage extends BaseThreadMessage
     {
         return $this->thread;
     }
-    
+
     public function setThread($thread)
     {
         $this->thread = $thread;
-    
+
         return $this;
     }
-    
+
     public function setUser($user)
     {
         $this->user = $user;

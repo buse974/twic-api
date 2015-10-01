@@ -25,58 +25,58 @@ class User extends BaseUser
 
         parent::exchangeArray($data);
 
-        $this->school         = $this->requireModel('app_model_school', $data);
-        $this->nationality    = $this->requireModel('addr_model_country', $data, 'nationality');
-        $this->origin         = $this->requireModel('addr_model_country', $data, 'origin');
+        $this->school = $this->requireModel('app_model_school', $data);
+        $this->nationality = $this->requireModel('addr_model_country', $data, 'nationality');
+        $this->origin = $this->requireModel('addr_model_country', $data, 'origin');
         $this->item_prog_user = $this->requireModel('app_model_item_prog_user', $data);
     }
-    
+
     public function getItemProgUser()
     {
         return $this->item_prog_user;
     }
-    
+
     public function setItemProgUser($item_prog_user)
     {
         $this->item_prog_user = $item_prog_user;
-    
+
         return $this;
     }
-    
+
     public function getOrigin()
     {
         return $this->origin;
     }
-    
+
     public function setOrigin($origin)
     {
         $this->origin = $origin;
-    
+
         return $this;
     }
     public function getNationality()
     {
         return $this->nationality;
     }
-    
+
     public function setNationality($nationality)
     {
         $this->nationality = $nationality;
-    
+
         return $this;
     }
     public function getGender()
     {
         return $this->gender;
     }
-    
+
     public function setGender($gender)
     {
         $this->gender = $gender;
-    
+
         return $this;
     }
-    
+
     public function getContactState()
     {
         return $this->contact_state;
@@ -85,7 +85,7 @@ class User extends BaseUser
     public function setContactState($contact_state)
     {
         $this->contact_state = $contact_state;
-    
+
         return $this;
     }
 
@@ -100,7 +100,7 @@ class User extends BaseUser
 
         return $this;
     }
-    
+
     public function setSchool($school)
     {
         $this->school = $school;

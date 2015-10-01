@@ -121,11 +121,11 @@ class Item extends AbstractService
 
         return $res_item->toArrayParent();
     }
-    
+
     /**
      * @invokable
      *
-     * @param integer $user
+     * @param int $user
      *
      * @return array
      */
@@ -140,7 +140,7 @@ class Item extends AbstractService
             }
             $m_item->setMaterials($ar_imdr);
         }
-    
+
         return $res_item->toArrayParent();
     }
 

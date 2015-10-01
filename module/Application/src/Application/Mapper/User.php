@@ -14,8 +14,8 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'gender', 'lastname', 'email', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar', 'school_id',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
-                . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
-            'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NOT NULL, 1, 0))')
+                .' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
+            'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NOT NULL, 1, 0))'),
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
@@ -31,16 +31,15 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $school = null, $event = null,$user_school = null, $type = null, 
-        $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, 
+    public function getList($filter = null, $school = null, $event = null, $user_school = null, $type = null,
+        $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null,
         $schools = true, $order = null, array $exclude = null, $message = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")')
-            , 'position', 'interest', 'avatar',
+        $select->columns(array('id', 'firstname', 'lastname', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1'
-            . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
-            'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NULL, 0, 1))')
+            .' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
+            'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NULL, 0, 1))'),
         ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
@@ -49,8 +48,6 @@ class User extends AbstractMapper
             ->join(array('connections' => 'contact'), 'connections.user_id = user.id', array(), $select::JOIN_LEFT)
             ->group('user.id')
             ->quantifier('DISTINCT');
-
-        
 
         switch ($order) {
             case 'firstname':
@@ -65,24 +62,24 @@ class User extends AbstractMapper
         }
 
         if ($exclude) {
-            $select->where->notIn('user.id',$exclude);
+            $select->where->notIn('user.id', $exclude);
         }
 
         if ($school !== null) {
             $select->where(array('school.id' => $school));
         }
-        
+
         if ($user_school) {
             $select->where(array('uu.id' => $user_school));
         }
 
-        if(null !== $event) {
+        if (null !== $event) {
             $select->join('like', 'like.user_id=user.id', array())
                    ->where(array('like.event_id' => $event))
                    ->where(array('like.is_like IS TRUE'));
         }
-        
-        if ($user_school && $schools===true) {
+
+        if ($user_school && $schools === true) {
             $sub_select = $this->tableGateway->getSql()->select();
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user_school));
             $select->where(array('school.id' => $sub_select));
@@ -151,14 +148,14 @@ class User extends AbstractMapper
             $select->where(array('program.level' => $level));
         }
 
-        if(null !== $message) {
+        if (null !== $message) {
             $select->join('message_user', 'message_user.user_id=user.id', array(), $select::JOIN_LEFT)
                    ->join('message', 'message_user.message_id=message.id', array(), $select::JOIN_LEFT)
                    ->where(array('message.id' => $message[1]))
                    ->where(array(' ( message_user.type = ? ' => $message[0]))
                    ->where(array(' message_user.type = ? ) ' => 'RS'), Predicate::OP_OR);
         }
-        
+
         if (!empty($search)) {
             $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'));
             $select->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR);
@@ -253,8 +250,8 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-     /**
+
+    /**
      * @param int $conversation
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -262,11 +259,10 @@ class User extends AbstractMapper
     public function getListByConversation($conversation)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','firstname', 'lastname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
                ->join('conversation_user', 'conversation_user.user_id = user.id', array())
                ->where(array('conversation_user.conversation_id' => $conversation));
-        
+
         return $this->selectWith($select);
     }
-        
 }

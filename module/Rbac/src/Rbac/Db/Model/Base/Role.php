@@ -16,7 +16,7 @@ class Role extends AbstractModel
 
     protected $id;
     protected $name;
-    
+
     protected $prefix = 'role';
 
     public function getId()

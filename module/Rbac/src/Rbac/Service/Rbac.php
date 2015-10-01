@@ -63,7 +63,7 @@ class Rbac implements ServiceLocatorAwareInterface
     public function getRbac()
     {
         if ($this->rbac === null) {
-            $this->rbac = (!$this->getCache()->hasItem('rbac')) ? 
+            $this->rbac = (!$this->getCache()->hasItem('rbac')) ?
                 $this->createRbac() : $this->getCache()->getItem('rbac');
         }
 
@@ -95,18 +95,18 @@ class Rbac implements ServiceLocatorAwareInterface
                 }
             }
         }
-        
+
         $this->rbac = $rbac;
-        
-        if($this->getCache()->hasItem('rbac')) {
+
+        if ($this->getCache()->hasItem('rbac')) {
             $this->getCache()->replaceItem('rbac', $rbac);
         } else {
             $this->getCache()->setItem('rbac', $rbac);
         }
-        
+
         return $this->rbac;
     }
-    
+
     /**
      * @return \Rbac\Db\Service\Role
      */

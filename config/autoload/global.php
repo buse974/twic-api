@@ -85,7 +85,7 @@ return [
             'app_service_questionnaire',
             'app_service_answer',
             'app_service_item_prog_user',
-	        'app_service_country',
+            'app_service_country',
             'app_service_component',
             'app_service_country',
             'app_service_user_language',
@@ -103,10 +103,10 @@ return [
             [
                 'class' => 'addr_service_address',
                 'methods' => [
-                    'getAddress'
+                    'getAddress',
                 ],
-                'namespace' => 'addr'
-            ]
+                'namespace' => 'addr',
+            ],
         ],
         'headers' => [
            /* 'Access-Control-Allow-Origin' => '*',

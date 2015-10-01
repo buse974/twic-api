@@ -20,22 +20,22 @@ class Permission extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-    public function getList($filter = null, $roleId = null, $search = null) 
+
+    public function getList($filter = null, $roleId = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'libelle'))
                 ->join('role_permission', 'role_permission.permission_id=permission.id', array('id'))
-                ->join('role', 'role.id=role_permission.role_id',array('id', 'name'));   
-        
+                ->join('role', 'role.id=role_permission.role_id', array('id', 'name'));
+
         if (!empty($roleId)) {
             $select->where(array('role_permission.role_id' => $roleId));
         }
-        
+
         if (!empty($search)) {
             $select->where(array('permission.libelle LIKE ? ' => '%'.$search.'%'));
         }
-        
+
         $select->where('role.name != "guest"');
 
         return $this->selectWith($select);

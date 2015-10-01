@@ -26,38 +26,38 @@ class Course extends BaseCourse
     {
         parent::exchangeArray($data);
 
-        $this->grading_policy   = $this->requireModel('app_model_grading_policy', $data);
-        $this->grading          = $this->requireModel('app_model_grading', $data);
-        $this->creator          = $this->requireModel('app_model_user', $data);
-        $this->module           = $this->requireModel('app_model_module', $data);
-        $this->school           = $this->requireModel('app_model_school', $data);
-        $this->program          = $this->requireModel('app_model_program', $data);
+        $this->grading_policy = $this->requireModel('app_model_grading_policy', $data);
+        $this->grading = $this->requireModel('app_model_grading', $data);
+        $this->creator = $this->requireModel('app_model_user', $data);
+        $this->module = $this->requireModel('app_model_module', $data);
+        $this->school = $this->requireModel('app_model_school', $data);
+        $this->program = $this->requireModel('app_model_program', $data);
     }
 
     public function getAvg()
     {
         return $this->avg;
     }
-    
+
     public function setAvg($avg)
     {
         $this->avg = $avg;
-    
+
         return $this;
     }
-    
+
     public function getProgram()
     {
         return $this->program;
     }
-    
+
     public function setProgram($program)
     {
         $this->program = $program;
-    
+
         return $this;
     }
-    
+
     public function getSchool()
     {
         return $this->school;
@@ -209,16 +209,16 @@ class Course extends BaseCourse
     {
         $this->end_date = $end_date;
     }
-    
+
     public function getItemProg()
     {
         return $this->item_prog;
     }
-    
+
     public function setItemProg($item_prog)
     {
         $this->item_prog = $item_prog;
-    
+
         return $this;
     }
 }

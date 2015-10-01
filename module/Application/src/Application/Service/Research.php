@@ -9,7 +9,7 @@ class Research extends AbstractService
     /**
      * @invokable
      *            
-     * @param string $string 
+     * @param string $string
      * 
      * @return array
      */
@@ -17,8 +17,8 @@ class Research extends AbstractService
     {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList($string);
-        
-        return array('list'=>$res,
-                    'count' => $mapper->count());
-    }    
+
+        return array('list' => $res,
+                    'count' => $mapper->count(), );
+    }
 }

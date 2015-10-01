@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -8,10 +9,10 @@ class Scale extends AbstractService
     /**
      * @invokable
      *
-     * @param string $name            
-     * @param string $value            
+     * @param string $name
+     * @param string $value
      *
-     * @return integer
+     * @return int
      */
     public function add($name, $value)
     {
@@ -20,16 +21,16 @@ class Scale extends AbstractService
             ->setValue($value)) <= 0) {
             throw new \Exception('error insert scale');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {
@@ -40,11 +41,11 @@ class Scale extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param string $name            
-     * @param string $value            
+     * @param int    $id
+     * @param string $name
+     * @param string $value
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $name, $value)
     {
@@ -57,13 +58,13 @@ class Scale extends AbstractService
     /**
      * @invokable
      *
-     * @param array $filter         
+     * @param array $filter
      */
     public function getList($filter = null)
     {
         $mapper = $this->getMapper();
         $res_scale = $mapper->usePaginator($filter)->fetchAll();
-        
+
         return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_scale] : $res_scale;
     }
 }

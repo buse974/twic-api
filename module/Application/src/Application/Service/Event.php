@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -7,21 +8,23 @@ use Zend\Http\Client;
 
 class Event extends AbstractService
 {
-    static private $id=0;
-    
+    private static $id = 0;
+
     const TARGET_TYPE_USER = 'user';
     const TARGET_TYPE_GLOBAL = 'global';
     const TARGET_TYPE_SCHOOL = 'school';
 
     /**
-     * create event
+     * create event.
      *
-     * @param string $event            
-     * @param string $source            
-     * @param string $object            
-     * @param array $user            
+     * @param string $event
+     * @param string $source
+     * @param string $object
+     * @param array  $user
+     *
      * @throws \Exception
-     * @return integer
+     *
+     * @return int
      */
     public function create($event, $source, $object, $user, $target, $src = null)
     {
@@ -33,21 +36,22 @@ class Event extends AbstractService
             ->setObject(json_encode($object))
             ->setTarget($target)
             ->setDate($date);
-        
+
         if ($this->getMapper()->insert($m_event) <= 0) {
             throw new \Exception('error insert event');
         }
-        
+
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventUser()->add($user, $event_id);
-        
+
         $this->sendRequest($user, array(
             'id' => $event_id,
             'event' => $event,
             'source' => $source,
             'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
-            'object' => $object
+            'object' => $object,
         ), $target);
+
         return $event_id;
     }
 
@@ -57,29 +61,28 @@ class Event extends AbstractService
         $request->setMethod('notification.publish')->setParams(array(
             'notification' => $notification,
             'users' => $users,
-            'type' => $target
+            'type' => $target,
         ))
         ->setId(++self::$id)
         ->setVersion('2.0');
-        
+
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
-        
+
         try {
             $client->doRequest($request);
         } catch (\Exception $e) {
-            syslog(1,$e->getMessage());
+            syslog(1, $e->getMessage());
         }
     }
-    
+
     /**
-     * 
      * @return \Zend\Http\Client
      */
     public function getClient()
     {
         $client = new Client();
         $client->setOptions($this->serviceLocator->get('config')['http-adapter']);
-        
+
         return $client;
     }
 
@@ -89,28 +92,29 @@ class Event extends AbstractService
      * @param string $filter
      * @param string $events
      * @param string $user
-     * @param integer $id
-     * @param integer $source
+     * @param int    $id
+     * @param int    $source
      */
     public function getList($filter = null, $events = null, $user = null, $id = null, $source = null)
     {
         $mapper = $this->getMapper();
-        if(null === $user){
-            $user = $this->getServiceUser()->getIdentity()['id'];            
+        if (null === $user) {
+            $user = $this->getServiceUser()->getIdentity()['id'];
         }
-      
+
         $res_event = $mapper->usePaginator($filter)->getList($user, $events, $id, $source);
         $ar_event = $res_event->toArray();
-        foreach($ar_event as &$event){
+        foreach ($ar_event as &$event) {
             $event['source'] = json_decode($event['source'], true);
             $event['object'] = json_decode($event['object'], true);
         }
+
         return ['list' => $ar_event,'count' => $mapper->count()];
     }
-    
+
     /**
-     * 
      * @param unknown $id
+     *
      * @return \Application\Model\Event
      */
     public function get($id)
@@ -119,10 +123,10 @@ class Event extends AbstractService
         $m_event = $this->getMapper()->getList($user, null, $id)->current();
         $m_event->setSource(json_decode($m_event->getSource(), true));
         $m_event->setObject(json_decode($m_event->getObject(), true));
-        
+
         return $m_event;
     }
-    
+
     // event
     public function userPublication($feed)
     {
@@ -137,11 +141,12 @@ class Event extends AbstractService
     public function userAddConnection($user, $contact)
     {
         $users = array_unique(array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)));
+
         return $this->create(
-            'user.addconnection', 
-            $this->getDataUser($user), 
-            $this->getDataUser($contact), 
-            $users, 
+            'user.addconnection',
+            $this->getDataUser($user),
+            $this->getDataUser($contact),
+            $users,
             self::TARGET_TYPE_USER
         );
     }
@@ -149,17 +154,17 @@ class Event extends AbstractService
     public function studentSubmitAssignment($item_assignment)
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
-        
+
         $res_user = $m_item_assignment->getItemProg()
             ->getItem()
             ->getCourse()
             ->getInstructor();
-        
+
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
         }
-        
+
         return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
@@ -174,32 +179,32 @@ class Event extends AbstractService
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
         $m_assignment_comment = $this->getServiceItemAssignmentComment()->get($item_assignment_comment);
-        
+
         $res_user = $m_item_assignment->getStudents();
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
         }
-        
+
         return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function threadNew($thread)
     {
         $m_thread = $this->getServiceThread()->get($thread);
-        
+
         $users = $this->getDataUserByCourse($m_thread->getCourse()->getId());
-        
+
         return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function threadMessage($thread_message)
     {
         $m_thread_message = $this->getServiceThreadMessage()->get($thread_message);
-        
+
         $users = $this->getDataUserByCourse($m_thread_message->getThread()
             ->getCourseId());
-        
+
         return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
@@ -207,14 +212,14 @@ class Event extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         $m_videoconf_archive = $this->getServiceVideoconfArchive()->get($videoconf_archive);
-        
+
         return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), $this->getDataUserByItemProg($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
     public function eqcqAvailable($item_prog)
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        
+
         return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getDataUserByItemProg($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
@@ -222,7 +227,7 @@ class Event extends AbstractService
     {
         return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
-    
+
     public function courseParticipation($course, $dataupdated)
     {
         return $this->create('course.participation', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
@@ -262,19 +267,19 @@ class Event extends AbstractService
     {
         return $this->create('school.new', [], $this->getDataSchool($school), [], self::TARGET_TYPE_GLOBAL);
     }
-    
+
     // ------------- DATA OBJECT -------------------
     public function getDataSchool($school)
     {
         $m_school = $this->getServiceSchool()->get($school);
-        
+
         return ['id' => $m_school->getId(),'name' => 'school','data' => ['id' => $m_school->getId(),'name' => $m_school->getName(),'short_name' => $m_school->getShortName(),'logo' => $m_school->getLogo()]];
     }
 
     public function getDataResume($resume)
     {
         $m_resume = $this->getServiceResume()->getById($resume);
-        
+
         return ['id' => $resume,'name' => 'resume','data' => ['start_date' => $m_resume->getStartDate(),'end_date' => $m_resume->getEndDate(),'address' => $m_resume->getAddress(),'title' => $m_resume->getTitle(),'subtitle' => $m_resume->getSubtitle(),'logo' => $m_resume->getLogo(),'description' => $m_resume->getDescription(),'type' => $m_resume->getType()]];
     }
 
@@ -283,14 +288,14 @@ class Event extends AbstractService
         if (isset($dataupdated['id'])) {
             unset($dataupdated['id']);
         }
-        
+
         return ['id' => $user,'name' => 'user','data' => ['updated' => array_keys($dataupdated)]];
     }
 
     public function getDataProgrammation($item_prog)
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        
+
         return [
             'id' => $m_item_prog->getId(),
             'name' => 'programmation',
@@ -304,7 +309,7 @@ class Event extends AbstractService
                     'duration' => $m_item_prog->getItem()->getDuration(),
                     'course' => [
                         'id' => $m_item_prog->getItem()->getCourse()->getId(),
-                        'title' => $m_item_prog->getItem()->getCourse()->getTitle()
+                        'title' => $m_item_prog->getItem()->getCourse()->getTitle(),
                     ],
                 ],
             ],
@@ -315,18 +320,18 @@ class Event extends AbstractService
     {
         $m_course = $this->getServiceCourse()->get($course);
         $m_material_document = $this->getServiceMaterialDocument()->get($material);
-        
+
         return ['id' => $course,'name' => 'course','data' => ['title' => $m_course->getTitle(),'picture' => $m_course->getPicture(),'material' => ['type' => $m_material_document->getType(),'title' => $m_material_document->getTitle(),'author' => $m_material_document->getAuthor(),'link' => $m_material_document->getLink(),'source' => $m_material_document->getSource(),'token' => $m_material_document->getToken()]]];
     }
 
     public function getDataCourseUpdate($course, $dataupdated)
     {
         $m_course = $this->getServiceCourse()->get($course);
-        
+
         if (isset($dataupdated['id'])) {
             unset($dataupdated['id']);
         }
-        
+
         return ['id' => $course,'name' => 'course','data' => ['title' => $m_course->getTitle(),'picture' => $m_course->getPicture(),'updated' => array_keys($dataupdated)]];
     }
 
@@ -338,12 +343,12 @@ class Event extends AbstractService
     public function getDataItemProgWihtUser(\Application\Model\ItemProg $m_item_prog)
     {
         $res_user = $this->getServiceUser()->getListByItemProg($m_item_prog->getId());
-        
+
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = ['firstname' => $m_user->getFirstname(),'lastname' => $m_user->getLastname(),'avatar' => $m_user->getAvatar()];
         }
-        
+
         return ['id' => $m_item_prog->getId(),'name' => 'programming','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()],'users' => $users]];
     }
 
@@ -355,36 +360,36 @@ class Event extends AbstractService
     public function getDataUserContact($user = null)
     {
         $ret = $this->getServiceContact()->getListId($user);
-        
-        if(null === $user) {
+
+        if (null === $user) {
             $user = $this->getServiceUser()->getIdentity()['id'];
         }
         $ret[] = $user;
-        
+
         return $ret;
     }
 
     public function getDataUserByCourse($course)
     {
         $res_user = $this->getServiceUser()->getListUserBycourse($course);
-        
+
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
         }
-        
+
         return $users;
     }
 
     public function getDataUserByItemProg($item_prog)
     {
         $res_user = $this->getServiceUser()->getListByItemProg($item_prog);
-        
+
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
         }
-        
+
         return $users;
     }
 
@@ -392,8 +397,8 @@ class Event extends AbstractService
     {
         $m_thread = $this->getServiceThread()->get($m_thread_message->getThread()
             ->getId());
-        
-        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)["data"]]];
+
+        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)['data']]];
     }
 
     public function getDataThread(\Application\Model\Thread $m_thread)
@@ -404,7 +409,7 @@ class Event extends AbstractService
     public function getDataFeed($feed)
     {
         $m_feed = $this->getServiceFeed()->get($feed);
-        
+
         return ['id' => $feed,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
     }
 
@@ -415,12 +420,10 @@ class Event extends AbstractService
         return [
             'id' => $event,
             'name' => 'event',
-            'data' => $m_event->toArray()
+            'data' => $m_event->toArray(),
         ];
     }
-    
-    
-    
+
     public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
     {
         return [
@@ -432,20 +435,20 @@ class Event extends AbstractService
                 ],
                 'item' => [
                     'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
-                    'type' => $m_item_assignment->getItemProg()->getItem()->getType()
+                    'type' => $m_item_assignment->getItemProg()->getItem()->getType(),
                 ],
                 'module' => [
                     'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
                     'course' => [
                         'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
-                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
-                    ]
+                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle(),
+                    ],
                 ],
                 'comment' => [
                     'id' => $m_comment->getId(),
-                    'text' => $m_comment->getText()
-                ]
-            ]
+                    'text' => $m_comment->getText(),
+                ],
+            ],
         ];
     }
 
@@ -456,19 +459,18 @@ class Event extends AbstractService
             'name' => 'assignment',
             'data' => [
                 'item_prog' => [
-                    'id' =>  $m_item_assignment->getItemProg()->getId()
+                    'id' => $m_item_assignment->getItemProg()->getId(),
                 ],
-                'item' => 
-                    ['title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
-                     'type' => $m_item_assignment->getItemProg()->getItem()->getType()],
+                'item' => ['title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                     'type' => $m_item_assignment->getItemProg()->getItem()->getType(), ],
                      'module' => [
                          'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
                          'course' => [
                              'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
-                             'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
-                         ]
-                     ]
-                ]
+                             'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle(),
+                         ],
+                     ],
+                ],
         ];
     }
 
@@ -478,12 +480,12 @@ class Event extends AbstractService
         foreach ($m_item_assignment->getStudents() as $student) {
             $users[] = ['id' => $student->getId(),'name' => 'user','data' => ['firstname' => $student->getFirstname(),'lastname' => $student->getLastname(),'avatar' => $student->getAvatar(),'school' => ['id' => $student->getSchool()->getId(),'short_name' => $student->getSchool()->getShortName(),'logo' => $student->getSchool()->getLogo()],'user_roles' => $student->getRoles()]];
         }
-        
+
         return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['users' => $users,'item' => ['title' => $m_item_assignment->getItemProg()
             ->getItem()
             ->getTitle(),'type' => $m_item_assignment->getItemProg()
             ->getItem()
-            ->getType()],'item_prog' => ['id' => $m_item_assignment->getItemProg()->getId()],'module' => ['title' => $m_item_assignment->getItemProg()
+            ->getType(), ],'item_prog' => ['id' => $m_item_assignment->getItemProg()->getId()],'module' => ['title' => $m_item_assignment->getItemProg()
             ->getItem()
             ->getModule()
             ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
@@ -492,7 +494,7 @@ class Event extends AbstractService
             ->getId(),'title' => $m_item_assignment->getItemProg()
             ->getItem()
             ->getCourse()
-            ->getTitle()]]]];
+            ->getTitle(), ], ]]];
     }
 
     public function getDataUser($id = null)
@@ -500,8 +502,9 @@ class Event extends AbstractService
         if (null == $id) {
             $id = $this->getServiceUser()->getIdentity()['id'];
         }
-        
+
         $m_user = $this->getServiceUser()->get($id);
+
         return [
             'id' => $id,
             'name' => 'user',
@@ -512,15 +515,14 @@ class Event extends AbstractService
                 'school' => [
                     'id' => $m_user['school']['id'],
                     'short_name' => $m_user['school']['short_name'],
-                    'logo' => $m_user['school']['logo']
+                    'logo' => $m_user['school']['logo'],
                 ],
-                'user_roles' => $m_user['roles']
+                'user_roles' => $m_user['roles'],
             ],
         ];
     }
 
     /**
-     *
      * @return \Application\Service\ThreadMessage
      */
     public function getServiceThreadMessage()
@@ -529,7 +531,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\MaterialDocument
      */
     public function getServiceMaterialDocument()
@@ -538,7 +539,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Thread
      */
     public function getServiceThread()
@@ -547,7 +547,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\EventUser
      */
     public function getServiceEventUser()
@@ -556,7 +555,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -565,7 +563,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Feed
      */
     public function getServiceFeed()
@@ -574,7 +571,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\ItemAssignment
      */
     public function getServiceItemAssignment()
@@ -583,7 +579,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\VideoconfArchive
      */
     public function getServiceVideoconfArchive()
@@ -592,7 +587,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\ItemProg
      */
     public function getServiceItemProg()
@@ -601,7 +595,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Course
      */
     public function getServiceCourse()
@@ -610,7 +603,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Resume
      */
     public function getServiceResume()
@@ -619,7 +611,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\School
      */
     public function getServiceSchool()
@@ -628,7 +619,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Contact
      */
     public function getServiceContact()
@@ -637,7 +627,6 @@ class Event extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\ItemAssignmentComment
      */
     public function getServiceItemAssignmentComment()

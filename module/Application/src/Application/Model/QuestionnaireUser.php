@@ -8,15 +8,15 @@ class QuestionnaireUser extends BaseQuestionnaireUser
 {
     protected $answers;
 
-    public function getAnswers() 
+    public function getAnswers()
     {
         return $this->answers;
     }
 
-    public function setAnswers($answers) 
+    public function setAnswers($answers)
     {
         $this->answers = $answers;
-        
+
         return $this;
     }
 }
