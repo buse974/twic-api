@@ -199,9 +199,21 @@ class Feed extends AbstractService
 
         $pc = $this->getServiceSimplePageCrawler();
         $page = $pc->setHttpClient($client)->get($url);
+       
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
-        
+
+        if(isset($return['meta'])) {
+            foreach ($return['meta'] as &$v) {
+                $v = html_entity_decode($v);
+            }
+        }
+        if(isset($return['open_graph'])) {
+            foreach ($return['open_graph'] as &$v) {
+                $v = html_entity_decode($v);
+            }
+        }
+
         return $return;
     }
 
