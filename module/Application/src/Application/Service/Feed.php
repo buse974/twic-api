@@ -205,12 +205,12 @@ class Feed extends AbstractService
 
         if(isset($return['meta'])) {
             foreach ($return['meta'] as &$v) {
-                $v = html_entity_decode($v);
+                $v = html_entity_decode(html_entity_decode($v));
             }
         }
         if(isset($return['open_graph'])) {
             foreach ($return['open_graph'] as &$v) {
-                $v = html_entity_decode($v);
+                $v = html_entity_decode(html_entity_decode($v));
             }
         }
 
