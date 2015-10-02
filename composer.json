@@ -9,8 +9,8 @@
     "homepage": "https://github.com/buse974/ZendSkeletonApplication/",
     "require": {
         "php": ">=5.4",
-	"blanchonvincent/simple-page-crawler":"dev-master",
         "zendframework/zendframework": "2.*",
+	"blanchonvincent/simple-page-crawler": "dev-master",
         "buse974/dms":"dev-master",
         "firebase/token-generator":"2.*",
         "buse974/dal":"dev-master",
@@ -24,6 +24,12 @@
             "fabpot/php-cs-fixer":"*",
             "phpunit/phpunit" : "*"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:buse974/SimplePageCrawler.git"
+        }
+    ],
     "config": {
             "bin-dir": "bin/"
    }
