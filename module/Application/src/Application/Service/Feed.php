@@ -199,22 +199,21 @@ class Feed extends AbstractService
 
         $pc = $this->getServiceSimplePageCrawler();
         $page = $pc->setHttpClient($client)->get($url);
-        $has_utf8 = ($pc->getHttpClient()->getResponse()->getHeaders()->get('content-type')->getCharset()==='utf-8')?true:false;
+        $has_not_charset = ($pc->getHttpClient()->getResponse()->getHeaders()->get('content-type')->getCharset()==null)?true:false;
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
         if(isset($return['meta'])) {
             foreach ($return['meta'] as &$v) {
                 $v = html_entity_decode($v);
-                if(!$has_utf8) {
+                if($has_not_charset) {
                     $v = utf8_decode($v);
                 }
             }
         }
-        
         if(isset($return['open_graph'])) {
             foreach ($return['open_graph'] as &$v) {
                 $v = html_entity_decode($v);
-                if(!$has_utf8) {
+                if($has_not_charset) {
                     $v = utf8_decode($v);
                 }
             }
