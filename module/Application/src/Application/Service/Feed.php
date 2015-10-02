@@ -197,24 +197,29 @@ class Feed extends AbstractService
         $client = new Client();
         $client->setOptions($sm->get('Config')['http-adapter']);
 
-        $page = $this->getServiceSimplePageCrawler()->setHttpClient($client)->get($url);
-
+        $pc = $this->getServiceSimplePageCrawler();
+        $page = $pc->setHttpClient($client)->get($url);
+        $has_utf8 = ($pc->getHttpClient()->getResponse()->getHeaders()->get('content-type')->getCharset()==='utf-8')?true:false;
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
-        
         if(isset($return['meta'])) {
-            foreach ($return['meta'] as $k => $v) {
-                $return['meta'][$k] = utf8_decode($v);
+            foreach ($return['meta'] as &$v) {
+                $v = html_entity_decode($v);
+                if(!$has_utf8) {
+                    $v = utf8_decode($v);
+                }
             }
         }
         
         if(isset($return['open_graph'])) {
-            foreach ($return['open_graph'] as $k => $v) {
-                $return['open_graph'][$k] = utf8_decode($v);
+            foreach ($return['open_graph'] as &$v) {
+                $v = html_entity_decode($v);
+                if(!$has_utf8) {
+                    $v = utf8_decode($v);
+                }
             }
         }
-        
-        
+
         return $return;
     }
 
