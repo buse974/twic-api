@@ -260,7 +260,23 @@ class Event extends AbstractService
 
     public function userRequestconnection($user)
     {
-        return $this->create('user.requestconnection', $this->getDataUser(), $this->getDataUser($user), [$user], self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+        $u = $this->getDataUser();
+        $uu = $this->getDataUser($user);
+        
+        try {
+            $this->getServiceMail()->sendTpl('tpl_newrequest', $uu['data']['email'], 
+                array(
+                    'firstname' => $u['data']['firstname'], 
+                    'lastname' => $u['data']['lastname'], 
+                    'avatar' => $u['data']['avatar'], 
+                    'school_name' => $u['data']['school']['short_name'],
+                    'school_logo' => $u['data']['school']['logo'],
+                ));
+        } catch (\Exception $e) {
+            syslog(1, 'Model tpl_newrequest does not exist');
+        }
+        
+        return $this->create('user.requestconnection', $u, $uu, [$user], self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     public function schoolNew($school)
@@ -524,6 +540,7 @@ class Event extends AbstractService
             'name' => 'user',
             'data' => [
                 'firstname' => $m_user['firstname'],
+                'email' => $m_user['email'],
                 'lastname' => $m_user['lastname'],
                 'avatar' => $m_user['avatar'],
                 'school' => [
@@ -646,5 +663,13 @@ class Event extends AbstractService
     public function getServiceItemAssignmentComment()
     {
         return $this->getServiceLocator()->get('app_service_item_assignment_comment');
+    }
+    
+    /**
+     * @return \Mail\Service\Mail
+     */
+    public function getServiceMail()
+    {
+        return $this->getServiceLocator()->get('mail.service');
     }
 }
