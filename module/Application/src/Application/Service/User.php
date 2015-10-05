@@ -328,7 +328,7 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null)
+    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null)
     {
         $m_user = $this->getModel();
 
@@ -347,7 +347,8 @@ class User extends AbstractService
             ->setBirthDate($birth_date)
             ->setPosition($position)
             ->setInterest($interest)
-            ->setAvatar($avatar);
+            ->setAvatar($avatar)
+            ->setHasEmailNotifier($has_email_notifier);
 
         if ($school_id !== null) {
             if ($school_id === 'null') {
@@ -525,6 +526,11 @@ class User extends AbstractService
     public function getListByItemProg($item_prog)
     {
         return $this->getMapper()->getListByItemProg($item_prog);
+    }
+    
+    public function getListByItemProgWithInstrutor($item_prog)
+    {
+        return $this->getMapper()->getListByItemProgWithInstrutor($item_prog);
     }
 
     /**
