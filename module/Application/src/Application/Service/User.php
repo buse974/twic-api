@@ -527,6 +527,11 @@ class User extends AbstractService
     {
         return $this->getMapper()->getListByItemProg($item_prog);
     }
+    
+    public function getListByItemProgWithInstrutor($item_prog)
+    {
+        return $this->getMapper()->getListByItemProgWithInstrutor($item_prog);
+    }
 
     /**
      * Get user list for item_prog and those available.

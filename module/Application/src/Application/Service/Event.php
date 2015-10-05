@@ -220,7 +220,7 @@ class Event extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
 
-        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getDataUserByItemProg($m_item_prog->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getListByItemProgWithInstrutor($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
     public function courseUpdated($course, $dataupdated)
@@ -381,6 +381,20 @@ class Event extends AbstractService
         return $users;
     }
 
+    
+    
+    public function getListByItemProgWithInstrutor($item_prog)
+    {
+        $res_user = $this->getServiceUser()->getListByItemProgWithInstrutor($item_prog);
+    
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+    
+        return $users;
+    }
+    
     public function getDataUserByItemProg($item_prog)
     {
         $res_user = $this->getServiceUser()->getListByItemProg($item_prog);
