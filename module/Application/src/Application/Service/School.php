@@ -126,6 +126,11 @@ class School extends AbstractService
         return ['count' => $mapper->count(), 'list' => $res_school];
     }
 
+    public function getEqCq($school)
+    {
+        return  $this->getMapper()-> getEqCq($school);   
+    }
+    
     /**
      * Delete school.
      *
