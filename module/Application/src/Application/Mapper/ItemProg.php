@@ -14,7 +14,7 @@ class ItemProg extends AbstractMapper
         $select->columns(array('id', 'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
             ->join('item', 'item.id=item_prog.item_id', array('id', 'title', 'describe', 'type'))
-            ->join('module', 'module.id=item.module_id', array('id', 'title'))
+            ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
             ->join('course', 'course.id=module.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item_prog.id' => $id))
@@ -62,7 +62,7 @@ class ItemProg extends AbstractMapper
         $select->join('item', 'item.id = item_prog.item_id', array('id', 'title', 'type'))
             ->join('course', 'course.id = item.course_id', array('id', 'title'))
             ->join('program', 'program.id = course.program_id', array('id', 'name'))
-            ->join('module', 'module.id = item.module_id', array('id', 'title'))
+            ->join('module', 'module.id = item.module_id', array('id', 'title'), $select::JOIN_LEFT)
             ->join('grading_policy', 'grading_policy.id = item.grading_policy_id', array('name', 'type'));
 
         if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles'])) {
@@ -124,13 +124,13 @@ class ItemProg extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getByItemAssignment($item_assignement)
+    public function getByItemAssignment($item_assignment)
     {
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('start_date', 'id'))
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
-            ->where(array('item_prog.id' => $item_assignement));
+            ->join('item_assignment', 'item_prog.id=item_assignment.item_prog_id', array())
+            ->where(array('item_assignment.id' => $item_assignment));
 
         return $this->selectWith($select);
     }
