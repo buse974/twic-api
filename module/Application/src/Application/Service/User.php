@@ -375,7 +375,7 @@ class User extends AbstractService
 
         $ret = $this->getMapper()->update($m_user);
 
-        if ($ret > 0) {
+        if ($ret > 0 && $id === $this->getIdentity()['id']) {
             $this->getServiceEvent()->profileUpdated($id, $m_user->toArray());
         }
 
