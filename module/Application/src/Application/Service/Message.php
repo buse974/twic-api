@@ -30,15 +30,7 @@ class Message extends AbstractService
 
         // Id is set => update
         if (null !== $id) {
-            $m_message = $this->getModel()->setId($id);
-            $res_message = $this->getMapper()->select($m_message);
-
-            // Throws an error if the message does not exist
-            if ($res_message->count() <= 0) {
-                throw new \Exception('error select message with id :'.$id);
-            }
-            // Fetches the entity and stores the message and conversation ids
-            $m_message = $res_message->current();
+            $m_message = $this->get($id);
             $message_id = $m_message->getId();
             $conversation = $m_message->getConversationId();
 
@@ -88,9 +80,28 @@ class Message extends AbstractService
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
 
+        $this->getServiceEvent()->messageNew($message_id, $to);
         return $this->getServiceMessageUser()
             ->getList($me, $message_id)['list']
             ->current();
+    }
+    
+    /**
+     * Get Message
+     * 
+     * @return \Application\Model\Message
+     */
+    public function get($id) 
+    {
+        $m_message = $this->getModel()->setId($id);
+        $res_message = $this->getMapper()->select($m_message);
+        
+        // Throws an error if the message does not exist
+        if ($res_message->count() <= 0) {
+            throw new \Exception('error select message with id :'.$id);
+        }
+        // Fetches the entity and stores the message and conversation ids
+        return $res_message->current();
     }
 
     /**
@@ -302,5 +313,13 @@ class Message extends AbstractService
     public function getServiceConversationUser()
     {
         return $this->getServiceLocator()->get('app_service_conversation_user');
+    }
+    
+    /**
+     * @return \Application\Service\Event
+     */
+    public function getServiceEvent()
+    {
+        return $this->getServiceLocator()->get('app_service_event');
     }
 }

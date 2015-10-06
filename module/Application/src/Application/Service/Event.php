@@ -18,8 +18,8 @@ class Event extends AbstractService
      * create event.
      *
      * @param string $event
-     * @param string $source
-     * @param string $object
+     * @param mixed $source
+     * @param mixed $object
      * @param array  $user
      *
      * @throws \Exception
@@ -128,6 +128,11 @@ class Event extends AbstractService
     }
 
     // event
+    public function messageNew($message, $to)
+    {
+        return $this->create('message.new', $this->getDataUser(), $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+    }
+    
     public function userPublication($feed)
     {
         return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
@@ -553,6 +558,17 @@ class Event extends AbstractService
         ];
     }
 
+    public function getDataMessage($message)
+    {
+        $m_message_user = $this->getServiceMessageUser()->getMessage($message);
+    
+        return [
+            'id' => $m_message_user->getMessage()->getId(),
+            'name' => 'message',
+            'data' => $m_message_user->getMessage()
+        ];
+    }
+    
     /**
      * @return \Application\Service\ThreadMessage
      */
@@ -671,5 +687,21 @@ class Event extends AbstractService
     public function getServiceMail()
     {
         return $this->getServiceLocator()->get('mail.service');
+    }
+    
+    /**
+     * @return \Application\Service\MessageUser
+     */
+    public function getServiceMessageUser()
+    {
+        return $this->getServiceLocator()->get('app_service_message_user');
+    }
+    
+    /**
+     * @return \Application\Service\Message
+     */
+    public function getServiceMessage()
+    {
+        return $this->getServiceLocator()->get('app_service_message');
     }
 }
