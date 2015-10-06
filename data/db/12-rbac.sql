@@ -161,7 +161,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('user.deleteCourse');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('course.get');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
