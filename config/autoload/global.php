@@ -105,8 +105,29 @@ return [
                 'methods' => [
                     'getAddress',
                 ],
-                'namespace' => 'addr',
             ],
+            [
+                'class' => 'addr_service_country',
+                'methods' => [
+                    'getList',
+                    'getCountry',
+                ],
+             ],
+            [
+                'class' => 'addr_service_city',
+                'methods' => [
+                    'getList',
+                    'getCity',
+                ],
+            ],
+            [
+                'class' => 'addr_service_division',
+                'methods' => [
+                    'getList',
+                    'getDivision',
+                ],
+            ],
+            
         ],
         'headers' => [
            /* 'Access-Control-Allow-Origin' => '*',
