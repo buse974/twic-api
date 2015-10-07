@@ -80,14 +80,10 @@ return [
             'app_service_feed_comment',
             'app_service_like',
             'app_service_resume',
-            'app_service_city',
-            'app_service_division',
             'app_service_questionnaire',
             'app_service_answer',
             'app_service_item_prog_user',
-            'app_service_country',
             'app_service_component',
-            'app_service_country',
             'app_service_user_language',
             'app_service_language',
             'app_service_language_level',
@@ -105,7 +101,27 @@ return [
                 'methods' => [
                     'getAddress',
                 ],
-                'namespace' => 'addr',
+            ],
+            [
+                'class' => 'addr_service_country',
+                'methods' => [
+                    'getList',
+                    'getCountry',
+                ],
+             ],
+            [
+                'class' => 'addr_service_city',
+                'methods' => [
+                    'getList',
+                    'getCity',
+                ],
+            ],
+            [
+                'class' => 'addr_service_division',
+                'methods' => [
+                    'getList',
+                    'getDivision',
+                ],
             ],
         ],
         'headers' => [
