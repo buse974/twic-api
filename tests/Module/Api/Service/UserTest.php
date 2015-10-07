@@ -132,7 +132,7 @@ class UserTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals(count($data['result'][0]['contact']) , 17);
+        $this->assertEquals(count($data['result'][0]['contact']) , 18);
         $this->assertEquals(count($data['result'][0]['contact']['origin']) , 2);
         $this->assertEquals($data['result'][0]['contact']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['contact']['origin']['short_name'] , null);
@@ -156,6 +156,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact']['school_id'] , 1);
         $this->assertEquals($data['result'][0]['contact']['interest'] , null);
         $this->assertEquals($data['result'][0]['contact']['avatar'] , null);
+        $this->assertEquals($data['result'][0]['contact']['has_email_notifier'] , 1);
         $this->assertEquals(count($data['result'][0]['contact']['roles']) , 1);
         $this->assertEquals($data['result'][0]['contact']['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result'][0]['contact']['program']) , 0);
