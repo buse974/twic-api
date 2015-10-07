@@ -24,22 +24,19 @@ class EventUser extends AbstractService
     /**
      * @invokable
      */
-    public function read($ids = null)
+    public function read($ids = null, $event = null)
     {
         $nb = 0;
-
         $me = $this->getServiceUser()->getIdentity()['id'];
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $m_event = $this->getModel()
-            ->setUserId($me)
-            ->setReadDate($date);
-
+        
         if (null !== $ids) {
-            $nb = $this->getMapper()->update($m_event->setEventId($ids));
+            $m_event = $this->getModel()->setUserId($me)->setReadDate($date)->setEventId($ids);
+            $nb = $this->getMapper()->update($m_event);
         } else {
-            $nb += $this->getMapper()->inserUpdate($date, $me);
-            $nb += $this->getMapper()->update($m_event, array('user_id' => $me));
+            $nb += $this->getMapper()->insertUpdate($date, $me, $event);
+            $nb += $this->getMapper()->updateReadMe($date, $me, $event);
         }
 
         return $nb;
