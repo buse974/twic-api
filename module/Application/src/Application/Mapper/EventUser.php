@@ -36,7 +36,7 @@ class EventUser extends AbstractMapper
         
         $update = $this->tableGateway->getSql()->update();
         $update->set(array('read_date' => $date))
-            ->where(array('event_id' => $select))
+            ->where(array('event_id IN ?' => $select))
             ->where(array('user_id' => $me))
             ->where(array('read_date IS NULL'));
         
