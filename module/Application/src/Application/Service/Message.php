@@ -80,7 +80,10 @@ class Message extends AbstractService
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
 
-        $this->getServiceEvent()->messageNew($message_id, $to);
+        if($draft===false) {
+            $this->getServiceEvent()->messageNew($message_id, $to);
+        }
+        
         return $this->getServiceMessageUser()
             ->getList($me, $message_id)['list']
             ->current();

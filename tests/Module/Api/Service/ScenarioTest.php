@@ -3846,6 +3846,18 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
+    
+    public function testEventRead2()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('eventuser.read', array('event' => ['school.new']));
+    
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
 
     public function setIdentity($id)
     {
