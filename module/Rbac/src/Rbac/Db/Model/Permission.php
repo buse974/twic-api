@@ -16,8 +16,8 @@ class Permission extends BasePermission
         }
         parent::exchangeArray($data);
 
-        $this->role = $this->requireModel('rbac_service_role', $data);
-        $this->role_permission = $this->requireModel('rbac_service_role_permission', $data);
+        $this->role = $this->requireModel('rbac_model_role', $data);
+        $this->role_permission = $this->requireModel('rbac_model_role_permission', $data);
     }
 
     public function getRolePermission()
