@@ -21,6 +21,7 @@ class Dimension extends AbstractMapper
         if (null !== $search) {
             $select->where(array('name LIKE ? ' => '%' . $search . '%'));
         }
+        $select->where(array('deleted_date IS NULL'));
         
         return $this->selectWith($select);
     }
