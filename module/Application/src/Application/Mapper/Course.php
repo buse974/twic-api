@@ -21,7 +21,7 @@ class Course extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($program = null, $search = null, $filter = null, $is_academic = false)
+    public function getList($program = null, $search = null, $filter = null, $is_academic = false, $user = null)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -35,8 +35,9 @@ class Course extends AbstractMapper
             $select->where(array('course.program_id' => $program));
         }
 
-        if (null !== $filter && array_key_exists('user', $filter) && $is_academic === false) {
-            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $filter['user']]);
+        if (null !== $user && $is_academic === false) {
+            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])
+                ->where(['course_user_relation.user_id' => $user]);
         }
 
         if (null == !$search) {
