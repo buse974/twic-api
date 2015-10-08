@@ -10,13 +10,14 @@ class Component extends AbstractMapper
     public function getList($dimension = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'name', 'describe', 'dimension_id'));
+        $select->columns(array('id', 'name', 'describe', 'dimension_id'))
+               ->join(array('component_dimension'  => 'dimension'), 'component_dimension.id=component.dimension_id', array('id', 'name'));
 
         if (null !== $dimension) {
             if (is_numeric($dimension)) {
                 $select->where(array('component.dimension_id' => $dimension));
             } else {
-                $select->join('dimension', 'dimension.id=component.dimension_id', array())->where(array('dimension.name' => $dimension));
+                $select->where(array('component_dimension.name' => $dimension));
             }
         }
 
