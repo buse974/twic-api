@@ -65,10 +65,11 @@ class School extends AbstractService
      * @param string $website
      * @param string $short_name
      * @param string $phone
-     *
-     * @return int
+     * @param string $address
+     * 
+     * @return integer
      */
-    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null)
+    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null)
     {
         $m_school = $this->getModel();
 
@@ -80,6 +81,13 @@ class School extends AbstractService
                  ->setShortName($short_name)
                  ->setPhone($phone);
 
+        if ($address !== null) {
+            $address_id = $this->getServiceAddress()->getAddress($address)->getId();
+            if ($address_id !== null) {
+                $m_school->setAddressId($address_id);
+            }
+        }
+        
         return $this->getMapper()->update($m_school);
     }
 
