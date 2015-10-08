@@ -18,7 +18,7 @@ class ItemAssignment extends AbstractMapper
             ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
             ->join('item', 'item.id=item_prog.item_id', array('id', 'title', 'describe', 'type'))
             ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
-            ->join('course', 'course.id=module.course_id', array('id', 'title'))
+            ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item_assignment.id' => $id));
 
