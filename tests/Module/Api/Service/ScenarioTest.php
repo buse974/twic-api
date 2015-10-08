@@ -1348,19 +1348,23 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(4);
         $data = $this->jsonRpc('questionnaire.getByItemProg', array('item_prog' => $item_prog));
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 6);
-        $this->assertEquals(count($data['result']['questions']), 11);
-        $this->assertEquals(count($data['result']['questions'][0]), 2);
-        $this->assertEquals(is_numeric($data['result']['questions'][10]['id']), true);
-        $this->assertEquals(! empty($data['result']['questions'][10]['text']), true);
-        $this->assertEquals($data['result']['id'], 1);
-        $this->assertEquals(! empty($data['result']['created_date']), true);
-        $this->assertEquals($data['result']['max_duration'], 30);
-        $this->assertEquals($data['result']['max_time'], 10);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 6); 
+        $this->assertEquals(count($data['result']['questions']) , 11); 
+        $this->assertEquals(count($data['result']['questions'][0]) , 3); 
+        $this->assertEquals(count($data['result']['questions'][0]['component']) , 2); 
+        $this->assertEquals($data['result']['questions'][0]['component']['id'] , 1); 
+        $this->assertEquals($data['result']['questions'][0]['component']['name'] , "Awareness"); 
+        $this->assertEquals(is_numeric($data['result']['questions'][0]['id'] ), true); 
+        $this->assertEquals(!empty($data['result']['questions'][0]['text']) , true); 
+        $this->assertEquals($data['result']['id'] , 1); 
+        $this->assertEquals($data['result']['item_id'] , 1); 
+        $this->assertEquals(!empty($data['result']['created_date']) , true); 
+        $this->assertEquals($data['result']['max_duration'] , 30); 
+        $this->assertEquals($data['result']['max_time'] , 10); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+         
         return $data['result']['questions'];
     }
 
@@ -2644,8 +2648,29 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['title'], "titl2e");
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
+        
+        return $data['result']['list'][0]['item_prog']['id'];
     }
 
+    /**
+     * @depends testCangetListGradeTwo
+     */
+    public function testCanItemGetByItemProg($itemprog)
+    {
+        $this->setIdentity(4);
+    
+        $data = $this->jsonRpc('item.getByItemProg', array('item_prog' => $itemprog));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['title'] , "titl2e");
+        $this->assertEquals($data['result']['type'] , "WG");
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+    }
+   
     /**
      * @depends testAddCourse
      * @depends testCanGradedTwo
@@ -2887,7 +2912,7 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(1);
         
         $data = $this->jsonRpc('program.getList', array());
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 1);
