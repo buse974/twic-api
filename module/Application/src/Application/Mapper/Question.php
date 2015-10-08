@@ -22,7 +22,8 @@ class Question extends AbstractMapper
     public function getList($questionnaire = null, $dimension = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'text'));
+        $select->columns(array('id', 'text'))
+               ->join('component', 'component.id=question.component_id', array('id', 'name'));
 
         if (null !== $questionnaire) {
             $select->join('questionnaire_question', 'questionnaire_question.question_id=question.id', array())
@@ -30,9 +31,8 @@ class Question extends AbstractMapper
         }
 
         if (null !== $dimension) {
-            $select->join('component', 'component.id=question.component_id', array())
-                   ->join('dimension', 'dimension.id=component.dimension_id', array())
-            ->where(array('dimension.name' => $dimension));
+            $select->join('dimension', 'dimension.id=component.dimension_id', array())
+                ->where(array('dimension.name' => $dimension));
         }
 
         if (null !== $search) {
