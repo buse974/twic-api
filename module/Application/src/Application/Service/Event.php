@@ -155,8 +155,8 @@ class Event extends AbstractService
         $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
         
         foreach ($to as $t) {
+            $u = $this->getDataUser($t);
             if(/*!$this->isConnected($t)*/ $u['has_email_notifier'] == true) {
-                $u = $this->getDataUser($t);
                 try {
                     $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array(
                         'to_firstname' => $u['data']['firstname'],
