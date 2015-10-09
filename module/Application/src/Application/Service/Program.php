@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Role as ModelRole;
 
 class Program extends AbstractService
 {
@@ -73,7 +74,11 @@ class Program extends AbstractService
      */
     public function getList($filter = null, $search = null)
     {
-        $res_program = $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), false, $search);
+        $user = $this->getServiceUser()->getIdentity();
+        
+        $all = !(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $user['roles']) || in_array(ModelRole::ROLE_STUDENT_STR, $user['roles']));
+
+        $res_program = $this->getListByUser($filter,$user['id'] , $all, $search);
 
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
