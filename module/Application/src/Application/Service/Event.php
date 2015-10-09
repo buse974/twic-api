@@ -117,13 +117,15 @@ class Event extends AbstractService
         }
         
         $res_event = $mapper->usePaginator($filter)->getList($user, $events, $id, $source);
+        $count = $mapper->count();
         $ar_event = $res_event->toArray();
         foreach ($ar_event as &$event) {
+            $event['nb_like'] = $this->getMapper()->nbrLike($event['id']);
             $event['source'] = json_decode($event['source'], true);
             $event['object'] = json_decode($event['object'], true);
         }
         
-        return ['list' => $ar_event,'count' => $mapper->count()];
+        return ['list' => $ar_event,'count' => $count];
     }
 
     /**
