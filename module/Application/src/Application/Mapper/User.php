@@ -11,15 +11,15 @@ class User extends AbstractMapper
 
     public function get($user, $me)
     {
-        $columns = array('id','firstname','gender','lastname','email',
+        $columns = array('id','firstname','gender','lastname','email','has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position','interest','avatar','school_id',
             'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1' . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
             'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NOT NULL, 1, 0))'));
         
-        if($user===$me) {
+        /*if($user===$me) {
             $columns[] = 'has_email_notifier';
-        }
+        }*/
         
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
