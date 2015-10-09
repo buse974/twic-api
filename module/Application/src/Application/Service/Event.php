@@ -156,7 +156,7 @@ class Event extends AbstractService
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
-            if(/*!$this->isConnected($t)*/ $u['has_email_notifier'] == true) {
+            if(/*!$this->isConnected($t)*/ $u['data']['has_email_notifier'] == true) {
                 try {
                     $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array(
                         'to_firstname' => $u['data']['firstname'],
