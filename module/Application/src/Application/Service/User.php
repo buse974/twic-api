@@ -195,17 +195,20 @@ class User extends AbstractService
 
     /**
      * @invokable
-     *
+     * 
      * @param string $filter
      * @param string $type
      * @param string $level
      * @param string $course
      * @param string $program
      * @param string $search
-     * @param int    $noprogram
-     * @param int    $nocourse
-     *
-     * @return array
+     * @param string $noprogram
+     * @param string $nocourse
+     * @param string $schools
+     * @param string $order
+     * @param array $exclude
+     * @param string $event
+     * @param string $message
      */
     public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $event = null, $message = null)
     {
@@ -231,16 +234,12 @@ class User extends AbstractService
 
     public function getListOnly($type, $course)
     {
-        return $this->getMapper()->getList(null, null, null, $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), $type, null, $course, null, null, null, null, false);
+        return $this->getMapper()->getList(null, null, null, null, $type, null, $course);
     }
 
     public function getListUserBycourse($course)
     {
-        return $this->getMapper()->getList(null, null, null, $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), null, null, $course, null, null, null, null, false);
+        return $this->getMapper()->getList(null, null, null, null, null, null, $course);
     }
 
     /**

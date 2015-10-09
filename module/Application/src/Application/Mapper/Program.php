@@ -27,11 +27,8 @@ class Program extends AbstractMapper
         ));
 
         $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();
-        $sub_select->columns(array(
-                'school_id',
-            ))->where(array(
-                'user.id' => $user_program,
-            ));
+        $sub_select->columns(array('school_id'))->where(array('user.id' => $user_program));
+            
         $select->where(array(
                 'school_id' => $sub_select,
             ));
