@@ -155,21 +155,21 @@ class Event extends AbstractService
         $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
         
         foreach ($to as $t) {
-            //if(!$this->isConnected($t)) {
-            $u = $this->getDataUser($t);
-            try {
-                $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array(
-                    'to_firstname' => $u['data']['firstname'],
-                    'to_lastname' => $u['data']['lastname'],
-                    'to_avatar' => $u['data']['avatar'],
-                    'from_firstname' => $from['data']['firstname'],
-                    'from_lastname' => $from['data']['lastname'],
-                    'from_avatar' => $from['data']['avatar']
-                ));
-            } catch (\Exception $e) {
-                syslog(1, 'Model tpl_newmessage does not exist');
+            if(/*!$this->isConnected($t)*/ $u['has_email_notifier'] == true) {
+                $u = $this->getDataUser($t);
+                try {
+                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array(
+                        'to_firstname' => $u['data']['firstname'],
+                        'to_lastname' => $u['data']['lastname'],
+                        'to_avatar' => $u['data']['avatar'],
+                        'from_firstname' => $from['data']['firstname'],
+                        'from_lastname' => $from['data']['lastname'],
+                        'from_avatar' => $from['data']['avatar']
+                    ));
+                } catch (\Exception $e) {
+                    syslog(1, 'Model tpl_newmessage does not exist');
+                }
             }
-            //}
         }
         
         return $ret;
@@ -559,6 +559,7 @@ class Event extends AbstractService
                 'firstname' => $m_user['firstname'],
                 'email' => $m_user['email'],
                 'lastname' => $m_user['lastname'],
+                'has_email_notifier' => $m_user['has_email_notifier'],
                 'avatar' => $m_user['avatar'],
                 'school' => [
                     'id' => $m_user['school']['id'],
