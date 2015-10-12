@@ -19,7 +19,7 @@ class Component extends AbstractService
 
         $res_component = $mapper->usePaginator($filter)->getList($dimension, $search);
 
-        return (null !== $filter) ?
+        return (null !== $filter) ? 
             array('count' => $mapper->count(),'list' => $res_component) :
             $res_component;
     }
@@ -51,7 +51,6 @@ class Component extends AbstractService
         $m_component = $this->getModel()
             ->setName($name)
             ->setDimensionId($dimension)
-            ->setComponentScales(null)
             ->setDescribe($describe);
 
         if ($this->getMapper()->insert($m_component) <= 0) {
@@ -75,7 +74,6 @@ class Component extends AbstractService
             ->setId($id)
             ->setName($name)
             ->setDimensionId($dimension)
-            ->setComponentScales(null)
             ->setDescribe($describe);
 
         return $this->getMapper()->update($m_component);
@@ -90,7 +88,6 @@ class Component extends AbstractService
     {
         $m_component = $this->getModel()
             ->setId($id)
-            ->setComponentScales(null)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         return $this->getMapper()->update($m_component);
