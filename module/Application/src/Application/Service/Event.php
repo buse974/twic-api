@@ -53,6 +53,7 @@ class Event extends AbstractService
 
     public function sendRequest($users, $notification, $target)
     {
+        $rep = false;
         $request = new Request();
         $request->setMethod('notification.publish')
             ->setParams(array('notification' => $notification,'users' => $users,'type' => $target))
@@ -62,10 +63,15 @@ class Event extends AbstractService
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
         
         try {
-            $client->doRequest($request);
+            $rep = $client->doRequest($request);
+            if($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
         } catch (\Exception $e) {
             syslog(1, $e->getMessage());
         }
+        
+        return $rep;
     }
 
     public function isConnected($user)
