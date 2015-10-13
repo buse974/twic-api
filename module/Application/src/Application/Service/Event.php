@@ -125,6 +125,11 @@ class Event extends AbstractService
         $res_event = $mapper->usePaginator($filter)->getList($user, $events, $id, $source);
         $count = $mapper->count();
         
+        foreach ($res_event as $m_event) {
+            $m_event->setSource(json_decode($m_event->getSource()));
+            $m_event->setObject(json_decode($m_event->getObject()));
+        }
+        
         return ['list' => $res_event,'count' => $count];
     }
 
