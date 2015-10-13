@@ -52,13 +52,17 @@ class Event extends BaseEvent
         return $this;
     }
 
-    public function getSource()
+    public function setSource($source)
     {
-        return (null !== $this->source) ? json_decode($this->source, true) : null;
+        $this->source = json_decode($source,true);
+        
+        return $this;
     }
 
-    public function getObject()
+    public function setObject($object)
     {
-        return (null !== $this->object) ? json_decode($this->object, true) : null;
+        $this->object = json_decode($object,true);
+        
+        return $this;
     }
 }
