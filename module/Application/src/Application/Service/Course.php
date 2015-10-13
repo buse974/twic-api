@@ -154,6 +154,30 @@ class Course extends AbstractService
 
         return $ret;
     }
+    
+    /**
+     * Delete course by Program.
+     *
+     * @param array $id
+     *
+     * @return int
+     */
+    public function deleteProgram($id)
+    {
+        $ret = array();
+    
+        if (!is_array($id)) {
+            $id = array($id);
+        }
+    
+        $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
+        foreach ($id as $idp) {
+            $ret[$idp] = $this->getMapper()->update($m_course, array('program_id' => $idp));
+        }
+    
+        return $ret;
+    }
 
     /**
      * @invokable
