@@ -60,10 +60,11 @@ class Event extends AbstractService
             ->setId(++ self::$id)
             ->setVersion('2.0');
         
+        syslog(1, 'Request: '.$request->toJson());
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
-        
         try {
             $rep = $client->doRequest($request);
+            syslog(1, 'Result: '.$rep->getResult());
             if($rep->isError()) {
                 throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
             }
