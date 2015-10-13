@@ -46,7 +46,7 @@ class Event extends AbstractService
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventUser()->add($user, $event_id);
         
-        $this->sendRequest($user, array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
+        $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
         
         return $event_id;
     }
@@ -59,7 +59,7 @@ class Event extends AbstractService
             ->setParams(array('notification' => $notification,'users' => $users,'type' => $target))
             ->setId(++ self::$id)
             ->setVersion('2.0');
-        
+
         syslog(1, 'Request: '.$request->toJson());
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
         try {
