@@ -46,26 +46,32 @@ class Event extends AbstractService
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventUser()->add($user, $event_id);
         
-        $this->sendRequest($user, array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
+        $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
         
         return $event_id;
     }
 
     public function sendRequest($users, $notification, $target)
     {
+        $rep = false;
         $request = new Request();
         $request->setMethod('notification.publish')
             ->setParams(array('notification' => $notification,'users' => $users,'type' => $target))
             ->setId(++ self::$id)
             ->setVersion('2.0');
-        
+
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
-        
         try {
-            $client->doRequest($request);
+            $rep = $client->doRequest($request);
+            if($rep->isError()) {
+                syslog(1, 'Request: '.$request->toJson());
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
         } catch (\Exception $e) {
             syslog(1, $e->getMessage());
         }
+        
+        return $rep;
     }
 
     public function isConnected($user)

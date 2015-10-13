@@ -368,9 +368,9 @@ class Videoconf extends AbstractService
      */
     public function stopRecord($id)
     {
-        $m_videoconf = $this->get($id);
+        $m_videoconf_archive = $this->getServiceVideoconfArchive()->getLastArchiveId($id);
 
-        return $this->getServiceZOpenTok()->stopArchive($m_videoconf->getToken());
+        return $this->getServiceZOpenTok()->stopArchive($m_videoconf_archive->getArchiveToken());
     }
 
     /**
@@ -389,7 +389,6 @@ class Videoconf extends AbstractService
         foreach ($res_video_no_upload as $m_videoconf_archive) {
             try {
                 $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_videoconf_archive->getArchiveToken()), true);
-
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
                     $this->getServiceVideoconfArchive()->updateByArchiveToken($m_videoconf_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
                     $arr = $m_videoconf_archive->toArray();
