@@ -52,7 +52,7 @@ class VideoconfArchive extends AbstractService
      */
     public function getLastArchiveId($videoconf)
     {
-        return $this->getMapper()->getLastInsertValue($videoconf);
+        return $this->getMapper()->getLastArchiveId($videoconf);
     }
     
     /**
