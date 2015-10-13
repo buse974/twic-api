@@ -137,7 +137,7 @@ class Event extends AbstractService
 
     /**
      *
-     * @param unknown $id            
+     * @param integer $id            
      *
      * @return \Application\Model\Event
      */

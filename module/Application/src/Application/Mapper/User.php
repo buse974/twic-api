@@ -98,7 +98,7 @@ class User extends AbstractMapper
                     ->where(array('role.name' => $ts));
             }
         }
-        if ($program !== null || $level !== null || $course !== null || $search !== null) {
+        if (!empty($program) || $level !== null || $course !== null || $search !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
             if ($level !== null || $course !== null || $search !== null) {
                 $select->join('program', 'program_user_relation.program_id=program.id', array(), $select::JOIN_LEFT);
@@ -115,7 +115,7 @@ class User extends AbstractMapper
                     $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => '' . $search . '%'), Predicate::OP_OR);
                 }
             }
-            if (null !== $program) {
+            if (!empty($program)) {
                 $select->where(array('program_user_relation.program_id' => $program));
             }
         }
