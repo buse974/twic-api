@@ -218,7 +218,7 @@ class User extends AbstractMapper
             ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID))
             ->group(array('user.id'));
         
-        return $this->selectWith($select);
+        return $this->selectWith($select);  
     }
 
     /**
