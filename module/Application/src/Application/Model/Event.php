@@ -51,18 +51,4 @@ class Event extends BaseEvent
         
         return $this;
     }
-
-    public function setSource($source)
-    {
-        $this->source = json_decode($source,true);
-        
-        return $this;
-    }
-
-    public function setObject($object)
-    {
-        $this->object = json_decode($object,true);
-        
-        return $this;
-    }
 }
