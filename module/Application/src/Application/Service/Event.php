@@ -59,12 +59,12 @@ class Event extends AbstractService
             ->setParams(array('notification' => $notification,'users' => $users,'type' => $target))
             ->setId(++ self::$id)
             ->setVersion('2.0');
-
+        
         $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
         try {
             $rep = $client->doRequest($request);
-            if($rep->isError()) {
-                syslog(1, 'Request: '.$request->toJson());
+            if ($rep->isError()) {
+                syslog(1, 'Request: ' . $request->toJson());
                 throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
             }
         } catch (\Exception $e) {
@@ -127,11 +127,11 @@ class Event extends AbstractService
         
         $ar_event = $res_event->toArray();
         foreach ($ar_event as &$event) {
-            //$event['nb_like'] = $this->getMapper()->nbrLike($event['id']);
+            // $event['nb_like'] = $this->getMapper()->nbrLike($event['id']);
             $event['source'] = json_decode($event['source'], true);
             $event['object'] = json_decode($event['object'], true);
         }
-             
+        
         return ['list' => $ar_event,'count' => $count];
     }
 
@@ -156,21 +156,14 @@ class Event extends AbstractService
     {
         $from = $this->getDataUser();
         
-        
-        $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+        $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()
+            ->getIdentity()['id']);
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
             if(/*!$this->isConnected($t)*/ $u['data']['has_email_notifier'] == true) {
                 try {
-                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array(
-                        'to_firstname' => $u['data']['firstname'],
-                        'to_lastname' => $u['data']['lastname'],
-                        'to_avatar' => $u['data']['avatar'],
-                        'from_firstname' => $from['data']['firstname'],
-                        'from_lastname' => $from['data']['lastname'],
-                        'from_avatar' => $from['data']['avatar']
-                    ));
+                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array('to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],'from_avatar' => $from['data']['avatar']));
                 } catch (\Exception $e) {
                     syslog(1, 'Model tpl_newmessage does not exist');
                 }
@@ -297,13 +290,15 @@ class Event extends AbstractService
 
     public function programmationNew($item_prog)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getDataUserByItemProg($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), 
+
+        $this->getListByItemProgWithInstrutor($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
     public function programmationUpdated($item_prog)
     {
-        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getDataUserByItemProg($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutor($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -557,22 +552,7 @@ class Event extends AbstractService
         
         $m_user = $this->getServiceUser()->get($id);
         
-        return [
-            'id' => $id,
-            'name' => 'user',
-            'data' => [
-                'firstname' => $m_user['firstname'],
-                'email' => $m_user['email'],
-                'lastname' => $m_user['lastname'],
-                'has_email_notifier' => $m_user['has_email_notifier'],
-                'avatar' => $m_user['avatar'],
-                'school' => [
-                    'id' => $m_user['school']['id'],
-                    'short_name' => $m_user['school']['short_name'],
-                    'logo' => $m_user['school']['logo']
-                ],
-                'user_roles' => $m_user['roles']
-            ]];
+        return ['id' => $id,'name' => 'user','data' => ['firstname' => $m_user['firstname'],'email' => $m_user['email'],'lastname' => $m_user['lastname'],'has_email_notifier' => $m_user['has_email_notifier'],'avatar' => $m_user['avatar'],'school' => ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' => $m_user['school']['logo']],'user_roles' => $m_user['roles']]];
     }
 
     public function getDataMessage($message)

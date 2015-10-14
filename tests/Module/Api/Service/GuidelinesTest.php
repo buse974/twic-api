@@ -24,7 +24,7 @@ class GuidelinesTest extends AbstractService
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 120);
+        $this->assertEquals($data['result'] , 121);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
@@ -41,7 +41,7 @@ class GuidelinesTest extends AbstractService
         ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 121);
+        $this->assertEquals($data['result'] , 122);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     
@@ -59,7 +59,7 @@ class GuidelinesTest extends AbstractService
         ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 122);
+        $this->assertEquals($data['result'] , 123);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     

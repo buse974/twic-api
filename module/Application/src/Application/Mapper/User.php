@@ -35,18 +35,9 @@ class User extends AbstractMapper
         $sub->columns(array('user$contacts_count' => new Expression('COUNT(user.id)')))
             ->join('contact', 'contact.user_id = user.id', array())
             ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
-
+        
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array(
-            'user$id' => new Expression('user.id'),
-            'firstname',
-            'lastname',
-            'email',
-            'password',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
-            'position','interest','avatar',
-            'user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1' . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),
-            'user$contacts_count' => $sub))
+        $select->columns(array('user$id' => new Expression('user.id'),'firstname','lastname','email','password','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1' . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),'user$contacts_count' => $sub))
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
@@ -98,7 +89,7 @@ class User extends AbstractMapper
                     ->where(array('role.name' => $ts));
             }
         }
-        if (!empty($program) || $level !== null || $course !== null || $search !== null) {
+        if (! empty($program) || $level !== null || $course !== null || $search !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
             if ($level !== null || $course !== null || $search !== null) {
                 $select->join('program', 'program_user_relation.program_id=program.id', array(), $select::JOIN_LEFT);
@@ -115,7 +106,7 @@ class User extends AbstractMapper
                     $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => '' . $search . '%'), Predicate::OP_OR);
                 }
             }
-            if (!empty($program)) {
+            if (! empty($program)) {
                 $select->where(array('program_user_relation.program_id' => $program));
             }
         }
@@ -181,15 +172,19 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id'))
             ->join('user_role', 'user_role.user_id=user.id', array())
-            ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
-            ->join('item', 'item.course_id=course_user_relation.course_id', array())
+            ->join('school', 'user.school_id=school.id', array())
+            ->join('program', 'program.school_id=school.id', array())
+            ->join('course', 'course.program_id=program.id', array())
+            ->join('item', 'item.course_id=course.id', array())
             ->join('item_prog', 'item_prog.item_id=item.id', array())
-            ->join('item_prog_user', 'item_prog_user.user_id=user.id AND item_prog_id = item_prog.id', array(), $select::JOIN_LEFT)
+            ->join('course_user_relation', 'course_user_relation.user_id=user.id AND course_user_relation.course_id=course.id', array(), $select::JOIN_LEFT)
+            ->join('item_prog_user', 'item_prog_user.user_id=user.id AND item_prog_user.item_prog_id = item_prog.id', array(), $select::JOIN_LEFT)
             ->where(array('item_prog.id' => $item_prog))
-            ->where(array(' (( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_STUDENT_ID))
-            ->where(array('item_prog_user.id IS NOT NULL ) '))
-            ->where(array('  user_role.role_id  = ? ) ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID), Predicate::OP_OR)
-            ->group(array('user.id'));
+            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_ACADEMIC_ID))
+            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID), Predicate::OP_OR)
+            ->where(array('course_user_relation.user_id IS NOT NULL ) '))
+            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_STUDENT_ID), Predicate::OP_OR)
+            ->where(array('item_prog_user.id IS NOT NULL ) )'));
         
         return $this->selectWith($select);
     }
@@ -218,7 +213,7 @@ class User extends AbstractMapper
             ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID))
             ->group(array('user.id'));
         
-        return $this->selectWith($select);  
+        return $this->selectWith($select);
     }
 
     /**
