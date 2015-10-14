@@ -26,22 +26,31 @@ class Permission extends AbstractService
      * Add permission.
      *
      * @invokable
-     *
+     * 
      * @param string $permission
-     *
-     * @return int
+     * @param integer $role
+     * 
+     * @throws \Exception
+     * @return integer
      */
-    public function add($permission)
+    public function add($permission, $role = null)
     {
         $m_permission = $this->getModel()->setLibelle($permission);
 
         if ($this->getMapper()->insert($m_permission) <= 0) {
-            throw new \Exception('error insert');
+            throw new \Exception('error insert permission : '.$permission);
         }
 
+        $permission_id = $this->getMapper()->getLastInsertValue();
+        
+        if(null !== $role) {
+            $this->getserviceRolePermission()->delete($permission_id);
+            $this->getserviceRolePermission()->add($role, $permission_id);
+        }
+        
         $this->getServiceRbac()->createRbac();
-
-        return $this->getMapper()->getLastInsertValue();
+        
+        return $permission_id;
     }
 
     /**
@@ -51,7 +60,7 @@ class Permission extends AbstractService
      *
      * @param string $libelle
      *
-     * @return int
+     * @return integer
      */
     public function delete($libelle)
     {
@@ -77,7 +86,7 @@ class Permission extends AbstractService
      * @param int $id
      * @param int $permission
      */
-    public function update($id, $permission)
+    public function update($id, $permission, $role = null)
     {
         $m_permission = $this->getModel()
             ->setId($id)
@@ -85,10 +94,15 @@ class Permission extends AbstractService
 
         $ret = $this->getMapper()->update($m_permission);
 
+        if(null !== $role) {
+            $this->getserviceRolePermission()->delete($id);
+            $this->getserviceRolePermission()->add($role, $id);
+        }
+        
         if ($ret > 0) {
             $this->getServiceRbac()->createRbac();
         }
-
+        
         return $ret;
     }
 
@@ -122,5 +136,13 @@ class Permission extends AbstractService
     public function getServiceRbac()
     {
         return $this->getServiceLocator()->get('rbac.service');
+    }
+    
+    /**
+     * @return \Rbac\Db\Service\RolePermission
+     */
+    public function getserviceRolePermission()
+    {
+        return $this->getServiceLocator()->get('rbac_service_role_permission');
     }
 }
