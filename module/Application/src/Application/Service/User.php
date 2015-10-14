@@ -462,16 +462,19 @@ class User extends AbstractService
             throw new \Exception('error get user:' . $id);
         }
         
-        $user = $res_user->current()->toArray();
         
-        $user['roles'] = [];
-        $user['program'] = [];
-        $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
-        foreach ($this->getServiceRole()->getRoleByUser($id) as $role) {
-            $user['roles'][] = $role->getName();
+        $users = $res_user->toArray();
+        
+        foreach ($users as $user) {
+            $user['roles'] = [];
+            $user['program'] = [];
+            $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
+            foreach ($this->getServiceRole()->getRoleByUser($id) as $role) {
+                $user['roles'][] = $role->getName();
+            }
         }
         
-        return $user;
+        return (count($user) > 1) ? $user:current($user);
     }
 
     /**
