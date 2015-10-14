@@ -30,14 +30,19 @@ class RolePermission extends AbstractService
      */
     public function add($role_id, $permission_id)
     {
-        $m_role_permission = $this->getModel()->setRoleId($role_id)->setPermissionId($permission_id);
+        if(!is_array($role_id)) {
+            $role_id = [$role_id];
+        }
+        
+        $m_role_permission = $this->getModel()->setPermissionId($permission_id);
 
-        $ret = $this->getMapper()->insert($m_role_permission);
-
-        if ($ret > 0) {
-            $this->getServiceRbac()->createRbac();
+        foreach ($role_id as $r) {
+            $m_role_permission->setRoleId($r);
+            $ret = $this->getMapper()->insert($m_role_permission);
         }
 
+        $this->getServiceRbac()->createRbac();
+        
         return $ret;
     }
 
@@ -54,11 +59,11 @@ class RolePermission extends AbstractService
     {
         $ret = array();
         if (!is_array($permission_id)) {
-            $permission_id = array($permission_id);
+            $permission_id = [$permission_id];
         }
 
+        $m_permission = $this->getModel();
         foreach ($permission_id as $i) {
-            $m_permission = $this->getModel();
             $m_permission->setPermissionId($i);
             $ret[$i] = $this->getMapper()->delete($m_permission);
         }

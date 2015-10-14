@@ -364,8 +364,8 @@ class User extends AbstractService
             if (! is_array($roles)) {
                 $roles = [$roles];
             }
+            $this->getServiceUserRole()->deleteByUser($id);
             foreach ($roles as $r) {
-                $this->getServiceUserRole()->deleteByUser($id);
                 $this->getServiceUserRole()->add($this->getServiceRole()
                     ->getIdByName($r), $id);
             }
