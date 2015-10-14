@@ -147,6 +147,7 @@ class Program extends AbstractService
         foreach ($id as $p) {
             $m_program = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($p);
             $ret[$p] = $this->getMapper()->update($m_program);
+            $this->getServiceCourse()->deleteProgram($p);
         }
 
         return $ret;
