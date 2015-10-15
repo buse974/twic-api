@@ -30,7 +30,7 @@ class Event extends AbstractService
      */
     public function create($event, $source, $object, $user, $target, $src = null)
     {
-        if(!is_array($user)) {
+        if (! is_array($user)) {
             $user = [$user];
         }
         $user = array_values(array_unique($user));
@@ -161,8 +161,7 @@ class Event extends AbstractService
     {
         $from = $this->getDataUser();
         
-        $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
@@ -216,7 +215,6 @@ class Event extends AbstractService
             ->getId());
         
         $users[] = $user;
-       
         
         return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
@@ -295,9 +293,7 @@ class Event extends AbstractService
 
     public function programmationNew($item_prog)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), 
-
-        $this->getListByItemProgWithInstrutor($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutor($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -586,9 +582,11 @@ class Event extends AbstractService
 
     public function getDataMessage($message)
     {
-        $m_message_user = $this->getServiceMessageUser()->getMessage($message);
+        $m_message = $this->getServiceMessageUser()
+            ->getMessage($message)
+            ->getMessage();
         
-        return ['id' => $m_message_user->getMessage()->getId(),'name' => 'message','data' => $m_message_user->getMessage()];
+        return ['id' => $m_message->getId(),'name' => 'message','data' => $m_message];
     }
 
     /**
