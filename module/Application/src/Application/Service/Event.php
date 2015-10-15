@@ -30,6 +30,11 @@ class Event extends AbstractService
      */
     public function create($event, $source, $object, $user, $target, $src = null)
     {
+        if(!is_array($user)) {
+            $user = [$user];
+        }
+        $user = array_values(array_unique($user));
+        
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $m_event = $this->getModel()
             ->setUserId($src)
@@ -64,10 +69,10 @@ class Event extends AbstractService
         try {
             $rep = $client->doRequest($request);
             if ($rep->isError()) {
-                syslog(1, 'Request: ' . $request->toJson());
                 throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
             }
         } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
             syslog(1, $e->getMessage());
         }
         
@@ -187,26 +192,17 @@ class Event extends AbstractService
 
     public function userAddConnection($user, $contact)
     {
-        $users = array_unique(array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)));
-        
-        return $this->create('user.addconnection', $this->getDataUser($user), $this->getDataUser($contact), $users, self::TARGET_TYPE_USER);
+        return $this->create('user.addconnection', $this->getDataUser($user), $this->getDataUser($contact), array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)), self::TARGET_TYPE_USER);
     }
 
     public function studentSubmitAssignment($item_assignment)
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
         
-        $res_user = $m_item_assignment->getItemProg()
+        return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
             ->getItem()
             ->getCourse()
-            ->getInstructor();
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+            ->getId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -214,7 +210,15 @@ class Event extends AbstractService
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
         
-        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), [$user], self::TARGET_TYPE_USER, $this->getServiceUser()
+        $users = $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
+            ->getItem()
+            ->getCourse()
+            ->getId());
+        
+        $users[] = $user;
+       
+        
+        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -229,7 +233,12 @@ class Event extends AbstractService
             $users[] = $m_user->getId();
         }
         
-        return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        $uai = $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
+            ->getItem()
+            ->getCourse()
+            ->getId());
+        
+        return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), array_merge($users, $uai), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -237,10 +246,8 @@ class Event extends AbstractService
     {
         $m_thread = $this->getServiceThread()->get($thread);
         
-        $users = $this->getDataUserByCourse($m_thread->getCourse()
-            ->getId());
-        
-        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $this->getDataUserByCourse($m_thread->getCourse()
+            ->getId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -248,10 +255,8 @@ class Event extends AbstractService
     {
         $m_thread_message = $this->getServiceThreadMessage()->get($thread_message);
         
-        $users = $this->getDataUserByCourse($m_thread_message->getThread()
-            ->getCourseId());
-        
-        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $this->getDataUserByCourse($m_thread_message->getThread()
+            ->getCourseId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -260,8 +265,7 @@ class Event extends AbstractService
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         $m_videoconf_archive = $this->getServiceVideoconfArchive()->get($videoconf_archive);
         
-        return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), 
-              $this->getListByItemProgWithInstrutor($m_item_prog->getId()), self::TARGET_TYPE_USER);
+        return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), $this->getListByItemProgWithInstrutor($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
     public function eqcqAvailable($item_prog)
@@ -273,7 +277,7 @@ class Event extends AbstractService
 
     public function courseUpdated($course, $dataupdated)
     {
-        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourseWithStudentAndInstructorAndAcademic($course), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -285,7 +289,7 @@ class Event extends AbstractService
 
     public function courseMaterialAdded($course, $material)
     {
-        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourseWithStudentAndInstructorAndAcademic($course), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -426,6 +430,30 @@ class Event extends AbstractService
     public function getDataUserByCourse($course)
     {
         $res_user = $this->getServiceUser()->getListUserBycourse($course);
+        
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+        
+        return $users;
+    }
+
+    public function getDataUserByCourseWithStudentAndInstructorAndAcademic($course)
+    {
+        $res_user = $this->getServiceUser()->getListUserBycourseWithStudentAndInstructorAndAcademic($course);
+        
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+        
+        return $users;
+    }
+
+    public function getDataUserByCourseWithInstructorAndAcademic($course)
+    {
+        $res_user = $this->getServiceUser()->getListUserBycourseWithInstructorAndAcademic($course);
         
         $users = [];
         foreach ($res_user as $m_user) {
