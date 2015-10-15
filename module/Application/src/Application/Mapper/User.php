@@ -189,6 +189,22 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListUserBycourseWithInstructorAndAcademic($course)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id'))
+            ->join('user_role', 'user_role.user_id=user.id', array())
+            ->join('school', 'user.school_id=school.id', array())
+            ->join('program', 'program.school_id=school.id', array())
+            ->join('course', 'course.program_id=program.id', array())
+            ->join('course_user_relation', 'course_user_relation.user_id=user.id AND course_user_relation.course_id=course.id', array(), $select::JOIN_LEFT)
+            ->where(array('course.id' => $course))
+            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_ACADEMIC_ID))
+            ->where(array('  course_user_relation.user_id IS NOT NULL ? ) '), Predicate::OP_OR);
+        
+        return $this->selectWith($select);
+    }
+
     /**
      * Get user list for item_prog and those available.
      *

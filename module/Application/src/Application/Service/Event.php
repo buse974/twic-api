@@ -237,10 +237,7 @@ class Event extends AbstractService
     {
         $m_thread = $this->getServiceThread()->get($thread);
         
-        $users = $this->getDataUserByCourse($m_thread->getCourse()
-            ->getId());
-        
-        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $this->getDataUserByCourse($m_thread->getCourse()->getId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -248,10 +245,7 @@ class Event extends AbstractService
     {
         $m_thread_message = $this->getServiceThreadMessage()->get($thread_message);
         
-        $users = $this->getDataUserByCourse($m_thread_message->getThread()
-            ->getCourseId());
-        
-        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $this->getDataUserByCourse($m_thread_message->getThread()->getCourseId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -273,7 +267,7 @@ class Event extends AbstractService
 
     public function courseUpdated($course, $dataupdated)
     {
-        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourseWithInstructorAndAcademic($course), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -285,7 +279,7 @@ class Event extends AbstractService
 
     public function courseMaterialAdded($course, $material)
     {
-        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourseWithInstructorAndAcademic($course), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -434,6 +428,20 @@ class Event extends AbstractService
         
         return $users;
     }
+    
+    public function getDataUserByCourseWithInstructorAndAcademic($course)
+    {
+        $res_user = $this->getServiceUser()->getListUserBycourseWithInstructorAndAcademic($course);
+    
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+    
+        return $users;
+    }
+    
+    
 
     public function getListByItemProgWithInstrutor($item_prog)
     {
