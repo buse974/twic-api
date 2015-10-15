@@ -234,16 +234,22 @@ class User extends AbstractService
 
     public function getListOnly($type, $course)
     {
-        return $this->getMapper()->getList(null, null, $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), $type, null, $course, null, null, null, null, false);
+        return $this->getMapper()->getList(null, null, $this->getServiceAuth()->getIdentity()->getId(), $type, null, $course, null, null, null, null, false);
     }
 
     public function getListUserBycourse($course)
     {
-        return $this->getMapper()->getList(null, null, $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), null, null, $course, null, null, null, null, false);
+        return $this->getMapper()->getList(null, null, $this->getServiceAuth()->getIdentity()->getId(), null, null, $course, null, null, null, null, false);
+    }
+    
+    public function getListUserBycourseWithStudentAndInstructorAndAcademic($course)
+    {
+        return $this->getMapper()->getListUserBycourseWithStudentAndInstructorAndAcademic($course);
+    }
+    
+    public function getListUserBycourseWithInstructorAndAcademic($course)
+    {
+        return $this->getMapper()->getListUserBycourseWithInstructorAndAcademic($course);
     }
 
     /**
