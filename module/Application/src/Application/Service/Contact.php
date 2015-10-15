@@ -55,7 +55,7 @@ class Contact extends AbstractService
         $ret = $this->getMapper()->update($m_contact, array('user_id' => $identity['id'], 'contact_id' => $user));
 
         if ($ret > 0) {
-            $this->getServiceEvent()->userAddConnection($user, $identity['id']);
+            $this->getServiceEvent()->userAddConnection($identity['id'], $user);
         }
 
         return $ret;
