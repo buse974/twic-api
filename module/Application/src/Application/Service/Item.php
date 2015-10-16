@@ -117,7 +117,7 @@ class Item extends AbstractService
             $m_item->setMaterials($ar_imdr);
         }
 
-        return $res_item->toArrayParent();
+        return $res_item;
     }
 
     /**
