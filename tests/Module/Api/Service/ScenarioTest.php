@@ -550,7 +550,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('item.get', array('id' => $id));
         
         $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 13);
+        $this->assertEquals(count($data['result']), 12);
         $this->assertEquals(count($data['result']['module']), 2);
         $this->assertEquals($data['result']['module']['id'], 1);
         $this->assertEquals($data['result']['module']['title'], null);
@@ -567,7 +567,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['type'], "WG");
         $this->assertEquals($data['result']['weight'], 1);
         $this->assertEquals($data['result']['course_id'], 1);
-        $this->assertEquals($data['result']['parent_id'], null);
         $this->assertEquals($data['result']['grading_policy_id'], 6);
         $this->assertEquals($data['result']['module_id'], 1);
         $this->assertEquals($data['id'], 1);
