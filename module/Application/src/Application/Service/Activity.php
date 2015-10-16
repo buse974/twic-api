@@ -126,7 +126,7 @@ class Activity extends AbstractService
             }
         }
 
-        $res_activity = $this->getMapper()->select($m_activity);
+        $res_activity = $this->getMapper()->select($m_activity, array('date' => 'ASC'));
 
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
