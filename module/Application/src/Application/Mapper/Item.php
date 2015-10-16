@@ -15,7 +15,7 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'weight', 'course_id', 'parent_id', 'grading_policy_id', 'module_id'))
+        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'weight', 'course_id', 'grading_policy_id', 'module_id'))
             ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
@@ -132,7 +132,7 @@ class Item extends AbstractMapper
      *
      * @return int
      */
-    public function selectLastParentId($course = null, $id = null)
+    /*public function selectLastParentId($course = null, $id = null)
     {
         if ($course === null && $id = null) {
             throw new \Exception('Course and id are null');
@@ -156,7 +156,7 @@ class Item extends AbstractMapper
         $res = $this->selectWith($select);
 
         return (($res->count() > 0) ? $res->current()->getId() : null);
-    }
+    }*/
 
     /**
      * @param int $course

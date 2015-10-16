@@ -17,7 +17,6 @@ class Item extends AbstractService
      * @param int    $duration
      * @param string $type
      * @param int    $weight
-     * @param int    $parent
      * @param int    $module
      * @param array  $materials
      *
@@ -25,12 +24,12 @@ class Item extends AbstractService
      *
      * @return int
      */
-    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $parent = null, $module = null, $materials = null)
+    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $module = null, $materials = null)
     {
         $m_item = $this->getModel()->setTitle($title)
                          ->setDescribe($describe)
                          ->setType($type)
-                         ->setParentId($this->getMapper()->selectLastParentId($course))
+                         //->setParentId($this->getMapper()->selectLastParentId($course))
                          ->setDuration($duration)
                          ->setWeight($weight)
                          ->setCourseId($course)
@@ -42,9 +41,9 @@ class Item extends AbstractService
         }
 
         $item_id = $this->getMapper()->getLastInsertValue();
-        if ($parent !== null) {
+        /*if ($parent !== null) {
             $this->updateParentId($item_id, $parent);
-        }
+        }*/
         if ($materials !== null) {
             $this->getServiceItemMaterialDocumentRelation()->addByItem($item_id, $materials);
         }
@@ -52,7 +51,7 @@ class Item extends AbstractService
         return $item_id;
     }
 
-    public function updateParentId($item, $parent_id)
+    /*public function updateParentId($item, $parent_id)
     {
         $res_item = $this->getMapper()->select($this->getModel()->setId($item));
         $me_item = $res_item->current();
@@ -62,7 +61,7 @@ class Item extends AbstractService
         // JE RENTRE
         $this->getMapper()->update($this->getModel()->setParentId($item), array('parent_id' => $parent_id, 'course_id' => $me_item->getCourseId()));
         $this->getMapper()->update($this->getModel()->setId($item)->setParentId($parent_id));
-    }
+    }*/
 
     /**
      * @invokable
@@ -73,13 +72,12 @@ class Item extends AbstractService
      * @param string $title
      * @param string $describe
      * @param int    $weight
-     * @param string $parent
      * @param int    $module
      * @param array  $materials
      *
      * @return int
      */
-    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $module = null, $materials = null)
+    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null,/* $parent = null, */ $module = null, $materials = null)
     {
         $m_item = $this->getModel()
                        ->setId($id)
@@ -90,9 +88,9 @@ class Item extends AbstractService
                        ->setGradingPolicyId($grading_policy)
                        ->setModuleId($module);
 
-        if ($parent !== null) {
+        /*if ($parent !== null) {
             $this->updateParentId($id, $parent);
-        }
+        }*/
         if ($materials !== null) {
             $this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
         }
@@ -119,7 +117,7 @@ class Item extends AbstractService
             $m_item->setMaterials($ar_imdr);
         }
 
-        return $res_item->toArrayParent();
+        return $res_item;
     }
 
     /**
