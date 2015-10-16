@@ -69,7 +69,7 @@ class School extends AbstractService
      * 
      * @return integer
      */
-    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null)
+    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null)
     {
         $m_school = $this->getModel();
 
@@ -79,7 +79,8 @@ class School extends AbstractService
                  ->setDescribe($describe)
                  ->setWebsite($website)
                  ->setShortName($short_name)
-                 ->setPhone($phone);
+				 ->setPhone($phone)
+				 ->setBackground($background);
 
         if ($address !== null) {
             $address_id = $this->getServiceAddress()->getAddress($address)->getId();
