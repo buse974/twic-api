@@ -292,6 +292,9 @@ class ItemProg extends AbstractService
     }
 
     /**
+     * 
+     * @invokable
+     * 
      * @param int $id
      * 
      * @return \Application\Model\ItemProg
