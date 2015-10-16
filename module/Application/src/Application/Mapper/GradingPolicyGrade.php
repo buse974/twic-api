@@ -58,16 +58,16 @@ class GradingPolicyGrade extends AbstractMapper
         }
         if (null !== $search) {
             if (isset($avg['program'])) {
-                $sel->where(array(' program$name LIKE ? ' => $search.'%'));
+                $sel->where(array(' program$name LIKE ? ' => '%'.$search . '%'));
             } elseif (isset($avg['user'])) {
-                $sel->where(array('( user$firstname LIKE ?' => $search.'%'))->where(array(' user$lastname LIKE ? )' => $search.'%'), Predicate::OP_OR);
+                $sel->where(array('( user$firstname LIKE ?' => '%'.$search . '%'))->where(array(' user$lastname LIKE ? )' => '%'.$search . '%'), Predicate::OP_OR);
             } elseif (isset($avg['course'])) {
-                $sel->where(array('course$title LIKE ?' => $search.'%'));
+                $sel->where(array('course$title LIKE ?' => '%'.$search . '%'));
             } else {
-                $sel->where(array('( user$firstname LIKE ?' => $search.'%'))
-                    ->where(array(' user$lastname LIKE ? ' => $search.'%'), Predicate::OP_OR)
-                    ->where(array(' program$name LIKE ? ' => $search.'%'), Predicate::OP_OR)
-                    ->where(array(' coursetitle LIKE ? )' => $search.'%'), Predicate::OP_OR);
+                $sel->where(array('( user$firstname LIKE ?' => '%'.$search . '%'))
+                    ->where(array(' user$lastname LIKE ? ' => '%'.$search . '%'), Predicate::OP_OR)
+                    ->where(array(' program$name LIKE ? ' => '%'.$search . '%'), Predicate::OP_OR)
+                    ->where(array(' coursetitle LIKE ? )' => '%'.$search . '%'), Predicate::OP_OR);
             }
         }
         if (in_array(\Application\Model\Role::ROLE_STUDENT_STR, $user['roles'])) {
