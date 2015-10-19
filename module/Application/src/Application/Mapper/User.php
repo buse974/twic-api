@@ -29,6 +29,14 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListLite($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id','firstname','lastname','avatar'))->where(array('user.id' => $id));
+        
+        return $this->selectWith($select);
+    }
+
     public function getList($filter = null, $event = null, $user_school, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null)
     {
         $sub = $this->tableGateway->getSql()->select();
