@@ -67,7 +67,7 @@ class GradingPolicyGrade extends AbstractMapper
                 $sel->where(array('( user$firstname LIKE ?' => '%'.$search . '%'))
                     ->where(array(' user$lastname LIKE ? ' => '%'.$search . '%'), Predicate::OP_OR)
                     ->where(array(' program$name LIKE ? ' => '%'.$search . '%'), Predicate::OP_OR)
-                    ->where(array(' coursetitle LIKE ? )' => '%'.$search . '%'), Predicate::OP_OR);
+                    ->where(array(' course$title LIKE ? )' => '%'.$search . '%'), Predicate::OP_OR);
             }
         }
         if (in_array(\Application\Model\Role::ROLE_STUDENT_STR, $user['roles'])) {
