@@ -10,7 +10,7 @@ foreach($file as $v) {
 	echo "INSERT INTO `component`(`name`,`dimension_id`,`describe`)VALUES('".$c['name']."', @DIMENSION, '".str_replace("'","''",$c['describe'])."');\n";
 	echo "SELECT LAST_INSERT_ID() INTO @COMPONENT;\n";
     	foreach($c['component_scale'] as $cs) {
-		echo "INSERT INTO `component_scale`(`component_id`,`min`,`max`,`describe`) VALUES(@COMPONENT, ".$cs['min'].", ".$cs['max'].", '".str_replace("'","''",$cs['describe'])."');\n";
+		echo "INSERT INTO `component_scale`(`component_id`,`min`,`max`,`describe`,`recommandation`) VALUES(@COMPONENT, ".$cs['min'].", ".$cs['max'].", '".str_replace("'","''",$cs['describe'])."', '".str_replace("'","''",$cs['recommandation'])."');\n";
     	}
 	foreach($c['question'] as $q) {
 	    echo "INSERT INTO `apilms`.`question`(`text`,`component_id`,`created_date`)VALUES('".$q['text']."', @COMPONENT, '".(new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')."');\n";
