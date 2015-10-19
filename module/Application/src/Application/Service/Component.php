@@ -63,6 +63,16 @@ class Component extends AbstractService
     /**
      * @invokable
      *
+     * @param integer $school
+     */
+    public function getEqCq($school)
+    {
+        return $this->getMapper()->getEqCq($school);
+    }
+    
+    /**
+     * @invokable
+     *
      * @param int    $id
      * @param string $name
      * @param string $dimension
