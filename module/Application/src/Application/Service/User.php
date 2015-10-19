@@ -480,7 +480,7 @@ class User extends AbstractService
             }
         }
         
-        return (count($user) > 1) ? $user:current($user);
+        return (count($users) > 1) ? $users:current($users);
     }
 
     /**
