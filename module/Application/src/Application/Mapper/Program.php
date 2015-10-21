@@ -15,7 +15,7 @@ class Program extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($user_program, $all = false, $search = null)
+    public function getList($user_program, $all = false, $search = null, $school = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
@@ -26,12 +26,13 @@ class Program extends AbstractMapper
             'year',
         ));
 
-        $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();
-        $sub_select->columns(array('school_id'))->where(array('user.id' => $user_program));
-            
-        $select->where(array(
-                'school_id' => $sub_select,
-            ));
+        if(null !== $school) {
+            $select->where(['school_id' => $school]);
+        } else {
+            $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();
+            $sub_select->columns(array('school_id'))->where(array('user.id' => $user_program));
+            $select->where(['school_id' => $sub_select]);
+        }
 
         if ($all === false) {
             $select->join('program_user_relation', 'program_user_relation.program_id=program.id', array())
