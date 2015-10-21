@@ -33,7 +33,7 @@ class Component extends AbstractMapper
     public function getEqCq($school)
     {
         $sql = "SELECT 
-                    AVG(`T`.`scale`) AS `value`,
+                    AVG(`T`.`scale`) * 20 AS `average`,
                         `T`.`component` as `id`,
                         `T`.`dimension`,
                         `component`.`name` as label
@@ -49,11 +49,12 @@ class Component extends AbstractMapper
                 INNER JOIN `scale` ON `scale`.`id` = `answer`.`scale_id`
                 INNER JOIN `question` ON `question`.`id` = `answer`.`question_id`
                 INNER JOIN `component` ON `component`.`id` = `question`.`component_id`
-                INNER JOIN `dimension` ON `dimension`.`id` = `component`.`dimension_id`
+				INNER JOIN `dimension` ON `dimension`.`id` = `component`.`dimension_id`
                 INNER JOIN `questionnaire_user` ON `questionnaire_user`.`id` = `answer`.`questionnaire_user_id`
-                INNER JOIN `item` ON `item`.`id` = `questionnaire_user`.`questionnaire_id`
-                INNER JOIN `course` ON `course`.`id` = `item`.`course_id`
-                INNER JOIN `program` ON `program`.`id` = `course`.`program_id`
+				INNER JOIN `questionnaire` ON `questionnaire`.`id` = `questionnaire_user`.`questionnaire_id`
+				INNER JOIN `item` ON `item`.`id` = `questionnaire`.`item_id`
+				INNER JOIN `course` ON `course`.`id` = `item`.`course_id`
+				INNER JOIN `program` ON `program`.`id` = `course`.`program_id`
                 WHERE
                     `answer`.`type` = 'peer'
                         AND `scale`.`value` <> 0
