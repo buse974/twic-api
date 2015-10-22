@@ -217,29 +217,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListByItemProgWithInstrutorAndAcademic($item_prog)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','firstname','lastname','avatar'))
-            ->join('user_role', 'user_role.user_id=user.id', array())
-            ->join('school', 'user.school_id=school.id', array())
-            ->join('program', 'program.school_id=school.id', array())
-            ->join('course', 'course.program_id=program.id', array())
-            ->join('item', 'item.course_id=course.id', array())
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
-            ->join('course_user_relation', 'course_user_relation.user_id=user.id AND course_user_relation.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('item_prog_user', 'item_prog_user.user_id=user.id AND item_prog_user.item_prog_id = item_prog.id', array('started_date','finished_date'), $select::JOIN_LEFT)
-            ->where(array('item_prog.id' => $item_prog))
-            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_ACADEMIC_ID))
-            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID), Predicate::OP_OR)
-            ->where(array('course_user_relation.user_id IS NOT NULL ) '))
-            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_STUDENT_ID), Predicate::OP_OR)
-            ->where(array('item_prog_user.id IS NOT NULL ) )'));
-        
-        return $this->selectWith($select);
-    }
-
-    public function getListUserBycourseWithStudentAndInstructorAndAcademic($course)
+     public function getListUserBycourseWithStudentAndInstructorAndAcademic($course)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id'))
