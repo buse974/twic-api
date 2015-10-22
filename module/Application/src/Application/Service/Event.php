@@ -263,14 +263,14 @@ class Event extends AbstractService
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         $m_videoconf_archive = $this->getServiceVideoconfArchive()->get($videoconf_archive);
         
-        return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), $this->getListByItemProgWithInstrutor($m_item_prog->getId()), self::TARGET_TYPE_USER);
+        return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), $this->getListByItemProgWithInstrutorAndAcademic($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
     public function eqcqAvailable($item_prog)
     {
         $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         
-        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getListByItemProgWithInstrutor($m_item_prog->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getListByItemProgWithInstrutorAndAcademic($m_item_prog->getId()), self::TARGET_TYPE_USER);
     }
 
     public function courseUpdated($course, $dataupdated)
@@ -293,13 +293,13 @@ class Event extends AbstractService
 
     public function programmationNew($item_prog)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutor($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutorAndAcademic($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
     public function programmationUpdated($item_prog)
     {
-        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutor($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutorAndAcademic($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -459,9 +459,9 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getListByItemProgWithInstrutor($item_prog)
+    public function getListByItemProgWithInstrutorAndAcademic($item_prog)
     {
-        $res_user = $this->getServiceUser()->getListByItemProgWithInstrutor($item_prog);
+        $res_user = $this->getServiceUser()->getListByItemProgWithInstrutorAndAcademic($item_prog);
         
         $users = [];
         foreach ($res_user as $m_user) {
