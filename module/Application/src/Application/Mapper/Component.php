@@ -38,12 +38,13 @@ class Component extends AbstractMapper
     Origines des votants (tableau d'id)
     Programmes (tableau d'id)
 
-
      * @param unknown $school
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getEqCq($school)
     {
+        $select = new Select();
+        
         $sql = "SELECT 
                     AVG(`T`.`scale`) * 20 AS `average`,
                         `T`.`component` as `id`,
@@ -56,8 +57,9 @@ class Component extends AbstractMapper
                         `dimension`.`id` AS `dimension`,
                         `program`.`school_id` AS `school`,
                         AVG(`scale`.`value`) AS `scale`
-                FROM
+                FROM 
                     `answer`
+                INNER JOIN `user` ON `user`.`id` = `answer`.`peer_id`
                 INNER JOIN `scale` ON `scale`.`id` = `answer`.`scale_id`
                 INNER JOIN `question` ON `question`.`id` = `answer`.`question_id`
                 INNER JOIN `component` ON `component`.`id` = `question`.`component_id`
