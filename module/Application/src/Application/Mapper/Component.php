@@ -29,4 +29,53 @@ class Component extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    /**
+     * 
+
+    Genre du votant (M/F)
+    Nationalités des votants (tableau d'id)
+    Origines des votants (tableau d'id)
+    Programmes (tableau d'id)
+
+
+     * @param unknown $school
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getEqCq($school)
+    {
+        $sql = "SELECT 
+                    AVG(`T`.`scale`) * 20 AS `average`,
+                        `T`.`component` as `id`,
+                        `T`.`dimension`,
+                        `component`.`name` as label
+                FROM
+                    (SELECT 
+                    `answer`.`peer_id` AS `peer`,
+                        `component`.`id` AS `component`,
+                        `dimension`.`id` AS `dimension`,
+                        `program`.`school_id` AS `school`,
+                        AVG(`scale`.`value`) AS `scale`
+                FROM
+                    `answer`
+                INNER JOIN `scale` ON `scale`.`id` = `answer`.`scale_id`
+                INNER JOIN `question` ON `question`.`id` = `answer`.`question_id`
+                INNER JOIN `component` ON `component`.`id` = `question`.`component_id`
+				INNER JOIN `dimension` ON `dimension`.`id` = `component`.`dimension_id`
+                INNER JOIN `questionnaire_user` ON `questionnaire_user`.`id` = `answer`.`questionnaire_user_id`
+				INNER JOIN `questionnaire` ON `questionnaire`.`id` = `questionnaire_user`.`questionnaire_id`
+				INNER JOIN `item` ON `item`.`id` = `questionnaire`.`item_id`
+				INNER JOIN `course` ON `course`.`id` = `item`.`course_id`
+				INNER JOIN `program` ON `program`.`id` = `course`.`program_id`
+                WHERE
+                    `answer`.`type` = 'peer'
+                        AND `scale`.`value` <> 0
+                GROUP BY `answer`.`peer_id` , `component`.`id` , `program`.`school_id`) AS T
+            INNER JOIN `component` ON `component`.`id` = `T`.`component` 
+            WHERE 
+                `T`.`school` = :school
+            GROUP BY `T`.`component` , `T`.`school`";
+    
+        return $this->selectNMPdo($sql, [':school' => $school]);
+    }
 }
