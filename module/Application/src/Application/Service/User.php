@@ -549,6 +549,11 @@ class User extends AbstractService
         return $this->getMapper()->getListByItemProg($item_prog);
     }
 
+    /**
+     * @invokable
+     * 
+     * @param integer $item_prog
+     */
     public function getListByItemProgWithInstrutor($item_prog)
     {
         return $this->getMapper()->getListByItemProgWithInstrutor($item_prog);
