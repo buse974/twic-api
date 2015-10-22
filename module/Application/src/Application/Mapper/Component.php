@@ -30,6 +30,18 @@ class Component extends AbstractMapper
         return $this->selectWith($select);
     }
     
+    /**
+     * 
+
+    Genre du votant (M/F)
+    Nationalités des votants (tableau d'id)
+    Origines des votants (tableau d'id)
+    Programmes (tableau d'id)
+
+
+     * @param unknown $school
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getEqCq($school)
     {
         $sql = "SELECT 

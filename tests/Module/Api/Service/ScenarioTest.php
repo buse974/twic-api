@@ -1499,11 +1499,11 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('component.getEqCq', array('school' => 2));
-    
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 4);
-        $this->assertEquals($data['result'][0]['value'] , 3.00000000);
+        $this->assertEquals($data['result'][0]['average'] , 60.00000000);
         $this->assertEquals($data['result'][0]['id'] , 2);
         $this->assertEquals($data['result'][0]['dimension'] , 1);
         $this->assertEquals($data['result'][0]['label'] , "Multicultural sensitivity");
