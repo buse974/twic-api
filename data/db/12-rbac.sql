@@ -85,11 +85,13 @@ INSERT INTO `permission` (`libelle`) VALUES ('videoconf.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('0', @rbac_permission_id);
 
-
-
 INSERT INTO `permission` (`libelle`) VALUES ('user.get');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('4', @rbac_permission_id);
+
+INSERT INTO `permission` (`libelle`) VALUES ('user.getListByItemProgWithInstrutor');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES ('5', @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('program.delete');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -97,9 +99,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('program.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('user.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -235,16 +235,12 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('item.getListGrade');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemassignment.addComment');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemassignment.setGrade');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -253,21 +249,15 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('gradingpolicygrade.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('item.getListGradeDetail');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('gradingpolicygradecomment.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemprog.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -295,44 +285,30 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('grading.getBySchool');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('task.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('task.update');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
-
 
 INSERT INTO `permission` (`libelle`) VALUES ('task.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemprog.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemprog.get');
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('task.delete');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
-
 
 INSERT INTO `permission` (`libelle`) VALUES ('user.getListForItemProg');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -357,9 +333,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_perm
 
 INSERT INTO `permission` (`libelle`) VALUES ('itemassignmentcomment.getList');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (3, @rbac_permission_id);
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
-INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, @rbac_permission_id);
 
 INSERT INTO `permission` (`libelle`) VALUES ('course.getListRecord');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
@@ -409,7 +383,6 @@ INSERT INTO `permission` (`libelle`) VALUES ('videoconf.joinUser');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
 
-
 INSERT INTO `permission` (`libelle`) VALUES ('videoconfdoc.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
@@ -457,7 +430,6 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_perm
 INSERT INTO `permission` (`libelle`) VALUES ('rolepermission.add');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
 INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (1, @rbac_permission_id);
-
 
 INSERT INTO `permission` (`libelle`) VALUES ('rolepermission.delete');
 SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
