@@ -246,6 +246,19 @@ class Item extends AbstractService
 
         return $res_grading_policy;
     }
+    
+      /**
+     * @invokable
+     *
+     * @param int $grading_policy
+     * @param int $course
+     * @param int $user
+     * @param int $item_prog
+     */
+    public function getListGradeItem($grading_policy = null,$course = null, $user = null, $item_prog = null)
+    {
+        return $this->getMapper()->getListGradeItem($grading_policy, $course, $user, $item_prog);
+    }
 
     /**
      * @invokable
