@@ -179,7 +179,7 @@ class User extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','firstname','lastname','avatar'))
-            ->join('user_role', 'user_role.user_id=user.id', array())
+            ->join('user_role', 'user_role.user_id=user.id', array('role_id'))
             ->join('school', 'user.school_id=school.id', array())
             ->join('program', 'program.school_id=school.id', array())
             ->join('course', 'course.program_id=program.id', array())
