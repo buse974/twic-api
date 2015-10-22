@@ -34,7 +34,7 @@ class Program extends AbstractMapper
             $select->where(['school_id' => $sub_select]);
         }
 
-        if ($all === false) {
+        if ($all === false && null === $school) {
             $select->join('program_user_relation', 'program_user_relation.program_id=program.id', array())
                     ->where(array('program_user_relation.user_id' => $user_program));
         }
