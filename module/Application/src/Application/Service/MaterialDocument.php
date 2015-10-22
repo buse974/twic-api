@@ -141,6 +141,8 @@ class MaterialDocument extends AbstractService
     /**
      * Get List material document by item id.
      *
+     * @invokable
+     * 
      * @param int $item
      *
      * @return \Dal\Db\ResultSet\ResultSet

@@ -25,6 +25,7 @@ class ItemProg extends BaseItemProg
         $this->item = $this->requireModel('app_model_item', $data);
         $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
         $this->item_grade = $this->requireModel('app_model_item_grading', $data);
+        $this->item_prog_user = $this->requireModel('app_model_item_prog_user', $data);
     }
 
     public function getItemProgUser()
