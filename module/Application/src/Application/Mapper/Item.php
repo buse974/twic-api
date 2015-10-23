@@ -170,7 +170,8 @@ class Item extends AbstractMapper
             ->join('item_prog', 'item_prog.item_id=item.id', array('id'))
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array('user_id'))
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
-            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id','submit_date', 'id'), $select::JOIN_LEFT)
+            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id',
+                'item_assignment$submit_date' => new Expression('DATE_FORMAT(item_assignment.submit_date, "%Y-%m-%dT%TZ")'), 'id'), $select::JOIN_LEFT)
             ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
             ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
             ->where('item_assignment.submit_date IS NOT NULL');
