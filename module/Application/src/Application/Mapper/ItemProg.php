@@ -4,6 +4,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class ItemProg extends AbstractMapper
 {
@@ -77,7 +78,9 @@ class ItemProg extends AbstractMapper
             $select->where(array('item_prog.item_id ' => $item));
         }
         if (null != $start && null !== $end) {
-            $select->where(array('start_date BETWEEN ? AND ? ' => array($start, $end)));
+            $select->where(array('( item_prog.start_date BETWEEN ? AND ? ' => array($start, $end)))
+                ->where(array('item_prog.due_date BETWEEN ? AND ?  ' => array($start, $end)) , Predicate::OP_OR)
+                ->where(array('( item_prog.start_date < ? AND item_prog.due_date > ? ) ) ' => array($start, $end)) , Predicate::OP_OR);
         }
         if (null !== $course) {
             $select->where(array('course.id' => $course));
