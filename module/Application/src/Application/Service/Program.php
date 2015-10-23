@@ -71,6 +71,8 @@ class Program extends AbstractService
      * @invokable
      *
      * @param array $filter
+     * @param string $search
+     * @param string $school
      */
     public function getList($filter = null, $search = null, $school = null)
     {
