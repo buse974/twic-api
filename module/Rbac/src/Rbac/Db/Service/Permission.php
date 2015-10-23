@@ -27,18 +27,18 @@ class Permission extends AbstractService
      *
      * @invokable
      * 
-     * @param string $permission
+     * @param string $libelle
      * @param integer $role
      * 
      * @throws \Exception
      * @return integer
      */
-    public function add($permission, $role = null)
+    public function add($libelle, $role = null)
     {
-        $m_permission = $this->getModel()->setLibelle($permission);
+        $m_permission = $this->getModel()->setLibelle($libelle);
 
         if ($this->getMapper()->insert($m_permission) <= 0) {
-            throw new \Exception('error insert permission : '.$permission);
+            throw new \Exception('error insert permission : '.$libelle);
         }
 
         $permission_id = $this->getMapper()->getLastInsertValue();
@@ -84,13 +84,13 @@ class Permission extends AbstractService
      * @invokable
      *
      * @param int $id
-     * @param int $permission
+     * @param string $libelle
      */
-    public function update($id, $permission, $role = null)
+    public function update($id, $libelle, $role = null)
     {
         $m_permission = $this->getModel()
             ->setId($id)
-            ->setLibelle($permission);
+            ->setLibelle($libelle);
 
         $ret = $this->getMapper()->update($m_permission);
 

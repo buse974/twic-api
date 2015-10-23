@@ -162,24 +162,34 @@ class Item extends AbstractMapper
      * @param int $course
      * @param int $user
      */
-    public function getListGradeItem($grading_policy, $course, $user)
+    public function getListGradeItem($grading_policy = null, $course = null, $user = null, $item_prog = null)
     {
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS DECIMAL )')))
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
-            ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
+            ->join('item_prog', 'item_prog.item_id=item.id', array('id'))
+            ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array('user_id'))
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
-            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id'), $select::JOIN_LEFT)
-            ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'))
+            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id','submit_date', 'id'), $select::JOIN_LEFT)
+            ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
             ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
-            ->where(array('item.course_id' => $course))
-            ->where(array('item.grading_policy_id' => $grading_policy))
-            ->where(array('item_prog_user.user_id' => $user))
-            ->
-        // ->where(array('( item_assignment.id IS NULL OR item_assignment_user.item_assignment_id IS NOT NULL)'))
-        group('item.id');
-
+            ->where('item_assignment.submit_date IS NOT NULL');
+        if(null !== $course){
+            $select->where(array('item.course_id' => $course));
+        }
+        if(null !== $grading_policy){
+            $select->where(array('item.grading_policy_id' => $grading_policy));
+        }
+        if(null !== $user){
+            $select->where(array('item_prog_user.user_id' => $user));
+        }
+        if(null !== $item_prog){
+            $select->where(array('item_prog.id' => $item_prog))
+            ->group('item_prog_user.user_id');
+        }
+        else{
+            $select->group('item.id');
+        }
         return $this->selectWith($select);
     }
 }
