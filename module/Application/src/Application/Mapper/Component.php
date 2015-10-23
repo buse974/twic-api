@@ -117,16 +117,18 @@ class Component extends AbstractMapper
         
         return $this->selectNMPdo($sql, $params);
     }
-    
+
     public function getEqCqStat($school, $gender = null, $nationality = null, $origin = null, $program = null)
     {
         $params = [':school' => $school];
-        $req = "SELECT
-                    `answer`.`peer_id` AS `peer`,
-                    `component`.`id` AS `component`,
-                    `dimension`.`id` AS `dimension`,
-                    `program`.`school_id` AS `school`,
-                    AVG(`scale`.`value`) AS `scale`
+        $req = "SELECT 
+                	AVG(FLOOR((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(user.birth_date))/31557600)) AS avgage,
+                    MAX(FLOOR((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(user.birth_date))/31557600)) AS maxage,
+                    MIN(FLOOR((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(user.birth_date))/31557600)) AS minage,
+                    COUNT(true) as total,
+                    GROUP_CONCAT(DISTINCT user.gender SEPARATOR '|') as genre,
+                    GROUP_CONCAT(DISTINCT user.nationality SEPARATOR '|') as nationality,
+                    GROUP_CONCAT(DISTINCT user.origin SEPARATOR '|') as origin
                 FROM
                     `answer`
                 INNER JOIN `user` ON `user`.`id` = `answer`.`peer_id`
@@ -142,12 +144,11 @@ class Component extends AbstractMapper
                 WHERE
                     `answer`.`type` = 'peer'
                         AND `scale`.`value` <> 0 ";
-    
+        
         if (null !== $gender) {
             $req .= " AND user.gender=:gender ";
             $params[':gender'] = $gender;
         }
-    
         if (null !== $nationality) {
             if (! is_array($nationality)) {
                 $nationality = [$nationality];
@@ -160,12 +161,11 @@ class Component extends AbstractMapper
             }
             $req .= " AND user.nationality IN (" . implode(",", $v) . ") ";
         }
-    
         if (null !== $origin) {
             if (! is_array($origin)) {
                 $origin = [$origin];
             }
-    
+            
             $v = [];
             $i = 1;
             foreach ($origin as $n) {
@@ -174,7 +174,6 @@ class Component extends AbstractMapper
             }
             $req .= " AND user.origin IN (" . implode(",", $v) . ") ";
         }
-    
         if (null !== $program) {
             if (! is_array($program)) {
                 $program = [$program];

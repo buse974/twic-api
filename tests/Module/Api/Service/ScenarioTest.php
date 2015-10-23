@@ -1501,12 +1501,21 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('component.getEqCq', array('school' => 2));
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 4);
-        $this->assertEquals($data['result'][0]['average'] , 60.00000000);
-        $this->assertEquals($data['result'][0]['id'] , 2);
-        $this->assertEquals($data['result'][0]['dimension'] , 1);
-        $this->assertEquals($data['result'][0]['label'] , "Multicultural sensitivity");
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['stats']) , 1);
+        $this->assertEquals(count($data['result']['stats'][0]) , 4);
+        $this->assertEquals($data['result']['stats'][0]['average'] , 60.00000000);
+        $this->assertEquals($data['result']['stats'][0]['id'] , 2);
+        $this->assertEquals($data['result']['stats'][0]['dimension'] , 1);
+        $this->assertEquals($data['result']['stats'][0]['label'] , "Multicultural sensitivity");
+        $this->assertEquals(count($data['result']['description']) , 7);
+        $this->assertEquals($data['result']['description']['avgage'] , null);
+        $this->assertEquals($data['result']['description']['maxage'] , null);
+        $this->assertEquals($data['result']['description']['minage'] , null);
+        $this->assertEquals($data['result']['description']['total'] , 1);
+        $this->assertEquals(count($data['result']['description']['genre']) , 0);
+        $this->assertEquals(count($data['result']['description']['nationality']) , 0);
+        $this->assertEquals(count($data['result']['description']['origin']) , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

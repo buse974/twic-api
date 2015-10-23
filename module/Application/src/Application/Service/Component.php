@@ -71,7 +71,13 @@ class Component extends AbstractService
      */
     public function getEqCq($school, $gender = null, $nationality = null, $origin = null, $program = null)
     {
-        return $this->getMapper()->getEqCq($school, $gender, $nationality, $origin, $program);
+        $ret = ['stats' => $this->getMapper()->getEqCq($school, $gender, $nationality, $origin, $program)->toArray(),
+                'description' => $this->getMapper()->getEqCqStat($school, $gender, $nationality, $origin, $program)->current()];
+        $ret['description']['genre'] =  (!empty($ret['description']['genre'])) ? explode("|", $ret['description']['genre']):[];
+        $ret['description']['nationality'] = (!empty($ret['description']['nationality'])) ? explode("|", $ret['description']['nationality']):[];
+        $ret['description']['origin'] =  (!empty($ret['description']['origin'])) ? explode("|", $ret['description']['origin']):[];
+        
+        return $ret;
     }
     
     /**
