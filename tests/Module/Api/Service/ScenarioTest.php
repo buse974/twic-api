@@ -3303,7 +3303,11 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('thread.getNbrMessage', array('school' => 2, 'day' => 30));
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 2);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals($data['result']['d'] , 2);
+        $this->assertEquals($data['result']['w'] , 2);
+        $this->assertEquals($data['result']['m'] , 2);
+        $this->assertEquals($data['result']['a'] , 2);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
