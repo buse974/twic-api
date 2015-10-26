@@ -776,7 +776,11 @@ class MessageTest extends AbstractService
         $data = $this->jsonRpc('message.getNbrMessage', array('school' => 1, 'day' => 30));
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 5);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals($data['result']['d'] , 5);
+        $this->assertEquals($data['result']['w'] , 5);
+        $this->assertEquals($data['result']['m'] , 5);
+        $this->assertEquals($data['result']['a'] , 5);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

@@ -290,13 +290,17 @@ class Message extends AbstractService
      * @invokable
      *
      * @param integer $school
-     * @param integer $day
      *
      * @return integer
      */
-    public function getNbrMessage($school, $day = null)
+    public function getNbrMessage($school)
     {
-        return $this->getMapper()->getNbrMessage($school, $day);
+        return [
+            'd'=>$this->getMapper()->getNbrMessage($school, 1),
+            'w'=>$this->getMapper()->getNbrMessage($school, 7),
+            'm'=>$this->getMapper()->getNbrMessage($school, 30),
+            'a'=>$this->getMapper()->getNbrMessage($school)
+        ];
     }
     
     /**
