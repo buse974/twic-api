@@ -73,9 +73,9 @@ class Component extends AbstractService
     {
         $ret = ['stats' => $this->getMapper()->getEqCq($school, $gender, $nationality, $origin, $program)->toArray(),
                 'description' => $this->getMapper()->getEqCqStat($school, $gender, $nationality, $origin, $program)->current()];
-        $ret['description']['genre'] =  (!empty($ret['description']['genre'])) ? explode("|", $ret['description']['genre']):[];
-        $ret['description']['nationality'] = (!empty($ret['description']['nationality'])) ? explode("|", $ret['description']['nationality']):[];
-        $ret['description']['origin'] =  (!empty($ret['description']['origin'])) ? explode("|", $ret['description']['origin']):[];
+        $ret['description']['genre'] =  (!empty($ret['description']['genre'])) ? json_decode($ret['description']['genre']):[];
+        $ret['description']['nationality'] = (!empty($ret['description']['nationality'])) ? json_decode($ret['description']['nationality']):[];
+        $ret['description']['origin'] =  (!empty($ret['description']['origin'])) ? json_decode($ret['description']['origin']):[];
         
         return $ret;
     }
