@@ -3297,6 +3297,17 @@ class ScenarioTest extends AbstractService
         return $data['result']['list'][0]['id'];
     }
 
+    public function testGetNbrMessageThread()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('thread.getNbrMessage', array('school' => 2, 'day' => 30));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 2);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     /**
      * @depends testGetThreadTwo
      */
@@ -3334,7 +3345,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-
+    
     /**
      * @depends testCanAddItemAssigment
      * @depends testCanAddSubmitItemAssigment
