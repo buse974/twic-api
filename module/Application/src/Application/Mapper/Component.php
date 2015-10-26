@@ -126,9 +126,9 @@ class Component extends AbstractMapper
                     MAX(FLOOR((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(user.birth_date))/31557600)) AS maxage,
                     MIN(FLOOR((UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(user.birth_date))/31557600)) AS minage,
                     COUNT(true) as total,
-                    GROUP_CONCAT(DISTINCT user.gender SEPARATOR '|') as genre,
-                    GROUP_CONCAT(DISTINCT user.nationality SEPARATOR '|') as nationality,
-                    GROUP_CONCAT(DISTINCT user.origin SEPARATOR '|') as origin
+                    CONCAT('[',GROUP_CONCAT(DISTINCT user.gender SEPARATOR ','),']') as genre,
+                    CONCAT('[',GROUP_CONCAT(DISTINCT user.nationality SEPARATOR ','),']') as nationality,
+                    CONCAT('[',GROUP_CONCAT(DISTINCT user.origin SEPARATOR ','),']') as origin
                 FROM
                     `answer`
                 
