@@ -15,14 +15,14 @@ class Message extends BaseMessage
     {
         return $this->nb_message;
     }
-    
+
     public function setNbMessage($nb_message)
     {
         $this->nb_message = $nb_message;
-    
+
         return $this;
     }
-    
+
     public function getFrom()
     {
         return $this->from;

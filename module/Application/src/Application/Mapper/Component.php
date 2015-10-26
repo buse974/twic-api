@@ -1,19 +1,18 @@
 <?php
+
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Dal\Db\Sql\Select;
 use Zend\Db\Sql\Predicate\Predicate;
-use Dal\Db\Sql\Dal\Db\Sql;
 
 class Component extends AbstractMapper
 {
-
     public function getList($dimension = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','name','describe','dimension_id'))->join(array('component_dimension' => 'dimension'), 'component_dimension.id=component.dimension_id', array('id','name'));
-        
+        $select->columns(array('id', 'name', 'describe', 'dimension_id'))->join(array('component_dimension' => 'dimension'), 'component_dimension.id=component.dimension_id', array('id', 'name'));
+
         if (null !== $dimension) {
             if (is_numeric($dimension)) {
                 $select->where(array('component.dimension_id' => $dimension));
@@ -21,13 +20,13 @@ class Component extends AbstractMapper
                 $select->where(array('component_dimension.name' => $dimension));
             }
         }
-        
+
         if (null !== $search) {
-            $select->where(array(' ( component.name LIKE ?' => '%' . $search . '%'))->where(array('component.describe LIKE ? )' => '%' . $search . '%'), Predicate::OP_OR);
+            $select->where(array(' ( component.name LIKE ?' => '%'.$search.'%'))->where(array('component.describe LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
         }
-        
+
         $select->where(array('component.deleted_date IS NULL'));
-        
+
         return $this->selectWith($select);
     }
 
@@ -55,66 +54,66 @@ class Component extends AbstractMapper
                 WHERE 
                     `answer`.`type` = 'peer' 
                         AND `scale`.`value` <> 0 ";
-        
+
         if (null !== $gender) {
-            $req .= " AND user.gender=:gender ";
+            $req .= ' AND user.gender=:gender ';
             $params[':gender'] = $gender;
         }
-        
+
         if (null !== $nationality) {
-            if (! is_array($nationality)) {
+            if (!is_array($nationality)) {
                 $nationality = [$nationality];
             }
             $v = [];
             $i = 1;
             foreach ($nationality as $n) {
-                $v[] = ':n' . $i;
-                $params[':n' . $i ++] = $n;
+                $v[] = ':n'.$i;
+                $params[':n'.$i++] = $n;
             }
-            $req .= " AND user.nationality IN (" . implode(",", $v) . ") ";
+            $req .= ' AND user.nationality IN ('.implode(',', $v).') ';
         }
-        
+
         if (null !== $origin) {
-            if (! is_array($origin)) {
+            if (!is_array($origin)) {
                 $origin = [$origin];
             }
-            
+
             $v = [];
             $i = 1;
             foreach ($origin as $n) {
-                $v[] = ':o' . $i;
-                $params[':o' . $i ++] = $n;
+                $v[] = ':o'.$i;
+                $params[':o'.$i++] = $n;
             }
-            $req .= " AND user.origin IN (" . implode(",", $v) . ") ";
+            $req .= ' AND user.origin IN ('.implode(',', $v).') ';
         }
-        
+
         if (null !== $program) {
-            if (! is_array($program)) {
+            if (!is_array($program)) {
                 $program = [$program];
             }
             $v = [];
             $i = 1;
             foreach ($program as $n) {
-                $v[] = ':p' . $i;
-                $params[':p' . $i ++] = $n;
+                $v[] = ':p'.$i;
+                $params[':p'.$i++] = $n;
             }
-            $req .= " AND program.id IN (" . implode(",", $v) . ") ";
+            $req .= ' AND program.id IN ('.implode(',', $v).') ';
         }
-        
-        $req .= " GROUP BY `answer`.`peer_id` , `component`.`id` , `program`.`school_id`";
-        
-        $sql = "SELECT 
+
+        $req .= ' GROUP BY `answer`.`peer_id` , `component`.`id` , `program`.`school_id`';
+
+        $sql = 'SELECT 
                     AVG(`T`.`scale`) * 20 AS `average`,
                         `T`.`component` as `id`,
                         `T`.`dimension`,
                         `component`.`name` as label
                 FROM
-                    (" . $req . ") AS T
+                    ('.$req.') AS T
             INNER JOIN `component` ON `component`.`id` = `T`.`component` 
             WHERE 
                 `T`.`school` = :school
-            GROUP BY `T`.`component` , `T`.`school`";
-        
+            GROUP BY `T`.`component` , `T`.`school`';
+
         return $this->selectNMPdo($sql, $params);
     }
 
@@ -145,49 +144,49 @@ class Component extends AbstractMapper
                 WHERE
                     `answer`.`type` = 'peer'
                         AND `scale`.`value` <> 0 AND `program`.`school_id`=:school";
-        
+
         if (null !== $gender) {
-            $req .= " AND user.gender=:gender ";
+            $req .= ' AND user.gender=:gender ';
             $params[':gender'] = $gender;
         }
         if (null !== $nationality) {
-            if (! is_array($nationality)) {
+            if (!is_array($nationality)) {
                 $nationality = [$nationality];
             }
             $v = [];
             $i = 1;
             foreach ($nationality as $n) {
-                $v[] = ':n' . $i;
-                $params[':n' . $i ++] = $n;
+                $v[] = ':n'.$i;
+                $params[':n'.$i++] = $n;
             }
-            $req .= " AND user.nationality IN (" . implode(",", $v) . ") ";
+            $req .= ' AND user.nationality IN ('.implode(',', $v).') ';
         }
         if (null !== $origin) {
-            if (! is_array($origin)) {
+            if (!is_array($origin)) {
                 $origin = [$origin];
             }
-            
+
             $v = [];
             $i = 1;
             foreach ($origin as $n) {
-                $v[] = ':o' . $i;
-                $params[':o' . $i ++] = $n;
+                $v[] = ':o'.$i;
+                $params[':o'.$i++] = $n;
             }
-            $req .= " AND user.origin IN (" . implode(",", $v) . ") ";
+            $req .= ' AND user.origin IN ('.implode(',', $v).') ';
         }
         if (null !== $program) {
-            if (! is_array($program)) {
+            if (!is_array($program)) {
                 $program = [$program];
             }
             $v = [];
             $i = 1;
             foreach ($program as $n) {
-                $v[] = ':p' . $i;
-                $params[':p' . $i ++] = $n;
+                $v[] = ':p'.$i;
+                $params[':p'.$i++] = $n;
             }
-            $req .= " AND program.id IN (" . implode(",", $v) . ") ";
+            $req .= ' AND program.id IN ('.implode(',', $v).') ';
         }
-        
+
         return $this->selectNMPdo($req, $params);
     }
 }

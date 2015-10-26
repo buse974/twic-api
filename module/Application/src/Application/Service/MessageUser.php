@@ -109,10 +109,9 @@ class MessageUser extends AbstractService
 
         return array('list' => $list,'count' => $mapper->count());
     }
-    
+
     /**
-     * 
-     * @param integer $message
+     * @param int $message
      * 
      * @return \Application\Model\MessageUser
      */
@@ -120,7 +119,6 @@ class MessageUser extends AbstractService
     {
         return $this->getList($this->getServiceUser()->getIdentity()['id'], $message)['list']->current();
     }
-    
 
     public function readByMessage($mesage)
     {

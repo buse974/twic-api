@@ -30,10 +30,10 @@ class RolePermission extends AbstractService
      */
     public function add($role_id, $permission_id)
     {
-        if(!is_array($role_id)) {
+        if (!is_array($role_id)) {
             $role_id = [$role_id];
         }
-        
+
         $m_role_permission = $this->getModel()->setPermissionId($permission_id);
 
         foreach ($role_id as $r) {
@@ -42,7 +42,7 @@ class RolePermission extends AbstractService
         }
 
         $this->getServiceRbac()->createRbac();
-        
+
         return $ret;
     }
 

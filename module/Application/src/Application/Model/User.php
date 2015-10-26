@@ -37,14 +37,14 @@ class User extends BaseUser
     {
         return $this->role;
     }
-    
+
     public function setRole($role)
     {
         $this->role = $role;
-    
+
         return $this;
     }
-    
+
     public function getItemProgUser()
     {
         return $this->item_prog_user;

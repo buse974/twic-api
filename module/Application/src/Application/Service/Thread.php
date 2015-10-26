@@ -152,20 +152,20 @@ class Thread extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $school
+     * @param int $school
      * 
-     * @return integer
+     * @return int
      */
     public function getNbrMessage($school)
     {
         return [
-            'd'=>$this->getMapper()->getNbrMessage($school, 1),
-            'w'=>$this->getMapper()->getNbrMessage($school, 7),
-            'm'=>$this->getMapper()->getNbrMessage($school, 30),
-            'a'=>$this->getMapper()->getNbrMessage($school)
+            'd' => $this->getMapper()->getNbrMessage($school, 1),
+            'w' => $this->getMapper()->getNbrMessage($school, 7),
+            'm' => $this->getMapper()->getNbrMessage($school, 30),
+            'a' => $this->getMapper()->getNbrMessage($school),
         ];
     }
-    
+
     /**
      * @return \Auth\Service\AuthService
      */

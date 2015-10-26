@@ -93,13 +93,13 @@ class Dimension extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $school
+     * @param int $school
      */
     public function getEqCq($school)
     {
         return $this->getMapper()->getEqCq($school);
     }
-    
+
     /**
      * @return \Application\Service\Component
      */

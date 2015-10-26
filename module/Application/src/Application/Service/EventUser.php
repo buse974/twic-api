@@ -30,7 +30,7 @@ class EventUser extends AbstractService
         $me = $this->getServiceUser()->getIdentity()['id'];
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         if (null !== $ids) {
             $m_event = $this->getModel()->setUserId($me)->setReadDate($date)->setEventId($ids);
             $nb = $this->getMapper()->update($m_event);

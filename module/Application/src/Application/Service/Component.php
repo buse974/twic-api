@@ -19,7 +19,7 @@ class Component extends AbstractService
 
         $res_component = $mapper->usePaginator($filter)->getList($dimension, $search);
 
-        return (null !== $filter) ? 
+        return (null !== $filter) ?
             array('count' => $mapper->count(),'list' => $res_component) :
             $res_component;
     }
@@ -63,8 +63,8 @@ class Component extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $school
-     * @param string $gender
+     * @param int          $school
+     * @param string       $gender
      * @param array|string $nationality
      * @param array|string $origin
      * @param array|string $program
@@ -72,14 +72,14 @@ class Component extends AbstractService
     public function getEqCq($school, $gender = null, $nationality = null, $origin = null, $program = null)
     {
         $ret = ['stats' => $this->getMapper()->getEqCq($school, $gender, $nationality, $origin, $program)->toArray(),
-                'description' => $this->getMapper()->getEqCqStat($school, $gender, $nationality, $origin, $program)->current()];
-        $ret['description']['genre'] =  (!empty($ret['description']['genre'])) ? json_decode($ret['description']['genre']):[];
-        $ret['description']['nationality'] = (!empty($ret['description']['nationality'])) ? json_decode($ret['description']['nationality']):[];
-        $ret['description']['origin'] =  (!empty($ret['description']['origin'])) ? json_decode($ret['description']['origin']):[];
-        
+                'description' => $this->getMapper()->getEqCqStat($school, $gender, $nationality, $origin, $program)->current(), ];
+        $ret['description']['genre'] = (!empty($ret['description']['genre'])) ? json_decode($ret['description']['genre']) : [];
+        $ret['description']['nationality'] = (!empty($ret['description']['nationality'])) ? json_decode($ret['description']['nationality']) : [];
+        $ret['description']['origin'] = (!empty($ret['description']['origin'])) ? json_decode($ret['description']['origin']) : [];
+
         return $ret;
     }
-    
+
     /**
      * @invokable
      *
