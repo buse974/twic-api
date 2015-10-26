@@ -41,12 +41,12 @@ class Component extends AbstractMapper
                     AVG(`scale`.`value`) AS `scale` 
                 FROM 
                     `answer` 
-                INNER JOIN `user` ON `user`.`id` = `answer`.`peer_id` 
                 INNER JOIN `scale` ON `scale`.`id` = `answer`.`scale_id` 
                 INNER JOIN `question` ON `question`.`id` = `answer`.`question_id` 
                 INNER JOIN `component` ON `component`.`id` = `question`.`component_id` 
 				INNER JOIN `dimension` ON `dimension`.`id` = `component`.`dimension_id` 
                 INNER JOIN `questionnaire_user` ON `questionnaire_user`.`id` = `answer`.`questionnaire_user_id` 
+                INNER JOIN `user` ON `user`.`id` = `questionnaire_user`.`user_id`
 				INNER JOIN `questionnaire` ON `questionnaire`.`id` = `questionnaire_user`.`questionnaire_id` 
 				INNER JOIN `item` ON `item`.`id` = `questionnaire`.`item_id` 
 				INNER JOIN `course` ON `course`.`id` = `item`.`course_id` 
