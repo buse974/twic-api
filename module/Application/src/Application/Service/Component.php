@@ -65,9 +65,9 @@ class Component extends AbstractService
      * 
      * @param integer $school
      * @param string $gender
-     * @param string $nationality
-     * @param string $origin
-     * @param string $program
+     * @param array|string $nationality
+     * @param array|string $origin
+     * @param array|string $program
      */
     public function getEqCq($school, $gender = null, $nationality = null, $origin = null, $program = null)
     {

@@ -144,7 +144,7 @@ class Component extends AbstractMapper
 				INNER JOIN `program` ON `program`.`id` = `course`.`program_id`
                 WHERE
                     `answer`.`type` = 'peer'
-                        AND `scale`.`value` <> 0 ";
+                        AND `scale`.`value` <> 0 AND `program`.`school_id`=:school";
         
         if (null !== $gender) {
             $req .= " AND user.gender=:gender ";
