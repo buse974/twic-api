@@ -770,6 +770,17 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    public function testGetNbrMessageBySchool()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('message.getNbrMessage', array('school' => 1, 'day' => 30));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 5);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     public function testCanAddDeleteMessage()
     {
         $this->setIdentity(5);
