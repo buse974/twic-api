@@ -1,28 +1,27 @@
 <?php
+
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
 class Dimension extends AbstractMapper
 {
-
     /**
-     *
-     * @param string $search            
+     * @param string $search
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($search = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        
-        $select->columns(array('id','name','describe','deleted_date'));
-        
+
+        $select->columns(array('id', 'name', 'describe', 'deleted_date'));
+
         if (null !== $search) {
-            $select->where(array('name LIKE ? ' => '%' . $search . '%'));
+            $select->where(array('name LIKE ? ' => '%'.$search.'%'));
         }
         $select->where(array('deleted_date IS NULL'));
-        
+
         return $this->selectWith($select);
     }
 
@@ -65,7 +64,7 @@ class Dimension extends AbstractMapper
                 JOIN `dimension` ON  `dimension`.`id`=`T`.`dimension`
             	WHERE `T`.`school`=:school
                 GROUP BY `T`.`dimension` , `T`.`school`";
-        
+
         return $this->selectNMPdo($sql, [':school' => $school]);
     }
 }

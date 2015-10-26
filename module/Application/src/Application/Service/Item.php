@@ -77,7 +77,7 @@ class Item extends AbstractService
      *
      * @return int
      */
-    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null,/* $parent = null, */ $module = null, $materials = null)
+    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, /* $parent = null, */ $module = null, $materials = null)
     {
         $m_item = $this->getModel()
                        ->setId($id)
@@ -246,8 +246,8 @@ class Item extends AbstractService
 
         return $res_grading_policy;
     }
-    
-      /**
+
+    /**
      * @invokable
      *
      * @param int $grading_policy
@@ -255,7 +255,7 @@ class Item extends AbstractService
      * @param int $user
      * @param int $item_prog
      */
-    public function getListGradeItem($grading_policy = null,$course = null, $user = null, $item_prog = null)
+    public function getListGradeItem($grading_policy = null, $course = null, $user = null, $item_prog = null)
     {
         return $this->getMapper()->getListGradeItem($grading_policy, $course, $user, $item_prog);
     }
@@ -279,7 +279,6 @@ class Item extends AbstractService
     }
 
     /**
-     * 
      * @invokable
      * 
      * @param int $item_prog

@@ -80,25 +80,25 @@ class Message extends AbstractService
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
         $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
 
-        if($draft===false) {
+        if ($draft === false) {
             $this->getServiceEvent()->messageNew($message_id, $to);
         }
-        
+
         return $this->getServiceMessageUser()
             ->getList($me, $message_id)['list']
             ->current();
     }
-    
+
     /**
-     * Get Message
+     * Get Message.
      * 
      * @return \Application\Model\Message
      */
-    public function get($id) 
+    public function get($id)
     {
         $m_message = $this->getModel()->setId($id);
         $res_message = $this->getMapper()->select($m_message);
-        
+
         // Throws an error if the message does not exist
         if ($res_message->count() <= 0) {
             throw new \Exception('error select message with id :'.$id);
@@ -289,20 +289,20 @@ class Message extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $school
+     * @param int $school
      *
-     * @return integer
+     * @return int
      */
     public function getNbrMessage($school)
     {
         return [
-            'd'=>$this->getMapper()->getNbrMessage($school, 1),
-            'w'=>$this->getMapper()->getNbrMessage($school, 7),
-            'm'=>$this->getMapper()->getNbrMessage($school, 30),
-            'a'=>$this->getMapper()->getNbrMessage($school)
+            'd' => $this->getMapper()->getNbrMessage($school, 1),
+            'w' => $this->getMapper()->getNbrMessage($school, 7),
+            'm' => $this->getMapper()->getNbrMessage($school, 30),
+            'a' => $this->getMapper()->getNbrMessage($school),
         ];
     }
-    
+
     /**
      * @return \Application\Service\User
      */
@@ -334,7 +334,7 @@ class Message extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_conversation_user');
     }
-    
+
     /**
      * @return \Application\Service\Event
      */

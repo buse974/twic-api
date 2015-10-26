@@ -40,10 +40,10 @@ class School extends BaseSchool
 
     public function getAddress()
     {
-        if($this->address instanceof Address && $this->address->getId()===null) {
+        if ($this->address instanceof Address && $this->address->getId() === null) {
             $this->address = null;
         }
-        
+
         return $this->address;
     }
 

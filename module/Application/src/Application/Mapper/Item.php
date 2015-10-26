@@ -171,26 +171,26 @@ class Item extends AbstractMapper
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array('user_id'))
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
             ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id',
-                'item_assignment$submit_date' => new Expression('DATE_FORMAT(item_assignment.submit_date, "%Y-%m-%dT%TZ")'), 'id'), $select::JOIN_LEFT)
+                'item_assignment$submit_date' => new Expression('DATE_FORMAT(item_assignment.submit_date, "%Y-%m-%dT%TZ")'), 'id', ), $select::JOIN_LEFT)
             ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
             ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
             ->where('item_assignment.submit_date IS NOT NULL');
-        if(null !== $course){
+        if (null !== $course) {
             $select->where(array('item.course_id' => $course));
         }
-        if(null !== $grading_policy){
+        if (null !== $grading_policy) {
             $select->where(array('item.grading_policy_id' => $grading_policy));
         }
-        if(null !== $user){
+        if (null !== $user) {
             $select->where(array('item_prog_user.user_id' => $user));
         }
-        if(null !== $item_prog){
+        if (null !== $item_prog) {
             $select->where(array('item_prog.id' => $item_prog))
             ->group('item_prog_user.user_id');
-        }
-        else{
+        } else {
             $select->group('item.id');
         }
+
         return $this->selectWith($select);
     }
 }

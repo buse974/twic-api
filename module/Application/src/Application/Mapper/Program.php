@@ -26,7 +26,7 @@ class Program extends AbstractMapper
             'year',
         ));
 
-        if(null !== $school) {
+        if (null !== $school) {
             $select->where(['school_id' => $school]);
         } else {
             $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();

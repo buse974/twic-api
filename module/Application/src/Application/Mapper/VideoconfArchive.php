@@ -4,7 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Application\Model\Videoconf as CVF;
-use Symfony\Component\Console\Application;
 
 class VideoconfArchive extends AbstractMapper
 {
@@ -27,21 +26,21 @@ class VideoconfArchive extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     /**
-     * @param integer $videoconf
+     * @param int $videoconf
      * 
      * @return \Application\Model\VideoconfArchive
      */
     public function getLastArchiveId($videoconf)
     {
         $select = $this->tableGateway->getSql()->select();
-        
+
         $select->columns(array('id', 'archive_link', 'archive_token', 'archive_duration'))
             ->where(array('videoconf_archive.videoconf_id' => $videoconf))
             ->order(array('videoconf_archive.id' => 'DESC'))
             ->limit(1);
-        
+
         return $this->selectWith($select)->current();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
@@ -7,12 +8,11 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Event extends AbstractMapper
 {
-
     public function getList($me, $events = null, $id = null, $source = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','source','object','event','event$date' => new Expression("DATE_FORMAT(date, '%Y-%m-%dT%TZ') ")))
-            ->join('like', 'event.id=like.event_id', array('event$is_like' => new Expression('MAX(IF(like.user_id = ' . $me . ' AND like.is_like IS TRUE, 1, 0))')), $select::JOIN_LEFT)
+        $select->columns(array('id', 'source', 'object', 'event', 'event$date' => new Expression("DATE_FORMAT(date, '%Y-%m-%dT%TZ') ")))
+            ->join('like', 'event.id=like.event_id', array('event$is_like' => new Expression('MAX(IF(like.user_id = '.$me.' AND like.is_like IS TRUE, 1, 0))')), $select::JOIN_LEFT)
             ->group('event.id')
             ->order(array('event.id' => 'DESC'));
         if (null === $id && $source === null) {
@@ -33,7 +33,7 @@ class Event extends AbstractMapper
                 ->where(array(' ( event_user.user_id = ?' => $source), Predicate::OP_OR)
                 ->where(array(' event.user_id IS NULL ) )'));
         }
-        
+
         return $this->selectWith($select);
     }
 
@@ -43,7 +43,7 @@ class Event extends AbstractMapper
         $select->columns(array())
             ->join('like', 'event.id=like.event_id', array('event$nb_like' => new Expression('SUM(IF(like.is_like IS TRUE, 1,0))')), $select::JOIN_LEFT)
             ->where(array('event.id' => $event));
-        
+
         return $this->selectWith($select)->current()->getNbLike();
     }
 }

@@ -292,7 +292,6 @@ class ItemProg extends AbstractService
     }
 
     /**
-     * 
      * @invokable
      * 
      * @param int $id

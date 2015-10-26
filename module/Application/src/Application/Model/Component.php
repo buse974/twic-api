@@ -12,22 +12,22 @@ class Component extends BaseComponent
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
-        
+
         $this->dimension = $this->requireModel('app_model_dimension', $data);
     }
-    
+
     public function getDimension()
     {
         return $this->dimension;
     }
-    
+
     public function setDimension($dimension)
     {
         $this->dimension = $dimension;
-    
+
         return $this;
     }
-    
+
     public function setComponentScales($component_scales)
     {
         $this->component_scales = $component_scales;
