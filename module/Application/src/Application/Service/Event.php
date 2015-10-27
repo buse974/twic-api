@@ -212,7 +212,7 @@ class Event extends AbstractService
             ->getCourse()
             ->getId());
 
-        $users[] = $user;
+        $users = array_merge($user, $users);
 
         return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
