@@ -154,7 +154,7 @@ class Course extends AbstractService
 
         return $ret;
     }
-    
+
     /**
      * Delete course by Program.
      *
@@ -165,17 +165,17 @@ class Course extends AbstractService
     public function deleteProgram($id)
     {
         $ret = array();
-    
+
         if (!is_array($id)) {
             $id = array($id);
         }
-    
+
         $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         foreach ($id as $idp) {
             $ret[$idp] = $this->getMapper()->update($m_course, array('program_id' => $idp));
         }
-    
+
         return $ret;
     }
 
@@ -215,7 +215,7 @@ class Course extends AbstractService
      * @param int    $program
      * @param string $search
      * @param array  $filter
-     * @param string  $user
+     * @param string $user
      *
      * @return array
      */

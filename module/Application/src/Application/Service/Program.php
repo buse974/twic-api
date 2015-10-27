@@ -13,14 +13,14 @@ class Program extends AbstractService
      * @invokable
      *
      * @param string $name
-     * @param integer $school_id
+     * @param int    $school_id
      * @param string $level
      * @param string $sis
      * @param string $year
      *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function add($name, $school_id, $level = null, $sis = null, $year = null)
     {
@@ -70,17 +70,17 @@ class Program extends AbstractService
     /**
      * @invokable
      *
-     * @param array $filter
+     * @param array  $filter
      * @param string $search
      * @param string $school
      */
     public function getList($filter = null, $search = null, $school = null)
     {
         $user = $this->getServiceUser()->getIdentity();
-        
+
         $all = !(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $user['roles']) || in_array(ModelRole::ROLE_STUDENT_STR, $user['roles']));
 
-        $res_program = $this->getListByUser($filter,$user['id'] , $all, $search, $school);
+        $res_program = $this->getListByUser($filter, $user['id'], $all, $search, $school);
 
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);

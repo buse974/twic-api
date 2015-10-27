@@ -46,7 +46,7 @@ class VideoconfArchive extends AbstractService
     }
 
     /**
-     * @param integer $videoconf
+     * @param int $videoconf
      *
      * @return \Application\Model\VideoconfArchive
      */
@@ -54,7 +54,7 @@ class VideoconfArchive extends AbstractService
     {
         return $this->getMapper()->getLastArchiveId($videoconf);
     }
-    
+
     /**
      * @param int $id
      *

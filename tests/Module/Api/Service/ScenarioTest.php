@@ -1501,12 +1501,21 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('component.getEqCq', array('school' => 2));
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][0]) , 4);
-        $this->assertEquals($data['result'][0]['average'] , 60.00000000);
-        $this->assertEquals($data['result'][0]['id'] , 2);
-        $this->assertEquals($data['result'][0]['dimension'] , 1);
-        $this->assertEquals($data['result'][0]['label'] , "Multicultural sensitivity");
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['stats']) , 1);
+        $this->assertEquals(count($data['result']['stats'][0]) , 4);
+        $this->assertEquals($data['result']['stats'][0]['average'] , 60.00000000);
+        $this->assertEquals($data['result']['stats'][0]['id'] , 2);
+        $this->assertEquals($data['result']['stats'][0]['dimension'] , 1);
+        $this->assertEquals($data['result']['stats'][0]['label'] , "Multicultural sensitivity");
+        $this->assertEquals(count($data['result']['description']) , 7);
+        $this->assertEquals($data['result']['description']['avgage'] , null);
+        $this->assertEquals($data['result']['description']['maxage'] , null);
+        $this->assertEquals($data['result']['description']['minage'] , null);
+        $this->assertEquals($data['result']['description']['total'] , 1);
+        $this->assertEquals(count($data['result']['description']['genre']) , 0);
+        $this->assertEquals(count($data['result']['description']['nationality']) , 0);
+        $this->assertEquals(count($data['result']['description']['origin']) , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -3288,6 +3297,21 @@ class ScenarioTest extends AbstractService
         return $data['result']['list'][0]['id'];
     }
 
+    public function testGetNbrMessageThread()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('thread.getNbrMessage', array('school' => 2, 'day' => 30));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals($data['result']['d'] , 2);
+        $this->assertEquals($data['result']['w'] , 2);
+        $this->assertEquals($data['result']['m'] , 2);
+        $this->assertEquals($data['result']['a'] , 2);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     /**
      * @depends testGetThreadTwo
      */
@@ -3325,7 +3349,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-
+    
     /**
      * @depends testCanAddItemAssigment
      * @depends testCanAddSubmitItemAssigment
@@ -3677,7 +3701,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals($data['result']['list'][0]['is_like'] , 0);
         $this->assertEquals($data['result']['list'][0]['read_date'] , null);
-        $this->assertEquals($data['result']['list'][0]['id'] , 18);
+        $this->assertEquals($data['result']['list'][0]['id'] , 16);
         $this->assertEquals(count($data['result']['list'][0]['source']) , 3);
         $this->assertEquals($data['result']['list'][0]['source']['id'] , 2);
         $this->assertEquals($data['result']['list'][0]['source']['name'] , "user");
@@ -3710,7 +3734,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]) , 8);
         $this->assertEquals($data['result']['list'][1]['is_like'] , 0);
         $this->assertEquals($data['result']['list'][1]['read_date'] , null);
-        $this->assertEquals($data['result']['list'][1]['id'] , 17);
+        $this->assertEquals($data['result']['list'][1]['id'] , 15);
         $this->assertEquals(count($data['result']['list'][1]['source']) , 3);
         $this->assertEquals($data['result']['list'][1]['source']['id'] , 1);
         $this->assertEquals($data['result']['list'][1]['source']['name'] , "user");
