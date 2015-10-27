@@ -3701,7 +3701,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals($data['result']['list'][0]['is_like'] , 0);
         $this->assertEquals($data['result']['list'][0]['read_date'] , null);
-        $this->assertEquals($data['result']['list'][0]['id'] , 18);
+        $this->assertEquals($data['result']['list'][0]['id'] , 16);
         $this->assertEquals(count($data['result']['list'][0]['source']) , 3);
         $this->assertEquals($data['result']['list'][0]['source']['id'] , 2);
         $this->assertEquals($data['result']['list'][0]['source']['name'] , "user");
@@ -3734,7 +3734,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]) , 8);
         $this->assertEquals($data['result']['list'][1]['is_like'] , 0);
         $this->assertEquals($data['result']['list'][1]['read_date'] , null);
-        $this->assertEquals($data['result']['list'][1]['id'] , 17);
+        $this->assertEquals($data['result']['list'][1]['id'] , 15);
         $this->assertEquals(count($data['result']['list'][1]['source']) , 3);
         $this->assertEquals($data['result']['list'][1]['source']['id'] , 1);
         $this->assertEquals($data['result']['list'][1]['source']['name'] , "user");

@@ -57,8 +57,6 @@ class GradingPolicyGrade extends AbstractService
     {
         $ret = $this->getMapper()->updateGrade($item_assignment, $user);
 
-        $this->getServiceEvent()->assignmentGraded($item_assignment, $user);
-
         return $ret;
     }
 
