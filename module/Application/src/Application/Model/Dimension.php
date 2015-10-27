@@ -11,7 +11,7 @@ class Dimension extends BaseDimension
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
-        
+
         $this->component = $this->requireModel('app_model_component', $data);
     }
 

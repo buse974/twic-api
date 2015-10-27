@@ -67,7 +67,7 @@ class School extends AbstractService
      * @param string $phone
      * @param string $address
      * 
-     * @return integer
+     * @return int
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null)
     {
@@ -79,8 +79,8 @@ class School extends AbstractService
                  ->setDescribe($describe)
                  ->setWebsite($website)
                  ->setShortName($short_name)
-				 ->setPhone($phone)
-				 ->setBackground($background);
+                 ->setPhone($phone)
+                 ->setBackground($background);
 
         if ($address !== null) {
             $address_id = $this->getServiceAddress()->getAddress($address)->getId();
@@ -88,7 +88,7 @@ class School extends AbstractService
                 $m_school->setAddressId($address_id);
             }
         }
-        
+
         return $this->getMapper()->update($m_school);
     }
 
@@ -137,9 +137,9 @@ class School extends AbstractService
 
     public function getEqCq($school)
     {
-        return  $this->getMapper()-> getEqCq($school);   
+        return  $this->getMapper()->getEqCq($school);
     }
-    
+
     /**
      * Delete school.
      *

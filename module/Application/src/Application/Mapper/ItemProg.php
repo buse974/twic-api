@@ -79,8 +79,8 @@ class ItemProg extends AbstractMapper
         }
         if (null != $start && null !== $end) {
             $select->where(array('( item_prog.start_date BETWEEN ? AND ? ' => array($start, $end)))
-                ->where(array('item_prog.due_date BETWEEN ? AND ?  ' => array($start, $end)) , Predicate::OP_OR)
-                ->where(array('( item_prog.start_date < ? AND item_prog.due_date > ? ) ) ' => array($start, $end)) , Predicate::OP_OR);
+                ->where(array('item_prog.due_date BETWEEN ? AND ?  ' => array($start, $end)), Predicate::OP_OR)
+                ->where(array('( item_prog.start_date < ? AND item_prog.due_date > ? ) ) ' => array($start, $end)), Predicate::OP_OR);
         }
         if (null !== $course) {
             $select->where(array('course.id' => $course));
