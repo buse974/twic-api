@@ -1525,7 +1525,10 @@ class ScenarioTest extends AbstractService
         system('phing -q test-videoconf');
         
         $this->setIdentity(4);
-        $data = $this->jsonRpc('videoconf.validTransfertVideo', array('videoconf_archive' => 1,'url' => 'urlvideo'));
+        $data = $this->jsonRpc('videoconf.validTransfertVideo', array(
+            'videoconf_archive' => 1,
+            'url' => 'urlvideo'
+        ));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);

@@ -16,8 +16,8 @@ return [
     'app-conf' => [
         'cache'   => 'storage_memcached',
         'secret_key' => 'toto',
-        'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
-        'secret_key_fb_debug' => false,
+        'secret_key_fb' => '${firebase.key}',
+        'secret_key_fb_debug' => ${firebase.debug},
     ],
     'dal-conf' => [
         'adapter' => 'db-adapter',
