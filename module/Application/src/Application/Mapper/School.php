@@ -23,7 +23,8 @@ class School extends AbstractMapper
                ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('id', 'name'),  $select::JOIN_LEFT)
                ->join(array('school_address_city' => 'city'), 'school_address_city.id=school_address.city_id', array('id', 'name'),  $select::JOIN_LEFT)
                ->join(array('school_address_country' => 'country'), 'school_address_country.id=school_address.country_id', array('id', 'short_name', 'name'),  $select::JOIN_LEFT)
-               ->where(array('school.id' => $school));
+               ->where(array('school.id' => $school))
+               ->where(array('school.deleted_date IS NULL'));
 
         return $this->selectWith($select);
     }
