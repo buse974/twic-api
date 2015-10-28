@@ -2237,6 +2237,13 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
+    public function testCanNbrView()
+    {
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('materialdocument.nbrView', array('school' => 1));
+        //print_r($data);
+    }
+    
     /**
      * @depends testCanUpdateTask
      */
@@ -2301,22 +2308,24 @@ class ScenarioTest extends AbstractService
         
         $data = $this->jsonRpc('itemproguser.getStartedConference', array());
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result'][0]), 3);
-        $this->assertEquals(count($data['result'][0]['questionnaire']), 2);
-        $this->assertEquals($data['result'][0]['questionnaire']['id'], 1);
-        $this->assertEquals(! empty($data['result'][0]['questionnaire']['created_date']), true);
-        $this->assertEquals(count($data['result'][0]['item_prog']), 4);
-        $this->assertEquals(count($data['result'][0]['item_prog']['item']), 2);
-        $this->assertEquals($data['result'][0]['item_prog']['item']['id'], 1);
-        $this->assertEquals($data['result'][0]['item_prog']['item']['type'], "WG");
-        $this->assertEquals($data['result'][0]['item_prog']['id'], 1);
-        $this->assertEquals($data['result'][0]['item_prog']['item_id'], 1);
-        $this->assertEquals(! empty($data['result'][0]['item_prog']['start_date']), true);
-        $this->assertEquals(! empty($data['result'][0]['started_date']), true);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 4);
+        $this->assertEquals(count($data['result'][0]['questionnaire_user']) , 1);
+        $this->assertEquals($data['result'][0]['questionnaire_user']['id'] , 1);
+        $this->assertEquals(count($data['result'][0]['questionnaire']) , 2);
+        $this->assertEquals($data['result'][0]['questionnaire']['id'] , 1);
+        $this->assertEquals(!empty($data['result'][0]['questionnaire']['created_date']) , true);
+        $this->assertEquals(count($data['result'][0]['item_prog']) , 4);
+        $this->assertEquals(count($data['result'][0]['item_prog']['item']) , 2);
+        $this->assertEquals($data['result'][0]['item_prog']['item']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog']['item']['type'] , "WG");
+        $this->assertEquals($data['result'][0]['item_prog']['id'] , 1);
+        $this->assertEquals($data['result'][0]['item_prog']['item_id'] , 1);
+        $this->assertEquals(!empty($data['result'][0]['item_prog']['start_date']) , true);
+        $this->assertEquals(!empty($data['result'][0]['started_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
