@@ -71,13 +71,21 @@ class MaterialDocument extends AbstractService
      */
     public function nbrView($school)
     {
-        return [
-            'd' => ['view'=> $this->getMapper()->nbrView($school, 1),'view'=> $this->getMapper()->nbrView($school, 1)],
-            'w' => ['view'=> $this->getMapper()->nbrView($school, 1),'view'=> $this->getMapper()->nbrView($school, 1)],
-            'm' => ['view'=> $this->getMapper()->nbrView($school, 1),'view'=> $this->getMapper()->nbrView($school, 1)],
-            'a' => ['view'=> $this->getMapper()->nbrView($school, 1),'view'=> $this->getMapper()->nbrView($school, 1)],
-        ];
+        $ret = ['d'=>null,'w'=>null,'m'=>null,'a'=>null];
         
+        $ret['d']['total'] = $this->getMapper()->nbrTotal($school, 1)->count();
+        $ret['d']['view']  = $this->getMapper()->nbrView($school, 1)->count();
+        
+        $ret['w']['total'] = $this->getMapper()->nbrTotal($school, 7)->count();
+        $ret['w']['view']  = $this->getMapper()->nbrView($school, 7)->count();
+        
+        $ret['m']['total'] = $this->getMapper()->nbrTotal($school, 30)->count();
+        $ret['m']['view']  = $this->getMapper()->nbrView($school, 30)->count();
+        
+        $ret['a']['total'] = $this->getMapper()->nbrTotal($school)->count();
+        $ret['a']['view']  = $this->getMapper()->nbrView($school)->count();
+        
+        return $ret;
     }
 
     /**
@@ -180,5 +188,14 @@ class MaterialDocument extends AbstractService
     public function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Activity
+     */
+    public function getServiceActivity()
+    {
+        return $this->getServiceLocator()->get('app_service_activity');
     }
 }
