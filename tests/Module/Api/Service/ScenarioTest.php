@@ -2241,7 +2241,23 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(3);
         $data = $this->jsonRpc('materialdocument.nbrView', array('school' => 1));
-        //print_r($data);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals(count($data['result']['d']) , 2);
+        $this->assertEquals($data['result']['d']['total'] , 0);
+        $this->assertEquals($data['result']['d']['view'] , 0);
+        $this->assertEquals(count($data['result']['w']) , 2);
+        $this->assertEquals($data['result']['w']['total'] , 0);
+        $this->assertEquals($data['result']['w']['view'] , 0);
+        $this->assertEquals(count($data['result']['m']) , 2);
+        $this->assertEquals($data['result']['m']['total'] , 0);
+        $this->assertEquals($data['result']['m']['view'] , 0);
+        $this->assertEquals(count($data['result']['a']) , 2);
+        $this->assertEquals($data['result']['a']['total'] , 0);
+        $this->assertEquals($data['result']['a']['view'] , 0);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     /**

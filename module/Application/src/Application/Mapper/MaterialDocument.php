@@ -29,7 +29,7 @@ class MaterialDocument extends AbstractMapper
      *
      * @param integer $school            
      */
-    public function nbrTotal($school, $day)
+    public function nbrTotal($school, $day = null)
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -41,7 +41,8 @@ class MaterialDocument extends AbstractMapper
             ->join('item_prog', 'item_prog.id = item_material_document_relation.item_id', array())
             ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array('material_document$user' => 'user_id'))
             ->where(array('program.school_id' => $school))
-            ->where(array(' ( material_document.link IS NOT NULL OR material_document.token IS NOT NULL ) '));
+            ->where(array(' ( material_document.link IS NOT NULL OR material_document.token IS NOT NULL ) '))
+            ->quantifier('DISTINCT');
         
         if (null !== $day) {
             $select->where(array('((item_prog.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'CP\' OR item.type = \'IA\'))'))->where(array('(item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
@@ -54,7 +55,7 @@ class MaterialDocument extends AbstractMapper
      *
      * @param integer $school            
      */
-    public function nbrView($school, $day)
+    public function nbrView($school, $day = null)
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -69,7 +70,8 @@ class MaterialDocument extends AbstractMapper
             ->where(array('activity.event' => 'course.material.view'))
             ->where(array('activity.object_name' => 'course.material'))
             ->where(array('program.school_id' => $school))
-            ->where(array(' ( material_document.link IS NOT NULL OR material_document.token IS NOT NULL ) '));
+            ->where(array(' ( material_document.link IS NOT NULL OR material_document.token IS NOT NULL ) '))
+            ->quantifier('DISTINCT');
         
         if (null !== $day) {
             $select->where(array('((item_prog.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'CP\' OR item.type = \'IA\'))'))->where(array('(item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
