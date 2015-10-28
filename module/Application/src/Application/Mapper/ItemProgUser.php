@@ -33,7 +33,7 @@ class ItemProgUser extends AbstractMapper
             ->join('item_prog', 'item_prog_user.item_prog_id=item_prog.id', array('id', 'item_id', 'item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') ")))
             ->join('item', 'item_prog.item_id=item.id', array('id', 'type'))
             ->join(array('item_prog_user_questionnaire' => 'questionnaire'), 'item_prog_user_questionnaire.item_id=item.id', array('id', 'created_date'), $select::JOIN_LEFT)
-            ->join('questionnaire_user', 'item_prog_user_questionnaire.id=questionnaire_user.questionnaire_id AND questionnaire_user.user_id=item_prog_user.user_id', array(), $select::JOIN_LEFT)
+            ->join(array('item_prog_user_questionnaire_user' => 'questionnaire_user'), 'item_prog_user_questionnaire.id=item_prog_user_questionnaire_user.questionnaire_id AND item_prog_user_questionnaire_user.user_id=item_prog_user.user_id', array('id'), $select::JOIN_LEFT)
             ->where(array('item_prog_user.user_id' => $user))
             ->where(array('( item.type = "WG" OR item.type = "LC" ) '))
             ->where(array('item_prog_user.finished_date IS NULL'))

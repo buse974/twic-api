@@ -25,8 +25,8 @@ class Permission extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'libelle'))
-                ->join('role_permission', 'role_permission.permission_id=permission.id', array('id'))
-                ->join('role', 'role.id=role_permission.role_id', array('id', 'name'));
+                ->join('role_permission', 'role_permission.permission_id=permission.id', array('id'), $select::JOIN_LEFT)
+                ->join('role', 'role.id=role_permission.role_id', array('id', 'name'), $select::JOIN_LEFT);
 
         if (!empty($roleId)) {
             $select->where(array('role_permission.role_id' => $roleId));
