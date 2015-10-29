@@ -301,8 +301,6 @@ class FeedTest extends AbstractService
     }
     // DELETE
     
-    
-    
     /**
      * @depends testAdd
      */
