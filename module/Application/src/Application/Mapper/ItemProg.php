@@ -133,21 +133,45 @@ class ItemProg extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function nbStart($school, $day = null)
+    public function nbStart($school, $day = null, $LC = true)
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array(
-            'item_prog$total' => new Expression('COUNT(true)'),
-            'item_prog$started' => new Expression('SUM(IF(item_prog_user.started_date IS NOT NULL,1,0))')))
+        $select->columns(array('item_prog$total' => new Expression('COUNT(true)'),'item_prog$started' => new Expression('SUM(IF(item_prog_user.started_date IS NOT NULL,1,0))')))
             ->join('item', 'item.id=item_prog.item_id', array(), $select::JOIN_INNER)
             ->join('course', 'course.id=item.course_id', array(), $select::JOIN_INNER)
             ->join('program', 'program.id=course.program_id', array(), $select::JOIN_INNER)
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array(), $select::JOIN_INNER)
-            ->where(array('program.school_id' => $school));
+            ->where(array('program.school_id' => $school))
+            ->where(array('item.type' => ($LC ? 'LC' : 'WG')));
         
         if (null !== $day) {
-            $select->where(array('item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY)'));
+            $select->where(array('item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY)'))->where(array('item_prog.start_date < UTC_TIMESTAMP()'));
+        } else {
+            $select->where(array('item_prog.start_date < UTC_TIMESTAMP()'));
+        }
+        
+        return $this->selectWith($select);
+    }
+
+    public function nbSubmit($school, $day = null, $CP = true)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        
+        $select->columns(array('item_prog$total' => new Expression('COUNT(true)'),'item_prog$submit' => new Expression('SUM(IF(item_assignment.submit_date IS NOT NULL,1,0))')))
+            ->join('item', 'item.id=item_prog.item_id', array(), $select::JOIN_INNER)
+            ->join('course', 'course.id=item.course_id', array(), $select::JOIN_INNER)
+            ->join('program', 'program.id=course.program_id', array(), $select::JOIN_INNER)
+            ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array(), $select::JOIN_INNER)
+            ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
+            ->join('item_assignment', 'item_assignment_relation.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
+            ->where(array('program.school_id' => $school))
+            ->where(array('item.type' => ($CP ? 'CP' : 'IA')));
+        
+        if (null !== $day) {
+            $select->where(array('item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY)'))->where(array('item_prog.start_date < UTC_TIMESTAMP()'));
+        } else {
+            $select->where(array('item_prog.start_date < UTC_TIMESTAMP()'));
         }
         
         return $this->selectWith($select);

@@ -15,6 +15,7 @@ class ItemProg extends BaseItemProg
     protected $item_prog_user;
     protected $total;
     protected $started;
+    protected $submit;
 
     public function exchangeArray(array &$data)
     {
@@ -30,6 +31,18 @@ class ItemProg extends BaseItemProg
         $this->item_prog_user = $this->requireModel('app_model_item_prog_user', $data);
     }
 
+    public function getSubmit()
+    {
+        return $this->submit;
+    }
+    
+    public function setSubmit($submit)
+    {
+        $this->submit = $submit;
+    
+        return $this;
+    }
+    
     public function getStarted()
     {
         return $this->started;
