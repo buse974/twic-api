@@ -284,10 +284,33 @@ class ItemProg extends AbstractService
     {
         $ret = [];
         
-        $ret['d'] = $this->getMapper()->nbStart($school, 1);
-        $ret['w'] = $this->getMapper()->nbStart($school, 7);
-        $ret['m'] = $this->getMapper()->nbStart($school, 30);
-        $ret['a'] = $this->getMapper()->nbStart($school);
+        $ret['d'] = [
+            'LC' => $this->getMapper()->nbStart($school, 1,true),
+            'GW' => $this->getMapper()->nbStart($school, 1, false),
+            'CP' => $this->getMapper()->nbSubmit($school, 1, true),
+            'IA' => $this->getMapper()->nbSubmit($school, 1, false),
+        ];
+        
+        $ret['w'] = [
+            'LC' => $this->getMapper()->nbStart($school, 7,true),
+            'GW' => $this->getMapper()->nbStart($school, 7, false),
+            'CP' => $this->getMapper()->nbSubmit($school, 7, true),
+            'IA' => $this->getMapper()->nbSubmit($school, 7, false),
+        ];
+        
+        $ret['m'] = [
+            'LC' => $this->getMapper()->nbStart($school, 30,true),
+            'GW' => $this->getMapper()->nbStart($school, 30, false),
+            'CP' => $this->getMapper()->nbSubmit($school, 30, true),
+            'IA' => $this->getMapper()->nbSubmit($school, 30, false),
+        ];
+        
+        $ret['a'] = [
+            'LC' => $this->getMapper()->nbStart($school, null,true),
+            'GW' => $this->getMapper()->nbStart($school, null, false),
+            'CP' => $this->getMapper()->nbSubmit($school, null, true),
+            'IA' => $this->getMapper()->nbSubmit($school, null, false),
+        ];
         
         return $ret;
     }
