@@ -275,6 +275,23 @@ class ItemProg extends AbstractService
         return $res_item_progs;
     }
 
+    /**
+     * @invokable
+     * 
+     * @param integer $school
+     */
+    public function nbStart($school)
+    {
+        $ret = [];
+        
+        $ret['d'] = $this->getMapper()->nbStart($school, 1);
+        $ret['w'] = $this->getMapper()->nbStart($school, 7);
+        $ret['m'] = $this->getMapper()->nbStart($school, 30);
+        $ret['a'] = $this->getMapper()->nbStart($school);
+        
+        return $ret;
+    }
+    
     public function getListByUserAndCourse($course, $user)
     {
         $res_item_prog = $this->getMapper()->getListByUserAndCourse($course, $user);
