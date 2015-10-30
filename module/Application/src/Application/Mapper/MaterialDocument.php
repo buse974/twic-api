@@ -74,7 +74,11 @@ class MaterialDocument extends AbstractMapper
             ->quantifier('DISTINCT');
         
         if (null !== $day) {
-            $select->where(array('((item_prog.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'CP\' OR item.type = \'IA\'))'))->where(array('(item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
+            $select->where(array('(( item_prog.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND item_prog.due_date < UTC_TIMESTAMP() AND (item.type = \'CP\' OR item.type = \'IA\'))'))
+                ->where(array('( item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND item_prog.start_date < UTC_TIMESTAMP() AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
+        } else {
+            $select->where(array('(( item_prog.due_date < UTC_TIMESTAMP() AND (item.type = \'CP\' OR item.type = \'IA\'))'))
+                ->where(array('( item_prog.start_date < UTC_TIMESTAMP() AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
         }
         
         return $this->selectWith($select);

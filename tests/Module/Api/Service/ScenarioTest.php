@@ -2401,6 +2401,33 @@ class ScenarioTest extends AbstractService
         return $data['result'];
     }
 
+    public function testCanItemprogNbStart()
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('itemprog.nbStart', array('school' => 2));
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 4); 
+        $this->assertEquals(count($data['result']['d']) , 1); 
+        $this->assertEquals(count($data['result']['d'][0]) , 2); 
+        $this->assertEquals($data['result']['d'][0]['started'] , 1); 
+        $this->assertEquals($data['result']['d'][0]['total'] , 2); 
+        $this->assertEquals(count($data['result']['w']) , 1); 
+        $this->assertEquals(count($data['result']['w'][0]) , 2); 
+        $this->assertEquals($data['result']['w'][0]['started'] , 1); 
+        $this->assertEquals($data['result']['w'][0]['total'] , 2); 
+        $this->assertEquals(count($data['result']['m']) , 1); 
+        $this->assertEquals(count($data['result']['m'][0]) , 2); 
+        $this->assertEquals($data['result']['m'][0]['started'] , 1); 
+        $this->assertEquals($data['result']['m'][0]['total'] , 2); 
+        $this->assertEquals(count($data['result']['a']) , 1); 
+        $this->assertEquals(count($data['result']['a'][0]) , 2); 
+        $this->assertEquals($data['result']['a'][0]['started'] , 1); 
+        $this->assertEquals($data['result']['a'][0]['total'] , 2); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     /**
      * @depends testAddModuleInCourse
      * @depends testCanAddItemsProgUSer

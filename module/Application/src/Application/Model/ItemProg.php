@@ -13,6 +13,8 @@ class ItemProg extends BaseItemProg
     protected $item_grade;
     protected $videoconf_archives;
     protected $item_prog_user;
+    protected $total;
+    protected $started;
 
     public function exchangeArray(array &$data)
     {
@@ -28,6 +30,30 @@ class ItemProg extends BaseItemProg
         $this->item_prog_user = $this->requireModel('app_model_item_prog_user', $data);
     }
 
+    public function getStarted()
+    {
+        return $this->started;
+    }
+    
+    public function setStarted($started)
+    {
+        $this->started = $started;
+    
+        return $this;
+    }
+    
+    public function getTotal()
+    {
+        return $this->total;
+    }
+    
+    public function setTotal($total)
+    {
+        $this->total = $total;
+    
+        return $this;
+    }
+    
     public function getItemProgUser()
     {
         return $this->item_prog_user;
