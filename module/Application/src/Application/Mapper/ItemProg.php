@@ -151,7 +151,7 @@ class ItemProg extends AbstractMapper
             $select->where(array('item_prog.start_date < UTC_TIMESTAMP()'));
         }
         
-        return $this->selectWith($select);
+        return $this->selectWith($select)->current();
     }
 
     public function nbSubmit($school, $day = null, $CP = true)
@@ -174,6 +174,6 @@ class ItemProg extends AbstractMapper
             $select->where(array('item_prog.start_date < UTC_TIMESTAMP()'));
         }
         
-        return $this->selectWith($select);
+        return $this->selectWith($select)->current();
     }
 }
