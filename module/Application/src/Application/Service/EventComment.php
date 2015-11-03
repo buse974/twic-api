@@ -6,4 +6,88 @@ use Dal\Service\AbstractService;
 
 class EventComment extends AbstractService
 {
+    
+      /**
+     * @invokable
+     *
+     * @param int $comment
+     * @param string $content
+     */
+    public function add($event, $content)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+
+        $m_comment = $this->getModel()
+            ->setEventId($event)
+            ->setUserId($me)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+            ->setContent($content);
+
+        $this->getMapper()->insert($m_comment);
+        return $this->getMapper()->getLastInsertValue();
+        
+    }
+
+    /**
+     * @invokable
+     *
+     * @param int $comment
+     * @param string $content
+     */
+    public function update($comment, $content)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+
+        return $this->getMapper()->update(
+                $this->getModel()->setId($comment)
+                ->setContent($content),
+                ['user_id' => $me, 'id' => $comment]);
+
+    }
+    
+     /**
+     * @invokable
+     *
+     * @param int $comment
+     */
+    public function delete($comment)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+
+        return $this->getMapper()->update(
+                $this->getModel()->setId($comment)
+                ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')),
+                ['user_id' => $me, 'id' => $comment]);
+
+    }
+
+    /**
+     * @invokable
+     *
+     * @param int $event
+     */
+    public function getList($event)
+    {
+        return $this->getMapper()->getList($event);
+    }
+
+   
+
+    /**
+     * @return \Application\Service\Event
+     */
+    public function getServiceEvent()
+    {
+        return $this->serviceLocator->get('app_service_event');
+    }
+    
+    
+     /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->serviceLocator->get('app_service_user');
+    }
+
 }
