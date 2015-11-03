@@ -199,6 +199,11 @@ class Event extends AbstractService
         return $this->create('user.addconnection', $this->getDataUser($user), $this->getDataUser($contact), array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)), self::TARGET_TYPE_USER);
     }
 
+    public function userDeleteConnection($user, $contact)
+    {
+        return $this->create('user.deleteConnection', $this->getDataUser($user), $this->getDataUser($contact), array_merge($this->getDataUserContact($contact), [$contact,$user]), self::TARGET_TYPE_USER);
+    }
+    
     public function studentSubmitAssignment($item_assignment)
     {
         $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
