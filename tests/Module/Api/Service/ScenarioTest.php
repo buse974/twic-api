@@ -3789,8 +3789,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result']['list']) , 7);
-        $this->assertEquals(count($data['result']['list'][0]) , 8);
+        $this->assertEquals(count($data['result']['list'][0]) , 9);
         $this->assertEquals($data['result']['list'][0]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][0]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][0]['read_date'] , null);
         $this->assertEquals($data['result']['list'][0]['id'] , 16);
         $this->assertEquals(count($data['result']['list'][0]['source']) , 3);
@@ -3821,9 +3822,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['object']['data']['thread']['course']) , 2);
         $this->assertEquals($data['result']['list'][0]['object']['data']['thread']['course']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['object']['data']['thread']['course']['title'] , "IMERIR");
-        $this->assertEquals($data['result']['list'][0]['nb_like'] , 0);
-        $this->assertEquals(count($data['result']['list'][1]) , 8);
+        $this->assertEquals(count($data['result']['list'][0]['comment']) , 0);
+        $this->assertEquals(count($data['result']['list'][1]) , 9);
         $this->assertEquals($data['result']['list'][1]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][1]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][1]['read_date'] , null);
         $this->assertEquals($data['result']['list'][1]['id'] , 15);
         $this->assertEquals(count($data['result']['list'][1]['source']) , 3);
@@ -3852,9 +3854,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]['object']['data']['course']) , 2);
         $this->assertEquals($data['result']['list'][1]['object']['data']['course']['id'] , 1);
         $this->assertEquals($data['result']['list'][1]['object']['data']['course']['title'] , "IMERIR");
-        $this->assertEquals($data['result']['list'][1]['nb_like'] , 0);
-        $this->assertEquals(count($data['result']['list'][2]) , 8);
+        $this->assertEquals(count($data['result']['list'][1]['comment']) , 0);
+        $this->assertEquals(count($data['result']['list'][2]) , 9);
         $this->assertEquals($data['result']['list'][2]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][2]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][2]['read_date'] , null);
         $this->assertEquals($data['result']['list'][2]['id'] , 6);
         $this->assertEquals(count($data['result']['list'][2]['source']) , 3);
@@ -3887,9 +3890,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][2]['object']['data']['material']['link'] , "link2");
         $this->assertEquals($data['result']['list'][2]['object']['data']['material']['source'] , "src2");
         $this->assertEquals($data['result']['list'][2]['object']['data']['material']['token'] , "token2");
-        $this->assertEquals($data['result']['list'][2]['nb_like'] , 0);
-        $this->assertEquals(count($data['result']['list'][3]) , 8);
+        $this->assertEquals(count($data['result']['list'][2]['comment']) , 0);
+        $this->assertEquals(count($data['result']['list'][3]) , 9);
         $this->assertEquals($data['result']['list'][3]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][3]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][3]['read_date'] , null);
         $this->assertEquals($data['result']['list'][3]['id'] , 5);
         $this->assertEquals(count($data['result']['list'][3]['source']) , 3);
@@ -3922,9 +3926,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][3]['object']['data']['material']['link'] , "link");
         $this->assertEquals($data['result']['list'][3]['object']['data']['material']['source'] , "src");
         $this->assertEquals($data['result']['list'][3]['object']['data']['material']['token'] , "token");
-        $this->assertEquals($data['result']['list'][3]['nb_like'] , 0);
-        $this->assertEquals(count($data['result']['list'][4]) , 8);
+        $this->assertEquals(count($data['result']['list'][3]['comment']) , 0);
+        $this->assertEquals(count($data['result']['list'][4]) , 9);
         $this->assertEquals($data['result']['list'][4]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][4]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][4]['read_date'] , null);
         $this->assertEquals($data['result']['list'][4]['id'] , 4);
         $this->assertEquals(count($data['result']['list'][4]['source']) , 3);
@@ -3962,9 +3967,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][4]['object']['data']['updated'][8] , "learning_outcomes");
         $this->assertEquals($data['result']['list'][4]['object']['data']['updated'][9] , "video_link");
         $this->assertEquals($data['result']['list'][4]['object']['data']['updated'][10] , "video_token");
-        $this->assertEquals($data['result']['list'][4]['nb_like'] , 0);
-        $this->assertEquals(count($data['result']['list'][5]) , 8);
+        $this->assertEquals(count($data['result']['list'][4]['comment']) , 0);
+        $this->assertEquals(count($data['result']['list'][5]) , 9);
         $this->assertEquals($data['result']['list'][5]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][5]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][5]['read_date'] , null);
         $this->assertEquals($data['result']['list'][5]['id'] , 2);
         $this->assertEquals(count($data['result']['list'][5]['source']) , 3);
@@ -3990,9 +3996,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][5]['object']['data']) , 1);
         $this->assertEquals(count($data['result']['list'][5]['object']['data']['updated']) , 1);
         $this->assertEquals($data['result']['list'][5]['object']['data']['updated'][0] , "school_id");
-        $this->assertEquals($data['result']['list'][5]['nb_like'] , 0);
-        $this->assertEquals(count($data['result']['list'][6]) , 8);
+        $this->assertEquals(count($data['result']['list'][5]['comment']) , 0);
+        $this->assertEquals(count($data['result']['list'][6]) , 9);
         $this->assertEquals($data['result']['list'][6]['is_like'] , 0);
+        $this->assertEquals($data['result']['list'][6]['nb_like'] , 0);
         $this->assertEquals($data['result']['list'][6]['read_date'] , null);
         $this->assertEquals($data['result']['list'][6]['id'] , 1);
         $this->assertEquals(count($data['result']['list'][6]['source']) , 0);
@@ -4006,10 +4013,11 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][6]['object']['data']['name'] , "université de monaco");
         $this->assertEquals($data['result']['list'][6]['object']['data']['short_name'] , "IUM");
         $this->assertEquals($data['result']['list'][6]['object']['data']['logo'] , "token");
-        $this->assertEquals($data['result']['list'][6]['nb_like'] , 0);
+        $this->assertEquals(count($data['result']['list'][6]['comment']) , 0);
         $this->assertEquals($data['result']['count'] , 7);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
 
     public function testEventRead()

@@ -187,6 +187,12 @@ class Event extends AbstractService
         return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
+    
+    public function userComment($m_comment)
+    {
+        return $this->create('user.comment', $this->getDataUser(), $this->getDataEventComment($m_comment), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
+            ->getIdentity()['id']);
+    }
 
     public function userAddConnection($user, $contact)
     {
@@ -507,6 +513,11 @@ class Event extends AbstractService
         $m_event = $this->get($event);
 
         return ['id' => $event,'name' => 'event','data' => $m_event->toArray()];
+    }
+    
+    public function getDataEventComment($m_event_comment)
+    {
+        return ['id' => $m_event_comment->getId(),'name' => 'comment','data' => $m_event_comment->toArray()];
     }
 
     public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
