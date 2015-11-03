@@ -190,7 +190,7 @@ class Event extends AbstractService
     
     public function userComment($m_comment)
     {
-        return $this->create('user.comment', $this->getDataUser(), $this->getDataEventComment($m_comment), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.comment', $this->getDataUser(), $this->getDataEvent($m_comment->getEventId()), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
