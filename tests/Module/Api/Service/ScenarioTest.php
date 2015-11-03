@@ -4019,7 +4019,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
     }
-
+    
     public function testEventRead()
     {
         $this->setIdentity(1);
