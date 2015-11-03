@@ -134,6 +134,7 @@ class Event extends AbstractService
             // $event['nb_like'] = $this->getMapper()->nbrLike($event['id']);
             $event['source'] = json_decode($event['source'], true);
             $event['object'] = json_decode($event['object'], true);
+            $event['comment'] = $this->getServiceEventComment()->getList($event['id'])->toArray();
         }
 
         return ['list' => $ar_event,'count' => $count];
@@ -617,6 +618,14 @@ class Event extends AbstractService
     public function getServiceEventUser()
     {
         return $this->getServiceLocator()->get('app_service_event_user');
+    }
+
+    /**
+     * @return \Application\Service\EventComment
+     */
+    public function getServiceEventComment()
+    {
+        return $this->getServiceLocator()->get('app_service_event_comment');
     }
 
     /**
