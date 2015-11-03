@@ -42,7 +42,7 @@ class Feed extends AbstractService
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($this->getMapper()->insert($m_feed) <= 0) {
-            new \Exception('error insert feed');
+            throw new \Exception('error insert feed');
         }
 
         $feed_id = $this->getMapper()->getLastInsertValue();

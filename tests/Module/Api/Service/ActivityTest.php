@@ -17,7 +17,7 @@ class ActivityTest extends AbstractService
 
     public function testCanAdd()
     {
-        $this->setIdentity(1);
+        $this->setIdentity(4);
 
         $data = $this->jsonRpc('activity.add', [
             'activities' => [
@@ -61,7 +61,7 @@ class ActivityTest extends AbstractService
 
     public function testCanAddTwo()
     {
-        $this->setIdentity(1);
+        $this->setIdentity(4);
         
         $data = $this->jsonRpc('activity.add', [
             'activities' => [[
@@ -110,7 +110,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][0]['target_name'] , "nametarget");
         $this->assertEquals($data['result'][0]['target_data'] , "datatarget");
         $this->assertEquals(!empty($data['result'][0]['date']) , true);
-        $this->assertEquals($data['result'][0]['user_id'] , 1);
+        $this->assertEquals($data['result'][0]['user_id'] , 4);
         $this->assertEquals(count($data['result'][1]) , 11);
         $this->assertEquals($data['result'][1]['id'] , 3);
         $this->assertEquals($data['result'][1]['event'] , "eventdeux");
@@ -122,7 +122,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][1]['target_name'] , "nametarget");
         $this->assertEquals($data['result'][1]['target_data'] , "datatarget");
         $this->assertEquals(!empty($data['result'][1]['date']) , true);
-        $this->assertEquals($data['result'][1]['user_id'] , 1);
+        $this->assertEquals($data['result'][1]['user_id'] , 4);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -134,7 +134,7 @@ class ActivityTest extends AbstractService
         
         $data = $this->jsonRpc('activity.aggregate', array(
             'event' => 'event',
-            'user' => 1,
+            'user' => 4,
             'object_id' => 3,
             'object_name' => 'item_prog'
         ));
@@ -169,7 +169,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][0]['target_name'] , "nametarget");
         $this->assertEquals($data['result'][0]['target_data'] , 'datatarget');
         $this->assertEquals(!empty($data['result'][0]['date']) , true);
-        $this->assertEquals($data['result'][0]['user_id'] , 1);
+        $this->assertEquals($data['result'][0]['user_id'] , 4);
         $this->assertEquals(count($data['result'][1]) , 11);
         $this->assertEquals($data['result'][1]['id'] , 2);
         $this->assertEquals($data['result'][1]['event'] , "event");
@@ -181,7 +181,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][1]['target_name'] , "nametarget");
         $this->assertEquals($data['result'][1]['target_data'] , 'datatarget');
         $this->assertEquals(!empty($data['result'][1]['date']) , true);
-        $this->assertEquals($data['result'][1]['user_id'] , 1);
+        $this->assertEquals($data['result'][1]['user_id'] , 4);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
