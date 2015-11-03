@@ -403,6 +403,18 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
+    public function testDeleteContact()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('contact.remove', array('user' => 3));
+    
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')

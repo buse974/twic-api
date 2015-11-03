@@ -81,7 +81,11 @@ class Contact extends AbstractService
             ->setUserId($user)
             ->setContactId($identity['id']);
 
-        return $this->getMapper()->delete($m_contact);
+        $this->getMapper()->delete($m_contact);
+        
+        $this->getServiceEvent()->userDeleteConnection($identity['id'], $user);
+        
+        return true;
     }
 
     /**
