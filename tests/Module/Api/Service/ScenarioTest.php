@@ -3952,9 +3952,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][4]['object']) , 3);
         $this->assertEquals($data['result']['list'][4]['object']['id'] , 1);
         $this->assertEquals($data['result']['list'][4]['object']['name'] , "course");
-        $this->assertEquals(count($data['result']['list'][4]['object']['data']) , 3);
+        $this->assertEquals(count($data['result']['list'][4]['object']['data']) , 4);
         $this->assertEquals($data['result']['list'][4]['object']['data']['title'] , "IMERIR");
         $this->assertEquals(count($data['result']['list'][4]['object']['data']['picture']) , 0);
+        $this->assertEquals(count($data['result']['list'][4]['object']['data']['program']) , 1);
         $this->assertEquals(count($data['result']['list'][4]['object']['data']['updated']) , 11);
         $this->assertEquals($data['result']['list'][4]['object']['data']['updated'][0] , "title");
         $this->assertEquals($data['result']['list'][4]['object']['data']['updated'][1] , "abstract");
