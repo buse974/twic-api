@@ -6,175 +6,189 @@ use Dal\Model\AbstractModel;
 
 class Feed extends AbstractModel
 {
-    protected $id;
-    protected $content;
-    protected $user_id;
-    protected $link;
-    protected $video;
-    protected $picture;
-    protected $name_picture;
-    protected $document;
-    protected $name_document;
-    protected $link_title;
-    protected $link_desc;
-    protected $created_date;
-    protected $deleted_date;
+ 	protected $id;
+	protected $content;
+	protected $user_id;
+	protected $link;
+	protected $video;
+	protected $picture;
+	protected $name_picture;
+	protected $document;
+	protected $name_document;
+	protected $link_title;
+	protected $link_desc;
+	protected $created_date;
+	protected $deleted_date;
+	protected $type;
 
-    protected $prefix = 'feed';
+	protected $prefix = 'feed';
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
+	public function setId($id)
+	{
+		$this->id = $id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getContent()
-    {
-        return $this->content;
-    }
+	public function getContent()
+	{
+		return $this->content;
+	}
 
-    public function setContent($content)
-    {
-        $this->content = $content;
+	public function setContent($content)
+	{
+		$this->content = $content;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
 
-    public function setUserId($user_id)
-    {
-        $this->user_id = $user_id;
+	public function setUserId($user_id)
+	{
+		$this->user_id = $user_id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLink()
-    {
-        return $this->link;
-    }
+	public function getLink()
+	{
+		return $this->link;
+	}
 
-    public function setLink($link)
-    {
-        $this->link = $link;
+	public function setLink($link)
+	{
+		$this->link = $link;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getVideo()
-    {
-        return $this->video;
-    }
+	public function getVideo()
+	{
+		return $this->video;
+	}
 
-    public function setVideo($video)
-    {
-        $this->video = $video;
+	public function setVideo($video)
+	{
+		$this->video = $video;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPicture()
-    {
-        return $this->picture;
-    }
+	public function getPicture()
+	{
+		return $this->picture;
+	}
 
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
+	public function setPicture($picture)
+	{
+		$this->picture = $picture;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getNamePicture()
-    {
-        return $this->name_picture;
-    }
+	public function getNamePicture()
+	{
+		return $this->name_picture;
+	}
 
-    public function setNamePicture($name_picture)
-    {
-        $this->name_picture = $name_picture;
+	public function setNamePicture($name_picture)
+	{
+		$this->name_picture = $name_picture;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDocument()
-    {
-        return $this->document;
-    }
+	public function getDocument()
+	{
+		return $this->document;
+	}
 
-    public function setDocument($document)
-    {
-        $this->document = $document;
+	public function setDocument($document)
+	{
+		$this->document = $document;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getNameDocument()
-    {
-        return $this->name_document;
-    }
+	public function getNameDocument()
+	{
+		return $this->name_document;
+	}
 
-    public function setNameDocument($name_document)
-    {
-        $this->name_document = $name_document;
+	public function setNameDocument($name_document)
+	{
+		$this->name_document = $name_document;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLinkTitle()
-    {
-        return $this->link_title;
-    }
+	public function getLinkTitle()
+	{
+		return $this->link_title;
+	}
 
-    public function setLinkTitle($link_title)
-    {
-        $this->link_title = $link_title;
+	public function setLinkTitle($link_title)
+	{
+		$this->link_title = $link_title;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLinkDesc()
-    {
-        return $this->link_desc;
-    }
+	public function getLinkDesc()
+	{
+		return $this->link_desc;
+	}
 
-    public function setLinkDesc($link_desc)
-    {
-        $this->link_desc = $link_desc;
+	public function setLinkDesc($link_desc)
+	{
+		$this->link_desc = $link_desc;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getCreatedDate()
-    {
-        return $this->created_date;
-    }
+	public function getCreatedDate()
+	{
+		return $this->created_date;
+	}
 
-    public function setCreatedDate($created_date)
-    {
-        $this->created_date = $created_date;
+	public function setCreatedDate($created_date)
+	{
+		$this->created_date = $created_date;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDeletedDate()
-    {
-        return $this->deleted_date;
-    }
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
 
-    public function setDeletedDate($deleted_date)
-    {
-        $this->deleted_date = $deleted_date;
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
-        return $this;
-    }
+		return $this;
+	}
+
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	public function setType($type)
+	{
+		$this->type = $type;
+
+		return $this;
+	}
+
 }
