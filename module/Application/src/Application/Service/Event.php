@@ -402,7 +402,11 @@ class Event extends AbstractService
             unset($dataupdated['id']);
         }
 
-        return ['id' => $course,'name' => 'course','data' => ['title' => $m_course->getTitle(),'picture' => $m_course->getPicture(),'updated' => array_keys($dataupdated)]];
+        return ['id' => $course,'name' => 'course','data' => [
+            'title' => $m_course->getTitle(),
+            'picture' => $m_course->getPicture(),
+            'program' => $m_course->getProgram()->getId(),
+            'updated' => array_keys($dataupdated)]];
     }
 
     public function getDataVideoArchive(\Application\Model\VideoconfArchive $m_videoconf_archive)
