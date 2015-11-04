@@ -30,7 +30,7 @@ return array(
 		),	
 	),
     'node' => array(
-        'addr' => 'http://127.0.0.1:8282'
+        'addr' => '${node.addr}'
     ),
     'dms-conf' => array(
         'size_allowed' => array(
