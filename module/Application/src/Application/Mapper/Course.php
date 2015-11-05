@@ -84,7 +84,7 @@ class Course extends AbstractMapper
     /**
      * @param int $user
      */
-    public function getListRecord($user, $is_student = false)
+    public function getListRecord($user, $is_student = false, $is_academic = false)
     {
         $select = $this->tableGateway->getSql()->select();
 
@@ -96,10 +96,12 @@ class Course extends AbstractMapper
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
             ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
             ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
-            ->where(array('course_user_relation.user_id' => $user))
             ->where(array('videoconf_archive.archive_link IS NOT NULL'))
             ->group('course.id');
 
+        if ($is_academic !== true) {
+            $select->where(array('course_user_relation.user_id' => $user));
+        }
         if ($is_student !== false) {
             $select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)->where(array('item_prog_user.user_id' => $user));
         }
