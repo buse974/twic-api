@@ -78,9 +78,7 @@ class Program extends AbstractService
     {
         $user = $this->getServiceUser()->getIdentity();
 
-        $all = !(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $user['roles']) || in_array(ModelRole::ROLE_STUDENT_STR, $user['roles']));
-
-        $res_program = $this->getListByUser($filter, $user['id'], $all, $search, $school);
+        $res_program = $this->getListByUser($filter, $user['id'], $search, $school);
 
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
@@ -117,14 +115,14 @@ class Program extends AbstractService
         return $m_program;
     }
 
-    public function getListByUser($filter = null, $user = null, $all = false, $search = null, $school = null)
+    public function getListByUser($filter = null, $user = null, $search = null, $school = null)
     {
         if ($user === null) {
             $user = $this->getServiceAuth()->getIdentity()->getId();
         }
         $mapper = $this->getMapper();
 
-        $res = $mapper->usePaginator($filter)->getList($user, $all, $search, $school);
+        $res = $mapper->usePaginator($filter)->getList($user, $search, $school);
 
         return array('list' => $res, 'count' => $mapper->count());
     }
