@@ -652,6 +652,15 @@ class User extends AbstractService
     }
 
     /**
+     * 
+     * @param integer $school
+     */
+    public function nbrBySchool($school)
+    {
+        return $this->getMapper()->nbrBySchool($school);
+    }
+    
+    /**
      * @return \Application\Service\Language
      */
     public function getServiceLanguage()

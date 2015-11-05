@@ -69,8 +69,7 @@ class Contact extends AbstractService
     public function remove($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
-
-        // $m_contact = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        //$m_contact = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         $m_contact = $this->getModel()
             ->setUserId($identity['id'])
@@ -118,10 +117,10 @@ class Contact extends AbstractService
     }
 
     /**
-     * @invokable
+     * @invokable 
      *
-     * @param int   $user
-     * @param array $exclude
+     * @param int   $user 
+     * @param array $exclude 
      */
     public function getList($user = null, $exclude = null)
     {
@@ -139,7 +138,7 @@ class Contact extends AbstractService
             $request->setContact($this->getServiceUser()->get($request->getContactId()));
         }
 
-        return $listRequest;
+        return $listRequest; 
     }
 
     public function getListId($user = null)

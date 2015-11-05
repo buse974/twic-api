@@ -1520,6 +1520,77 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    public function testSchoolEqCq()
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('component.getListEqCq', array('schools' => [1]));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 2);
+        $this->assertEquals(count($data['result'][1]['eqcq']) , 2);
+        $this->assertEquals(count($data['result'][1]['eqcq']['stats']) , 0);
+        $this->assertEquals(count($data['result'][1]['eqcq']['description']) , 7);
+        $this->assertEquals($data['result'][1]['eqcq']['description']['avgage'] , null);
+        $this->assertEquals($data['result'][1]['eqcq']['description']['maxage'] , null);
+        $this->assertEquals($data['result'][1]['eqcq']['description']['minage'] , null);
+        $this->assertEquals($data['result'][1]['eqcq']['description']['total'] , 0);
+        $this->assertEquals(count($data['result'][1]['eqcq']['description']['genre']) , 0);
+        $this->assertEquals(count($data['result'][1]['eqcq']['description']['nationality']) , 0);
+        $this->assertEquals(count($data['result'][1]['eqcq']['description']['origin']) , 0);
+        $this->assertEquals(count($data['result'][1]['nbr']) , 4);
+        $this->assertEquals(count($data['result'][1]['nbr'][0]) , 3);
+        $this->assertEquals($data['result'][1]['nbr'][0]['role_id'] , 1);
+        $this->assertEquals($data['result'][1]['nbr'][0]['nb_user'] , 1);
+        $this->assertEquals($data['result'][1]['nbr'][0]['school_id'] , 1);
+        $this->assertEquals(count($data['result'][1]['nbr'][1]) , 3);
+        $this->assertEquals($data['result'][1]['nbr'][1]['role_id'] , 3);
+        $this->assertEquals($data['result'][1]['nbr'][1]['nb_user'] , 1);
+        $this->assertEquals($data['result'][1]['nbr'][1]['school_id'] , 1);
+        $this->assertEquals(count($data['result'][1]['nbr'][2]) , 3);
+        $this->assertEquals($data['result'][1]['nbr'][2]['role_id'] , 4);
+        $this->assertEquals($data['result'][1]['nbr'][2]['nb_user'] , 2);
+        $this->assertEquals($data['result'][1]['nbr'][2]['school_id'] , 1);
+        $this->assertEquals(count($data['result'][1]['nbr'][3]) , 3);
+        $this->assertEquals($data['result'][1]['nbr'][3]['role_id'] , 5);
+        $this->assertEquals($data['result'][1]['nbr'][3]['nb_user'] , 1);
+        $this->assertEquals($data['result'][1]['nbr'][3]['school_id'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    public function testSchoolEqCq2()
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('component.getListEqCq', array('schools' => [2]));
+    
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 1); 
+        $this->assertEquals(count($data['result'][2]) , 2); 
+        $this->assertEquals(count($data['result'][2]['eqcq']) , 2); 
+        $this->assertEquals(count($data['result'][2]['eqcq']['stats']) , 1); 
+        $this->assertEquals(count($data['result'][2]['eqcq']['stats'][0]) , 4); 
+        $this->assertEquals($data['result'][2]['eqcq']['stats'][0]['average'] , 60.00000000); 
+        $this->assertEquals($data['result'][2]['eqcq']['stats'][0]['id'] , 2); 
+        $this->assertEquals($data['result'][2]['eqcq']['stats'][0]['dimension'] , 1); 
+        $this->assertEquals($data['result'][2]['eqcq']['stats'][0]['label'] , "Multicultural sensitivity"); 
+        $this->assertEquals(count($data['result'][2]['eqcq']['description']) , 7); 
+        $this->assertEquals($data['result'][2]['eqcq']['description']['avgage'] , null); 
+        $this->assertEquals($data['result'][2]['eqcq']['description']['maxage'] , null); 
+        $this->assertEquals($data['result'][2]['eqcq']['description']['minage'] , null); 
+        $this->assertEquals($data['result'][2]['eqcq']['description']['total'] , 1); 
+        $this->assertEquals(count($data['result'][2]['eqcq']['description']['genre']) , 0); 
+        $this->assertEquals(count($data['result'][2]['eqcq']['description']['nationality']) , 0); 
+        $this->assertEquals(count($data['result'][2]['eqcq']['description']['origin']) , 0); 
+        $this->assertEquals(count($data['result'][2]['nbr']) , 1); 
+        $this->assertEquals(count($data['result'][2]['nbr'][0]) , 3); 
+        $this->assertEquals($data['result'][2]['nbr'][0]['role_id'] , 2); 
+        $this->assertEquals($data['result'][2]['nbr'][0]['nb_user'] , 1); 
+        $this->assertEquals($data['result'][2]['nbr'][0]['school_id'] , 2); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+    }
+        
     public function testCanGetValidTransfertVideo()
     {
         system('phing -q test-videoconf');

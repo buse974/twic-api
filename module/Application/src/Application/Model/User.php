@@ -17,6 +17,8 @@ class User extends BaseUser
     protected $origin;
     protected $item_prog_user;
     protected $role;
+    protected $nb_user;
+    protected $role_id;
 
     public function exchangeArray(array &$data)
     {
@@ -33,6 +35,30 @@ class User extends BaseUser
         $this->item_prog_user = $this->requireModel('app_model_item_prog_user', $data);
     }
 
+    public function getRoleId()
+    {
+        return $this->role_id;
+    }
+    
+    public function setRoleId($role_id)
+    {
+        $this->role_id = $role_id;
+    
+        return $this;
+    }
+    
+    public function getNbUser()
+    {
+        return $this->nb_user;
+    }
+    
+    public function setNbUser($nb_user)
+    {
+        $this->nb_user = $nb_user;
+    
+        return $this;
+    }
+    
     public function getRole()
     {
         return $this->role;
