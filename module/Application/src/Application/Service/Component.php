@@ -3,7 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Mapper\School;
 use Satooshi\Bundle\CoverallsBundle\Console\Application;
 
 class Component extends AbstractService
