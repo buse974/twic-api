@@ -81,8 +81,7 @@ class Item extends AbstractMapper
         }
         if (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $me['roles'])) {
             $select->where(array('program.school_id' => $me['school']['id']));
-        }
-        if (array_key_exists(ModelRole::ROLE_INSTRUCTOR_ID, $me['roles'])) {
+        } elseif (array_key_exists(ModelRole::ROLE_INSTRUCTOR_ID, $me['roles'])) {
             $select->join('course_user_relation', 'course_user_relation.course_id = course.id', array())->where(array('course_user_relation.user_id' => $me['id']));
         }
         if ($item_prog !== null) {

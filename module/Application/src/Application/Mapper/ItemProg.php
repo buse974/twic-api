@@ -64,11 +64,11 @@ class ItemProg extends AbstractMapper
             ->join('module', 'module.id = item.module_id', array('id','title'), $select::JOIN_LEFT)
             ->join('grading_policy', 'grading_policy.id = item.grading_policy_id', array('name','type'));
         
-        if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles'])) {
-            $select->join('course_user_relation', 'course.id = course_user_relation.course_id', array())->where(array('course_user_relation.user_id' => $user['id']));
-        } elseif (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $user['roles'])) {
+        if (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $user['roles'])) {
             $select->where(array('program.school_id ' => $user['school']['id']));
-        } elseif (! in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $user['roles'])) {
+        } elseif (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles'])) {
+            $select->join('course_user_relation', 'course.id = course_user_relation.course_id', array())->where(array('course_user_relation.user_id' => $user['id']));
+        } else {
             $select->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array())->where(array('item_prog_user.user_id' => $user['id']));
         }
         
