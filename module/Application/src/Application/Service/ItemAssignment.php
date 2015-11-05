@@ -21,11 +21,11 @@ class ItemAssignment extends AbstractService
         $user = $this->getServiceUser()->getIdentity()['id'];
         $res_item_assignment = $this->getFromItemProg($user, $item_prog);
         if ($res_item_assignment->count() > 0) {
-            return $this->get($res_item_assignment->current()
+            return $this->_get($res_item_assignment->current()
                 ->getId());
         }
 
-        return $this->get($this->add($item_prog));
+        return $this->_get($this->add($item_prog));
     }
 
     public function getIdByItemProg($item_prog)
@@ -52,7 +52,6 @@ class ItemAssignment extends AbstractService
      */
     public function get($id)
     {
-        /*
          $m_item_prog = $this->getServiceItemProg()->getByItemAssignment($id);
         
          $datetime1 = new \DateTime($m_item_prog->getStartDate());
@@ -61,31 +60,35 @@ class ItemAssignment extends AbstractService
          if ($datetime1 > $datetime2) {
             return false;
          }
-         */
-
+         
+        return $this->_get($id);
+    }
+    
+    public function _get($id)
+    {
         $res_item_assignement = $this->getMapper()->get($id);
-
+    
         if ($res_item_assignement->count() == 0) {
             throw new \Exception('no item_assigment');
         }
-
+    
         $m_item_assignment = $res_item_assignement->current();
-
+    
         $m_item_assignment->setStudents($this->getServiceUser()
             ->getListByItemAssignment($id))
             ->setDocuments($this->getServiceItemAssignmentDocument()
-            ->getListByItemAssignment($id))
-            ->setComments($this->getServiceItemAssignmentComment()
-            ->getListByItemAssignment($id));
-
+                ->getListByItemAssignment($id))
+                ->setComments($this->getServiceItemAssignmentComment()
+                    ->getListByItemAssignment($id));
+    
         $m_item = $m_item_assignment->getItemProg()->getItem();
         $m_item->setMaterials($this->getServiceMaterialDocument()
             ->getListByItem($m_item->getId()));
-
+    
         $m_course = $m_item->getCourse();
         $m_course->setInstructor($this->getServiceUser()
             ->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
-
+    
         return $m_item_assignment;
     }
 
