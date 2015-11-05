@@ -212,7 +212,7 @@ class Event extends AbstractService
     
     public function studentSubmitAssignment($item_assignment)
     {
-        $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
+        $m_item_assignment = $this->getServiceItemAssignment()->_get($item_assignment);
 
         return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
             ->getItem()
@@ -223,7 +223,7 @@ class Event extends AbstractService
 
     public function assignmentGraded($item_assignment, $user)
     {
-        $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
+        $m_item_assignment = $this->getServiceItemAssignment()->_get($item_assignment);
 
         $users = $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
             ->getItem()
@@ -238,7 +238,7 @@ class Event extends AbstractService
 
     public function assignmentCommented($item_assignment, $item_assignment_comment)
     {
-        $m_item_assignment = $this->getServiceItemAssignment()->get($item_assignment);
+        $m_item_assignment = $this->getServiceItemAssignment()->_get($item_assignment);
         $m_assignment_comment = $this->getServiceItemAssignmentComment()->get($item_assignment_comment);
 
         $res_user = $m_item_assignment->getStudents();
