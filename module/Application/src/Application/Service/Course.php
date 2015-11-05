@@ -246,12 +246,12 @@ class Course extends AbstractService
     public function getListRecord()
     {
         $user = $this->getServiceUser()->getIdentity();
-        $is_student = (array_key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) ? true : false;
-        $res_course = $this->getMapper()->getListRecord($user['id'], $is_student);
+        $is_student  = (array_key_exists(ModelRole::ROLE_STUDENT_ID,  $user['roles'])) ? true : false;
+        $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $user['roles'])) ? true : false;
+        $res_course = $this->getMapper()->getListRecord($user['id'], $is_student, $is_academic);
 
         foreach ($res_course as $m_course) {
-            $m_course->setItems($this->getServiceItem()
-                ->getListRecord($m_course->getId(), $user['id'], $is_student));
+            $m_course->setItems($this->getServiceItem()->getListRecord($m_course->getId(), $user['id'], $is_student));
         }
 
         return $res_course;
