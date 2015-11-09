@@ -16,7 +16,7 @@ class Event extends AbstractMapper
            ->group('event.id')
             ->order(array('event.id' => 'DESC'));
         if (null === $id && $source === null) {
-            $select->join('event_user', 'event.id=event_user.event_id', array('event$read_date' => 'read_date'), $select::JOIN_LEFT)
+            $select->join('event_user', 'event.id=event_user.event_id', array('event$read_date' => 'read_date', 'event$view_date' => 'view_date'), $select::JOIN_LEFT)
                 ->where(array(' (event_user.user_id = ?' => $me))
                 ->where(array(' event.target =  ?)' => 'global'), Predicate::OP_OR);
         }
