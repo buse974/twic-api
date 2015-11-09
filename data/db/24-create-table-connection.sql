@@ -14,3 +14,9 @@ CREATE TABLE IF NOT EXISTS `connection` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;
+
+
+INSERT INTO `permission` (`libelle`) VALUES ('connection.getAvg');
+SELECT LAST_INSERT_ID() INTO @rbac_permission_id;
+INSERT INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, @rbac_permission_id);
+
