@@ -14,7 +14,7 @@ class EventUser extends AbstractMapper
 
         $select->columns(array('user_id' => new Expression("'$me'"), 'read_date' => new Expression("'$date'")))
             ->join('event', 'event.id=event_user.event_id', array('event_id' => 'id'), $select::JOIN_RIGHT)
-            ->where(array("event.target <> 'user'", 'event_user.read_date IS NULL OR event_user.view_date IS NULL'));
+            ->where(array("event.target <> 'user'", ' ( event_user.read_date IS NULL OR event_user.view_date IS NULL ) '));
 
         if (null !== $event) {
             $select->where(array('event.event' => $event));
