@@ -14,6 +14,19 @@ class Event extends BaseEvent
 
     protected $read_date;
 
+    protected $view_date;
+
+    public function getViewDate() 
+    {
+        return $this->view_date;
+    }
+
+    public function setViewDate($view_date) 
+    {
+        $this->view_date = $view_date;
+        
+        return $this;
+    }
     public function getComment()
     {
         return $this->comment;
