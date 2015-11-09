@@ -3372,6 +3372,30 @@ class ScenarioTest extends AbstractService
         return $data['result'];
     }
 
+    public function testCanConnectionGetAvg()
+    {
+        $this->setIdentity(2);
+    
+        $data = $this->jsonRpc('connection.getAvg', array('school' => 1));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals(count($data['result']['d']) , 2);
+        $this->assertEquals($data['result']['d']['nbr_session'] , 3);
+        $this->assertEquals($data['result']['d']['avg'] , 3.3333);
+        $this->assertEquals(count($data['result']['w']) , 2);
+        $this->assertEquals($data['result']['w']['nbr_session'] , 3);
+        $this->assertEquals($data['result']['w']['avg'] , 3.3333);
+        $this->assertEquals(count($data['result']['m']) , 2);
+        $this->assertEquals($data['result']['m']['nbr_session'] , 3);
+        $this->assertEquals($data['result']['m']['avg'] , 3.3333);
+        $this->assertEquals(count($data['result']['a']) , 2);
+        $this->assertEquals($data['result']['a']['nbr_session'] , 3);
+        $this->assertEquals($data['result']['a']['avg'] , 3.3333);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     /**
      * @depends testAddThread
      */
@@ -4132,7 +4156,7 @@ class ScenarioTest extends AbstractService
         
         $identityMock->expects($this->any())
             ->method('toArray')
-            ->will($this->returnValue(array('id' => $id)));
+            ->will($this->returnValue(['id' => $id, 'token' => ''+$id+'token']));
         
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
             ->disableOriginalConstructor()

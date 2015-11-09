@@ -366,7 +366,7 @@ class FeedTest extends AbstractService
         
         $identityMock->expects($this->any())
             ->method('toArray')
-            ->will($this->returnValue(array('id' => $id)));
+            ->will($this->returnValue(['id' => $id, 'token' => 't'+$id+'token']));
         
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
             ->disableOriginalConstructor()

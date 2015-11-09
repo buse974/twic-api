@@ -1470,7 +1470,7 @@ class EQCQTest extends AbstractService
         
         $identityMock->expects($this->any())
             ->method('toArray')
-            ->will($this->returnValue(array('id' => $id)));
+            ->will($this->returnValue(['id' => $id, 'token' => ''+$id+'token']));
         
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
             ->disableOriginalConstructor()
