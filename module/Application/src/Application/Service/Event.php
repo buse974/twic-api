@@ -48,6 +48,7 @@ class Event extends AbstractService
             throw new \Exception('error insert event');
         }
 
+        $this->getServiceConnection()->add();
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventUser()->add($user, $event_id);
 
@@ -756,5 +757,13 @@ class Event extends AbstractService
     public function getServiceMessage()
     {
         return $this->getServiceLocator()->get('app_service_message');
+    }
+    
+    /**
+     * @return \Application\Service\Connection
+     */
+    public function getServiceConnection()
+    {
+        return $this->getServiceLocator()->get('app_service_connection');
     }
 }

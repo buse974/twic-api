@@ -9,10 +9,8 @@ class Connection extends AbstractModel
  	protected $id;
 	protected $user_id;
 	protected $token;
-	protected $diff;
+	protected $end;
 	protected $start;
-	protected $total;
-	protected $parent_id;
 
 	protected $prefix = 'connection';
 
@@ -52,14 +50,14 @@ class Connection extends AbstractModel
 		return $this;
 	}
 
-	public function getDiff()
+	public function getEnd()
 	{
-		return $this->diff;
+		return $this->end;
 	}
 
-	public function setDiff($diff)
+	public function setEnd($end)
 	{
-		$this->diff = $diff;
+		$this->end = $end;
 
 		return $this;
 	}
@@ -72,30 +70,6 @@ class Connection extends AbstractModel
 	public function setStart($start)
 	{
 		$this->start = $start;
-
-		return $this;
-	}
-
-	public function getTotal()
-	{
-		return $this->total;
-	}
-
-	public function setTotal($total)
-	{
-		$this->total = $total;
-
-		return $this;
-	}
-
-	public function getParentId()
-	{
-		return $this->parent_id;
-	}
-
-	public function setParentId($parent_id)
-	{
-		$this->parent_id = $parent_id;
 
 		return $this;
 	}

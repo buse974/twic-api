@@ -97,6 +97,7 @@ return [
             'app_service_dimension_scale',
             'app_service_component_scale',
             'app_service_guidelines',
+            'app_service_connection',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
