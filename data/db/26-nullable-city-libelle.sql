@@ -1,0 +1,3 @@
+ALTER TABLE `city` 
+CHANGE COLUMN `libelle` `libelle` VARCHAR(128) NULL DEFAULT NULL ;
+
