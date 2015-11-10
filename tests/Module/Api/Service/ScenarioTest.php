@@ -1400,26 +1400,27 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(4);
         $data = $this->jsonRpc('questionnaire.getAnswer', array('item_prog' => $item_prog));
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 7);
-        $this->assertEquals(count($data['result']['answers']), 1);
-        $this->assertEquals(count($data['result']['answers'][0]), 8);
-        $this->assertEquals($data['result']['answers'][0]['id'], 1);
-        $this->assertEquals($data['result']['answers'][0]['questionnaire_user_id'], 1);
-        $this->assertEquals($data['result']['answers'][0]['questionnaire_question_id'], 2);
-        $this->assertEquals(! empty($data['result']['answers'][0]['question_id']), true);
-        $this->assertEquals($data['result']['answers'][0]['peer_id'], 6);
-        $this->assertEquals($data['result']['answers'][0]['scale_id'], 3);
-        $this->assertEquals($data['result']['answers'][0]['type'], "PEER");
-        $this->assertEquals(! empty($data['result']['answers'][0]['created_date']), true);
-        $this->assertEquals($data['result']['id'], 1);
-        $this->assertEquals($data['result']['user_id'], 4);
-        $this->assertEquals($data['result']['questionnaire_id'], 1);
-        $this->assertEquals($data['result']['state'], null);
-        $this->assertEquals(! empty($data['result']['created_date']), true);
-        $this->assertEquals($data['result']['end_date'], null);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 8);
+        $this->assertEquals(count($data['result']['answers']) , 1);
+        $this->assertEquals(count($data['result']['answers'][0]) , 8);
+        $this->assertEquals($data['result']['answers'][0]['id'] , 1);
+        $this->assertEquals($data['result']['answers'][0]['questionnaire_user_id'] , 1);
+        $this->assertEquals($data['result']['answers'][0]['questionnaire_question_id'] , 2);
+        $this->assertEquals(is_numeric($data['result']['answers'][0]['question_id']) , true);
+        $this->assertEquals($data['result']['answers'][0]['peer_id'] , 6);
+        $this->assertEquals($data['result']['answers'][0]['scale_id'] , 3);
+        $this->assertEquals($data['result']['answers'][0]['type'] , "PEER");
+        $this->assertEquals(!empty($data['result']['answers'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['user_id'] , 4);
+        $this->assertEquals($data['result']['questionnaire_id'] , 1);
+        $this->assertEquals($data['result']['item_prog_user_id'] , 3);
+        $this->assertEquals($data['result']['state'] , null);
+        $this->assertEquals(!empty($data['result']['created_date']) , true);
+        $this->assertEquals($data['result']['end_date'] , null);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
