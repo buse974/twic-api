@@ -504,7 +504,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
-
+    
     public function testCanReadMessage()
     {
         $this->setIdentity(2);
@@ -516,7 +516,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-
+    
     public function testCanReadConversation()
     {
         $this->setIdentity(3);
@@ -769,7 +769,22 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
-
+    
+    public function testCanGetListTag()
+    {
+        $this->setIdentity(2);
+    
+        $data = $this->jsonRpc('message.getListTag', array());
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals($data['result']['INBOX'] , 0);
+        $this->assertEquals($data['result']['DRAFT'] , 0);
+        $this->assertEquals($data['result']['CHAT'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     public function testGetNbrMessageBySchool()
     {
         $this->setIdentity(1);

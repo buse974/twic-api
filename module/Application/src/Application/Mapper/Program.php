@@ -14,6 +14,17 @@ class Program extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListUser($user)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id','name','level','sis','year'))
+            ->join('program_user_relation', 'program_user_relation.program_id=program.id', [])
+            ->where(['program_user_relation.user_id' => $user])
+            ->where(array('program.deleted_date IS NULL'));
+        
+        return $this->selectWith($select);
+    }
+
     public function getList($user, $search = null, $school = null)
     {
         $select = $this->tableGateway->getSql()->select();

@@ -88,7 +88,24 @@ class Program extends AbstractService
 
         return $res_program;
     }
+    
+    public function getListUser($user)
+    {
+        return $this->getMapper()->getListUser($user);
+    }
 
+    public function getListByUser($filter = null, $user = null, $search = null, $school = null)
+    {
+        if ($user === null) {
+            $user = $this->getServiceAuth()->getIdentity()->getId();
+        }
+        $mapper = $this->getMapper();
+    
+        $res = $mapper->usePaginator($filter)->getList($user, $search, $school);
+    
+        return array('list' => $res, 'count' => $mapper->count());
+    }
+    
     public function getListBySchool($school)
     {
         return $this->getMapper()->select($this->getModel()->setSchoolId($school));
@@ -113,18 +130,6 @@ class Program extends AbstractService
         $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId()));
 
         return $m_program;
-    }
-
-    public function getListByUser($filter = null, $user = null, $search = null, $school = null)
-    {
-        if ($user === null) {
-            $user = $this->getServiceAuth()->getIdentity()->getId();
-        }
-        $mapper = $this->getMapper();
-
-        $res = $mapper->usePaginator($filter)->getList($user, $search, $school);
-
-        return array('list' => $res, 'count' => $mapper->count());
     }
 
     /**
