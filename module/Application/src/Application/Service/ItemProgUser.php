@@ -101,6 +101,30 @@ class ItemProgUser extends AbstractService
     }
 
     /**
+     *
+     * @param integer $user
+     * @param integer $questionnaire
+     *
+     * @return \Application\Model\ItemProgUser
+     */
+    public function getByUserAndItem($user, $item)
+    {
+        return $this->getMapper()->getByUserAndItem($user, $item);
+    }
+    
+    /**
+     *
+     * @param integer $user
+     * @param integer $questionnaire
+     *
+     * @return \Application\Model\ItemProgUser
+     */
+    public function getByUserAndQuestionnaire($user, $questionnaire) 
+    {
+        return $this->getMapper()->getByUserAndQuestionnaire($user, $questionnaire);
+    }
+    
+    /**
      * @param int $item_prog
      * @param int $user
      *
