@@ -226,7 +226,7 @@ class User extends AbstractService
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
                 $user['roles'][] = $role->getName();
             }
-            $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
+            $user['program'] = $this->getServiceProgram()->getListUser($user['id']);
         }
 
         return ['list' => $res,'count' => $mapper->count()];

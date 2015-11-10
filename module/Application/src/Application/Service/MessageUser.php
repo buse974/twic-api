@@ -120,6 +120,20 @@ class MessageUser extends AbstractService
         return $this->getList($this->getServiceUser()->getIdentity()['id'], $message)['list']->current();
     }
 
+    /**
+     * 
+     * @param string $tag
+     * @param integer $type
+     * 
+     * @return integer
+     */
+    public function countTag($tag, $type)
+    {
+        $res_message_user = $this->getMapper()->countTag($this->getServiceUser()->getIdentity()['id'], $tag, $type);
+        
+        return ($res_message_user->count()>0)?$res_message_user->current()->getCount():0;
+    }
+    
     public function readByMessage($mesage)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
