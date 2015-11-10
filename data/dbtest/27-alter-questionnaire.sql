@@ -19,9 +19,10 @@ ADD CONSTRAINT `fk_answer_1`
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
 
-UPDATE `questionnaire_user` toto
-SET
-    `item_prog_user_id` = (SELECT
+
+UPDATE `questionnaire_user` toto 
+SET 
+    `item_prog_user_id` = (SELECT 
             item_prog_user.id
         FROM
             item_prog_user
@@ -34,3 +35,4 @@ SET
                 AND questionnaire.id = toto.`questionnaire_id`)
 WHERE
     `item_prog_user_id` IS NULL OR `item_prog_user_id`=0;
+
