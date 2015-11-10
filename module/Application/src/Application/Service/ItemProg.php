@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -9,10 +8,11 @@ use Application\Model\Role as ModelRole;
 
 class ItemProg extends AbstractService
 {
+
     /**
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @throws \Exception
      *
@@ -28,17 +28,18 @@ class ItemProg extends AbstractService
                 ->getListByItem($m_item->getId()));
             $m_course = $m_item->getCourse();
             $m_item_prog->setUsers(array($this->getServiceUser()
-                ->get($user), ));
+                ->get($user)));
             $m_course->setInstructor($this->getServiceUser()
                 ->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
-
+            
             return array('item_prog' => $m_item_prog,'students' => $m_item_prog->getUsers());
         }
-        throw new JrpcException('No authorization', -32029);
+        throw new JrpcException('No authorization', - 32029);
     }
 
     /**
-     * @param int $item_assignment
+     *
+     * @param int $item_assignment            
      *
      * @throws \Exception
      *
@@ -47,11 +48,11 @@ class ItemProg extends AbstractService
     public function getByItemAssignment($item_assignment)
     {
         $res_item_prog = $this->getMapper()->getByItemAssignment($item_assignment);
-
+        
         if ($res_item_prog->count() <= 0) {
             throw new \Exception('error select item by itemassignement');
         }
-
+        
         return $res_item_prog->current();
     }
 
@@ -60,10 +61,10 @@ class ItemProg extends AbstractService
      *
      * @invokable
      *
-     * @param int       $item
-     * @param string    $start_date
-     * @param string    $due_date
-     * @param int|array $users
+     * @param int $item            
+     * @param string $start_date            
+     * @param string $due_date            
+     * @param int|array $users            
      *
      * @throws \Exception
      *
@@ -80,11 +81,11 @@ class ItemProg extends AbstractService
         }
         $id = $this->getMapper()->getLastInsertValue();
         $m_item = $this->getServiceItem()->get($item);
-
+        
         if (null === $users) {
             $users = [];
         }
-
+        
         if (null !== $users) {
             $ip = $this->getServiceItemProgUser()->add($users, [$id]);
             if (isset($ip[$id])) {
@@ -92,7 +93,7 @@ class ItemProg extends AbstractService
             }
             $users = array_keys($ip, 1, true);
         }
-
+        
         switch ($m_item->getType()) {
             case ModelItem::TYPE_LIVE_CLASS:
                 $instructors = $this->getServiceUser()->getList(null, ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
@@ -112,9 +113,9 @@ class ItemProg extends AbstractService
             default:
                 break;
         }
-
+        
         $this->getServiceEvent()->programmationNew($id);
-
+        
         return $id;
     }
 
@@ -127,7 +128,7 @@ class ItemProg extends AbstractService
             $m_item_prog->setUsers($this->getServiceUser()
                 ->getListByItemProg($m_item_prog->getId()));
         }
-
+        
         return $res_item_prog;
     }
 
@@ -136,27 +137,27 @@ class ItemProg extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $start_date
-     * @param string $due_date
-     * @param array  $users
+     * @param int $id            
+     * @param string $start_date            
+     * @param string $due_date            
+     * @param array $users            
      *
      * @return int
      */
     public function update($id, $start_date = null, $due_date = null, $users = null)
     {
         $m_item_prog = $this->getModel();
-
+        
         $m_item_prog->setId($id)
             ->setStartDate($start_date)
             ->setDueDate($due_date);
-
+        
         if ($users !== null) {
             $this->getServiceItemProgUser()->deleteByItemProg($id);
             $this->getServiceItemProgUser()->add($users, array($id));
-
+            
             $m_item = $this->getServiceItem()->getByItemProg($id);
-
+            
             switch ($m_item->getType()) {
                 case ModelItem::TYPE_LIVE_CLASS:
                     $instructors = $this->getServiceUser()->getList(null, ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
@@ -180,21 +181,21 @@ class ItemProg extends AbstractService
                     break;
             }
         }
-
+        
         if (null !== $start_date) {
             $this->getServiceVideoconf()->updateByItemProg($id, $start_date);
         }
-
+        
         $ret = $this->getMapper()->update($m_item_prog);
         $this->getServiceEvent()->programmationUpdated($id);
-
+        
         return $ret;
     }
 
     /**
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @return int
      */
@@ -202,7 +203,7 @@ class ItemProg extends AbstractService
     {
         $this->getServiceItemProgUser()->deleteByItemProg($id);
         $this->getServiceItemAssignment()->deleteByItemProg($id);
-
+        
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
     }
@@ -212,25 +213,25 @@ class ItemProg extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $item_prog
-     * @param int|array $user
+     * @param int|array $item_prog            
+     * @param int|array $user            
      */
     public function addUser($item_prog, $user)
     {
-        if (!is_array($user)) {
+        if (! is_array($user)) {
             $user = array($user);
         }
-        if (!is_array($item_prog)) {
+        if (! is_array($item_prog)) {
             $item_prog = array($item_prog);
         }
-
+        
         $this->getServiceItemProgUser()->add($user, $item_prog);
-
+        
         $users = [];
         foreach ($this->getServiceUser()->getListByItemProg($item_prog) as $u) {
             $users[] = $u->getId();
         }
-
+        
         foreach ($item_prog as $ip) {
             $m_item = $this->getServiceItem()->getByItemProg($ip);
             switch ($m_item->getType()) {
@@ -246,118 +247,109 @@ class ItemProg extends AbstractService
                     break;
             }
         }
-
+        
         return $users;
     }
 
     /**
      * @invokable
-     * 
-     * @param int    $item
-     * @param string $start
-     * @param string $end
-     * @param int    $course
-     * @param int    $id
+     *
+     * @param int $item            
+     * @param string $start            
+     * @param string $end            
+     * @param int $course            
+     * @param int $id  
+     * @param filter $filter            
      */
-    public function getList($item = null, $start = null, $end = null, $course = null, $id = null)
+    public function getList($item = null, $start = null, $end = null, $course = null, $id = null, $filter = null)
     {
         $me = $this->getServiceUser()->getIdentity();
-        $res_item_progs = $this->getMapper()->getList($me, $item, $start, $end, $course, $id);
+        $mapper = $this->getMapper();
+        
+        $res_item_progs = $mapper->usePaginator($filter)->getList($me, $item, $start, $end, $course, $id);
         foreach ($res_item_progs as $m_item_prog) {
-            $m_item_prog->setUsers($this->getServiceUser()->getListByItemProg($m_item_prog->getId()));
+            $m_item_prog->setUsers($this->getServiceUser()
+                ->getListByItemProg($m_item_prog->getId()));
             if (in_array(ModelRole::ROLE_STUDENT_STR, $me['roles'])) {
-                $m_item_prog->setItemProgUser($this->getServiceItemProgUser()->getListByItemProg($m_item_prog->getId(), $me['id'])->current());
+                $m_item_prog->setItemProgUser($this->getServiceItemProgUser()
+                    ->getListByItemProg($m_item_prog->getId(), $me['id'])
+                    ->current());
             } else {
-                $m_item_prog->setItemProgUser($this->getServiceItemProgUser()->getListByItemProg($m_item_prog->getId()));
+                $m_item_prog->setItemProgUser($this->getServiceItemProgUser()
+                    ->getListByItemProg($m_item_prog->getId()));
             }
         }
-
-        return $res_item_progs;
+        
+        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_item_progs] : $res_item_progs;
     }
 
     /**
      * @invokable
-     * 
-     * @param integer $school
+     *
+     * @param integer $school            
      */
     public function nbStart($school)
     {
         $ret = [];
         
-        $ret['d'] = [
-            'LC' => $this->getMapper()->nbStart($school, 1,true),
-            'GW' => $this->getMapper()->nbStart($school, 1, false),
-            'CP' => $this->getMapper()->nbSubmit($school, 1, true),
-            'IA' => $this->getMapper()->nbSubmit($school, 1, false),
-        ];
+        $ret['d'] = ['LC' => $this->getMapper()->nbStart($school, 1, true),'GW' => $this->getMapper()->nbStart($school, 1, false),'CP' => $this->getMapper()->nbSubmit($school, 1, true),'IA' => $this->getMapper()->nbSubmit($school, 1, false)];
         
-        $ret['w'] = [
-            'LC' => $this->getMapper()->nbStart($school, 7,true),
-            'GW' => $this->getMapper()->nbStart($school, 7, false),
-            'CP' => $this->getMapper()->nbSubmit($school, 7, true),
-            'IA' => $this->getMapper()->nbSubmit($school, 7, false),
-        ];
+        $ret['w'] = ['LC' => $this->getMapper()->nbStart($school, 7, true),'GW' => $this->getMapper()->nbStart($school, 7, false),'CP' => $this->getMapper()->nbSubmit($school, 7, true),'IA' => $this->getMapper()->nbSubmit($school, 7, false)];
         
-        $ret['m'] = [
-            'LC' => $this->getMapper()->nbStart($school, 30,true),
-            'GW' => $this->getMapper()->nbStart($school, 30, false),
-            'CP' => $this->getMapper()->nbSubmit($school, 30, true),
-            'IA' => $this->getMapper()->nbSubmit($school, 30, false),
-        ];
+        $ret['m'] = ['LC' => $this->getMapper()->nbStart($school, 30, true),'GW' => $this->getMapper()->nbStart($school, 30, false),'CP' => $this->getMapper()->nbSubmit($school, 30, true),'IA' => $this->getMapper()->nbSubmit($school, 30, false)];
         
-        $ret['a'] = [
-            'LC' => $this->getMapper()->nbStart($school, null,true),
-            'GW' => $this->getMapper()->nbStart($school, null, false),
-            'CP' => $this->getMapper()->nbSubmit($school, null, true),
-            'IA' => $this->getMapper()->nbSubmit($school, null, false),
-        ];
+        $ret['a'] = ['LC' => $this->getMapper()->nbStart($school, null, true),'GW' => $this->getMapper()->nbStart($school, null, false),'CP' => $this->getMapper()->nbSubmit($school, null, true),'IA' => $this->getMapper()->nbSubmit($school, null, false)];
         
         return $ret;
     }
-    
+
     public function getListByUserAndCourse($course, $user)
     {
         $res_item_prog = $this->getMapper()->getListByUserAndCourse($course, $user);
-
+        
         foreach ($res_item_prog as $m_item_prog) {
-            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item_prog->getItem()->getId());
+            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item_prog->getItem()
+                ->getId());
             $ar_imdr = array();
             foreach ($res_imdr as $m_imdr) {
                 $ar_imdr[] = $m_imdr->getMaterialDocumentId();
             }
             $m_item_prog->getItem()->setMaterials($ar_imdr);
         }
-
+        
         return $res_item_prog;
     }
 
     /**
      * @invokable
-     * 
-     * @param int $id
-     * 
+     *
+     * @param int $id            
+     *
      * @return \Application\Model\ItemProg
      */
     public function get($id)
     {
-        return $this->getMapper()->get($id)->current();
+        return $this->getMapper()
+            ->get($id)
+            ->current();
     }
 
     public function deleteByItem($item)
     {
         $res_item_prog = $this->getMapper()->select($this->getModel()
             ->setItemId($item));
-
+        
         foreach ($res_item_prog as $m_item_prog) {
             $this->getServiceItemProgUser()->deleteByItemProg($m_item_prog->getId());
             $this->getServiceItemAssignment()->deleteByItemProg($m_item_prog->getId());
         }
-
+        
         $this->getMapper()->delete($this->getModel()
             ->setItemId($item));
     }
 
     /**
+     *
      * @return \Application\Service\VideoconfArchive
      */
     public function getServiceVideoconfArchive()
@@ -366,6 +358,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Videoconf
      */
     public function getServiceVideoconf()
@@ -374,6 +367,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Item
      */
     public function getServiceItem()
@@ -382,6 +376,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ItemProgUser
      */
     public function getServiceItemProgUser()
@@ -390,6 +385,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ItemAssignment
      */
     public function getServiceItemAssignment()
@@ -398,6 +394,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -406,6 +403,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()
@@ -414,6 +412,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ConversationUser
      */
     public function getServiceConversationUser()
@@ -422,6 +421,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\VideoconfConversation
      */
     public function getServiceVideoconfConversation()
@@ -430,6 +430,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Zend\Authentication\AuthenticationService
      */
     public function getServiceAuth()
@@ -438,6 +439,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\MaterialDocument
      */
     public function getServiceMaterialDocument()
@@ -446,6 +448,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ItemMaterialDocumentRelation
      */
     public function getServiceItemMaterialDocumentRelation()
@@ -454,6 +457,7 @@ class ItemProg extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ItemAssignmentRelation
      */
     public function getServiceItemAssignmentRelation()
