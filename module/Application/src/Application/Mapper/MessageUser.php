@@ -86,7 +86,7 @@ class MessageUser extends AbstractMapper
     public function countTag($me, $tag = 'INBOX', $type = 1)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('message_user$count' => new Expression('COUNT(true)')))
+        $select->columns(['ok' => new Expression('true')])
             ->join('message', 'message.id=message_user.message_id', [])
             ->where(array('message_user.user_id' => $me))
             ->where(array('message_user.deleted_date IS NULL'))
