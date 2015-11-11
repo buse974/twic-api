@@ -222,9 +222,10 @@ class Message extends AbstractService
     public function getListTag()
     {
         return [
-            'INBOX' => $this->getServiceMessageUser()->countTag('NOREAD', 1),
-            'DRAFT' => $this->getServiceMessageUser()->countTag('DRAFT', 1),
-            'CHAT' => $this->getServiceMessageUser()->countTag('NOREAD', 2)
+            [ 'tag' => 'INBOX', 'count' => $this->getServiceMessageUser()->countTag('NOREAD', 1) ],
+            [ 'tag' => 'SENT', 'count' => 0 ],
+            [ 'tag' => 'DRAFT', 'count' => $this->getServiceMessageUser()->countTag('DRAFT', 1) ],
+            [ 'tag' => 'CHAT', 'count' => $this->getServiceMessageUser()->countTag('NOREAD', 2) ]
         ];
     }
 
