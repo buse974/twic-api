@@ -307,7 +307,7 @@ class Videoconf extends AbstractService
 
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getId()))
             ->setUsers($res)
-            ->setConversations($conversations)
+            ->setConversations(new \ArrayObject($conversations))
             ->setVideoconfAdmin($this->getServiceVideoconfAdmin()->add($m_videoconf->getId(), $optok));
 
         return $m_videoconf;
