@@ -789,10 +789,19 @@ class MessageTest extends AbstractService
         $data = $this->jsonRpc('message.getListTag', array());
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 3);
-        $this->assertEquals($data['result']['INBOX'] , 0);
-        $this->assertEquals($data['result']['DRAFT'] , 0);
-        $this->assertEquals($data['result']['CHAT'] , 1);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals(count($data['result'][0]) , 2);
+        $this->assertEquals($data['result'][0]['tag'] , "INBOX");
+        $this->assertEquals($data['result'][0]['count'] , 0);
+        $this->assertEquals(count($data['result'][1]) , 2);
+        $this->assertEquals($data['result'][1]['tag'] , "SENT");
+        $this->assertEquals($data['result'][1]['count'] , 0);
+        $this->assertEquals(count($data['result'][2]) , 2);
+        $this->assertEquals($data['result'][2]['tag'] , "DRAFT");
+        $this->assertEquals($data['result'][2]['count'] , 0);
+        $this->assertEquals(count($data['result'][3]) , 2);
+        $this->assertEquals($data['result'][3]['tag'] , "CHAT");
+        $this->assertEquals($data['result'][3]['count'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
