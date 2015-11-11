@@ -66,6 +66,29 @@ class ConversationUser extends AbstractService
         return $conversation_id;
     }
 
+    /**
+     * @param integer $user
+     * @param integer $conversation
+     */
+    public function join($user, $conversation)
+    {
+        if(!is_array($user)) {
+            $user = [$user];
+        }
+        
+        
+        $ret = 0;
+        $m_conversation_user = $this->getModel()->setConversationId($conversation);
+        foreach ($user as $u) {
+            $m_conversation_user->setUserId($u);
+            if($this->getMapper()->select($m_conversation_user)->count() === 0) {
+                $ret =+ $this->getMapper()->insert($m_conversation_user);
+            }
+        }
+        
+        return $ret;
+    }
+
     public function add($conversation, $users)
     {
         $ret = [];

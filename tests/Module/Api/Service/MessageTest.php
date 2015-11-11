@@ -770,6 +770,18 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
+    public function testCanJoinConversation()
+    {
+        $this->setIdentity(2);
+    
+        $data = $this->jsonRpc('conversation.join', array('conversation' => 5));
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     public function testCanGetListTag()
     {
         $this->setIdentity(2);
