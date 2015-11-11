@@ -39,6 +39,18 @@ class Conversation extends AbstractService
     {
         return $this->getServiceConversationUser()->createConversation($users);
     }
+    
+    /**
+     * Joindre conversation.
+     *
+     * @invokable
+     *
+     * @param integer $conversation
+     */
+    public function join($conversation)
+    {
+        return $this->getServiceConversationUser()->join($this->getServiceUser()->getIdentity()['id'], $conversation);
+    }
 
     /**
      * @invokable
