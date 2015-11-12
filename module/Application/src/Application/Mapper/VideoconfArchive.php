@@ -23,7 +23,7 @@ class VideoconfArchive extends AbstractMapper
         $select->columns(array('id','archive_link','archive_token','archive_duration'))
             ->join('videoconf', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
             ->where(array('videoconf.item_prog_id' => $item_prog))
-            ->where(array('archive_status' => CVF::ARV_AVAILABLE));
+            ->where(array('videoconf_archive.archive_status' => CVF::ARV_AVAILABLE));
         
         return $this->selectWith($select);
     }

@@ -1693,7 +1693,7 @@ class ScenarioTest extends AbstractService
     public function testCanGetByItemProg($item_prog)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('videoconf.getByItemProg', array('itm_prog' => $item_prog));
+        $data = $this->jsonRpc('videoconf.getByItemProg', array('item_prog' => $item_prog));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 14);

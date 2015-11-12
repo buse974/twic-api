@@ -219,15 +219,15 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $itm_prog
+     * @param int $item_prog
      *
      * @throws \Exception
      *
      * @return \Application\Model\Videoconf
      */
-    public function getByItemProg($itm_prog)
+    public function getByItemProg($item_prog)
     {
-        $res_videoconf = $this->getMapper()->getByItemProg($itm_prog);
+        $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
 
         if ($res_videoconf->count() === 0) {
             throw new \Exception('Error select');
@@ -235,7 +235,7 @@ class Videoconf extends AbstractService
 
         $m_videoconf = $res_videoconf->current();
         $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()
-            ->getListRecordByItemProg($itm_prog));
+            ->getListRecordByItemProg($item_prog));
 
         return $m_videoconf;
     }
