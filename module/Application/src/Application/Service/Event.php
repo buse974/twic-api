@@ -195,6 +195,11 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
     
+    public function taskshared($task, $users)
+    {
+        return $this->create('task.shared', $this->getDataUser(), $this->getDataTask($task), $users, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+    }
+    
     public function userComment($m_comment)
     {
         return $this->create('user.comment', $this->getDataUser(), $this->getDataEvent($m_comment->getEventId()), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
@@ -360,6 +365,16 @@ class Event extends AbstractService
         return ['id' => $m_school->getId(),'name' => 'school','data' => ['id' => $m_school->getId(),'name' => $m_school->getName(),'short_name' => $m_school->getShortName(),'logo' => $m_school->getLogo()]];
     }
 
+    public function getDataTask($task) 
+    {
+        $m_task = $this->getServiceTask()->get($task);
+        
+        return ['id' => $m_task->getId(),
+            'name' => 'task',
+            'data' => $m_task->toArray(),
+        ];
+    }
+    
     public function getDataResume($resume)
     {
         $m_resume = $this->getServiceResume()->getById($resume);
@@ -765,5 +780,13 @@ class Event extends AbstractService
     public function getServiceConnection()
     {
         return $this->getServiceLocator()->get('app_service_connection');
+    }
+    
+    /**
+     * @return \Application\Service\Task
+     */
+    public function getServiceTask()
+    {
+        return $this->getServiceLocator()->get('app_service_task');
     }
 }
