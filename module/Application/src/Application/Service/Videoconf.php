@@ -221,8 +221,6 @@ class Videoconf extends AbstractService
      *
      * @param int $item_prog
      *
-     * @throws \Exception
-     *
      * @return \Application\Model\Videoconf
      */
     public function getByItemProg($item_prog)
@@ -230,7 +228,7 @@ class Videoconf extends AbstractService
         $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
 
         if ($res_videoconf->count() === 0) {
-            throw new \Exception('Error select');
+            return [];
         }
 
         $m_videoconf = $res_videoconf->current();
