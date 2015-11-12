@@ -11,13 +11,13 @@ class Task extends AbstractService
     /**
      * Get task.
      *
-     * @param int $id *
+     * @param int $id 
      *
-     * @return array
+     * @return \Application\Model\Task
      */
     public function get($id)
     {
-        return $this->getMapper()->get($id);
+        return $this->getMapper()->get($id)->current();
     }
 
     /**
@@ -67,7 +67,7 @@ class Task extends AbstractService
      * @param int|array $users
      */
     public function addSharing($task, $users)
-    {
+    {   
         if (!is_array($users)) {
             $users = array(
                     $users,
