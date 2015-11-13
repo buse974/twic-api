@@ -185,7 +185,7 @@ class Event extends AbstractService
     
     public function userAnnouncement($feed)
     {
-        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUser, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUser(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
     
