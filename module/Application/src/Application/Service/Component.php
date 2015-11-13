@@ -101,8 +101,7 @@ class Component extends AbstractService
         
         $ret = [];
         foreach ($schools as $school) {
-            $ret[$school] = 
-            [
+            $ret[$school] = [
                 'eqcq' => $this->getEqCq($school, $gender, $nationality, $origin, $program),
                 'nbr' => $ns[$school]
             ];

@@ -113,6 +113,8 @@ class ItemProg extends AbstractMapper
         
         $select->columns(array('id','item_prog$start_date' => new Expression('DATE_FORMAT(item_prog.start_date, "%Y-%m-%dT%TZ")'),'due_date'))
             ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
+            ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
+            ->where(array('videoconf_archive.archive_link IS NOT NULL'))
             ->where(array('item_prog.item_id' => $item));
         
         if ($is_student !== false) {
