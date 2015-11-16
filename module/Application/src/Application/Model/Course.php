@@ -21,7 +21,8 @@ class Course extends BaseCourse
     protected $program;
     protected $avg;
     protected $item_prog;
-
+    protected $nbr_course;
+    
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -34,6 +35,18 @@ class Course extends BaseCourse
         $this->program = $this->requireModel('app_model_program', $data);
     }
 
+    public function getNbrCourse()
+    {
+        return $this->nbr_course;
+    }
+    
+    public function setNbrCourse($nbr_course)
+    {
+        $this->nbr_course = $nbr_course;
+    
+        return $this;
+    }
+    
     public function getAvg()
     {
         return $this->avg;

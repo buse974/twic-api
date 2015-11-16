@@ -224,9 +224,9 @@ class Course extends AbstractService
         $mapper = $this->getMapper();
 
         $u = $this->getServiceUser()->getIdentity();
-        $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $u['roles'])) ? true : false;
+        //$is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $u['roles'])) ? true : false;
 
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $is_academic, $user);
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user);
 
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()
@@ -240,6 +240,19 @@ class Course extends AbstractService
         return array('count' => $mapper->count(),'list' => $res_course);
     }
 
+    /**
+     * get Nbr Course by program
+     * 
+     * @param integer $program
+     * @return integer
+     */
+    public function count($program) 
+    {
+        $res_course = $this->getMapper()->getCount($program);
+        
+        return ($res_course->count() > 0) ? $res_course->current()->getNbrCourse():0;
+    }
+    
     /**
      * @invokable
      */
