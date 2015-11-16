@@ -219,7 +219,7 @@ class UserTest extends AbstractService
             'gender' => 'm', 'origin' => 1, 'nationality' => 1 , 'lastname' => 'Robert','email' => 'crobertr@thestudnet.com','password' => 'studnet','birth_date' => '21/03/1984','position' => 'une position',
             // 'school_id' => 1,
             'interest' => 'un interet','avatar' => 'un_token'));
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 7);
         $this->assertEquals($data['id'], 1);
