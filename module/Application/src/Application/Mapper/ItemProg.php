@@ -53,9 +53,9 @@ class ItemProg extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         
         if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $user['roles']) || in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $user['roles'])) {
-            $select->columns(array('id','item_id','item_prog$editable' => new Expression('1'),'item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")));
+            $select->columns(array('id','item_id', 'picture','item_prog$editable' => new Expression('1'),'item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")));
         } else {
-            $select->columns(array('id','item_id','item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")));
+            $select->columns(array('id','item_id', 'picture','item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")));
         }
         
         $select->join('item', 'item.id = item_prog.item_id', array('id','title','type'))
