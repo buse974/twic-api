@@ -2298,11 +2298,12 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['item']['program']), 2);
         $this->assertEquals($data['result'][0]['item']['program']['id'], 1);
         $this->assertEquals($data['result'][0]['item']['program']['name'], "program name upd");
-        $this->assertEquals(count($data['result'][0]['item']['course']), 3);
+        $this->assertEquals(count($data['result'][0]['item']['course']), 4);
         $this->assertEquals(count($data['result'][0]['item']['course']['grading_policy']), 2);
         $this->assertEquals($data['result'][0]['item']['course']['grading_policy']['name'], "Live class");
         $this->assertEquals($data['result'][0]['item']['course']['grading_policy']['type'], "LC");
         $this->assertEquals($data['result'][0]['item']['course']['id'], 1);
+        $this->assertEquals($data['result'][0]['item']['course']['picture'], null);
         $this->assertEquals($data['result'][0]['item']['course']['title'], "IMERIR");
         $this->assertEquals($data['result'][0]['item']['id'], 1);
         $this->assertEquals($data['result'][0]['item']['title'], "titl2e");
@@ -2612,11 +2613,12 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['program']), 2);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['program']['id'], 1);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['program']['name'], "program name upd");
-        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['course']), 3);
+        $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['course']), 4);
         $this->assertEquals(count($data['result'][0]['item_prog'][0]['item']['course']['grading_policy']), 2);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['course']['grading_policy']['name'], "Live class");
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['course']['grading_policy']['type'], "LC");
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['course']['id'], 1);
+        $this->assertEquals($data['result'][0]['item_prog'][0]['item']['course']['picture'], null);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['course']['title'], "IMERIR");
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['id'], 1);
         $this->assertEquals($data['result'][0]['item_prog'][0]['item']['title'], "titl2e");
