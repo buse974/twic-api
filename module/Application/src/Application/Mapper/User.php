@@ -302,7 +302,6 @@ class User extends AbstractMapper
     }
 
     /**
-     *
      * @param int $conversation            
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -317,15 +316,28 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getEmailUnique($email, $user)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('user$nb_user' => new Expression('COUNT(true)')))
+            ->where(array('user.email' => $email))
+            ->where(array('user.deleted_date IS NULL'));
+        
+        if(null !== $user) {
+            $select->where(array('user.id <> ?' => $user));
+        }
+        
+        return $this->selectWith($select);
+    }
+
     public function nbrBySchool($school)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('school_id','user$nb_user' => new Expression('COUNT(true)')))
             ->join('user_role', 'user_role.user_id = user.id', array('user$role_id' => 'role_id'))
             ->where(array('user.school_id' => $school))
-            ->group(array('user.school_id', 'user_role.role_id'));
+            ->group(array('user.school_id','user_role.role_id'));
         
         return $this->selectWith($select);
     }
-
 }
