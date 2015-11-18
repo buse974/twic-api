@@ -27,6 +27,8 @@ class Activity extends AbstractService
             $ret[] = $this->_add($date, $event, $object, $target, $user);
         }
 
+        $this->getServiceConnection()->add();
+        
         return $ret;
     }
 
@@ -171,5 +173,14 @@ class Activity extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+
+    /**
+     * @return \Application\Service\Connection
+     */
+    public function getServiceConnection()
+    {
+        return $this->getServiceLocator()->get('app_service_connection');
     }
 }
