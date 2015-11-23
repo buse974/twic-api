@@ -15,7 +15,7 @@ class User extends AbstractMapper
         
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
-            ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo'), $select::JOIN_LEFT)
+            ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id','short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id','short_name'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
@@ -46,7 +46,7 @@ class User extends AbstractMapper
         
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('user$id' => new Expression('user.id'),'firstname','lastname','email','password','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1' . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),'user$contacts_count' => $sub))
-            ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo'), $select::JOIN_LEFT)
+            ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
             ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
@@ -157,7 +157,7 @@ class User extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','firstname','lastname','avatar'))
-            ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo'), $select::JOIN_LEFT)
+            ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->join('item_prog_user', 'item_prog_user.user_id=user.id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
             ->where(array('item_assignment_relation.item_assignment_id' => $item_assignment));
