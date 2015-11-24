@@ -182,7 +182,7 @@ class FeedTest extends AbstractService
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 3);
-        $this->assertEquals(count($data['result']['meta']), 12);
+        $this->assertEquals(count($data['result']['meta']) > 12, true);
         $this->assertEquals($data['result']['meta']['description'], "Des dizaines de femmes aux seins nus ont participé, dimanche, au défilé de la «fierté topless» à New York pour contrer les critiques de ceux qui se plaignent de la...");
         $this->assertEquals($data['result']['meta']['keywords'], "Actualités internationales, barack obama, george w bush");
         $this->assertEquals($data['result']['meta']['twitter:card'], "summary_large_image");
