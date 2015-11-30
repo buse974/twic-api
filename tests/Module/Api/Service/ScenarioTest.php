@@ -178,13 +178,13 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['address']['street_no'] , 12);
         $this->assertEquals($data['result']['list'][1]['address']['street_type'] , "rue");
         $this->assertEquals($data['result']['list'][1]['address']['street_name'] , "du stade");
-        $this->assertEquals($data['result']['list'][1]['address']['longitude'] , null);
-        $this->assertEquals($data['result']['list'][1]['address']['latitude'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['longitude'] , '7.3999876999999996');
+        $this->assertEquals($data['result']['list'][1]['address']['latitude'] , '43.744114400000001');
         $this->assertEquals($data['result']['list'][1]['address']['door'] , null);
         $this->assertEquals($data['result']['list'][1]['address']['building'] , null);
         $this->assertEquals($data['result']['list'][1]['address']['apartment'] , null);
         $this->assertEquals($data['result']['list'][1]['address']['floor'] , null);
-        $this->assertEquals($data['result']['list'][1]['address']['timezone'] , null);
+        $this->assertEquals($data['result']['list'][1]['address']['timezone'] , 'Europe/Paris');
         $this->assertEquals($data['result']['list'][1]['id'] , 2);
         $this->assertEquals($data['result']['list'][1]['name'] , "université de monaco");
         $this->assertEquals($data['result']['list'][1]['next_name'] , "buisness school");
