@@ -36,13 +36,13 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['address']['street_no'], 12);
         $this->assertEquals($data['result']['address']['street_type'], "rue");
         $this->assertEquals($data['result']['address']['street_name'], "du stade");
-        //$this->assertEquals($data['result']['address']['longitude'], 11.6412744);
-        //$this->assertEquals($data['result']['address']['latitude'], 48.142066700000001);
+        $this->assertEquals(is_numeric($data['result']['address']['longitude']), true);
+        $this->assertEquals(is_numeric($data['result']['address']['latitude']), true);
         $this->assertEquals($data['result']['address']['door'], null);
         $this->assertEquals($data['result']['address']['building'], null);
         $this->assertEquals($data['result']['address']['apartment'], null);
         $this->assertEquals($data['result']['address']['floor'], null);
-        //$this->assertEquals($data['result']['address']['timezone'], "Europe/Berlin");
+        $this->assertEquals($data['result']['address']['timezone'], "Europe/Paris");
         $this->assertEquals(count($data['result']['contact_user']), 9);
         $this->assertEquals($data['result']['contact_user']['id'], 1);
         $this->assertEquals($data['result']['contact_user']['firstname'], "Paul");
