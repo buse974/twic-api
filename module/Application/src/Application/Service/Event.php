@@ -184,7 +184,7 @@ class Event extends AbstractService
     
     public function userAnnouncement($feed)
     {
-        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), [], self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserBySchool($this->getServiceUser()->getIdentity()['school']['id']), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
     
@@ -467,6 +467,18 @@ class Event extends AbstractService
         return $ret;
     }
 
+    public function getDataUserBySchool($school)
+    {
+        $res_user = $this->getServiceUser()->getListBySchool($school);
+    
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+    
+        return $users;
+    }
+    
     public function getDataUserByCourse($course)
     {
         $res_user = $this->getServiceUser()->getListUserBycourse($course);

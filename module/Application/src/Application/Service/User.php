@@ -195,6 +195,11 @@ class User extends AbstractService
         
         return $id;
     }
+    
+    public function getListBySchool($school)
+    {
+        return $this->getMapper()->getListBySchool($school);
+    }
 
     /**
      * @invokable
