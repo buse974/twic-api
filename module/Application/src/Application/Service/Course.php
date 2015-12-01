@@ -224,9 +224,16 @@ class Course extends AbstractService
         $mapper = $this->getMapper();
 
         $u = $this->getServiceUser()->getIdentity();
-        //$is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $u['roles'])) ? true : false;
+        $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $u['roles'])) ? true : false;
 
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user);
+        //si il est academic on enleve le user puis on recupere tous les cour de l'ecole
+        $school = null;
+        if($is_academic===true) {
+            $school = $u['school']['id'];
+            $user = null;
+        }
+        
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school);
 
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()

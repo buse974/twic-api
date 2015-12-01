@@ -184,7 +184,7 @@ class Event extends AbstractService
     
     public function userAnnouncement($feed)
     {
-        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUser(), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), [], self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
     
@@ -342,7 +342,16 @@ class Event extends AbstractService
         $uu = $this->getDataUser($user);
 
         try {
-            $this->getServiceMail()->sendTpl('tpl_newrequest', $uu['data']['email'], array('firstname' => $u['data']['firstname'], 'lastname' => $u['data']['lastname'], 'avatar' => $u['data']['avatar'], 'school_name' => $u['data']['school']['short_name'], 'school_logo' => $u['data']['school']['logo']));
+            $this->getServiceMail()->sendTpl('tpl_newrequest', $uu['data']['email'], 
+                array(
+                    'to_firstname' => $uu['data']['firstname'], 
+                    'to_lastname' => $uu['data']['lastname'],
+                    'firstname' => $u['data']['firstname'], 
+                    'lastname' => $u['data']['lastname'], 
+                    'avatar' => $u['data']['avatar'], 
+                    'school_name' => $u['data']['school']['short_name'], 
+                    'school_logo' => $u['data']['school']['logo']
+                ));
         } catch (\Exception $e) {
             syslog(1, 'Model tpl_newrequest does not exist');
         }
