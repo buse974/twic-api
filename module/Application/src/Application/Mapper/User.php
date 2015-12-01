@@ -249,6 +249,16 @@ class User extends AbstractMapper
         
         return $this->selectWith($select);
     }
+    
+    public function getListBySchool($school)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id'))
+            ->where(array('user.deleted_date IS NULL'))
+            ->where(array('user.school_id' => $school));
+    
+        return $this->selectWith($select);
+    }
 
     /**
      * Get user list for item_prog and those available.
