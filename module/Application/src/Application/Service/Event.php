@@ -648,7 +648,8 @@ class Event extends AbstractService
                 'id' => $m_user['school']['id'],
                 'short_name' => $m_user['school']['short_name'],
                 'logo' => $m_user['school']['logo'],
-                'background' => $m_user['school']['background']
+                'background' => $m_user['school']['background'],
+                'name' => $m_user['school']['name']
             ],
             'user_roles' => $m_user['roles']]];
     }
