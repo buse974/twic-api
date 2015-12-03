@@ -32,8 +32,10 @@ class Course extends AbstractMapper
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
             ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_LEFT)
             ->join('program', 'program.id=course.program_id', array())
+            ->join('school', 'school.id=program.school_id', array())
             ->where(array('course.deleted_date IS NULL'))
             ->where(array('program.deleted_date IS NULL'))
+            ->where(array('school.deleted_date IS NULL'))
             ->group('course.id');
         
         if (null !== $program) {
