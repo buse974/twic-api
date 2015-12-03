@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Program extends AbstractService
 {
@@ -108,7 +109,7 @@ class Program extends AbstractService
     
     public function getListBySchool($school)
     {
-        return $this->getMapper()->select($this->getModel()->setSchoolId($school));
+        return $this->getMapper()->select($this->getModel()->setSchoolId($school)->setDeletedDate(new IsNull()));
     }
 
     /**
