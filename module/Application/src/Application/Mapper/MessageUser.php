@@ -53,22 +53,22 @@ class MessageUser extends AbstractMapper
             
             switch ($tag) {
                 case 'INBOX':
-                    $subselect->where(array('message_user_message.is_draft IS FALSE'))
+                    $subselect->where(array('message.is_draft IS FALSE'))
                         ->where(array(' (message_user.type = ? ' => 'R'))
                         ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;
                 case 'SENT':
-                    $subselect->where(array('message_user_message.is_draft IS FALSE'))
+                    $subselect->where(array('message.is_draft IS FALSE'))
                         ->where(array(' ( message_user.type = ? ' => 'S'))
                         ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;
                 case 'DRAFT':
-                    $subselect->where(array('message_user_message.is_draft IS TRUE'))
+                    $subselect->where(array('message.is_draft IS TRUE'))
                         ->where(array('message_user.user_id=message_user.from_id'));
                     break;
                 case 'NOREAD':
                     $subselect->where(array('message_user.read_date IS NULL'))
-                        ->where(array('message_user_message.is_draft IS FALSE'))
+                        ->where(array('message.is_draft IS FALSE'))
                         ->where(array(' (message_user.type = ? ' => 'R'))
                         ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;

@@ -638,7 +638,19 @@ class Event extends AbstractService
 
         $m_user = $this->getServiceUser()->get($id);
 
-        return ['id' => $id,'name' => 'user','data' => ['firstname' => $m_user['firstname'],'email' => $m_user['email'],'lastname' => $m_user['lastname'],'has_email_notifier' => $m_user['has_email_notifier'],'avatar' => $m_user['avatar'],'school' => ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' => $m_user['school']['logo']],'user_roles' => $m_user['roles']]];
+        return ['id' => $id,'name' => 'user','data' => [
+            'firstname' => $m_user['firstname'],
+            'email' => $m_user['email'],
+            'lastname' => $m_user['lastname'],
+            'has_email_notifier' => $m_user['has_email_notifier'],
+            'avatar' => $m_user['avatar'],
+            'school' => [
+                'id' => $m_user['school']['id'],
+                'short_name' => $m_user['school']['short_name'],
+                'logo' => $m_user['school']['logo'],
+                'background' => $m_user['school']['background']
+            ],
+            'user_roles' => $m_user['roles']]];
     }
 
     public function getDataMessage($message)
