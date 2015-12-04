@@ -18,7 +18,7 @@ class MaterialDocument extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','course_id','type','title','author','link','source','token'))
+        $select->columns(array('id','course_id','type','title','author','link','source','token', 'description'))
             ->join('item_material_document_relation', 'item_material_document_relation.material_document_id = material_document.id')
             ->where(array('item_material_document_relation.item_id ' => $item));
         
