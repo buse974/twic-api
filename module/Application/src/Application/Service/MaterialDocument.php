@@ -21,13 +21,14 @@ class MaterialDocument extends AbstractService
      * @param string $link            
      * @param string $source            
      * @param string $token            
-     * @param string $date            
+     * @param string $date  
+     * @param string $description            
      *
      * @throws \Exception
      *
      * @return int
      */
-    public function add($course_id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
+    public function add($course_id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null, $description = null)
     {
         $m_material_document = $this->getModel()
             ->setCourseId($course_id)
@@ -37,6 +38,7 @@ class MaterialDocument extends AbstractService
             ->setLink($link)
             ->setSource($source)
             ->setToken($token)
+            ->setDescription($description)
             ->setDate($date)
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
@@ -101,10 +103,11 @@ class MaterialDocument extends AbstractService
      * @param string $source            
      * @param string $token            
      * @param string $date            
-     *
+     * @param string $description
+     * 
      * @return int
      */
-    public function update($id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null)
+    public function update($id, $type = null, $title = null, $author = null, $link = null, $source = null, $token = null, $date = null, $description = null)
     {
         $m_material_document = $this->getModel()
             ->setId($id)
@@ -115,6 +118,7 @@ class MaterialDocument extends AbstractService
             ->setLink($link)
             ->setSource($source)
             ->setToken($token)
+            ->setDescription($description)
             ->setDate($date);
         
         return $this->getMapper()->update($m_material_document);
