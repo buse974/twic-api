@@ -61,8 +61,12 @@ class ItemProg extends AbstractMapper
         $select->join('item', 'item.id = item_prog.item_id', array('id','title','type'))
             ->join('course', 'course.id = item.course_id', array('id','title', 'picture'))
             ->join('program', 'program.id = course.program_id', array('id','name'))
+            ->join('school', 'school.id = program.school_id', array())
             ->join('module', 'module.id = item.module_id', array('id','title'), $select::JOIN_LEFT)
-            ->join('grading_policy', 'grading_policy.id = item.grading_policy_id', array('name','type'));
+            ->join('grading_policy', 'grading_policy.id = item.grading_policy_id', array('name','type'))
+            ->where(array('course.deleted_date IS NULL'))
+            ->where(array('program.deleted_date IS NULL'))
+            ->where(array('school.deleted_date IS NULL'));
         
         if (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $user['roles'])) {
             $select->where(array('program.school_id ' => $user['school']['id']));
