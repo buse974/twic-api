@@ -642,6 +642,7 @@ class Event extends AbstractService
             'firstname' => $m_user['firstname'],
             'email' => $m_user['email'],
             'lastname' => $m_user['lastname'],
+            'gender' => $m_user['gender'],
             'has_email_notifier' => $m_user['has_email_notifier'],
             'avatar' => $m_user['avatar'],
             'school' => [
