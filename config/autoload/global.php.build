@@ -98,6 +98,7 @@ return [
             'app_service_component_scale',
             'app_service_guidelines',
             'app_service_connection',
+            'app_service_poll',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

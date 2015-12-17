@@ -23,13 +23,17 @@ class Poll extends AbstractService
      *      },...]
      * }
      *
+     * @invokable
+     * 
      * @param integer $message            
      * @param array $datas            
      */
     public function add($title, $poll_questions, $expiration = null)
     {
         $m_poll = $this->getModel();
-        $m_poll->setExpirationDate($expiration)                                                                                                                                                                           ->setTilte($datas['title']);
+        $m_poll->setExpirationDate($expiration)
+            ->setTitle($title);
+        
         if ($this->getMapper()->insert($m_poll) < 1) {
             throw new \Exception('Insert poll error');
         }
