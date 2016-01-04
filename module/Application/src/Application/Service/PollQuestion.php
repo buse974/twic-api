@@ -6,13 +6,13 @@ use Dal\Service\AbstractService;
 class PollQuestion extends AbstractService
 {
 
-    public function add($poll, $question, $question_type, $mandatory = null, $parent = null)
+    public function add($poll, $question, $poll_question_type = 1, $poll_question_items = [], $mandatory = null, $parent = null)
     {
         $m_question = $this->getModel();
         $m_question->setIsMandatory($mandatory)
             ->setPollId($poll)
             ->setQuestion($question)
-            ->setQuestionTypeId($question_type)
+            ->setPollQuestionTypeId($poll_question_type)
             ->setParentId($this->getMapper()->selectLastParentId($poll));
         
         if ($this->getMapper()->insert($m_question) < 1) {
@@ -22,12 +22,15 @@ class PollQuestion extends AbstractService
         $question_id = $this->getMapper()->getLastInsertValue();
         
         if (null !== $parent) {
-            $this->updateParentId($poll, $question_id, $datas['parent']);
+            $this->updateParentId($poll, $question_id, $parent);
         }
         
-        if ($question_type == 2 || $question_type == 3) {
-            foreach ($question_items as $question_item) {
-                $this->getServiceQuestionItem()->add($question_id, $question_item);
+        if ($poll_question_type == 2 || $poll_question_type == 3) {
+            foreach ($poll_question_items as $question_item) {
+                $this->getServicePollQuestionItem()->add(
+                    $question_id, 
+                    isset($question_item['libelle'])?$question_item['libelle']:null, 
+                    isset($question_item['parent'])?$question_item['parent']:null);
             }
         }
         
@@ -64,7 +67,7 @@ class PollQuestion extends AbstractService
                 ->getList($m_question->getId()));
         }
         
-        return $res_question->toArrayParent('parent_id', 'id', array('id'));
+        return $res_question->toArrayParent('parent_id', 'id');
     }
 
     /**
@@ -73,6 +76,6 @@ class PollQuestion extends AbstractService
      */
     public function getServicePollQuestionItem()
     {
-        return $this->getServiceLocator()->get('dal_service_poll_question_item');
+        return $this->getServiceLocator()->get('app_service_poll_question_item');
     }
 }

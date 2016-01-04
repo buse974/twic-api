@@ -41,12 +41,24 @@ class Poll extends AbstractService
         $poll_id = $this->getMapper()->getLastInsertValue();
         
         foreach ($poll_questions as $poll_question) {
-            $this->getServicePollQuestion()->add($poll_id, $poll_question);
+            $this->getServicePollQuestion()->add($poll_id, 
+                (isset($poll_question['question']) ? $poll_question['question']:null),
+                (isset($poll_question['poll_question_type']) ? $poll_question['poll_question_type']:1),
+                (isset($poll_question['poll_question_items']) ? $poll_question['poll_question_items']:[]),
+                (isset($poll_question['mandatory']) ? $poll_question['mandatory']:false),
+                (isset($poll_question['parent']) ? $poll_question['parent']:null));
         }
         
-        return $poll_id;
+        return $this->get($poll_id);
     }
 
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * 
+     * @throws \Exception
+     */
     public function get($id)
     {
         $m_poll = $this->getModel();
@@ -59,17 +71,48 @@ class Poll extends AbstractService
         }
         
         $m_poll = $res_poll->current();
-        $m_poll->setQuestions($this->getServicePollQuestion()->getList($id));
+        $m_poll->setPollQuestions($this->getServicePollQuestion()->getList($id));
         
         return $m_poll;
     }
 
+    /**
+     * @invokable
+     * 
+     * @param integer $poll
+     * @param integer $poll_question
+     * @param array $items
+     */
+    public function vote($poll, $poll_question, $items)
+    {       
+        return $this->getServicePollAnswer()->add($poll, $poll_question, $items);
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $id
+     */
+    public function delete($id)
+    {
+        return $this->getMapper()->delete($this->getModel()->setId($id));
+    }
+    
+    /**
+     *
+     * @return \Application\Service\PollAnswer
+     */
+    public function getServicePollAnswer()
+    {
+        return $this->getServiceLocator()->get('app_service_poll_answer');
+    }
+    
     /**
      *
      * @return \Application\Service\PollQuestion
      */
     public function getServicePollQuestion()
     {
-        return $this->getServiceLocator()->get('dal_service_poll_question');
+        return $this->getServiceLocator()->get('app_service_poll_question');
     }
 }
