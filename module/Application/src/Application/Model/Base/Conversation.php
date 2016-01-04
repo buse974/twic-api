@@ -7,6 +7,7 @@ use Dal\Model\AbstractModel;
 class Conversation extends AbstractModel
 {
     protected $id;
+    protected $type;
     protected $created_date;
 
     protected $prefix = 'conversation';
@@ -19,6 +20,18 @@ class Conversation extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }

@@ -12,7 +12,7 @@
  */
 
 return array(
-        'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
+    'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
 	'db' => array(
 		'adapters' => array(
 			'db-adapter' => array(
@@ -29,6 +29,20 @@ return array(
 			),
 		),	
 	),
+    'node' => array(
+        'addr' => '${node.addr}'
+    ),
+    'dms-conf' => array(
+        'size_allowed' => array(
+            array('width' => 300, 'height' => 200),
+            array('width' => 300, 'height' => 300),
+            array('width' => 150, 'height' => 100),
+            array('width' => 80, 'height' => 80),
+            array('width' => 300),
+        ),
+        'check_size_allowed' => false,
+        'default_path' => '${dms.uploaddir}',
+    ),
 	'log' => array(
 		'log-system' => array(
 			'writers' => array(
@@ -48,7 +62,7 @@ return array(
 		),
 	),
 	'http-adapter' => array(
-		'adapter' => 'Zend\Http\Client\Adapter\Socket',
+		'adapter' => 'Zend\Http\Client\Adapter\Curl',
 		'maxredirects'   => 5,
 		'sslverifypeer'  => false,
 		'timeout'        => 10,
@@ -59,8 +73,8 @@ return array(
 				'name' => 'memcached',
 				'options' => array(
 					'servers' => array(
-						array('host' => 'localhost' , 'port' => '11211', 'weight' => 66),
-						array('host' => 'localhost' , 'port' => '11211', 'weight' => 33)
+						array('host' => 'localhost' , 'port' => '${memcached.port}', 'weight' => 66),
+						array('host' => 'localhost' , 'port' => '${memcached.port}', 'weight' => 33)
 					),
 					'lib_options' => array(
 						array('option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true),

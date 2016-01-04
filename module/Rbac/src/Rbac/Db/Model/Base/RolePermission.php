@@ -7,11 +7,8 @@ use Dal\Model\AbstractModel;
 class RolePermission extends AbstractModel
 {
     protected $id;
-
     protected $role_id;
-
     protected $permission_id;
-
     protected $prefix = 'role_permission';
 
     public function getId()

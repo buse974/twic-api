@@ -8,6 +8,7 @@ class MessageDoc extends AbstractModel
 {
     protected $id;
     protected $token;
+    protected $name;
     protected $message_id;
     protected $created_date;
 
@@ -33,6 +34,18 @@ class MessageDoc extends AbstractModel
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
 
         return $this;
     }

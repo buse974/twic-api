@@ -8,6 +8,9 @@ use Zend\Authentication\Result;
 use Zend\Db\Sql\Sql as DbSql;
 use Auth\Authentication\Adapter\Model\Identity;
 use Zend\Math\Rand;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\Predicate\IsNotNull;
 
 class DbAdapter extends AbstractAdapter
 {
@@ -72,9 +75,11 @@ class DbAdapter extends AbstractAdapter
         $sql = new DbSql($this->db_adapter);
         $select = $sql->select();
         $select->from($this->table)
-               ->columns(array('*'))
-               ->where(array($this->table.'.'.$this->credential_column.' = MD5(?) ' => $this->credential))
-               ->where(array($this->table.'.'.$this->identity_column.' = ? ' => $this->identity));
+            ->columns(array('*'))
+            ->where(array(' ( user.password = MD5(?) ' => $this->credential))
+            ->where(array('user.new_password = MD5(?) )' => $this->credential), Predicate::OP_OR)
+            ->where(array('user.'.$this->identity_column.' = ? ' => $this->identity))
+            ->where(array('user.deleted_date IS NULL'));
 
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
@@ -88,8 +93,19 @@ class DbAdapter extends AbstractAdapter
         } else {
             $code = Result::SUCCESS;
             $message[] = 'Authentication successful.';
-            $identity = $this->getResult()->exchangeArray($results->current());
+
+            $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
+
+            $arrayIdentity = current($arrayIdentity);
+
+            $identity = $this->getResult()->exchangeArray($arrayIdentity);
             $identity->setToken($identity->getId().md5($identity->getId().$identity->getEmail().Rand::getBytes(10).time()));
+
+            $update = $sql->update('user');
+
+            $update->set(array('password' => md5($this->credential), 'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));
+            $statement = $sql->prepareStatementForSqlObject($update);
+            $statement->execute();
         }
 
         return new Result($code, $identity, $message);

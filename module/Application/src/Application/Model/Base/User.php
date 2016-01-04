@@ -12,11 +12,16 @@ class User extends AbstractModel
     protected $status;
     protected $email;
     protected $password;
+    protected $new_password;
     protected $birth_date;
     protected $position;
     protected $school_id;
     protected $interest;
+    protected $gender;
+    protected $nationality;
+    protected $origin;
     protected $avatar;
+    protected $has_email_notifier;
     protected $deleted_date;
     protected $sis;
 
@@ -94,6 +99,18 @@ class User extends AbstractModel
         return $this;
     }
 
+    public function getNewPassword()
+    {
+        return $this->new_password;
+    }
+
+    public function setNewPassword($new_password)
+    {
+        $this->new_password = $new_password;
+
+        return $this;
+    }
+
     public function getBirthDate()
     {
         return $this->birth_date;
@@ -142,6 +159,42 @@ class User extends AbstractModel
         return $this;
     }
 
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    public function getNationality()
+    {
+        return $this->nationality;
+    }
+
+    public function setNationality($nationality)
+    {
+        $this->nationality = $nationality;
+
+        return $this;
+    }
+
+    public function getOrigin()
+    {
+        return $this->origin;
+    }
+
+    public function setOrigin($origin)
+    {
+        $this->origin = $origin;
+
+        return $this;
+    }
+
     public function getAvatar()
     {
         return $this->avatar;
@@ -150,6 +203,18 @@ class User extends AbstractModel
     public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getHasEmailNotifier()
+    {
+        return $this->has_email_notifier;
+    }
+
+    public function setHasEmailNotifier($has_email_notifier)
+    {
+        $this->has_email_notifier = $has_email_notifier;
 
         return $this;
     }

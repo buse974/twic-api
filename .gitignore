@@ -20,3 +20,4 @@ test.properties
 upload/
 build/
 /tests/*.sql
+.gitkanban

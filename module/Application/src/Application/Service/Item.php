@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Item extends AbstractService
 {
@@ -16,7 +17,6 @@ class Item extends AbstractService
      * @param int    $duration
      * @param string $type
      * @param int    $weight
-     * @param int    $parent
      * @param int    $module
      * @param array  $materials
      *
@@ -24,12 +24,12 @@ class Item extends AbstractService
      *
      * @return int
      */
-    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $parent = null, $module = null, $materials = null)
+    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $module = null, $materials = null)
     {
         $m_item = $this->getModel()->setTitle($title)
                          ->setDescribe($describe)
                          ->setType($type)
-                         ->setParentId($this->getMapper()->selectLastParentId($course))
+                         //->setParentId($this->getMapper()->selectLastParentId($course))
                          ->setDuration($duration)
                          ->setWeight($weight)
                          ->setCourseId($course)
@@ -41,9 +41,9 @@ class Item extends AbstractService
         }
 
         $item_id = $this->getMapper()->getLastInsertValue();
-        if ($parent !== null) {
+        /*if ($parent !== null) {
             $this->updateParentId($item_id, $parent);
-        }
+        }*/
         if ($materials !== null) {
             $this->getServiceItemMaterialDocumentRelation()->addByItem($item_id, $materials);
         }
@@ -51,7 +51,7 @@ class Item extends AbstractService
         return $item_id;
     }
 
-    public function updateParentId($item, $parent_id)
+    /*public function updateParentId($item, $parent_id)
     {
         $res_item = $this->getMapper()->select($this->getModel()->setId($item));
         $me_item = $res_item->current();
@@ -61,7 +61,7 @@ class Item extends AbstractService
         // JE RENTRE
         $this->getMapper()->update($this->getModel()->setParentId($item), array('parent_id' => $parent_id, 'course_id' => $me_item->getCourseId()));
         $this->getMapper()->update($this->getModel()->setId($item)->setParentId($parent_id));
-    }
+    }*/
 
     /**
      * @invokable
@@ -72,13 +72,12 @@ class Item extends AbstractService
      * @param string $title
      * @param string $describe
      * @param int    $weight
-     * @param string $parent
      * @param int    $module
      * @param array  $materials
      *
      * @return int
      */
-    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $module = null, $materials = null)
+    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, /* $parent = null, */ $module = null, $materials = null)
     {
         $m_item = $this->getModel()
                        ->setId($id)
@@ -89,9 +88,9 @@ class Item extends AbstractService
                        ->setGradingPolicyId($grading_policy)
                        ->setModuleId($module);
 
-        if ($parent !== null) {
+        /*if ($parent !== null) {
             $this->updateParentId($id, $parent);
-        }
+        }*/
         if ($materials !== null) {
             $this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
         }
@@ -118,7 +117,40 @@ class Item extends AbstractService
             $m_item->setMaterials($ar_imdr);
         }
 
+        return $res_item;
+    }
+
+    /**
+     * @invokable
+     *
+     * @param int $user
+     *
+     * @return array
+     */
+    public function getListByUser($user)
+    {
+        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course));
+        foreach ($res_item as $m_item) {
+            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
+            $ar_imdr = array();
+            foreach ($res_imdr as $m_imdr) {
+                $ar_imdr[] = $m_imdr->getMaterialDocumentId();
+            }
+            $m_item->setMaterials($ar_imdr);
+        }
+
         return $res_item->toArrayParent();
+    }
+
+    public function getListRecord($course, $user, $is_student)
+    {
+        $res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
+
+        foreach ($res_item as $m_item) {
+            $m_item->setItemProg($this->getServiceItemProg()->getListRecord($m_item->getId(), $user, $is_student));
+        }
+
+        return $res_item;
     }
 
     /**
@@ -177,15 +209,18 @@ class Item extends AbstractService
      * @param bool   $new_message
      * @param array  $filter
      */
-    public function getListGrade($program, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null)
+    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $item_prog = null, $user = null)
     {
         $mapper = $this->getMapper();
-        $user = $this->getServiceUser()->getIdentity();
+        $me = $this->getServiceUser()->getIdentity();
 
-        $res_item = $mapper->usePaginator($filter)->getListGrade($user, $program, $course, $type, $not_graded, $new_message, $filter);
+        $res_item = $mapper->usePaginator($filter)->getListGrade($me, $program, $course, $type, $not_graded, $new_message, $filter, $item_prog, $user);
 
         foreach ($res_item as $m_item) {
-            $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($m_item->getItemProg()->getItem()->getItemAssignment()->getId()));
+            $item_assigment_id = $m_item->getItemProg()->getItemAssignment()->getId();
+            if ($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
+                $m_item->setUsers($this->getServiceUser()->getListByItemAssignment($item_assigment_id));
+            }
         }
 
         return array('count' => $mapper->count(), 'list' => $res_item);
@@ -200,7 +235,7 @@ class Item extends AbstractService
     public function getListGradeDetail($course, $user = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        if($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])){
+        if ($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])) {
             $user = $identity['id'];
         }
         $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
@@ -210,6 +245,19 @@ class Item extends AbstractService
         }
 
         return $res_grading_policy;
+    }
+
+    /**
+     * @invokable
+     *
+     * @param int $grading_policy
+     * @param int $course
+     * @param int $user
+     * @param int $item_prog
+     */
+    public function getListGradeItem($grading_policy = null, $course = null, $user = null, $item_prog = null)
+    {
+        return $this->getMapper()->getListGradeItem($grading_policy, $course, $user, $item_prog);
     }
 
     /**
@@ -231,6 +279,8 @@ class Item extends AbstractService
     }
 
     /**
+     * @invokable
+     * 
      * @param int $item_prog
      *
      * @throws \Exception
@@ -247,23 +297,25 @@ class Item extends AbstractService
 
         return $res_item->current();
     }
-    
+
     /**
-     * @param int $item
+     * @invokable
+     * 
+     * @param int $id
      *
      * @throws \Exception
      *
      * @return \Application\Model\Item
      */
-    public function get($item)
+    public function get($id)
     {
-    	$res_item = $this->getMapper()->select($this->getModel()->setId($item));
-    
-    	if ($res_item->count() <= 0) {
-    		throw new \Exception('error select item');
-    	}
-    
-    	return $res_item->current();
+        $res_item = $this->getMapper()->get($id);
+
+        if ($res_item->count() <= 0) {
+            throw new \Exception('error select item');
+        }
+
+        return $res_item->current();
     }
 
     /**

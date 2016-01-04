@@ -14,6 +14,7 @@ class MessageUser extends AbstractModel
     protected $read_date;
     protected $deleted_date;
     protected $created_date;
+    protected $type;
 
     protected $prefix = 'message_user';
 
@@ -109,6 +110,18 @@ class MessageUser extends AbstractModel
     public function setCreatedDate($created_date)
     {
         $this->created_date = $created_date;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }

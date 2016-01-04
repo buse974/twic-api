@@ -9,16 +9,26 @@ class School extends BaseSchool
 {
     protected $address;
     protected $contact_user;
+    protected $program;
 
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
-        $this->address = new Address($this);
-        $this->contact_user = new User($this);
+        $this->address = $this->requireModel('addr_model_address', $data);
+        $this->contact_user = $this->requireModel('app_model_user', $data);
+    }
 
-        $this->contact_user->exchangeArray($data);
-        $this->address->exchangeArray($data);
+    public function getProgram()
+    {
+        return $this->program;
+    }
+
+    public function setProgram($program)
+    {
+        $this->program = $program;
+
+        return $this;
     }
 
     public function setAddress($address)
@@ -30,6 +40,10 @@ class School extends BaseSchool
 
     public function getAddress()
     {
+        if ($this->address instanceof Address && $this->address->getId() === null) {
+            $this->address = null;
+        }
+
         return $this->address;
     }
 
