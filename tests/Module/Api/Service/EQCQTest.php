@@ -532,7 +532,7 @@ class EQCQTest extends AbstractService
         $this->assertEquals($data['result'][51]['component']['id'] , 8);
         $this->assertEquals($data['result'][51]['component']['name'] , "Empathy");
         $this->assertEquals($data['result'][51]['id'] , 53);
-        $this->assertEquals($data['result'][51]['text'] , "In group-work, \$subject care about how others may feel when someone has been rude or condescending to them.");
+        $this->assertEquals($data['result'][51]['text'] , "In group-work, \$subject care(s) about how others may feel when someone has been rude or condescending to them.");
         $this->assertEquals(count($data['result'][52]) , 3);
         $this->assertEquals(count($data['result'][52]['component']) , 2);
         $this->assertEquals($data['result'][52]['component']['id'] , 8);
