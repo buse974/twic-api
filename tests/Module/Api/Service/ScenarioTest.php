@@ -3937,10 +3937,11 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][0]['source']) , 3);
        $this->assertEquals($data['result']['list'][0]['source']['id'] , 2);
        $this->assertEquals($data['result']['list'][0]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][0]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][0]['source']['data']) , 8);
        $this->assertEquals($data['result']['list'][0]['source']['data']['firstname'] , "Xuan-Anh");
        $this->assertEquals($data['result']['list'][0]['source']['data']['email'] , "xhoang@thestudnet.com");
        $this->assertEquals($data['result']['list'][0]['source']['data']['lastname'] , "Hoang");
+       $this->assertEquals($data['result']['list'][0]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][0]['source']['data']['has_email_notifier'] , 1);
        $this->assertEquals($data['result']['list'][0]['source']['data']['avatar'] , null);
        $this->assertEquals(count($data['result']['list'][0]['source']['data']['school']) , 5);
@@ -3974,7 +3975,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][1]['source']) , 3);
        $this->assertEquals($data['result']['list'][1]['source']['id'] , 1);
        $this->assertEquals($data['result']['list'][1]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][1]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][1]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][1]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][1]['source']['data']['firstname'] , "Paul");
        $this->assertEquals($data['result']['list'][1]['source']['data']['email'] , "pboussekey@thestudnet.com");
        $this->assertEquals($data['result']['list'][1]['source']['data']['lastname'] , "Boussekey");
@@ -4009,7 +4011,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][2]['source']) , 3);
        $this->assertEquals($data['result']['list'][2]['source']['id'] , 3);
        $this->assertEquals($data['result']['list'][2]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][2]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][2]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][2]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][2]['source']['data']['firstname'] , "Christophe");
        $this->assertEquals($data['result']['list'][2]['source']['data']['email'] , "crobert@thestudnet.com");
        $this->assertEquals($data['result']['list'][2]['source']['data']['lastname'] , "Robert");
@@ -4045,7 +4048,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][3]['source']) , 3);
        $this->assertEquals($data['result']['list'][3]['source']['id'] , 3);
        $this->assertEquals($data['result']['list'][3]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][3]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][3]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][3]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][3]['source']['data']['firstname'] , "Christophe");
        $this->assertEquals($data['result']['list'][3]['source']['data']['email'] , "crobert@thestudnet.com");
        $this->assertEquals($data['result']['list'][3]['source']['data']['lastname'] , "Robert");
@@ -4081,7 +4085,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][4]['source']) , 3);
        $this->assertEquals($data['result']['list'][4]['source']['id'] , 3);
        $this->assertEquals($data['result']['list'][4]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][4]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][4]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][4]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][4]['source']['data']['firstname'] , "Christophe");
        $this->assertEquals($data['result']['list'][4]['source']['data']['email'] , "crobert@thestudnet.com");
        $this->assertEquals($data['result']['list'][4]['source']['data']['lastname'] , "Robert");
@@ -4120,7 +4125,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][5]['source']) , 3);
        $this->assertEquals($data['result']['list'][5]['source']['id'] , 3);
        $this->assertEquals($data['result']['list'][5]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][5]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][5]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][5]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][5]['source']['data']['firstname'] , "Christophe");
        $this->assertEquals($data['result']['list'][5]['source']['data']['email'] , "crobert@thestudnet.com");
        $this->assertEquals($data['result']['list'][5]['source']['data']['lastname'] , "Robert");
@@ -4159,7 +4165,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][6]['source']) , 3);
        $this->assertEquals($data['result']['list'][6]['source']['id'] , 1);
        $this->assertEquals($data['result']['list'][6]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][6]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][6]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][6]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][6]['source']['data']['firstname'] , "Paul");
        $this->assertEquals($data['result']['list'][6]['source']['data']['email'] , "pboussekey@thestudnet.com");
        $this->assertEquals($data['result']['list'][6]['source']['data']['lastname'] , "Boussekey");
@@ -4204,7 +4211,8 @@ class ScenarioTest extends AbstractService
        $this->assertEquals(count($data['result']['list'][7]['source']) , 3);
        $this->assertEquals($data['result']['list'][7]['source']['id'] , 1);
        $this->assertEquals($data['result']['list'][7]['source']['name'] , "user");
-       $this->assertEquals(count($data['result']['list'][7]['source']['data']) , 7);
+       $this->assertEquals(count($data['result']['list'][7]['source']['data']) , 8);
+       $this->assertEquals($data['result']['list'][7]['source']['data']['gender'] , null);
        $this->assertEquals($data['result']['list'][7]['source']['data']['firstname'] , "Paul");
        $this->assertEquals($data['result']['list'][7]['source']['data']['email'] , "pboussekey@thestudnet.com");
        $this->assertEquals($data['result']['list'][7]['source']['data']['lastname'] , "Boussekey");
