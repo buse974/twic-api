@@ -46,7 +46,7 @@ class Course extends AbstractMapper
             $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user]);
         }
         
-        if(null !== $school) {
+        if (null !== $school) {
             $select->where(array('program.school_id' => $school));
         }
         
@@ -90,10 +90,10 @@ class Course extends AbstractMapper
             ->where(array('item_prog_user.user_id' => $user))
             ->group('course.id');
         
-        if (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $me['roles'])) {
-            $select->join('course_user_relation', 'course.id = course_user_relation.course_id', array())->where(array('course_user_relation.user_id' => $me['id']));
-        } elseif (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $me['roles'])) {
+        if (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $me['roles'])) {
             $select->where(array('program.school_id ' => $me['school']['id']));
+        } elseif (in_array(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $me['roles'])) {
+            $select->join('course_user_relation', 'course.id = course_user_relation.course_id', array())->where(array('course_user_relation.user_id' => $me['id']));
         }
         
         return $this->selectWith($select);
