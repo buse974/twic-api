@@ -7,8 +7,11 @@ use Dal\Model\AbstractModel;
 class Message extends AbstractModel
 {
     protected $id;
+    protected $title;
     protected $text;
     protected $token;
+    protected $is_draft;
+    protected $type;
     protected $conversation_id;
     protected $created_date;
 
@@ -22,6 +25,18 @@ class Message extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
         return $this;
     }
@@ -46,6 +61,30 @@ class Message extends AbstractModel
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getIsDraft()
+    {
+        return $this->is_draft;
+    }
+
+    public function setIsDraft($is_draft)
+    {
+        $this->is_draft = $is_draft;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
 
         return $this;
     }

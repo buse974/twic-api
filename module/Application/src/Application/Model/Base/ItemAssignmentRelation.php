@@ -4,12 +4,12 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class ItemAssignmentUser extends AbstractModel
+class ItemAssignmentRelation extends AbstractModel
 {
     protected $item_assignment_id;
-    protected $user_id;
+    protected $item_prog_user_id;
 
-    protected $prefix = 'item_assignment_user';
+    protected $prefix = 'item_assignment_relation';
 
     public function getItemAssignmentId()
     {
@@ -23,14 +23,14 @@ class ItemAssignmentUser extends AbstractModel
         return $this;
     }
 
-    public function getUserId()
+    public function getItemProgUserId()
     {
-        return $this->user_id;
+        return $this->item_prog_user_id;
     }
 
-    public function setUserId($user_id)
+    public function setItemProgUserId($item_prog_user_id)
     {
-        $this->user_id = $user_id;
+        $this->item_prog_user_id = $item_prog_user_id;
 
         return $this;
     }

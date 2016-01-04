@@ -16,20 +16,83 @@ class Course extends BaseCourse
     protected $instructor;
     protected $start_date;
     protected $end_date;
-
+    protected $items;
+    protected $school;
+    protected $program;
+    protected $avg;
+    protected $item_prog;
+    protected $nbr_course;
+    
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
-        $this->grading_policy = new GradingPolicy($this);
-        $this->grading = new Grading($this);
-        $this->creator = new User($this);
-        $this->module = new Module($this);
+        $this->grading_policy = $this->requireModel('app_model_grading_policy', $data);
+        $this->grading = $this->requireModel('app_model_grading', $data);
+        $this->creator = $this->requireModel('app_model_user', $data);
+        $this->module = $this->requireModel('app_model_module', $data);
+        $this->school = $this->requireModel('app_model_school', $data);
+        $this->program = $this->requireModel('app_model_program', $data);
+    }
 
-        $this->module->exchangeArray($data);
-        $this->grading_policy->exchangeArray($data);
-        $this->grading->exchangeArray($data);
-        $this->creator->exchangeArray($data);
+    public function getNbrCourse()
+    {
+        return $this->nbr_course;
+    }
+    
+    public function setNbrCourse($nbr_course)
+    {
+        $this->nbr_course = $nbr_course;
+    
+        return $this;
+    }
+    
+    public function getAvg()
+    {
+        return $this->avg;
+    }
+
+    public function setAvg($avg)
+    {
+        $this->avg = $avg;
+
+        return $this;
+    }
+
+    public function getProgram()
+    {
+        return $this->program;
+    }
+
+    public function setProgram($program)
+    {
+        $this->program = $program;
+
+        return $this;
+    }
+
+    public function getSchool()
+    {
+        return $this->school;
+    }
+
+    public function setSchool($school)
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
     }
 
     public function setStudent($student)
@@ -158,5 +221,17 @@ class Course extends BaseCourse
     public function setEndDate($end_date)
     {
         $this->end_date = $end_date;
+    }
+
+    public function getItemProg()
+    {
+        return $this->item_prog;
+    }
+
+    public function setItemProg($item_prog)
+    {
+        $this->item_prog = $item_prog;
+
+        return $this;
     }
 }

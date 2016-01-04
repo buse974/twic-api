@@ -8,18 +8,28 @@ class MessageUser extends BaseMessageUser
 {
     protected $message;
     protected $user;
+    protected $count;
 
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
-        $this->message = new Message($this);
-        $this->user = new User($this, 'from');
-
-        $this->user->exchangeArray($data);
-        $this->message->exchangeArray($data);
+        $this->message = $this->requireModel('app_model_message', $data);
+        $this->user = $this->requireModel('app_model_user', $data, 'from');
     }
 
+    public function getCount()
+    {
+        return $this->count;
+    }
+    
+    public function setCount($count)
+    {
+        $this->count = $count;
+    
+        return $this;
+    }
+    
     public function getMessage()
     {
         return $this->message;

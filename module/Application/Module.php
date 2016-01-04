@@ -8,17 +8,22 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
+
 namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use JRpc\Json\Server\Exception\JrpcException;
 use Rbac\Db\Model\Role;
+use Sge\Service\Sge;
 
 class Module
 {
     public function onBootstrap(MvcEvent $event)
     {
+        $sge = new Sge();
+        $sge->init();
+
         $eventManager = $event->getApplication()->getEventManager();
         $eventManagerShare = $eventManager->getSharedManager();
         $eventManagerShare->attach('JRpc\Json\Server\Server', 'sendRequest.pre', function ($e) use ($event) {

@@ -13,7 +13,7 @@ class Role extends BaseRole
     const ROLE_INSTRUCTOR_ID = 5;
     const ROLE_RECRUTER_ID = 6;
 
-    const ROLE_SADMIN_STR = 'sadmin';
+    const ROLE_SADMIN_STR = 'super_admin';
     const ROLE_ADMIN_STR = 'admin';
     const ROLE_ACADEMIC_STR = 'academic';
     const ROLE_STUDENT_STR = 'student';

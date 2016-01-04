@@ -15,7 +15,6 @@ class Role extends AbstractModel
     const STR_RECRUITER = 'recruiter';
 
     protected $id;
-
     protected $name;
 
     protected $prefix = 'role';

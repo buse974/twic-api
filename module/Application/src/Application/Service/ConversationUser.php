@@ -6,7 +6,13 @@ use Dal\Service\AbstractService;
 
 class ConversationUser extends AbstractService
 {
-    public function getConversationByUser(array $users)
+    /**
+     * @invokable
+     * 
+     * @param array $users
+     * @param int   $type
+     */
+    public function getConversationByUser(array $users, $type = null)
     {
         $conversation = null;
         $identity = $this->getServiceUser()->getIdentity();
@@ -14,12 +20,12 @@ class ConversationUser extends AbstractService
             $users[] = $identity['id'];
         }
 
-        $res_conversation_user = $this->getMapper()->getConversationByUser($users);
+        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type);
 
         if ($res_conversation_user->count() === 1) {
             $conversation = $res_conversation_user->current()->getConversationId();
         } elseif ($res_conversation_user->count() === 0) {
-            $conversation = $this->createConversation($users);
+            $conversation = $this->createConversation($users, null, $type);
         } elseif ($res_conversation_user->count() > 1) {
             throw new \Exception('more of one conversation');
         }
@@ -37,9 +43,15 @@ class ConversationUser extends AbstractService
         return $this->getMapper()->select($this->getModel()->setConversationId($conversation));
     }
 
-    public function createConversation($users)
+    /**
+     * @param array  $users
+     * @param string $videoconf
+     *
+     * @return int
+     */
+    public function createConversation($users, $videoconf = null, $type = null)
     {
-        $conversation_id = $this->getServiceConversation()->create();
+        $conversation_id = $this->getServiceConversation()->create($type);
 
         $m_conversation_user = $this->getModel()->setConversationId($conversation_id);
         foreach ($users as $user) {
@@ -47,7 +59,51 @@ class ConversationUser extends AbstractService
             $this->getMapper()->insert($m_conversation_user);
         }
 
+        if ($videoconf !== null) {
+            $this->getServiceVideoconfConversation()->add($conversation_id, $videoconf);
+        }
+
         return $conversation_id;
+    }
+
+    /**
+     * @param integer $user
+     * @param integer $conversation
+     */
+    public function join($user, $conversation)
+    {
+        if(!is_array($user)) {
+            $user = [$user];
+        }
+        
+        
+        $ret = 0;
+        $m_conversation_user = $this->getModel()->setConversationId($conversation);
+        foreach ($user as $u) {
+            $m_conversation_user->setUserId($u);
+            if($this->getMapper()->select($m_conversation_user)->count() === 0) {
+                $ret =+ $this->getMapper()->insert($m_conversation_user);
+            }
+        }
+        
+        return $ret;
+    }
+
+    public function add($conversation, $users)
+    {
+        $ret = [];
+        foreach ($users as $user) {
+            $ret[$user] = $this->getMapper()->add($conversation, $user);
+        }
+
+        return $ret;
+    }
+
+    public function replace($conversation, $users)
+    {
+        $this->getMapper()->deleteNotIn($conversation, $users);
+
+        return $this->add($conversation, $users);
     }
 
     /**

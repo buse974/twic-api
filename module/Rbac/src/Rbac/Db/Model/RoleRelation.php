@@ -13,11 +13,8 @@ class RoleRelation extends BaseRoleRelation
     {
         parent::exchangeArray($data);
 
-        $this->role = new Role($this);
-        $this->permission = new Permission($this);
-
-        $this->permission->exchangeArray($data);
-        $this->role->exchangeArray($data);
+        $this->permission = $this->requireModel('rbac_service_permission', $data);
+        $this->role = $this->requireModel('rbac_service_role', $data);
     }
 
     public function setPermission($permission)

@@ -16,13 +16,9 @@ class GradingPolicyGrade extends BaseGradingPolicyGrade
     {
         parent::exchangeArray($data);
 
-        $this->user = new User($this);
-        $this->program = new Program($this);
-        $this->course = new Course($this);
-
-        $this->user->exchangeArray($data);
-        $this->program->exchangeArray($data);
-        $this->course->exchangeArray($data);
+        $this->user = $this->requireModel('app_model_user', $data);
+        $this->program = $this->requireModel('app_model_program', $data);
+        $this->course = $this->requireModel('app_model_course', $data);
     }
 
     public function setLetter($letter)

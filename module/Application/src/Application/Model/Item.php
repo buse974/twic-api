@@ -26,19 +26,12 @@ class Item extends BaseItem
     {
         parent::exchangeArray($data);
 
-        $this->module = new Module($this);
-        $this->program = new Program($this);
-        $this->course = new Course($this);
-        $this->item_prog = new ItemProg($this);
-        $this->item_assignment = new ItemAssignment($this);
-        $this->item_grade = new ItemGrading($this);
-
-        $this->module->exchangeArray($data);
-        $this->program->exchangeArray($data);
-        $this->course->exchangeArray($data);
-        $this->item_prog->exchangeArray($data);
-        $this->item_assignment->exchangeArray($data);
-        $this->item_grade->exchangeArray($data);
+        $this->module = $this->requireModel('app_model_module', $data);
+        $this->program = $this->requireModel('app_model_program', $data);
+        $this->course = $this->requireModel('app_model_course', $data);
+        $this->item_prog = $this->requireModel('app_model_item_prog', $data);
+        $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
+        $this->item_grade = $this->requireModel('app_model_item_grading', $data);
     }
 
     public function setMaterials($materials)

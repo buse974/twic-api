@@ -1,0 +1,12 @@
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('A', 95, 100, 4.0, 'Outstanding performance, works shows superior command of the subject.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('A-', 90, 94, 3.7, 'Very good work showing understanding and mastery of all concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('B+', 87, 89, 3.3, 'Good work showing understanding and mastery of most concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('B', 83, 86, 3.0, 'Fairly good work that shows an understanding of the main concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('B-', 80, 82, 2.7, 'Fairly good work showing understanding of several important concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('C+', 77, 79, 2.3, 'Uneven understanding of the concepts with occasional lack of clarity', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('C', 73, 76, 2.0, 'Work that barely meets modest expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('C-', 70, 72, 1.7, 'Work that is below modest expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('D+', 67, 69, 1.3, 'Poor performance with lack of understanding of several important concepts', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('D', 63, 66, 1.0, 'Work that is marginally above the minimum expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('D-', 60, 62, 0.7, 'Work that barely meets the minimum expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('F', 0, 59, 0, 'Work does not meet the minimum expectations for the class', true);

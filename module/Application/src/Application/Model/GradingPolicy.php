@@ -6,13 +6,11 @@ use Application\Model\Base\GradingPolicy as BaseGradingPolicy;
 
 class GradingPolicy extends BaseGradingPolicy
 {
-    
-    
     const GP_INDIVIDUAL_ASSIGNEMENT = 'IA';
     const GP_CAPSTONE_PROJECT = 'CP';
     const GP_LIVE_CLASS = 'LC';
     const GP_WORKGROUP = 'WG';
-    
+
     protected $items;
     protected $nbr_comment;
     protected $processed_grade;
@@ -25,8 +23,8 @@ class GradingPolicy extends BaseGradingPolicy
         }
 
         parent::exchangeArray($data);
-        $this->grading_policy_grade = new GradingPolicyGrade($this);
-        $this->grading_policy_grade->exchangeArray($data);
+
+        $this->grading_policy_grade = $this->requireModel('app_model_grading_policy_grade', $data);
     }
 
     public function getItems()
@@ -51,8 +49,8 @@ class GradingPolicy extends BaseGradingPolicy
         $this->nbr_comment = $nbr_comment;
 
         return $this;
-    } 
-    
+    }
+
     public function getProcessedGrade()
     {
         return $this->processed_grade;

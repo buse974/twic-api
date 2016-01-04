@@ -20,19 +20,79 @@ class Videoconf extends BaseVideoconf
     protected $videoconf_entity;
     protected $videoconf_invitation;
     protected $videoconf_admin;
+    protected $videoconf_archives;
+    protected $conversations;
+    protected $users;
+    protected $docs;
+    protected $item_assignment_id;
 
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
-        $this->videoconf_invitation = new VideoconfInvitation($this);
-        $this->videoconf_invitation->exchangeArray($data);
+        $this->videoconf_invitation = $this->requireModel('app_model_videoconf_invitation', $data);
+        $this->videoconf_admin = $this->requireModel('app_model_videoconf_admin', $data);
+        $this->videoconf_entity = $this->requireModel('app_model_videoconf_entity', $data);
+    }
 
-        $this->videoconf_entity = new VideoconfEntity($this);
-        $this->videoconf_entity->exchangeArray($data);
+    public function getItemAssignmentId()
+    {
+        return $this->item_assignment_id;
+    }
 
-        $this->videoconf_admin = new VideoconfAdmin($this);
-        $this->videoconf_admin->exchangeArray($data);
+    public function setItemAssignmentId($item_assignment_id)
+    {
+        $this->item_assignment_id = $item_assignment_id;
+
+        return $this;
+    }
+
+    public function getVideoconfArchives()
+    {
+        return $this->videoconf_archives;
+    }
+
+    public function setVideoconfArchives($videoconf_archives)
+    {
+        $this->videoconf_archives = $videoconf_archives;
+
+        return $this;
+    }
+
+    public function getDocs()
+    {
+        return $this->docs;
+    }
+
+    public function setDocs($docs)
+    {
+        $this->docs = $docs;
+
+        return $this;
+    }
+
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    public function setUsers($users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    public function getConversations()
+    {
+        return $this->conversations;
+    }
+
+    public function setConversations($conversations)
+    {
+        $this->conversations = $conversations;
+
+        return $this;
     }
 
     public function setVideoconfEntity($videoconf_entity)

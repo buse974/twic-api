@@ -15,8 +15,7 @@ class ItemAssignment extends BaseItemAssignment
     {
         parent::exchangeArray($data);
 
-        $this->item_prog = new ItemProg($this);
-        $this->item_prog->exchangeArray($data);
+        $this->item_prog = $this->module = $this->requireModel('app_model_item_prog', $data);
     }
 
     public function setItemProg($item_prog)

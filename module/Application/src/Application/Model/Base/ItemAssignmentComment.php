@@ -10,6 +10,8 @@ class ItemAssignmentComment extends AbstractModel
     protected $text;
     protected $user_id;
     protected $item_assignment_id;
+    protected $file;
+    protected $file_name;
     protected $created_date;
     protected $read_date;
 
@@ -59,6 +61,30 @@ class ItemAssignmentComment extends AbstractModel
     public function setItemAssignmentId($item_assignment_id)
     {
         $this->item_assignment_id = $item_assignment_id;
+
+        return $this;
+    }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    public function getFileName()
+    {
+        return $this->file_name;
+    }
+
+    public function setFileName($file_name)
+    {
+        $this->file_name = $file_name;
 
         return $this;
     }

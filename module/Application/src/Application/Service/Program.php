@@ -3,6 +3,8 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Role as ModelRole;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Program extends AbstractService
 {
@@ -42,7 +44,6 @@ class Program extends AbstractService
      * Update Program.
      *
      * @invokable
-
      *
      * @param int    $id
      * @param string $name
@@ -70,19 +71,45 @@ class Program extends AbstractService
     /**
      * @invokable
      *
-     * @param array $filter
+     * @param array  $filter
+     * @param string $search
+     * @param string $school
      */
-    public function getList($filter = null, $search = null)
+    public function getList($filter = null, $search = null, $school = null)
     {
-        $res_program = $this->getListByUser($filter, $this->getServiceAuth()->getIdentity()->getId(), true, $search);
+        $user = $this->getServiceUser()->getIdentity();
+
+        $res_program = $this->getListByUser($filter, $user['id'], $search, $school);
 
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'student', null, null, $m_program->getId())['count']);
             $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1, 'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
-            $m_program->setCourse($this->getServiceCourse()->getList($m_program->getId(), null, array('n' => 1, 'p' => 1))['count']);
+            $m_program->setCourse($this->getServiceCourse()->count($m_program->getId()));
         }
 
         return $res_program;
+    }
+    
+    public function getListUser($user)
+    {
+        return $this->getMapper()->getListUser($user);
+    }
+
+    public function getListByUser($filter = null, $user = null, $search = null, $school = null)
+    {
+        if ($user === null) {
+            $user = $this->getServiceAuth()->getIdentity()->getId();
+        }
+        $mapper = $this->getMapper();
+    
+        $res = $mapper->usePaginator($filter)->getList($user, $search, $school);
+    
+        return array('list' => $res, 'count' => $mapper->count());
+    }
+    
+    public function getListBySchool($school)
+    {
+        return $this->getMapper()->select($this->getModel()->setSchoolId($school)->setDeletedDate(new IsNull()));
     }
 
     /**
@@ -106,18 +133,6 @@ class Program extends AbstractService
         return $m_program;
     }
 
-    public function getListByUser($filter = null, $user = null, $all = false, $search = null)
-    {
-        if ($user === null) {
-            $user = $this->getServiceAuth()->getIdentity()->getId();
-        }
-        $mapper = $this->getMapper();
-
-        $res = $mapper->usePaginator($filter)->getList($user, $all, $search);
-
-        return array('list' => $res, 'count' => $mapper->count());
-    }
-
     /**
      * Delete Program by ID.
      *
@@ -138,6 +153,7 @@ class Program extends AbstractService
         foreach ($id as $p) {
             $m_program = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($p);
             $ret[$p] = $this->getMapper()->update($m_program);
+            $this->getServiceCourse()->deleteProgram($p);
         }
 
         return $ret;

@@ -14,7 +14,7 @@ class School extends AbstractModel
     protected $describe;
     protected $website;
     protected $programme;
-    protected $backroung;
+    protected $background;
     protected $phone;
     protected $contact;
     protected $contact_id;
@@ -119,14 +119,14 @@ class School extends AbstractModel
         return $this;
     }
 
-    public function getBackroung()
+    public function getBackground()
     {
-        return $this->backroung;
+        return $this->background;
     }
 
-    public function setBackroung($backroung)
+    public function setBackground($background)
     {
-        $this->backroung = $backroung;
+        $this->background = $background;
 
         return $this;
     }

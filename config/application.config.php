@@ -12,6 +12,7 @@ return array(
         'Auth',
         'Mail',
         'Rbac',
+        'SimplePageCrawler',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
@@ -30,6 +31,7 @@ return array(
             'ZOpenTok' => __DIR__.'/../vendor/buse974/zopentok',
             'Mail' => __DIR__.'/../module/Mail',
             'Rbac' => __DIR__.'/../module/Rbac',
+            'SimplePageCrawler' => __DIR__.'/../vendor/blanchonvincent/simple-page-crawler',
         ),
 
         // An array of paths from which to glob configuration files after
@@ -43,7 +45,7 @@ return array(
         // Whether or not to enable a configuration cache.
         // If enabled, the merged configuration will be cached and used in
         // subsequent requests.
-        'config_cache_enabled' => true,
+        'config_cache_enabled' => false,
 
         // The key used to create the configuration cache file name.
         //'config_cache_key' => $stringKey,
@@ -51,7 +53,7 @@ return array(
         // Whether or not to enable a module class map cache.
         // If enabled, creates a module class map cache which will be used
         // by in future requests, to reduce the autoloading process.
-        'module_map_cache_enabled' => true,
+        'module_map_cache_enabled' => false,
 
         // The key used to create the class map cache file name.
         //'module_map_cache_key' => $stringKey,

@@ -7,7 +7,6 @@ use Dal\Model\AbstractModel;
 class RoleRelation extends AbstractModel
 {
     protected $role_id;
-
     protected $parent_id;
 
     protected $prefix = 'role_relation';

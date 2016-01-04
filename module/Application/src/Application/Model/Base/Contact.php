@@ -11,7 +11,7 @@ class Contact extends AbstractModel
     protected $contact_id;
     protected $request_date;
     protected $deleted_date;
-    protected $acepted_date;
+    protected $accepted_date;
 
     protected $prefix = 'contact';
 
@@ -75,14 +75,14 @@ class Contact extends AbstractModel
         return $this;
     }
 
-    public function getAceptedDate()
+    public function getAcceptedDate()
     {
-        return $this->acepted_date;
+        return $this->accepted_date;
     }
 
-    public function setAceptedDate($acepted_date)
+    public function setAcceptedDate($accepted_date)
     {
-        $this->acepted_date = $acepted_date;
+        $this->accepted_date = $accepted_date;
 
         return $this;
     }

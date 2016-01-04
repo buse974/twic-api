@@ -20,7 +20,8 @@ class Role extends AbstractService
      */
     public function add($name)
     {
-        if ($this->getMapper()->insert($this->getModel()->setName($name)) <= 0) {
+        if ($this->getMapper()->insert($this->getModel()
+            ->setName($name)) <= 0) {
             throw new \Exception('error insert');
         }
 
@@ -41,8 +42,7 @@ class Role extends AbstractService
     {
         $m_role = $this->getModel();
 
-        $m_role->setId($id)
-               ->setName($name);
+        $m_role->setId($id)->setName($name);
 
         return $this->getMapper()->update($m_role);
     }
@@ -58,7 +58,8 @@ class Role extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()->setId($id));
+        return $this->getMapper()->delete($this->getModel()
+            ->setId($id));
     }
 
     /**
@@ -77,12 +78,13 @@ class Role extends AbstractService
     }
 
     /**
-     *
      */
     public function getRoleByUser($id = null)
     {
         if ($id === null) {
-            $id = $this->getServiceAuth()->getIdentity()->getId();
+            $id = $this->getServiceAuth()
+                ->getIdentity()
+                ->getId();
         }
 
         return $this->getMapper()->getRoleByUser($id);

@@ -19,8 +19,7 @@ class Mail extends BaseMail
     {
         parent::exchangeArray($data);
 
-        $this->mail_user = new MailUser($this);
-        $this->mail_user->exchangeArray($data);
+        $this->mail_user = $this->requireModel('app_model_mail_user', $data);
     }
 
     public function setReceiver($receiver)
