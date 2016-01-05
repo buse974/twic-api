@@ -10,6 +10,9 @@ class Item extends BaseItem
     const TYPE_WORKGROUP = 'WG';
     const TYPE_INDIVIDUAL_ASSIGMENT = 'IA';
     const TYPE_CAPSTONE_PROJECT = 'CP';
+    const TYPE_POLL = 'POLL';
+    const TYPE_DOCUMENT = 'DOC';
+    const TYPE_TXT = 'TXT';
 
     protected $materials;
     protected $module;
