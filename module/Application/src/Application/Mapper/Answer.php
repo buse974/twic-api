@@ -6,7 +6,7 @@ use Dal\Mapper\AbstractMapper;
 
 class Answer extends AbstractMapper
 {
-    public function getList($item_prog, $peer)
+    public function getList($item_prog, $peer, $me)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'peer_id', 'type', 'created_date'))
@@ -20,6 +20,7 @@ class Answer extends AbstractMapper
             ->join('questionnaire', 'questionnaire.id=questionnaire_user.questionnaire_id', array())
             ->join('item', 'item.id=questionnaire.item_id', array('answer$item' => 'id', 'answer$course' => 'course_id'))
             ->join('item_prog', 'item_prog.item_id=item.id', array())
+            ->where(array("( answer.type='PEER' OR (answer.type='SELF' AND user.id = ? )) " => $me))
             ->where(array('scale.value <> 0'));
 
         if (null !== $peer) {

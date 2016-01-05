@@ -43,7 +43,9 @@ class Answer extends AbstractService
      */
     public function getList($item_prog = null, $peer = null)
     {
-        return $this->getMapper()->getList($item_prog, $peer);
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->getMapper()->getList($item_prog, $peer, $me);
     }
 
     /**
