@@ -6,13 +6,14 @@ use Dal\Service\AbstractService;
 use Application\Model\Item as CItem;
 use DateTime;
 use DateTimeZone;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class ItemAssignment extends AbstractService
 {
     /**
      * @invokable
      *
-     * @param int $item_prog
+     * @param integer $item_prog
      *
      * @return array
      */
@@ -28,6 +29,21 @@ class ItemAssignment extends AbstractService
         return $this->_get($this->add($item_prog));
     }
 
+    /**
+     * @invokable
+     *
+     * @param integer $item_prog
+     *
+     * @return boolean
+     */
+    public function isGroupWorkSubmitted($item_prog)
+    {
+        $res_item_assignment = $this->getMapper()->select($this->getModel()
+            ->setItemProgId($item_prog));
+    
+        return ($res_item_assignment->count() > 0 && !$res_item_assignment->current()->getSubmitDate() instanceof IsNull);
+    }
+    
     public function getIdByItemProg($item_prog)
     {
         $m_item_assigment = $this->getModel()->setItemProgId($item_prog);
