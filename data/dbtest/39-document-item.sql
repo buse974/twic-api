@@ -16,5 +16,5 @@ CREATE TABLE IF NOT EXISTS `document` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-ALTER TABLE `item` CHANGE COLUMN `type` `type` ENUM('LC', 'WG', 'CP', 'IA', 'DOC', 'TXT') NOT NULL ;
+ALTER TABLE `item` CHANGE COLUMN `type` `type` ENUM('LC', 'WG', 'CP', 'IA', 'DOC', 'TXT', 'POLL') NOT NULL ;
 
