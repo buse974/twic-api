@@ -4,10 +4,11 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class ItemAssignment extends AbstractMapper
 {
-    public function get($id)
+    public function get($id, $user)
     {
         $select = $this->tableGateway->getSql()->select();
 

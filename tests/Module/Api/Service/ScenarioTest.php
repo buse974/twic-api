@@ -2634,6 +2634,7 @@ class ScenarioTest extends AbstractService
 
     /**
      * @depends testCanAddProgrmItem
+     * @depends testCanAddUserCourse
      */
     public function testCanAddItemAssigment($item_prog)
     {
