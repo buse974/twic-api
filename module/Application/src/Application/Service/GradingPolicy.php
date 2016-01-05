@@ -17,7 +17,7 @@ class GradingPolicy extends AbstractService
      * @return bool
      */
     public function replace($datas, $course)
-    {
+    { 
         $this->getMapper()->delete($this->getModel()->setCourseId($course));
         foreach ($datas as $gp) {
             $this->_add($gp['name'], $gp['grade'], $course);
@@ -39,8 +39,13 @@ class GradingPolicy extends AbstractService
         foreach ($datas as $gp) {
             $name = isset($gp['name']) ? $gp['name'] : null;
             $grade = isset($gp['grade']) ? $gp['grade'] : null;
-
-            $ret[$gp['id']] = $this->_update($gp['id'], $name, $grade);
+            if(array_key_exists('id', $gp)){
+                $ret[$gp['id']] = $this->_update($gp['id'], $name, $grade);
+            }
+            else{
+                $id = $this->_add($name, $grade, 1);
+                $ret[$id] = $id;
+            }
         }
 
         return $ret;
@@ -70,7 +75,15 @@ class GradingPolicy extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()->setId($id));
+        
+        if (! is_array($id)) {
+            $id = array($id);
+        }
+        $ret = 0;
+        foreach ($id as $i) {
+            $ret += $this->getMapper()->delete($this->getModel()->setId($i));
+        }
+        return $ret;
     }
 
     /**
@@ -135,6 +148,8 @@ class GradingPolicy extends AbstractService
     /**
      * Get the list of Grading policy by course id.
      *
+     * @invokable
+     * 
      * @param int $course
      * @param int $user
      */

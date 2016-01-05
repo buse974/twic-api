@@ -6,6 +6,7 @@ use Dal\Service\AbstractService;
 use Application\Model\Item as CItem;
 use DateTime;
 use DateTimeZone;
+use JRpc\Json\Server\Exception\JrpcException;
 
 class ItemAssignment extends AbstractService
 {
@@ -248,6 +249,52 @@ class ItemAssignment extends AbstractService
         $this->getServiceEvent()->assignmentGraded($item_assignment, $u);
 
         return true;
+    } 
+    
+    /**
+     * @invokable
+     *
+     * @param int $id
+     *
+     * @return int
+     */
+    public function update($id, $documents = null,  $response = null, $submit = false)
+    {
+        $user = $this->getServiceUser()->getIdentity()['id'];
+        $students = $this->getServiceUser()->getListByItemAssignment($id);
+        $res_item_assignment = array();
+        foreach($students as $student){
+            if($student->getId() === $user){
+                $res_item_assignment = $this->getMapper()->select($this->getModel()->setId($id));
+                break;
+            }
+        }
+        if($res_item_assignment !== null && $res_item_assignment->getSubmitDate() instanceof \Zend\Db\Sql\Predicate\IsNull){
+            $m_item_assignment = $res_item_assignment->current();
+            if($response !== null){
+                $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr>'));
+            }
+            if (is_array($documents)){
+                $this->getServiceItemAssignmentDocument()->deleteByItemAssignment($id);
+                foreach ($documents as $d) {
+                    $type = isset($d['type']) ? $d['type'] : null;
+                    $title = isset($d['title']) ? $d['title'] : null;
+                    $author = isset($d['author']) ? $d['author'] : null;
+                    $link = isset($d['link']) ? $d['link'] : null;
+                    $source = isset($d['source']) ? $d['source'] : null;
+                    $token = isset($d['token']) ? $d['token'] : null;
+                    $date = isset($d['date']) ? $d['date'] : null;
+
+                    $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
+                }
+            }
+            if($submit){
+                $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            }
+
+            return $this->getMapper()->update($m_item_assignment);
+        }
+        return 0;
     }
 
     /**
