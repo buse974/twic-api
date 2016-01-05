@@ -1,28 +1,29 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class GradingPolicy extends AbstractService
 {
+
     /**
      * replace grading.
      *
      * @invokable
      *
-     * @param array $datas
-     * @param int   $course
+     * @param array $datas            
+     * @param int $course            
      *
      * @return bool
      */
     public function replace($datas, $course)
-    { 
-        $this->getMapper()->delete($this->getModel()->setCourseId($course));
+    {
+        $this->getMapper()->delete($this->getModel()
+            ->setCourseId($course));
         foreach ($datas as $gp) {
             $this->_add($gp['name'], $gp['grade'], $course);
         }
-
+        
         return true;
     }
 
@@ -31,7 +32,7 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param array $datas
+     * @param array $datas            
      */
     public function update($datas)
     {
@@ -39,30 +40,30 @@ class GradingPolicy extends AbstractService
         foreach ($datas as $gp) {
             $name = isset($gp['name']) ? $gp['name'] : null;
             $grade = isset($gp['grade']) ? $gp['grade'] : null;
-            if(array_key_exists('id', $gp)){
+            if (array_key_exists('id', $gp)) {
                 $ret[$gp['id']] = $this->_update($gp['id'], $name, $grade);
-            }
-            else{
+            } else {
                 $id = $this->_add($name, $grade, 1);
                 $ret[$id] = $id;
             }
         }
-
+        
         return $ret;
     }
 
     /**
-     * @param int    $id
-     * @param string $name
-     * @param int    $grade
+     *
+     * @param int $id            
+     * @param string $name            
+     * @param int $grade            
      */
     public function _update($id, $name = null, $grade = null)
     {
         $m_grading = $this->getModel()
-                          ->setName($name)
-                          ->setGrade($grade)
-                          ->setId($id);
-
+            ->setName($name)
+            ->setGrade($grade)
+            ->setId($id);
+        
         return $this->getMapper()->update($m_grading);
     }
 
@@ -71,17 +72,17 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      */
     public function delete($id)
     {
-        
         if (! is_array($id)) {
             $id = array($id);
         }
         $ret = 0;
         foreach ($id as $i) {
-            $ret += $this->getMapper()->delete($this->getModel()->setId($i));
+            $ret += $this->getMapper()->delete($this->getModel()
+                ->setId($i));
         }
         return $ret;
     }
@@ -91,9 +92,9 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int    $course_id
-     * @param string $name
-     * @param string $grade
+     * @param int $course_id            
+     * @param string $name            
+     * @param string $grade            
      *
      * @return int
      */
@@ -102,17 +103,17 @@ class GradingPolicy extends AbstractService
         if ($this->_add($name, $grade, $course_id) <= 0) {
             throw new \Exception('error insert grading policy');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
     public function _add($name, $grade, $course)
     {
         $m_grading = $this->getModel()
-                          ->setName($name)
-                          ->setGrade($grade)
-                          ->setCourseId($course);
-
+            ->setName($name)
+            ->setGrade($grade)
+            ->setCourseId($course);
+        
         return $this->getMapper()->insert($m_grading);
     }
 
@@ -121,27 +122,29 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int $course
+     * @param int $course            
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($course)
     {
-        return $this->getMapper()->select($this->getModel()->setCourseId($course));
+        return $this->getMapper()->select($this->getModel()
+            ->setCourseId($course));
     }
 
     public function initTpl($course)
     {
-        $res_grading_policy = $this->getMapper()->select($this->getModel()->setTpl(true));
-
+        $res_grading_policy = $this->getMapper()->select($this->getModel()
+            ->setTpl(true));
+        
         foreach ($res_grading_policy as $m_grading_policy) {
             $m_grading_policy->setId(null)
-                             ->setCourseId($course)
-                             ->setTpl(false);
-
+                ->setCourseId($course)
+                ->setTpl(false);
+            
             $this->getMapper()->insert($m_grading_policy);
         }
-
+        
         return true;
     }
 
@@ -149,9 +152,9 @@ class GradingPolicy extends AbstractService
      * Get the list of Grading policy by course id.
      *
      * @invokable
-     * 
-     * @param int $course
-     * @param int $user
+     *
+     * @param int $course            
+     * @param int $user            
      */
     public function getListByCourse($course, $user)
     {
@@ -159,6 +162,7 @@ class GradingPolicy extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\GradingPolicyGrade
      */
     public function getServiceGradingPolicyGrade()
