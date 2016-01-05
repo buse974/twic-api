@@ -268,7 +268,7 @@ class ItemAssignment extends AbstractService
             $m_item = $this->getServiceItem()->getByItemProg($m_item_assignment->getItemProgId());
 
             if ($response !== null) {
-                $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<div><span><p><strong><img><hr><u><a><ol><ul><li>'));
+                $m_item_assignment->setResponse(strip_tags(htmlspecialchars_decode(htmlentities($response)), '<style><pre><div><span><p><strong><img><hr><u><a><ol><ul><li>'));
             }
             if (is_array($documents)) {
                 $this->getServiceItemAssignmentDocument()->deleteByItemAssignment($id);
