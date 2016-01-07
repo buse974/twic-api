@@ -3866,6 +3866,60 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
+    
+    /**
+     * @depends testAddCourse
+     * @depends testAddMaterialDocument
+     * @depends testAddModuleInCourse
+     */
+    public function testAddItemDocument($id, $material, $module)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('item.add', array(
+            'course' => $id,
+            'duration' => 234,
+            'title' => 'un document',
+            'describe' => 'super description',
+            'type' => 'DOC',
+            'weight' => 1,
+            'module' => $module,
+            'data' => [
+                'link' => 'link',
+                'token' => 'token',
+                'title' => 'title'
+            ]
+        ));
+    
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['result'] , 3); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        
+        return $data['result'];
+    }
+    
+    /**
+     * @depends testAddItemDocument
+     */
+    public function testUpdateItemDocument($item)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('document.update', array(
+            'item' => $item,
+            'link' => 'linkupt',
+            'token' => 'tokenupt',
+            'title' => 'titleupt'));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    
+    
     // DELETE
     
     /**
