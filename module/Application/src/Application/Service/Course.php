@@ -228,7 +228,7 @@ class Course extends AbstractService
 
         //si il est academic on enleve le user puis on recupere tous les cour de l'ecole
         $school = null;
-        if($is_academic===true) {
+        if($is_academic===true && $program===null) {
             $school = $u['school']['id'];
             $user = null;
         }
