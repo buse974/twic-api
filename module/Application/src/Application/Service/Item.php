@@ -26,7 +26,7 @@ class Item extends AbstractService
      *
      * @return integer
      */
-    public function add($course, $grading_policy, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $module = null, $materials = null, $data = null)
+    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $module = null, $materials = null, $data = null)
     {
         $m_item = $this->getModel()
             ->setTitle($title)
@@ -55,19 +55,14 @@ class Item extends AbstractService
         
         switch ($type) {
             case ModelItem::TYPE_DOCUMENT :
-                foreach ($data as $d) {
-                    $link = isset($d['link'])?$d['link']:null;
-                    $token = isset($d['token'])?$d['token']:null;
-                    $ti = isset($d['title'])?$d['title']:null;
-                    
-                    $this->getServiceDocument()->add($ti, $link, $token, $item_id);
-                }
-            break;
-            
+                $link = isset($data['link'])?$data['link']:null;
+                $token = isset($data['token'])?$data['token']:null;
+                $ti = isset($data['title'])?$data['title']:null;
+                $this->getServiceDocument()->add($ti, $link, $token, $item_id);
+                break;
             case ModelItem::TYPE_POLL : 
                 $ti = isset($d['title'])?$d['title']:$title;
                 $poll_questions = isset($d['questions'])?$d['questions']:null;
-                
                 $this->getServicePoll()->add($ti, $poll_questions);
                 break;
         }

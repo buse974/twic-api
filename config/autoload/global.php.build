@@ -99,6 +99,7 @@ return [
             'app_service_guidelines',
             'app_service_connection',
             'app_service_poll',
+            'app_service_document',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
