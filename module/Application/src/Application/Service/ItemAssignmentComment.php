@@ -8,10 +8,11 @@ use DateTimeZone;
 
 class ItemAssignmentComment extends AbstractService
 {
-    public function add($item_assignment_id, $text, $file = null, $file_name = null)
+    public function add($item_assignment_id, $text = null, $audio = null, $file = null, $file_name = null)
     {
         $m_item_assignment_comment = $this->getModel()->setItemAssignmentId($item_assignment_id)
                                                       ->setText($text)
+                                                      ->setAudio($audio)
                                                       ->setFile($file)
                                                       ->setFileName($file_name)
                                                       ->setUserId($this->getServiceAuth()->getIdentity()->getId())
