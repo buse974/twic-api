@@ -2836,7 +2836,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['documents'][0]['source'] , "source");
         $this->assertEquals($data['result']['documents'][0]['token'] , "token");
         $this->assertEquals(count($data['result']['comments']) , 1);
-        $this->assertEquals(count($data['result']['comments'][0]) , 8);
+        $this->assertEquals(count($data['result']['comments'][0]) , 9);
         $this->assertEquals(count($data['result']['comments'][0]['user']) , 5);
         $this->assertEquals(count($data['result']['comments'][0]['user']['roles']) , 1);
         $this->assertEquals(count($data['result']['comments'][0]['user']['roles'][0]) , 2);
@@ -2848,6 +2848,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['comments'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['comments'][0]['id'] , 1);
         $this->assertEquals($data['result']['comments'][0]['text'] , "text text text");
+        $this->assertEquals($data['result']['comments'][0]['audio'] , null);
         $this->assertEquals($data['result']['comments'][0]['item_assignment_id'] , 2);
         $this->assertEquals($data['result']['comments'][0]['file'] , null);
         $this->assertEquals($data['result']['comments'][0]['file_name'] , null);
@@ -3843,7 +3844,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['documents'][0]['source'], "source");
         $this->assertEquals($data['result']['documents'][0]['token'], "token");
         $this->assertEquals(count($data['result']['comments']), 1);
-        $this->assertEquals(count($data['result']['comments'][0]), 8);
+        $this->assertEquals(count($data['result']['comments'][0]), 9);
         $this->assertEquals(count($data['result']['comments'][0]['user']), 5);
         $this->assertEquals(count($data['result']['comments'][0]['user']['roles']), 1);
         $this->assertEquals(count($data['result']['comments'][0]['user']['roles'][0]), 2);
@@ -3855,6 +3856,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['comments'][0]['user']['avatar'], null);
         $this->assertEquals($data['result']['comments'][0]['id'], 1);
         $this->assertEquals($data['result']['comments'][0]['text'], "text text text");
+        $this->assertEquals($data['result']['comments'][0]['audio'] , null);
         $this->assertEquals($data['result']['comments'][0]['file'], null);
         $this->assertEquals($data['result']['comments'][0]['file_name'], null);
         $this->assertEquals($data['result']['comments'][0]['item_assignment_id'], 2);
