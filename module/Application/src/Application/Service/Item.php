@@ -106,7 +106,7 @@ class Item extends AbstractService
             ->setTitle($title)
             ->setDescribe($describe)
             ->setWeight($weight)
-            ->setGradingPolicyId($grading_policy)
+            ->setGradingPolicyId(($grading_policy===0)?new IsNull():$grading_policy)
             ->setModuleId($module);
         
         /*
