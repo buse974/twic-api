@@ -17,6 +17,7 @@ class MessageUser extends AbstractMapper
             ->join(array('message_user_from' => 'user'), 'message_user_from.id=message_user.from_id', array('id','firstname','lastname','avatar'))
             ->where(array('message_user.user_id' => $me))
             ->where(array('message_user.deleted_date IS NULL'))
+            ->where(array(' ( message_user_message.is_draft IS FALSE OR ( message_user_message.is_draft IS TRUE AND message_user_from.id = ? )) ' => $me))
             ->order(array('message_user.id' => 'DESC'));
         
         if (null !== $message) {
@@ -73,7 +74,7 @@ class MessageUser extends AbstractMapper
                         ->where(array('message_user.type = ?) ' => 'RS'), Predicate::OP_OR);
                     break;
                 default:
-                    ;
+                    $subselect->where(array(' ( message.is_draft IS FALSE OR ( message.is_draft IS TRUE AND message_user.from_id = ? )) ' => $me));
                     break;
             }
             
