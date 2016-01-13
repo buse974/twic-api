@@ -12,7 +12,7 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param array $datas
-     * @param int   $school
+     * @param integer   $school
      *
      * @return bool
      */
@@ -25,15 +25,33 @@ class Grading extends AbstractService
 
         return true;
     }
+    
+    /**
+     * update grading policy by program.
+     *
+     * @invokable
+     *
+     * @param array $datas
+     * @param integer   $program
+     *
+     * @return bool
+     */
+    public function updateProgram($datas, $program)
+    {
+        $this->getMapper()->delete($this->getModel()->setProgramId($program));
+        foreach ($datas as $gp) {
+            $this->_add($gp['letter'], $gp['min'], $gp['max'], $gp['grade'], $gp['description'], null, $program);
+        }
+    
+        return true;
+    }
 
     /**
      * Get Grading by school id.
      *
      * @invokable
      *
-     * @param int $school
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @param integer $school
      */
     public function getBySchool($school = null)
     {
@@ -43,22 +61,33 @@ class Grading extends AbstractService
 
         return $this->getMapper()->select($this->getModel()->setSchoolId($school));
     }
+    
+    /**
+     * Get Grading by program id.
+     *
+     * @invokable
+     *
+     * @param integer $program
+     */
+    public function getByProgram($program)
+    {
+        return $this->getMapper()->select($this->getModel()->setProgramId($program));
+    }
 
     /**
      * Get Grading by school id.
      *
      * @invokable
      *
-     * @param int $school
+     * @param integer $school
      *
-     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByCourse($course)
     {
         return $this->getMapper()->getByCourse($course);
     }
 
-    public function _add($letter, $min, $max, $grade, $description, $school)
+    public function _add($letter, $min, $max, $grade, $description, $school= null, $program= null)
     {
         $m_grading = $this->getModel()
                            ->setLetter($letter)
@@ -66,7 +95,8 @@ class Grading extends AbstractService
                            ->setMax($max)
                            ->setGrade($grade)
                            ->setDescription($description)
-                           ->setSchoolId($school);
+                           ->setSchoolId($school)
+                           ->setProgramId($program);
 
         return $this->getMapper()->insert($m_grading);
     }
