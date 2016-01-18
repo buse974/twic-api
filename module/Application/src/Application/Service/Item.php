@@ -297,26 +297,6 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $module            
-     *
-     * @return array
-     */
-    public function getListByModule($module)
-    {
-        $res_items = $this->getMapper()->select($this->getModel()
-            ->setModuleId($module));
-        
-        foreach ($res_items as $m_item) {
-            $m_item->setItemProg($this->getServiceItemProg()
-                ->getList($m_item->getId()));
-        }
-        
-        return $res_items;
-    }
-
-    /**
-     * @invokable
-     *
      * @param int $item_prog            
      *
      * @throws \Exception

@@ -31,6 +31,14 @@
             "url":  "git@github.com:buse974/SimplePageCrawler.git"
         }
     ],
+    "autoload": {
+        "psr-4": {  
+            "Application\\": "module/Application/src/", 
+            "Auth\\": "module/Auth/src/",
+            "Mail\\": "module/Mail/src/", 
+            "Rbac\\": "module/Rbac/src/" 
+        }
+    },
     "config": {
             "bin-dir": "bin/"
    }
