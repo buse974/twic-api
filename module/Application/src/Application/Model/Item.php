@@ -13,6 +13,7 @@ class Item extends BaseItem
     const TYPE_POLL = 'POLL';
     const TYPE_DOCUMENT = 'DOC';
     const TYPE_TXT = 'TXT';
+    const TYPE_MODULE = 'MOD';
 
     protected $materials;
     protected $module;
@@ -25,6 +26,46 @@ class Item extends BaseItem
     protected $new_message;
     protected $nbr_comment;
 
+    /*protected $module_assignments;
+    protected $material_document;
+    protected $items;
+    
+    public function setModuleAssignments($module_assignments)
+    {
+        $this->module_assignments = $module_assignments;
+    
+        return $this;
+    }
+    
+    public function getModuleAssignments()
+    {
+        return $this->module_assignments;
+    }
+    
+    public function setMaterialDocument($material_document)
+    {
+        $this->material_document = $material_document;
+    
+        return $this;
+    }
+    
+    public function getMaterialDocument()
+    {
+        return $this->material_document;
+    }
+    
+    public function setItems($items)
+    {
+        $this->items = $items;
+    
+        return $this;
+    }
+    
+    public function getItems()
+    {
+        return $this->items;
+    }*/
+    
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
