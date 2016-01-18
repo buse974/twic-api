@@ -321,14 +321,6 @@ class Course extends AbstractService
     }
 
     /**
-     * @return \Application\Service\Module
-     */
-    public function getServiceModule()
-    {
-        return $this->getServiceLocator()->get('app_service_module');
-    }
-
-    /**
      * @return \Application\Service\Item
      */
     public function getServiceItem()

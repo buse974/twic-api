@@ -15,7 +15,6 @@ class ItemProg extends AbstractMapper
         $select->columns(array('id','item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
             ->join('item', 'item.id=item_prog.item_id', array('id','title','describe','type'))
-            ->join('module', 'module.id=item.module_id', array('id','title'), $select::JOIN_LEFT)
             ->join('course', 'course.id=module.course_id', array('id','title'))
             ->join('program', 'program.id=course.program_id', array('id','name'))
             ->where(array('item_prog.id' => $id))
@@ -62,7 +61,6 @@ class ItemProg extends AbstractMapper
             ->join('course', 'course.id = item.course_id', array('id','title', 'picture'))
             ->join('program', 'program.id = course.program_id', array('id','name'))
             ->join('school', 'school.id = program.school_id', array())
-            ->join('module', 'module.id = item.module_id', array('id','title'), $select::JOIN_LEFT)
             ->join('grading_policy', 'grading_policy.id = item.grading_policy_id', array('name','type'))
             ->where(array('course.deleted_date IS NULL'))
             ->where(array('program.deleted_date IS NULL'))
@@ -100,7 +98,6 @@ class ItemProg extends AbstractMapper
         
         $select->columns(array('id','item_id','item_prog$start_date' => new Expression("DATE_FORMAT(item_prog.start_date, '%Y-%m-%dT%TZ') "),'item_prog$due_date' => new Expression("DATE_FORMAT(item_prog.due_date, '%Y-%m-%dT%TZ') ")))
             ->join('item', 'item.id = item_prog.item_id', array('id','title','type'))
-            ->join('module', 'module.id = item.module_id', array('id','title'), $select::JOIN_LEFT)
             ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
             ->join('item_assignment', 'item_assignment.item_prog_id=item_prog.id AND item_assignment_relation.item_assignment_id=item_assignment.id ', array('id','item_assignment$submit_date' => new Expression("DATE_FORMAT(item_assignment.submit_date, '%Y-%m-%dT%TZ') ")), $select::JOIN_LEFT)

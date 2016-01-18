@@ -15,8 +15,7 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'weight', 'course_id', 'grading_policy_id', 'module_id'))
-            ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
+        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'weight', 'course_id', 'grading_policy_id'))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item.id' => $id));
@@ -34,7 +33,6 @@ class Item extends AbstractMapper
             ->where(array('item_assignment_comment.read_date IS NULL'));
 
         $select->columns(array('id', 'title', 'item$new_message' => $select_new_message))
-            ->join('module', 'module.id=item.module_id', array('id', 'title'), $select::JOIN_LEFT)
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->join('item_prog', 'item_prog.item_id=item.id', array('id', 'item_prog$due_date' => new Expression('DATE_FORMAT(due_date, "%Y-%m-%dT%TZ")'), 'item_prog$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))

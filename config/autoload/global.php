@@ -58,7 +58,6 @@ return [
             'app_service_thread',
             'app_service_thread_message',
             'app_service_message',
-            'app_service_module',
             'app_service_module_assignments',
             'app_service_item_assignment',
             'app_service_item_prog',

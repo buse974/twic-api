@@ -573,38 +573,51 @@ class Event extends AbstractService
 
     public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
     {
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['item_prog' => ['id' => $m_item_assignment->getItemProg()->getId()],'item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType(), ],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle(), ], ],'comment' => ['id' => $m_comment->getId(),'text' => $m_comment->getText()]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'item_prog' => [
+                    'id' => $m_item_assignment->getItemProg()->getId()
+                ],'item' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                    'type' => $m_item_assignment->getItemProg()->getItem()->getType(), 
+                ],/*,'module' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(), 
+                    'course' => [
+                        'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle(), 
+                    ], 
+                ]*/
+                'comment' => [
+                    'id' => $m_comment->getId(),
+                    'text' => $m_comment->getText()
+                ]
+            ]
+        ];
     }
 
     public function getDataAssignmentGrade(\Application\Model\ItemAssignment $m_item_assignment)
     {
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['item_prog' => ['id' => $m_item_assignment->getItemProg()->getId()],'item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType(), ],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle(), ], ]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'item_prog' => [
+                    'id' => $m_item_assignment->getItemProg()->getId()
+                ],
+                'item' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                    'type' => $m_item_assignment->getItemProg()->getItem()->getType()
+                ],
+            /*'module' => ['title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
+                'course' => [
+                    'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle(), 
+                ], 
+            ]*/
+            ] 
+        ];
     }
 
     public function getDataAssignment(\Application\Model\ItemAssignment $m_item_assignment)
@@ -614,20 +627,27 @@ class Event extends AbstractService
             $users[] = ['id' => $student->getId(),'name' => 'user','data' => ['firstname' => $student->getFirstname(),'lastname' => $student->getLastname(),'avatar' => $student->getAvatar(),'school' => ['id' => $student->getSchool()->getId(),'short_name' => $student->getSchool()->getShortName(),'logo' => $student->getSchool()->getLogo()],'user_roles' => $student->getRoles()]];
         }
 
-        return ['id' => $m_item_assignment->getId(),'name' => 'assignment','data' => ['users' => $users,'item' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getTitle(),'type' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getType(), ],'item_prog' => ['id' => $m_item_assignment->getItemProg()->getId()],'module' => ['title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getModule()
-            ->getTitle(),'course' => ['id' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId(),'title' => $m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getTitle(), ], ]]];
+        return [
+            'id' => $m_item_assignment->getId(),
+            'name' => 'assignment',
+            'data' => [
+                'users' => $users,
+                'item' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
+                    'type' => $m_item_assignment->getItemProg()->getItem()->getType(), 
+                ],
+                'item_prog' => [
+                    'id' => $m_item_assignment->getItemProg()->getId()
+                ],
+                /*'module' => [
+                    'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
+                    'course' => [
+                        'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
+                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
+                    ]
+                ]*/
+            ]
+        ];
     }
 
     public function getDataUser($id = null)
