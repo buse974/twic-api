@@ -32,6 +32,7 @@
         <echo msg="Composer install" />
         	<composer command="update" composer="/usr/bin/composer.phar">
 				<arg value="--optimize-autoloader" />
+        		<arg value="--classmap-authoritative" />
 	   			<arg value="--working-dir=${tmp.basedir}" />
 	   			<arg value="--no-dev" />
         		<arg value="-q" />
