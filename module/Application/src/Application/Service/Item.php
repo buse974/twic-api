@@ -17,27 +17,26 @@ class Item extends AbstractService
      * @param string $describe            
      * @param integer $duration            
      * @param string $type            
-     * @param integer $weight            
-     * @param integer $module            
+     * @param integer $weight                      
      * @param array $materials            
-     * @param array $data            
+     * @param array $data   
+     * @param integer $parent;         
      *
      * @throws \Exception
      *
      * @return integer
      */
-    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $module = null, $materials = null, $data = null)
+    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $materials = null, $data = null, $parent = null)
     {
         $m_item = $this->getModel()
             ->setTitle($title)
             ->setDescribe($describe)
             ->setType($type)
-        /* ->setParentId($this->getMapper()->selectLastParentId($course))*/
+            ->setParentId($parent)
             ->setDuration($duration)
             ->setWeight($weight)
             ->setCourseId($course)
-            ->setGradingPolicyId($grading_policy)
-            ->setModuleId($module);
+            ->setGradingPolicyId($grading_policy);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
             throw new \Exception('error insert item');
@@ -93,21 +92,21 @@ class Item extends AbstractService
      * @param string $title            
      * @param string $describe            
      * @param int $weight            
-     * @param int $module            
+     * @param int $parent            
      * @param array $materials            
      *
      * @return int
      */
-    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, /* $parent = null, */ $module = null, $materials = null)
+    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $materials = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
             ->setDuration($duration)
             ->setTitle($title)
+            ->setParentId(($parent===0)?new IsNull():$parent)
             ->setDescribe($describe)
             ->setWeight($weight)
-            ->setGradingPolicyId(($grading_policy===0)?new IsNull():$grading_policy)
-            ->setModuleId($module);
+            ->setGradingPolicyId(($grading_policy===0)?new IsNull():$grading_policy);
         
         /*
          * if ($parent !== null) {
@@ -124,14 +123,14 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $course            
+     * @param int $course  
+     * @param integer $parent          
      *
      * @return array
      */
-    public function getList($course)
+    public function getList($course, $parent = null)
     {
-        $res_item = $this->getMapper()->select($this->getModel()
-            ->setCourseId($course));
+        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course)->setParentId($parent));
         foreach ($res_item as $m_item) {
             $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
             $ar_imdr = array();
@@ -196,21 +195,6 @@ class Item extends AbstractService
             ->setCourse($course);
         
         return $this->getMapper()->select($m_item);
-    }
-
-    public function deleteByModuleId($module)
-    {
-        $nbr = 0;
-        $res_item = $this->getMapper()->select($this->getModel()
-            ->setModuleId($module));
-        
-        if ($res_item->count() > 0) {
-            foreach ($res_item as $m_item) {
-                $nbr += $this->delete($m_item->getId());
-            }
-        }
-        
-        return $nbr;
     }
 
     /**

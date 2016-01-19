@@ -468,7 +468,7 @@ class ScenarioTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result'][0]) , 9);
+        $this->assertEquals(count($data['result'][0]) , 10);
         $this->assertEquals(count($data['result'][0]['materials']) , 1);
         $this->assertEquals($data['result'][0]['materials'][0] , 3);
         $this->assertEquals($data['result'][0]['id'] , 1);
@@ -478,8 +478,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['type'] , "WG");
         $this->assertEquals($data['result'][0]['weight'] , 1);
         $this->assertEquals($data['result'][0]['course_id'] , 1);
+        $this->assertEquals($data['result'][0]['parent_id'] , 2);
         $this->assertEquals($data['result'][0]['grading_policy_id'] , 8);
-        $this->assertEquals(count($data['result'][1]) , 9);
+        $this->assertEquals(count($data['result'][1]) , 10);
         $this->assertEquals(count($data['result'][1]['materials']) , 0);
         $this->assertEquals($data['result'][1]['id'] , 2);
         $this->assertEquals($data['result'][1]['title'] , "titl2e");
@@ -488,6 +489,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][1]['type'] , "CP");
         $this->assertEquals($data['result'][1]['weight'] , 1);
         $this->assertEquals($data['result'][1]['course_id'] , 1);
+        $this->assertEquals($data['result'][1]['parent_id'] , null);
         $this->assertEquals($data['result'][1]['grading_policy_id'] , 7);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
