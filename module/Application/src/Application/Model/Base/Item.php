@@ -14,7 +14,7 @@ class Item extends AbstractModel
 	protected $weight;
 	protected $course_id;
 	protected $grading_policy_id;
-	protected $module_id;
+	protected $parent_id;
 
 	protected $prefix = 'item';
 
@@ -114,14 +114,14 @@ class Item extends AbstractModel
 		return $this;
 	}
 
-	public function getModuleId()
+	public function getParentId()
 	{
-		return $this->module_id;
+		return $this->parent_id;
 	}
 
-	public function setModuleId($module_id)
+	public function setParentId($parent_id)
 	{
-		$this->module_id = $module_id;
+		$this->parent_id = $parent_id;
 
 		return $this;
 	}
