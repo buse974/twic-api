@@ -355,7 +355,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['firstname'] , "Jean");
         $this->assertEquals($data['result']['lastname'] , "Paul");
         $this->assertEquals($data['result']['email'] , "jpaul@thestudnet.com");
-        $this->assertEquals($data['result']['birth_date'] , "0000-00-00T00:00:00Z");
+        $this->assertEquals($data['result']['birth_date'] , null);
         $this->assertEquals($data['result']['position'] , "une position new");
         $this->assertEquals($data['result']['school_id'] , 1);
         $this->assertEquals($data['result']['interest'] , "un interet new");
