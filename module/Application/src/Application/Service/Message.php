@@ -178,10 +178,12 @@ class Message extends AbstractService
                 throw new \Exception('User ' . $me . ' is not in conversation ' . $conversation);
             }
         }
-        
+
         if (empty($text)) {
             throw new \Exception('error content is empty');
         }
+        
+        //@todo if $conversation is not null 
         $m_message = $this->getModel()
             ->setText($text)
             ->setType($type)
