@@ -97,12 +97,14 @@ class Program extends AbstractService
 
     public function getListByUser($filter = null, $user = null, $search = null, $school = null)
     {
+        $identity = $this->getServiceUser()->getIdentity();
+        
         if ($user === null) {
-            $user = $this->getServiceAuth()->getIdentity()->getId();
+            $user = $identity['id'];
         }
         $mapper = $this->getMapper();
-    
-        $res = $mapper->usePaginator($filter)->getList($user, $search, $school);
+        $is_sadmin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']));
+        $res = $mapper->usePaginator($filter)->getList($user, $search, $school, $is_sadmin);
     
         return array('list' => $res, 'count' => $mapper->count());
     }
