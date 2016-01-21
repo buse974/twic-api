@@ -130,7 +130,7 @@ class Item extends AbstractService
      */
     public function getList($course, $parent = null )
     {
-        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course)->setParentId($parent));
+        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course)->setParentId(($parent===null)?new IsNull():$parent));
         foreach ($res_item as $m_item) {
             $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
             $ar_imdr = array();
