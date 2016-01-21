@@ -25,14 +25,14 @@ class Program extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($user, $search = null, $school = null)
+    public function getList($user, $search = null, $school = null, $is_sadmin = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','name','level','sis','year'));
-        
+
         if (null !== $school) {
             $select->where(['school_id' => $school]);
-        } else {
+        } elseif($is_sadmin===false) {
             $sub_select = $this->getMapperUser()->tableGateway->getSql()->select();
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user));
             $select->where(['school_id' => $sub_select]);
