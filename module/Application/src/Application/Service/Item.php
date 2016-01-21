@@ -128,7 +128,7 @@ class Item extends AbstractService
      *
      * @return array
      */
-    public function getList($course, $parent = null)
+    public function getList($course, $parent = null )
     {
         $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course)->setParentId($parent));
         foreach ($res_item as $m_item) {

@@ -80,10 +80,10 @@ class Course extends AbstractService
 
     /**
      * Update course.
-     *
+     *  
      * @invokable
      *
-     * @param int    $id
+     * @param integer $id
      * @param string $title
      * @param string $abstract
      * @param string $description
