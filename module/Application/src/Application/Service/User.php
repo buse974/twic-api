@@ -47,17 +47,21 @@ class User extends AbstractService
             $user = $this->getServiceAuth()
                 ->getIdentity()
                 ->toArray();
+            
             $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][$role->getId()] = $role->getName();
-            }
-            $user['school'] = $this->get($id)['school'];
+            }   
+
+            $res_user = $this->getMapper()->get($id, $id);
+            $user['school'] = ($res_user->count() > 0) ? $res_user->current()->toArray()['school']:null;
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
+
             $secret_key_fb = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb'];
             $secret_key_fb_debug = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb_debug'];
+
             $generator = new TokenGenerator($secret_key_fb);
-            
             $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
                 ->setOption('debug', $secret_key_fb_debug)
                 ->setOption('expires', 1506096687)
