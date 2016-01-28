@@ -147,6 +147,19 @@ class Activity extends AbstractService
 
         return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_activity] : $res_activity;
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param array $filter
+     */
+    public function getListWithUser($filter = null, $search = null)
+    {
+        $mapper = $this->getMapper();
+        $res_activity = $mapper->usePaginator($filter)->getListWithUser($search);
+       
+        return ['count' => $mapper->count(), 'list' => $res_activity];
+    }
 
     /**
      * @invokable

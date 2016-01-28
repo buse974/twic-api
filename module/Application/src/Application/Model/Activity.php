@@ -6,9 +6,31 @@ use Application\Model\Base\Activity as BaseActivity;
 
 class Activity extends BaseActivity
 {
+    protected $user;
     protected $value_user;
     protected $value_total;
 
+    
+     public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
+
+        $this->user = $this->requireModel('app_model_user', $data);
+    }
+
+    
+     public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+    
     public function getValueTotal()
     {
         return $this->value_total;
