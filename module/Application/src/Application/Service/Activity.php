@@ -90,12 +90,11 @@ class Activity extends AbstractService
      * @param array  $object
      * @param array  $target
      * @param array  $user
-     * 
-     * @throws \Exception
-     * 
-     * @return int
+     * @param string $start_date
+     * @param string $end_date
+     * @param array $filter
      */
-    public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null)
+    public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null, $filter = null)
     {
         $m_activity = $this->getModel();
         $m_activity->setEvent($event)
@@ -128,7 +127,11 @@ class Activity extends AbstractService
             }
         }
 
-        $res_activity = $this->getMapper()->select($m_activity, array('date' => 'ASC'));
+        $mapper = ($filter !== null) ?
+            $this->getMapper()->usePaginator($filter) :
+            $this->getMapper();
+        
+        $res_activity = $mapper->select($m_activity, array('date' => 'ASC'));
 
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
@@ -142,7 +145,7 @@ class Activity extends AbstractService
             }
         }
 
-        return $res_activity;
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_activity] : $res_activity;
     }
 
     /**
