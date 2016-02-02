@@ -520,8 +520,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['school']['name'] , "université de monaco");
         $this->assertEquals($data['result']['school']['logo'] , "token");
         $this->assertEquals(count($data['result']['instructor']) , 1);
-        $this->assertEquals(count($data['result']['instructor'][0]) , 12);
-        $this->assertEquals($data['result']['instructor'][0]['contact_state'] , 0);
+        $this->assertEquals(count($data['result']['instructor'][0]) , 11);
         $this->assertEquals($data['result']['instructor'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['instructor'][0]['school']) , 5);
         $this->assertEquals($data['result']['instructor'][0]['school']['id'] , 1);
@@ -1501,8 +1500,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']), 8);
         $this->assertEquals(count($data['result']['message']), 10);
         $this->assertEquals(count($data['result']['message']['from']), 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]), 14);
-        $this->assertEquals($data['result']['message']['from'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['message']['from'][0]), 13);
         $this->assertEquals($data['result']['message']['from'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['message']['from'][0]['school']), 5);
         $this->assertEquals($data['result']['message']['from'][0]['school']['id'], 1);
@@ -1524,8 +1522,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['message']['from'][0]['program']), 0);
         $this->assertEquals(count($data['result']['message']['document']), 0);
         $this->assertEquals(count($data['result']['message']['to']), 1);
-        $this->assertEquals(count($data['result']['message']['to'][0]), 14);
-        $this->assertEquals($data['result']['message']['to'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['message']['to'][0]), 13);
         $this->assertEquals($data['result']['message']['to'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['message']['to'][0]['school']), 5);
         $this->assertEquals($data['result']['message']['to'][0]['school']['id'], 1);
@@ -1579,8 +1576,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']), 8);
         $this->assertEquals(count($data['result']['message']), 10);
         $this->assertEquals(count($data['result']['message']['from']), 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]), 14);
-        $this->assertEquals($data['result']['message']['from'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['message']['from'][0]), 13);
         $this->assertEquals($data['result']['message']['from'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['message']['from'][0]['school']), 5);
         $this->assertEquals($data['result']['message']['from'][0]['school']['id'], 1);
@@ -1602,8 +1598,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['message']['from'][0]['program']), 0);
         $this->assertEquals(count($data['result']['message']['document']), 0);
         $this->assertEquals(count($data['result']['message']['to']), 1);
-        $this->assertEquals(count($data['result']['message']['to'][0]), 14);
-        $this->assertEquals($data['result']['message']['to'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['message']['to'][0]), 13);
         $this->assertEquals($data['result']['message']['to'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['message']['to'][0]['school']), 5);
         $this->assertEquals($data['result']['message']['to'][0]['school']['background'], null);
@@ -1673,8 +1668,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]), 8);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']), 10);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from']), 1);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]), 14);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]), 13);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['school']), 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['school']['background'], null);
@@ -1696,8 +1690,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['program']), 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['document']), 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to']), 1);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]), 14);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]), 13);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['school']), 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['school']['background'], null);
@@ -1794,8 +1787,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]), 8);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']), 10);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['from']), 1);
-        $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]), 14);
-        $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]), 13);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]['school']), 5);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]['school']['background'], null);
@@ -1817,8 +1809,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['from'][0]['program']), 0);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['document']), 0);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['to']), 1);
-        $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['to'][0]), 14);
-        $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['to'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['to'][0]), 13);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['to'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['conversations'][1]['messages']['list'][0]['message']['to'][0]['school']), 5);
         $this->assertEquals($data['result']['conversations'][1]['messages']['list'][0]['message']['to'][0]['school']['background'], null);
@@ -1875,8 +1866,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]), 8);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']), 10);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from']), 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]), 14);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]), 13);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']), 5);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']['id'], 1);
@@ -1898,8 +1888,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['program']), 0);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['document']), 0);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to']), 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]), 14);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]), 13);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']), 5);
         $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']['background'], null);
@@ -2404,8 +2393,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['item_prog']['item']['program']['name'] , "program name upd");
         $this->assertEquals(count($data['result']['item_prog']['item']['course']) , 3);
         $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor']) , 1);
-        $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor'][0]) , 12);
-        $this->assertEquals($data['result']['item_prog']['item']['course']['instructor'][0]['contact_state'] , 0);
+        $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor'][0]) , 11);
         $this->assertEquals($data['result']['item_prog']['item']['course']['instructor'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor'][0]['school']) , 5);
         $this->assertEquals($data['result']['item_prog']['item']['course']['instructor'][0]['school']['id'] , 1);
@@ -2969,8 +2957,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 1);
-        $this->assertEquals(count($data['result']['list'][0]), 14);
-        $this->assertEquals($data['result']['list'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['list'][0]), 13);
         $this->assertEquals($data['result']['list'][0]['contacts_count'], 1);
         $this->assertEquals(count($data['result']['list'][0]['school']), 5);
         $this->assertEquals($data['result']['list'][0]['school']['background'], 'background');
@@ -3017,8 +3004,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list']), 1);
         $this->assertEquals(count($data['result']['list'][0]), 18);
         $this->assertEquals(count($data['result']['list'][0]['instructor']), 1);
-        $this->assertEquals(count($data['result']['list'][0]['instructor'][0]), 12);
-        $this->assertEquals($data['result']['list'][0]['instructor'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['list'][0]['instructor'][0]), 11);
         $this->assertEquals($data['result']['list'][0]['instructor'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['list'][0]['instructor'][0]['school']), 5);
         $this->assertEquals($data['result']['list'][0]['instructor'][0]['school']['background'], null);
@@ -3400,8 +3386,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['item_prog']['item']['program']['name'], "program name upd");
         $this->assertEquals(count($data['result']['item_prog']['item']['course']), 3);
         $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor']), 1);
-        $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor'][0]), 12);
-        $this->assertEquals($data['result']['item_prog']['item']['course']['instructor'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor'][0]), 11);
         $this->assertEquals($data['result']['item_prog']['item']['course']['instructor'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['item_prog']['item']['course']['instructor'][0]['school']), 5);
         $this->assertEquals($data['result']['item_prog']['item']['course']['instructor'][0]['school']['background'], null);
@@ -3666,8 +3651,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list']), 1);
         $this->assertEquals(count($data['result']['list'][0]), 18);
         $this->assertEquals(count($data['result']['list'][0]['instructor']), 1);
-        $this->assertEquals(count($data['result']['list'][0]['instructor'][0]), 12);
-        $this->assertEquals($data['result']['list'][0]['instructor'][0]['contact_state'], 0);
+        $this->assertEquals(count($data['result']['list'][0]['instructor'][0]), 11);
         $this->assertEquals($data['result']['list'][0]['instructor'][0]['contacts_count'], 0);
         $this->assertEquals(count($data['result']['list'][0]['instructor'][0]['school']), 5);
         $this->assertEquals($data['result']['list'][0]['instructor'][0]['school']['id'], 1);
