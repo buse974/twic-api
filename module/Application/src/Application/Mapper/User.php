@@ -11,19 +11,14 @@ class User extends AbstractMapper
 
     public function get($user, $me)
     {
-        $columns = array('id','firstname','gender','lastname','email','has_email_notifier','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id','user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1' . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),'user$contacts_count' => new Expression('SUM(IF(connections.accepted_date IS NOT NULL, 1, 0))'));
+        $columns = array('id','firstname','gender','lastname','email','has_email_notifier',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id');
         
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id','short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id','short_name'), $select::JOIN_LEFT)
-            ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
-            ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
-            ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
-            ->join(array('connections' => 'contact'), 'connections.user_id = user.id')
-            ->where(array('uu.id' => $me))
-            ->where('connections.accepted_date IS NOT NULL')
             ->where(array('user.id' => $user));
         
         return $this->selectWith($select);
@@ -45,7 +40,8 @@ class User extends AbstractMapper
             ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
         
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('user$id' => new Expression('user.id'),'firstname','lastname','email','password','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','user$contact_state' => new Expression('(contact.accepted_date IS NOT NULL OR other_contact.request_date IS NOT NULL) << 1' . ' | (contact.accepted_date IS NOT NULL OR contact.request_date IS NOT NULL)'),'user$contacts_count' => $sub))
+        $select->columns(array('user$id' => new Expression('user.id'),'firstname','lastname','email','password','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar',
+             'user$contacts_count' => $sub))
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
             ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
@@ -60,9 +56,6 @@ class User extends AbstractMapper
                 break;
             case 'random':
                 $select->order(new Expression('RAND()'));
-                break;
-            case 'contact_state':
-                $select->order('user$contact_state DESC');
                 break;
         }
         if ($exclude) {
@@ -149,6 +142,41 @@ class User extends AbstractMapper
         $select->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(array('user.id' => 'DESC'));
+        
+        return $this->selectWith($select);
+    }
+    
+    public function getListContact($me, $type = null, $date = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id','firstname','lastname','school_id' ,'email','password','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar'))
+            ->join('contact', 'contact.contact_id=user.id', array('request_date', 'accepted_date', 'deleted_date', 'requested', 'accepted', 'deleted'))
+            ->where('user.deleted_date IS NULL')
+            ->where(array('contact.user_id' => $me))
+            ->order(array('user.id' => 'DESC'))
+            ->quantifier('DISTINCT');
+        
+        switch ($type) {
+            case 1 : // on me demande en contact
+                $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS false AND accepted IS false AND deleted IS false'));
+                break;
+            case 2 : // j'ai demander en contact
+                $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS true AND accepted IS false AND deleted IS false'));
+                break;
+            case 3 : // on ma refuser en contact
+                $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NOT NULL AND requested IS true AND accepted IS false AND deleted IS false'));
+                break;
+            case 4 : // on ma suprimé alors que je suis en contact
+                $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NOT NULL AND deleted IS false'));
+                break;
+            case 5 : // contact ok
+                $select->where(array('contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
+                break;
+        }
+        
+        if($date) {
+            $select->where(array('( contact.request_date < ? ' => $date,' contact.accepted_date < ? ' => $date,' contact.deleted_date < ? ) ' => $date));
+        }
         
         return $this->selectWith($select);
     }

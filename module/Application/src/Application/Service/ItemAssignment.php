@@ -70,7 +70,7 @@ class ItemAssignment extends AbstractService
     {
         $m_item_prog = $this->getServiceItemProg()->getByItemAssignment($id);
         
-        $datetime1 = new \DateTime($m_item_prog->getStartDate());
+        $datetime1 = new \DateTime($m_item_prog->getStartDate(), new DateTimeZone('UTC'));
         $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
         
         if ($datetime1 > $datetime2) {
