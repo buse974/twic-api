@@ -270,6 +270,12 @@ class User extends AbstractService
         return $this->getMapper()->getList(null, null, $me, $type, null, $course, null, null, null, null, false);
     }
     
+    /**
+     * @invokable
+     * 
+     * @param integer $type
+     * @param string $date
+     */
     public function getListContact($type = 5, $date = null)
     {
         $me = $this->getServiceAuth()->getIdentity()->getId();
