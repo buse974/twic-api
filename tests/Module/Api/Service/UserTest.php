@@ -325,6 +325,85 @@ class UserTest extends AbstractService
     /**
      * @depends testCanAddUser
      */
+    public function testGetMulti($id)
+    {
+        $this->setIdentity(1);
+    
+        $ar = [
+            ['method' => 'user.get', 'id' => 1, 'params' => ['id' => 1]],
+            ['method' => 'user.get', 'id' => 2, 'params' => ['id' => 2]]
+        ];
+        
+        $data = $this->jsonRpcRequest($ar);
+        
+        $this->assertEquals(count($data) , 2);
+        $this->assertEquals(count($data[0]) , 3);
+        $this->assertEquals(count($data[0]['result']) , 17);
+        $this->assertEquals(count($data[0]['result']['origin']) , 2);
+        $this->assertEquals($data[0]['result']['origin']['id'] , null);
+        $this->assertEquals($data[0]['result']['origin']['short_name'] , null);
+        $this->assertEquals(count($data[0]['result']['nationality']) , 2);
+        $this->assertEquals($data[0]['result']['nationality']['id'] , null);
+        $this->assertEquals($data[0]['result']['nationality']['short_name'] , null);
+        $this->assertEquals($data[0]['result']['gender'] , null);
+        $this->assertEquals(count($data[0]['result']['school']) , 5);
+        $this->assertEquals($data[0]['result']['school']['id'] , 1);
+        $this->assertEquals($data[0]['result']['school']['name'] , "Morbi Corporation");
+        $this->assertEquals($data[0]['result']['school']['short_name'] , "turpis");
+        $this->assertEquals($data[0]['result']['school']['logo'] , null);
+        $this->assertEquals($data[0]['result']['school']['background'] , null);
+        $this->assertEquals($data[0]['result']['id'] , 1);
+        $this->assertEquals($data[0]['result']['firstname'] , "Paul");
+        $this->assertEquals($data[0]['result']['lastname'] , "Boussekey");
+        $this->assertEquals($data[0]['result']['email'] , "pboussekey@thestudnet.com");
+        $this->assertEquals($data[0]['result']['birth_date'] , null);
+        $this->assertEquals($data[0]['result']['position'] , null);
+        $this->assertEquals($data[0]['result']['school_id'] , 1);
+        $this->assertEquals($data[0]['result']['interest'] , null);
+        $this->assertEquals($data[0]['result']['avatar'] , null);
+        $this->assertEquals($data[0]['result']['has_email_notifier'] , 1);
+        $this->assertEquals($data[0]['result']['contacts_count'] , 6);
+        $this->assertEquals(count($data[0]['result']['roles']) , 1);
+        $this->assertEquals($data[0]['result']['roles'][0] , "admin");
+        $this->assertEquals(count($data[0]['result']['program']) , 0);
+        $this->assertEquals($data[0]['id'] , 1);
+        $this->assertEquals($data[0]['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data[1]) , 3);
+        $this->assertEquals(count($data[1]['result']) , 17);
+        $this->assertEquals(count($data[1]['result']['origin']) , 2);
+        $this->assertEquals($data[1]['result']['origin']['id'] , null);
+        $this->assertEquals($data[1]['result']['origin']['short_name'] , null);
+        $this->assertEquals(count($data[1]['result']['nationality']) , 2);
+        $this->assertEquals($data[1]['result']['nationality']['id'] , null);
+        $this->assertEquals($data[1]['result']['nationality']['short_name'] , null);
+        $this->assertEquals($data[1]['result']['gender'] , null);
+        $this->assertEquals(count($data[1]['result']['school']) , 5);
+        $this->assertEquals($data[1]['result']['school']['id'] , 1);
+        $this->assertEquals($data[1]['result']['school']['name'] , "Morbi Corporation");
+        $this->assertEquals($data[1]['result']['school']['short_name'] , "turpis");
+        $this->assertEquals($data[1]['result']['school']['logo'] , null);
+        $this->assertEquals($data[1]['result']['school']['background'] , null);
+        $this->assertEquals($data[1]['result']['id'] , 2);
+        $this->assertEquals($data[1]['result']['firstname'] , "Xuan-Anh");
+        $this->assertEquals($data[1]['result']['lastname'] , "Hoang");
+        $this->assertEquals($data[1]['result']['email'] , "xhoang@thestudnet.com");
+        $this->assertEquals($data[1]['result']['birth_date'] , null);
+        $this->assertEquals($data[1]['result']['position'] , null);
+        $this->assertEquals($data[1]['result']['school_id'] , 1);
+        $this->assertEquals($data[1]['result']['interest'] , null);
+        $this->assertEquals($data[1]['result']['avatar'] , null);
+        $this->assertEquals($data[1]['result']['has_email_notifier'] , 1);
+        $this->assertEquals($data[1]['result']['contacts_count'] , 6);
+        $this->assertEquals(count($data[1]['result']['roles']) , 1);
+        $this->assertEquals($data[1]['result']['roles'][0] , "super_admin");
+        $this->assertEquals(count($data[1]['result']['program']) , 0);
+        $this->assertEquals($data[1]['id'] , 2);
+        $this->assertEquals($data[1]['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanAddUser
+     */
     public function testGet($id)
     {
         $this->setIdentity(1);

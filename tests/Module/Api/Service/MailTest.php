@@ -12,18 +12,7 @@ class MailTest extends AbstractService
 		
 		parent::setUpBeforeClass();
 	}
-    
-   /* public function testCanTest()
-    {
-        $this->setIdentity(1);
-    
-        $datas = $this->jsonRpc('user.test', array());
-        
-        print_r($datas);
-        
-        exit();
-    }*/
-	
+
 	public function testCanSend()
 	{
 		$this->setIdentity(3);
