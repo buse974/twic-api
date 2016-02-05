@@ -10,8 +10,6 @@ chdir(__DIR__);
  */
 class bootstrap
 {
-    protected static $serviceManager;
-
     public static function init()
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
@@ -22,11 +20,6 @@ class bootstrap
         
         system('phing init-conf');
         static::initAutoloader();
-    }
-
-    public static function getServiceManager()
-    {
-        return static::$serviceManager;
     }
 
     protected static function initAutoloader()
