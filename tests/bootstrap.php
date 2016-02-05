@@ -10,8 +10,6 @@ chdir(__DIR__);
  */
 class bootstrap
 {
-    protected static $serviceManager;
-
     public static function init()
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
@@ -24,34 +22,20 @@ class bootstrap
         static::initAutoloader();
     }
 
-    public static function getServiceManager()
-    {
-        return static::$serviceManager;
-    }
-
     protected static function initAutoloader()
     {
-        // $vendorPath = static::findParentPath('vendor');
-        // $zf2Path = $vendorPath . '/zendframework/zendframework/library/';
-        // require $vendorPath . "/autoload.php";
-        // include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
+        $vendorPath = static::findParentPath('vendor');
+        $loader = include $vendorPath.'/autoload.php';
+        
         Zend\Loader\AutoloaderFactory::factory(array(
             'Zend\Loader\StandardAutoloader' => array(
                 'autoregister_zf' => true,
                 'namespaces' => array(
                     'ModuleTest' => __DIR__ . '/Module',
-                    'JsonRpcTest' => __DIR__ . '/JsonRpcClient')
+                    'JsonRpcTest' => __DIR__ . '/JsonRpcClient',
+                    'JrpcMock' => __DIR__ . '/JrpcMock')
             )
         ));
-        
-        $autolader = new Zend\Loader\StandardAutoloader(array('namespaces' => array('Zend' => __DIR__ . '/ZendMock')));
-        
-        spl_autoload_register(array($autolader,'autoload'), true, true);
-        
-        $serviceManager = new ServiceManager(new ServiceManagerConfig());
-        $serviceManager->setService('ApplicationConfig', include __DIR__ . '/config/application.config.php');
-        $serviceManager->get('ModuleManager')->loadModules();
-        static::$serviceManager = $serviceManager;
     }
 
     protected static function findParentPath($path)
