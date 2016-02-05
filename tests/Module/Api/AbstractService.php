@@ -12,8 +12,17 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
 
     public function setUp()
     {
-        $this->setApplicationConfig(include __DIR__ . '/../../config/application.config.php');
         parent::setUp();
+    }
+    
+    public function reset($keepPersistence = false) 
+    {
+        parent::reset($keepPersistence);
+        
+        $this->setApplicationConfig(include __DIR__ . '/../../config/application.config.php');
+        $serviceLocator = $this->getApplicationServiceLocator();
+        $serviceLocator->setAllowOverride(true);
+        $serviceLocator->setInvokableClass('json_server','JrpcMock\Json\Server\Server');
     }
 
     public function tearDown()
@@ -33,21 +42,35 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     
     public function jsonRpc($method, array $params, $hasToken=null)
     {
-    	if($hasToken){
-    		$this->getRequest()->getHeaders()->addHeaderLine('Authorization',$hasToken);
-    	}
-    	
-        $postJson = json_encode(array('method' => $method, 'id' => 1, 'params' => $params));
+        $postJson = array('method' => $method, 'id' => 1, 'params' => $params);
+        
+        return $this->jsonRpcRequest($postJson, $hasToken);
+    }
+    
+    public function jsonRpcRequest($request, $hasToken=null)
+    {
+        if($hasToken){
+            $this->getRequest()->getHeaders()->addHeaderLine('Authorization',$hasToken);
+        }
+        $ret = null;
+        $postJson = json_encode($request);
         file_put_contents(__DIR__ . '/../../_files/input.data',$postJson);
         $this->getRequest()->setMethod('POST');
+        
         $this->dispatch('/api.json-rpc');
         $response = $this->getResponse()->getContent();
-        
+    
         if(is_string($response)){
-        	exit($response);	
+            exit($response);
+        }elseif(is_array($response)) {
+            foreach ($response as $r) {
+                $ret[] = Json::decode($r,Json::TYPE_ARRAY);
+            }
+        } else {
+            $ret = Json::decode($response,Json::TYPE_ARRAY);
         }
         
-        return Json::decode($response,Json::TYPE_ARRAY);
+        return $ret;
     }
 
     /**
