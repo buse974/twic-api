@@ -35,8 +35,8 @@ class School extends AbstractService
                  ->setContactId($contact_id);
 
         if ($address !== null) {
-            $address_id = $this->getServiceAddress()->getAddress($address)->getId();
-            if ($address_id !== null) {
+            $address = $this->getServiceAddress()->getAddress($address);
+            if ($address && null !== ($address_id = $address->getId())) {
                 $m_school->setAddressId($address_id);
             }
         }
