@@ -251,7 +251,7 @@ class Videoconf extends AbstractService
     {
         return $this->getMapper()->getByVideoconfArchive($videoconf_archive)->current();
     }
-
+    
     /**
      * @invokable
      *
@@ -414,12 +414,22 @@ class Videoconf extends AbstractService
      */
     public function validTransfertVideo($videoconf_archive, $url)
     {
+        $event_send = true;
+        $videoconf = $this->getByVideoconfArchive($videoconf_archive)->getItemProgId();
+        $res_videoconf_archive = $this->getServiceVideoconfArchive()->getListByVideoConf($videoconf);
+        
+        foreach ($res_videoconf_archive as $m_videoconf_archive) {
+            if(CVF::ARV_AVAILABLE===$m_videoconf_archive->getArchiveStatus()) {
+                $event_send=false;
+            }
+        }
+        
         $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
-
-        $this->getServiceEvent()->recordAvailable(
-            $this->getByVideoconfArchive($videoconf_archive)->getItemProgId(),
-            $videoconf_archive);
-
+        
+        if($event_send) {
+            $this->getServiceEvent()->recordAvailable($videoconf,$videoconf_archive);
+        }
+        
         return $ret;
     }
 

@@ -55,6 +55,11 @@ class VideoconfArchive extends AbstractService
         return $this->getMapper()->getLastArchiveId($videoconf);
     }
 
+    public function getListByVideoConf($videoconf)
+    {
+        return $this->getMapper()->getListByVideoConf($videoconf);
+    }
+    
     /**
      * @param int $id
      *
