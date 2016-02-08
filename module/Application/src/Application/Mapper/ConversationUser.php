@@ -45,8 +45,11 @@ class ConversationUser extends AbstractMapper
     public function deleteNotIn($conversation, $users)
     {
         $delete = $this->tableGateway->getSql()->delete();
-        $delete->where(array('conversation_id' => $conversation))
-                ->where(new NotIn('user_id', $users));
+        $delete->where(array('conversation_id' => $conversation));
+        
+        if(empty($users)) {
+            $delete->where(new NotIn('user_id', $users));
+        }
 
         return $this->deleteWith($delete);
     }
