@@ -152,6 +152,7 @@ class Activity extends AbstractService
      * @invokable
      * 
      * @param array $filter
+     * @param string $search
      */
     public function getListWithUser($filter = null, $search = null)
     {
