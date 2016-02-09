@@ -387,10 +387,12 @@ class User extends AbstractService
      */
     public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null)
     {
-        if($birth_date!==null && \DateTime::createFromFormat('Y-m-d H:i:s',$birth_date)===false) {
-            $birth_date = null;
+        if($birth_date!==null
+            && \DateTime::createFromFormat('Y-m-d',$birth_date)===false
+            && \DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $birth_date)===false) {
+                $birth_date = null;
         }
-        
+            
         if($this->getNbrEmailUnique($email, $id) > 0) {
             throw new JrpcException('duplicate email', -38001);
         }
