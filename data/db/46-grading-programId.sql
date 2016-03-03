@@ -1,2 +1,0 @@
-ALTER TABLE `grading` 
-ADD COLUMN `program_id` INT UNSIGNED NULL DEFAULT NULL AFTER `school_id`;

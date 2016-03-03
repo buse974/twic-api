@@ -1,4 +1,0 @@
-ALTER TABLE `user` 
-CHANGE COLUMN `email` `email` VARCHAR(128) NOT NULL ,
-DROP INDEX `email_UNIQUE` ;
-
