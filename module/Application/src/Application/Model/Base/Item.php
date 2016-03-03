@@ -13,6 +13,7 @@ class Item extends AbstractModel
 	protected $type;
 	protected $weight;
 	protected $course_id;
+	protected $set_id;
 	protected $grading_policy_id;
 	protected $parent_id;
 
@@ -98,6 +99,18 @@ class Item extends AbstractModel
 	public function setCourseId($course_id)
 	{
 		$this->course_id = $course_id;
+
+		return $this;
+	}
+
+	public function getSetId()
+	{
+		return $this->set_id;
+	}
+
+	public function setSetId($set_id)
+	{
+		$this->set_id = $set_id;
 
 		return $this;
 	}
