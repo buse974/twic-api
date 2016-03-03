@@ -10,33 +10,34 @@ class Item extends AbstractService
 
     /**
      * @invokable
-     *
-     * @param integer $course            
-     * @param integer $grading_policy            
-     * @param string $title            
-     * @param string $describe            
-     * @param integer $duration            
-     * @param string $type            
-     * @param integer $weight                      
-     * @param array $materials            
-     * @param array $data   
-     * @param integer $parent;         
-     *
+     * 
+     * @param integer $course
+     * @param string $grading_policy
+     * @param string $title
+     * @param string $describe
+     * @param string $duration
+     * @param string $type
+     * @param string $data
+     * @param string $ct
+     * @param string $parent
+     * @param string $order
+     * 
      * @throws \Exception
-     *
+     * 
      * @return integer
      */
-    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $weight = null, $materials = null, $data = null, $parent = null)
+    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent = null, $order = null)
     {
         $m_item = $this->getModel()
+            ->setCourseId($course)
+            ->setGradingPolicyId($grading_policy)
             ->setTitle($title)
             ->setDescribe($describe)
+            ->setDuration($duration)
             ->setType($type)
             ->setParentId($parent)
-            ->setDuration($duration)
-            ->setWeight($weight)
-            ->setCourseId($course)
-            ->setGradingPolicyId($grading_policy);
+            ->setOrderId($order)
+            ->setWeight($weight);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
             throw new \Exception('error insert item');
@@ -85,28 +86,35 @@ class Item extends AbstractService
     
     /**
      * @invokable
-     *
-     * @param int $id            
-     * @param int $grading_policy            
-     * @param int $duration            
-     * @param string $title            
-     * @param string $describe            
-     * @param int $weight            
-     * @param int $parent            
-     * @param array $materials            
-     *
-     * @return int
+     * 
+     * @param integer $id
+     * @param string $grading_policy
+     * @param string $title
+     * @param string $describe
+     * @param string $duration
+     * @param string $type
+     * @param string $data
+     * @param string $ct
+     * @param string $parent
+     * @param string $order
+     * 
+     * @return integer
      */
-    public function update($id, $grading_policy = null, $duration = null, $title = null, $describe = null, $weight = null, $parent = null, $materials = null)
+    public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent = null, $order = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
-            ->setDuration($duration)
+            ->setGradingPolicyId(($grading_policy===0)?new IsNull():$grading_policy)
             ->setTitle($title)
-            ->setParentId(($parent===0)?new IsNull():$parent)
             ->setDescribe($describe)
+            ->setDuration($duration)
+            ->setType($type)
+            
+            
+            ->setParentId(($parent===0)?new IsNull():$parent)
+            
             ->setWeight($weight)
-            ->setGradingPolicyId(($grading_policy===0)?new IsNull():$grading_policy);
+            
         
         /*
          * if ($parent !== null) {
