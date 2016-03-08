@@ -6,11 +6,24 @@ use Dal\Model\AbstractModel;
 
 class CtDate extends AbstractModel
 {
- 	protected $item_id;
+ 	protected $id;
+	protected $item_id;
 	protected $date;
-	protected $AFTER;
+	protected $after;
 
 	protected $prefix = 'ct_date';
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
 
 	public function getItemId()
 	{
@@ -36,14 +49,14 @@ class CtDate extends AbstractModel
 		return $this;
 	}
 
-	public function getAFTER()
+	public function getAfter()
 	{
-		return $this->AFTER;
+		return $this->after;
 	}
 
-	public function setAFTER($AFTER)
+	public function setAfter($after)
 	{
-		$this->AFTER = $AFTER;
+		$this->after = $after;
 
 		return $this;
 	}

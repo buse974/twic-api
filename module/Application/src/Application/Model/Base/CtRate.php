@@ -6,12 +6,25 @@ use Dal\Model\AbstractModel;
 
 class CtRate extends AbstractModel
 {
- 	protected $item_id;
+ 	protected $id;
+	protected $item_id;
 	protected $inf;
 	protected $sup;
 	protected $target_id;
 
 	protected $prefix = 'ct_rate';
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
 
 	public function getItemId()
 	{

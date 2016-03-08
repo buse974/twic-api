@@ -10,23 +10,23 @@ class Item extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $course
-     * @param string $grading_policy
-     * @param string $title
-     * @param string $describe
-     * @param string $duration
-     * @param string $type
-     * @param string $data
-     * @param string $ct
-     * @param string $parent
-     * @param string $order
-     * 
+     *
+     * @param integer $course            
+     * @param string $grading_policy            
+     * @param string $title            
+     * @param string $describe            
+     * @param string $duration            
+     * @param string $type            
+     * @param string $data            
+     * @param string $ct            
+     * @param string $parent            
+     * @param string $order            
+     *
      * @throws \Exception
-     * 
+     *
      * @return integer
      */
-    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent = null, $order = null)
+    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $set = null, $parent = null, $order = null)
     {
         $m_item = $this->getModel()
             ->setCourseId($course)
@@ -35,34 +35,59 @@ class Item extends AbstractService
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setType($type)
-            ->setParentId($parent)
-            ->setOrderId($order)
-            ->setWeight($weight);
+            ->setSetId($set)
+            ->setOrderId($order);
+        
+        if (null === $parent) {
+            $m_item->setParentId($this->getMapper()->selectLastParentId($course));
+        }
         
         if ($this->getMapper()->insert($m_item) <= 0) {
             throw new \Exception('error insert item');
         }
         
         $item_id = $this->getMapper()->getLastInsertValue();
-        /*
-         * if ($parent !== null) {
-         * $this->updateParentId($item_id, $parent);
-         * }
-         */
-        if ($materials !== null) {
-            $this->getServiceItemMaterialDocumentRelation()->addByItem($item_id, $materials);
+        
+        if ($parent !== null) {
+             $this->updateParentId($item_id, $parent);
+        }
+        
+        if(null !== $ct) {
+            if(isset($ct['date'])) {
+                foreach ($ct['date'] as $date) {
+                    $this->getServiceCtDate()->add($item_id, $date['date'], (isset($date['after'])) ? $date['after'] : null);
+                }
+            }
+            if(isset($ct['done'])) {
+                foreach ($ct['done'] as $done) {
+                    $this->getServiceCtDone()->add($item_id, $done['target'], (isset($done['all'])) ? $done['all'] : null);
+                }
+            
+            }
+            if(isset($ct['group'])) {
+                foreach ($ct['group'] as $group) {
+                    $this->getServiceCtGroup()->add($item_id, $group['group'], (isset($group['belongs'])) ? $group['belongs'] : null);
+                }
+            
+            }
+            if(isset($ct['rate'])) {
+                foreach ($ct['rate'] as $rate) {
+                    $this->getServiceCtRate()->add($item_id, $rate['target'], (isset($rate['inf'])) ? $rate['inf'] : null, (isset($rate['sup'])) ? $rate['sup'] : null);
+                }
+            
+            }
         }
         
         switch ($type) {
-            case ModelItem::TYPE_DOCUMENT :
-                $link = isset($data['link'])?$data['link']:null;
-                $token = isset($data['token'])?$data['token']:null;
-                $ti = isset($data['title'])?$data['title']:null;
+            case ModelItem::TYPE_DOCUMENT:
+                $link = isset($data['link']) ? $data['link'] : null;
+                $token = isset($data['token']) ? $data['token'] : null;
+                $ti = isset($data['title']) ? $data['title'] : null;
                 $this->getServiceDocument()->add($ti, $link, $token, $item_id);
                 break;
-            case ModelItem::TYPE_POLL : 
-                $ti = isset($d['title'])?$d['title']:$title;
-                $poll_questions = isset($d['questions'])?$d['questions']:null;
+            case ModelItem::TYPE_POLL:
+                $ti = isset($d['title']) ? $d['title'] : $title;
+                $poll_questions = isset($d['questions']) ? $d['questions'] : null;
                 $this->getServicePoll()->add($ti, $poll_questions);
                 break;
         }
@@ -70,60 +95,58 @@ class Item extends AbstractService
         return $item_id;
     }
 
-    /*
-     * public function updateParentId($item, $parent_id)
-     * {
-     * $res_item = $this->getMapper()->select($this->getModel()->setId($item));
-     * $me_item = $res_item->current();
-     *
-     * // JE SORT
-     * $this->getMapper()->update($this->getModel()->setParentId($me_item->getParentId() === null ? new IsNull() : $me_item->getParentId()), array('parent_id' => $item, 'course_id' => $me_item->getCourseId()));
-     * // JE RENTRE
-     * $this->getMapper()->update($this->getModel()->setParentId($item), array('parent_id' => $parent_id, 'course_id' => $me_item->getCourseId()));
-     * $this->getMapper()->update($this->getModel()->setId($item)->setParentId($parent_id));
-     * }
-     */
-    
+    public function updateParentId($item, $parent_id)
+    {
+        $me_item = $this->getMapper()
+            ->select($this->getModel()
+            ->setId($item))
+            ->current();
+
+        if($item == $parent_id || $parent_id == $me_item->getParentId()) {
+            return;
+        }
+       
+        // JE SORT
+        $this->getMapper()->update($this->getModel()->setParentId($me_item->getParentId() === null ? new IsNull() : $me_item->getParentId()), array('parent_id' => $item,'course_id' => $me_item->getCourseId()));
+        // JE RENTRE
+        $this->getMapper()->update($this->getModel()
+            ->setParentId($item), array('parent_id' => $parent_id,'course_id' => $me_item->getCourseId()));
+        $this->getMapper()->update($this->getModel()
+            ->setId($item)
+            ->setParentId($parent_id));
+    }
+
     /**
      * @invokable
-     * 
-     * @param integer $id
-     * @param string $grading_policy
-     * @param string $title
-     * @param string $describe
-     * @param string $duration
-     * @param string $type
-     * @param string $data
-     * @param string $ct
-     * @param string $parent
-     * @param string $order
-     * 
+     *
+     * @param integer $id            
+     * @param string $grading_policy            
+     * @param string $title            
+     * @param string $describe            
+     * @param string $duration            
+     * @param string $type            
+     * @param string $data            
+     * @param string $ct            
+     * @param string $parent            
+     * @param string $order            
+     *
      * @return integer
      */
     public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent = null, $order = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
-            ->setGradingPolicyId(($grading_policy===0)?new IsNull():$grading_policy)
+            ->setGradingPolicyId(($grading_policy === 0) ? new IsNull() : $grading_policy)
             ->setTitle($title)
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setType($type)
-            
-            
-            ->setParentId(($parent===0)?new IsNull():$parent)
-            
-            ->setWeight($weight)
-            
+            ->setOrderId($order);
         
-        /*
-         * if ($parent !== null) {
-         * $this->updateParentId($id, $parent);
-         * }
-         */
-        if ($materials !== null) {
-            $this->getServiceItemMaterialDocumentRelation()->replaceByItem($id, $materials);
-        }
+         if ($parent !== null) {
+            $this->updateParentId($id, $parent);
+         }
+        
         
         return $this->getMapper()->update($m_item);
     }
@@ -131,24 +154,16 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $course  
-     * @param integer $parent          
+     * @param int $course            
+     * @param integer $parent            
      *
      * @return array
      */
-    public function getList($course, $parent = null )
+    public function getList($course, $parent = null)
     {
-        $res_item = $this->getMapper()->select($this->getModel()->setCourseId($course)->setParentId(($parent===null)?new IsNull():$parent));
-        foreach ($res_item as $m_item) {
-            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
-            $ar_imdr = array();
-            foreach ($res_imdr as $m_imdr) {
-                $ar_imdr[] = $m_imdr->getMaterialDocumentId();
-            }
-            $m_item->setMaterials($ar_imdr);
-        }
-        
-        return $res_item;
+        return $this->getMapper()->select($this->getModel()
+            ->setCourseId($course)
+            ->setParentId(($parent === 0) ? new IsNull() : $parent))->toArrayParent();
     }
 
     /**
@@ -160,18 +175,10 @@ class Item extends AbstractService
      */
     public function getListByUser($user)
     {
-        $res_item = $this->getMapper()->select($this->getModel()
-            ->setCourseId($course));
-        foreach ($res_item as $m_item) {
-            $res_imdr = $this->getServiceItemMaterialDocumentRelation()->getListByItemId($m_item->getId());
-            $ar_imdr = array();
-            foreach ($res_imdr as $m_imdr) {
-                $ar_imdr[] = $m_imdr->getMaterialDocumentId();
-            }
-            $m_item->setMaterials($ar_imdr);
-        }
-        
-        return $res_item->toArrayParent();
+        return $this->getMapper()
+            ->select($this->getModel()
+            ->setCourseId($course))
+            ->toArrayParent();
     }
 
     public function getListRecord($course, $user, $is_student)
@@ -361,7 +368,7 @@ class Item extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
+
     /**
      *
      * @return \Application\Service\Document
@@ -370,7 +377,7 @@ class Item extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_document');
     }
-    
+
     /**
      *
      * @return \Application\Service\Poll
@@ -379,4 +386,43 @@ class Item extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_poll');
     }
+    
+    
+    /**
+     *
+     * @return \Application\Service\CtDate
+     */
+    public function getServiceCtDate()
+    {
+        return $this->getServiceLocator()->get('app_service_ct_date');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\CtDone
+     */
+    public function getServiceCtDone()
+    {
+        return $this->getServiceLocator()->get('app_service_ct_done');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\CtGroup
+     */
+    public function getServiceCtGroup()
+    {
+        return $this->getServiceLocator()->get('app_service_ct_group');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\CtRate
+     */
+    public function getServiceCtRate()
+    {
+        return $this->getServiceLocator()->get('app_service_ct_rate');
+    }
+    
+    
 }

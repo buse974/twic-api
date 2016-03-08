@@ -129,7 +129,7 @@ class Item extends AbstractMapper
      *
      * @return int
      */
-    /*public function selectLastParentId($course = null, $id = null)
+    public function selectLastParentId($course = null, $id = null)
     {
         if ($course === null && $id = null) {
             throw new \Exception('Course and id are null');
@@ -153,7 +153,7 @@ class Item extends AbstractMapper
         $res = $this->selectWith($select);
 
         return (($res->count() > 0) ? $res->current()->getId() : null);
-    }*/
+    }
 
     /**
      * @param int $course

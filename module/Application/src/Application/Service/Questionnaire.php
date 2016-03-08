@@ -28,28 +28,25 @@ class Questionnaire extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog
+     * @param int $item
      */
-    public function getByItemProg($item_prog)
+    public function getByItem($item)
     {
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-
-        if ($m_item_prog->getItem()->getType() !== CI::TYPE_WORKGROUP) {
+        $m_item = $this->getServiceItem()->get($item);
+        
+        if ($m_item->getItem()->getType() !== CI::TYPE_WORKGROUP) {
             throw new  \Exception('No Workgroup');
         }
 
-        $res_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId());
+        $res_questionnaire = $this->getMapper()->getByItem($item);
 
         if ($res_questionnaire->count() <= 0) {
-            $this->create($m_item_prog->getItem()->getId());
-            $res_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId());
+            $this->create($item);
+            $res_questionnaire = $this->getMapper()->getByItem($item);
         }
 
         $m_questionnaire = $res_questionnaire->current();
-
-        $m_questionnaire->setQuestions($this->getServiceQuestion()
-            ->getList($m_questionnaire->getId()));
-
+        $m_questionnaire->setQuestions($this->getServiceQuestion()->getList($m_questionnaire->getId()));
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
 
         return $m_questionnaire;
@@ -58,15 +55,14 @@ class Questionnaire extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog
+     * @param int $item
      * @param int $user
      * @param int $question
      * @param int $scale
      */
-    public function answer($item_prog, $user, $question, $scale)
+    public function answer($item, $user, $question, $scale)
     {
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        $m_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId())->current();
+        $m_questionnaire = $this->getMapper()->getByItem($item)->current();
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
 
@@ -91,15 +87,15 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * @param int $item_prog
+     * @param int $item
      *
-     * @return NULL|int
+     * @return NULL|integer
      */
-    public function getNbrQuestionNoCompleted($item_prog)
+    public function getNbrQuestionNoCompleted($item)
     {
         $nbr = null;
         $user = $this->getServiceUser()->getIdentity()['id'];
-        $res_questionnaire = $this->getMapper()->getNbrQuestionNoCompleted($item_prog, $user);
+        $res_questionnaire = $this->getMapper()->getNbrQuestionNoCompleted($item, $user);
 
         if ($res_questionnaire->count() > 0) {
             $nbr = $res_questionnaire->current()->getNbNoCompleted();
@@ -114,17 +110,16 @@ class Questionnaire extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog
+     * @param int $item
      * @param int $user
      */
-    public function getAnswer($item_prog, $user = null)
+    public function getAnswer($item, $user = null)
     {
         if (null === $user) {
             $user = $this->getServiceUser()->getIdentity()['id'];
         }
 
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
-        $m_questionnaire = $this->getMapper()->getByItem($m_item_prog->getItem()->getId())->current();
+        $m_questionnaire = $this->getMapper()->getByItem($item)->current();
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
 
         $m_questionnaire_user->setAnswers($this->getServiceAnswer()
@@ -189,6 +184,14 @@ class Questionnaire extends AbstractService
         return $this->getServiceLocator()->get('app_service_item_assignment');
     }
 
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+        return $this->getServiceLocator()->get('app_service_item');
+    }
+    
     /**
      * @return \Application\Service\Answer
      */

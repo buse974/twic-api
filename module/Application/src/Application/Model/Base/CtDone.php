@@ -6,11 +6,24 @@ use Dal\Model\AbstractModel;
 
 class CtDone extends AbstractModel
 {
- 	protected $item_id;
+ 	protected $id;
+	protected $item_id;
 	protected $target_id;
 	protected $all;
 
 	protected $prefix = 'ct_done';
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
 
 	public function getItemId()
 	{

@@ -9,7 +9,6 @@ class Group extends AbstractModel
  	protected $id;
 	protected $uid;
 	protected $name;
-	protected $course_id;
 
 	protected $prefix = 'group';
 
@@ -45,18 +44,6 @@ class Group extends AbstractModel
 	public function setName($name)
 	{
 		$this->name = $name;
-
-		return $this;
-	}
-
-	public function getCourseId()
-	{
-		return $this->course_id;
-	}
-
-	public function setCourseId($course_id)
-	{
-		$this->course_id = $course_id;
 
 		return $this;
 	}

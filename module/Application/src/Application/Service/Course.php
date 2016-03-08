@@ -36,9 +36,7 @@ class Course extends AbstractService
     {
         $m_course = $this->getModel()
             ->setTitle($title)
-            ->setCreatorId($this->getServiceAuth()
-            ->getIdentity()
-            ->getId())
+            ->setCreatorId($this->getServiceAuth()->getIdentity()->getId())
             ->setAbstract($abstract)
             ->setPicture($picture)
             ->setDescription($description)
@@ -197,8 +195,6 @@ class Course extends AbstractService
         }
 
         $m_course = $res_couse->current();
-        $m_course->setMaterialDocument($this->getServiceMaterialDocument()
-            ->getListByCourse($id));
         $m_course->setGrading($this->getServiceGrading()
             ->getByCourse($id));
         $m_course->setGradingPolicy($this->getServiceGradingPolicy()

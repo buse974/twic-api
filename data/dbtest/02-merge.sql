@@ -1,3 +1,55 @@
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Paul', 'Boussekey', 'pboussekey@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Xuan-Anh', 'Hoang', 'xhoang@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Christophe', 'Robert', 'crobert@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Salim', 'Bendacha', 'sbendacha@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Sébastien', 'Sayegh', 'ssayegh@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Guillaume', 'Masmejean', 'gmasmejean@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Arthur', 'Flachs', 'aflachs@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
+
+INSERT INTO `language_level` (`level`) VALUES ('Elementary proficiency');
+INSERT INTO `language_level` (`level`) VALUES ('Limited working proficiency');
+INSERT INTO `language_level` (`level`) VALUES ('Professional working proficiency');
+INSERT INTO `language_level` (`level`) VALUES ('Full professional proficiency');
+INSERT INTO `language_level` (`level`) VALUES ('Native or bilingual proficiency');
+
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('A', 95, 100, 4.0, 'Outstanding performance, works shows superior command of the subject.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('A-', 90, 94, 3.7, 'Very good work showing understanding and mastery of all concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('B+', 87, 89, 3.3, 'Good work showing understanding and mastery of most concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('B', 83, 86, 3.0, 'Fairly good work that shows an understanding of the main concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('B-', 80, 82, 2.7, 'Fairly good work showing understanding of several important concepts.', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('C+', 77, 79, 2.3, 'Uneven understanding of the concepts with occasional lack of clarity', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('C', 73, 76, 2.0, 'Work that barely meets modest expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('C-', 70, 72, 1.7, 'Work that is below modest expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('D+', 67, 69, 1.3, 'Poor performance with lack of understanding of several important concepts', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('D', 63, 66, 1.0, 'Work that is marginally above the minimum expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('D-', 60, 62, 0.7, 'Work that barely meets the minimum expectations for the class', true);
+INSERT INTO `grading` (`letter`, `min`, `max`, `grade`, `description`, `tpl`) VALUES ('F', 0, 59, 0, 'Work does not meet the minimum expectations for the class', true);
+
+INSERT INTO `grading_policy` (`name`, `tpl`, `mandatory`, `type`,`grade`) VALUES ('Individual assignment', true, true, 'IA', 20);
+INSERT INTO `grading_policy` (`name`, `tpl`, `mandatory`, `type`, `grade`) VALUES ('Group work', true, true, 'WG', 20);
+INSERT INTO `grading_policy` (`name`, `tpl`, `mandatory`, `type`, `grade`) VALUES ('Live class', true, true, 'LC', 20);
+INSERT INTO `grading_policy` (`name`, `tpl`, `mandatory`, `type`, `grade`) VALUES ('Capstone project', true, true, 'CP', 20);
+INSERT INTO `grading_policy` (`name`, `tpl`, `mandatory`, `grade`) VALUES ('Attendance and participation', true, true, 20);
+
+SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO';
+
+INSERT INTO `role` (`id`, `name`) VALUES (0, 'guest');
+INSERT INTO `role` (`id`, `name`) VALUES ('1', 'super_admin');
+INSERT INTO `role` (`id`, `name`) VALUES ('2', 'admin');
+INSERT INTO `role` (`id`, `name`) VALUES ('3', 'academic');
+INSERT INTO `role` (`id`, `name`) VALUES ('4', 'student');
+INSERT INTO `role` (`id`, `name`) VALUES ('5', 'instructor');
+INSERT INTO `role` (`id`, `name`) VALUES ('6', 'recruiter');
+
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('0', '4');
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('2', '1');
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('3', '2');
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('5', '3');
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('4', '4');
+
+INSERT INTO `contact` (`accepted_date`, `contact_id`, `user_id`) VALUES ('2015-08-11 13:17:25', 1,2);
+INSERT INTO `contact` (`accepted_date`, `contact_id`, `user_id`) VALUES ('2015-08-11 13:17:25', 2,1);
+
 INSERT INTO `language` (`libelle`) VALUES ('Afar'); 
 INSERT INTO `language` (`libelle`) VALUES ('Abkhazian'); 
 INSERT INTO `language` (`libelle`) VALUES ('Achinese'); 
@@ -497,3 +549,79 @@ INSERT INTO `language` (`libelle`) VALUES ('Zande languages');
 INSERT INTO `language` (`libelle`) VALUES ('Zulu'); 
 INSERT INTO `language` (`libelle`) VALUES ('Zuni'); 
 INSERT INTO `language` (`libelle`) VALUES ('Zazaki'); 
+
+INSERT INTO `scale` (`name`, `value`) VALUES ('Strongly disagree', '1');
+INSERT INTO `scale` (`name`, `value`) VALUES ('Disagree', '2');
+INSERT INTO `scale` (`name`, `value`) VALUES ('Neither agree, nor disagree', '3');
+INSERT INTO `scale` (`name`, `value`) VALUES ('Agree', '4');
+INSERT INTO `scale` (`name`, `value`) VALUES ('Strongly agree', '5');
+INSERT INTO `scale` (`name`, `value`) VALUES ('I don\'t Know', '0');
+
+UPDATE question SET text = 'When working with others in a multicultural group, $subject like(s) to know about the historical, legal, political and economic conditions of their different countries.' WHERE id = 1;
+UPDATE question SET text = 'In group meetings $subject assume(s) that cultural values will differ amongst participants.' WHERE id = 2;
+UPDATE question SET deleted_date = CURRENT_TIMESTAMP WHERE id = 3;
+UPDATE question SET text = '$subject believe(s) that gender roles may vary amongst people from different countries and/or cultures.' WHERE id = 4;
+UPDATE question SET text = '$subject realize(s) that because of different cultural backgrounds in our team, our perspectives may not be the same as those of team members from other regions.' WHERE id = 5;
+UPDATE question SET text = '$subject believe(s)  that different cultural norms and values can affect business decisions in group work.' WHERE id = 6;
+UPDATE question SET text = '$subject adapt(s) my/his/her communication style to the cultural sensitivities in the group.' WHERE id = 7;
+UPDATE question SET text = 'When interacting with team members from different countries, $subject ask(s) questions to avoid misunderstanding.' WHERE id = 8;
+UPDATE question SET text = 'In group meetings with people from different countries, $subject never lose(s) patience and stop listening.' WHERE id = 9;
+UPDATE question SET text = '$subject am/is a good listener and pay(s) attention to what is being said by others.' WHERE id = 10;
+UPDATE question SET text = '$subject am/is able to easily persuade other team members and win them over to my/his/her perspective.' WHERE id = 11;
+UPDATE question SET text = 'Whenever there is conflict in the group, $subject seek(s) feedback from others regarding his/her/my ability to try to manage it.' WHERE id = 12;
+UPDATE question SET text = 'When other team members become stressed or confrontational, $subject make(s) an effort to keep the conversation calm.' WHERE id = 13;
+UPDATE question SET text = '$subject understand(s) how his/her/my behavior can affect others’ work and emotions in group work.' WHERE id = 14;
+UPDATE question SET text = 'Even during emotionally charged arguments, $subject remain(s) patient.' WHERE id = 15;
+UPDATE question SET text = 'In stressful group work situations, $subject never respond(s) too quickly or sharply.' WHERE id = 16;
+UPDATE question SET text = '$subject am/is aware of my/his/her verbal outbursts during the team discussions.' WHERE id = 17;
+UPDATE question SET text = '$subject adapt(s) my/his/her communication style to how others in the group are feeling.' WHERE id = 18;
+UPDATE question SET text = '$subject always try/tries to find the best way to communicate with other team members, even when there is resistance, confusion or conflict.' WHERE id = 19;
+UPDATE question SET text = '$subject like(s) to express opinions and share(s) ideas with others in the team.' WHERE id = 20;
+UPDATE question SET text = '$subject enjoy(s) being on stage and presenting the recommendations of our group work to others.' WHERE id = 21;
+UPDATE question SET text = 'During group discussions, $subject frequently use(s) stories and metaphors to get my/his/her ideas and recommendations across more persuasively.' WHERE id = 22;
+UPDATE question SET text = '$subject incorporate(s) other team members’ viewpoints into our group presentations.' WHERE id = 23;
+UPDATE question SET text = '$subject never become(s) impatient when listening to team members.' WHERE id = 24;
+UPDATE question SET text = 'During tense group discussions, $subject never project(s) my/his/her stress and sense of urgency onto other people.' WHERE id = 25;
+UPDATE question SET text = '$subject am/is an easy going and sociable person, and want(s) the team to work well together.' WHERE id = 26;
+UPDATE question SET text = 'Whenever $subject have/has a problem with the group assignment, $subject will contact the other team members to find solutions.' WHERE id = 27;
+UPDATE question SET text = 'Even when $subject am/is angry or frustrated with the pace or quality of his/her/my group’s work, I/he/she remain(s) cool, calm and collected.' WHERE id = 28;
+UPDATE question SET text = '$subject know(s) that I/he/she don’t/doesn’t work well under tight deadlines, so I/he/she get my/their part of the group work done well in advance.' WHERE id = 29;
+UPDATE question SET text = 'When $subject believe(s) that team members didn’t do a good job, I/he/she try/tries to understand the reasons for the failure and whether my/his/her actions or decisions had something to do with it.' WHERE id = 30;
+UPDATE question SET text = 'During group work discussions, $subject respectfully listen(s) to team members and then offer my/his/her opinions.' WHERE id = 31;
+UPDATE question SET text = '$subject am/is interested in understanding team members’ points of view, and then offering some suggestions based on what they’re saying.' WHERE id = 32;
+UPDATE question SET text = 'Even if $subject thinks I/he/she have/has a better plan, I/he/she let others feel good about their ideas too' WHERE id = 33;
+UPDATE question SET text = 'When our group project is criticized by the instructor, $subject don’t/doesn’t blame others and instead try/tries to understand what we did wrong and how we can improve for the next round.' WHERE id = 34;
+UPDATE question SET text = '$subject am/is able to manage my/his/her emotions in confrontational group work situations.' WHERE id = 35;
+UPDATE question SET text = '$subject encourage(s) the participation of everyone on the team.' WHERE id = 36;
+UPDATE question SET text = '$subject am/is able to build group pride, foster a positive emotional tone, and bring out the best in our team members.' WHERE id = 37;
+UPDATE question SET text = '$subject always notice(s) when team members appear annoyed, frustrated or overwhelmed by my/his/her personality' WHERE id = 38;
+UPDATE question SET text = 'Whenever team members don’t do what they were expected to do, $subject deal(s) with it professionally and politely and explain(s) what had to be done differently.' WHERE id = 39;
+UPDATE question SET text = '$subject can lead group discussions without team members feeling that they are being controlled.' WHERE id = 40;
+UPDATE question SET text = '$subject always congratulate(s) team members for a job well-done.' WHERE id = 41;
+UPDATE question SET text = 'Even if $subject don’t/doesn’t like a team member, I/he/she will still work proactively with that person to get the job done.' WHERE id = 42;
+UPDATE question SET text = '$subject take(s) other team members’ opinions into consideration when making decisions.' WHERE id = 43;
+UPDATE question SET text = '$subject never blame(s) the team members when things go wrong.' WHERE id = 44;
+UPDATE question SET text = '$subject use(s) “we” rather than “I” when describing our team’s accomplishments.' WHERE id = 45;
+UPDATE question SET text = 'When discussing the problem to be solved within the group, $subject am/is aware of how others perceive me/him/her.' WHERE id = 46;
+UPDATE question SET text = 'In case work discussions on which managerial option to follow, $subject am/is able to see the big picture and am/is not too narrowly focused.' WHERE id = 47;
+UPDATE question SET text = 'During debate on which group decision to take, $subject am/is able to consider issues from other team members’ perspectives.' WHERE id = 48;
+UPDATE question SET text = 'In case study discussions, $subject am/is easily able to identify the major issues confronting the organization and/or protagonists in the case.' WHERE id = 49;
+UPDATE question SET text = 'When other team members suggest an alternative solution or recommendation to mine/his/her, $subject listen(s) to them and weigh the pros and cons of the different options with all the team members.' WHERE id = 50;
+UPDATE question SET text = '$subject am/is able to read the emotions of the team members.' WHERE id = 51;
+UPDATE question SET text = '$subject easily build(s) relationships with almost everyone on the team.' WHERE id = 52;
+UPDATE question SET text = 'In group-work, $subject care about how others may feel when someone has been rude or condescending to them.' WHERE id = 53;
+UPDATE question SET text = '$subject understand(s) what motivates our team members, even those from different backgrounds.' WHERE id = 54;
+UPDATE question SET text = '$subject am/is able to read other team members’ emotions and use that insight to create a positive and participative forum for group work discussions.' WHERE id = 55;
+UPDATE question SET text = '$subject always approach(es) a new group task, even if it means added work for me/him/her, enthusiastically.' WHERE id = 56;
+UPDATE question SET text = '$subject really enjoy(s) it when the problem or issue that has to be solved as a team is a challenging and unexpected one.' WHERE id = 57;
+UPDATE question SET text = 'Even when the instructor seemed harsh in the criticism of our group work, $subject see(s) it as a way to improve for the next round.' WHERE id = 58;
+
+INSERT INTO `poll_question_type` VALUES (1,'text'),(2,'multiple_choice'),(3,'checkbox'),(4,'date'),(5,'time');
+UPDATE question SET text = 'In group-work, $subject care(s) about how others may feel when someone has been rude or condescending to them.' WHERE id = 53;
+
+INSERT INTO `school` (`name`, `next_name`, `short_name`, `describe`, `website`, `programme`, `phone`, `contact`, `contact_id`)
+VALUES
+('Morbi Corporation', 'Dolor Dolor Foundation', 'turpis', 'vel, mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et libero. Proin mi. Aliquam gravida mauris ut mi. Duis risus odio, auctor vitae, aliquet nec, imperdiet nec, leo. Morbi neque tellus, imperdiet non,', 'http://', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur', '04 17 21 41 32', 'Dane Z. Shepard', '1');
+UPDATE `user` SET `school_id` = 1;
+UPDATE `grading` SET `school_id` = 1;
+
