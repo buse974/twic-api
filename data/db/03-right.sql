@@ -934,6 +934,10 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('group.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'group.add'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('set.getList');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'set.getList'));
+
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('set.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'set.add'));

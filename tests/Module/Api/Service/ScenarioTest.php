@@ -354,6 +354,33 @@ class ScenarioTest extends AbstractService
     }
     
     /**
+     * @depends testAddCourse
+     */
+    public function testSetGetList($course)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('set.getList', [ 'course' => $course ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 5);
+        $this->assertEquals(count($data['result'][0]['groups']) , 1);
+        $this->assertEquals(count($data['result'][0]['groups'][0]) , 4);
+        $this->assertEquals(count($data['result'][0]['groups'][0]['users']) , 2);
+        $this->assertEquals($data['result'][0]['groups'][0]['users'][0] , 3);
+        $this->assertEquals($data['result'][0]['groups'][0]['users'][1] , 4);
+        $this->assertEquals($data['result'][0]['groups'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['groups'][0]['uid'] , "guid");
+        $this->assertEquals($data['result'][0]['groups'][0]['name'] , "namegroup");
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['uid'] , "suid");
+        $this->assertEquals($data['result'][0]['name'] , "nameset");
+        $this->assertEquals($data['result'][0]['course_id'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+    }
+    /**
      * @depends testAddSet
      */
     public function testUpdateSet($set)
