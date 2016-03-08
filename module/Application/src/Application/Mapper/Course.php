@@ -11,9 +11,8 @@ class Course extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','course$start_date' => new Expression('DATE_FORMAT(MIN(start_date), "%Y-%m-%dT%TZ")'),'course$end_date' => new Expression('DATE_FORMAT(MAX(start_date), "%Y-%m-%dT%TZ")'),'notes'))
+        $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes'))
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_LEFT)
             ->join(array('course_user' => 'user'), 'course_user.id=course.creator_id', array('id','firstname','lastname','email'))
             ->join(array('course_user_school' => 'school'), 'course_user_school.id=course_user.school_id', array('id','name','logo'), $select::JOIN_LEFT)
             ->join(array('course_program' => 'program'), 'course_program.id=course.program_id', array('id','name'))
@@ -30,7 +29,6 @@ class Course extends AbstractMapper
         
         $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes','program_id','course$start_date' => new Expression('DATE_FORMAT(MIN(start_date), "%Y-%m-%dT%TZ")'),'course$end_date' => new Expression('DATE_FORMAT(MAX(start_date), "%Y-%m-%dT%TZ")')))
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_LEFT)
             ->join('program', 'program.id=course.program_id', array())
             ->join('school', 'school.id=program.school_id', array())
             ->where(array('course.deleted_date IS NULL'))
@@ -83,8 +81,6 @@ class Course extends AbstractMapper
         $select->columns(array('id','title','abstract','description','picture'))
             ->join('program', 'course.program_id=program.id', array('id','name'), $select::JOIN_INNER)
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
-            ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
-            ->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)
             ->join('grading_policy', 'grading_policy.course_id=course.id', array(), $select::JOIN_LEFT)
             ->join('grading_policy_grade', 'grading_policy.id=grading_policy_grade.grading_policy_id AND grading_policy_grade.user_id=item_prog_user.user_id', array('course$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade)/SUM(IF(grading_policy_grade.grade IS NULL,0, grading_policy.grade)) AS DECIMAL )')), $select::JOIN_LEFT)
             ->where(array('item_prog_user.user_id' => $user))

@@ -7,15 +7,15 @@ use Dal\Model\AbstractModel;
 class Item extends AbstractModel
 {
  	protected $id;
+	protected $course_id;
+	protected $grading_policy_id;
 	protected $title;
 	protected $describe;
 	protected $duration;
 	protected $type;
-	protected $weight;
-	protected $course_id;
 	protected $set_id;
-	protected $grading_policy_id;
 	protected $parent_id;
+	protected $order_id;
 
 	protected $prefix = 'item';
 
@@ -27,6 +27,30 @@ class Item extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
+
+		return $this;
+	}
+
+	public function getCourseId()
+	{
+		return $this->course_id;
+	}
+
+	public function setCourseId($course_id)
+	{
+		$this->course_id = $course_id;
+
+		return $this;
+	}
+
+	public function getGradingPolicyId()
+	{
+		return $this->grading_policy_id;
+	}
+
+	public function setGradingPolicyId($grading_policy_id)
+	{
+		$this->grading_policy_id = $grading_policy_id;
 
 		return $this;
 	}
@@ -79,30 +103,6 @@ class Item extends AbstractModel
 		return $this;
 	}
 
-	public function getWeight()
-	{
-		return $this->weight;
-	}
-
-	public function setWeight($weight)
-	{
-		$this->weight = $weight;
-
-		return $this;
-	}
-
-	public function getCourseId()
-	{
-		return $this->course_id;
-	}
-
-	public function setCourseId($course_id)
-	{
-		$this->course_id = $course_id;
-
-		return $this;
-	}
-
 	public function getSetId()
 	{
 		return $this->set_id;
@@ -115,18 +115,6 @@ class Item extends AbstractModel
 		return $this;
 	}
 
-	public function getGradingPolicyId()
-	{
-		return $this->grading_policy_id;
-	}
-
-	public function setGradingPolicyId($grading_policy_id)
-	{
-		$this->grading_policy_id = $grading_policy_id;
-
-		return $this;
-	}
-
 	public function getParentId()
 	{
 		return $this->parent_id;
@@ -135,6 +123,18 @@ class Item extends AbstractModel
 	public function setParentId($parent_id)
 	{
 		$this->parent_id = $parent_id;
+
+		return $this;
+	}
+
+	public function getOrderId()
+	{
+		return $this->order_id;
+	}
+
+	public function setOrderId($order_id)
+	{
+		$this->order_id = $order_id;
 
 		return $this;
 	}

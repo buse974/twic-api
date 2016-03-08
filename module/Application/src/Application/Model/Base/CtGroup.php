@@ -6,12 +6,25 @@ use Dal\Model\AbstractModel;
 
 class CtGroup extends AbstractModel
 {
- 	protected $item_id;
+ 	protected $id;
+	protected $item_id;
 	protected $group_id;
 	protected $set_id;
 	protected $belongs;
 
 	protected $prefix = 'ct_group';
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
 
 	public function getItemId()
 	{

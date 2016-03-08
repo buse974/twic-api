@@ -5,6 +5,7 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Log\Writer\Syslog;
 
 class Activity extends AbstractMapper
 {
@@ -20,7 +21,8 @@ class Activity extends AbstractMapper
             $select->where(array('target_id' => $target_id,'target_name' => $target_name));
         }
         
-        $select->join('user_role', 'user_role.user_id=activity.user_id')->where(array('user_role.role_id=' . ModelRole::ROLE_STUDENT_ID . ''));
+        $select->join('user_role', 'user_role.user_id=activity.user_id')
+            ->where(array('user_role.role_id=' . ModelRole::ROLE_STUDENT_ID . ''));
         
         return $this->selectWith($select);
     }

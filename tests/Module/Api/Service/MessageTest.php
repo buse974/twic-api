@@ -41,7 +41,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['message']['from'][0]['roles'][0] , "admin");
+        $this->assertEquals($data['result']['message']['from'][0]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['message']['document']) , 0);
         $this->assertEquals(count($data['result']['message']['to']) , 2);
@@ -83,7 +83,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['avatar'] , null);
         $this->assertEquals(count($data['result']['message']['to'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['message']['to'][1]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['message']['to'][1]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['message']['to'][1]['program']) , 0);
         $this->assertEquals($data['result']['message']['id'] , 1);
         $this->assertEquals($data['result']['message']['title'] , null);
@@ -172,7 +172,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
@@ -257,7 +257,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][1]['message']['to'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][1]['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['program']) , 0);
         $this->assertEquals($data['result']['list'][1]['message']['id'] , 3);
         $this->assertEquals($data['result']['list'][1]['message']['title'] , null);
@@ -298,7 +298,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][2]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][2]['message']['from'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][2]['message']['from'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][2]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][2]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][2]['message']['to']) , 1);
@@ -375,7 +375,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
@@ -438,7 +438,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['roles'][0] , "admin");
+        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to']) , 2);
@@ -480,7 +480,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][1]['message']['to'][1]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][1]['message']['to'][1]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]['program']) , 0);
         $this->assertEquals($data['result']['list'][1]['message']['id'] , 1);
         $this->assertEquals($data['result']['list'][1]['message']['title'] , null);
@@ -726,7 +726,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['message']['to'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['message']['to'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['message']['to'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['message']['to'][1]['contacts_count'] , 1);
@@ -746,7 +746,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['avatar'] , null);
         $this->assertEquals(count($data['result']['message']['to'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['message']['to'][1]['roles'][0] , "admin");
+        $this->assertEquals($data['result']['message']['to'][1]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['message']['to'][1]['program']) , 0);
         $this->assertEquals($data['result']['message']['id'] , 6);
         $this->assertEquals($data['result']['message']['title'] , "objet mail update");
@@ -885,7 +885,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['program']) , 0);
         $this->assertEquals($data['result']['list'][0]['message']['id'] , 3);
         $this->assertEquals($data['result']['list'][0]['message']['title'] , null);
@@ -926,7 +926,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['roles'][0] , "admin");
+        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to']) , 2);
@@ -968,7 +968,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][1]['message']['to'][1]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][1]['message']['to'][1]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]['program']) , 0);
         $this->assertEquals($data['result']['list'][1]['message']['id'] , 1);
         $this->assertEquals($data['result']['list'][1]['message']['title'] , null);
@@ -1057,7 +1057,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['contacts_count'] , 1);
@@ -1077,7 +1077,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['to'][1]['roles'][0] , "admin");
+        $this->assertEquals($data['result']['list'][0]['message']['to'][1]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][1]['program']) , 0);
         $this->assertEquals($data['result']['list'][0]['message']['id'] , 6);
         $this->assertEquals($data['result']['list'][0]['message']['title'] , "objet mail update");
@@ -1154,7 +1154,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['program']) , 0);
         $this->assertEquals($data['result']['list'][0]['message']['id'] , 3);
         $this->assertEquals($data['result']['list'][0]['message']['title'] , null);
@@ -1208,7 +1208,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['avatar'] , null);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
