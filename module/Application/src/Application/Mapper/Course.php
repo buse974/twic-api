@@ -27,7 +27,7 @@ class Course extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         
-        $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes','program_id','course$start_date' => new Expression('DATE_FORMAT(MIN(start_date), "%Y-%m-%dT%TZ")'),'course$end_date' => new Expression('DATE_FORMAT(MAX(start_date), "%Y-%m-%dT%TZ")')))
+        $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes','program_id'))
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
             ->join('program', 'program.id=course.program_id', array())
             ->join('school', 'school.id=program.school_id', array())
