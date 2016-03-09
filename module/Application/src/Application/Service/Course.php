@@ -236,8 +236,6 @@ class Course extends AbstractService
                 ->getListOnly(ModelRole::ROLE_STUDENT_STR, $m_course->getId()));
             $m_course->setInstructor($this->getServiceUser()
                 ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
-            $m_course->setMaterialDocument($this->getServiceMaterialDocument()
-                ->getListByCourse($m_course->getId()));
         }
 
         return array('count' => $mapper->count(),'list' => $res_course);

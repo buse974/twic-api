@@ -15,7 +15,7 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'weight', 'course_id', 'grading_policy_id'))
+        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'course_id', 'grading_policy_id'))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item.id' => $id));
