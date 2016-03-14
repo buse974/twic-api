@@ -163,7 +163,7 @@ class Item extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()
             ->setCourseId($course)
-            ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id))->toArrayParent();
+            ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id))->toArray();
     }
 
     /**
@@ -178,7 +178,7 @@ class Item extends AbstractService
         return $this->getMapper()
             ->select($this->getModel()
             ->setCourseId($course))
-            ->toArrayParent();
+            ->toArray();
     }
 
     public function getListRecord($course, $user, $is_student)
