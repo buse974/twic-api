@@ -30,7 +30,7 @@ class GroupUser extends AbstractService
         return $u;
     }
     
-    public function delete($group, $user) 
+    public function delete($group, $user = null) 
     {
         return $this->getMapper()->delete($this->getModel()->setGroupId($group)->setUserId($user));
     }

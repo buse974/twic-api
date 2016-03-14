@@ -81,6 +81,31 @@ class Group extends AbstractService
     /**
      * @invokable
      * 
+     * @param integer $id
+     * @param integer|array $users
+     * 
+     * @return NULL
+     */
+    public function replaceUser($id, $users) 
+    {
+        $ret = [];
+        $this->getServiceGroupUser()->delete($id);
+      
+        if(!is_array($users)) {
+            $users = [$users];
+        }
+        
+        
+        foreach ($users as $user) {
+            $ret[$user] = $this->getServiceGroupUser()->add($id, $user);
+        }
+        
+        return $ret;
+    }
+    
+    /**
+     * @invokable
+     * 
      * @param integer $set
      */
     public function getList($set)
@@ -100,7 +125,7 @@ class Group extends AbstractService
      * @param integr $id
      * @param array|integr $user
      */
-    public function deleteUser($id, $user) 
+    public function deleteUser($id, $user = null) 
     {
         return $this->getServiceGroupUser()->delete($id, $user);
     }

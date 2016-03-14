@@ -14,7 +14,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int    $program_id
+     * @param integer $program_id
      * @param string $title
      * @param string $abstract
      * @param string $description
@@ -30,7 +30,7 @@ class Course extends AbstractService
      *
      * @throws \Exception
      *
-     * @return int
+     * @return integer
      */
     public function add($program_id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
@@ -208,7 +208,7 @@ class Course extends AbstractService
     /**
      * @invokable
      *
-     * @param int    $program
+     * @param integer $program
      * @param string $search
      * @param array  $filter
      * @param string $user
