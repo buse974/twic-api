@@ -349,8 +349,29 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['course_id'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    
+        
         return $data['result']['id'];
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
+    public function testReplaceGroup()
+    {
+    	$this->setIdentity(4);
+    	$data = $this->jsonRpc('group.replaceUser', [
+    		'id' => 1,
+    		'users' =>  [
+    			3,4
+    		],
+    	]);
+    
+    	$this->assertEquals(count($data) , 3);
+    	$this->assertEquals(count($data['result']) , 2);
+    	$this->assertEquals($data['result'][3] , true);
+    	$this->assertEquals($data['result'][4] , true);
+    	$this->assertEquals($data['id'] , 1);
+    	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     /**
