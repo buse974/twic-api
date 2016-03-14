@@ -19,14 +19,14 @@ class Item extends AbstractService
      * @param string $type            
      * @param string $data            
      * @param string $ct            
-     * @param string $parent            
-     * @param string $order            
+     * @param string $parent_id           
+     * @param string $order_id          
      *
      * @throws \Exception
      *
      * @return integer
      */
-    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $set = null, $parent = null, $order = null)
+    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $set = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setCourseId($course)
@@ -36,9 +36,9 @@ class Item extends AbstractService
             ->setDuration($duration)
             ->setType($type)
             ->setSetId($set)
-            ->setOrderId($order);
+            ->setOrderId($order_id);
         
-        if (null === $parent) {
+        if (null === $parent_id) {
             $m_item->setParentId($this->getMapper()->selectLastParentId($course));
         }
         
@@ -48,8 +48,8 @@ class Item extends AbstractService
         
         $item_id = $this->getMapper()->getLastInsertValue();
         
-        if ($parent !== null) {
-             $this->updateParentId($item_id, $parent);
+        if ($parent_id !== null) {
+             $this->updateParentId($item_id, $parent_id);
         }
         
         if(null !== $ct) {
@@ -127,12 +127,12 @@ class Item extends AbstractService
      * @param string $type            
      * @param string $data            
      * @param string $ct            
-     * @param string $parent            
-     * @param string $order            
+     * @param string $parent_id         
+     * @param string $order_id          
      *
      * @return integer
      */
-    public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent = null, $order = null)
+    public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -141,10 +141,10 @@ class Item extends AbstractService
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setType($type)
-            ->setOrderId($order);
+            ->setOrderId($order_id);
         
-         if ($parent !== null) {
-            $this->updateParentId($id, $parent);
+         if ($parent_id !== null) {
+            $this->updateParentId($id, $parent_id);
          }
         
         
@@ -155,15 +155,15 @@ class Item extends AbstractService
      * @invokable
      *
      * @param int $course            
-     * @param integer $parent            
+     * @param integer $parent_id            
      *
      * @return array
      */
-    public function getList($course, $parent = null)
+    public function getList($course, $parent_id = null)
     {
         return $this->getMapper()->select($this->getModel()
             ->setCourseId($course)
-            ->setParentId(($parent === 0) ? new IsNull() : $parent))->toArrayParent();
+            ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id))->toArrayParent();
     }
 
     /**

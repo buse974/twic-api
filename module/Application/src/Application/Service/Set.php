@@ -98,18 +98,21 @@ class Set extends AbstractService
 
     /**
      * @invokable
-     *
-     * @param integer $course            
+     * 
+     * @param integer $course
+     * @param string $name
+     * @param array $filter
      */
-    public function getList($course)
+    public function getList($course, $name = null, $filter = null)
     {
-        $res_set = $this->getMapper()->select($this->getModel()
-            ->setCourseId($course));
+    	$mapper = $this->getMapper();
+        $res_set = $mapper->usePaginator($filter)->getList($course, $name); 
         foreach ($res_set as $m_set) {
             $m_set->setGroups($this->getServiceGroup()
                 ->getList($m_set->getId()));
         }
-        return $res_set;
+        
+        return ($filter === null) ? $res_set:['count' => $mapper->count(),'list' => $res_set];
     }
 
     /**
