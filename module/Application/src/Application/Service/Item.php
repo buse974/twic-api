@@ -221,9 +221,6 @@ class Item extends AbstractService
      */
     public function delete($id)
     {
-        $this->getServiceItemMaterialDocumentRelation()->deleteByItem($id);
-        $this->getServiceItemProg()->deleteByItem($id);
-        
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
     }
