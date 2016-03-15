@@ -4,6 +4,9 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use \Application\Model\Item as ModelItem;
+use Zend\Db\Sql\Predicate\IsNotNull;
+use Zend\Db\Sql\Predicate\Operator;
+use Guzzle\Service\Description\Operation;
 
 class Item extends AbstractService
 {
@@ -36,11 +39,7 @@ class Item extends AbstractService
             ->setDuration($duration)
             ->setType($type)
             ->setSetId($set)
-            ->setOrderId($order_id);
-        
-        if (null === $parent_id) {
-            $m_item->setParentId($this->getMapper()->selectLastParentId($course));
-        }
+            ->setParentId($parent_id);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
             throw new \Exception('error insert item');
@@ -48,9 +47,7 @@ class Item extends AbstractService
         
         $item_id = $this->getMapper()->getLastInsertValue();
         
-        if ($parent_id !== null) {
-             $this->updateParentId($item_id, $parent_id);
-        }
+        $this->updateOrderId($item_id, $order_id);
         
         if(null !== $ct) {
             if(isset($ct['date'])) {
@@ -94,26 +91,49 @@ class Item extends AbstractService
         
         return $item_id;
     }
-
-    public function updateParentId($item, $parent_id)
+    
+    public function updateOrderId($item, $order_id = null)
     {
         $me_item = $this->getMapper()
             ->select($this->getModel()
             ->setId($item))
             ->current();
-
-        if($item == $parent_id || $parent_id == $me_item->getParentId()) {
-            return;
+        $parent_id = $me_item->getParentId();
+        $sort = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
+        $sortp = [];
+        
+        $parent_id = ($parent_id == null || $parent_id instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $parent_id];
+        if(is_array($parent_id)) {
+        	$sortp = $parent_id;
+        }else {
+        	$sortp[] = $parent_id;
         }
-       
+        $sort = array_merge($sortp, $sort);
+        $rentrep = [];
+        $rentre = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
+        		$order_id  = ($order_id == null)?new IsNull('order_id'): ['order_id' => $order_id];
+        		if(is_array($order_id)) {
+        			$rentre = array_merge($sort,$order_id);
+        		}else {
+        			$rentrep[] = $order_id;
+        		}
+        		if(is_array($parent_id)) {
+        			$rentre = array_merge($sort,$parent_id);
+        		}else {
+        			$rentrep[] = $parent_id;
+        		}
+        	
+        $rentre = array_merge($rentrep, $rentre);    
         // JE SORT
-        $this->getMapper()->update($this->getModel()->setParentId($me_item->getParentId() === null ? new IsNull() : $me_item->getParentId()), array('parent_id' => $item,'course_id' => $me_item->getCourseId()));
+        $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
+        
         // JE RENTRE
-        $this->getMapper()->update($this->getModel()
-            ->setParentId($item), array('parent_id' => $parent_id,'course_id' => $me_item->getCourseId()));
+        $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
+        
+        
         $this->getMapper()->update($this->getModel()
             ->setId($item)
-            ->setParentId($parent_id));
+            ->setOrderId(($order_id === null) ? new IsNull():$order_id));
     }
 
     /**
@@ -143,11 +163,10 @@ class Item extends AbstractService
             ->setType($type)
             ->setOrderId($order_id);
         
-         if ($parent_id !== null) {
-            $this->updateParentId($id, $parent_id);
+         if ($order_id !== null) {
+         	$this->updateOrderId($id, $order_id);
          }
-        
-        
+
         return $this->getMapper()->update($m_item);
     }
 
@@ -221,8 +240,7 @@ class Item extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete($this->getModel()->setId($id));
     }
 
     /**
