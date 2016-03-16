@@ -157,7 +157,7 @@ class Item extends AbstractService
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setType($type)
-            ->setParentId($order_id);
+            ->setParentId($parent_id);
         
          if ($order_id !== null) {
          	$this->updateOrderId($id, $order_id);
