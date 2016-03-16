@@ -100,10 +100,12 @@ class Item extends AbstractService
             ->current();
         
         $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
-        $parent_target = ($parent_target === null) ? $parent_id:$parent_target;
+        
         $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
         $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
         $sortp = $rentrep = [];
+        
+        $parent_target = ($parent_target === null) ? $parent_id:$parent_target;
         $order  = ($order_id === null || $order_id === 0)?new IsNull('order_id'): ['order_id' => $order_id];
         
         if(is_array($parent_id)) {
