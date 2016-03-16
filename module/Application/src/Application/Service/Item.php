@@ -39,7 +39,7 @@ class Item extends AbstractService
             ->setDuration($duration)
             ->setType($type)
             ->setSetId($set)
-            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
+            ->setParentId($parent_id);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
             throw new \Exception('error insert item');
@@ -98,6 +98,7 @@ class Item extends AbstractService
             ->select($this->getModel()
             ->setId($item))
             ->current();
+        
         $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
         $parent_target = ($parent_target === null) ? $parent_id:$parent_target;
         $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
