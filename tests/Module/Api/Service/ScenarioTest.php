@@ -541,7 +541,7 @@ class ScenarioTest extends AbstractService
      * @depends testAddItem
      * @depends testAddItemTwo
      */
-    public function testUpdateItem($id, $material)
+    public function testUpdateItem($id)
     {
         $this->setIdentity(1);
         
@@ -550,8 +550,7 @@ class ScenarioTest extends AbstractService
             'grading_policy' => 8,
             'duration' => 123,
             'title' => 'titl2e',
-            'describe' => 'description2',
-            'parent' => 2
+            'describe' => 'description2'
         ]);
         
         $this->assertEquals(count($data), 3);
@@ -564,7 +563,7 @@ class ScenarioTest extends AbstractService
      * @depends testAddCourse
      * @depends testAddItem
      */
-    public function testAddItemu($id)
+    /*public function testAddItemu($id)
     {
     	$this->setIdentity(1);
     
@@ -574,15 +573,14 @@ class ScenarioTest extends AbstractService
     			'duration' => 234,
     			'title' => 'titl2e',
     			'describe' => 'description2',
-    			'type' => 'CP',
-    			'parent_id' => 3
+    			'type' => 'CP'
     	));
     
     	$this->assertEquals(count($data), 3);
     	$this->assertEquals($data['result'], 4);
     	$this->assertEquals($data['id'], 1);
     	$this->assertEquals($data['jsonrpc'], 2.0);
-    }
+    }*/
     
     /**
      * @depends testAddCourse
@@ -595,6 +593,8 @@ class ScenarioTest extends AbstractService
         
         $data = $this->jsonRpc('item.getList', array('course' => $course));
 
+        //print_r($data);
+        
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result'][0]) , 10);
@@ -632,6 +632,44 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][2]['order_id'] , 2);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testAddItem
+     * @depends testAddItemTwo
+     */
+    public function testUpdateItemu($id)
+    {
+    	$this->setIdentity(1);
+    
+    	$data = $this->jsonRpc('item.update', [
+    			'id' => 3,
+    			'grading_policy' => 8,
+    			'duration' => 123,
+    			'title' => 'titl2e',
+    			'describe' => 'description2',
+    			'order_id' => 2
+    	]);
+    
+    	//print_r($data);
+    	$this->assertEquals(count($data), 3);
+    	$this->assertEquals($data['result'], 1);
+    	$this->assertEquals($data['id'], 1);
+    	$this->assertEquals($data['jsonrpc'], 2.0);
+    }
+    
+    /**
+     * @depends testAddCourse
+     * @depends testAddItem
+     * @depends testAddItemTwo
+     */
+    public function testCanGetListItemuu($course)
+    {
+    	$this->setIdentity(1);
+    
+    	$data = $this->jsonRpc('item.getList', array('course' => $course));
+    
+    	//print_r($data);
     }
     
     /**

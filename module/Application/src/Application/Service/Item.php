@@ -47,7 +47,7 @@ class Item extends AbstractService
         
         $item_id = $this->getMapper()->getLastInsertValue();
         
-        $this->updateOrderId($item_id, $order_id);
+        $this->updateOrderId($item_id,$parent_id, $order_id);
         
         if(null !== $ct) {
             if(isset($ct['date'])) {
@@ -92,29 +92,33 @@ class Item extends AbstractService
         return $item_id;
     }
     
-    public function updateOrderId($item, $order_id = null)
+    public function updateOrderId($item, $parent_target = null,$order_id = null)
     {
         $me_item = $this->getMapper()
             ->select($this->getModel()
             ->setId($item))
             ->current();
-        $parent_id = $me_item->getParentId();
+        $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
+        $parent_target = ($parent_target === null) ? $parent_id:$parent_target;
         $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
         $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
         $sortp = $rentrep = [];
-        $parent_id = ($parent_id == null || $parent_id instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $parent_id];
-        $order_id  = ($order_id == null)?new IsNull('order_id'): ['order_id' => $order_id];
+        $order  = ($order_id == null)?new IsNull('order_id'): ['order_id' => $order_id];
+        
         if(is_array($parent_id)) {
         	$sort	= array_merge($sort,$parent_id);
-        	$rentre = array_merge($rentre,$parent_id);
         }else {
         	$sortp[]   = $parent_id;
-        	$rentrep[] = $parent_id;
-        } 
-        if(is_array($order_id)) {
-        	$rentre = array_merge($sort,$order_id);
+        }
+        if(is_array($parent_target)) {
+        	$rentre = array_merge($rentre,$parent_target);
         }else {
-        	$rentrep[] = $order_id;
+        	$rentrep[] = $parent_target;
+        }
+        if(is_array($order)) {
+        	$rentre = array_merge($rentre,$order);
+        }else {
+        	$rentrep[] = $order;
         }
         
         $sort = array_merge($sortp, $sort);
@@ -122,10 +126,8 @@ class Item extends AbstractService
         
         // JE SORT
         $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
-        
         // JE RENTRE
         $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
-        
         
         $this->getMapper()->update($this->getModel()
             ->setId($item)
@@ -160,7 +162,7 @@ class Item extends AbstractService
             ->setParentId($parent_id);
         
          if ($order_id !== null) {
-         	$this->updateOrderId($id, $order_id);
+         	$this->updateOrderId($id, $parent_id, $order_id);
          }
 
         return $this->getMapper()->update($m_item);
