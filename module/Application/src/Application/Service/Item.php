@@ -99,31 +99,27 @@ class Item extends AbstractService
             ->setId($item))
             ->current();
         $parent_id = $me_item->getParentId();
-        $sort = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
-        $sortp = [];
-        
+        $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
+        $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
+        $sortp = $rentrep = [];
         $parent_id = ($parent_id == null || $parent_id instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $parent_id];
+        $order_id  = ($order_id == null)?new IsNull('order_id'): ['order_id' => $order_id];
         if(is_array($parent_id)) {
-        	$sortp = $parent_id;
+        	$sort	= array_merge($sort,$parent_id);
+        	$rentre = array_merge($rentre,$parent_id);
         }else {
-        	$sortp[] = $parent_id;
+        	$sortp[]   = $parent_id;
+        	$rentrep[] = $parent_id;
+        } 
+        if(is_array($order_id)) {
+        	$rentre = array_merge($sort,$order_id);
+        }else {
+        	$rentrep[] = $order_id;
         }
+        
         $sort = array_merge($sortp, $sort);
-        $rentrep = [];
-        $rentre = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
-        		$order_id  = ($order_id == null)?new IsNull('order_id'): ['order_id' => $order_id];
-        		if(is_array($order_id)) {
-        			$rentre = array_merge($sort,$order_id);
-        		}else {
-        			$rentrep[] = $order_id;
-        		}
-        		if(is_array($parent_id)) {
-        			$rentre = array_merge($sort,$parent_id);
-        		}else {
-        			$rentrep[] = $parent_id;
-        		}
-        	
-        $rentre = array_merge($rentrep, $rentre);    
+        $rentre = array_merge($rentrep, $rentre);
+        
         // JE SORT
         $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
         
@@ -182,7 +178,7 @@ class Item extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()
             ->setCourseId($course)
-            ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id))->toArray();
+            ->setParentId(($parent_id === 0 || null === $parent_id) ? new IsNull() : $parent_id))->toArrayParent('order_id');
     }
 
     /**
