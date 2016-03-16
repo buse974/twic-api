@@ -161,7 +161,7 @@ class Item extends AbstractService
             ->setType($type)
             ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
         
-         if ($order_id !== null) {
+         if ($order_id !== null || $parent_id !== null ) {
          	$this->updateOrderId($id, $parent_id, $order_id);
          }
 
