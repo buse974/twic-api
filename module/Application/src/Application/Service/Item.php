@@ -105,7 +105,7 @@ class Item extends AbstractService
         $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
         $sortp = $rentrep = [];
         
-        $parent_target = ($parent_target === null) ? $parent_id:$parent_target;
+        $parent_target = ($parent_target === null) ? $parent_id: (($parent_target === 0) ? new IsNull('parent_id'):['parent_id' => $parent_target]);
         $order  = ($order_id === null || $order_id === 0)?new IsNull('order_id'): ['order_id' => $order_id];
         
         if(is_array($parent_id)) {
@@ -129,9 +129,9 @@ class Item extends AbstractService
         
         // JE SORT
         $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
+
         // JE RENTRE
         $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
-        
         $this->getMapper()->update($this->getModel()
             ->setId($item)
             ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull():$order_id));
