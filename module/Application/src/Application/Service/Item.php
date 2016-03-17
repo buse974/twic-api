@@ -100,7 +100,6 @@ class Item extends AbstractService
             ->current();
         
         $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
-        
         $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
         $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
         $sortp = $rentrep = [];
@@ -131,10 +130,24 @@ class Item extends AbstractService
         $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
 
         // JE RENTRE
-        $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
-        $this->getMapper()->update($this->getModel()
-            ->setId($item)
-            ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull():$order_id));
+	    $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
+	    $this->getMapper()->update($this->getModel()
+	        ->setId($item)
+	        ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull():$order_id));
+        
+    }
+    
+    public function sort($item)
+    {
+    	$me_item = $this->getMapper()
+    		->select($this->getModel()
+    		->setId($item))
+    		->current();
+    	
+    	return $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), [
+    		'order_id' => $me_item->getId(),
+    		'course_id' => $me_item->getCourseId()
+    	]);
     }
 
     /**
@@ -241,6 +254,8 @@ class Item extends AbstractService
      */
     public function delete($id)
     {
+    	$this->sort($id);
+    	
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
 
