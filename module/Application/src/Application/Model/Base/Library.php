@@ -4,17 +4,18 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class Document extends AbstractModel
+class Library extends AbstractModel
 {
  	protected $id;
 	protected $title;
-	protected $item_id;
-	protected $library_id;
+	protected $link;
+	protected $token;
+	protected $path;
 	protected $created_date;
 	protected $deleted_date;
 	protected $updated_date;
 
-	protected $prefix = 'document';
+	protected $prefix = 'library';
 
 	public function getId()
 	{
@@ -40,26 +41,38 @@ class Document extends AbstractModel
 		return $this;
 	}
 
-	public function getItemId()
+	public function getLink()
 	{
-		return $this->item_id;
+		return $this->link;
 	}
 
-	public function setItemId($item_id)
+	public function setLink($link)
 	{
-		$this->item_id = $item_id;
+		$this->link = $link;
 
 		return $this;
 	}
 
-	public function getLibraryId()
+	public function getToken()
 	{
-		return $this->library_id;
+		return $this->token;
 	}
 
-	public function setLibraryId($library_id)
+	public function setToken($token)
 	{
-		$this->library_id = $library_id;
+		$this->token = $token;
+
+		return $this;
+	}
+
+	public function getPath()
+	{
+		return $this->path;
+	}
+
+	public function setPath($path)
+	{
+		$this->path = $path;
 
 		return $this;
 	}
