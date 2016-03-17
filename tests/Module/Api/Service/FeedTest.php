@@ -203,7 +203,7 @@ class FeedTest extends AbstractService
         $this->assertEquals($data['result']['open_graph']['locale'], "fr_CA");
         $this->assertEquals($data['result']['open_graph']['url'], "http://www.lapresse.ca/international/etats-unis/201508/23/01-4894779-manifestation-seins-nus-sur-times-square.php");
         $this->assertEquals($data['result']['open_graph']['image'], "http://images.lpcdn.ca/924x615/201508/23/1048015-porte-parole-evenement-rachel-jessee.jpg");
-        $this->assertEquals(count($data['result']['images']), 31);
+        $this->assertEquals(count($data['result']['images']), 30);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
