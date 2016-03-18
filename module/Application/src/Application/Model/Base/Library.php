@@ -7,13 +7,15 @@ use Dal\Model\AbstractModel;
 class Library extends AbstractModel
 {
  	protected $id;
-	protected $title;
+	protected $name;
 	protected $link;
 	protected $token;
-	protected $path;
+	protected $type;
 	protected $created_date;
 	protected $deleted_date;
 	protected $updated_date;
+	protected $folder_id;
+	protected $owner_id;
 
 	protected $prefix = 'library';
 
@@ -29,14 +31,14 @@ class Library extends AbstractModel
 		return $this;
 	}
 
-	public function getTitle()
+	public function getName()
 	{
-		return $this->title;
+		return $this->name;
 	}
 
-	public function setTitle($title)
+	public function setName($name)
 	{
-		$this->title = $title;
+		$this->name = $name;
 
 		return $this;
 	}
@@ -65,14 +67,14 @@ class Library extends AbstractModel
 		return $this;
 	}
 
-	public function getPath()
+	public function getType()
 	{
-		return $this->path;
+		return $this->type;
 	}
 
-	public function setPath($path)
+	public function setType($type)
 	{
-		$this->path = $path;
+		$this->type = $type;
 
 		return $this;
 	}
@@ -109,6 +111,30 @@ class Library extends AbstractModel
 	public function setUpdatedDate($updated_date)
 	{
 		$this->updated_date = $updated_date;
+
+		return $this;
+	}
+
+	public function getFolderId()
+	{
+		return $this->folder_id;
+	}
+
+	public function setFolderId($folder_id)
+	{
+		$this->folder_id = $folder_id;
+
+		return $this;
+	}
+
+	public function getOwnerId()
+	{
+		return $this->owner_id;
+	}
+
+	public function setOwnerId($owner_id)
+	{
+		$this->owner_id = $owner_id;
 
 		return $this;
 	}
