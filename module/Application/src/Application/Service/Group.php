@@ -15,7 +15,7 @@ class Group extends AbstractService
      * 
      * @return integer
      */
-    public function add($set, $name,$uid = null, $users = null) 
+    public function add($set, $name, $uid = null, $users = null) 
     {
         $m_group = $this->getModel()->setUId($uid)->setName($name);
         
@@ -107,12 +107,13 @@ class Group extends AbstractService
      * @invokable
      * 
      * @param integer $set
+     * @param string $name
      * @param array $filter
      */
-    public function getList($set, $filter = null)
+    public function getList($set, $name = null, $filter = null)
     {
     	$mapper = $this->getMapper();
-        $res_group = $mapper->usePaginator($filter)->getList($set);
+        $res_group = $mapper->usePaginator($filter)->getList($set, $name);
         
         foreach ($res_group as $m_group) {
             $m_group->setUsers($this->getServiceGroupUser()->getListUser($m_group->getId()));

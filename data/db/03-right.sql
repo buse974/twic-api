@@ -1002,3 +1002,23 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('group.update');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 (SELECT `id` FROM `permission` WHERE `libelle`= 'group.update'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('library.add');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'library.add'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('library.update');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'library.update'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('library.getList');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'library.getList'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('library.get');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'library.get'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('library.delete');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'library.delete'));
+
