@@ -91,6 +91,37 @@ class LibraryTest extends AbstractService
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    /**
+     * @depends testCanAddDocument
+     */
+    public function testCanDeleteDocument($id)
+    {
+    	$this->setIdentity(1);
+    	
+    	
+    	$data = $this->jsonRpc('library.delete', array('id' => $id));
+    	
+    	$this->assertEquals(count($data) , 3);
+    	$this->assertEquals($data['result'] , 1);
+    	$this->assertEquals($data['id'] , 1);
+    	$this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanAddDocument
+     */
+    public function testCanGetList2Document($id)
+    {
+    	$this->setIdentity(1);
+    	
+    	$data = $this->jsonRpc('library.getList', array());
+    	 
+    	$this->assertEquals(count($data) , 3);
+    	$this->assertEquals(count($data['result']) , 0);
+    	$this->assertEquals($data['id'] , 1);
+    	$this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')

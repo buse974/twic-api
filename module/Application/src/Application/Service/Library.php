@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Zend\Db\Sql\Predicate\IsNotNull;
 
 class Library extends AbstractService
 {
@@ -70,9 +71,25 @@ class Library extends AbstractService
 	 */
 	public function getList($folder_id = null)
 	{
-		$m_library = $this->getModel()->setFolderId(($folder_id == null)? new IsNull():$folder_id)->setOwnerId($this->getServiceUser()->getIdentity()['id']);
+		$m_library = $this->getModel()
+		    ->setFolderId(($folder_id == null)? new IsNull():$folder_id)
+		    ->setDeletedDate(new IsNull())
+		    ->setOwnerId($this->getServiceUser()->getIdentity()['id']);
 		
 		return $this->getMapper()->select($m_library);
+	}
+	
+	/**
+	 * @invokable
+	 *
+	 * @param integer $id
+	 */
+	public function delete($id)
+	{
+		$m_library = $this->getModel()
+			->setId($id)
+			->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+	 	return $this->getMapper()->update($m_library);
 	}
 	
 	/**
