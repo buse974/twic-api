@@ -82,11 +82,6 @@ class Thread extends AbstractService
         $mapper = $this->getMapper();
 
         $res_thread = $mapper->usePaginator($filter)->getList($course);
-
-        if ($res_thread->count() <= 0) {
-            throw new \Exception('not thread with course id: '.$course);
-        }
-
         foreach ($res_thread as $m_thread) {
             $m_thread->setMessage($this->getServiceThreadMessage()
                 ->getLast($m_thread->getId()));
