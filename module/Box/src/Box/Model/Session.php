@@ -6,6 +6,7 @@ class Session extends AbstractModel
 {
     protected $id;
     protected $expires_at;
+    protected $urls;
       
     public function getExpiresAt() 
     {
@@ -28,6 +29,18 @@ class Session extends AbstractModel
     {
         $this->id = $id;
         
+        return $this;
+    }
+    
+    public function getUrls()
+    {
+        return $this->urls;
+    }
+    
+    public function setUrls($urls)
+    {
+        $this->urls = $urls;
+    
         return $this;
     }
 }
