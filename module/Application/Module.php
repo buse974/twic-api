@@ -41,7 +41,7 @@ class Module
                     throw new JrpcException('Method not found', -32028);
                 }
                 if (!$authService->hasIdentity()) {
-                    throw new JrpcException('No connected', -32027);
+                    throw new JrpcException('Not connected', -32027);
                 }
                 throw new JrpcException('No authorization', -32029);
             }
