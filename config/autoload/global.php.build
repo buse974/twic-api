@@ -18,6 +18,7 @@ return [
         'secret_key' => 'toto',
         'secret_key_fb' => '${firebase.key}',
         'secret_key_fb_debug' => ${firebase.debug},
+        'urldms' => 'http://apilms.com/data/',
     ],
     'dal-conf' => [
         'adapter' => 'db-adapter',
