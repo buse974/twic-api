@@ -138,9 +138,13 @@ class LibraryTest extends AbstractService
         ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals($data['result']['expiresAt'] , null);
-        $this->assertEquals(!empty($data['result']['id']) , true);
+        $this->assertEquals(!empty($data['result']['id'] ), true);
+        $this->assertEquals(count($data['result']['urls']) , 3);
+        $this->assertEquals(!empty($data['result']['urls']['view']) , true);
+        $this->assertEquals(!empty($data['result']['urls']['assets']) , true);
+        $this->assertEquals(!empty($data['result']['urls']['realtime']), true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
