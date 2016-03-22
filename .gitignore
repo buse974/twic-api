@@ -8,14 +8,15 @@ nbproject
 .settings
 composer.lock
 vendor/bin
-config/
-Zdeploy/
+/config/
+/Zdeploy/
 vendor
 composer.phar
 bin/*
 Zdeploy/properties/*.properties
 *.bak
 tests/_files/input.data
+tests/config/autoload/local.php
 test.properties
 upload/
 build/
