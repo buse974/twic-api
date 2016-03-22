@@ -22,10 +22,17 @@ class Library extends AbstractService
 	 */
 	public function add($name, $link = null, $token = null, $type = 'f', $folder_id = null)
 	{
+	    if($link === null && $token === null) {
+	        throw new \Exception('error $link = null and  $token = null');
+	    }
+	    
+	    $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
+	    $res_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token);
 		$m_library = $this->getModel()
 			->setName($name)
 			->setLink($link)
 			->setToken($token)
+			->setBoxId($res_box->getId())
 			->setFolderId($folder_id)
 			->setType($type)
 			->setOwnerId($this->getServiceUser()->getIdentity()['id'])
@@ -103,10 +110,31 @@ class Library extends AbstractService
 	}
 	
 	/**
+	 * @invokable
+	 *
+	 * @param integer $id
+	 */
+	public function getSession($id)
+	{
+	    $m_library = $this->getMapper()->select($this->getModel()->setId($id)->setOwnerId($this->getServiceUser()->getIdentity()['id']))->current();
+	    
+	    return $this->getServiceBox()->createSession($m_library->getBoxId());
+	}
+	
+	/**
 	 * @return \Application\Service\User
 	 */
 	public function getServiceUser()
 	{
 		return $this->getServiceLocator()->get('app_service_user');
 	}
+	
+	/**
+	 * @return \Box\Service\Api
+	 */
+	public function getServiceBox()
+	{
+	    return $this->getServiceLocator()->get('box.service');
+	}
+	
 }

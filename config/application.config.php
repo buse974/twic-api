@@ -4,6 +4,7 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
+        'Box',
         'Dal',
         'JRpc',
         'Address',
@@ -31,6 +32,7 @@ return array(
             'ZOpenTok' => __DIR__.'/../vendor/buse974/zopentok',
             'Mail' => __DIR__.'/../module/Mail',
             'Rbac' => __DIR__.'/../module/Rbac',
+            'Box' => __DIR__.'/../module/Box',
             'SimplePageCrawler' => __DIR__.'/../vendor/blanchonvincent/simple-page-crawler',
         ),
 

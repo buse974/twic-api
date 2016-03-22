@@ -16,6 +16,7 @@ class Library extends AbstractModel
 	protected $updated_date;
 	protected $folder_id;
 	protected $owner_id;
+	protected $box_id;
 
 	protected $prefix = 'library';
 
@@ -135,6 +136,18 @@ class Library extends AbstractModel
 	public function setOwnerId($owner_id)
 	{
 		$this->owner_id = $owner_id;
+
+		return $this;
+	}
+
+	public function getBoxId()
+	{
+		return $this->box_id;
+	}
+
+	public function setBoxId($box_id)
+	{
+		$this->box_id = $box_id;
 
 		return $this;
 	}
