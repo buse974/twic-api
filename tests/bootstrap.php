@@ -1,6 +1,5 @@
 <?php
-use Zend\Mvc\Service\ServiceManagerConfig;
-use Zend\ServiceManager\ServiceManager;
+
 ini_set('date.timezone', "Europe/Paris");
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);

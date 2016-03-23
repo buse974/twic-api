@@ -16,6 +16,9 @@ class Item extends AbstractModel
 	protected $set_id;
 	protected $parent_id;
 	protected $order_id;
+	protected $start;
+	protected $end;
+	protected $cut_off;
 
 	protected $prefix = 'item';
 
@@ -135,6 +138,42 @@ class Item extends AbstractModel
 	public function setOrderId($order_id)
 	{
 		$this->order_id = $order_id;
+
+		return $this;
+	}
+
+	public function getStart()
+	{
+		return $this->start;
+	}
+
+	public function setStart($start)
+	{
+		$this->start = $start;
+
+		return $this;
+	}
+
+	public function getEnd()
+	{
+		return $this->end;
+	}
+
+	public function setEnd($end)
+	{
+		$this->end = $end;
+
+		return $this;
+	}
+
+	public function getCutOff()
+	{
+		return $this->cut_off;
+	}
+
+	public function setCutOff($cut_off)
+	{
+		$this->cut_off = $cut_off;
 
 		return $this;
 	}

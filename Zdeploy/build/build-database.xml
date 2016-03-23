@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-model xlink:href="/usr/share/pear-data/phing/etc/phing-grammar.rng"
+	            schematypens="http://relaxng.org/ns/structure/1.0" ?>
+
 <project default="database">
     <target name="database">
         <echo msg="Deploying database..." />
