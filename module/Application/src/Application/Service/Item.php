@@ -79,7 +79,7 @@ class Item extends AbstractService
         
         if(null !== $opt) {
             if(isset($opt['assignment'])) {
-                $this->getServiceCtDate()->add($item_id, (isset($opt['assignment']['mode'])) ? $opt['assignment']['mode'] : null,(isset($opt['assignment']['has_pg'])) ? $opt['assignment']['has_pg'] : null,(isset($opt['assignment']['pg_nb'])) ? $opt['assignment']['pg_nb'] : null,(isset($opt['assignment']['pg_auto'])) ? $opt['assignment']['pg_auto'] : null,(isset($opt['assignment']['pg_due_date'])) ? $opt['assignment']['pg_due_date'] : null,(isset($opt['assignment']['pg_can_view'])) ? $opt['assignment']['pg_can_view'] : null,(isset($opt['assignment']['user_can_view'])) ? $opt['assignment']['user_can_view'] : null,(isset($opt['assignment']['pg_stars'])) ? $opt['assignment']['pg_stars'] : null);
+                $this->getServiceOptAssignment()->add($item_id, (isset($opt['assignment']['mode'])) ? $opt['assignment']['mode'] : null,(isset($opt['assignment']['has_pg'])) ? $opt['assignment']['has_pg'] : null,(isset($opt['assignment']['pg_nb'])) ? $opt['assignment']['pg_nb'] : null,(isset($opt['assignment']['pg_auto'])) ? $opt['assignment']['pg_auto'] : null,(isset($opt['assignment']['pg_due_date'])) ? $opt['assignment']['pg_due_date'] : null,(isset($opt['assignment']['pg_can_view'])) ? $opt['assignment']['pg_can_view'] : null,(isset($opt['assignment']['user_can_view'])) ? $opt['assignment']['user_can_view'] : null,(isset($opt['assignment']['pg_stars'])) ? $opt['assignment']['pg_stars'] : null);
             }
         }
         switch ($type) {
@@ -87,6 +87,7 @@ class Item extends AbstractService
                 $link = isset($data['link']) ? $data['link'] : null;
                 $token = isset($data['token']) ? $data['token'] : null;
                 $ti = isset($data['title']) ? $data['title'] : null;
+                $this->
                 $this->getServiceDocument()->add($ti, $link, $token, $item_id);
                 break;
             case ModelItem::TYPE_POLL:
@@ -464,5 +465,13 @@ class Item extends AbstractService
         return $this->getServiceLocator()->get('app_service_ct_rate');
     }
     
+    /**
+     *
+     * @return \Application\Service\OptAssignment
+     */
+    public function getServiceOptAssignment()
+    {
+        return $this->getServiceLocator()->get('app_service_opt_assignment');
+    }
     
 }

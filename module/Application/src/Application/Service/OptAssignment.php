@@ -32,7 +32,7 @@ class OptAssignment extends AbstractService
             ->setPgDueDate($pg_due_date)
             ->setPgCanView($pg_can_view)
             ->setUserCanView($user_can_view)
-            ->setPgStarts($pg_stars);
+            ->setPgStars($pg_stars);
         
         return $this->getMapper()->insert($m_opt_assignment);
     }
@@ -63,7 +63,7 @@ class OptAssignment extends AbstractService
             ->setPgDueDate($pg_due_date)
             ->setPgCanView($pg_can_view)
             ->setUserCanView($user_can_view)
-            ->setPgStarts($pg_stars);
+            ->setPgStars($pg_stars);
     
         return $this->getMapper()->update($m_opt_assignment);
     }

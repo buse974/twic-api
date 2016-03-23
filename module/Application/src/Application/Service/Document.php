@@ -7,21 +7,22 @@ class Document extends AbstractService
 {
 
     /**
-     * @param string $title
+     * @param string $name
+     * @param string $type
      * @param string $link
      * @param string $token
-     * @param string $item
+     * @param string $item_id
+     * 
      * @throws \Exception
      * 
      * @return integer
      */
-    public function add($title = null, $link = null, $token = null, $item = null)
+    public function add($name = null, $type = null, $link = null, $token = null, $item_id = null)
     {
+        $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type);
         $m_document = $this->getModel()
-            ->setTitle($title)
-            ->setLink($link)
-            ->setToken($token)
             ->setItemId($item)
+            ->setLibrary($library_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_document) <= 0) {
@@ -29,34 +30,6 @@ class Document extends AbstractService
         }
         
         return $this->getMapper()->getLastInsertValue();
-    }
-
-    /**
-     * @invokable
-     * 
-     * @param integer $id
-     * @param integer $item
-     * @param string $title
-     * @param string $link
-     * @param string $token
-     * @throws \Exception
-     * 
-     * @return integer
-     */
-    public function update($id = null, $item = null, $title = null, $link = null, $token = null)
-    {
-        if($id===null && $item===null) {
-            throw new \Exception('id and item are null');
-        }
-        
-        $m_document = $this->getModel()
-            ->setTitle($title)
-            ->setLink($link)
-            ->setToken($token);
-        
-        $w = ($id!==null) ? ['id' => $id]:['item_id' => $item];
-        
-        return $this->getMapper()->update($m_document, $w);
     }
     
     /**
@@ -68,5 +41,14 @@ class Document extends AbstractService
     public function delete($id) 
     {
         return $this->getMapper()->delete($this->getModel()->setId($id));   
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Library
+     */
+    public function getServiceLibrary()
+    {
+        return $this->getServiceLocator()->get('app_service_library');
     }
 }
