@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit bootstrap="./tests/bootstrap.php" colors="true">
+<phpunit 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="/home/buse974/workspace/apilms/phpunit-schema/tools/phpunit.xsd.1458729399"
+    bootstrap="./tests/bootstrap.php" 
+    colors="true">
     <testsuites>
         <testsuite name="apiwow">
             <directory>./tests</directory>

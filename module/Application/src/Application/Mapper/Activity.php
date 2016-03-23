@@ -5,7 +5,6 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
-use Zend\Log\Writer\Syslog;
 
 class Activity extends AbstractMapper
 {

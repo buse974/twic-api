@@ -4,9 +4,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use \Application\Model\Item as ModelItem;
-use Zend\Db\Sql\Predicate\IsNotNull;
 use Zend\Db\Sql\Predicate\Operator;
-use Guzzle\Service\Description\Operation;
 
 class Item extends AbstractService
 {
@@ -21,7 +19,8 @@ class Item extends AbstractService
      * @param string $duration            
      * @param string $type            
      * @param string $data            
-     * @param string $ct            
+     * @param string $ct  
+     * @param string $opt          
      * @param string $parent_id           
      * @param string $order_id          
      *
@@ -29,7 +28,7 @@ class Item extends AbstractService
      *
      * @return integer
      */
-    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $set = null, $parent_id = null, $order_id = null)
+    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setCourseId($course)
@@ -38,6 +37,9 @@ class Item extends AbstractService
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setType($type)
+            ->setStart($start)
+            ->setEnd($end)
+            ->setCutOff($cut_off)
             ->setSetId($set)
             ->setParentId(($parent_id === 0) ? null : $parent_id);
         
@@ -75,6 +77,11 @@ class Item extends AbstractService
             }
         }
         
+        if(null !== $opt) {
+            if(isset($opt['assignment'])) {
+                $this->getServiceCtDate()->add($item_id, (isset($opt['assignment']['mode'])) ? $opt['assignment']['mode'] : null,(isset($opt['assignment']['has_pg'])) ? $opt['assignment']['has_pg'] : null,(isset($opt['assignment']['pg_nb'])) ? $opt['assignment']['pg_nb'] : null,(isset($opt['assignment']['pg_auto'])) ? $opt['assignment']['pg_auto'] : null,(isset($opt['assignment']['pg_due_date'])) ? $opt['assignment']['pg_due_date'] : null,(isset($opt['assignment']['pg_can_view'])) ? $opt['assignment']['pg_can_view'] : null,(isset($opt['assignment']['user_can_view'])) ? $opt['assignment']['user_can_view'] : null,(isset($opt['assignment']['pg_stars'])) ? $opt['assignment']['pg_stars'] : null);
+            }
+        }
         switch ($type) {
             case ModelItem::TYPE_DOCUMENT:
                 $link = isset($data['link']) ? $data['link'] : null;
@@ -159,14 +166,13 @@ class Item extends AbstractService
      * @param string $describe            
      * @param string $duration            
      * @param string $type            
-     * @param string $data            
-     * @param string $ct            
+     * @param string $data                     
      * @param string $parent_id         
      * @param string $order_id          
      *
      * @return integer
      */
-    public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $parent_id = null, $order_id = null)
+    public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -174,6 +180,9 @@ class Item extends AbstractService
             ->setTitle($title)
             ->setDescribe($describe)
             ->setDuration($duration)
+            ->setStart($start)
+            ->setEnd($end)
+            ->setCutOff($cut_off)
             ->setType($type)
             ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
         
