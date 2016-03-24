@@ -86,9 +86,9 @@ class Item extends AbstractService
             case ModelItem::TYPE_DOCUMENT:
                 $link = isset($data['link']) ? $data['link'] : null;
                 $token = isset($data['token']) ? $data['token'] : null;
-                $ti = isset($data['title']) ? $data['title'] : null;
-                $this->
-                $this->getServiceDocument()->add($ti, $link, $token, $item_id);
+                $name = isset($data['name']) ? $data['name'] : null;
+                $type = isset($data['type']) ? $data['type'] : null;
+                $this->getServiceDocument()->add($name, $type, $link, $token, $item_id);
                 break;
             case ModelItem::TYPE_POLL:
                 $ti = isset($d['title']) ? $d['title'] : $title;

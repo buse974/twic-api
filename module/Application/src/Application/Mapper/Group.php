@@ -13,13 +13,18 @@ class Group extends AbstractMapper
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($set, $name = null)
+    public function getList($set, $name = null, $course)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'uid', 'name'))
             ->join('set_group', 'set_group.group_id=group.id')
-            ->where(array('set_group.set_id' => $set));
+            ->join('set', 'set_group.set_id=set.id')
+            ->where(['set.course_id' => $course]);
         
+        
+        if($set !== null) {
+            $select->where(['set_group.set_id' => $set]);
+        }
         if($name !== null) {
         	$select->where(['group.name LIKE ?' => '%'. $name .'%']);
         }
