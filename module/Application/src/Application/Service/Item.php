@@ -78,8 +78,8 @@ class Item extends AbstractService
         }
         
         if(null !== $opt) {
-            if(isset($opt['assignment'])) {
-                $this->getServiceOptAssignment()->add($item_id, (isset($opt['assignment']['mode'])) ? $opt['assignment']['mode'] : null,(isset($opt['assignment']['has_pg'])) ? $opt['assignment']['has_pg'] : null,(isset($opt['assignment']['pg_nb'])) ? $opt['assignment']['pg_nb'] : null,(isset($opt['assignment']['pg_auto'])) ? $opt['assignment']['pg_auto'] : null,(isset($opt['assignment']['pg_due_date'])) ? $opt['assignment']['pg_due_date'] : null,(isset($opt['assignment']['pg_can_view'])) ? $opt['assignment']['pg_can_view'] : null,(isset($opt['assignment']['user_can_view'])) ? $opt['assignment']['user_can_view'] : null,(isset($opt['assignment']['pg_stars'])) ? $opt['assignment']['pg_stars'] : null);
+            if(isset($opt['grading'])) {
+                $this->getServiceOptAssignment()->add($item_id, (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,(isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,(isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,(isset($opt['grading']['pg_auto'])) ? $opt['grading']['pg_auto'] : null,(isset($opt['grading']['pg_due_date'])) ? $opt['grading']['pg_due_date'] : null,(isset($opt['grading']['pg_can_view'])) ? $opt['grading']['pg_can_view'] : null,(isset($opt['grading']['user_can_view'])) ? $opt['grading']['user_can_view'] : null,(isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
         }
         switch ($type) {

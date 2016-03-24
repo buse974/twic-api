@@ -475,8 +475,16 @@ class ScenarioTest extends AbstractService
                     ],
                 ],
                 'opt' => [
-                    'assignment' => [
-                        'mode' => 'average', 'has_pg' => true, 'pg_nb' => 2, 'pg_auto' => true, 'pg_due_date' => '2016-10-10', 'pg_can_view' => true, 'user_can_view' => true, 'pg_stars' => true
+                    'grading' => [
+                        'mode' => 'average', 
+                        'has_pg' => true, 
+                        'pg_nb' => 2, 
+                        'pg_auto' => true, 
+                        'pg_due_date' => 
+                        '2016-10-10', 
+                        'pg_can_view' => true, 
+                        'user_can_view' => true, 
+                        'pg_stars' => true
                     ], 
                 ],
                 'data' => null,
