@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class OptAssignment extends AbstractMapper
+class OptGrading extends AbstractMapper
 {
 }
