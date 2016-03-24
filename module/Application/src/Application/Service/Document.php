@@ -21,7 +21,7 @@ class Document extends AbstractService
     {
         $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type);
         $m_document = $this->getModel()
-            ->setItemId($item)
+            ->setItemId($item_id)
             ->setLibrary($library_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
