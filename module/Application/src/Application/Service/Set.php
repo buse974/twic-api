@@ -109,7 +109,7 @@ class Set extends AbstractService
         $res_set = $mapper->usePaginator($filter)->getList($course, $name); 
         foreach ($res_set as $m_set) {
             $m_set->setGroups($this->getServiceGroup()
-                ->getList($m_set->getId()));
+                ->getList($m_set->getCourseId(), $m_set->getId()));
         }
         
         return ($filter === null) ? $res_set:['count' => $mapper->count(),'list' => $res_set];

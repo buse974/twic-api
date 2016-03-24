@@ -106,14 +106,15 @@ class Group extends AbstractService
     /**
      * @invokable
      * 
+     * @param integer $course
      * @param integer $set
      * @param string $name
      * @param array $filter
      */
-    public function getList($set, $name = null, $filter = null)
+    public function getList($course, $set = null, $name = null, $filter = null)
     {
     	$mapper = $this->getMapper();
-        $res_group = $mapper->usePaginator($filter)->getList($set, $name);
+        $res_group = $mapper->usePaginator($filter)->getList($set, $name, $course);
         
         foreach ($res_group as $m_group) {
             $m_group->setUsers($this->getServiceGroupUser()->getListUser($m_group->getId()));
