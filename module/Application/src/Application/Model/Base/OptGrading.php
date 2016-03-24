@@ -4,7 +4,7 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class OptAssignment extends AbstractModel
+class OptGrading extends AbstractModel
 {
  	protected $item_id;
 	protected $mode;
@@ -16,7 +16,7 @@ class OptAssignment extends AbstractModel
 	protected $user_can_view;
 	protected $pg_stars;
 
-	protected $prefix = 'opt_assignment';
+	protected $prefix = 'opt_grading';
 
 	public function getItemId()
 	{

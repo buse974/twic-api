@@ -103,6 +103,7 @@ return [
             'app_service_set',
         	'app_service_library',
             'app_service_group',
+            'app_service_opt_grading',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
