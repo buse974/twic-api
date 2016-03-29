@@ -19,12 +19,8 @@ class Library extends AbstractService
 	 * 
 	 * @return integer
 	 */
-	public function add($name, $link = null, $token = null, $type = 'f', $folder_id = null)
+	public function add($name, $link = null, $token = null, $type = null, $folder_id = null)
 	{
-	    if($link === null && $token === null) {
-	        throw new \Exception('error $link = null and  $token = null');
-	    }
-	    
 	    $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
 	    $res_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token);
 		$m_library = $this->getModel()
