@@ -15,8 +15,8 @@ class User extends AbstractMapper
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar', 'school_id',
             'user$contact_state' => new Expression(
                 'IF(contact.accepted_date IS NOT NULL AND contact.contact_id=' .$me.', 3,
-		         IF(contact.request_date IS NOT  NULL AND requested IS FALSE AND contact.contact_id=' .$me.', 2,
-			     IF(contact.request_date IS NOT  NULL AND requested IS TRUE AND contact.contact_id=' .$me.', 1,0)
+		         IF(contact.request_date IS NOT  NULL AND requested <> 1 AND contact.contact_id=' .$me.', 2,
+			     IF(contact.request_date IS NOT  NULL AND requested = 1 AND contact.contact_id=' .$me.', 1,0)
 		)
 	)'));
             
@@ -54,8 +54,8 @@ class User extends AbstractMapper
             'position','interest','avatar',
             'user$contact_state' => new Expression(
                 'IF(contact.accepted_date IS NOT NULL AND contact.contact_id=' .$user_school.', 3,
-		         IF(contact.request_date IS NOT  NULL AND requested IS FALSE AND contact.contact_id=' .$user_school.', 2,
-			     IF(contact.request_date IS NOT  NULL AND requested IS TRUE AND contact.contact_id=' .$user_school.', 1,0)
+		         IF(contact.request_date IS NOT  NULL AND requested <> 1 AND contact.contact_id=' .$user_school.', 2,
+			     IF(contact.request_date IS NOT  NULL AND requested = 1 AND contact.contact_id=' .$user_school.', 1,0)
 		)
 	)'),
             'user$contacts_count' => $sub))
