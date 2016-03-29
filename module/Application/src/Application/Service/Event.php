@@ -656,6 +656,7 @@ class Event extends AbstractService
             $id = $this->getServiceUser()->getIdentity()['id'];
         }
 
+        
         $m_user = $this->getServiceUser()->get($id);
 
         return ['id' => $id,'name' => 'user','data' => [
