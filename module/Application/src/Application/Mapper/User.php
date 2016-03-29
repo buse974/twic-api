@@ -12,14 +12,21 @@ class User extends AbstractMapper
     public function get($user, $me)
     {
         $columns = array('id','firstname','gender','lastname','email','has_email_notifier',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id');
-        
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar', 'school_id',
+            'user$contact_state' => new Expression(
+                'IF(contact.accepted_date IS NOT NULL AND contact.contact_id=' .$me.', 3,
+		         IF(contact.request_date IS NOT  NULL AND requested IS FALSE AND contact.contact_id=' .$me.', 2,
+			     IF(contact.request_date IS NOT  NULL AND requested IS TRUE AND contact.contact_id=' .$me.', 1,0)
+		)
+	)'));
+            
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id','short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id','short_name'), $select::JOIN_LEFT)
-            ->where(array('user.id' => $user));
+            ->join('contact', 'contact.user_id=user.id', array(), $select::JOIN_LEFT)
+            ->where(['user.id' => $user]);
         
         return $this->selectWith($select);
     }
@@ -40,13 +47,20 @@ class User extends AbstractMapper
             ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
         
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('user$id' => new Expression('user.id'),'firstname','lastname','email','password','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar',
-             'user$contacts_count' => $sub))
+        $select->columns(array(
+            'user$id' => new Expression('user.id'),
+            'firstname','lastname','email','password',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position','interest','avatar',
+            'user$contact_state' => new Expression(
+                'IF(contact.accepted_date IS NOT NULL AND contact.contact_id=' .$user_school.', 3,
+		         IF(contact.request_date IS NOT  NULL AND requested IS FALSE AND contact.contact_id=' .$user_school.', 2,
+			     IF(contact.request_date IS NOT  NULL AND requested IS TRUE AND contact.contact_id=' .$user_school.', 1,0)
+		)
+	)'),
+            'user$contacts_count' => $sub))
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
-            ->join(array('uu' => 'user'), 'uu.id=uu.id', array(), $select::JOIN_CROSS)
-            ->join('contact', 'contact.contact_id = user.id AND contact.user_id=uu.id', array(), $select::JOIN_LEFT)
-            ->join(array('other_contact' => 'contact'), 'other_contact.user_id = user.id AND other_contact.contact_id=uu.id', array(), $select::JOIN_LEFT)
-            ->where(array('uu.id' => $user_school))
+            ->join('contact', 'contact.user_id=user.id', array(), $select::JOIN_LEFT)
             ->group('user.id')
             ->quantifier('DISTINCT');
         

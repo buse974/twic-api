@@ -27,7 +27,7 @@ class LibraryTest extends AbstractService
         $this->assertEquals($data['result']['name'] , "monfile");
         $this->assertEquals($data['result']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
         $this->assertEquals($data['result']['token'] , null);
-        $this->assertEquals($data['result']['type'] , "f");
+        $this->assertEquals($data['result']['type'] , null);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['deleted_date'] , null);
         $this->assertEquals($data['result']['updated_date'] , null);
@@ -56,7 +56,7 @@ class LibraryTest extends AbstractService
     	$this->assertEquals($data['result']['name'] , "monfileupt");
     	$this->assertEquals($data['result']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
     	$this->assertEquals($data['result']['token'] , null);
-    	$this->assertEquals($data['result']['type'] , "f");
+    	$this->assertEquals($data['result']['type'] , null);
     	$this->assertEquals(!empty($data['result']['created_date']) , true);
     	$this->assertEquals($data['result']['deleted_date'] , null);
     	$this->assertEquals(!empty($data['result']['updated_date']) , true);
@@ -95,7 +95,7 @@ class LibraryTest extends AbstractService
     	$this->assertEquals($data['result'][1]['name'] , "monfileupt");
     	$this->assertEquals($data['result'][1]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
     	$this->assertEquals($data['result'][1]['token'] , null);
-    	$this->assertEquals($data['result'][1]['type'] , "f");
+    	$this->assertEquals($data['result'][1]['type'] , null);
     	$this->assertEquals(!empty($data['result'][1]['created_date']) , true);
     	$this->assertEquals($data['result'][1]['deleted_date'] , null);
     	$this->assertEquals(!empty($data['result'][1]['updated_date']) , true);

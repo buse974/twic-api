@@ -540,9 +540,8 @@ class User extends AbstractService
         }
         
         $users = $res_user->toArray();
-        
+
         foreach ($users as &$user) {
-            
             $user['contacts_count'] = $this->getListContact(5)->count();
             $user['roles'] = [];
             $user['program'] = [];
