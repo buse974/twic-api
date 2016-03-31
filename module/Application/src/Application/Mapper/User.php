@@ -17,8 +17,7 @@ class User extends AbstractMapper
                 'IF(contact.accepted_date IS NOT NULL AND contact.contact_id=' .$me.', 3,
 		         IF(contact.request_date IS NOT  NULL AND requested <> 1 AND contact.contact_id=' .$me.', 2,
 			     IF(contact.request_date IS NOT  NULL AND requested = 1 AND contact.contact_id=' .$me.', 1,0)
-		)
-	)'));
+		))'));
             
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
@@ -26,7 +25,8 @@ class User extends AbstractMapper
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id','short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id','short_name'), $select::JOIN_LEFT)
             ->join('contact', 'contact.user_id=user.id', array(), $select::JOIN_LEFT)
-            ->where(['user.id' => $user]);
+            ->where(['user.id' => $user])
+            ->quantifier('DISTINCT');
         
         return $this->selectWith($select);
     }
