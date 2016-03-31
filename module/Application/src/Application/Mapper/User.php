@@ -67,7 +67,7 @@ class User extends AbstractMapper
 		     IF(contact.request_date IS NOT  NULL AND requested = 1, 1,0)))')))
         			     ->join('contact', 'contact.user_id = user.id', array())
         			     ->where(array('user.id=`user$id`'))
-        			     ->where(['( contact.contact_id = ? || contact.contact_id IS NULL )' => $me ]);
+        			     ->where(['( contact.contact_id = ? || contact.contact_id IS NULL )' => $user_school ]);
             
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
