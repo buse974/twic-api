@@ -616,7 +616,7 @@ UPDATE question SET text = '$subject always approach(es) a new group task, even 
 UPDATE question SET text = '$subject really enjoy(s) it when the problem or issue that has to be solved as a team is a challenging and unexpected one.' WHERE id = 57;
 UPDATE question SET text = 'Even when the instructor seemed harsh in the criticism of our group work, $subject see(s) it as a way to improve for the next round.' WHERE id = 58;
 
-INSERT INTO `poll_question_type` VALUES (1,'text'),(2,'multiple_choice'),(3,'checkbox'),(4,'date'),(5,'time');
+INSERT INTO `bank_question_type` VALUES (1,'text'),(2,'multiple_choice'),(3,'checkbox'),(4,'date'),(5,'time');
 UPDATE question SET text = 'In group-work, $subject care(s) about how others may feel when someone has been rude or condescending to them.' WHERE id = 53;
 
 INSERT INTO `school` (`name`, `next_name`, `short_name`, `describe`, `website`, `programme`, `phone`, `contact`, `contact_id`)

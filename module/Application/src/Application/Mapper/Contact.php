@@ -38,7 +38,13 @@ class Contact extends AbstractMapper
 
         $select->columns(array('request_date', 'user_id', 'contact_id'))
             ->where(array('contact.user_id' => $user))
-            ->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS false AND accepted IS false AND deleted IS false'));
+            ->where(array('
+                contact.request_date IS NOT NULL AND 
+                contact.accepted_date IS NULL AND 
+                contact.deleted_date IS NULL AND 
+                requested IS false AND 
+                accepted IS false AND 
+                deleted IS false'));
         
         return $this->selectWith($select);
     }
