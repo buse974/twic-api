@@ -36,7 +36,7 @@ class UserTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 4);
-        $this->assertEquals(count($data['result'][0]['contact']) , 17);
+        $this->assertEquals(count($data['result'][0]['contact']) , 18);
         $this->assertEquals(count($data['result'][0]['contact']['origin']) , 2);
         $this->assertEquals($data['result'][0]['contact']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['contact']['origin']['short_name'] , null);
@@ -44,13 +44,13 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact']['nationality']['id'] , null);
         $this->assertEquals($data['result'][0]['contact']['nationality']['short_name'] , null);
         $this->assertEquals($data['result'][0]['contact']['gender'] , null);
-        $this->assertEquals($data['result'][0]['contact']['contacts_count'] , 0);
+        $this->assertEquals($data['result'][0]['contact']['contact_state'] , 1);
         $this->assertEquals(count($data['result'][0]['contact']['school']) , 5);
         $this->assertEquals($data['result'][0]['contact']['school']['id'] , 1);
-        $this->assertEquals($data['result'][0]['contact']['school']['background'] , null);
         $this->assertEquals($data['result'][0]['contact']['school']['name'] , "Morbi Corporation");
         $this->assertEquals($data['result'][0]['contact']['school']['short_name'] , "turpis");
         $this->assertEquals($data['result'][0]['contact']['school']['logo'] , null);
+        $this->assertEquals($data['result'][0]['contact']['school']['background'] , null);
         $this->assertEquals($data['result'][0]['contact']['id'] , 1);
         $this->assertEquals($data['result'][0]['contact']['firstname'] , "Paul");
         $this->assertEquals($data['result'][0]['contact']['lastname'] , "Boussekey");
@@ -61,8 +61,9 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][0]['contact']['interest'] , null);
         $this->assertEquals($data['result'][0]['contact']['avatar'] , null);
         $this->assertEquals($data['result'][0]['contact']['has_email_notifier'] , 1);
+        $this->assertEquals($data['result'][0]['contact']['contacts_count'] , 0);
         $this->assertEquals(count($data['result'][0]['contact']['roles']) , 1);
-        $this->assertEquals($data['result'][0]['contact']['roles'][0] , "admin");
+        $this->assertEquals($data['result'][0]['contact']['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result'][0]['contact']['program']) , 0);
         $this->assertEquals($data['result'][0]['user_id'] , 3);
         $this->assertEquals($data['result'][0]['contact_id'] , 1);

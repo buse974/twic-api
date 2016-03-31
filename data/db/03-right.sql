@@ -912,7 +912,9 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('materialdocument.nbrView');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'materialdocument.nbrView'));
 
-
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('group.replaceUser');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'group.replaceUser'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('group.deleteUser');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
@@ -1026,7 +1028,6 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('library.getSession');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'library.getSession'));
 
-
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('optgrading.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'optgrading.add'));
@@ -1038,5 +1039,7 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('optgrading.delete');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'optgrading.delete'));
+
+
 
 
