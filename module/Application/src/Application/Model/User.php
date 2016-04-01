@@ -124,7 +124,7 @@ class User extends BaseUser
 
     public function setContactState($contact_state)
     {
-        $this->contact_state = $contact_state;
+        $this->contact_state = ($contact_state===null) ? 0:$contact_state;
 
         return $this;
     }
