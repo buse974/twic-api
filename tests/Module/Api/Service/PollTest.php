@@ -15,7 +15,91 @@ class PollTest extends AbstractService
         parent::setUpBeforeClass();
     }
 
-    public function testCanPollAdd()
+    public function testAddCourse()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => 1,'level' => 'emba','sis' => 'sis'));
+    
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    
+        $program_id = $data['result'];
+
+        $this->reset();
+        
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('course.add', array('title' => 'IMERIR','abstract' => 'un_token','description' => 'description','objectives' => 'objectives',
+            'teaching' => 'teaching','attendance' => 'attendance','duration' => 18,'notes' => 'notes',
+            'learning_outcomes' => 'learning_outcomes','video_link' => 'http://google.fr','video_token' => 'video_token',
+            'material_document' => array(array('type' => 'link','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token',
+                'date' => '2011-01-01')),'program_id' => $program_id));
+
+        return $data['result']['id'];
+    }
+    
+    /**
+     * @depends testAddCourse
+     */
+    public function testCanQuestionAdd($course)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('bankquestion.add', [ 
+            'course_id' => $course,
+            'data' => [
+                [
+                    'question' => 'Ma question',
+                    'bank_question_type' => 3,
+                    'bank_question_tag' => ['maquestion'],
+                    'bank_question_media' => [
+                        ['token' => 'token'],
+                        ['link' => 'link']
+                    ],
+                    'point' => 99,
+                    'bank_question_item' => [
+                        [
+                            'libelle' => 'oui',
+                            'answer' => 'super pas cool',
+                            'percent' => '100'
+                        ],
+                        ['libelle' => 'non']
+                    ]
+                ]
+            ]
+        ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][0] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /*public function testCanPollAdd()
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('poll.add', [
+            'title' => 'un titre',
+            'time_limit' => 'time_limit',
+            'item_id' => 1,
+            'poll_item' => [
+                [
+                    'nb_point' => 99,
+                    'bank_question_id' => 1
+                ],
+                [
+                    'nb_point' => 99,
+                    'nb' => 10,
+                    'group_question' => [1,2,3,4],
+                ]
+            ]
+        ]);
+    }*/
+    
+    /*public function testCanPollAdd()
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('poll.add', [
@@ -29,7 +113,7 @@ class PollTest extends AbstractService
                         [ 'libelle' => 'non']
                     ]
                 ]
-            ] 
+            ]
         ]);
         
         $this->assertEquals(count($data) , 3);
@@ -123,7 +207,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
+    }*/
     
     
     public function setIdentity($id)

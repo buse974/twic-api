@@ -7,9 +7,8 @@ use Dal\Model\AbstractModel;
 class PollQuestion extends AbstractModel
 {
  	protected $id;
-	protected $question;
 	protected $poll_id;
-	protected $poll_question_type_id;
+	protected $bank_question_id;
 	protected $is_mandatory;
 	protected $parent_id;
 
@@ -27,18 +26,6 @@ class PollQuestion extends AbstractModel
 		return $this;
 	}
 
-	public function getQuestion()
-	{
-		return $this->question;
-	}
-
-	public function setQuestion($question)
-	{
-		$this->question = $question;
-
-		return $this;
-	}
-
 	public function getPollId()
 	{
 		return $this->poll_id;
@@ -51,14 +38,14 @@ class PollQuestion extends AbstractModel
 		return $this;
 	}
 
-	public function getPollQuestionTypeId()
+	public function getBankQuestionId()
 	{
-		return $this->poll_question_type_id;
+		return $this->bank_question_id;
 	}
 
-	public function setPollQuestionTypeId($poll_question_type_id)
+	public function setBankQuestionId($bank_question_id)
 	{
-		$this->poll_question_type_id = $poll_question_type_id;
+		$this->bank_question_id = $bank_question_id;
 
 		return $this;
 	}

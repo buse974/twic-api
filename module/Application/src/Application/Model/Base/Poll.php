@@ -9,6 +9,8 @@ class Poll extends AbstractModel
  	protected $id;
 	protected $title;
 	protected $expiration_date;
+	protected $time_limit;
+	protected $item_id;
 
 	protected $prefix = 'poll';
 
@@ -44,6 +46,30 @@ class Poll extends AbstractModel
 	public function setExpirationDate($expiration_date)
 	{
 		$this->expiration_date = $expiration_date;
+
+		return $this;
+	}
+
+	public function getTimeLimit()
+	{
+		return $this->time_limit;
+	}
+
+	public function setTimeLimit($time_limit)
+	{
+		$this->time_limit = $time_limit;
+
+		return $this;
+	}
+
+	public function getItemId()
+	{
+		return $this->item_id;
+	}
+
+	public function setItemId($item_id)
+	{
+		$this->item_id = $item_id;
 
 		return $this;
 	}

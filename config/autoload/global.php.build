@@ -104,6 +104,7 @@ return [
             'app_service_library',
             'app_service_group',
 	    'app_service_opt_grading',
+	    'app_service_bank_question',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

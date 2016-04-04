@@ -4,14 +4,14 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class PollQuestionItem extends AbstractModel
+class BankQuestionItem extends AbstractModel
 {
  	protected $id;
 	protected $libelle;
-	protected $poll_question_id;
-	protected $parent_id;
+	protected $bank_question_id;
+	protected $order_id;
 
-	protected $prefix = 'poll_question_item';
+	protected $prefix = 'bank_question_item';
 
 	public function getId()
 	{
@@ -37,26 +37,26 @@ class PollQuestionItem extends AbstractModel
 		return $this;
 	}
 
-	public function getPollQuestionId()
+	public function getBankQuestionId()
 	{
-		return $this->poll_question_id;
+		return $this->bank_question_id;
 	}
 
-	public function setPollQuestionId($poll_question_id)
+	public function setBankQuestionId($bank_question_id)
 	{
-		$this->poll_question_id = $poll_question_id;
+		$this->bank_question_id = $bank_question_id;
 
 		return $this;
 	}
 
-	public function getParentId()
+	public function getOrderId()
 	{
-		return $this->parent_id;
+		return $this->order_id;
 	}
 
-	public function setParentId($parent_id)
+	public function setOrderId($order_id)
 	{
-		$this->parent_id = $parent_id;
+		$this->order_id = $order_id;
 
 		return $this;
 	}

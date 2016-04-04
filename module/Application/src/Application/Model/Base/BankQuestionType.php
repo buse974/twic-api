@@ -4,12 +4,12 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class PollQuestionType extends AbstractModel
+class BankQuestionType extends AbstractModel
 {
  	protected $id;
 	protected $name;
 
-	protected $prefix = 'poll_question_type';
+	protected $prefix = 'bank_question_type';
 
 	public function getId()
 	{

@@ -4,16 +4,17 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class PollAnswer extends AbstractModel
+class PollItem extends AbstractModel
 {
  	protected $id;
 	protected $poll_id;
-	protected $poll_item_id;
 	protected $bank_question_id;
 	protected $group_question_id;
-	protected $user_id;
+	protected $order_id;
+	protected $is_mandatory;
+	protected $nb_point;
 
-	protected $prefix = 'poll_answer';
+	protected $prefix = 'poll_item';
 
 	public function getId()
 	{
@@ -35,18 +36,6 @@ class PollAnswer extends AbstractModel
 	public function setPollId($poll_id)
 	{
 		$this->poll_id = $poll_id;
-
-		return $this;
-	}
-
-	public function getPollItemId()
-	{
-		return $this->poll_item_id;
-	}
-
-	public function setPollItemId($poll_item_id)
-	{
-		$this->poll_item_id = $poll_item_id;
 
 		return $this;
 	}
@@ -75,14 +64,38 @@ class PollAnswer extends AbstractModel
 		return $this;
 	}
 
-	public function getUserId()
+	public function getOrderId()
 	{
-		return $this->user_id;
+		return $this->order_id;
 	}
 
-	public function setUserId($user_id)
+	public function setOrderId($order_id)
 	{
-		$this->user_id = $user_id;
+		$this->order_id = $order_id;
+
+		return $this;
+	}
+
+	public function getIsMandatory()
+	{
+		return $this->is_mandatory;
+	}
+
+	public function setIsMandatory($is_mandatory)
+	{
+		$this->is_mandatory = $is_mandatory;
+
+		return $this;
+	}
+
+	public function getNbPoint()
+	{
+		return $this->nb_point;
+	}
+
+	public function setNbPoint($nb_point)
+	{
+		$this->nb_point = $nb_point;
 
 		return $this;
 	}
