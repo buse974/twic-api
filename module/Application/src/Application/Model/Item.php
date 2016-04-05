@@ -8,12 +8,15 @@ class Item extends BaseItem
 {
     const TYPE_LIVE_CLASS = 'LC';
     const TYPE_WORKGROUP = 'WG';
-    const TYPE_INDIVIDUAL_ASSIGMENT = 'IA';
+    const TYPE_INDIVIDUAL_ASSIGNMENT = 'IA';
     const TYPE_CAPSTONE_PROJECT = 'CP';
     const TYPE_POLL = 'POLL';
     const TYPE_DOCUMENT = 'DOC';
     const TYPE_TXT = 'TXT';
     const TYPE_MODULE = 'MOD';
+    const TYPE_CHAT = 'CHAT';
+    const TYPE_DISCUSSION = 'DISC';
+    const TYPE_EQCQ = 'eqcq';
 
     protected $materials;
     protected $module;

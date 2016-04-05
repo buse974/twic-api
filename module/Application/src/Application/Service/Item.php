@@ -5,6 +5,7 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use \Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
+use Application\Model\Conversation as ModelConversation;
 
 class Item extends AbstractService
 {
@@ -79,7 +80,15 @@ class Item extends AbstractService
         
         if(null !== $opt) {
             if(isset($opt['grading'])) {
-                $this->getServiceOptGrading()->add($item_id, (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,(isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,(isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,(isset($opt['grading']['pg_auto'])) ? $opt['grading']['pg_auto'] : null,(isset($opt['grading']['pg_due_date'])) ? $opt['grading']['pg_due_date'] : null,(isset($opt['grading']['pg_can_view'])) ? $opt['grading']['pg_can_view'] : null,(isset($opt['grading']['user_can_view'])) ? $opt['grading']['user_can_view'] : null,(isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
+                $this->getServiceOptGrading()->add($item_id, 
+                    (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,
+                    (isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,
+                    (isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,
+                    (isset($opt['grading']['pg_auto'])) ? $opt['grading']['pg_auto'] : null,
+                    (isset($opt['grading']['pg_due_date'])) ? $opt['grading']['pg_due_date'] : null,
+                    (isset($opt['grading']['pg_can_view'])) ? $opt['grading']['pg_can_view'] : null,
+                    (isset($opt['grading']['user_can_view'])) ? $opt['grading']['user_can_view'] : null,
+                    (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
         }
         switch ($type) {
@@ -91,71 +100,43 @@ class Item extends AbstractService
                 $this->getServiceDocument()->add($name, $type, $link, $token, $item_id);
                 break;
             case ModelItem::TYPE_POLL:
-                $ti = isset($d['title']) ? $d['title'] : $title;
-                $poll_questions = isset($d['questions']) ? $d['questions'] : null;
-                $this->getServicePoll()->add($ti, $poll_questions);
+                $ti = isset($data['title']) ? $data['title'] : $title;
+                $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
+                $expiration = isset($data['expiration']) ? $data['expiration'] : null;
+                $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
+                $this->getServicePoll()->add($ti, $poll_item, $expiration, $time_limit, $item_id);
+                break;
+            case ModelItem::TYPE_CHAT:
+                $this->getServiceConversation()->create(ModelConversation::TYPE_ITEM_CHAT, $item_id);
+                break;
+            case ModelItem::TYPE_DISCUSSION:
+                if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
+                    $this->getServiceThread()->update($thread_id,null,$item_id);
+                } else {
+                    $this->getServiceThread()->add($title, $course, $describe, $item_id);
+                }
+                break;
+            case ModelItem::TYPE_WORKGROUP:
+                $record = isset($data['record']) ? $data['record'] : null;
+                $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
+                $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
+                $this->getServiceOptVideoconf()->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
+                break;
+            case ModelItem::TYPE_LIVE_CLASS:
+                $record = isset($data['record']) ? $data['record'] : null;
+                $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
+                $this->getServiceOptVideoconf()->add($item_id, $record, $nb_user_autorecord, true);
                 break;
         }
         
+        if(isset($data['opt_eqcq']) && $data['opt_eqcq']==1) {
+            $this->add($course,null,null,null,null,ModelItem::TYPE_EQCQ,null,null,null,null,null,null,null,$item_id);
+        }
+        if(isset($data['opt_assignment']) && $data['opt_assignment']==1) {
+            $this->add($course,null,null,null,null,ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT,null,null,null,null,null,null,null,$item_id);
+        }
+        
         return $item_id;
-    }
-    
-    public function updateOrderId($item, $parent_target = null,$order_id = null)
-    {
-        $me_item = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($item))
-            ->current();
-        
-        $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
-        $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
-        $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
-        $sortp = $rentrep = [];
-        
-        $parent_target = ($parent_target === null) ? $parent_id: (($parent_target === 0) ? new IsNull('parent_id'):['parent_id' => $parent_target]);
-        $order  = ($order_id === null || $order_id === 0)?new IsNull('order_id'): ['order_id' => $order_id];
-        
-        if(is_array($parent_id)) {
-        	$sort	= array_merge($sort,$parent_id);
-        }else {
-        	$sortp[]   = $parent_id;
-        }
-        if(is_array($parent_target)) {
-        	$rentre = array_merge($rentre,$parent_target);
-        }else {
-        	$rentrep[] = $parent_target;
-        }
-        if(is_array($order)) {
-        	$rentre = array_merge($rentre,$order);
-        }else {
-        	$rentrep[] = $order;
-        }
-        
-        $sort = array_merge($sortp, $sort);
-        $rentre = array_merge($rentrep, $rentre);
-        
-        // JE SORT
-        $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
-
-        // JE RENTRE
-	    $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
-	    $this->getMapper()->update($this->getModel()
-	        ->setId($item)
-	        ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull():$order_id));
-        
-    }
-    
-    public function sort($item)
-    {
-    	$me_item = $this->getMapper()
-    		->select($this->getModel()
-    		->setId($item))
-    		->current();
-    	
-    	return $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), [
-    		'order_id' => $me_item->getId(),
-    		'course_id' => $me_item->getCourseId()
-    	]);
     }
 
     /**
@@ -374,6 +355,64 @@ class Item extends AbstractService
         return $res_item->current();
     }
 
+    public function updateOrderId($item, $parent_target = null,$order_id = null)
+    {
+        $me_item = $this->getMapper()
+        ->select($this->getModel()
+            ->setId($item))
+            ->current();
+    
+            $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
+            $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
+            $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
+            $sortp = $rentrep = [];
+    
+            $parent_target = ($parent_target === null) ? $parent_id: (($parent_target === 0) ? new IsNull('parent_id'):['parent_id' => $parent_target]);
+            $order  = ($order_id === null || $order_id === 0)?new IsNull('order_id'): ['order_id' => $order_id];
+    
+            if(is_array($parent_id)) {
+                $sort	= array_merge($sort,$parent_id);
+            }else {
+                $sortp[]   = $parent_id;
+            }
+            if(is_array($parent_target)) {
+                $rentre = array_merge($rentre,$parent_target);
+            }else {
+                $rentrep[] = $parent_target;
+            }
+            if(is_array($order)) {
+                $rentre = array_merge($rentre,$order);
+            }else {
+                $rentrep[] = $order;
+            }
+    
+            $sort = array_merge($sortp, $sort);
+            $rentre = array_merge($rentrep, $rentre);
+    
+            // JE SORT
+            $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
+    
+            // JE RENTRE
+            $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
+            $this->getMapper()->update($this->getModel()
+                ->setId($item)
+                ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull():$order_id));
+    
+    }
+    
+    public function sort($item)
+    {
+        $me_item = $this->getMapper()
+        ->select($this->getModel()
+            ->setId($item))
+            ->current();
+             
+            return $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), [
+                'order_id' => $me_item->getId(),
+                'course_id' => $me_item->getCourseId()
+            ]);
+    }
+    
     /**
      *
      * @return \Application\Service\ItemMaterialDocumentRelation
@@ -472,6 +511,33 @@ class Item extends AbstractService
     public function getServiceOptGrading()
     {
         return $this->getServiceLocator()->get('app_service_opt_grading');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Conversation
+     */
+    public function getServiceConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Thread
+     */
+    public function getServiceThread()
+    {
+        return $this->getServiceLocator()->get('app_service_thread');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\OptVideoconf
+     */
+    public function getServiceOptVideoconf()
+    {
+        return $this->getServiceLocator()->get('app_service_opt_videoconf');
     }
     
 }

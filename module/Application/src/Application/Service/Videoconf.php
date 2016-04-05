@@ -32,10 +32,8 @@ class Videoconf extends AbstractService
             ->setDescription($description)
             ->setItemProgId($item_prog)
             ->setConversationId($conversation)
-            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))
-            ->format('Y-m-d H:i:s'))
-            ->setToken($this->getServiceZOpenTok()
-            ->getSessionId())
+            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
+            ->setToken($this->getServiceZOpenTok()->getSessionId())
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($this->getMapper()->insert($m_videoconf) === 0) {

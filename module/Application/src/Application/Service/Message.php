@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Conversation;
 
 class Message extends AbstractService
 {
@@ -54,7 +55,7 @@ class Message extends AbstractService
                     $tmp[] = $me;
                 }
                 
-                $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, 1);
+                $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, Conversation::TYPE_EMAIL);
             }
             
             // Applies the params to a new model
@@ -90,24 +91,6 @@ class Message extends AbstractService
     }
 
     /**
-     * Get Message.
-     *
-     * @return \Application\Model\Message
-     */
-    public function get($id)
-    {
-        $m_message = $this->getModel()->setId($id);
-        $res_message = $this->getMapper()->select($m_message);
-        
-        // Throws an error if the message does not exist
-        if ($res_message->count() <= 0) {
-            throw new \Exception('error select message with id :' . $id);
-        }
-        // Fetches the entity and stores the message and conversation ids
-        return $res_message->current();
-    }
-
-    /**
      * Send message for videoconf.
      *
      * @invokable
@@ -122,7 +105,7 @@ class Message extends AbstractService
      */
     public function sendVideoConf($text = null, $to = null, $conversation = null)
     {
-        return $this->_send($text, $to, $conversation, 3);
+        return $this->_send($text, $to, $conversation, Conversation::TYPE_VIDEOCONF);
     }
 
     /**
@@ -140,9 +123,28 @@ class Message extends AbstractService
      */
     public function send($text = null, $to = null, $conversation = null)
     {
-        return $this->_send($text, $to, $conversation, 2);
+        return $this->_send($text, $to, $conversation, Conversation::TYPE_CHAT);
     }
 
+
+    /**
+     * Get Message.
+     *
+     * @return \Application\Model\Message
+     */
+    public function get($id)
+    {
+        $m_message = $this->getModel()->setId($id);
+        $res_message = $this->getMapper()->select($m_message);
+    
+        // Throws an error if the message does not exist
+        if ($res_message->count() <= 0) {
+            throw new \Exception('error select message with id :' . $id);
+        }
+        // Fetches the entity and stores the message and conversation ids
+        return $res_message->current();
+    }
+    
     public function _send($text = null, $to = null, $conversation = null, $type = null)
     {
         $identity = $this->getServiceUser()->getIdentity();

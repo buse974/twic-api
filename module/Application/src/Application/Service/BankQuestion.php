@@ -9,9 +9,17 @@ class BankQuestion extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $course_id
-     * @param array $data
-     */
+     * @param unknown $course_id
+     * 
+     * @param unknown $question
+     * @param unknown $bank_question_type_id
+     * @param unknown $point
+     * @param unknown $bank_question_item
+     * @param unknown $bank_question_tag
+     * @param unknown $bank_question_media
+     * @param unknown $name
+     * 
+     **/
     public function add($course_id, $data) 
     {
         $ret = [];
