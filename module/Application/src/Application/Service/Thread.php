@@ -66,8 +66,7 @@ class Thread extends AbstractService
         $m_thread = $this->getModel()
             ->setId($id)
             ->setTitle($title)
-            ->setItemId($item_id)
-            ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            ->setItemId($item_id);
 
         return $this->getMapper()->update($m_thread);
     }
@@ -77,21 +76,20 @@ class Thread extends AbstractService
      *
      * @invokable
      *
-     * @param int $course
+     * @param integer $course
+     * @param unknown $filter
+     * @param string $name
      *
-     * @throws \Exception
      *
      * @return ResultSet
      */
-    public function getList($course, $filter = null)
+    public function getList($course, $filter = null, $name = null)
     {
         $mapper = $this->getMapper();
-
-        $res_thread = $mapper->usePaginator($filter)->getList($course);
+        $res_thread = $mapper->usePaginator($filter)->getList($course, null, $name);
         foreach ($res_thread as $m_thread) {
             $m_thread->setMessage($this->getServiceThreadMessage()
                 ->getLast($m_thread->getId()));
-
             $roles = [];
             foreach ($this->getServiceRole()->getRoleByUser($m_thread->getUser()
                 ->getId()) as $role) {
@@ -147,7 +145,7 @@ class Thread extends AbstractService
         return $this->getMapper()->update($this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceAuth()
             ->getIdentity()
-            ->getId(), 'id' => $id, ));
+            ->getId(), 'id' => $id));
     }
 
     /**

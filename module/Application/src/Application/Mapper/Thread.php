@@ -6,8 +6,8 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 
 class Thread extends AbstractMapper
-{
-    public function getList($course = null, $thread = null)
+{   
+    public function getList($course = null, $thread = null, $name = null)
     {
         if (null === $course && null === $thread) {
             throw new \Exception('no params');
@@ -22,10 +22,12 @@ class Thread extends AbstractMapper
             ->where(array('thread.deleted_date IS NULL'))
             ->group('thread.id');
 
+        if(null !== $name) {
+            $select->where(array('thread.title LIKE ? ' => $name.'%'));
+        }
         if (null !== $course) {
             $select->where(array('thread.course_id' => $course));
         }
-
         if (null !== $thread) {
             $select->where(array('thread.id' => $thread));
         }
