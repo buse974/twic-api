@@ -13,7 +13,7 @@ class Group extends AbstractMapper
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($set, $name = null, $course)
+    public function getList($set = null, $name = null, $course)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'uid', 'name'))
