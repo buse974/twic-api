@@ -52,6 +52,7 @@ class PollTest extends AbstractService
             'data' => [
                 [
                     'question' => 'Ma question',
+                    'name' => 'name',
                     'bank_question_type' => 3,
                     'bank_question_tag' => ['maquestion'],
                     'bank_question_media' => [
@@ -67,24 +68,81 @@ class PollTest extends AbstractService
                         ],
                         ['libelle' => 'non']
                     ]
+                ],
+                [
+                'question' => 'Ma question',
+                'name' => 'name',
+                'bank_question_type' => 3,
+                'bank_question_tag' => ['maquestion'],
+                'bank_question_media' => [
+                    ['token' => 'token'],
+                    ['link' => 'link']
+                ],
+                'point' => 99,
+                'bank_question_item' => [
+                    [
+                        'libelle' => 'oui',
+                        'answer' => 'super pas cool',
+                        'percent' => '100'
+                    ],
+                    ['libelle' => 'non']
+                ]
+                ],
+                [
+                'question' => 'Ma question',
+                'name' => 'name',
+                'bank_question_type' => 3,
+                'bank_question_tag' => ['maquestion'],
+                'bank_question_media' => [
+                    ['token' => 'token'],
+                    ['link' => 'link']
+                ],
+                'point' => 99,
+                'bank_question_item' => [
+                    [
+                        'libelle' => 'oui',
+                        'answer' => 'super pas cool',
+                        'percent' => '100'
+                    ],
+                    ['libelle' => 'non']
+                ]
+                ],
+                [
+                'question' => 'Ma question',
+                'name' => 'name',
+                'bank_question_type' => 3,
+                'bank_question_tag' => ['maquestion'],
+                'bank_question_media' => [
+                    ['token' => 'token'],
+                    ['link' => 'link']
+                ],
+                'point' => 99,
+                'bank_question_item' => [
+                    [
+                        'libelle' => 'oui',
+                        'answer' => 'super pas cool',
+                        'percent' => '100'
+                    ],
+                    ['libelle' => 'non']
+                ]
                 ]
             ]
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals($data['result'][0] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    /*public function testCanPollAdd()
+    public function testCanPollAdd()
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('poll.add', [
             'title' => 'un titre',
-            'time_limit' => 'time_limit',
-            'item_id' => 1,
+            'expiration' => '2107-10-10',
+            'time_limit' => 10,
             'poll_item' => [
                 [
                     'nb_point' => 99,
@@ -93,11 +151,21 @@ class PollTest extends AbstractService
                 [
                     'nb_point' => 99,
                     'nb' => 10,
-                    'group_question' => [1,2,3,4],
+                    'group_question' => [1,2,3],
                 ]
             ]
         ]);
-    }*/
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 5);
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['title'] , "un titre");
+        $this->assertEquals(!empty($data['result']['expiration_date']) , true);
+        $this->assertEquals($data['result']['time_limit'] , 10);
+        $this->assertEquals($data['result']['item_id'] , null);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
     
     /*public function testCanPollAdd()
     {

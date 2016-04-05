@@ -8,47 +8,31 @@ class Poll extends AbstractService
 
     /**
      * Add poll for message.
-     *
-     * {
-     * tilte,
-     * expiration,
-     *      poll_questions : [{
-     *          mandatory,
-     *          question,
-     *          question_type,
-     *          question_items : {
-     *              libelle,
-     *              parent,
-     *          },..]
-     *      },...]
-     * }
-     *
+     * 
      * @invokable
      * 
-     * @param integer $message            
-     * @param array $datas            
+     * @param string $title
+     * @param integer $poll_item
+     * @param integer $expiration
+     * @param integer $time_limit
+     * @param integer $item_id
+     * @throws \Exception
      */
-    public function add($title, $poll_questions, $expiration = null)
+    public function add($title, $poll_item, $expiration = null, $time_limit = null, $item_id = null)
     {
         $m_poll = $this->getModel();
         $m_poll->setExpirationDate($expiration)
-            ->setTitle($title);
+               ->setTitle($title)
+               ->setTimeLimit($time_limit)
+               ->setItemId($item_id);
         
         if ($this->getMapper()->insert($m_poll) < 1) {
             throw new \Exception('Insert poll error');
         }
         
         $poll_id = $this->getMapper()->getLastInsertValue();
-        
-        foreach ($poll_questions as $poll_question) {
-            $this->getServicePollQuestion()->add($poll_id, 
-                (isset($poll_question['question']) ? $poll_question['question']:null),
-                (isset($poll_question['poll_question_type']) ? $poll_question['poll_question_type']:1),
-                (isset($poll_question['poll_question_items']) ? $poll_question['poll_question_items']:[]),
-                (isset($poll_question['mandatory']) ? $poll_question['mandatory']:false),
-                (isset($poll_question['parent']) ? $poll_question['parent']:null));
-        }
-        
+        $this->getServicePollItem()->add($poll_id, $poll_item);
+            
         return $this->get($poll_id);
     }
 
@@ -71,7 +55,7 @@ class Poll extends AbstractService
         }
         
         $m_poll = $res_poll->current();
-        $m_poll->setPollQuestions($this->getServicePollQuestion()->getList($id));
+        //$m_poll->setPollQuestions($this->getServicePollQuestion()->getList($id));
         
         return $m_poll;
     }
@@ -109,10 +93,10 @@ class Poll extends AbstractService
     
     /**
      *
-     * @return \Application\Service\PollQuestion
+     * @return \Application\Service\PollItem
      */
-    public function getServicePollQuestion()
+    public function getServicePollItem()
     {
-        return $this->getServiceLocator()->get('app_service_poll_question');
+        return $this->getServiceLocator()->get('app_service_poll_item');
     }
 }

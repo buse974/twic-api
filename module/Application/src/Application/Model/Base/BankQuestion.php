@@ -7,6 +7,7 @@ use Dal\Model\AbstractModel;
 class BankQuestion extends AbstractModel
 {
  	protected $id;
+	protected $name;
 	protected $question;
 	protected $bank_question_type_id;
 	protected $course_id;
@@ -22,6 +23,18 @@ class BankQuestion extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
+
+		return $this;
+	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function setName($name)
+	{
+		$this->name = $name;
 
 		return $this;
 	}
