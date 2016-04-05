@@ -17,7 +17,7 @@ class BankQuestion extends AbstractService
         $ret = [];
         foreach ($data as $bq) {
             $question = (isset($bq['question'])) ? $bq['question']:null;
-            $bank_question_type_id  = (isset($bq['bank_question_type'])) ? $bq['bank_question_type']:null;
+            $bank_question_type_id  = (isset($bq['bank_question_type_id'])) ? $bq['bank_question_type_id']:null;
             $point = (isset($bq['point'])) ? $bq['point']:null;
             $bank_question_item  = (isset($bq['bank_question_item'])) ? $bq['bank_question_item']:null;
             $bank_question_tag = (isset($bq['bank_question_tag'])) ? $bq['bank_question_tag']:null;
@@ -52,6 +52,25 @@ class BankQuestion extends AbstractService
         return $bank_question_id;
     }
         
+    /**
+     * @invokable
+     * 
+     * @param integer $course_id
+     */
+    public function getList($course_id)
+    {
+        $res_bank_question = $this->getMapper()->select($this->getModel()->setCourseId($course_id));
+        
+        foreach ($res_bank_question as $m_bank_question) {
+            $bank_question_id = $m_bank_question->getId();
+            $m_bank_question->setBankQuestionItem($this->getServiceBankQuestionItem()->getList($bank_question_id)); 
+            $m_bank_question->setBankQuestionMedia($this->getServiceBankQuestionMedia()->getList($bank_question_id));
+            $m_bank_question->setBankQuestionTag($this->getServiceBankQuestionTag()->getList($bank_question_id));
+        }
+        
+        return $res_bank_question;
+    }
+    
     /**
      * 
      * @return \Application\Service\BankQuestionMedia

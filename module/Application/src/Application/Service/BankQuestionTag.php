@@ -45,4 +45,24 @@ class BankQuestionTag extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     
     }
+    
+    public function getList($bank_question_id)
+    {
+        $ret = [];
+        $res_bank_question_tag = $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id));
+        foreach ($res_bank_question_tag as $m_bank_question_tag) {
+            $ret[] = $m_bank_question_tag->getName();
+        }
+        
+        return $ret;
+    }
 }
+
+
+
+
+
+
+
+
+

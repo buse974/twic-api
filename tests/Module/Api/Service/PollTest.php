@@ -53,7 +53,7 @@ class PollTest extends AbstractService
                 [
                     'question' => 'Ma question',
                     'name' => 'name',
-                    'bank_question_type' => 3,
+                    'bank_question_type_id' => 3,
                     'bank_question_tag' => ['maquestion'],
                     'bank_question_media' => [
                         ['token' => 'token'],
@@ -72,7 +72,7 @@ class PollTest extends AbstractService
                 [
                 'question' => 'Ma question',
                 'name' => 'name',
-                'bank_question_type' => 3,
+                'bank_question_type_id' => 3,
                 'bank_question_tag' => ['maquestion'],
                 'bank_question_media' => [
                     ['token' => 'token'],
@@ -91,7 +91,7 @@ class PollTest extends AbstractService
                 [
                 'question' => 'Ma question',
                 'name' => 'name',
-                'bank_question_type' => 3,
+                'bank_question_type_id' => 3,
                 'bank_question_tag' => ['maquestion'],
                 'bank_question_media' => [
                     ['token' => 'token'],
@@ -110,7 +110,7 @@ class PollTest extends AbstractService
                 [
                 'question' => 'Ma question',
                 'name' => 'name',
-                'bank_question_type' => 3,
+                'bank_question_type_id' => 3,
                 'bank_question_tag' => ['maquestion'],
                 'bank_question_media' => [
                     ['token' => 'token'],
@@ -167,6 +167,191 @@ class PollTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
+    /**
+     * @depends testAddCourse
+     */
+    public function testCanBankQuestionGetList($course)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('bankquestion.getList', ['course_id' => $course]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals(count($data['result'][0]) , 9);
+        $this->assertEquals(count($data['result'][0]['bank_question_tag']) , 1);
+        $this->assertEquals($data['result'][0]['bank_question_tag'][0] , "maquestion");
+        $this->assertEquals(count($data['result'][0]['bank_question_item']) , 2);
+        $this->assertEquals(count($data['result'][0]['bank_question_item'][0]) , 5);
+        $this->assertEquals(count($data['result'][0]['bank_question_item'][0]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['libelle'] , "oui");
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_question_id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['order_id'] , null);
+        $this->assertEquals(count($data['result'][0]['bank_question_item'][1]) , 5);
+        $this->assertEquals(count($data['result'][0]['bank_question_item'][1]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['bank_answer_item']['bank_question_item_id'] , 2);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['bank_answer_item']['percent'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['id'] , 2);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['libelle'] , "non");
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['bank_question_id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_item'][1]['order_id'] , null);
+        $this->assertEquals(count($data['result'][0]['bank_question_media']) , 2);
+        $this->assertEquals(count($data['result'][0]['bank_question_media'][0]) , 4);
+        $this->assertEquals($data['result'][0]['bank_question_media'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_media'][0]['bank_question_id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_media'][0]['token'] , "token");
+        $this->assertEquals($data['result'][0]['bank_question_media'][0]['link'] , null);
+        $this->assertEquals(count($data['result'][0]['bank_question_media'][1]) , 4);
+        $this->assertEquals($data['result'][0]['bank_question_media'][1]['id'] , 2);
+        $this->assertEquals($data['result'][0]['bank_question_media'][1]['bank_question_id'] , 1);
+        $this->assertEquals($data['result'][0]['bank_question_media'][1]['token'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_media'][1]['link'] , "link");
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['name'] , "name");
+        $this->assertEquals($data['result'][0]['question'] , "Ma question");
+        $this->assertEquals($data['result'][0]['bank_question_type_id'] , 3);
+        $this->assertEquals($data['result'][0]['course_id'] , 1);
+        $this->assertEquals($data['result'][0]['point'] , 99);
+        $this->assertEquals(count($data['result'][1]) , 9);
+        $this->assertEquals(count($data['result'][1]['bank_question_tag']) , 1);
+        $this->assertEquals($data['result'][1]['bank_question_tag'][0] , "maquestion");
+        $this->assertEquals(count($data['result'][1]['bank_question_item']) , 2);
+        $this->assertEquals(count($data['result'][1]['bank_question_item'][0]) , 5);
+        $this->assertEquals(count($data['result'][1]['bank_question_item'][0]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 3);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['id'] , 3);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['libelle'] , "oui");
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['order_id'] , null);
+        $this->assertEquals(count($data['result'][1]['bank_question_item'][1]) , 5);
+        $this->assertEquals(count($data['result'][1]['bank_question_item'][1]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['bank_answer_item']['bank_question_item_id'] , 4);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['bank_answer_item']['percent'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['id'] , 4);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['libelle'] , "non");
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['bank_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['bank_question_item'][1]['order_id'] , null);
+        $this->assertEquals(count($data['result'][1]['bank_question_media']) , 2);
+        $this->assertEquals(count($data['result'][1]['bank_question_media'][0]) , 4);
+        $this->assertEquals($data['result'][1]['bank_question_media'][0]['id'] , 3);
+        $this->assertEquals($data['result'][1]['bank_question_media'][0]['bank_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['bank_question_media'][0]['token'] , "token");
+        $this->assertEquals($data['result'][1]['bank_question_media'][0]['link'] , null);
+        $this->assertEquals(count($data['result'][1]['bank_question_media'][1]) , 4);
+        $this->assertEquals($data['result'][1]['bank_question_media'][1]['id'] , 4);
+        $this->assertEquals($data['result'][1]['bank_question_media'][1]['bank_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['bank_question_media'][1]['token'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_media'][1]['link'] , "link");
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['name'] , "name");
+        $this->assertEquals($data['result'][1]['question'] , "Ma question");
+        $this->assertEquals($data['result'][1]['bank_question_type_id'] , 3);
+        $this->assertEquals($data['result'][1]['course_id'] , 1);
+        $this->assertEquals($data['result'][1]['point'] , 99);
+        $this->assertEquals(count($data['result'][2]) , 9);
+        $this->assertEquals(count($data['result'][2]['bank_question_tag']) , 1);
+        $this->assertEquals($data['result'][2]['bank_question_tag'][0] , "maquestion");
+        $this->assertEquals(count($data['result'][2]['bank_question_item']) , 2);
+        $this->assertEquals(count($data['result'][2]['bank_question_item'][0]) , 5);
+        $this->assertEquals(count($data['result'][2]['bank_question_item'][0]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 5);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['id'] , 5);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['libelle'] , "oui");
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_question_id'] , 3);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['order_id'] , null);
+        $this->assertEquals(count($data['result'][2]['bank_question_item'][1]) , 5);
+        $this->assertEquals(count($data['result'][2]['bank_question_item'][1]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['bank_answer_item']['bank_question_item_id'] , 6);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['bank_answer_item']['percent'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['id'] , 6);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['libelle'] , "non");
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['bank_question_id'] , 3);
+        $this->assertEquals($data['result'][2]['bank_question_item'][1]['order_id'] , null);
+        $this->assertEquals(count($data['result'][2]['bank_question_media']) , 2);
+        $this->assertEquals(count($data['result'][2]['bank_question_media'][0]) , 4);
+        $this->assertEquals($data['result'][2]['bank_question_media'][0]['id'] , 5);
+        $this->assertEquals($data['result'][2]['bank_question_media'][0]['bank_question_id'] , 3);
+        $this->assertEquals($data['result'][2]['bank_question_media'][0]['token'] , "token");
+        $this->assertEquals($data['result'][2]['bank_question_media'][0]['link'] , null);
+        $this->assertEquals(count($data['result'][2]['bank_question_media'][1]) , 4);
+        $this->assertEquals($data['result'][2]['bank_question_media'][1]['id'] , 6);
+        $this->assertEquals($data['result'][2]['bank_question_media'][1]['bank_question_id'] , 3);
+        $this->assertEquals($data['result'][2]['bank_question_media'][1]['token'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_media'][1]['link'] , "link");
+        $this->assertEquals($data['result'][2]['id'] , 3);
+        $this->assertEquals($data['result'][2]['name'] , "name");
+        $this->assertEquals($data['result'][2]['question'] , "Ma question");
+        $this->assertEquals($data['result'][2]['bank_question_type_id'] , 3);
+        $this->assertEquals($data['result'][2]['course_id'] , 1);
+        $this->assertEquals($data['result'][2]['point'] , 99);
+        $this->assertEquals(count($data['result'][3]) , 9);
+        $this->assertEquals(count($data['result'][3]['bank_question_tag']) , 1);
+        $this->assertEquals($data['result'][3]['bank_question_tag'][0] , "maquestion");
+        $this->assertEquals(count($data['result'][3]['bank_question_item']) , 2);
+        $this->assertEquals(count($data['result'][3]['bank_question_item'][0]) , 5);
+        $this->assertEquals(count($data['result'][3]['bank_question_item'][0]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 7);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['id'] , 7);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['libelle'] , "oui");
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_question_id'] , 4);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['order_id'] , null);
+        $this->assertEquals(count($data['result'][3]['bank_question_item'][1]) , 5);
+        $this->assertEquals(count($data['result'][3]['bank_question_item'][1]['bank_answer_item']) , 5);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['bank_answer_item']['bank_question_item_id'] , 8);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['bank_answer_item']['percent'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['bank_answer_item']['date'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['bank_answer_item']['time'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['id'] , 8);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['libelle'] , "non");
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['bank_question_id'] , 4);
+        $this->assertEquals($data['result'][3]['bank_question_item'][1]['order_id'] , null);
+        $this->assertEquals(count($data['result'][3]['bank_question_media']) , 2);
+        $this->assertEquals(count($data['result'][3]['bank_question_media'][0]) , 4);
+        $this->assertEquals($data['result'][3]['bank_question_media'][0]['id'] , 7);
+        $this->assertEquals($data['result'][3]['bank_question_media'][0]['bank_question_id'] , 4);
+        $this->assertEquals($data['result'][3]['bank_question_media'][0]['token'] , "token");
+        $this->assertEquals($data['result'][3]['bank_question_media'][0]['link'] , null);
+        $this->assertEquals(count($data['result'][3]['bank_question_media'][1]) , 4);
+        $this->assertEquals($data['result'][3]['bank_question_media'][1]['id'] , 8);
+        $this->assertEquals($data['result'][3]['bank_question_media'][1]['bank_question_id'] , 4);
+        $this->assertEquals($data['result'][3]['bank_question_media'][1]['token'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_media'][1]['link'] , "link");
+        $this->assertEquals($data['result'][3]['id'] , 4);
+        $this->assertEquals($data['result'][3]['name'] , "name");
+        $this->assertEquals($data['result'][3]['question'] , "Ma question");
+        $this->assertEquals($data['result'][3]['bank_question_type_id'] , 3);
+        $this->assertEquals($data['result'][3]['course_id'] , 1);
+        $this->assertEquals($data['result'][3]['point'] , 99);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
     /*public function testCanPollAdd()
     {
         $this->setIdentity(4);

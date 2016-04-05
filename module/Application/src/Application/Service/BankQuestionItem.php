@@ -57,6 +57,17 @@ class BankQuestionItem extends AbstractService
         return $m_bank_question_item_id;
     }
     
+    public function getList($bank_question_id)
+    {
+        $res_bank_question_item = $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id));
+        
+        foreach ($res_bank_question_item as $m_bank_question_item) {
+            $m_bank_question_item->setBankAnswerItem($this->getServiceBankAnswerItem()->get($m_bank_question_item->getId()));
+        }
+        
+        return $res_bank_question_item;
+    }
+    
     /**
      *
      * @return \Application\Service\BankAnswerItem
