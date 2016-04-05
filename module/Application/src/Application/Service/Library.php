@@ -53,6 +53,10 @@ class Library extends AbstractService
 	 */
 	public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
 	{
+	    if($folder_id === $id) {
+	        return 0;
+	    }
+	    
 		$m_library = $this->getModel()
 			->setId($id)
 			->setName($name)

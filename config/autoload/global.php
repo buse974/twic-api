@@ -105,6 +105,10 @@ return [
             'app_service_group',
             'app_service_opt_grading',
             'app_service_bank_question',
+            'app_service_ct_date',
+            'app_service_ct_done',
+            'app_service_ct_rate',
+            'app_service_ct_group',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
