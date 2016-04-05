@@ -172,7 +172,7 @@ class ItemAssignment extends AbstractService
                 }
                 break;
             
-            case (CItem::TYPE_INDIVIDUAL_ASSIGMENT || CItem::TYPE_CAPSTONE_PROJECT):
+            case (CItem::TYPE_INDIVIDUAL_ASSIGNMENT || CItem::TYPE_CAPSTONE_PROJECT):
                 $res_item_prog_user = $this->getServiceItemProgUser()->getListByItemProg($item_prog, $this->getServiceAuth()
                     ->getIdentity()
                     ->getId());
@@ -301,13 +301,13 @@ class ItemAssignment extends AbstractService
                     $this->getServiceItemAssignmentDocument()->add($id, $type, $title, $author, $link, $source, $token, $date);
                 }
             }
-            if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
+            if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGNMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
                 $this->getServiceItemProgUser()->start($m_item_assignment->getItemProgId());
             }
             if ($submit) {
                 $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
                 $this->getServiceEvent()->studentSubmitAssignment($id);
-                if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
+                if ($m_item->getType() === CItem::TYPE_INDIVIDUAL_ASSIGNMENT || $m_item->getType() === CItem::TYPE_CAPSTONE_PROJECT) {
                     $this->getServiceItemProgUser()->end($m_item_assignment->getItemProgId());
                 }
             }

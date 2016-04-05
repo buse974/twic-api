@@ -13,22 +13,22 @@ class Thread extends AbstractService
      * @invokable
      *
      * @param string $title
-     * @param int    $course
+     * @param integer $course
      * @param string $message
-     *
+     * @param integer $item_id
+     * 
      * @throws \Exception
      *
      * @return int
      */
-    public function add($title, $course, $message = null)
+    public function add($title, $course, $message = null, $item_id = null)
     {
         $m_thread = $this->getModel()
             ->setCourseId($course)
             ->setTitle($title)
+            ->setItemId($item_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setUserId($this->getServiceAuth()
-            ->getIdentity()
-            ->getId());
+            ->setUserId($this->getServiceAuth()->getIdentity()->getId());
 
         if ($this->getMapper()->insert($m_thread) <= 0) {
             throw new \Exception('error insert thread');
@@ -51,19 +51,25 @@ class Thread extends AbstractService
      *
      * @TODO Add updated date
      *
-     * @param int    $id
+     * @param integer $id
      * @param string $title
-     *
-     * @return int
+     * @param integer $item_id
+     * 
+     * @return integer
      */
-    public function update($id, $title)
+    public function update($id, $title = null, $item_id = null)
     {
-        $m_thread = $this->getModel()->setTitle($title);
-        // ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        if($item_id === null && $title === null) {
+            return 0;
+        }
+        
+        $m_thread = $this->getModel()
+            ->setId($id)
+            ->setTitle($title)
+            ->setItemId($item_id)
+            ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        return $this->getMapper()->update($m_thread, array('id' => $id, 'user_id' => $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), ));
+        return $this->getMapper()->update($m_thread);
     }
 
     /**
