@@ -78,7 +78,28 @@ class Library extends AbstractService
 		    ->setDeletedDate(new IsNull())
 		    ->setOwnerId($this->getServiceUser()->getIdentity()['id']);
 		
-		return $this->getMapper()->select($m_library);
+		// If root folder: returns only documents
+		if (!$folder_id) {
+			return ['documents' => $this->getMapper()->select($m_library)];
+		}
+		
+		// Requested document / folder
+		$m_folder = $this->getModel()->setId($folder_id);
+		$folder = $this->getMapper()->select($m_folder)->current();
+
+		// Parent folder
+		if (!$folder->getFolderId() instanceof \Zend\Db\Sql\Predicate\IsNull) {
+			$m_parent = $this->getModel()->setId($folder->getFolderId());
+			$parent = $this->getMapper()->select($m_parent)->current();
+		} else {
+			$parent = null;
+		}
+
+		return [
+			'documents' => $this->getMapper()->select($m_library),
+			'folder' => $folder,
+			'parent' => $parent,
+		];
 	}
 	
 	/**
