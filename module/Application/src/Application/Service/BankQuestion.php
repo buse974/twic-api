@@ -6,28 +6,6 @@ use Dal\Service\AbstractService;
 
 class BankQuestion extends AbstractService
 {
-    public function create($course_id, $question, $bank_question_type, $bank_question_tag, $bank_question_media, $point)
-    {
-        /* 'question' => 'Ma question',
-         'bank_question_type' => 3,
-         'bank_question_tag' => 'maquestion',
-         'bank_question_media' => [
-         ['token' => 'token'],
-         ['link' => 'link']
-         ],
-         'point' => 99,
-         'bank_question_item' => [
-         [
-         'libelle' => 'oui',
-         'answer' => 'super pas cool',
-         'percent' => '(-100%) < > (100%)'
-    
-         ],
-         ['libelle' => 'non']
-         ]
-         */
-    }
-    
     /**
      * @invokable
      * 
@@ -44,19 +22,21 @@ class BankQuestion extends AbstractService
             $bank_question_item  = (isset($bq['bank_question_item'])) ? $bq['bank_question_item']:null;
             $bank_question_tag = (isset($bq['bank_question_tag'])) ? $bq['bank_question_tag']:null;
             $bank_question_media  = (isset($bq['bank_question_media'])) ? $bq['bank_question_media']:null;
+            $name = (isset($bq['name'])) ? $bq['name']:null;
         
-            $ret[] = $this->_add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media);
+            $ret[] = $this->_add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media, $name);
         }
         
         return $ret;
     }
     
-    public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media)
+    public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media, $name)
     {
         $m_bank_question = $this->getModel()
             ->setQuestion($question)
             ->setBankQuestionTypeId($bank_question_type_id)
             ->setPoint($point)
+            ->setName($name)
             ->setCourseId($course_id);
         
         if($this->getMapper()->insert($m_bank_question) <= 0) {

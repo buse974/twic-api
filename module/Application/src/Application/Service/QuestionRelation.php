@@ -6,4 +6,8 @@ use Dal\Service\AbstractService;
 
 class QuestionRelation extends AbstractService
 {
+    public function add($group_question_id, $bank_question_id)
+    {
+        return $this->getMapper()->insert($this->getModel()->setGroupQuestionId($group_question_id)->setBankQuestionId($bank_question_id));
+    }
 }
