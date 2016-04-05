@@ -49,4 +49,9 @@ class BankQuestionMedia extends AbstractService
         return $this->getMapper()->getLastInsertValue();
         
     }
+    
+    public function getList($bank_question_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id));
+    }
 }

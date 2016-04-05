@@ -77,31 +77,32 @@ class LibraryTest extends AbstractService
     	$data = $this->jsonRpc('library.getList', array());
 
     	$this->assertEquals(count($data) , 3);
-    	$this->assertEquals(count($data['result']) , 2);
-    	$this->assertEquals(count($data['result'][0]) , 11);
-    	$this->assertEquals($data['result'][0]['id'] , 1);
-    	$this->assertEquals($data['result'][0]['name'] , "toto");
-    	$this->assertEquals($data['result'][0]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
-    	$this->assertEquals($data['result'][0]['token'] , null);
-    	$this->assertEquals($data['result'][0]['type'] , null);
-    	$this->assertEquals($data['result'][0]['created_date'] , null);
-    	$this->assertEquals($data['result'][0]['deleted_date'] , null);
-    	$this->assertEquals($data['result'][0]['updated_date'] , null);
-    	$this->assertEquals($data['result'][0]['folder_id'] , null);
-    	$this->assertEquals($data['result'][0]['owner_id'] , 1);
-    	$this->assertEquals(!empty($data['result'][0]['box_id']) , true);
-    	$this->assertEquals(count($data['result'][1]) , 11);
-    	$this->assertEquals($data['result'][1]['id'] , 2);
-    	$this->assertEquals($data['result'][1]['name'] , "monfileupt");
-    	$this->assertEquals($data['result'][1]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
-    	$this->assertEquals($data['result'][1]['token'] , null);
-    	$this->assertEquals($data['result'][1]['type'] , null);
-    	$this->assertEquals(!empty($data['result'][1]['created_date']) , true);
-    	$this->assertEquals($data['result'][1]['deleted_date'] , null);
-    	$this->assertEquals(!empty($data['result'][1]['updated_date']) , true);
-    	$this->assertEquals($data['result'][1]['folder_id'] , null);
-    	$this->assertEquals($data['result'][1]['owner_id'] , 1);
-    	$this->assertEquals(!empty($data['result'][1]['box_id']) , true);
+    	$this->assertEquals(count($data['result']) , 1);
+    	$this->assertEquals(count($data['result']['documents']) , 2);
+    	$this->assertEquals(count($data['result']['documents'][0]) , 11);
+    	$this->assertEquals($data['result']['documents'][0]['id'] , 1);
+    	$this->assertEquals($data['result']['documents'][0]['name'] , "toto");
+    	$this->assertEquals($data['result']['documents'][0]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
+    	$this->assertEquals($data['result']['documents'][0]['token'] , null);
+    	$this->assertEquals($data['result']['documents'][0]['type'] , null);
+    	$this->assertEquals($data['result']['documents'][0]['created_date'] , null);
+    	$this->assertEquals($data['result']['documents'][0]['deleted_date'] , null);
+    	$this->assertEquals($data['result']['documents'][0]['updated_date'] , null);
+    	$this->assertEquals($data['result']['documents'][0]['folder_id'] , null);
+    	$this->assertEquals($data['result']['documents'][0]['owner_id'] , 1);
+    	$this->assertEquals($data['result']['documents'][0]['box_id'] , "66bbb5cb2ef149f7989f33d8513cc058");
+    	$this->assertEquals(count($data['result']['documents'][1]) , 11);
+    	$this->assertEquals($data['result']['documents'][1]['id'] , 2);
+    	$this->assertEquals($data['result']['documents'][1]['name'] , "monfileupt");
+    	$this->assertEquals($data['result']['documents'][1]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
+    	$this->assertEquals($data['result']['documents'][1]['token'] , null);
+    	$this->assertEquals($data['result']['documents'][1]['type'] , null);
+    	$this->assertEquals(!empty($data['result']['documents'][1]['created_date']) , true);
+    	$this->assertEquals($data['result']['documents'][1]['deleted_date'] , null);
+    	$this->assertEquals(!empty($data['result']['documents'][1]['updated_date']) , true);
+    	$this->assertEquals($data['result']['documents'][1]['folder_id'] , null);
+    	$this->assertEquals($data['result']['documents'][1]['owner_id'] , 1);
+    	$this->assertEquals(!empty($data['result']['documents'][1]['box_id']) , true);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -181,9 +182,10 @@ class LibraryTest extends AbstractService
     	$this->setIdentity(1);
     	
     	$data = $this->jsonRpc('library.getList', array());
-    	 
+
     	$this->assertEquals(count($data) , 3);
-    	$this->assertEquals(count($data['result']) , 0);
+    	$this->assertEquals(count($data['result']) , 1);
+    	$this->assertEquals(count($data['result']['documents']) , 0);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
