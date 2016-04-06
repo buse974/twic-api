@@ -28,8 +28,8 @@ class Item extends AbstractMapper
         $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'course_id', 'grading_policy_id', 'set_id', 'parent_id', 'order_id', 'start', 'end', 'cut_off'))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
-            ->join('opt_grading', 'item.id=opt_grading.item_id', array('mode', 'has_pg', 'pg_nb', 'pg_auto', 'pg_due_date', 'pg_can_view', 'user_can_view', 'pg_stars'))
-            ->join('opt_videoconf', 'item.id=opt_videoconf.item_id', array('item_id', 'record', 'nb_user_autorecord', 'allow_intructor'))
+            ->join('opt_grading', 'item.id=opt_grading.item_id', array('mode', 'has_pg', 'pg_nb', 'pg_auto', 'pg_due_date', 'pg_can_view', 'user_can_view', 'pg_stars'), $select::JOIN_LEFT)
+            ->join('opt_videoconf', 'item.id=opt_videoconf.item_id', array('item_id', 'record', 'nb_user_autorecord', 'allow_intructor'), $select::JOIN_LEFT)
             ->where(array('item.id' => $id));
     
         return $this->selectWith($select);
