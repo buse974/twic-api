@@ -204,6 +204,19 @@ class User extends AbstractService
         return $id;
     }
     
+    /**
+     * 
+     * @param integer $item_id
+     * @param integer $user
+     */
+    public function getListUsersGroupByItemAndUser($item_id, $user = null)
+    {
+        if(null === $user) {
+            $user= $this->getIdentity()['id'];
+        }
+        return $this->getMapper()->getListUsersGroupByItemAndUser($item_id, $user);
+    }
+    
     public function getListBySchool($school)
     {
         return $this->getMapper()->getListBySchool($school);

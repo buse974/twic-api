@@ -3,6 +3,7 @@
 namespace Application\Model;
 
 use Application\Model\Base\User as BaseUser;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class User extends BaseUser
 {
@@ -124,7 +125,7 @@ class User extends BaseUser
 
     public function setContactState($contact_state)
     {
-        $this->contact_state = ($contact_state===null) ? 0:$contact_state;
+        $this->contact_state = ($contact_state===null || $contact_state instanceof IsNull) ? 0:$contact_state;
 
         return $this;
     }
@@ -136,7 +137,7 @@ class User extends BaseUser
 
     public function setContactsCount($contacts_count)
     {
-        $this->contacts_count = $contacts_count;
+        $this->contacts_count = ($contacts_count===null || $contacts_count instanceof IsNull) ? 0:$contacts_count;
 
         return $this;
     }
