@@ -8,18 +8,40 @@ use Zend\Db\Sql\Select;
 
 class User extends AbstractMapper
 {
+    
+    
+    public function getListUsersGroupByItemAndUser($item_id, $user)
+    {
+        $sub = $this->tableGateway->getSql()->select();
+        $sub->columns([])
+            ->join('group_user', 'group_user.user_id=user.id', array('group_id'))
+            ->join('set_group', 'set_group.group_id=group_user.group_id', array())
+            ->join('item', 'item.set_id=set_group.set_id', array())
+            ->where(array('group_user.user_id' => $user))
+            ->where(array('item.id' => $item_id));
+    
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['user$id' => new Expression('user.id'),
+            'firstname',
+            'gender',
+            'lastname',
+            'email',
+            'has_email_notifier',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position',
+            'interest',
+            'avatar', 
+            'school_id',
+            'user$contact_state' => $this->getSelectContactState($user)
+        ])
+            ->join('group_user', 'group_user.user_id=user.id', array())
+            ->where(array('group_user.group_id' => $sub));
+    
+        return $this->selectWith($select);
+    }
 
     public function get($user, $me)
     {
-        $sub = $this->tableGateway->getSql()->select();
-        $sub->columns(array('user$contact_state' =>  new Expression(
-                'IF(contact.accepted_date IS NOT NULL, 3,
-		         IF(contact.request_date IS NOT  NULL AND requested <> 1, 2,
-			     IF(contact.request_date IS NOT  NULL AND requested = 1, 1,0)))')))
-            ->join('contact', 'contact.user_id = user.id', array())
-            ->where(array('user.id=`user$id`'))
-            ->where(['( contact.contact_id = ? || contact.contact_id IS NULL )' => $me ]);
-        
         $columns = array(
             'user$id' => new Expression('user.id'),
             'firstname',
@@ -32,7 +54,7 @@ class User extends AbstractMapper
             'interest',
             'avatar', 
             'school_id',
-            'user$contact_state' => $sub);
+            'user$contact_state' => $this->getSelectContactState($me));
             
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
@@ -59,15 +81,6 @@ class User extends AbstractMapper
         $sub_count->columns(array('user$contacts_count' => new Expression('COUNT(user.id)')))
             ->join('contact', 'contact.user_id = user.id', array())
             ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
-        
-        $sub_state = $this->tableGateway->getSql()->select();
-        $sub_state->columns(array('user$contact_state' =>  new Expression(
-            'IF(contact.accepted_date IS NOT NULL, 3,
-	         IF(contact.request_date IS NOT  NULL AND requested <> 1, 2,
-		     IF(contact.request_date IS NOT  NULL AND requested = 1, 1,0)))')))
-        			     ->join('contact', 'contact.user_id = user.id', array())
-        			     ->where(array('user.id=`user$id`'))
-        			     ->where(['( contact.contact_id = ? || contact.contact_id IS NULL )' => $user_school ]);
             
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
@@ -75,7 +88,7 @@ class User extends AbstractMapper
             'firstname','lastname','email','password',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position','interest','avatar',
-            'user$contact_state' => $sub_state,
+            'user$contact_state' => $this->getSelectContactState($user_school),
             'user$contacts_count' => $sub_count))
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
             ->group('user.id')
@@ -409,5 +422,23 @@ class User extends AbstractMapper
             ->group(array('user.school_id','user_role.role_id'));
         
         return $this->selectWith($select);
+    }
+    
+    /**
+     * @param integer $user
+     * @return \Zend\Db\Sql\Select
+     */
+    private function getSelectContactState($user)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('user$contact_state' =>  new Expression(
+            'IF(contact.accepted_date IS NOT NULL, 3,
+	         IF(contact.request_date IS NOT  NULL AND requested <> 1, 2,
+		     IF(contact.request_date IS NOT  NULL AND requested = 1, 1,0)))')))
+    		     ->join('contact', 'contact.user_id = user.id', array())
+    		     ->where(array('user.id=`user$id`'))
+    		     ->where(['( contact.contact_id = ? || contact.contact_id IS NULL )' => $user ]);
+    
+    		     return $select;
     }
 }

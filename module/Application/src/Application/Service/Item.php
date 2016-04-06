@@ -141,6 +141,16 @@ class Item extends AbstractService
 
     /**
      * @invokable
+     * 
+     * @param integer $item_id
+     */
+    public function getListUsers($item_id)
+    {
+        return $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id);
+    }
+    
+    /**
+     * @invokable
      *
      * @param integer $id            
      * @param string $grading_policy            

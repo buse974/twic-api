@@ -431,6 +431,7 @@ class ScenarioTest extends AbstractService
             'grading_policy' => 7,
             'duration' => 234,
             'title' => 'titl2e',
+            'set' => 1,
             'describe' => 'desone',
             'type' => 'TXT'));
     
@@ -442,6 +443,48 @@ class ScenarioTest extends AbstractService
         return $data['result'];
     }
     
+    /**
+     * @depends testAddCourse
+     */
+    public function testGetListUsers($item)
+    {
+        $this->setIdentity(3);
+        
+        $data = $this->jsonRpc('item.getListUsers', [
+            'item_id' => $item
+        ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result'][0]) , 12);
+        $this->assertEquals($data['result'][0]['gender'] , null);
+        $this->assertEquals($data['result'][0]['contact_state'] , 0);
+        $this->assertEquals($data['result'][0]['id'] , 3);
+        $this->assertEquals($data['result'][0]['firstname'] , "Christophe");
+        $this->assertEquals($data['result'][0]['lastname'] , "Robert");
+        $this->assertEquals($data['result'][0]['email'] , "crobert@thestudnet.com");
+        $this->assertEquals($data['result'][0]['birth_date'] , null);
+        $this->assertEquals($data['result'][0]['position'] , null);
+        $this->assertEquals($data['result'][0]['school_id'] , 1);
+        $this->assertEquals($data['result'][0]['interest'] , null);
+        $this->assertEquals($data['result'][0]['avatar'] , null);
+        $this->assertEquals($data['result'][0]['has_email_notifier'] , 1);
+        $this->assertEquals(count($data['result'][1]) , 12);
+        $this->assertEquals($data['result'][1]['gender'] , null);
+        $this->assertEquals($data['result'][1]['contact_state'] , 0);
+        $this->assertEquals($data['result'][1]['id'] , 4);
+        $this->assertEquals($data['result'][1]['firstname'] , "Salim");
+        $this->assertEquals($data['result'][1]['lastname'] , "Bendacha");
+        $this->assertEquals($data['result'][1]['email'] , "sbendacha@thestudnet.com");
+        $this->assertEquals($data['result'][1]['birth_date'] , null);
+        $this->assertEquals($data['result'][1]['position'] , null);
+        $this->assertEquals($data['result'][1]['school_id'] , 1);
+        $this->assertEquals($data['result'][1]['interest'] , null);
+        $this->assertEquals($data['result'][1]['avatar'] , null);
+        $this->assertEquals($data['result'][1]['has_email_notifier'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
     /**
      * @depends testAddCourse
      * @depends testAddSet
@@ -622,7 +665,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][2]['describe'] , "desone"); 
         $this->assertEquals($data['result'][2]['duration'] , 234); 
         $this->assertEquals($data['result'][2]['type'] , "TXT"); 
-        $this->assertEquals($data['result'][2]['set_id'] , null); 
+        $this->assertEquals($data['result'][2]['set_id'] , 1); 
         $this->assertEquals($data['result'][2]['parent_id'] , null); 
         $this->assertEquals($data['result'][2]['order_id'] , 2); 
         $this->assertEquals($data['result'][2]['start'] , null); 
@@ -694,7 +737,7 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][2]['describe'] , "desone");
     	$this->assertEquals($data['result'][2]['duration'] , 234);
     	$this->assertEquals($data['result'][2]['type'] , "TXT");
-    	$this->assertEquals($data['result'][2]['set_id'] , null);
+    	$this->assertEquals($data['result'][2]['set_id'] , 1);
     	$this->assertEquals($data['result'][2]['parent_id'] , null);
     	$this->assertEquals($data['result'][2]['order_id'] , 3);
     	$this->assertEquals($data['result'][2]['start'] , null);
@@ -764,7 +807,7 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][2]['describe'] , "desone");
     	$this->assertEquals($data['result'][2]['duration'] , 234);
     	$this->assertEquals($data['result'][2]['type'] , "TXT");
-    	$this->assertEquals($data['result'][2]['set_id'] , null);
+    	$this->assertEquals($data['result'][2]['set_id'] , 1);
     	$this->assertEquals($data['result'][2]['parent_id'] , null);
     	$this->assertEquals($data['result'][2]['order_id'] , 2);
     	$this->assertEquals($data['result'][2]['start'] , null);
