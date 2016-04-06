@@ -54,7 +54,6 @@ class Message extends AbstractService
                 if (! in_array($me, $tmp)) {
                     $tmp[] = $me;
                 }
-                
                 $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, Conversation::TYPE_EMAIL);
             }
             
@@ -71,7 +70,6 @@ class Message extends AbstractService
             if ($this->getMapper()->insert($m_message) <= 0) {
                 throw new \Exception('error insert message');
             }
-            
             // Stores the new message id
             $message_id = $this->getMapper()->getLastInsertValue();
         }
@@ -125,54 +123,36 @@ class Message extends AbstractService
     {
         return $this->_send($text, $to, $conversation, Conversation::TYPE_CHAT);
     }
-
-
-    /**
-     * Get Message.
-     *
-     * @return \Application\Model\Message
-     */
-    public function get($id)
-    {
-        $m_message = $this->getModel()->setId($id);
-        $res_message = $this->getMapper()->select($m_message);
     
-        // Throws an error if the message does not exist
-        if ($res_message->count() <= 0) {
-            throw new \Exception('error select message with id :' . $id);
-        }
-        // Fetches the entity and stores the message and conversation ids
-        return $res_message->current();
+    /**
+     * Send message.
+     *
+     * @invokable
+     *
+     * @param string $text
+     * @param integer $to
+     * @param integer $conversation
+     * @param integer $item
+     * @param integer $group
+     */
+    public function sendAssignment($text = null, $to = null, $conversation = null, $item = null, $group = null)
+    {
+        return $this->_send($text, $to, $conversation, Conversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item, $group);
     }
     
-    public function _send($text = null, $to = null, $conversation = null, $type = null)
+    
+    public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null, $group = null)
     {
-        $identity = $this->getServiceUser()->getIdentity();
-        
-        $me = $identity['id'];
-        
-        /*
-         * if $to
-         * on vérifie qu'il n'esiste pas de conversation deja existante
-         * if oui
-         * on récupaire la conversation id
-         * if non
-         * on créé la conversation
-         * else if $conversation
-         * on vérifie que la personne qui envoie le messge fait parti de la conversation
-         * if oui
-         * continue;
-         * if non
-         * exception;
-         */
-        if (null !== $to) {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+
+        if (null !== $to && $conversation === null) {
             if (! is_array($to)) {
                 $to = array($to);
             }
             if (! in_array($me, $to)) {
                 $to[] = $me;
             }
-            $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type);
+            $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type, $item, $group);
         } elseif ($conversation !== null) {
             if ($this->getServiceConversationUser()
                 ->getByConversationUser($conversation, $me)
@@ -185,7 +165,6 @@ class Message extends AbstractService
             throw new \Exception('error content is empty');
         }
         
-        //@todo if $conversation is not null 
         $m_message = $this->getModel()
             ->setText($text)
             ->setType($type)
@@ -213,12 +192,29 @@ class Message extends AbstractService
      */
     public function getList($conversation, $filter = array())
     {
-        $identity = $this->getServiceUser()->getIdentity();
-        $me = $identity['id'];
+        $me = $this->getServiceUser()->getIdentity()['id'];
         
         return $this->getServiceMessageUser()->getList($me, null, $conversation, $filter);
     }
 
+    /**
+     * Get Message.
+     *
+     * @return \Application\Model\Message
+     */
+    public function get($id)
+    {
+        $m_message = $this->getModel()->setId($id);
+        $res_message = $this->getMapper()->select($m_message);
+    
+        // Throws an error if the message does not exist
+        if ($res_message->count() <= 0) {
+            throw new \Exception('error select message with id :' . $id);
+        }
+        // Fetches the entity and stores the message and conversation ids
+        return $res_message->current();
+    }
+    
     /**
      * 
      * @invokable 
@@ -281,8 +277,7 @@ class Message extends AbstractService
      */
     public function getListConversation($filter = null, $tag = null, $type = null, $search = null)
     {
-        $identity = $this->getServiceUser()->getIdentity();
-        $me = $identity['id'];
+        $me = $this->getServiceUser()->getIdentity()['id'];
         
         return $this->getServiceMessageUser()->getList($me, null, null, $filter, $tag, $type, $search);
     }

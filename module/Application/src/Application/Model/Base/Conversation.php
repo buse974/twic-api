@@ -9,6 +9,7 @@ class Conversation extends AbstractModel
  	protected $id;
 	protected $type;
 	protected $item_id;
+	protected $group_id;
 	protected $created_date;
 
 	protected $prefix = 'conversation';
@@ -45,6 +46,18 @@ class Conversation extends AbstractModel
 	public function setItemId($item_id)
 	{
 		$this->item_id = $item_id;
+
+		return $this;
+	}
+
+	public function getGroupId()
+	{
+		return $this->group_id;
+	}
+
+	public function setGroupId($group_id)
+	{
+		$this->group_id = $group_id;
 
 		return $this;
 	}
