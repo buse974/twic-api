@@ -348,6 +348,8 @@ class Item extends AbstractService
     /**
      * @invokable
      *
+     * @TODO CHECK RIGHT
+     * 
      * @param int $id            
      *
      * @throws \Exception
@@ -356,17 +358,17 @@ class Item extends AbstractService
      */
     public function get($id)
     {
-        $res_item = $this->getMapper()->getAllow($id);
-        
+        $is_allow = true;
+        $res_item = ($is_allow) ? $this->getMapper()->getAllow($id) : $this->getMapper()->get($id);
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item');
         }
         
         $m_item = $res_item->current();
         $m_item->setCtDate($this->getServiceCtDate()->get($m_item->getId()))
-               ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
-               ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
-               ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()));
+            ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
+            ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
+            ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()));
         
         return $m_item;
     }
