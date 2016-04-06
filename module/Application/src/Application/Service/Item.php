@@ -356,13 +356,19 @@ class Item extends AbstractService
      */
     public function get($id)
     {
-        $res_item = $this->getMapper()->get($id);
+        $res_item = $this->getMapper()->getAllow($id);
         
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item');
         }
         
-        return $res_item->current();
+        $m_item = $res_item->current();
+        $m_item->setCtDate($this->getServiceCtDate()->get($m_item->getId()))
+               ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
+               ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
+               ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()));
+        
+        return $m_item;
     }
 
     public function updateOrderId($item, $parent_target = null,$order_id = null)
