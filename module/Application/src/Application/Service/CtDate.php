@@ -50,7 +50,7 @@ class CtDate extends AbstractService
      */
     public function get($item_id)
     {
-        return $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        return $this->getMapper()->get($item_id);
     }
 
     /**
