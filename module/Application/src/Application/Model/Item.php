@@ -28,7 +28,13 @@ class Item extends BaseItem
     protected $item_grade;
     protected $new_message;
     protected $nbr_comment;
-    
+    protected $ct_done;
+    protected $ct_rate;
+    protected $ct_date;
+    protected $ct_group;
+    protected $opt_grading;
+    protected $opt_videoconf;
+      
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -39,6 +45,8 @@ class Item extends BaseItem
         $this->item_prog = $this->requireModel('app_model_item_prog', $data);
         $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
         $this->item_grade = $this->requireModel('app_model_item_grading', $data);
+        $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
+        $this->opt_videoconf = $this->requireModel('app_model_opt_videoconf', $data);
     }
 
     public function setMaterials($materials)
@@ -158,6 +166,78 @@ class Item extends BaseItem
     {
         $this->nbr_comment = $nbr_comment;
 
+        return $this;
+    }
+    
+    public function getCtGroup()
+    {
+        return $this->ct_group;
+    }
+    
+    public function setCtGroup($ct_group)
+    {
+        $this->ct_group = $ct_group;
+    
+        return $this;
+    }
+    
+    public function getCtDate()
+    {
+        return $this->ct_date;
+    }
+    
+    public function setCtDate($ct_date)
+    {
+        $this->ct_date = $ct_date;
+    
+        return $this;
+    }
+    
+    public function getCtRate()
+    {
+        return $this->ct_rate;
+    }
+    
+    public function setCtRate($ct_rate)
+    {
+        $this->ct_rate = $ct_rate;
+    
+        return $this;
+    }
+    
+    public function getCtDone()
+    {
+        return $this->ct_done;
+    }
+    
+    public function setCtDone($ct_done)
+    {
+        $this->ct_done = $ct_done;
+    
+        return $this;
+    }
+    
+    public function getOptVideoconf()
+    {
+        return $this->opt_videoconf;
+    }
+    
+    public function setOptVideoconf($opt_videoconf)
+    {
+        $this->opt_videoconf = $opt_videoconf;
+    
+        return $this;
+    }
+    
+    public function getOptGrading()
+    {
+        return $this->opt_grading;
+    }
+    
+    public function setOptGrading($opt_grading)
+    {
+        $this->opt_grading = $opt_grading;
+    
         return $this;
     }
 }

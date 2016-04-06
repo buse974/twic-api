@@ -14,12 +14,24 @@ class Item extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-
-        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'course_id', 'grading_policy_id'))
+        $select->columns(array('id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id'))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item.id' => $id));
 
+        return $this->selectWith($select);
+    }
+    
+    public function getAllow($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'course_id', 'grading_policy_id', 'set_id', 'parent_id', 'order_id', 'start', 'end', 'cut_off'))
+            ->join('course', 'course.id=item.course_id', array('id', 'title'))
+            ->join('program', 'program.id=course.program_id', array('id', 'name'))
+            ->join('opt_grading', 'item.id=opt_grading.item_id', array('mode', 'has_pg', 'pg_nb', 'pg_auto', 'pg_due_date', 'pg_can_view', 'user_can_view', 'pg_stars'))
+            ->join('opt_videoconf', 'item.id=opt_videoconf.item_id', array('item_id', 'record', 'nb_user_autorecord', 'allow_intructor'))
+            ->where(array('item.id' => $id));
+    
         return $this->selectWith($select);
     }
 

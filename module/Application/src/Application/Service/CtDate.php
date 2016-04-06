@@ -44,6 +44,14 @@ class CtDate extends AbstractService
         
         return $this->getMapper()->update($m_ct_date);
     }
+    
+    /**
+     * @param integer $item_id
+     */
+    public function get($item_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setItemId($item_id));
+    }
 
     /**
      * @invokable
