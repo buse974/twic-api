@@ -15,7 +15,7 @@ class ConversationUser extends AbstractMapper
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getConversationByUser($users, $type = null)
+    public function getConversationByUser($users, $type = null, $item = null, $group = null)
     {
         $having = new \Zend\Db\Sql\Having();
         $having->expression('COUNT(1) = ?', count($users));
@@ -38,6 +38,15 @@ class ConversationUser extends AbstractMapper
         if (null !== $type) {
             $select->where(array('conversation.type' => $type));
         }
+        if (null !== $item) {
+            $select->where(array('conversation.user_id' => $item));
+        }
+        if (null !== $group) {
+            $select->where(array('conversation.group_id' => $group));
+        }
+        
+        
+        
 
         return $this->selectWith($select);
     }

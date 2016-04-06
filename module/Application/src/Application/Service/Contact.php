@@ -117,13 +117,10 @@ class Contact extends AbstractService
      */
     public function getListRequest($all = false)
     {
-        $identity = $this->getServiceUser()->getIdentity();
-
-        $listRequest = $this->getMapper()->getListRequest($identity['id']);
-
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $listRequest = $this->getMapper()->getListRequest($me);
         foreach ($listRequest as $request) {
-            $request->setContact($this->getServiceUser()
-                ->get($request->getContactId()));
+            $request->setContact($this->getServiceUser()->get($request->getContactId()));
         }
 
         return $listRequest;

@@ -1056,5 +1056,9 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('item.getListUsers');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'item.getListUsers'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('message.sendAssignment');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'message.sendAssignment'));
+
 
 
