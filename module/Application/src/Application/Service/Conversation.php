@@ -11,16 +11,14 @@ class Conversation extends AbstractService
      * 
      * @param integer $type
      * @param integer $item_id
-     * @param integer $group_id
      * 
      * @return integer
      */
-    public function create($type = null, $item_id = null, $group_id = null)
+    public function create($type = null, $item_id = null)
     {
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setItemId($item_id)
-            ->setGroupId($group_id)
             ->setType($type);
 
         if ($this->getMapper()->insert($m_conversation) <= 0) {

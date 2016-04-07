@@ -14,13 +14,13 @@ class Mail extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select(); //new Select();
         $select->columns(array('mail.id' => new Expression('MAX(mail.id)')))
-        ->join('mail_user', 'mail_user.mail_id=mail.id', array(), $select::JOIN_LEFT)
-        ->join('mail_receiver', 'mail_receiver.mail_id=mail.id', array())
-        ->where(array('( mail_user.user_id = ? ' => $user))
-        ->where(array(' mail_user.user_id IS NULL )'), 'OR')
-        ->order(array('mail.id' => 'DESC'))
-        ->group(array('mail.mail_group_id'))
-        ->quantifier('DISTINCT');
+            ->join('mail_user', 'mail_user.mail_id=mail.id', array(), $select::JOIN_LEFT)
+            ->join('mail_receiver', 'mail_receiver.mail_id=mail.id', array())
+            ->where(array('( mail_user.user_id = ? ' => $user))
+            ->where(array(' mail_user.user_id IS NULL )'), 'OR')
+            ->order(array('mail.id' => 'DESC'))
+            ->group(array('mail.mail_group_id'))
+            ->quantifier('DISTINCT');
 
         if ($tag === ModelMail::TYPE_DRAFT) {
             $select->where(array('mail.draft IS TRUE'));
@@ -44,11 +44,11 @@ class Mail extends AbstractMapper
 
         $rselect = $this->tableGateway->getSql()->select();
         $rselect->columns(array('id', 'suject', 'content', 'mail_group_id', 'created_date'))
-        ->join('mail_user', 'mail_user.mail_id=mail.id', array('id', 'created_date', 'read_date', 'deleted_date'), $select::JOIN_LEFT)
-        ->where(array(new In('mail.id', $select)))
-        ->where(array('( mail_user.user_id = ? ' => $user))
-        ->where(array(' mail_user.user_id IS NULL )'), 'OR')
-        ->quantifier('DISTINCT');
+            ->join('mail_user', 'mail_user.mail_id=mail.id', array('id', 'created_date', 'read_date', 'deleted_date'), $select::JOIN_LEFT)
+            ->where(array(new In('mail.id', $select)))
+            ->where(array('( mail_user.user_id = ? ' => $user))
+            ->where(array(' mail_user.user_id IS NULL )'), 'OR')
+            ->quantifier('DISTINCT');
 
         return $this->selectWith($rselect);
     }

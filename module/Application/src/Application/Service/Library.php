@@ -108,6 +108,36 @@ class Library extends AbstractService
 	
 	/**
 	 * @invokable
+	 * 
+	 * @param integer $item
+	 */
+	public function getListByItem($item)
+	{
+	    return $this->getMapper()->getListByItem($item);
+	}
+	
+	/**
+	 * @invokable
+	 *
+	 * @param integer $item
+	 */
+	public function getListByCt($item)
+	{
+	    return $this->getMapper()->getListByCt($item);
+	}
+	
+	/**
+	 * @invokable
+	 *
+	 * @param integer $item
+	 */
+	public function getListBySubmission($item)
+	{
+	    return $this->getMapper()->getListBySubmission($item);     
+	}
+	
+	/**
+	 * @invokable
 	 *
 	 * @param integer $id
 	 */

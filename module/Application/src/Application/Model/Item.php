@@ -16,7 +16,7 @@ class Item extends BaseItem
     const TYPE_MODULE = 'MOD';
     const TYPE_CHAT = 'CHAT';
     const TYPE_DISCUSSION = 'DISC';
-    const TYPE_EQCQ = 'eqcq';
+    const TYPE_EQCQ = 'EQCQ';
 
     protected $materials;
     protected $module;

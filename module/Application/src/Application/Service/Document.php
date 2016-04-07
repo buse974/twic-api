@@ -19,6 +19,10 @@ class Document extends AbstractService
      */
     public function add($name = null, $type = null, $link = null, $token = null, $item_id = null)
     {
+        if(null === $link && null === $token && null === $name) {
+            return 0;
+        }
+        
         $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type)->getId();
         $m_document = $this->getModel()
             ->setItemId($item_id)
