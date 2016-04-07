@@ -112,7 +112,7 @@ class Item extends AbstractService
             case ModelItem::TYPE_DISCUSSION:
                 if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
                     $this->getServiceThread()->update($thread_id,null,$item_id);
-                } else {
+                } elseif( null !== $title) {
                     $this->getServiceThread()->add($title, $course, $describe, $item_id);
                 }
                 break;
