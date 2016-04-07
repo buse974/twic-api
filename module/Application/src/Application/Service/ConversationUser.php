@@ -12,7 +12,7 @@ class ConversationUser extends AbstractService
      * @param array $users
      * @param int   $type
      */
-    public function getConversationByUser(array $users, $type = null, $item = null, $group = null)
+    public function getConversationByUser(array $users, $type = null, $item = null)
     {
         $conversation = null;
         $identity = $this->getServiceUser()->getIdentity();
@@ -20,12 +20,15 @@ class ConversationUser extends AbstractService
             $users[] = $identity['id'];
         }
 
-        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type, $item, $group);
-
+        if(null !== $item && empty($users)) {
+            
+        }
+        
+        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type, $item);
         if ($res_conversation_user->count() === 1) {
             $conversation = $res_conversation_user->current()->getConversationId();
         } elseif ($res_conversation_user->count() === 0) {
-            $conversation = $this->createConversation($users, null, $type, $item, $group);
+            $conversation = $this->createConversation($users, null, $type, $item);
         } elseif ($res_conversation_user->count() > 1) {
             throw new \Exception('more of one conversation');
         }
@@ -49,9 +52,9 @@ class ConversationUser extends AbstractService
      *
      * @return int
      */
-    public function createConversation($users, $videoconf = null, $type = null, $item = null, $group = null)
+    public function createConversation($users, $videoconf = null, $type = null, $item = null)
     {
-        $conversation_id = $this->getServiceConversation()->create($type, $item, $group);
+        $conversation_id = $this->getServiceConversation()->create($type, $item);
 
         $m_conversation_user = $this->getModel()->setConversationId($conversation_id);
         foreach ($users as $user) {
@@ -133,5 +136,13 @@ class ConversationUser extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+        return $this->getServiceLocator()->get('app_service_item');
     }
 }
