@@ -13,27 +13,27 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $course            
-     * @param string $grading_policy            
-     * @param string $title            
-     * @param string $describe            
-     * @param string $duration            
-     * @param string $type            
-     * @param string $data            
-     * @param string $ct  
-     * @param string $opt          
-     * @param string $parent_id           
-     * @param string $order_id          
-     *
-     * @throws \Exception
-     *
-     * @return integer
+     * @param integer $course
+     * @param integer $grading_policy_id
+     * @param string $title
+     * @param string $describe
+     * @param integer $duration
+     * @param string $type
+     * @param array $data
+     * @param array $ct
+     * @param array $opt
+     * @param integer $set_id
+     * @param string $start
+     * @param string $end
+     * @param string $cut_off
+     * @param integer $parent_id
+     * @param integer $order_id
      */
-    public function add($course, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
+    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set_id = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setCourseId($course)
-            ->setGradingPolicyId($grading_policy)
+            ->setGradingPolicyId($grading_policy_id)
             ->setTitle($title)
             ->setDescribe($describe)
             ->setDuration($duration)
@@ -41,7 +41,7 @@ class Item extends AbstractService
             ->setStart($start)
             ->setEnd($end)
             ->setCutOff($cut_off)
-            ->setSetId($set)
+            ->setSetId($set_id)
             ->setParentId(($parent_id === 0) ? null : $parent_id);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
@@ -99,7 +99,7 @@ class Item extends AbstractService
                 $type = isset($data['type']) ? $data['type'] : null;
                 $this->getServiceDocument()->add($name, $type, $link, $token, $item_id);
                 break;
-            case ModelItem::TYPE_POLL:
+          /*  case ModelItem::TYPE_POLL:
                 $ti = isset($data['title']) ? $data['title'] : $title;
                 $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
                 $expiration = isset($data['expiration']) ? $data['expiration'] : null;
@@ -126,7 +126,7 @@ class Item extends AbstractService
                 $record = isset($data['record']) ? $data['record'] : null;
                 $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
                 $this->getServiceOptVideoconf()->add($item_id, $record, $nb_user_autorecord, true);
-                break;
+                break;*/
         }
         
         if(isset($data['opt_eqcq']) && $data['opt_eqcq']==1) {
@@ -151,28 +151,31 @@ class Item extends AbstractService
     
     /**
      * @invokable
-     *
-     * @param integer $id            
-     * @param string $grading_policy            
-     * @param string $title            
-     * @param string $describe            
-     * @param string $duration            
-     * @param string $type            
-     * @param string $data                     
-     * @param string $parent_id         
-     * @param string $order_id          
-     *
-     * @return integer
+     * 
+     * @param integer $id
+     * @param integer $grading_policy_id
+     * @param string $title
+     * @param string $describe
+     * @param integer $duration
+     * @param string $type
+     * @param array $data
+     * @param integer $set_id
+     * @param string $start
+     * @param string $end
+     * @param string $cut_off
+     * @param integer $parent_id
+     * @param integer $order_id
      */
-    public function update($id, $grading_policy = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
+    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $set_id = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
-            ->setGradingPolicyId(($grading_policy === 0) ? new IsNull() : $grading_policy)
+            ->setGradingPolicyId(($grading_policy_id === 0) ? new IsNull() : $grading_policy_id)
             ->setTitle($title)
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setStart($start)
+            ->setSetId($set_id)
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setType($type)
@@ -315,14 +318,14 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $grading_policy            
+     * @param int $grading_policy_id           
      * @param int $course            
      * @param int $user            
      * @param int $item_prog            
      */
-    public function getListGradeItem($grading_policy = null, $course = null, $user = null, $item_prog = null)
+    public function getListGradeItem($grading_policy_id= null, $course = null, $user = null, $item_prog = null)
     {
-        return $this->getMapper()->getListGradeItem($grading_policy, $course, $user, $item_prog);
+        return $this->getMapper()->getListGradeItem($grading_policy_id, $course, $user, $item_prog);
     }
 
     /**

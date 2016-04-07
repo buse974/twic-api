@@ -33,7 +33,6 @@ class Item extends BaseItem
     protected $ct_date;
     protected $ct_group;
     protected $opt_grading;
-    protected $opt_videoconf;
       
     public function exchangeArray(array &$data)
     {
@@ -46,7 +45,6 @@ class Item extends BaseItem
         $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
         $this->item_grade = $this->requireModel('app_model_item_grading', $data);
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
-        $this->opt_videoconf = $this->requireModel('app_model_opt_videoconf', $data);
     }
 
     public function setMaterials($materials)
@@ -213,18 +211,6 @@ class Item extends BaseItem
     public function setCtDone($ct_done)
     {
         $this->ct_done = $ct_done;
-    
-        return $this;
-    }
-    
-    public function getOptVideoconf()
-    {
-        return $this->opt_videoconf;
-    }
-    
-    public function setOptVideoconf($opt_videoconf)
-    {
-        $this->opt_videoconf = $opt_videoconf;
     
         return $this;
     }

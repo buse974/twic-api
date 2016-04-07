@@ -428,10 +428,10 @@ class ScenarioTest extends AbstractService
     
         $data = $this->jsonRpc('item.add', array(
             'course' => $id,
-            'grading_policy' => 7,
+            'grading_policy_id' => 7,
             'duration' => 234,
             'title' => 'titl2e',
-            'set' => 1,
+            'set_id' => 1,
             'describe' => 'desone',
             'type' => 'TXT'));
     
@@ -497,12 +497,12 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('item.add', 
             [
                 'course' => (int)$id,
-                'grading_policy' => 6,
+                'grading_policy_id' => 6,
                 'title' => 'title',
                 'describe' => 'description',
                 'duration' => 234,
                 'type' => 'WG',
-                'set' => $set,
+                'set_id' => $set,
                 'ct' => [
                     'done'  => [
                         ['target' => $item, 'all' => true],
@@ -553,7 +553,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('item.get', array('id' => $id));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 21);
+        $this->assertEquals(count($data['result']) , 20);
         $this->assertEquals(count($data['result']['program']) , 2);
         $this->assertEquals($data['result']['program']['id'] , 1);
         $this->assertEquals($data['result']['program']['name'] , "program name upd");
@@ -586,11 +586,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['ct_done'][0]['item_id'] , 2);
         $this->assertEquals($data['result']['ct_done'][0]['target_id'] , 1);
         $this->assertEquals($data['result']['ct_done'][0]['all'] , 1);
-        $this->assertEquals(count($data['result']['opt_videoconf']) , 4);
-        $this->assertEquals($data['result']['opt_videoconf']['item_id'] , 2);
-        $this->assertEquals($data['result']['opt_videoconf']['record'] , 1);
-        $this->assertEquals($data['result']['opt_videoconf']['nb_user_autorecord'] , 2);
-        $this->assertEquals($data['result']['opt_videoconf']['allow_intructor'] , 1);
         $this->assertEquals(count($data['result']['opt_grading']) , 8);
         $this->assertEquals($data['result']['opt_grading']['mode'] , "average");
         $this->assertEquals($data['result']['opt_grading']['has_pg'] , 1);
@@ -627,7 +622,7 @@ class ScenarioTest extends AbstractService
         
         $data = $this->jsonRpc('item.add', array(
             'course' => $id,
-            'grading_policy' => 7,
+            'grading_policy_id' => 7,
             'duration' => 234,
             'title' => 'titl2e',
             'describe' => 'description2',
@@ -649,7 +644,7 @@ class ScenarioTest extends AbstractService
         
         $data = $this->jsonRpc('item.update', [
             'id' => (int)$id,
-            'grading_policy' => 8,
+            'grading_policy_id' => 8,
             'duration' => 123,
             'title' => 'titl2e',
             'describe' => 'description2'
@@ -732,7 +727,7 @@ class ScenarioTest extends AbstractService
     	
     	$this->jsonRpc('item.update', [
     			'id' => 3,
-    			'grading_policy' => 8,
+    			'grading_policy_id' => 8,
     			'duration' => 123,
     			'title' => 'titl2e',
     			'describe' => 'description2',
@@ -873,7 +868,7 @@ class ScenarioTest extends AbstractService
     
     	$data = $this->jsonRpc('item.add', array(
     			'course' => $id,
-    			'grading_policy' => 7,
+    			'grading_policy_id' => 7,
     			'duration' => 234,
     			'title' => 'titl2e',
     			'describe' => 'description2',
