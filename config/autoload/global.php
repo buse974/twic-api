@@ -18,7 +18,7 @@ return [
         'secret_key' => 'toto',
         'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
         'secret_key_fb_debug' => false,
-        'urldms' => 'http://apilms.com/data/',
+        'urldms' => 'https://api.local/data/',
     ],
     'dal-conf' => [
         'adapter' => 'db-adapter',
