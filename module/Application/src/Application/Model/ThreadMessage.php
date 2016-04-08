@@ -8,6 +8,7 @@ class ThreadMessage extends BaseThreadMessage
 {
     protected $user;
     protected $thread;
+    protected $parent;
 
     public function exchangeArray(array &$data)
     {
@@ -15,6 +16,7 @@ class ThreadMessage extends BaseThreadMessage
 
         $this->user = $this->requireModel('app_model_user', $data);
         $this->thread = $this->requireModel('app_model_thread', $data);
+        $this->parent = $this->requireModel('app_model_thread_message', $data, 'parent');
     }
 
     public function getThread()
@@ -26,6 +28,18 @@ class ThreadMessage extends BaseThreadMessage
     {
         $this->thread = $thread;
 
+        return $this;
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+    
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+        
         return $this;
     }
 

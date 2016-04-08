@@ -15,7 +15,7 @@ class Thread extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'created_date', 'deleted_date'))
+        $select->columns(array('id', 'title', 'thread$created_date' => new Expression('DATE_FORMAT(thread.created_date, "%Y-%m-%dT%TZ")'), 'thread$deleted_date' => new Expression('DATE_FORMAT(thread.deleted_date, "%Y-%m-%dT%TZ")')))
             ->join(array('thread_user' => 'user'), 'thread_user.id=thread.user_id', array('id', 'firstname', 'lastname', 'avatar', 'thread$nb_message' => new Expression('SUM(IF(thread_message.id IS NULL OR thread_message.deleted_date IS NOT NULL, 0,1))')))
             ->join('thread_message', 'thread_message.thread_id=thread.id', array(), $select::JOIN_LEFT)
             ->join('course', 'thread.course_id=course.id', array('id', 'title'), $select::JOIN_LEFT)
