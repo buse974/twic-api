@@ -4,15 +4,15 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class Conversation extends AbstractModel
+class TextEditor extends AbstractModel
 {
  	protected $id;
 	protected $name;
-	protected $type;
+	protected $text;
 	protected $submission_id;
-	protected $created_date;
+	protected $submit_date;
 
-	protected $prefix = 'conversation';
+	protected $prefix = 'text_editor';
 
 	public function getId()
 	{
@@ -38,14 +38,14 @@ class Conversation extends AbstractModel
 		return $this;
 	}
 
-	public function getType()
+	public function getText()
 	{
-		return $this->type;
+		return $this->text;
 	}
 
-	public function setType($type)
+	public function setText($text)
 	{
-		$this->type = $type;
+		$this->text = $text;
 
 		return $this;
 	}
@@ -62,14 +62,14 @@ class Conversation extends AbstractModel
 		return $this;
 	}
 
-	public function getCreatedDate()
+	public function getSubmitDate()
 	{
-		return $this->created_date;
+		return $this->submit_date;
 	}
 
-	public function setCreatedDate($created_date)
+	public function setSubmitDate($submit_date)
 	{
-		$this->created_date = $created_date;
+		$this->submit_date = $submit_date;
 
 		return $this;
 	}

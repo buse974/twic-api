@@ -5,11 +5,49 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use \Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
-use Application\Model\Conversation as ModelConversation;
 
 class Item extends AbstractService
 {
 
+    protected $conf = [
+            ModelItem::TYPE_CAPSTONE_PROJECT => [
+                ModelItem::CMP_ASSIGNMENT => true,
+            ],
+            ModelItem::TYPE_CHAT => [
+                ModelItem::CMP_CHAT => true,
+            ],
+            ModelItem::TYPE_DISCUSSION => [
+                ModelItem::CMP_DISCUSSION => true,
+            ],
+            ModelItem::TYPE_DOCUMENT => [
+                ModelItem::CMP_DOCUMENT => true,
+            ],
+            ModelItem::TYPE_EQCQ => [
+                ModelItem::CMP_EQCQ => true,
+            ],
+            ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [
+                ModelItem::CMP_ASSIGNMENT => true,
+                ModelItem::CMP_CHAT => true,
+            ],
+            ModelItem::TYPE_LIVE_CLASS => [
+                ModelItem::CMP_VIDEOCONF => true,
+                ModelItem::CMP_CHAT => true,
+            ],
+            ModelItem::TYPE_MODULE => [
+            ],
+            ModelItem::TYPE_POLL => [
+                ModelItem::CMP_POLL => true,
+            ],
+            ModelItem::TYPE_TXT => [
+            ],
+            ModelItem::TYPE_WORKGROUP => [
+                ModelItem::CMP_VIDEOCONF => true,
+                ModelItem::CMP_CHAT => true,
+                ModelItem::CMP_EQCQ => false,
+                ModelItem::CMP_ASSIGNMENT => false,
+            ],
+        ];
+    
     /**
      * @invokable
      *
@@ -31,6 +69,11 @@ class Item extends AbstractService
      */
     public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set_id = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
+        if(!isset($this->conf[$type])) {
+            return;
+        }
+        $tconf = $this->conf[$type];
+        
         $m_item = $this->getModel()
             ->setCourseId($course)
             ->setGradingPolicyId($grading_policy_id)
@@ -49,9 +92,9 @@ class Item extends AbstractService
         }
         
         $item_id = $this->getMapper()->getLastInsertValue();
-        
         $this->updateOrderId($item_id,$parent_id, $order_id);
         
+        // CONTRAINTE
         if(null !== $ct) {
             if(isset($ct['date'])) {
                 foreach ($ct['date'] as $date) {
@@ -78,6 +121,7 @@ class Item extends AbstractService
             }
         }
         
+        // OPTION GRADING
         if(null !== $opt) {
             if(isset($opt['grading'])) {
                 $this->getServiceOptGrading()->add($item_id, 
@@ -91,54 +135,86 @@ class Item extends AbstractService
                     (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
         }
-        switch ($type) {
-            case ModelItem::TYPE_DOCUMENT:
-                $link = isset($data['link']) ? $data['link'] : null;
-                $token = isset($data['token']) ? $data['token'] : null;
-                $name = isset($data['name']) ? $data['name'] : null;
-                $type = isset($data['type']) ? $data['type'] : null;
-                $this->getServiceDocument()->add($name, $type, $link, $token, $item_id);
-                break;
-          /*  case ModelItem::TYPE_POLL:
-                $ti = isset($data['title']) ? $data['title'] : $title;
-                $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
-                $expiration = isset($data['expiration']) ? $data['expiration'] : null;
-                $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
-                $this->getServicePoll()->add($ti, $poll_item, $expiration, $time_limit, $item_id);
-                break;
-            case ModelItem::TYPE_CHAT:
-                $this->getServiceConversation()->create(ModelConversation::TYPE_ITEM_CHAT, $item_id);
-                break;
-            case ModelItem::TYPE_DISCUSSION:
-                if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
-                    $this->getServiceThread()->update($thread_id,null,$item_id);
-                } elseif( null !== $title) {
-                    $this->getServiceThread()->add($title, $course, $describe, $item_id);
-                }
-                break;
-            case ModelItem::TYPE_WORKGROUP:
-                $record = isset($data['record']) ? $data['record'] : null;
-                $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
-                $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
-                $this->getServiceOptVideoconf()->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
-                break;
-            case ModelItem::TYPE_LIVE_CLASS:
-                $record = isset($data['record']) ? $data['record'] : null;
-                $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
-                $this->getServiceOptVideoconf()->add($item_id, $record, $nb_user_autorecord, true);
-                break;*/
-        }
         
-        if(isset($data['opt_eqcq']) && $data['opt_eqcq']==1) {
-            $this->add($course,null,null,null,null,ModelItem::TYPE_EQCQ,null,null,null,null,null,null,null,$item_id);
-        }
-        if(isset($data['opt_assignment']) && $data['opt_assignment']==1) {
-            $this->add($course,null,null,null,null,ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT,null,null,null,null,null,null,null,$item_id);
+        
+        // COMPONENT
+        foreach ($tconf as $component => $v) {
+            
+            if($component === true) {
+                $this->factorieComponent($component, $data[$component], $item_id);
+            } elseif(isset($data[$component]) && $data[$component] !== false) {
+                $this->factorieComponent($component, $data[$component], $item_id);
+            }
         }
         
         return $item_id;
     }
 
+    private function factorieComponent($component, $data, $item_id) 
+    {
+        $cmp = false;
+        switch ($component) {
+            case ModelItem::CMP_ASSIGNMENT: 
+                break;
+            case ModelItem::CMP_CHAT:
+                break;
+            case ModelItem::CMP_DISCUSSION:
+                $cmp = $this->addCmpThread($data[ModelItem::CMP_DISCUSSION], $item_id);
+                break;
+            case ModelItem::CMP_DOCUMENT:
+                $this->addCmpDocument($data[ModelItem::CMP_DOCUMENT], $item_id);
+                break;
+            case ModelItem::CMP_EQCQ:
+                break;
+            case ModelItem::CMP_POLL:
+                $cmp = $this->addCmpPoll($data[ModelItem::CMP_POLL], $item_id);
+                break;
+            case ModelItem::CMP_VIDEOCONF:
+                $cmp = $this->addCmpVideoconf($data[ModelItem::CMP_VIDEOCONF], $item_id);
+                break;
+        }
+        
+        return $cmp;
+    }
+    
+    public function addCmpPoll($data, $item_id)
+    {
+        $ti = isset($data['title']) ? $data['title'] : $title;
+        $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
+        $expiration = isset($data['expiration']) ? $data['expiration'] : null;
+        $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
+        
+        return $this->getServicePoll()->add($ti, $poll_item, $expiration, $time_limit, $item_id);
+    }
+    
+    public function addCmpVideoconf($data, $item_id)
+    {
+         $record = isset($data['record']) ? $data['record'] : null;
+         $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
+         $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
+         
+         return $this->getServiceVideoconfOpt()->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
+    }
+    
+    public function addCmpThread($data, $item_id)
+    {
+         if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
+            return $this->getServiceThread()->update($thread_id,null,$item_id);
+         } else {
+            return $this->getServiceThread()->add($title, $course, $describe, $item_id);
+         }
+    }
+    
+    public function addCmpDocument($data, $item_id)
+    {
+        $name = isset($data['name']) ? $data['name'] : null;
+        $type  = isset($data['type']) ? $data['type'] : null;
+        $link = isset($data['link']) ? $data['link'] : null;
+        $token = isset($data['token']) ? $data['token'] : null;
+        
+        return $this->getServiceDocument()->add($name,$type,$link,$token,$item_id);
+    }
+    
     /**
      * @invokable
      * 
@@ -554,11 +630,11 @@ class Item extends AbstractService
     
     /**
      *
-     * @return \Application\Service\OptVideoconf
+     * @return \Application\Service\VideoconfOpt
      */
-    public function getServiceOptVideoconf()
+    public function getServiceVideoconfOpt()
     {
-        return $this->getServiceLocator()->get('app_service_opt_videoconf');
+        return $this->getServiceLocator()->get('app_service_videoconf_opt');
     }
     
 }

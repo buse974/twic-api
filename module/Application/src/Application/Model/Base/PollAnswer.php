@@ -12,6 +12,7 @@ class PollAnswer extends AbstractModel
 	protected $bank_question_id;
 	protected $group_question_id;
 	protected $user_id;
+	protected $submission_id;
 
 	protected $prefix = 'poll_answer';
 
@@ -83,6 +84,18 @@ class PollAnswer extends AbstractModel
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
+
+		return $this;
+	}
+
+	public function getSubmissionId()
+	{
+		return $this->submission_id;
+	}
+
+	public function setSubmissionId($submission_id)
+	{
+		$this->submission_id = $submission_id;
 
 		return $this;
 	}

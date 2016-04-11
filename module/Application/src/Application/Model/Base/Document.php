@@ -12,6 +12,7 @@ class Document extends AbstractModel
 	protected $created_date;
 	protected $deleted_date;
 	protected $updated_date;
+	protected $submission_id;
 
 	protected $prefix = 'document';
 
@@ -83,6 +84,18 @@ class Document extends AbstractModel
 	public function setUpdatedDate($updated_date)
 	{
 		$this->updated_date = $updated_date;
+
+		return $this;
+	}
+
+	public function getSubmissionId()
+	{
+		return $this->submission_id;
+	}
+
+	public function setSubmissionId($submission_id)
+	{
+		$this->submission_id = $submission_id;
 
 		return $this;
 	}
