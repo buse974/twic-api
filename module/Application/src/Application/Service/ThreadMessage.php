@@ -56,12 +56,16 @@ class ThreadMessage extends AbstractService
      */
     public function update($message, $id, $parent_id = null)
     {
-        // ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-        return $this->getMapper()->update($this->getModel()
-            ->setMessage($message), array('user_id' => $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), 'id' => $id, ))
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        
+        $m_threadmessage = $this->getModel()
+            ->setMessage($message)
             ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
+                
+        return $this->getMapper()->update($m_threadmessage, [
+            'user_id' => $me,
+            'id' => $id,
+        ]);
     }
 
     /**
@@ -145,5 +149,13 @@ class ThreadMessage extends AbstractService
     public function getServiceRole()
     {
         return $this->getServiceLocator()->get('app_service_role');
+    }
+    
+    /**
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }
