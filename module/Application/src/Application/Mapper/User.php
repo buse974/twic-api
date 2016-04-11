@@ -433,12 +433,12 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('user$contact_state' =>  new Expression(
             'IF(contact.accepted_date IS NOT NULL, 3,
-	         IF(contact.request_date IS NOT  NULL AND requested <> 1, 2,
-		     IF(contact.request_date IS NOT  NULL AND requested = 1, 1,0)))')))
-    		     ->join('contact', 'contact.user_id = user.id', array())
+	         IF(contact.request_date IS NOT  NULL AND contact.requested <> 1, 2,
+		     IF(contact.request_date IS NOT  NULL AND contact.requested = 1, 1,0)))')))
+    		     ->join('contact', 'contact.contact_id = user.id', array())
     		     ->where(array('user.id=`user$id`'))
-    		     ->where(['( contact.contact_id = ? || contact.contact_id IS NULL )' => $user ]);
+    		     ->where(['contact.user_id' => $user ]);
     
-    		     return $select;
+        return $select;
     }
 }

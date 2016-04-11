@@ -17,7 +17,15 @@ class Item extends BaseItem
     const TYPE_CHAT = 'CHAT';
     const TYPE_DISCUSSION = 'DISC';
     const TYPE_EQCQ = 'EQCQ';
-
+    
+    const CMP_VIDEOCONF = 'videoconf';
+    const CMP_ASSIGNMENT = 'assigment';
+    const CMP_POLL = 'poll';
+    const CMP_DOCUMENT = 'document';
+    const CMP_CHAT = 'chat';
+    const CMP_DISCUSSION = 'discussion';
+    const CMP_EQCQ = 'eqcq';
+    
     protected $materials;
     protected $module;
     protected $program;

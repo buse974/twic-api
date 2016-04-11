@@ -1547,8 +1547,10 @@ class ScenarioTest extends AbstractService
         return $data['result'];
     }*/
     
-    
-    public function testGetQuestionaire($item_prog)
+    /**
+     * @depends testAddItem
+     */
+    public function testGetQuestionaire($item)
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('questionnaire.getByItem', array('item' => $item));

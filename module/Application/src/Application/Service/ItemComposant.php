@@ -4,6 +4,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
-class OptVideoconf extends AbstractService
+class ItemComposant extends AbstractService
 {
 }

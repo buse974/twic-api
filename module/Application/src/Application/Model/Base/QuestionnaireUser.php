@@ -9,7 +9,7 @@ class QuestionnaireUser extends AbstractModel
  	protected $id;
 	protected $user_id;
 	protected $questionnaire_id;
-	protected $item_prog_user_id;
+	protected $submission_id;
 	protected $state;
 	protected $created_date;
 	protected $end_date;
@@ -52,14 +52,14 @@ class QuestionnaireUser extends AbstractModel
 		return $this;
 	}
 
-	public function getItemProgUserId()
+	public function getSubmissionId()
 	{
-		return $this->item_prog_user_id;
+		return $this->submission_id;
 	}
 
-	public function setItemProgUserId($item_prog_user_id)
+	public function setSubmissionId($submission_id)
 	{
-		$this->item_prog_user_id = $item_prog_user_id;
+		$this->submission_id = $submission_id;
 
 		return $this;
 	}

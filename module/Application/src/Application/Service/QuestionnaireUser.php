@@ -22,10 +22,9 @@ class QuestionnaireUser extends AbstractService
             ->setQuestionnaireId($questionnaire);
 
         $res_questionnaire_user = $this->getMapper()->select($m_questionnaire_user);
-
         if ($res_questionnaire_user->count() <= 0) {
             $m_questionnaire_user
-                ->setItemProgUserId($this->getServiceItemProgUser()->getByUserAndQuestionnaire($me, $questionnaire)->getId())
+                ->setSubmissionId($this->getServiceSubmission()->getByUserAndQuestionnaire($me, $questionnaire)->getId())
                 ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             if ($this->getMapper()->insert($m_questionnaire_user) <= 0) {
                 throw new \Exception('Error insert questionnaire user');
@@ -46,10 +45,10 @@ class QuestionnaireUser extends AbstractService
     }
     
     /**
-     * @return \Application\Service\ItemProgUser
+     * @return \Application\Service\Submission
      */
-    public function getServiceItemProgUser()
+    public function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog_user');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 }
