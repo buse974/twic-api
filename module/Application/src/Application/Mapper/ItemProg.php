@@ -11,7 +11,6 @@ class ItemProg extends AbstractMapper
     public function getSubmission($user, $id)
     {
         $select = $this->tableGateway->getSql()->select();
-        
         $select->columns(array('id','item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array())
             ->join('item', 'item.id=item_prog.item_id', array('id','title','describe','type'))
