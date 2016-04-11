@@ -22,3 +22,5 @@ upload/
 build/
 /tests/*.sql
 .gitkanban
+config/autoload/global.php
+composer-setup.php

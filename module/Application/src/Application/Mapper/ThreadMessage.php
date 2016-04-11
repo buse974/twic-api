@@ -2,6 +2,7 @@
 
 namespace Application\Mapper;
 
+use Zend\Db\Sql\Predicate\Expression;
 use Dal\Mapper\AbstractMapper;
 
 class ThreadMessage extends AbstractMapper
@@ -13,12 +14,16 @@ class ThreadMessage extends AbstractMapper
         }
 
         $select = $this->tableGateway->getSql()->select();
-
-        $select->columns(array('id', 'message', 'created_date'))
+        
+        $select->columns(array('id', 'message', 'parent_id', 
+            'thread_message$created_date' => new Expression('DATE_FORMAT(thread_message.created_date, "%Y-%m-%dT%TZ")')))
             ->join(array('thread_message_user' => 'user'), 'thread_message_user.id=thread_message.user_id', array('id', 'firstname', 'lastname', 'avatar'))
             ->join('thread', 'thread.id=thread_message.thread_id', array('id', 'course_id'))
+            ->join(array('thread_message_parent' => 'thread_message'), 'thread_message_parent.id=thread_message.parent_id', array('id'), $select::JOIN_LEFT)
+            ->join(array('thread_message_parent_user' => 'user'), 'thread_message_parent_user.id=thread_message_parent.user_id', array('id', 'firstname', 'lastname', 'avatar'),  $select::JOIN_LEFT)                
             ->where(array('thread.deleted_date IS NULL'))
-            ->where(array('thread_message.deleted_date IS NULL'));
+            ->where(array('thread_message.deleted_date IS NULL'))                
+            ->order(array('thread_message.created_date DESC'));
 
         if (null !== $thread) {
             $select->where(array('thread_message.thread_id' => $thread));
@@ -35,7 +40,7 @@ class ThreadMessage extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'message', 'created_date'))
+        $select->columns(array('id', 'message', 'thread_message$created_date' => new Expression('DATE_FORMAT(thread_message.created_date, "%Y-%m-%dT%TZ")')))
             ->join(array('thread_message_user' => 'user'), 'thread_message_user.id=thread_message.user_id', array('id', 'firstname', 'lastname', 'avatar'))
             ->join('thread', 'thread.id=thread_message.thread_id', array())
             ->where(array('thread_message.thread_id' => $thread))
