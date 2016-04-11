@@ -10,23 +10,22 @@ class ThreadMessage extends AbstractService
      * Add message in thread.
      *
      * @invokable
-     *
+     * 
      * @param string $message
-     * @param int    $thread
-     *
-     * @throws \Exception
-     *
+     * @param int $thread
+     * @param int $is_new
+     * @param int $parent_id
+     * 
      * @return int
      */
-    public function add($message, $thread, $is_new = false)
+    public function add($message, $thread, $is_new = false, $parent_id = null)
     {
         $m_thread_message = $this->getModel()
             ->setMessage($message)
             ->setThreadId($thread)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setUserId($this->getServiceAuth()
-            ->getIdentity()
-            ->getId());
+            ->setUserId($this->getServiceAuth()->getIdentity()->getId())
+            ->setParentId(($parent_id === 0) ? null : $parent_id);
 
         if ($this->getMapper()->insert($m_thread_message) <= 0) {
             throw new \Exception('error insert thread');
@@ -55,13 +54,14 @@ class ThreadMessage extends AbstractService
      *
      * @return int
      */
-    public function update($message, $id)
+    public function update($message, $id, $parent_id = null)
     {
         // ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
         return $this->getMapper()->update($this->getModel()
             ->setMessage($message), array('user_id' => $this->getServiceAuth()
             ->getIdentity()
-            ->getId(), 'id' => $id, ));
+            ->getId(), 'id' => $id, ))
+            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
     }
 
     /**
@@ -111,8 +111,9 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * @param ineteger $thread_message
-     *
+     * @invokable
+     * 
+     * @param integer $thread_message
      * @return \Application\Model\ThreadMessage
      */
     public function get($thread_message)
