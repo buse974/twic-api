@@ -179,12 +179,12 @@ class Item extends AbstractService
     
     public function addCmpPoll($data, $item_id)
     {
-        $ti = isset($data['title']) ? $data['title'] : $title;
+        $title = isset($data['title']) ? $data['title'] : null;
         $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
         $expiration = isset($data['expiration']) ? $data['expiration'] : null;
         $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
         
-        return $this->getServicePoll()->add($ti, $poll_item, $expiration, $time_limit, $item_id);
+        return $this->getServicePoll()->add($title, $poll_item, $expiration, $time_limit, $item_id);
     }
     
     public function addCmpVideoconf($data, $item_id)
@@ -201,7 +201,7 @@ class Item extends AbstractService
          if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
             return $this->getServiceThread()->update($thread_id,null,$item_id);
          } else {
-            return $this->getServiceThread()->add($title, $course, $describe, $item_id);
+            return $this->getServiceThread()->add(null, $course, $describe, $item_id);
          }
     }
     
