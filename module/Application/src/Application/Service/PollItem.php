@@ -6,7 +6,7 @@ use Dal\Service\AbstractService;
 
 class PollItem extends AbstractService
 {
-    public function add($poll_id, $data)
+    public function add($poll_id, $data = [])
     {
         $ret = [];
         foreach ($data as $d) {
