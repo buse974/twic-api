@@ -67,7 +67,7 @@ class PollTest extends AbstractService
                             'percent' => '100'
                         ],
                         ['libelle' => 'non']
-                    ]
+                    ],
                 ],
                 [
                 'question' => 'Ma question',
@@ -165,7 +165,39 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['item_id'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        return $data['result']['id'];
     }
+    
+    /**
+     * @depends testCanPollAdd
+     */
+    public function testCanPollReplace($poll)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('pollitem.replace', [
+            'poll_id' => $poll,
+            'data' => [
+                [
+                    'nb_point' => 99,
+                    'bank_question_id' => 1
+                ],
+                [
+                    'nb_point' => 99,
+                    'nb' => 10,
+                    'group_question' => [1,2,3],
+                ]
+            ]
+        ]);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result'][0] , 3);
+        $this->assertEquals($data['result'][1] , 4);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     
     /**
      * @depends testAddCourse

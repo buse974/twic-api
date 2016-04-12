@@ -136,7 +136,6 @@ class Item extends AbstractService
             }
         }
         
-        
         // COMPONENT
         foreach ($tconf as $component => $v) {
             if($component === true) {

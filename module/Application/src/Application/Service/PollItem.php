@@ -43,6 +43,24 @@ class PollItem extends AbstractService
     }
     
     /**
+     * @invokable
+     * 
+     * @param integer $poll_id
+     * @param array $data
+     * 
+     */
+    public function replace($poll_id, $data = [])
+    {
+        $this->delete($poll_id);
+        
+        return $this->add($poll_id, $data);
+    }
+    
+    public function delete($poll_id)
+    {
+        return $this->getMapper()->delete($this->getModel()->setPollId($poll_id));
+    }
+    /**
      *
      * @return \Application\Service\GroupQuestion
      */
