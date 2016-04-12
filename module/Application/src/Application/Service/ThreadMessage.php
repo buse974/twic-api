@@ -16,7 +16,7 @@ class ThreadMessage extends AbstractService
      * @param int $is_new
      * @param int $parent_id
      * 
-     * @return int
+     * @return integer
      */
     public function add($message, $thread, $is_new = false, $parent_id = null)
     {
