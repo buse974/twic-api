@@ -22,6 +22,8 @@ class Item extends BaseItem
     const CMP_ASSIGNMENT = 'assigment';
     const CMP_POLL = 'poll';
     const CMP_DOCUMENT = 'document';
+    const CMP_TEXT_EDITOR = 'text_editor';
+    const CMP_DOCUMENT = 'document';
     const CMP_CHAT = 'chat';
     const CMP_DISCUSSION = 'discussion';
     const CMP_EQCQ = 'eqcq';
@@ -40,7 +42,8 @@ class Item extends BaseItem
     protected $ct_rate;
     protected $ct_date;
     protected $ct_group;
-    protected $opt_grading;
+    protected $opt_grading; 
+    protected $poll;
       
     public function exchangeArray(array &$data)
     {
@@ -55,6 +58,18 @@ class Item extends BaseItem
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
     }
 
+    public function getPoll()
+    {
+        return $this->poll;
+    }
+    
+    public function setPoll($poll)
+    {
+        $this->poll = $poll;
+    
+        return $this;
+    }
+    
     public function setMaterials($materials)
     {
         $this->materials = $materials;
