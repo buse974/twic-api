@@ -6,7 +6,7 @@ use Dal\Mapper\AbstractMapper;
 
 class Library extends AbstractMapper
 {
-    public function getListByItem($item)
+    public function getListByParentItem($item)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'name', 'link', 'token', 'type', 'created_date', 'deleted_date', 'updated_date', 'folder_id', 'owner_id', 'box_id'])
@@ -14,7 +14,17 @@ class Library extends AbstractMapper
             ->join('item', 'document.item_id=item.parent_id', [])
             ->where(array('item.id' => $item));
         
-        return $this->getMapper()->getListByItem($item);
+        return $this->selectWith($select);
+    }
+    
+    public function getListByItem($item)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'name', 'link', 'token', 'type', 'created_date', 'deleted_date', 'updated_date', 'folder_id', 'owner_id', 'box_id'])
+            ->join('document', 'document.library_id=library.id', [])
+            ->where(array('document.item_id' => $item));
+    
+        return $this->selectWith($select);
     }
 
     public function getListByCt($item)
@@ -25,7 +35,7 @@ class Library extends AbstractMapper
             ->join('ct_done', 'ct_done.target_id=item.parent_id', [])
             ->where(array('ct_done.item_id' => $item));
         
-        return $this->getMapper()->getListByItem($item);
+        return $this->selectWith($select);
     }
 
     public function getListBySubmission($item)
@@ -36,6 +46,6 @@ class Library extends AbstractMapper
             ->join('ct_done', 'ct_done.target_id=item.parent_id', [])
             ->where(array('ct_done.item_id' => $item));
         
-        return $this->getMapper()->getListByItem($item);
+        return $this->selectWith($select);
     }
 }
