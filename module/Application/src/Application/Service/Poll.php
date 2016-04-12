@@ -45,10 +45,7 @@ class Poll extends AbstractService
      */
     public function get($id)
     {
-        $m_poll = $this->getModel();
-        $m_poll->setId($id);
-        
-        $res_poll = $this->getMapper()->select($m_poll);
+        $res_poll = $this->getMapper()->select($this->getModel()->setId($id));
         
         if ($res_poll->count() !== 1) {
             throw new \Exception('poll not exist');
@@ -62,19 +59,9 @@ class Poll extends AbstractService
 
     public function getByItem($item_id)
     {
-        $m_poll = $this->getModel();
-        $m_poll->setItemId($item_id);
-    
-        $res_poll = $this->getMapper()->select($m_poll);
-    
-        if ($res_poll->count() !== 1) {
-            throw new \Exception('poll not exist');
-        }
-    
-        $m_poll = $res_poll->current();
-        //$m_poll->setPollQuestions($this->getServicePollQuestion()->getList($id));
-    
-        return $m_poll;
+        $res_poll = $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        
+        return ($res_poll->count() > 0 ) ? $res_poll->current():null;
     }
 
     /**

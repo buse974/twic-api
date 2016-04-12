@@ -139,7 +139,6 @@ class Item extends AbstractService
         
         // COMPONENT
         foreach ($tconf as $component => $v) {
-            
             if($component === true) {
                 $this->factorieComponent($component, $data[$component], $item_id);
             } elseif(isset($data[$component]) && $data[$component] !== false) {
