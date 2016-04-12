@@ -23,7 +23,6 @@ class Item extends BaseItem
     const CMP_POLL = 'poll';
     const CMP_DOCUMENT = 'document';
     const CMP_TEXT_EDITOR = 'text_editor';
-    const CMP_DOCUMENT = 'document';
     const CMP_CHAT = 'chat';
     const CMP_DISCUSSION = 'discussion';
     const CMP_EQCQ = 'eqcq';
