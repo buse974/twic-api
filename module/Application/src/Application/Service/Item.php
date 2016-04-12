@@ -446,6 +446,7 @@ class Item extends AbstractService
             ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
             ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
             ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()))
+            ->setDocument($this->getServiceDocument()->getByItem($m_item->getId()))
             ->setPoll($this->getServicePoll()->getByItem($m_item->getId()));
         
         return $m_item;

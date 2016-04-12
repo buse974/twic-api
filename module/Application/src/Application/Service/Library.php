@@ -117,6 +117,18 @@ class Library extends AbstractService
 	}
 	
 	/**
+	 * @param integer $item_id
+	 * @return \Application\Model\Library
+	 * 
+	 */
+	public function get    ByItem($item_id)
+	{
+	    $res_library = $this->getMapper()->getListByItem($item);
+	    
+	    return ($res_library->count() > 0) ?  $res_library->current() : null;
+	}
+	
+	/**
 	 * @invokable
 	 *
 	 * @param integer $item

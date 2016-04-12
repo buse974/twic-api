@@ -47,6 +47,11 @@ class Document extends AbstractService
         return $this->getMapper()->delete($this->getModel()->setId($id));   
     }
     
+    public function getByItem($item_id)
+    {
+        
+    }
+    
     /**
      *
      * @return \Application\Service\Library

@@ -43,6 +43,20 @@ class Item extends BaseItem
     protected $ct_group;
     protected $opt_grading; 
     protected $poll;
+    protected $document;
+      
+      
+    public function getDocument() 
+    {
+        return $this->document;
+    }
+    
+    public function setDocument($document) 
+    {
+        $this->document = $document;
+        
+        return $this;
+    }
       
     public function exchangeArray(array &$data)
     {
