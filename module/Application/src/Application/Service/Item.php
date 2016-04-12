@@ -159,18 +159,18 @@ class Item extends AbstractService
             case ModelItem::CMP_CHAT:
                 break;
             case ModelItem::CMP_DISCUSSION:
-                $cmp = $this->addCmpThread($data[ModelItem::CMP_DISCUSSION], $item_id);
+                $cmp = $this->addCmpThread($data, $item_id);
                 break;
             case ModelItem::CMP_DOCUMENT:
-                $this->addCmpDocument($data[ModelItem::CMP_DOCUMENT], $item_id);
+                $this->addCmpDocument($data, $item_id);
                 break;
             case ModelItem::CMP_EQCQ:
                 break;
             case ModelItem::CMP_POLL:
-                $cmp = $this->addCmpPoll($data[ModelItem::CMP_POLL], $item_id);
+                $cmp = $this->addCmpPoll($data, $item_id);
                 break;
             case ModelItem::CMP_VIDEOCONF:
-                $cmp = $this->addCmpVideoconf($data[ModelItem::CMP_VIDEOCONF], $item_id);
+                $cmp = $this->addCmpVideoconf($data, $item_id);
                 break;
         }
         
