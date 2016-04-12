@@ -35,7 +35,7 @@ class Poll extends AbstractService
             
         return $this->get($poll_id);
     }
-
+    
     /**
      * @invokable
      * 
@@ -51,10 +51,7 @@ class Poll extends AbstractService
             throw new \Exception('poll not exist');
         }
         
-        $m_poll = $res_poll->current();
-        //$m_poll->setPollQuestions($this->getServicePollQuestion()->getList($id));
-        
-        return $m_poll;
+        return $res_poll->current();
     }
 
     public function getByItem($item_id)
