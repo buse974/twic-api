@@ -110,6 +110,7 @@ return [
             'app_service_ct_done',
             'app_service_ct_rate',
             'app_service_ct_group',
+	    'app_service_submission',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
