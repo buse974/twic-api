@@ -169,6 +169,8 @@ class PollTest extends AbstractService
         return $data['result']['id'];
     }
     
+    
+    
     /**
      * @depends testCanPollAdd
      */
@@ -384,6 +386,37 @@ class PollTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+    
+    /**
+     * @depends testCanPollAdd
+     */
+    public function testCanPollUpadte($poll)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('poll.update', [
+            'id' => $poll,
+            'title' => 'un titre upd',
+            'expiration' => '2107-10-11',
+            'time_limit' => 11,
+            'poll_item' => [
+                [
+                    'nb_point' => 99,
+                    'bank_question_id' => 1
+                ],
+                [
+                    'nb_point' => 99,
+                    'nb' => 10,
+                    'group_question' => [1,2,3],
+                ]
+            ]
+        ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     /*public function testCanPollAdd()
     {
         $this->setIdentity(4);
