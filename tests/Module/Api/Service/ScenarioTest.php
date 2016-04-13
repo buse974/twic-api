@@ -552,7 +552,6 @@ class ScenarioTest extends AbstractService
         
         $data = $this->jsonRpc('item.get', array('id' => $id));
         
-        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 20);
         $this->assertEquals(count($data['result']['program']) , 2);
