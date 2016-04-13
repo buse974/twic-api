@@ -121,7 +121,7 @@ class Library extends AbstractService
 	 * @return \Application\Model\Library
 	 * 
 	 */
-	public function get    ByItem($item_id)
+	public function getByItem($item_id)
 	{
 	    $res_library = $this->getMapper()->getListByItem($item);
 	    
