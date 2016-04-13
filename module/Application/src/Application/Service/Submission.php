@@ -12,13 +12,17 @@ class Submission extends AbstractService
         $m_submission = $this->getMapper()->getByUserAndQuestionnaire($me, $questionnaire);
     }
     
-    public function getList($item_id)
+    /**
+     * @invokable
+     * 
+     * @param integer $item_id
+     */
+    public function get($item_id)
     {
         $ret = [];
         $m_item = $this->getServiceItem()->get($item_id);
         
-        switch ($m_item->getType()) {
-            case ModelItem::TYPE_CHAT :
+        
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->get($item_id);
                 $ret[ModelItem::CMP_ASSIGNMENT] = $this->getServiceConversation()->get($item_id);
                 $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
@@ -26,6 +30,8 @@ class Submission extends AbstractService
                 $ret[ModelItem::CMP_EQCQ] = $this->getServiceConversation()->get($item_id);
                 $ret[ModelItem::CMP_POLL] = $this->getServiceConversation()->get($item_id);
                 $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceConversation()->get($item_id);
+        switch ($m_item->getType()) {
+            case ModelItem::TYPE_CHAT :
             break;
         }
         

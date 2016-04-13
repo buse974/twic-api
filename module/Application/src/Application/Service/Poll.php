@@ -37,6 +37,34 @@ class Poll extends AbstractService
     }
     
     /**
+     * update poll
+     *
+     * @invokable
+     *
+     * @param intger $id
+     * @param string $title
+     * @param integer $poll_item
+     * @param integer $expiration
+     * @param integer $time_limit
+     * @param integer $item_id
+     */
+    public function update($id, $title = null, $poll_item = null, $expiration = null, $time_limit = null, $item_id = null)
+    {
+        $m_poll = $this->getModel();
+        $m_poll->setId($id)
+            ->setExpirationDate($expiration)
+            ->setTitle($title)
+            ->setTimeLimit($time_limit)
+            ->setItemId($item_id);
+    
+        if(null !== $poll_item) {
+            $this->getServicePollItem()->replace($id,$poll_item);
+        }
+        
+        return $this->getMapper()->update($m_poll);
+    }
+    
+    /**
      * @invokable
      * 
      * @param integer $id
