@@ -10,4 +10,9 @@ class QuestionRelation extends AbstractService
     {
         return $this->getMapper()->insert($this->getModel()->setGroupQuestionId($group_question_id)->setBankQuestionId($bank_question_id));
     }
+    
+    public function getList($group_question_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setGroupQuestionId($group_question_id));
+    }
 }
