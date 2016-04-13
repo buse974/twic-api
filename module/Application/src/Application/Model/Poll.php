@@ -6,16 +6,16 @@ use Application\Model\Base\Poll as BasePoll;
 
 class Poll extends BasePoll
 {
-    protected $poll_questions;
-
-    public function getPollQuestions() 
+    protected $poll_item;
+      
+    public function getPollItem() 
     {
-        return $this->poll_questions;
+        return $this->poll_item;
     }
-
-    public function setPollQuestions($poll_questions) 
+    
+    public function setPollItem($poll_item) 
     {
-        $this->poll_questions = $poll_questions;
+        $this->poll_item = $poll_item;
         
         return $this;
     }

@@ -60,6 +60,23 @@ class PollItem extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()->setPollId($poll_id));
     }
+    
+    public function getList($poll_id)
+    {
+        $res_poll_item = $this->getMapper()->select($this->getModel()
+            ->setPollId($poll_id));
+        
+        if($res_poll_item->count() <= 0) {
+            return null;
+        }
+        
+        foreach ($res_poll_item as $m_poll_item) {
+            $m_poll_item->setGroupQuestion($this->getServiceGroupQuestion()->getList($m_poll_item->getId()));
+        }
+        
+        return $res_poll_item;
+    }
+    
     /**
      *
      * @return \Application\Service\GroupQuestion

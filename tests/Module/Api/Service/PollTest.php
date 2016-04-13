@@ -157,7 +157,31 @@ class PollTest extends AbstractService
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 5);
+        $this->assertEquals(count($data['result']) , 6);
+        $this->assertEquals(count($data['result']['poll_item']) , 2);
+        $this->assertEquals(count($data['result']['poll_item'][0]) , 8);
+        $this->assertEquals(count($data['result']['poll_item'][0]['group_question']) , 3);
+        $this->assertEquals(count($data['result']['poll_item'][0]['group_question']['bank_question']) , 3);
+        $this->assertEquals($data['result']['poll_item'][0]['group_question']['bank_question'][0] , 1);
+        $this->assertEquals($data['result']['poll_item'][0]['group_question']['bank_question'][1] , 2);
+        $this->assertEquals($data['result']['poll_item'][0]['group_question']['bank_question'][2] , 3);
+        $this->assertEquals($data['result']['poll_item'][0]['group_question']['id'] , 1);
+        $this->assertEquals($data['result']['poll_item'][0]['group_question']['nb'] , 10);
+        $this->assertEquals($data['result']['poll_item'][0]['id'] , 1);
+        $this->assertEquals($data['result']['poll_item'][0]['poll_id'] , 1);
+        $this->assertEquals($data['result']['poll_item'][0]['bank_question_id'] , 1);
+        $this->assertEquals($data['result']['poll_item'][0]['group_question_id'] , null);
+        $this->assertEquals($data['result']['poll_item'][0]['order_id'] , null);
+        $this->assertEquals($data['result']['poll_item'][0]['is_mandatory'] , 0);
+        $this->assertEquals($data['result']['poll_item'][0]['nb_point'] , 99);
+        $this->assertEquals(count($data['result']['poll_item'][1]) , 7);
+        $this->assertEquals($data['result']['poll_item'][1]['id'] , 2);
+        $this->assertEquals($data['result']['poll_item'][1]['poll_id'] , 1);
+        $this->assertEquals($data['result']['poll_item'][1]['bank_question_id'] , null);
+        $this->assertEquals($data['result']['poll_item'][1]['group_question_id'] , 1);
+        $this->assertEquals($data['result']['poll_item'][1]['order_id'] , null);
+        $this->assertEquals($data['result']['poll_item'][1]['is_mandatory'] , 0);
+        $this->assertEquals($data['result']['poll_item'][1]['nb_point'] , 99);
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['title'] , "un titre");
         $this->assertEquals(!empty($data['result']['expiration_date']) , true);
@@ -165,6 +189,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['item_id'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
         
         return $data['result']['id'];
     }

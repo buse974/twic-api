@@ -20,6 +20,28 @@ class GroupQuestion extends AbstractService
         return $group_question_id;
     }
     
+    public function getList($group_question_id)
+    {
+        if(null === $group_question_id) {
+            null;
+        }
+        
+        $res_group_question = $this->getMapper()->select($this->getModel()->setId($group_question_id));
+        if($res_group_question->count() <= 0) {
+            return null;
+        }
+        
+        $m_group_question = $res_group_question->current();
+        $res_question_relation = $this->getServiceQuestionRelation()->getList($group_question_id);
+        $ret = [];
+        foreach ($res_question_relation as $m_question_relation) {
+            $ret[] = $m_question_relation->getBankQuestionId();
+        }
+        $m_group_question->setBankQuestion($ret);
+        
+        return $m_group_question;
+    }
+    
     /**
      * @return \Application\Service\QuestionRelation
      */
