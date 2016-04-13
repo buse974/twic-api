@@ -21,22 +21,26 @@ class Submission extends AbstractService
     {
         $ret = [];
         $m_item = $this->getServiceItem()->get($item_id);
-        
-        
-                $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->get($item_id);
-                $ret[ModelItem::CMP_ASSIGNMENT] = $this->getServiceConversation()->get($item_id);
-                $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
-                $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceConversation()->get($item_id);
-                $ret[ModelItem::CMP_EQCQ] = $this->getServiceConversation()->get($item_id);
-                $ret[ModelItem::CMP_POLL] = $this->getServiceConversation()->get($item_id);
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceConversation()->get($item_id);
+
+        /*$ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->get($item_id);
+        $ret[ModelItem::CMP_ASSIGNMENT] = $this->getServiceConversation()->get($item_id);
+        $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
+        $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceConversation()->get($item_id);
+        $ret[ModelItem::CMP_EQCQ] = $this->getServiceConversation()->get($item_id);
+        $ret[ModelItem::CMP_POLL] = $this->getServiceConversation()->get($item_id);
+        $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceConversation()->get($item_id);*/
+            
         switch ($m_item->getType()) {
-            case ModelItem::TYPE_CHAT :
+            case ModelItem::TYPE_CHAT:
+            break;
+            case ModelItem::TYPE_WORKGROUP:
+                $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getOrCreate($item_id);
             break;
         }
         
-        $ret[ModelItem::CMP_ASSIGNMENT] = $this->getServiceConversation()->get($item_id);
-        $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceConversation()->get($item_id);
+        //$ret[ModelItem::CMP_ASSIGNMENT] = $this->getServiceConversation()->get($item_id);
+        
+        return $ret;
     }
     
     /**
