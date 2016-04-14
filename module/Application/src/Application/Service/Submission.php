@@ -106,7 +106,7 @@ class Submission extends AbstractService
     {
         $ret = [];
         
-        $item_id = $this->getMapper()->select($this->getModel()->setId($submission_id))->current()->getItem();
+        $item_id = $this->getMapper()->select($this->getModel()->setId($submission_id))->current()->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
            
