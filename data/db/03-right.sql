@@ -1076,3 +1076,7 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.get');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'submission.get'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.getContent');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'submission.getContent'));
+
