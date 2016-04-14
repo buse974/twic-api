@@ -10,7 +10,7 @@ class Submission extends AbstractService
     protected $sub = [
         ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [
             ModelItem::CMP_TEXT_EDITOR => true,
-            ModelItem::CMP_CHAT => false,
+            ModelItem::CMP_CHAT => true,
         ],
         ModelItem::TYPE_WORKGROUP => [
             ModelItem::CMP_VIDEOCONF => true,
