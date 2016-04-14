@@ -27,6 +27,11 @@ class TextEditor extends AbstractService
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
     }
     
+    public function getListBy($submission_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+    }
+    
     /**
      * @invokable
      * 
