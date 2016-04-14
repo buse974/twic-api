@@ -105,6 +105,8 @@ class Submission extends AbstractService
     public function getContent($submission_id)
     {
         $ret = [];
+        
+        $item_id = $this->getMapper()->select($this->getModel()->setId($submission_id))->current()->getItem();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
            
