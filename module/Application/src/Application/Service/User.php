@@ -620,20 +620,6 @@ class User extends AbstractService
     }
 
     /**
-     * Get user list from item prog.
-     *
-     * @invokable
-     *
-     * @param int $item_prog            
-     *
-     * @return array
-     */
-    public function getListByItemProg($item_prog)
-    {
-        return $this->getMapper()->getListByItemProg($item_prog);
-    }
-
-    /**
      * @invokable
      *
      * @param int $item_prog            

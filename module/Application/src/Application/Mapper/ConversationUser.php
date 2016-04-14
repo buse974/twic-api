@@ -12,10 +12,12 @@ class ConversationUser extends AbstractMapper
 {
     /**
      * @param array $users
-     *
+     * @param integer $type
+     * @param integer $submission_id
+     * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getConversationByUser($users, $type = null, $item = null)
+    public function getConversationByUser($users, $type = null)
     {
         $having = new \Zend\Db\Sql\Having();
         $having->expression('COUNT(1) = ?', count($users));
@@ -24,7 +26,7 @@ class ConversationUser extends AbstractMapper
         $select_sub->columns(array('conversation_id'))
                    ->group(array('conversation_id'))
                    ->having($having);
-
+    
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('conversation_id'))  
                ->join('videoconf', 'videoconf.conversation_id=conversation_user.conversation_id', array(), $select::JOIN_LEFT)
@@ -37,9 +39,6 @@ class ConversationUser extends AbstractMapper
 
         if (null !== $type) {
             $select->where(array('conversation.type' => $type));
-        }
-        if (null !== $item) {
-            $select->where(array('conversation.user_id' => $item));
         }
 
         return $this->selectWith($select);

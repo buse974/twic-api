@@ -25,4 +25,13 @@ class VideoconfOpt extends AbstractService
     
         return $this->getMapper()->insert($m_opt_videoconf);
     }
+    
+    public function getByItem($item_id)
+    {
+        $m_opt_videoconf = $this->getModel()->setItemId($item_id);
+        
+        $res_opt_videoconf = $this->getMapper()->select($m_opt_videoconf);
+        
+        return ($res_opt_videoconf->count() >0) ? $res_opt_videoconf->current():null;
+    }
 }
