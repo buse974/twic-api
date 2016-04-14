@@ -71,7 +71,7 @@ class PollItem extends AbstractService
         }
         
         foreach ($res_poll_item as $m_poll_item) {
-            $m_poll_item->setGroupQuestion($this->getServiceGroupQuestion()->getList($m_poll_item->getId()));
+            $m_poll_item->setGroupQuestion($this->getServiceGroupQuestion()->getList($m_poll_item->getGroupQuestionId()));
         }
         
         return $res_poll_item;
