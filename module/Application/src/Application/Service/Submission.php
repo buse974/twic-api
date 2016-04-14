@@ -100,9 +100,9 @@ class Submission extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $item_id
+     * @param integer $submission_id
      */
-    public function getContent($item_id)
+    public function getContent($submission_id)
     {
         $ret = [];
         $m_item = $this->getServiceItem()->get($item_id);
@@ -110,9 +110,9 @@ class Submission extends AbstractService
            
         
         if(isset($type[ModelItem::CMP_TEXT_EDITOR]) && $type[ModelItem::CMP_TEXT_EDITOR] === true) {
-            $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getOrCreate($item_id);
+            $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getOrCreate($submission_id);
         } else {
-            $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListByItem($item_id);
+            $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         }
         
         /*$ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->get($item_id);
@@ -125,7 +125,7 @@ class Submission extends AbstractService
         
         
         
-        switch ($m_item->getType()) {
+      /*  switch ($m_item->getType()) {
             case ModelItem::TYPE_CHAT:
             break;
             case ModelItem::TYPE_WORKGROUP:
@@ -133,7 +133,7 @@ class Submission extends AbstractService
             case ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT:
                 $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getOrCreate($item_id);
             break;
-        }
+        }*/
         
         return $ret;
     }
