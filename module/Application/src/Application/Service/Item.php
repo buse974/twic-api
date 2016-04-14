@@ -10,8 +10,8 @@ class Item extends AbstractService
 {
 
     protected $conf = [
-            ModelItem::TYPE_CAPSTONE_PROJECT => [
-                ModelItem::CMP_ASSIGNMENT => true,
+            ModelItem::TYPE_CAPSTONE_PROJECT => [     
+                ModelItem::CMP_CHAT => false,
             ],
             ModelItem::TYPE_CHAT => [
                 ModelItem::CMP_CHAT => true,
@@ -26,8 +26,7 @@ class Item extends AbstractService
                 ModelItem::CMP_EQCQ => true,
             ],
             ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [
-                ModelItem::CMP_ASSIGNMENT => true,
-                ModelItem::CMP_CHAT => true,
+                ModelItem::CMP_CHAT => false,
             ],
             ModelItem::TYPE_LIVE_CLASS => [
                 ModelItem::CMP_VIDEOCONF => true,
@@ -44,7 +43,6 @@ class Item extends AbstractService
                 ModelItem::CMP_VIDEOCONF => true,
                 ModelItem::CMP_CHAT => true,
                 ModelItem::CMP_EQCQ => false,
-                ModelItem::CMP_ASSIGNMENT => false,
             ],
         ];
     
@@ -152,8 +150,6 @@ class Item extends AbstractService
     {
         $cmp = false;
         switch ($component) {
-            case ModelItem::CMP_ASSIGNMENT: 
-                break;
             case ModelItem::CMP_CHAT:
                 break;
             case ModelItem::CMP_DISCUSSION:

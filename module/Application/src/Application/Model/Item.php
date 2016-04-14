@@ -19,9 +19,9 @@ class Item extends BaseItem
     const TYPE_EQCQ = 'EQCQ';
     
     const CMP_VIDEOCONF = 'videoconf';
-    const CMP_ASSIGNMENT = 'assigment';
     const CMP_POLL = 'poll';
     const CMP_DOCUMENT = 'document';
+    const CMP_SUB_DOCUMENT = 'subdocument';
     const CMP_TEXT_EDITOR = 'text_editor';
     const CMP_CHAT = 'chat';
     const CMP_DISCUSSION = 'discussion';
