@@ -66,9 +66,14 @@ class Submission extends AbstractService
         if($res_submission->count() <= 0) {
             $this->create($item_id);
             $res_submission = $this->getMapper()->get($item_id, $me);
+            
+            
         }
-
-        return $res_submission;
+        
+        $m_submission = $res_submission->current();
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        
+        return $m_submission;
     }
     
     public function create($item_id)

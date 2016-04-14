@@ -30,36 +30,18 @@ class Submission extends AbstractMapper
     /**
      * @param integer $item_id
      * @param integer $user_id
+     * @param integer $me
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function get($item_id, $user_id)
     {
-        $sub = $this->tableGateway->getSql()->select();
-        $sub->columns(array('id'))
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'item_id'))
             ->join('submission_user', 'submission_user.submission_id=submission.id', array())
             ->where(array('submission.item_id' => $item_id))
             ->where(array('submission_user.user_id' => $user_id));
-        
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'item_id'))
-            ->join('submission_user', 'submission_user.submission_id=submission.id', 
-                array('submission_id', 'user_id', 'group_id', 'grade', 'started_date', 'finished_date'))
-                ->join('user', 'user.id=submission_user.user_id', ['user$id' => new Expression('user.id'),
-            'firstname',
-            'gender',
-            'lastname',
-            'email',
-            'has_email_notifier',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
-            'position',
-            'interest',
-            'avatar', 
-            'school_id',
-            'user$contact_state' => $this->getSelectContactState($user_id)
-        ])
-            ->where(array('submission.id' => $sub));
-    
+
         return $this->selectWith($select);
     }
     

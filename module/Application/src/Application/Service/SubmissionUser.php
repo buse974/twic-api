@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Symfony\Component\Console\Application;
 
 class SubmissionUser extends AbstractService
 {
@@ -14,5 +15,21 @@ class SubmissionUser extends AbstractService
         }
         
         return $ret;
+    }
+    
+    public function getListBySubmissionId($submission_id)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->getMapper()->getListBySubmissionId($submission_id, $me);
+    }
+    
+    /**
+     * 
+     * @return \Application\Service\User
+     */
+    public function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }
