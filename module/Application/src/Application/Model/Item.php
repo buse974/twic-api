@@ -44,19 +44,7 @@ class Item extends BaseItem
     protected $opt_grading; 
     protected $poll;
     protected $document;
-      
-      
-    public function getDocument() 
-    {
-        return $this->document;
-    }
-    
-    public function setDocument($document) 
-    {
-        $this->document = $document;
-        
-        return $this;
-    }
+    protected $videoconf;
       
     public function exchangeArray(array &$data)
     {
@@ -71,6 +59,30 @@ class Item extends BaseItem
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
     }
 
+    public function getDocument()
+    {
+        return $this->document;
+    }
+    
+    public function setDocument($document)
+    {
+        $this->document = $document;
+    
+        return $this;
+    }
+    
+    public function getVideoconf()
+    {
+        return $this->videoconf;
+    }
+    
+    public function setVideoconf($videoconf)
+    {
+        $this->videoconf = $videoconf;
+    
+        return $this;
+    }
+    
     public function getPoll()
     {
         return $this->poll;

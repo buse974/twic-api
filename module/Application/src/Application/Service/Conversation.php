@@ -27,7 +27,7 @@ class Conversation extends AbstractService
 
         return $this->getMapper()->getLastInsertValue();
     }
-
+    
     /**
      * Create conversation.
      *
@@ -69,7 +69,28 @@ class Conversation extends AbstractService
 
         return $conv;
     }
+    
+    /**
+     * @param integer $submission_id
+     * 
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListBySubmission($submission_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+    }
 
+    /**
+     * 
+     * @param integer $submission_id
+     * 
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListOrCreate($submission_id)
+    {
+        return $this->getServiceConversationUser()->getListConversationBySubmission($submission_id);
+    }
+    
     /**
      * Read Message(s).
      *

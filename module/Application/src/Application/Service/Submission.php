@@ -52,30 +52,6 @@ class Submission extends AbstractService
         $m_submission = $this->getMapper()->getByUserAndQuestionnaire($me, $questionnaire);
     }
     
-    /**
-     * @invokable
-     *
-     * @param integer $item_id
-     */
-    public function get($item_id)
-    {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        
-        $res_submission = $this->getMapper()->get($item_id, $me);
-        
-        if($res_submission->count() <= 0) {
-            $this->create($item_id);
-            $res_submission = $this->getMapper()->get($item_id, $me);
-            
-            
-        }
-        
-        $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
-        
-        return $m_submission;
-    }
-    
     public function create($item_id)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
@@ -100,13 +76,66 @@ class Submission extends AbstractService
     /**
      * @invokable
      * 
+     * @param integer $item_id
+     * @param integer $submission_id
+     * 
+     *  @return \Application\Model\Submission
+     */
+
+    public function get($item_id = null, $submission_id = null)
+    {
+        if($item_id !== null) {
+            return $this->getByItem($item_id);
+        } elseif ($submission_id !== null) {
+            return $this->getBySubmission($submission_id);
+        }
+    }
+    
+    /**
+     * 
+     * @param integer $id
+     * 
+     * @return \Application\Model\Submission
+     */
+    public function getBySubmission($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($submission_id))->current();
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $item_id
+     * 
+     * @return \Application\Model\Submission
+     */
+    public function getByItem($item_id)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+    
+        $res_submission = $this->getMapper()->get($item_id, $me);
+    
+        if($res_submission->count() <= 0) {
+            $this->create($item_id);
+            $res_submission = $this->getMapper()->get($item_id, $me);
+        }
+    
+        $m_submission = $res_submission->current();
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+    
+        return $m_submission;
+    }
+    
+    /**
+     * @invokable
+     * 
      * @param integer $submission_id
      */
     public function getContent($submission_id)
     {
         $ret = [];
         
-        $item_id = $this->getMapper()->select($this->getModel()->setId($submission_id))->current()->getItemId();
+        $item_id = $this->getBySubmission($submission_id)->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
            
@@ -116,6 +145,13 @@ class Submission extends AbstractService
         } else {
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         }
+        
+        if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
+            $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
+        } else {
+            $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
+        }
+        
         
         /*$ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->get($item_id);
    

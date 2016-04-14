@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Conversation as ModelConversation;
 
 class ConversationUser extends AbstractService
 {
@@ -12,7 +13,7 @@ class ConversationUser extends AbstractService
      * @param array $users
      * @param int   $type
      */
-    public function getConversationByUser(array $users, $type = null, $item = null)
+    public function getConversationByUser(array $users, $type = null)
     {
         $conversation = null;
         $identity = $this->getServiceUser()->getIdentity();
@@ -20,20 +21,39 @@ class ConversationUser extends AbstractService
             $users[] = $identity['id'];
         }
 
-        if(null !== $item && empty($users)) {
-            
-        }
-        
-        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type, $item);
+        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type);  
         if ($res_conversation_user->count() === 1) {
             $conversation = $res_conversation_user->current()->getConversationId();
         } elseif ($res_conversation_user->count() === 0) {
-            $conversation = $this->createConversation($users, null, $type, $item);
+            $conversation = $this->createConversation($users, null, $type);
         } elseif ($res_conversation_user->count() > 1) {
             throw new \Exception('more of one conversation');
         }
 
         return $conversation;
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id
+     */
+    public function getListConversationBySubmission($submission_id)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $res_conversation = $this->getServiceConversation()->getListBySubmission($submission_id);
+        if ($res_conversation_user->count() <= 0) {
+            $m_submission = $this->getServiceSubmission()->getByItem($item_id);
+            $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($m_submission->getItemId());
+            $users = [];
+            foreach ($res_user as $m_user) {
+                $users[] = $m_user->getId();
+            }
+            $this->createConversation($users, null, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id);
+            $res_conversation = $this->getServiceConversation()->getListBySubmission($submission_id);
+        }
+    
+        return $res_conversation;
     }
 
     /**
@@ -52,9 +72,9 @@ class ConversationUser extends AbstractService
      *
      * @return int
      */
-    public function createConversation($users, $videoconf = null, $type = null, $item = null)
+    public function createConversation($users = null, $videoconf = null, $type = null, $submission_id = null)
     {
-        $conversation_id = $this->getServiceConversation()->create($type, $item);
+        $conversation_id = $this->getServiceConversation()->create($type, $submission_id);
 
         $m_conversation_user = $this->getModel()->setConversationId($conversation_id);
         foreach ($users as $user) {
@@ -144,5 +164,13 @@ class ConversationUser extends AbstractService
     public function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
+    }
+    
+    /**
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 }
