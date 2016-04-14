@@ -112,7 +112,7 @@ class Submission extends AbstractService
            
         
         if(isset($type[ModelItem::CMP_TEXT_EDITOR]) && $type[ModelItem::CMP_TEXT_EDITOR] === true) {
-            $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getOrCreate($submission_id);
+            $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListOrCreate($submission_id);
         } else {
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         }
