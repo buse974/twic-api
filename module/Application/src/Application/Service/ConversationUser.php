@@ -42,7 +42,7 @@ class ConversationUser extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $res_conversation = $this->getServiceConversation()->getListBySubmission($submission_id);
-        if ($res_conversation_user->count() <= 0) {
+        if ($res_conversation->count() <= 0) {
             $m_submission = $this->getServiceSubmission()->getByItem($item_id);
             $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($m_submission->getItemId());
             $users = [];
