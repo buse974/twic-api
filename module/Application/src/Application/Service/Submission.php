@@ -134,12 +134,10 @@ class Submission extends AbstractService
     public function getContent($submission_id)
     {
         $ret = [];
-        
         $item_id = $this->getBySubmission($submission_id)->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
            
-        
         if(isset($type[ModelItem::CMP_TEXT_EDITOR]) && $type[ModelItem::CMP_TEXT_EDITOR] === true) {
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListOrCreate($submission_id);
         } else {
@@ -152,37 +150,24 @@ class Submission extends AbstractService
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
         }
         
+        $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         
-        /*$ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->get($item_id);
-   
-         $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
+        /*$ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_EQCQ] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_POLL] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceConversation()->get($item_id);*/
-        
-        
-        
-      /*  switch ($m_item->getType()) {
-            case ModelItem::TYPE_CHAT:
-            break;
-            case ModelItem::TYPE_WORKGROUP:
-            case ModelItem::TYPE_CAPSTONE_PROJECT:
-            case ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT:
-                $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getOrCreate($item_id);
-            break;
-        }*/
         
         return $ret;
     }
     
     /**
      * 
-     * @return \Application\Service\Document
+     * @return \Application\Service\Library
      */
-    public function getServiceDocument()
+    public function getServiceLibrary()
     {
-        return $this->getServiceLocator()->get('app_service_document');
+        return $this->getServiceLocator()->get('app_service_library');
     }
     
     /**

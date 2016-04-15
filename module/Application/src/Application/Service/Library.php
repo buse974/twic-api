@@ -117,6 +117,16 @@ class Library extends AbstractService
 	}
 	
 	/**
+	 * @invokable
+	 *
+	 * @param integer $submission_id
+	 */
+	public function getListBySubmission($submission_id)
+	{
+	    return $this->getMapper()->getListBySubmission($submission_id);
+	}
+	
+	/**
 	 * @param integer $item_id
 	 * @return \Application\Model\Library
 	 * 
@@ -136,16 +146,6 @@ class Library extends AbstractService
 	public function getListByCt($item)
 	{
 	    return $this->getMapper()->getListByCt($item);
-	}
-	
-	/**
-	 * @invokable
-	 *
-	 * @param integer $item
-	 */
-	public function getListBySubmission($item)
-	{
-	    return $this->getMapper()->getListBySubmission($item);     
 	}
 	
 	/**
