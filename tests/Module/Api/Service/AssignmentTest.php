@@ -260,14 +260,14 @@ class AssignmentTest extends AbstractService
         $this->assertEquals(count($data['result']['text_editor']) , 1);
         $this->assertEquals(count($data['result']['text_editor'][0]) , 5);
         $this->assertEquals($data['result']['text_editor'][0]['id'] , 1);
-        $this->assertEquals($data['result']['text_editor'][0]['name'] , null);
+        $this->assertEquals($data['result']['text_editor'][0]['name'] , 'Text Editor');
         $this->assertEquals($data['result']['text_editor'][0]['text'] , "");
         $this->assertEquals($data['result']['text_editor'][0]['submission_id'] , 1);
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['chat']) , 1);
         $this->assertEquals(count($data['result']['chat'][0]) , 5);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
-        $this->assertEquals($data['result']['chat'][0]['name'] , null);
+        $this->assertEquals($data['result']['chat'][0]['name'] , 'Chat');
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
