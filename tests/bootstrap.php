@@ -17,7 +17,7 @@ class bootstrap
             session_start();
         }
         
-        system('phing init-conf');
+        //system('phing init-conf');
         static::initAutoloader();
     }
 

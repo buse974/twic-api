@@ -14,7 +14,11 @@ class Item extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id'))
+        $select->columns(['id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id',
+            'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
+            'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
+            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
+        ])
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item.id' => $id));
@@ -25,7 +29,21 @@ class Item extends AbstractMapper
     public function getAllow($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'title', 'describe', 'duration', 'type', 'course_id', 'grading_policy_id', 'set_id', 'parent_id', 'order_id', 'start', 'end', 'cut_off'))
+        $select->columns([
+            'id', 
+            'title', 
+            'describe', 
+            'duration', 
+            'type', 
+            'course_id', 
+            'grading_policy_id',
+            'set_id', 
+            'parent_id', 
+            'order_id', 
+            'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
+            'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
+            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
+        ])
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->join('opt_grading', 'item.id=opt_grading.item_id', array('mode', 'has_pg', 'pg_nb', 'pg_auto', 'pg_due_date', 'pg_can_view', 'user_can_view', 'pg_stars'), $select::JOIN_LEFT)

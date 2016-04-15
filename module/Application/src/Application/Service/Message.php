@@ -2,7 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Conversation;
+use Application\Model\Conversation as ModelConversation;
 
 class Message extends AbstractService
 {
@@ -54,7 +54,7 @@ class Message extends AbstractService
                 if (! in_array($me, $tmp)) {
                     $tmp[] = $me;
                 }
-                $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, Conversation::TYPE_EMAIL);
+                $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, ModelConversation::TYPE_EMAIL);
             }
             
             // Applies the params to a new model
@@ -103,7 +103,7 @@ class Message extends AbstractService
      */
     public function sendVideoConf($text = null, $to = null, $conversation = null)
     {
-        return $this->_send($text, $to, $conversation, Conversation::TYPE_VIDEOCONF);
+        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_VIDEOCONF);
     }
 
     /**
@@ -121,7 +121,7 @@ class Message extends AbstractService
      */
     public function send($text = null, $to = null, $conversation = null)
     {
-        return $this->_send($text, $to, $conversation, Conversation::TYPE_CHAT);
+        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_CHAT);
     }
     
     /**
@@ -137,7 +137,7 @@ class Message extends AbstractService
      */
     public function sendAssignment($text = null, $to = null, $conversation = null, $item = null, $group = null)
     {
-        return $this->_send($text, $to, $conversation, Conversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item, $group);
+        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item, $group);
     }
     
     
