@@ -441,7 +441,7 @@ class Item extends AbstractService
             ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
             ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
             ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()))
-            ->setDocument($this->getServiceDocument()->getListByItem($m_item->getId()))
+            ->setDocument($this->getServiceLibrary()->getListByItem($m_item->getId()))
             ->setVideoconf($this->getServiceVideoconfOpt()->getByItem($m_item->getId()))
             ->setPoll($this->getServicePoll()->getByItem($m_item->getId()));
         
@@ -542,6 +542,15 @@ class Item extends AbstractService
         return $this->getServiceLocator()->get('app_service_user');
     }
 
+    /**
+     *
+     * @return \Application\Service\Library
+     */
+    public function getServiceLibrary()
+    {
+        return $this->getServiceLocator()->get('app_service_library');
+    }
+    
     /**
      *
      * @return \Application\Service\Document
