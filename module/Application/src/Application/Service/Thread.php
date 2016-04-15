@@ -133,6 +133,13 @@ class Thread extends AbstractService
         return $m_thread;
     }
 
+    public function getByItem($item_id)
+    {
+        $res_thread  = $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        
+        return ($res_thread->count() > 0) ? $res_thread->current():null;
+    }
+    
     /**
      * delete thread.
      *

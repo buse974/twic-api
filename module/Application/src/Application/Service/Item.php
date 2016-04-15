@@ -443,6 +443,7 @@ class Item extends AbstractService
             ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()))
             ->setDocument($this->getServiceLibrary()->getListByItem($m_item->getId()))
             ->setVideoconf($this->getServiceVideoconfOpt()->getByItem($m_item->getId()))
+            ->setThread($this->getServiceThread()->getByItem($m_item->getId()))
             ->setPoll($this->getServicePoll()->getByItem($m_item->getId()));
         
         return $m_item;
