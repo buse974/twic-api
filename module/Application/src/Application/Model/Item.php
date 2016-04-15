@@ -45,7 +45,8 @@ class Item extends BaseItem
     protected $poll;
     protected $document;
     protected $videoconf;
-      
+    protected $thread;
+       
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -59,6 +60,18 @@ class Item extends BaseItem
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
     }
 
+    public function getThread()
+    {
+        return $this->thread;
+    }
+    
+    public function setThread($thread)
+    {
+        $this->thread = $thread;
+    
+        return $this;
+    }
+    
     public function getDocument()
     {
         return $this->document;
