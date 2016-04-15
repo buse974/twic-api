@@ -175,12 +175,20 @@ class Library extends AbstractService
 	 * @invokable
 	 *
 	 * @param integer $id
+	 * @param integer $box_id
 	 */
-	public function getSession($id)
+	public function getSession($id = null, $box_id = null)
 	{
-	    $m_library = $this->getMapper()->select($this->getModel()->setId($id)->setOwnerId($this->getServiceUser()->getIdentity()['id']))->current();
+	    if(null === $id && null === $box_id) {
+	        return;
+	    }
 	    
-	    return $this->getServiceBox()->createSession($m_library->getBoxId());
+	    if(null !== $id) {
+	       $m_library = $this->getMapper()->select($this->getModel()->setId($id))->current();
+	       $box_id=$m_library->getBoxId();
+	    }
+	    
+	    return $this->getServiceBox()->createSession($box_id);
 	}
 	
 	/**
