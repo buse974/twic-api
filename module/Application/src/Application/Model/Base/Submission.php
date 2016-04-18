@@ -9,6 +9,8 @@ class Submission extends AbstractModel
  	protected $id;
 	protected $item_id;
 	protected $published_date;
+	protected $group_name;
+	protected $submit_date;
 
 	protected $prefix = 'submission';
 
@@ -44,6 +46,30 @@ class Submission extends AbstractModel
 	public function setPublishedDate($published_date)
 	{
 		$this->published_date = $published_date;
+
+		return $this;
+	}
+
+	public function getGroupName()
+	{
+		return $this->group_name;
+	}
+
+	public function setGroupName($group_name)
+	{
+		$this->group_name = $group_name;
+
+		return $this;
+	}
+
+	public function getSubmitDate()
+	{
+		return $this->submit_date;
+	}
+
+	public function setSubmitDate($submit_date)
+	{
+		$this->submit_date = $submit_date;
 
 		return $this;
 	}

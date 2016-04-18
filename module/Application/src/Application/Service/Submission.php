@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Item as ModelItem;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Submission extends AbstractService
 {
@@ -160,6 +161,66 @@ class Submission extends AbstractService
         
         return $ret;
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $submission_id
+     * @param integer $item_id
+     * @return void|boolean
+     */
+    public function submit($submission_id = null, $item_id = null) 
+    {
+        if($submission_id === null && $item_id === null) {
+            return;
+        }
+        
+        return ($submission_id !== null) ?
+            $this->submitBySubmission($submission_id) :
+            $this->submitByItem($item_id);
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $submission_id
+     * @return boolean
+     */
+    public function submitBySubmission($submission_id) 
+    {
+        $ret = true;
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $submit = 1;
+        
+        $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id);
+        foreach ($res_submission_user as $m_submission_user) {
+            if($m_submission_user->getUserId() === $me) {
+                $ret = $this->getServiceSubmissionUser()->submit($submission_id, $me);
+            } else {
+                $submit&=($m_submission_user->getSubmitDate()!==null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
+            }
+        }
+        if($submit===1) {
+            $m_submission = $this->getModel()
+                ->setSubmitDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+                ->setId($submission_id);
+            $this->getMapper()->update($m_submission);
+        }
+        
+        return $ret;
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $item_id
+     * @return boolean
+     */
+    public function submitByItem($item_id)
+    {
+        return $this->submitBySubmission($this->getByItem($item_id)->getId());
+    }
+    
     
     /**
      * 
