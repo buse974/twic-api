@@ -5,6 +5,7 @@ namespace Box\Service;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Http\Response;
+use JRpc\Json\Server\Exception\JrpcException;
 
 abstract class AbstractApi implements ServiceManagerAwareInterface
 {
@@ -69,7 +70,7 @@ abstract class AbstractApi implements ServiceManagerAwareInterface
                         $resp->getStatusCode()
 				);
 			} else {
-				throw new \Exception(
+				throw new JrpcException(
 						$resp->getBody(),
 						$resp->getStatusCode()
 				);
