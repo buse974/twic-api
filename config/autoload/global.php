@@ -112,6 +112,7 @@ return [
             'app_service_ct_group',
             'app_service_submission',
             'app_service_text_editor',
+            'app_service_videoconf_opt',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

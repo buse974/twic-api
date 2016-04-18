@@ -553,7 +553,12 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('item.get', array('id' => $id));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 20);
+        $this->assertEquals(count($data['result']) , 21);
+        $this->assertEquals(count($data['result']['videoconf']) , 4);
+        $this->assertEquals($data['result']['videoconf']['item_id'] , 2);
+        $this->assertEquals($data['result']['videoconf']['record'] , 1);
+        $this->assertEquals($data['result']['videoconf']['nb_user_autorecord'] , 2);
+        $this->assertEquals($data['result']['videoconf']['allow_intructor'] , 1);
         $this->assertEquals(count($data['result']['program']) , 2);
         $this->assertEquals($data['result']['program']['id'] , 1);
         $this->assertEquals($data['result']['program']['name'] , "program name upd");

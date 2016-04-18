@@ -9,16 +9,16 @@ class CtDate extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $item            
+     * @param integer $item_id            
      * @param string $date            
      * @param string $after            
      *
      * @return integer
      */
-    public function add($item, $date, $after = true)
+    public function add($item_id, $date, $after = true)
     {
         $m_ct_date = $this->getModel()
-            ->setItemId($item)
+            ->setItemId($item_id)
             ->setDate($date)
             ->setAfter($after);
         $this->getMapper()->insert($m_ct_date);

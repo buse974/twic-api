@@ -9,18 +9,18 @@ class CtRate extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $item            
-     * @param integer $target            
+     * @param integer $item_id            
+     * @param integer $target_id           
      * @param string $inf            
      * @param string $sup            
      *
      * @return integer
      */
-    public function add($item, $target, $inf = null, $sup = null)
+    public function add($item_id, $target_id, $inf = null, $sup = null)
     {
         $m_ct_rate = $this->getModel()
-            ->setItemId($item)
-            ->setTargetId($target)
+            ->setItemId($item_id)
+            ->setTargetId($target_id)
             ->setInf($inf)
             ->setSup($sup);
         $this->getMapper()->insert($m_ct_rate);
@@ -32,16 +32,16 @@ class CtRate extends AbstractService
      * @invokable
      *
      * @param integer $id    
-     * @param integer $target
+     * @param integer $target_id
      * @param string $inf
      * @param string $sup
      * @return integer
      */
-    public function update($id, $target = null, $inf = null, $sup = null)
+    public function update($id, $target_id = null, $inf = null, $sup = null)
     {
         $m_ct_rate = $this->getModel()
             ->setId($id)
-            ->setTargetId($target)
+            ->setTargetId($target_id)
             ->setInf($inf)
             ->setSup($sup);
         

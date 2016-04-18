@@ -1111,3 +1111,10 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('texteditor.update');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'texteditor.update'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconfopt.update');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'videoconfopt.update'));
+
+
+

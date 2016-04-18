@@ -117,7 +117,6 @@ class Item extends AbstractService
                 }
             }
         }
-        
         // OPTION GRADING
         if(null !== $opt) {
             if(isset($opt['grading'])) {
@@ -135,8 +134,8 @@ class Item extends AbstractService
         
         // COMPONENT
         foreach ($tconf as $component => $v) {
-            if($component === true) {
-                $this->factorieComponent($component, $data[$component], $item_id);
+            if($v === true) {
+                $this->factorieComponent($component, ((isset($data[$component]))?$data[$component]:[]), $item_id);
             } elseif(isset($data[$component]) && $data[$component] !== false) {
                 $this->factorieComponent($component, $data[$component], $item_id);
             }
