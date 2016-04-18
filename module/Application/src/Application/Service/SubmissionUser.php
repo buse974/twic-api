@@ -25,6 +25,18 @@ class SubmissionUser extends AbstractService
     }
     
     /**
+     * @param integer $submission_id
+     * @param integer $user_id
+     * @return integer
+     */
+    public function submit($submission_id, $user_id)
+    {
+        $m_submission_user = $this->getModel()->setSubmitDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
+        return $this->getMapper()->update($m_submission_user, ['user_id' => $user_id, 'submission_id' => $submission_id]);
+    }
+    
+    /**
      * 
      * @return \Application\Service\User
      */

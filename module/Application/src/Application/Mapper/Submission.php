@@ -37,7 +37,7 @@ class Submission extends AbstractMapper
     public function get($item_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'item_id'))
+        $select->columns(array('id', 'item_id', 'submit_date'))
             ->join('submission_user', 'submission_user.submission_id=submission.id', array())
             ->where(array('submission.item_id' => $item_id))
             ->where(array('submission_user.user_id' => $user_id));

@@ -163,9 +163,9 @@ class AssignmentTest extends AbstractService
         ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['submission_user']) , 3);
-        $this->assertEquals(count($data['result']['submission_user'][0]) , 7);
+        $this->assertEquals(count($data['result']['submission_user'][0]) , 8);
         $this->assertEquals(count($data['result']['submission_user'][0]['user']) , 12);
         $this->assertEquals($data['result']['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['contact_state'] , 0);
@@ -185,7 +185,8 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][0]['grade'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['started_date'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['finished_date'] , null);
-        $this->assertEquals(count($data['result']['submission_user'][1]) , 7);
+        $this->assertEquals($data['result']['submission_user'][0]['submit_date'] , null);
+        $this->assertEquals(count($data['result']['submission_user'][1]) , 8);
         $this->assertEquals(count($data['result']['submission_user'][1]['user']) , 12);
         $this->assertEquals($data['result']['submission_user'][1]['user']['gender'] , null);
         $this->assertEquals($data['result']['submission_user'][1]['user']['contact_state'] , 0);
@@ -205,7 +206,8 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][1]['grade'] , null);
         $this->assertEquals($data['result']['submission_user'][1]['started_date'] , null);
         $this->assertEquals($data['result']['submission_user'][1]['finished_date'] , null);
-        $this->assertEquals(count($data['result']['submission_user'][2]) , 7);
+        $this->assertEquals($data['result']['submission_user'][1]['submit_date'] , null);
+        $this->assertEquals(count($data['result']['submission_user'][2]) , 8);
         $this->assertEquals(count($data['result']['submission_user'][2]['user']) , 12);
         $this->assertEquals($data['result']['submission_user'][2]['user']['gender'] , null);
         $this->assertEquals($data['result']['submission_user'][2]['user']['contact_state'] , 0);
@@ -225,8 +227,10 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][2]['grade'] , null);
         $this->assertEquals($data['result']['submission_user'][2]['started_date'] , null);
         $this->assertEquals($data['result']['submission_user'][2]['finished_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['submit_date'] , null);
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['item_id'] , 1);
+        $this->assertEquals($data['result']['submit_date'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
@@ -289,6 +293,117 @@ class AssignmentTest extends AbstractService
         
     }
     
+    /**
+     * @depends testAddItem
+     */
+    public function testCanSubmit($item_id)
+    {
+        $this->setIdentity(1);
+        $this->jsonRpc('submission.submit', [
+            'item_id' => $item_id
+        ]);
+        $this->reset();
+        
+        $this->setIdentity(3);
+        $this->jsonRpc('submission.submit', [
+            'item_id' => $item_id
+        ]);
+        $this->reset();
+        
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('submission.submit', [
+            'item_id' => $item_id
+        ]);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testAddItem
+     */
+    public function testCanGetSubmissionAfterSubmit($item_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('submission.get', [
+            'item_id' => $item_id
+        ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 4);
+        $this->assertEquals(count($data['result']['submission_user']) , 3);
+        $this->assertEquals(count($data['result']['submission_user'][0]) , 8);
+        $this->assertEquals(count($data['result']['submission_user'][0]['user']) , 12);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['gender'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['submission_user'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
+        $this->assertEquals($data['result']['submission_user'][0]['user']['birth_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['position'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 2);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['interest'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['has_email_notifier'] , 1);
+        $this->assertEquals($data['result']['submission_user'][0]['submission_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][0]['user_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][0]['group_id'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['grade'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['started_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][0]['finished_date'] , null);
+        $this->assertEquals(!empty($data['result']['submission_user'][0]['submit_date']) , true);
+        $this->assertEquals(count($data['result']['submission_user'][1]) , 8);
+        $this->assertEquals(count($data['result']['submission_user'][1]['user']) , 12);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['gender'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['id'] , 3);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['firstname'] , "Christophe");
+        $this->assertEquals($data['result']['submission_user'][1]['user']['lastname'] , "Robert");
+        $this->assertEquals($data['result']['submission_user'][1]['user']['email'] , "crobert@thestudnet.com");
+        $this->assertEquals($data['result']['submission_user'][1]['user']['birth_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['position'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['school_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['interest'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['has_email_notifier'] , 1);
+        $this->assertEquals($data['result']['submission_user'][1]['submission_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][1]['user_id'] , 3);
+        $this->assertEquals($data['result']['submission_user'][1]['group_id'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['grade'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['started_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['finished_date'] , null);
+        $this->assertEquals(!empty($data['result']['submission_user'][1]['submit_date']) , true);
+        $this->assertEquals(count($data['result']['submission_user'][2]) , 8);
+        $this->assertEquals(count($data['result']['submission_user'][2]['user']) , 12);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['gender'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['id'] , 4);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['firstname'] , "Salim");
+        $this->assertEquals($data['result']['submission_user'][2]['user']['lastname'] , "Bendacha");
+        $this->assertEquals($data['result']['submission_user'][2]['user']['email'] , "sbendacha@thestudnet.com");
+        $this->assertEquals($data['result']['submission_user'][2]['user']['birth_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['position'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['school_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['interest'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['user']['has_email_notifier'] , 1);
+        $this->assertEquals($data['result']['submission_user'][2]['submission_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][2]['user_id'] , 4);
+        $this->assertEquals($data['result']['submission_user'][2]['group_id'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['grade'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['started_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][2]['finished_date'] , null);
+        $this->assertEquals(!empty($data['result']['submission_user'][2]['submit_date']) , true);
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['item_id'] , 1);
+        $this->assertEquals(!empty($data['result']['submit_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+    }
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
