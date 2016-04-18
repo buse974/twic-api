@@ -5,6 +5,7 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Dal\Db\Sql\Select;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class SubmissionUser extends AbstractMapper
 {
@@ -36,7 +37,7 @@ class SubmissionUser extends AbstractMapper
     
             return $this->selectWith($select);
     }
-    
+
     /**
      * @param integer $user
      * @return \Zend\Db\Sql\Select
