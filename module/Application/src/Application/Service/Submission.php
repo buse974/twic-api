@@ -247,17 +247,13 @@ class Submission extends AbstractService
      */
     public function cancelsubmitBySubmission($submission_id)
     {
-        $ret = true;
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $submit = 1;
-    
-        $m_submission = $this->get(null,$submission_id);
         
+        $m_submission = $this->get(null,$submission_id);
         if(!($m_submission->getSubmitDate()=== null || $m_submission->getSubmitDate() instanceof IsNull)) {
             return;
         }
         
-        return $this->getServiceSubmissionUser()->cancelsubmit($submission_id, $me);
+        return $this->getServiceSubmissionUser()->cancelsubmit($submission_id, $this->getServiceUser()->getIdentity()['id']);
     }
     
     /**

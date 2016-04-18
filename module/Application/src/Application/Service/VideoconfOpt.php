@@ -26,6 +26,26 @@ class VideoconfOpt extends AbstractService
         return $this->getMapper()->insert($m_opt_videoconf);
     }
     
+    /**
+     * @invokable
+     *
+     * @param integer $item_id
+     * @param bool $record
+     * @param integer $nb_user_autorecord
+     * @param bool $allow_intructor
+     *
+     * @return integer
+     */
+    public function update($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
+    {
+        $m_opt_videoconf = $this->getModel()
+            ->setRecord($record)
+            ->setNbUserAutorecord($nb_user_autorecord)
+            ->setAllowIntructor($allow_intructor);
+    
+        return $this->getMapper()->update($m_opt_videoconf, ['item_id' => $item_id]);
+    }
+    
     public function getByItem($item_id)
     {
         $m_opt_videoconf = $this->getModel()->setItemId($item_id);

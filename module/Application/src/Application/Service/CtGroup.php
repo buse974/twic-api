@@ -9,16 +9,16 @@ class CtGroup extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $item            
+     * @param integer $item_id            
      * @param integer $group            
      * @param bool $belongs            
      *
      * @return integer
      */
-    public function add($item, $group, $belongs = true)
+    public function add($item_id, $group, $belongs = true)
     {
         $m_ct_group = $this->getModel()
-            ->setItemId($item)
+            ->setItemId($item_id)
             ->setGroupId($group)
             ->setBelongs($belongs);
         $this->getMapper()->insert($m_ct_group);
