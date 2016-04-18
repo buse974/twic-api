@@ -221,6 +221,55 @@ class Submission extends AbstractService
         return $this->submitBySubmission($this->getByItem($item_id)->getId());
     }
     
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id
+     * @param integer $item_id
+     * @return void|boolean
+     */
+    public function cancelsubmit($submission_id = null, $item_id = null)
+    {
+        if($submission_id === null && $item_id === null) {
+            return;
+        }
+    
+        return ($submission_id !== null) ?
+        $this->cancelsubmitBySubmission($submission_id) :
+        $this->cancelsubmitByItem($item_id);
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id
+     * @return boolean
+     */
+    public function cancelsubmitBySubmission($submission_id)
+    {
+        $ret = true;
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $submit = 1;
+    
+        $m_submission = $this->get(null,$submission_id);
+        
+        if(!($m_submission->getSubmitDate()=== null || $m_submission->getSubmitDate() instanceof IsNull)) {
+            return;
+        }
+        
+        return $this->getServiceSubmissionUser()->cancelsubmit($submission_id, $me);
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $item_id
+     * @return boolean
+     */
+    public function cancelsubmitByItem($item_id)
+    {
+        return $this->cancelsubmitBySubmission($this->getByItem($item_id)->getId());
+    }
     
     /**
      * 

@@ -1092,6 +1092,18 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.submitByItem');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'submission.submitByItem'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.cancelsubmit');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'submission.cancelsubmit'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.cancelsubmitByItem');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'submission.cancelsubmitByItem'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.cancelsubmitBySubmission');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'submission.cancelsubmitBySubmission'));
+
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('texteditor.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'texteditor.add'));
