@@ -80,7 +80,7 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('document.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
-(SELECT `id` FROM `permission` WHERE `libelle`= 'document.update'));
+(SELECT `id` FROM `permission` WHERE `libelle`= 'document.add'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('grading.getByProgram');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
