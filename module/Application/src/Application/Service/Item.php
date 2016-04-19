@@ -204,6 +204,7 @@ class Item extends AbstractService
         } else {
             $course = isset($data['course']) ? $data['course'] : null;
             $describe = isset($data['describe']) ? $data['describe'] : null;
+            $title = isset($data['title']) ? $data['title'] : null;
             return $this->getServiceThread()->add(null, $course, $describe, $item_id);
         }
     }
