@@ -7,7 +7,7 @@ use Dal\Mapper\AbstractMapper;
 
 class ThreadMessage extends AbstractMapper
 {
-    public function getList($thread = null, $thread_message = null)
+    public function getList($thread = null, $thread_message = null, $parent_id = null)
     {
         if (null === $thread && null === $thread_message) {
             throw new \Exception('error params');
@@ -31,6 +31,10 @@ class ThreadMessage extends AbstractMapper
 
         if (null !== $thread_message) {
             $select->where(array('thread_message.id' => $thread_message));
+        }
+        
+        if (null !== $parent_id) {
+            $select->where(array('thread_message.parent_id' => $parent_id));
         }
 
         return $this->selectWith($select);

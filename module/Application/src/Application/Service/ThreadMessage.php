@@ -88,14 +88,15 @@ class ThreadMessage extends AbstractService
      *
      * @invokable
      *
-     * @param int    $thread
+     * @param integer $thread
+     * @param integer $parent_id
      * @param string $filter
      */
-    public function getList($thread, $filter = null)
+    public function getList($thread, $parent_id = null, $filter = null)
     {
         $mapper = $this->getMapper();
 
-        $res_thread_message = $mapper->usePaginator($filter)->getList($thread);
+        $res_thread_message = $mapper->usePaginator($filter)->getList($thread, null, $parent_id);
 
         foreach ($res_thread_message as $m_thread_message) {
             $roles = [];

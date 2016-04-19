@@ -30,6 +30,11 @@ class Document extends AbstractService
             $item_id = null;
         }
         
+        if(null !== $item_id) {
+            $this->getMapper()->delete($this->getModel()->setItemId($item_id));
+        }
+        
+        
         $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type, $folder_id)->getId();
         $m_document = $this->getModel()
             ->setItemId($item_id)
