@@ -71,7 +71,6 @@ class Item extends AbstractService
         if(!isset($this->conf[$type])) {
             return;
         }
-        $tconf = $this->conf[$type];
         
         $m_item = $this->getModel()
             ->setCourseId($course)
@@ -133,7 +132,14 @@ class Item extends AbstractService
             }
         }
         
-        // COMPONENT
+        $this->initCmp($type, $data, $item_id);
+        
+        return $item_id;
+    }
+
+    private function initCmp($type, $data, $item_id)
+    {
+        $tconf = $this->conf[$type];
         foreach ($tconf as $component => $v) {
             if($v === true) {
                 $this->factorieComponent($component, ((isset($data[$component]))?$data[$component]:[]), $item_id);
@@ -141,10 +147,7 @@ class Item extends AbstractService
                 $this->factorieComponent($component, $data[$component], $item_id);
             }
         }
-        
-        return $item_id;
     }
-
     private function factorieComponent($component, $data, $item_id) 
     {
         $cmp = false;
@@ -191,6 +194,10 @@ class Item extends AbstractService
     
     public function addCmpThread($data, $item_id)
     {
+        if(empty($data)) {
+            return;
+        }
+        
         if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
             return $this->getServiceThread()->update($thread_id,null,$item_id);
         } else {
@@ -202,6 +209,10 @@ class Item extends AbstractService
     
     public function addCmpDocument($data, $item_id)
     {
+        if(empty($data)) {
+            return;
+        }
+        
         $name = isset($data['name']) ? $data['name'] : null;
         $type  = isset($data['type']) ? $data['type'] : null;
         $link = isset($data['link']) ? $data['link'] : null;
@@ -256,7 +267,13 @@ class Item extends AbstractService
          	$this->updateOrderId($id, $parent_id, $order_id);
          }
 
-        return $this->getMapper()->update($m_item);
+         if(null !== $data) {
+             if(null === $type) {
+                 $type = $this->get($id)->getType();
+             }
+             $this->initCmp($type, $data, $id);
+         }
+         return $this->getMapper()->update($m_item);
     }
 
     /**
