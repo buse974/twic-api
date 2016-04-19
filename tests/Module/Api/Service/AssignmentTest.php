@@ -277,7 +277,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
         $this->assertEquals(count($data['result']['document']) , 1);
         $this->assertEquals(count($data['result']['document'][0]) , 11);
-        $this->assertEquals($data['result']['document'][0]['id'] , 2);
+        $this->assertEquals($data['result']['document'][0]['id'] , 3);
         $this->assertEquals($data['result']['document'][0]['name'] , "monfile");
         $this->assertEquals($data['result']['document'][0]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
         $this->assertEquals($data['result']['document'][0]['token'] , null);
@@ -290,7 +290,22 @@ class AssignmentTest extends AbstractService
         $this->assertEquals(!empty($data['result']['document'][0]['box_id']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanGetSubmission
+     */
+    public function testCanAddTextEditor($submission_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('texteditor.add', ['name' => 'monfile','text' => 'text','submission_id' => $submission_id]);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 2);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
         
+        return $data['result'];
     }
     
     /**

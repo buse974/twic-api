@@ -15,12 +15,13 @@ class Document extends AbstractService
      * @param string $token
      * @param string $item_id
      * @param integer $submission_id
+     * @param integer $folder_id
      * 
      * @throws \Exception
      * 
      * @return integer
      */
-    public function add($name = null, $type = null, $link = null, $token = null, $item_id = null, $submission_id = null)
+    public function add($name = null, $type = null, $link = null, $token = null, $item_id = null, $submission_id = null, $folder_id = null)
     {
         if(null === $link && null === $token && null === $name) {
             return 0;
@@ -29,7 +30,7 @@ class Document extends AbstractService
             $item_id = null;
         }
         
-        $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type)->getId();
+        $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type, $folder_id)->getId();
         $m_document = $this->getModel()
             ->setItemId($item_id)
             ->setSubmissionId($submission_id)

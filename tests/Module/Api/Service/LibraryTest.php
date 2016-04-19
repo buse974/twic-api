@@ -23,7 +23,7 @@ class LibraryTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 11);
-        $this->assertEquals($data['result']['id'] , 2);
+        $this->assertEquals($data['result']['id'] , 3);
         $this->assertEquals($data['result']['name'] , "monfile");
         $this->assertEquals($data['result']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
         $this->assertEquals($data['result']['token'] , null);
@@ -52,7 +52,7 @@ class LibraryTest extends AbstractService
 
     	$this->assertEquals(count($data) , 3);
     	$this->assertEquals(count($data['result']) , 11);
-    	$this->assertEquals($data['result']['id'] , 2);
+    	$this->assertEquals($data['result']['id'] , 3);
     	$this->assertEquals($data['result']['name'] , "monfileupt");
     	$this->assertEquals($data['result']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
     	$this->assertEquals($data['result']['token'] , null);
@@ -80,7 +80,7 @@ class LibraryTest extends AbstractService
     	$this->assertEquals(count($data['result']) , 1);
     	$this->assertEquals(count($data['result']['documents']) , 2);
     	$this->assertEquals(count($data['result']['documents'][0]) , 11);
-    	$this->assertEquals($data['result']['documents'][0]['id'] , 1);
+    	$this->assertEquals($data['result']['documents'][0]['id'] , 2);
     	$this->assertEquals($data['result']['documents'][0]['name'] , "toto");
     	$this->assertEquals($data['result']['documents'][0]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
     	$this->assertEquals($data['result']['documents'][0]['token'] , null);
@@ -92,7 +92,7 @@ class LibraryTest extends AbstractService
     	$this->assertEquals($data['result']['documents'][0]['owner_id'] , 1);
     	$this->assertEquals($data['result']['documents'][0]['box_id'] , "66bbb5cb2ef149f7989f33d8513cc058");
     	$this->assertEquals(count($data['result']['documents'][1]) , 11);
-    	$this->assertEquals($data['result']['documents'][1]['id'] , 2);
+    	$this->assertEquals($data['result']['documents'][1]['id'] , 3);
     	$this->assertEquals($data['result']['documents'][1]['name'] , "monfileupt");
     	$this->assertEquals($data['result']['documents'][1]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
     	$this->assertEquals($data['result']['documents'][1]['token'] , null);
@@ -135,7 +135,7 @@ class LibraryTest extends AbstractService
         $this->setIdentity(1);
     
         $data = $this->jsonRpc('library.getSession', [
-            'id' => 1
+            'id' => 2
         ]);
     
         $this->assertEquals(count($data) , 3);
@@ -166,7 +166,7 @@ class LibraryTest extends AbstractService
     	$this->reset();
     	
     	$this->setIdentity(1);
-    	$data = $this->jsonRpc('library.delete', array('id' => 1));
+    	$data = $this->jsonRpc('library.delete', array('id' => 2));
     	 
     	$this->assertEquals(count($data) , 3);
     	$this->assertEquals($data['result'] , 1);
