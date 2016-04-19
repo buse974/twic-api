@@ -14,7 +14,7 @@ class Item extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id',
+        $select->columns(['id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
@@ -40,6 +40,7 @@ class Item extends AbstractMapper
             'set_id', 
             'parent_id', 
             'order_id', 
+            'has_submission',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
@@ -136,17 +137,6 @@ class Item extends AbstractMapper
         if ($is_student !== false) {
             $select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)->where(array('item_prog_user.user_id' => $user));
         }
-
-        return $this->selectWith($select);
-    }
-
-    public function getByItemProg($item_prog)
-    {
-        $select = $this->tableGateway->getSql()->select();
-
-        $select->columns(array('id', 'title', 'type'))
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
-            ->where(array('item_prog.id' => $item_prog));
 
         return $this->selectWith($select);
     }

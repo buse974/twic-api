@@ -16,6 +16,7 @@ class Item extends AbstractModel
 	protected $set_id;
 	protected $parent_id;
 	protected $order_id;
+	protected $has_submission;
 	protected $start;
 	protected $end;
 	protected $cut_off;
@@ -138,6 +139,18 @@ class Item extends AbstractModel
 	public function setOrderId($order_id)
 	{
 		$this->order_id = $order_id;
+
+		return $this;
+	}
+
+	public function getHasSubmission()
+	{
+		return $this->has_submission;
+	}
+
+	public function setHasSubmission($has_submission)
+	{
+		$this->has_submission = $has_submission;
 
 		return $this;
 	}
