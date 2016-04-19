@@ -66,7 +66,7 @@ class Item extends AbstractService
      * @param integer $parent_id
      * @param integer $order_id
      */
-    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set_id = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
+    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
         if(!isset($this->conf[$type])) {
             return;
@@ -83,6 +83,7 @@ class Item extends AbstractService
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setSetId($set_id)
+            ->setHasSubmission($has_submission)
             ->setParentId(($parent_id === 0) ? null : $parent_id);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
@@ -248,7 +249,7 @@ class Item extends AbstractService
      * @param integer $parent_id
      * @param integer $order_id
      */
-    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $set_id = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
+    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -261,6 +262,7 @@ class Item extends AbstractService
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setType($type)
+            ->setHasSubmission($has_submission)
             ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
         
          if ($order_id !== null || $parent_id !== null ) {
