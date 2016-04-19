@@ -5,6 +5,7 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use \Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
+use Application\Model\Library as ModelLibrary;
 
 class Item extends AbstractService
 {
@@ -181,20 +182,22 @@ class Item extends AbstractService
     
     public function addCmpVideoconf($data, $item_id)
     {
-         $record = isset($data['record']) ? $data['record'] : null;
-         $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
-         $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
-         
-         return $this->getServiceVideoconfOpt()->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
+        $record = isset($data['record']) ? $data['record'] : null;
+        $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
+        $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
+        
+        return $this->getServiceVideoconfOpt()->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
     }
     
     public function addCmpThread($data, $item_id)
     {
-         if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
+        if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
             return $this->getServiceThread()->update($thread_id,null,$item_id);
-         } else {
+        } else {
+            $course = isset($data['course']) ? $data['course'] : null;
+            $describe = isset($data['describe']) ? $data['describe'] : null;
             return $this->getServiceThread()->add(null, $course, $describe, $item_id);
-         }
+        }
     }
     
     public function addCmpDocument($data, $item_id)
@@ -204,7 +207,7 @@ class Item extends AbstractService
         $link = isset($data['link']) ? $data['link'] : null;
         $token = isset($data['token']) ? $data['token'] : null;
         
-        return $this->getServiceDocument()->add($name,$type,$link,$token,$item_id);
+        return $this->getServiceDocument()->add($name,$type,$link,$token,$item_id, null, ModelLibrary::FOLDER_OTHER_INT);
     }
     
     /**

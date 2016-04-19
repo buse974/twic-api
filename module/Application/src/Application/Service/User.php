@@ -214,6 +214,7 @@ class User extends AbstractService
         if(null === $user) {
             $user= $this->getIdentity()['id'];
         }
+        
         return $this->getMapper()->getListUsersGroupByItemAndUser($item_id, $user);
     }
     

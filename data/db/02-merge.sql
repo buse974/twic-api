@@ -6,6 +6,8 @@ INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Séba
 INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Guillaume', 'Masmejean', 'gmasmejean@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
 INSERT INTO `user` (`firstname`, `lastname`, `email`, `password`) VALUES ('Arthur', 'Flachs', 'aflachs@thestudnet.com', '4ac91ac4cb1614b368e3dff3ac718f1d');
 
+INSERT INTO `library` (`id`, `name`) VALUES ('1', 'other');
+
 INSERT INTO `language_level` (`level`) VALUES ('Elementary proficiency');
 INSERT INTO `language_level` (`level`) VALUES ('Limited working proficiency');
 INSERT INTO `language_level` (`level`) VALUES ('Professional working proficiency');

@@ -57,6 +57,17 @@ class TextEditor extends AbstractService
 
     /**
      * @invokable
+     *
+     * @param integer $id
+     * @return integer
+     */
+    public function delete($id)
+    {
+        return $this->getMapper()->delete($this->getModel()->setId($id));
+    }
+    
+    /**
+     * @invokable
      * 
      * @param integer $id
      * @param integer $submission_id
