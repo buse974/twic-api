@@ -100,7 +100,7 @@ class Submission extends AbstractService
      */
     public function getBySubmission($id)
     {
-        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+        return $this->getByItem($this->getMapper()->select($this->getModel()->setId($id))->current()->getItemId()); ;
     }
     
     /**
