@@ -119,9 +119,9 @@ class Message extends AbstractService
      *
      * @return int
      */
-    public function send($text = null, $to = null, $conversation = null)
+    public function send($text = null, $to = null, $conversation = null, $type = ModelConversation::TYPE_CHAT)
     {
-        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_CHAT);
+        return $this->_send($text, $to, $conversation, $type);
     }
     
     /**
