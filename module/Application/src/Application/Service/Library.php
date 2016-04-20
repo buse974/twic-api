@@ -113,7 +113,7 @@ class Library extends AbstractService
 	 */
 	public function getListByItem($item)
 	{
-	    return $this->getMapper()->getListByItem($item);
+	    return $this->getMapper()->getListByParentItem($item);
 	}
 	
 	/**
