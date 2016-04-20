@@ -8,6 +8,10 @@ class PollItem extends AbstractService
 {
     public function add($poll_id, $data = [])
     {
+        if(empty($data)) {
+            return;
+        }
+        
         $ret = [];
         foreach ($data as $d) {
             $nb_point = (isset($d['nb_point']))?$d['nb_point']:null;
