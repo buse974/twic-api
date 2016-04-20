@@ -7,6 +7,20 @@ use Dal\Service\AbstractService;
 class VideoconfOpt extends AbstractService
 {
     /**
+     * 
+     * @param integer $item_id
+     * @param bool $record
+     * @param integer $nb_user_autorecord
+     * @param bool $allow_intructor
+     */
+    public function addOrUpdate($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
+    {
+        return (null !== $this->getByItem($item_id)) ?
+            $this->update($item_id, $record, $nb_user_autorecord, $allow_intructor):
+            $this->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
+    }
+    
+    /**
      *
      * @param integer $item_id
      * @param bool $record
@@ -15,7 +29,7 @@ class VideoconfOpt extends AbstractService
      *
      * @return integer
      */
-    public function add($item_id, $record, $nb_user_autorecord, $allow_intructor)
+    public function add($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
     {
         $m_opt_videoconf = $this->getModel()
             ->setItemId($item_id)
@@ -38,6 +52,10 @@ class VideoconfOpt extends AbstractService
      */
     public function update($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
     {
+        if(null === $record && null === $nb_user_autorecord && null === $allow_intructor) {
+            return 0;
+        }
+        
         $m_opt_videoconf = $this->getModel()
             ->setRecord($record)
             ->setNbUserAutorecord($nb_user_autorecord)

@@ -190,7 +190,7 @@ class Item extends AbstractService
         $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
         $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
         
-        return $this->getServiceVideoconfOpt()->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
+        return $this->getServiceVideoconfOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor);
     }
     
     public function addCmpThread($data, $item_id)
