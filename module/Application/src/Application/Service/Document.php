@@ -69,11 +69,20 @@ class Document extends AbstractService
      * @invokable
      * 
      * @param integer $id
-     * @return integer
+     * @param integer $submission_id
+     * @param integer $library_id
+     * @return boolean
      */
-    public function delete($id) 
+    public function delete($id = null, $submission_id = null, $library_id = null) 
     {
-        return $this->getMapper()->delete($this->getModel()->setId($id));   
+        if($id === null && ($submission_id === null || $library_id === null)) {
+            return false;
+        }
+        
+        return $this->getMapper()->delete($this->getModel()
+            ->setId($id)
+            ->setSubmissionId($submission_id)
+            ->setLibraryId($library_id));
     }
     
     /**
