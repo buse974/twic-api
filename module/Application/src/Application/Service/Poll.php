@@ -7,6 +7,20 @@ class Poll extends AbstractService
 {
 
     /**
+     *
+     * @param integer $item_id
+     * @param bool $record
+     * @param integer $nb_user_autorecord
+     * @param bool $allow_intructor
+     */
+    public function addOrUpdate($item_id, $title = null, $poll_item = null, $expiration = null, $time_limit = null)
+    {
+        return (null !== ($m_poll = $this->getByItem($item_id))) ?
+            $this->update($m_poll->getId(), $title, $poll_item, $expiration, $time_limit):
+            $this->add($title, $poll_item, $expiration, $time_limit, $item_id);
+    }
+    
+    /**
      * Add poll for message.
      * 
      * @invokable
