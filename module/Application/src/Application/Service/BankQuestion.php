@@ -30,6 +30,44 @@ class BankQuestion extends AbstractService
         return $ret;
     }
     
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param string $question
+     * @param integer $bank_question_type_id
+     * @param integer $point
+     * @param array $bank_question_item
+     * @param array $bank_question_tag
+     * @param array $bank_question_media
+     * @param string $name
+     */
+    public function update($id, $question = null, $bank_question_type_id = null, $point = null, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name = null)
+    {
+        $m_bank_question = $this->getModel()
+            ->setId($id)
+            ->setQuestion($question)
+            ->setBankQuestionTypeId($bank_question_type_id)
+            ->setPoint($point)
+            ->setName($name);
+        
+        $ret = $this->getMapper()->update($m_bank_question);
+        
+        if(null !== $bank_question_media) {
+            $this->getServiceBankQuestionMedia()->replace($id, $bank_question_media);
+        }
+        
+        if(null !== $bank_question_tag) {
+            $this->getServiceBankQuestionTag()->replace($id, $bank_question_tag);
+        }
+        
+        if(null !== $bank_question_item) {
+            $this->getServiceBankQuestionItem()->replace($id, $bank_question_item);
+        }
+        
+        return $ret;
+    }
+    
     public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media, $name)
     {
         $m_bank_question = $this->getModel()
