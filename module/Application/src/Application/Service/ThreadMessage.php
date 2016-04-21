@@ -94,9 +94,9 @@ class ThreadMessage extends AbstractService
      */
     public function getList($thread, $parent_id = null, $filter = null)
     {
-        $mapper = $this->getMapper();
-
-        $res_thread_message = $mapper->usePaginator($filter)->getList($thread, null, $parent_id);
+        $mapper = ($filter !== null) ? $this->getMapper()->usePaginator($filter) : $this->getMapper();
+        
+        $res_thread_message = $mapper->getList($thread, null, $parent_id);
 
         foreach ($res_thread_message as $m_thread_message) {
             $roles = [];
@@ -107,7 +107,7 @@ class ThreadMessage extends AbstractService
             $m_thread_message->getUser()->setRoles($roles);
         }
 
-        return array('count' => $mapper->count(),'list' => $res_thread_message);
+        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_thread_message]:$res_thread_message;
     }
 
     public function getLast($thread)

@@ -152,6 +152,7 @@ class Submission extends AbstractService
         }
         
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
+        //ret[ModelItem::CMP_DISCUSSION] = $this->getServic()->getListBySubmission($submission_id);
         
         /*$ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceConversation()->get($item_id);
@@ -301,6 +302,15 @@ class Submission extends AbstractService
     public function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Thread
+     */
+    public function getServiceThread()
+    {
+        return $this->getServiceLocator()->get('app_service_thread');
     }
     
     /**

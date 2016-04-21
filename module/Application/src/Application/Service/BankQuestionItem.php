@@ -30,6 +30,15 @@ class BankQuestionItem extends AbstractService
         return $ret;
     }
     
+    public function replace($bank_question_id, $data)
+    {
+        $m_bank_question_item = $this->getModel()->setBankQuestionId($bank_question_id);
+        
+        $this->getMapper()->delete($m_bank_question_item);
+    
+        return $this->add($bank_question_id, $data);
+    }
+    
     /**
      * 
      * @param integer $bank_question_id

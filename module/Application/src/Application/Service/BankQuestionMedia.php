@@ -29,8 +29,14 @@ class BankQuestionMedia extends AbstractService
         return $ret;
     }
     
+    public function replace($bank_question_id, $data)
+    {
+        $this->getMapper()->delete($this->getModel()->setBankQuestionId($bank_question_id));
+        
+        return $this->add($bank_question_id, $data);
+    }
+    
     /**
-     * 
      * @param integer $bank_question_id
      * @param string $token
      * @param string $link
