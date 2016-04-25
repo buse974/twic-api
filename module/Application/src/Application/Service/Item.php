@@ -227,10 +227,11 @@ class Item extends AbstractService
      * @invokable
      * 
      * @param integer $item_id
+     * @param integer $user_id
      */
-    public function getListUsers($item_id)
+    public function getListUsers($item_id, $user_id = null)
     {
-        return $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id);
+        return $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id, $user_id);
     }
     
     /**
