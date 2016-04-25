@@ -58,6 +58,7 @@
 				<property name="dbdeploy.passwordParam" value="" override="yes" />
 			</then>
 		</if>
+		<exec command="echo 'INSERT INTO `videoconf` (`duration`, `submission_id`,`created_date`) VALUES ('500', 1, '2016-01-01')' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />	
 		<exec command="echo 'INSERT INTO `videoconf_archive` (`id`, `videoconf_id`) VALUES (1, 1)' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />
 		<exec command="echo 'INSERT INTO `videoconf_archive` (`id`, `videoconf_id`) VALUES (2, 1)' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />
 	</target>

@@ -26,11 +26,13 @@ class Videoconf extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getByItemProg($item_prog)
+    public function getBySubmission($submission)
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'description', 'conversation_id', 'item_prog_id', 'duration', 'videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "), 'token', 'archive_token', 'archive_link', 'archive_status', 'created_date', 'deleted_date'))->where(array('videoconf.item_prog_id' => $item_prog));
+        $select->columns(array('id', 'title', 'description', 'conversation_id', 'submission_id', 'duration', 
+            'videoconf$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') "), 'token', 'archive_token', 'archive_link', 'archive_status', 
+            'created_date', 'deleted_date'))->where(array('videoconf.submission_id' => $submission));
 
         return $this->selectWith($select);
     }
@@ -39,7 +41,7 @@ class Videoconf extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'item_prog_id'))
+        $select->columns(array('id', 'submission_id'))
             ->join('videoconf_archive', 'videoconf_archive.videoconf_id=videoconf.id', array())
             ->where(array('videoconf_archive.id' => $videoconf_archive));
 

@@ -10,8 +10,6 @@ class SubmissionUser extends AbstractModel
 	protected $user_id;
 	protected $group_id;
 	protected $grade;
-	protected $started_date;
-	protected $finished_date;
 	protected $submit_date;
 
 	protected $prefix = 'submission_user';
@@ -60,30 +58,6 @@ class SubmissionUser extends AbstractModel
 	public function setGrade($grade)
 	{
 		$this->grade = $grade;
-
-		return $this;
-	}
-
-	public function getStartedDate()
-	{
-		return $this->started_date;
-	}
-
-	public function setStartedDate($started_date)
-	{
-		$this->started_date = $started_date;
-
-		return $this;
-	}
-
-	public function getFinishedDate()
-	{
-		return $this->finished_date;
-	}
-
-	public function setFinishedDate($finished_date)
-	{
-		$this->finished_date = $finished_date;
 
 		return $this;
 	}

@@ -314,8 +314,7 @@ class Item extends AbstractService
         $res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
         
         foreach ($res_item as $m_item) {
-            $m_item->setItemProg($this->getServiceItemProg()
-                ->getListRecord($m_item->getId(), $user, $is_student));
+            $m_item->setSubmission($this->getServiceSubmission()->getListRecord($m_item->getId(), $user, $is_student));
         }
         
         return $res_item;
@@ -540,11 +539,11 @@ class Item extends AbstractService
 
     /**
      *
-     * @return \Application\Service\ItemProg
+     * @return \Application\Service\Submission
      */
-    public function getServiceItemProg()
+    public function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**

@@ -8,7 +8,6 @@ class Submission extends AbstractModel
 {
  	protected $id;
 	protected $item_id;
-	protected $published_date;
 	protected $group_name;
 	protected $submit_date;
 
@@ -34,18 +33,6 @@ class Submission extends AbstractModel
 	public function setItemId($item_id)
 	{
 		$this->item_id = $item_id;
-
-		return $this;
-	}
-
-	public function getPublishedDate()
-	{
-		return $this->published_date;
-	}
-
-	public function setPublishedDate($published_date)
-	{
-		$this->published_date = $published_date;
 
 		return $this;
 	}

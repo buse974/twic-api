@@ -108,8 +108,8 @@ class Course extends AbstractMapper
             ->join(array('course_school' => 'school'), 'program.school_id=course_school.id', array('id','logo','name'), $select::JOIN_INNER)
             ->join('course_user_relation', 'course_user_relation.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
-            ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
-            ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
+            ->join('submission', 'submission.item_id=item.id', array(), $select::JOIN_INNER)
+            ->join('videoconf', 'submission.id=videoconf.submission_id', array(), $select::JOIN_INNER)
             ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
             ->where(array('videoconf_archive.archive_link IS NOT NULL'))
             ->group('course.id');

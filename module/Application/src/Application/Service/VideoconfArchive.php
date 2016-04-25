@@ -75,8 +75,8 @@ class VideoconfArchive extends AbstractService
         return $this->getMapper()->getListVideoUpload();
     }
 
-    public function getListRecordByItemProg($item_prog)
+    public function getListRecordBySubmission($submission_id)
     {
-        return $this->getMapper()->getListRecordByItemProg($item_prog);
+        return $this->getMapper()->getListRecordBySubmission($submission_id);
     }
 }

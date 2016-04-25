@@ -31,7 +31,6 @@ class Item extends BaseItem
     protected $module;
     protected $program;
     protected $course;
-    protected $item_prog;
     protected $item_assignment;
     protected $users;
     protected $item_grade;
@@ -46,7 +45,8 @@ class Item extends BaseItem
     protected $document;
     protected $videoconf;
     protected $thread;
-       
+    protected $submission;
+      
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -60,6 +60,18 @@ class Item extends BaseItem
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
     }
 
+    public function getSubmission()
+    {
+        return $this->submission;
+    }
+    
+    public function setSubmission($submission)
+    {
+        $this->submission = $submission;
+    
+        return $this;
+    }
+    
     public function getThread()
     {
         return $this->thread;

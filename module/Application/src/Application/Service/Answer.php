@@ -38,14 +38,14 @@ class Answer extends AbstractService
     /**
      * @invokable
      * 
-     * @param int $item_prog
+     * @param int $item
      * @param int $peer
      */
-    public function getList($item_prog = null, $peer = null)
+    public function getList($item = null, $peer = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        return $this->getMapper()->getList($item_prog, $peer, $me);
+        return $this->getMapper()->getList($item, $peer, $me);
     }
 
     /**

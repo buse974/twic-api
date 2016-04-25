@@ -218,6 +218,14 @@ class User extends AbstractService
         return $this->getMapper()->getListUsersGroupByItemAndUser($item_id, $user);
     }
     
+    /**
+     * @param integer $submission_id
+     */
+    public function getListUsersBySubmission($submission_id)
+    {
+        return $this->getMapper()->getListUsersBySubmission($submission_id);
+    }
+    
     public function getListBySchool($school)
     {
         return $this->getMapper()->getListBySchool($school);
@@ -623,11 +631,11 @@ class User extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog            
+     * @param integer $submission_id            
      */
-    public function getListByItemProgWithInstrutorAndAcademic($item_prog)
+    public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
-        return $this->getMapper()->getListByItemProgWithInstrutorAndAcademic($item_prog);
+        return $this->getMapper()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
     }
 
     /**
