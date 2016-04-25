@@ -68,6 +68,16 @@ class BankQuestion extends AbstractService
         return $ret;
     }
     
+    /**
+     * @invokable
+     *
+     * @param integer $id
+     */
+    public function delete($id)
+    {
+        return $this->getMapper()->delete($this->getModel()->setId($id));
+    }
+    
     public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media, $name)
     {
         $m_bank_question = $this->getModel()

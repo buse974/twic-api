@@ -126,6 +126,10 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.join');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (0, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'videoconf.join'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.delete');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (0, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'videoconf.delete'));
+
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.validTransfertVideo');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (0, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'videoconf.validTransfertVideo'));

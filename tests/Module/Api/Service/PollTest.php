@@ -474,116 +474,20 @@ class PollTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    /*public function testCanPollAdd()
+    /**
+     * @depends testAddCourse
+     */
+    public function testCanBankQuestionDelete($course)
     {
         $this->setIdentity(4);
-        $data = $this->jsonRpc('poll.add', [
-            'title' => 'un titre',
-            'poll_questions' => [ 
-                [
-                    'question' => 'Ma question',
-                    'poll_question_type' => 3,
-                    'poll_question_items' => [
-                        ['libelle' => 'oui'],
-                        [ 'libelle' => 'non']
-                    ]
-                ]
-            ]
-        ]);
-        
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 4);
-        $this->assertEquals(count($data['result']['poll_questions']) , 1);
-        $this->assertEquals(count($data['result']['poll_questions'][0]) , 7);
-        $this->assertEquals(count($data['result']['poll_questions'][0]['poll_question_items']) , 2);
-        $this->assertEquals(count($data['result']['poll_questions'][0]['poll_question_items'][0]) , 4);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['libelle'] , "oui");
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['poll_question_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['parent_id'] , null);
-        $this->assertEquals(count($data['result']['poll_questions'][0]['poll_question_items'][1]) , 4);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['id'] , 2);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['libelle'] , "non");
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['poll_question_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['parent_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['question'] , "Ma question");
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_type_id'] , 3);
-        $this->assertEquals($data['result']['poll_questions'][0]['is_mandatory'] , 0);
-        $this->assertEquals($data['result']['poll_questions'][0]['parent_id'] , null);
-        $this->assertEquals($data['result']['id'] , 1);
-        $this->assertEquals($data['result']['title'] , "un titre");
-        $this->assertEquals($data['result']['expiration_date'] , null);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-    
-    public function testCanPollGet()
-    {
-        $this->setIdentity(4);
-        $data = $this->jsonRpc('poll.get', ['id' => 1]);
-        
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 4);
-        $this->assertEquals(count($data['result']['poll_questions']) , 1);
-        $this->assertEquals(count($data['result']['poll_questions'][0]) , 7);
-        $this->assertEquals(count($data['result']['poll_questions'][0]['poll_question_items']) , 2);
-        $this->assertEquals(count($data['result']['poll_questions'][0]['poll_question_items'][0]) , 4);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['libelle'] , "oui");
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['poll_question_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][0]['parent_id'] , null);
-        $this->assertEquals(count($data['result']['poll_questions'][0]['poll_question_items'][1]) , 4);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['id'] , 2);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['libelle'] , "non");
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['poll_question_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_items'][1]['parent_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['question'] , "Ma question");
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_id'] , 1);
-        $this->assertEquals($data['result']['poll_questions'][0]['poll_question_type_id'] , 3);
-        $this->assertEquals($data['result']['poll_questions'][0]['is_mandatory'] , 0);
-        $this->assertEquals($data['result']['poll_questions'][0]['parent_id'] , null);
-        $this->assertEquals($data['result']['id'] , 1);
-        $this->assertEquals($data['result']['title'] , "un titre");
-        $this->assertEquals($data['result']['expiration_date'] , null);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-
-    public function testVote()
-    {
-        $this->setIdentity(4);
-        $data = $this->jsonRpc('poll.vote', [
-            'poll' => 1, 
-            'poll_question' => 1, 
-            'items' => [[
-                'item' => 1,
-                'answer' => 'response',
-                'date' => '2016',
-                'time' => '10:10:10'
-        ]]]);
-        
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-    
-    public function testDelete()
-    {
-        $this->setIdentity(4);
-        $data = $this->jsonRpc('poll.delete', [
-            'id' => 1
-        ]);
+        $data = $this->jsonRpc('bankquestion.delete', ['id' => 1]);
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }*/
     
+    }
     
     public function setIdentity($id)
     {
