@@ -268,7 +268,7 @@ class PollTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 4);
-        $this->assertEquals(count($data['result'][0]) , 9);
+        $this->assertEquals(count($data['result'][0]) , 11);
         $this->assertEquals(count($data['result'][0]['bank_question_tag']) , 1);
         $this->assertEquals($data['result'][0]['bank_question_tag'][0] , "maquestion upt");
         $this->assertEquals(count($data['result'][0]['bank_question_item']) , 2);
@@ -311,7 +311,9 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['bank_question_type_id'] , 3);
         $this->assertEquals($data['result'][0]['course_id'] , 1);
         $this->assertEquals($data['result'][0]['point'] , 88);
-        $this->assertEquals(count($data['result'][1]) , 9);
+        $this->assertEquals($data['result'][0]['older'] , null);
+        $this->assertEquals($data['result'][0]['created_date'] , null);
+        $this->assertEquals(count($data['result'][1]) , 11);
         $this->assertEquals(count($data['result'][1]['bank_question_tag']) , 1);
         $this->assertEquals($data['result'][1]['bank_question_tag'][0] , "maquestion");
         $this->assertEquals(count($data['result'][1]['bank_question_item']) , 2);
@@ -354,7 +356,9 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][1]['bank_question_type_id'] , 3);
         $this->assertEquals($data['result'][1]['course_id'] , 1);
         $this->assertEquals($data['result'][1]['point'] , 99);
-        $this->assertEquals(count($data['result'][2]) , 9);
+        $this->assertEquals($data['result'][1]['older'] , null);
+        $this->assertEquals($data['result'][1]['created_date'] , null);
+        $this->assertEquals(count($data['result'][2]) , 11);
         $this->assertEquals(count($data['result'][2]['bank_question_tag']) , 1);
         $this->assertEquals($data['result'][2]['bank_question_tag'][0] , "maquestion");
         $this->assertEquals(count($data['result'][2]['bank_question_item']) , 2);
@@ -397,7 +401,9 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][2]['bank_question_type_id'] , 3);
         $this->assertEquals($data['result'][2]['course_id'] , 1);
         $this->assertEquals($data['result'][2]['point'] , 99);
-        $this->assertEquals(count($data['result'][3]) , 9);
+        $this->assertEquals($data['result'][2]['older'] , null);
+        $this->assertEquals($data['result'][2]['created_date'] , null);
+        $this->assertEquals(count($data['result'][3]) , 11);
         $this->assertEquals(count($data['result'][3]['bank_question_tag']) , 1);
         $this->assertEquals($data['result'][3]['bank_question_tag'][0] , "maquestion");
         $this->assertEquals(count($data['result'][3]['bank_question_item']) , 2);
@@ -440,6 +446,8 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][3]['bank_question_type_id'] , 3);
         $this->assertEquals($data['result'][3]['course_id'] , 1);
         $this->assertEquals($data['result'][3]['point'] , 99);
+        $this->assertEquals($data['result'][3]['older'] , null);
+        $this->assertEquals($data['result'][3]['created_date'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

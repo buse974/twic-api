@@ -12,6 +12,8 @@ class BankQuestion extends AbstractModel
 	protected $bank_question_type_id;
 	protected $course_id;
 	protected $point;
+	protected $older;
+	protected $created_date;
 
 	protected $prefix = 'bank_question';
 
@@ -83,6 +85,30 @@ class BankQuestion extends AbstractModel
 	public function setPoint($point)
 	{
 		$this->point = $point;
+
+		return $this;
+	}
+
+	public function getOlder()
+	{
+		return $this->older;
+	}
+
+	public function setOlder($older)
+	{
+		$this->older = $older;
+
+		return $this;
+	}
+
+	public function getCreatedDate()
+	{
+		return $this->created_date;
+	}
+
+	public function setCreatedDate($created_date)
+	{
+		$this->created_date = $created_date;
 
 		return $this;
 	}

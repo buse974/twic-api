@@ -180,22 +180,34 @@ class Submission extends AbstractService
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         }
         
+        $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
+        
+        // Les composants seulement par groupe
         if($m_item->getSetId() !== null) {
             if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
             } else {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
             }
+            
+            if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission);
+            } else {
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission);
+            }
         }
         
-        $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
-        //ret[ModelItem::CMP_DISCUSSION] = $this->getServic()->getListBySubmission($submission_id);
         
+        
+        
+        
+        
+        //ret[ModelItem::CMP_DISCUSSION] = $this->getServic()->getListBySubmission($submission_id);
         /*$ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_EQCQ] = $this->getServiceConversation()->get($item_id);
          $ret[ModelItem::CMP_POLL] = $this->getServiceConversation()->get($item_id);
-         $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceConversation()->get($item_id);*/
+         */
         
         return $ret;
     }
@@ -357,6 +369,15 @@ class Submission extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Videoconf
+     */
+    public function getServiceVideoconf()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf');
     }
     
     /**

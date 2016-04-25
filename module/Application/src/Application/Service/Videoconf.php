@@ -228,12 +228,28 @@ class Videoconf extends AbstractService
         $res_videoconf = $this->getMapper()->getBySubmission($submission);
 
         if ($res_videoconf->count() === 0) {
-            return [];
+            return null;
         }
 
         $m_videoconf = $res_videoconf->current();
         $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordBySubmission($submission));
 
+        return $m_videoconf;
+    }
+    
+    /**
+     * @param integer $submission_id
+     * 
+     * @return \Application\Model\Videoconf
+     */
+    public function getListOrCreate($submission_id)
+    {
+        $m_videoconf = $this->getBySubmission($submission_id);
+        if(null === $m_videoconf) {
+            $this->add($title, $description, $start_date);
+            $m_videoconf = $this->getBySubmission($submission_id);
+        }
+        
         return $m_videoconf;
     }
 
@@ -255,16 +271,16 @@ class Videoconf extends AbstractService
      * @invokable
      *
      * @param int $id
-     * @param int $item_prog
+     * @param int $submission
      *
      * @throws \Exception
      */
-    public function joinUser($id = null, $item_prog = null)
+    public function joinUser($id = null, $submission = null)
     {
         if (null !== $id) {
             $res_videoconf = $this->getMapper()->get($id);
         } elseif (null !== $item_prog) {
-            $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
+            $res_videoconf = $this->getMapper()->getBySubmission($submission);
         } else {
             throw new \Exception('Error params joinUser');
         }
@@ -282,12 +298,6 @@ class Videoconf extends AbstractService
         }
 
         $res_videoconf_conversation = $this->getServiceVideoconfConversation()->getByVideoconfUser($m_videoconf->getId(), $identity['id']);
-
-        $conversations = [];
-        foreach ($res_videoconf_conversation as $m_videoconf_conversation) {
-            $conversations[$m_videoconf_conversation->getConversationId()] = $this->getServiceConversation()->getConversation($m_videoconf_conversation->getConversationId());
-        }
-
         $res = $this->getServiceUser()
             ->getListByItemProg($m_videoconf->getItemProgId())
             ->toArray(array('id'));
@@ -299,12 +309,11 @@ class Videoconf extends AbstractService
                 $res[$instructor['id']] = $instructor;
             }
         } else {
-            $m_videoconf->setItemAssignmentId($this->getServiceItemAssignment()->getIdByItemProg($m_videoconf->getItemProgId()));
+            $m_videoconf->setItemAssignmentId($this->getServiceItemAssignment()->getIdBySubmission($m_videoconf->getItemProgId()));
         }
 
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getId()))
             ->setUsers($res)
-            ->setConversations(new \ArrayObject($conversations))
             ->setVideoconfAdmin($this->getServiceVideoconfAdmin()->add($m_videoconf->getId(), $optok));
 
         return $m_videoconf;

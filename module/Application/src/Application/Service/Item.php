@@ -181,7 +181,7 @@ class Item extends AbstractService
         $expiration = isset($data['expiration']) ? $data['expiration'] : null;
         $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
         
-        return $this->getServicePoll()->addaddOrUpdate($item_id, $title, $poll_item, $expiration, $time_limit);
+        return $this->getServicePoll()->addOrUpdate($item_id, $title, $poll_item, $expiration, $time_limit);
     }
     
     public function addCmpVideoconf($data, $item_id)
