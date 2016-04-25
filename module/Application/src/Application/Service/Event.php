@@ -279,12 +279,16 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
 
-    public function recordAvailable($item_prog, $videoconf_archive)
+    public function recordAvailable($submission_id, $videoconf_archive)
     {
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
         $m_videoconf_archive = $this->getServiceVideoconfArchive()->get($videoconf_archive);
 
-        return $this->create('record.available', $this->getDataItemProg($m_item_prog), $this->getDataVideoArchive($m_videoconf_archive), $this->getListByItemProgWithInstrutorAndAcademic($m_item_prog->getId()), self::TARGET_TYPE_USER);
+        $m_submission = $this->getServiceSubmission()->get(null, $submission_id);
+        return $this->create('record.available', 
+            $this->getDataSubmission($m_submission), 
+            $this->getDataVideoArchive($m_videoconf_archive), 
+            $this->getListBySubmissionWithInstrutorAndAcademic($submission_id), 
+            self::TARGET_TYPE_USER);
     }
 
     public function eqcqAvailable($item_prog)
@@ -452,9 +456,25 @@ class Event extends AbstractService
 
     public function getDataItemProg(\Application\Model\ItemProg $m_item_prog)
     {
-        return ['id' => $m_item_prog->getId(),'name' => 'programming','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()]]];
+        return [
+            'id' => $m_item_prog->getId(),
+            'name' => 'programming',
+            'data' => [
+                'start_date' => $m_item_prog->getStartDate(),
+                'item' => ['id' => $m_item_prog->getItem()->getId(),
+                    'title' => $m_item_prog->getItem()->getTitle(),
+                    'type' => $m_item_prog->getItem()->getType()]]];
     }
+    
 
+    public function getDataSubmission(\Application\Model\Submission $submission)
+    {
+        return [
+            'id' => $submission->getId(),
+            'name' => 'programming',
+            'data' => []];
+    }
+    
     public function getDataUserContact($user = null)
     {
         $ret = $this->getServiceContact()->getListId($user);
@@ -527,6 +547,18 @@ class Event extends AbstractService
         return $users;
     }
 
+    public function getListBySubmissionWithInstrutorAndAcademic($submission)
+    {
+        $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission);
+    
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+    
+        return $users;
+    }
+    
     public function getDataUserByItemProg($item_prog)
     {
         $res_user = $this->getServiceUser()->getListByItemProg($item_prog);
@@ -789,6 +821,14 @@ class Event extends AbstractService
         return $this->getServiceLocator()->get('app_service_school');
     }
 
+    /**
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
+    }
+    
     /**
      * @return \Application\Service\Contact
      */

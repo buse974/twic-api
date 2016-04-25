@@ -19,7 +19,7 @@ class SubmissionUser extends AbstractMapper
     public function getListBySubmissionId($submission_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['submission_id', 'user_id', 'group_id', 'grade', 'submit_date', 'started_date', 'finished_date'])
+        $select->columns(['submission_id', 'user_id', 'group_id', 'grade', 'submit_date'])
             ->join('user', 'user.id=submission_user.user_id', ['user$id' => new Expression('user.id'),
                 'firstname',
                 'gender',

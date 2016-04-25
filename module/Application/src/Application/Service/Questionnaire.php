@@ -47,7 +47,7 @@ class Questionnaire extends AbstractService
 
         $m_questionnaire = $res_questionnaire->current();
         $m_questionnaire->setQuestions($this->getServiceQuestion()->getList($m_questionnaire->getId()));
-        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
+        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
 
         return $m_questionnaire;
     }
@@ -63,7 +63,7 @@ class Questionnaire extends AbstractService
     public function answer($item, $user, $question, $scale)
     {
         $m_questionnaire = $this->getMapper()->getByItem($item)->current();
-        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
+        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
 
         $ret = $this->getServiceAnswer()->add(
@@ -73,13 +73,13 @@ class Questionnaire extends AbstractService
             $user,
             $scale);
 
-        $nbrq = $this->getNbrQuestionNoCompleted($item_prog);
+        $nbrq = $this->getNbrQuestionNoCompleted($item);
         if (is_numeric($nbrq) && $nbrq == 0) {
-            $this->getServiceItemProgUser()->end($item_prog);
-            $has_all_finish = $this->getServiceItemProgUser()->checkAllFinish($item_prog);
+            $this->getServiceItemProgUser()->end($item);
+            $has_all_finish = $this->getServiceItemProgUser()->checkAllFinish($item);
             if ($has_all_finish) {
-                $this->getServiceItemAssignment()->submitByItemProg($item_prog);
-                $this->getServiceEvent()->eqcqAvailable($item_prog);
+                $this->getServiceItemAssignment()->submitByItemProg($item);
+                $this->getServiceEvent()->eqcqAvailable($item);
             }
         }
 
@@ -120,7 +120,7 @@ class Questionnaire extends AbstractService
         }
 
         $m_questionnaire = $this->getMapper()->getByItem($item)->current();
-        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId());
+        $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
 
         $m_questionnaire_user->setAnswers($this->getServiceAnswer()
             ->getByQuestionnaireUser($m_questionnaire_user->getId()));

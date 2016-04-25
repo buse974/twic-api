@@ -127,15 +127,16 @@ class Item extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'title', 'type'))
-            ->join('item_prog', 'item_prog.item_id=item.id', array(), $select::JOIN_INNER)
-            ->join('videoconf', 'item_prog.id=videoconf.item_prog_id', array(), $select::JOIN_INNER)
+            ->join('submission', 'submission.item_id=item.id', array(), $select::JOIN_INNER)
+            ->join('videoconf', 'submission.id=videoconf.submission_id', array(), $select::JOIN_INNER)
             ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
             ->where(array('videoconf_archive.archive_link IS NOT NULL'))
             ->where(array('item.course_id' => $course))
             ->group('item.id');
 
         if ($is_student !== false) {
-            $select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)->where(array('item_prog_user.user_id' => $user));
+            $select->join('submission_user', 'submission.id=item_prog_user.submission_id', array(), $select::JOIN_INNER)
+                ->where(array('submission_user.user_id' => $user));
         }
 
         return $this->selectWith($select);
@@ -227,9 +228,9 @@ class Item extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS DECIMAL )')))
-            ->join('item_prog', 'item_prog.item_id=item.id', array('id'))
-            ->join('item_prog_user', 'item_prog_user.item_prog_id=item_prog.id', array('user_id'))
-            ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array(), $select::JOIN_LEFT)
+            ->join('submission', 'submission.item_id=item.id', array('id'))
+            ->join('submission_user', 'submission_user.submission_id=submission.id', array('user_id'))
+            ->join('item_assignment_relation', 'item_assignment_relation.submission_id=submission_user.id', array(), $select::JOIN_LEFT)
             ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id',
                 'item_assignment$submit_date' => new Expression('DATE_FORMAT(item_assignment.submit_date, "%Y-%m-%dT%TZ")'), 'id', ), $select::JOIN_LEFT)
             ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
@@ -245,8 +246,8 @@ class Item extends AbstractMapper
             $select->where(array('item_prog_user.user_id' => $user));
         }
         if (null !== $item_prog) {
-            $select->where(array('item_prog.id' => $item_prog))
-            ->group('item_prog_user.user_id');
+            $select->where(array('submission.id' => $item_prog))
+            ->group('submission_user.user_id');
         } else {
             $select->group('item.id');
         }

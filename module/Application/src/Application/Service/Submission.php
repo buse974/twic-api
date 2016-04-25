@@ -48,9 +48,21 @@ class Submission extends AbstractService
         
     ];
     
-    public function getByUserAndQuestionnaire($me, $questionnaire)
+    /**
+     * @param integer $user_id
+     * @param integer $questionnaire_id
+     * 
+     * @return \Application\Service\Submission
+     */
+    public function getByUserAndQuestionnaire($user_id, $questionnaire_id, $item_id)
     {
-        $m_submission = $this->getMapper()->getByUserAndQuestionnaire($me, $questionnaire);
+        $res_submission = $this->getMapper()->getByUserAndQuestionnaire($user_id, $questionnaire_id);
+        
+        $m_submission = ($res_submission->count() <= 0) ?
+             $this->get($item_id) :
+             $res_submission->current();
+        
+        return $m_submission;
     }
     
     public function create($item_id)
@@ -103,6 +115,17 @@ class Submission extends AbstractService
         return $this->getByItem($this->getMapper()->select($this->getModel()->setId($id))->current()->getItemId()); ;
     }
     
+    public function getListRecord($item, $user, $is_student)
+    {
+        $res_submission = $this->getMapper()->getListRecord($item, $user, $is_student);
+        foreach ($res_submission as $m_submission) {
+            $m_submission->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordBySubmission($m_submission->getId()));
+            $m_submission->setUsers($this->getServiceUser()->getListUsersBySubmission($m_submission->getId()));
+        }
+    
+        return $res_submission;
+    }
+    
     /**
      * @invokable
      *
@@ -145,10 +168,12 @@ class Submission extends AbstractService
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         }
         
-        if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
-            $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
-        } else {
-            $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
+        if($m_item->getSetId() !== null) {
+            if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
+                $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
+            } else {
+                $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
+            }
         }
         
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
@@ -330,4 +355,14 @@ class Submission extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission_user');
     }
+    
+    /**
+     *
+     * @return \Application\Service\VideoconfArchive
+     */
+    public function getServiceVideoconfArchive()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf_archive');
+    }
+    
 }

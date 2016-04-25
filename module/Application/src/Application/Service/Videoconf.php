@@ -18,19 +18,21 @@ class Videoconf extends AbstractService
      * @param string $title
      * @param string $description
      * @param string $start_date
-     * @param int    $item_prog
-     * @param int    $conversation
-     *
+     * @param integer $submission_id
+     * @param integer $item_id
+     * @param integer $conversation
      * @throws \Exception
-     *
-     * @return int
      */
-    public function add($title, $description, $start_date, $item_prog = null, $conversation = null)
+    public function add($title, $description, $start_date, $submission_id = null, $item_id = null, $conversation = null)
     {
+        if(null === $submission_id && null !==$item_id) {
+            $submission_id = $this->getServiceSubmission()->getByItem($item_id)->getId();
+        }
+        
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
             ->setDescription($description)
-            ->setItemProgId($item_prog)
+            ->setSubmissionId($submission_id)
             ->setConversationId($conversation)
             ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
             ->setToken($this->getServiceZOpenTok()->getSessionId())
@@ -217,21 +219,20 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $item_prog
+     * @param integer $submission
      *
      * @return \Application\Model\Videoconf
      */
-    public function getByItemProg($item_prog)
+    public function getBySubmission($submission)
     {
-        $res_videoconf = $this->getMapper()->getByItemProg($item_prog);
+        $res_videoconf = $this->getMapper()->getBySubmission($submission);
 
         if ($res_videoconf->count() === 0) {
             return [];
         }
 
         $m_videoconf = $res_videoconf->current();
-        $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()
-            ->getListRecordByItemProg($item_prog));
+        $m_videoconf->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordBySubmission($submission));
 
         return $m_videoconf;
     }
@@ -413,8 +414,8 @@ class Videoconf extends AbstractService
     public function validTransfertVideo($videoconf_archive, $url)
     {
         $event_send = true;
-        $videoconf = $this->getByVideoconfArchive($videoconf_archive)->getItemProgId();
-        $res_videoconf_archive = $this->getServiceVideoconfArchive()->getListByVideoConf($videoconf);
+        $m_videoconf = $this->getByVideoconfArchive($videoconf_archive);
+        $res_videoconf_archive = $this->getServiceVideoconfArchive()->getListByVideoConf($m_videoconf->getId());
         
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
             if(CVF::ARV_AVAILABLE===$m_videoconf_archive->getArchiveStatus()) {
@@ -425,7 +426,7 @@ class Videoconf extends AbstractService
         $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
         
         if($event_send) {
-            $this->getServiceEvent()->recordAvailable($videoconf,$videoconf_archive);
+            $this->getServiceEvent()->recordAvailable($m_videoconf->getSubmissionId(),$videoconf_archive);
         }
         
         return $ret;
@@ -471,11 +472,11 @@ class Videoconf extends AbstractService
     }
 
     /**
-     * @return \Application\Service\ItemProgUser
+     * @return \Application\Service\Submission
      */
-    public function getServiceItemProgUser()
+    public function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog_user');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**

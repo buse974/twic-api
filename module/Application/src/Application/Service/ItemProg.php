@@ -119,19 +119,6 @@ class ItemProg extends AbstractService
         return $id;
     }
 
-    public function getListRecord($item, $user, $is_student)
-    {
-        $res_item_prog = $this->getMapper()->getListRecord($item, $user, $is_student);
-        foreach ($res_item_prog as $m_item_prog) {
-            $m_item_prog->setVideoconfArchives($this->getServiceVideoconfArchive()
-                ->getListRecordByItemProg($m_item_prog->getId()));
-            $m_item_prog->setUsers($this->getServiceUser()
-                ->getListByItemProg($m_item_prog->getId()));
-        }
-        
-        return $res_item_prog;
-    }
-
     /**
      * Update User.
      *

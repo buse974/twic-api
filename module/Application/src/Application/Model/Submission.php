@@ -8,6 +8,32 @@ class Submission extends BaseSubmission
 {
     protected $chat;
     protected $submission_user;
+    protected $videoconf_archives;
+    protected $users;
+      
+    public function getUsers() 
+    {
+        return $this->users;
+    }
+    
+    public function setUsers($users) 
+    {
+        $this->users = $users;
+        
+        return $this;
+    }
+      
+    public function getVideoconfArchives() 
+    {
+        return $this->videoconf_archives;
+    }
+    
+    public function setVideoconfArchives($videoconf_archives) 
+    {
+        $this->videoconf_archives = $videoconf_archives;
+        
+        return $this;
+    }
       
     public function exchangeArray(array &$data)
     {

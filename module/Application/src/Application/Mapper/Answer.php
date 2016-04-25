@@ -6,7 +6,7 @@ use Dal\Mapper\AbstractMapper;
 
 class Answer extends AbstractMapper
 {
-    public function getList($item_prog, $peer, $me)
+    public function getList($item, $peer, $me)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'peer_id', 'type', 'created_date'))
@@ -19,7 +19,6 @@ class Answer extends AbstractMapper
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('answer$origin' => 'id', 'answer$origin_name' => 'short_name'), $select::JOIN_LEFT)
             ->join('questionnaire', 'questionnaire.id=questionnaire_user.questionnaire_id', array())
             ->join('item', 'item.id=questionnaire.item_id', array('answer$item' => 'id', 'answer$course' => 'course_id'))
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
             ->where(array("( answer.type='PEER' OR (answer.type='SELF' AND user.id = ? )) " => $me))
             ->where(array('scale.value <> 0'));
 
@@ -27,9 +26,10 @@ class Answer extends AbstractMapper
             $select->where(array('answer.peer_id' => $peer));
         }
 
-        if (null !== $item_prog) {
-            $select->join('item_prog_user', 'item_prog.id = item_prog_user.item_prog_id AND item_prog_user.user_id = user.id', array())
-                ->where(array('item_prog.id' => $item_prog));
+        if (null !== $item) {
+            $select->join('submission', 'submission.item_id = item.id', array())
+                ->join('submission_user', 'submission.id = submission_user.submission_id AND submission_user.user_id = user.id', array())
+                ->where(array('submission.item_id' => $item));
         }
 
         return $this->selectWith($select);

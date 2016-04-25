@@ -142,7 +142,11 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.implode');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (0, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'videoconf.implode'));
 
-INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.getRoom');
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.getBySubmission');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (0, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'videoconf.getRoom'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('videoconf.getBySubmission');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (0, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'videoconf.getRoom'));
 
