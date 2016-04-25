@@ -5,6 +5,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\IsNull;
+use JRpc\Json\Server\Exception\JrpcException;
 
 class Submission extends AbstractService
 {
@@ -158,7 +159,13 @@ class Submission extends AbstractService
     public function getContent($submission_id)
     {
         $ret = [];
-        $item_id = $this->getBySubmission($submission_id)->getItemId();
+        
+        if($m_item = $this->getBySubmission($submission_id) === null) {
+            throw new JrpcException("Error no submission", 999);
+        }
+        
+        $item_id = $m_item->getItemId();
+        
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
            
