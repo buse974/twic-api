@@ -113,7 +113,14 @@ class Submission extends AbstractService
      */
     public function getBySubmission($id)
     {
-        return $this->getByItem($this->getMapper()->select($this->getModel()->setId($id))->current()->getItemId()); ;
+        $m_submission = null;
+        $res_submission = $this->getMapper()->select($this->getModel()->setId($id));
+        
+        if ($res_submission->count() > 0) {
+            $m_submission = $this->getByItem($res_submission->current()->getItemId()); 
+        }
+        
+        return $m_submission;
     }
     
     public function getListRecord($item, $user, $is_student)
@@ -158,14 +165,12 @@ class Submission extends AbstractService
      */
     public function getContent($submission_id)
     {
-        $ret = [];
-        
-        if($m_item = $this->getBySubmission($submission_id) === null) {
+        if(null === ($m_submission = $this->getBySubmission($submission_id))) {
             throw new JrpcException("Error no submission", 999);
         }
         
-        $item_id = $m_item->getItemId();
-        
+        $ret = [];
+        $item_id = $m_submission->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
            
