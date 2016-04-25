@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class BankQuestion extends AbstractService
 {
@@ -44,6 +45,9 @@ class BankQuestion extends AbstractService
      */
     public function update($id, $question = null, $bank_question_type_id = null, $point = null, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name = null)
     {
+        
+        //$this->getServiceSubPollUser()->
+        
         $m_bank_question = $this->getModel()
             ->setId($id)
             ->setQuestion($question)
@@ -107,7 +111,7 @@ class BankQuestion extends AbstractService
      */
     public function getList($course_id)
     {
-        $res_bank_question = $this->getMapper()->select($this->getModel()->setCourseId($course_id));
+        $res_bank_question = $this->getMapper()->select($this->getModel()->setCourseId($course_id)->setOlder(new IsNull('older')));
         
         foreach ($res_bank_question as $m_bank_question) {
             $bank_question_id = $m_bank_question->getId();
@@ -135,6 +139,15 @@ class BankQuestion extends AbstractService
     public function getServiceBankQuestionTag()
     {
         return $this->getServiceLocator()->get('app_service_bank_question_tag');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\SubPollUser
+     */
+    public function getServiceSubPollUser()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_poll_user');
     }
     
     /**
