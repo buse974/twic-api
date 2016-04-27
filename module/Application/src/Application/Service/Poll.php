@@ -98,6 +98,21 @@ class Poll extends AbstractService
         
         return $m_poll;
     }
+    
+    /**
+     * @param integer $id
+     *
+     * @return NULL|\Application\Model\Poll
+     */
+    public function getLite($id)
+    {
+        $res_poll = $this->getMapper()->select($this->getModel()->setId($id));
+        if ($res_poll->count() !== 1) {
+            throw new \Exception('poll not exist');
+        }
+    
+        return $res_poll->current();
+    }
 
     public function getByItem($item_id)
     {
@@ -111,6 +126,16 @@ class Poll extends AbstractService
         $m_poll->setPollItem($this->getServicePollItem()->getList($m_poll->getId()));
         
         return $m_poll;
+    }
+    
+    /**
+     * @param integer $item_id
+     * 
+     * @return NULL|\Application\Model\Poll
+     */
+    public function getLiteByItem($item_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setItemId($item_id))->current();
     }
 
     /**

@@ -9,13 +9,40 @@ use JRpc\Json\Server\Exception\JrpcException;
 
 class Api extends AbstractApi
 {
+    protected  $allow_type = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-powerpoint",
+        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "text/plain",
+        "application/x-python",
+        "text/x-python",
+        "text/javascript",
+        "application/x-javascript",
+        "application/javascript",
+        "text/xml",
+        "application/xml",
+        "text/css",
+        "text/x-markdown",
+        "text/x-script.perl",
+        "text/x-c",
+        "text/x-m",
+        "application/json"
+    ];
+    
     /**
      * @param string $url
      * 
      * @return \Box\Model\Document
      */
-    public function addFile($url)
+    public function addFile($url, $type)
     {
+        if(!in_array($type, $this->allow_type)) {
+            return null;
+        }
     	$this->setMethode(Request::METHOD_POST);
     	$this->setPath(sprintf('/documents'));
     	$this->setParams(['url' => $url]);

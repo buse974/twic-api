@@ -81,6 +81,11 @@ class PollItem extends AbstractService
         return $res_poll_item;
     }
     
+    public function getListLite($poll_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setPollId($poll_id));
+    }
+    
     /**
      *
      * @return \Application\Service\GroupQuestion

@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Library as ModelLibrary;
 
 class BankQuestionMedia extends AbstractService
 {
@@ -16,14 +17,16 @@ class BankQuestionMedia extends AbstractService
      *  
      * @return integer
      */
-    public function add($bank_question_id, $data)
+    public function add($bank_question_id, $data = [])
     {
         $ret = [];
         foreach ($data as $bqm) {
             $token = (isset($bqm['token'])) ? $bqm['token']:null;
             $link  = (isset($bqm['link'])) ? $bqm['link']:null;
+            $name = (isset($bqm['name'])) ? $bqm['name']:null;
+            $type  = (isset($bqm['type'])) ? $bqm['type']:null;
             
-            $ret[] = $this->_add($bank_question_id, $token, $link);
+            $ret[] = $this->_add($bank_question_id, $name, $link, $token, $type);
         }
     
         return $ret;
@@ -36,17 +39,33 @@ class BankQuestionMedia extends AbstractService
         return $this->add($bank_question_id, $data);
     }
     
+    public function copy($bank_question_id_new, $bank_question_id_old)
+    {
+        $res_bank_question_media = $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id_old));
+    
+        foreach ($res_bank_question_media as $m_bank_question_media) {
+            $this->getMapper()->insert($m_bank_question_media->setBankQuestionId($bank_question_id_new)->setId(null));
+        }
+    
+        return true;
+    }
+    
     /**
      * @param integer $bank_question_id
-     * @param string $token
+     * @param string $name
      * @param string $link
-     * @throws \Exception
+     * @param string $token
+     * @param string $type
      * 
      * @return integer
      */
-    public function _add($bank_question_id, $token = null, $link = null)
+    public function _add($bank_question_id, $name = null, $link = null, $token = null, $type = null)
     {
-        $m_bank_question_media = $this->getModel()->setBankQuestionId($bank_question_id)->setToken($token)->setLink($link);
+        $m_library = $this->getServiceLibrary()->add($name, $link, $token, $type, ModelLibrary::FOLDER_OTHER_INT);
+        
+        $m_bank_question_media = $this->getModel()
+            ->setBankQuestionId($bank_question_id)
+            ->setLibraryId($m_library->getId());
         
         if($this->getMapper()->insert($m_bank_question_media) <=0) {
             throw new \Exception('error insert media');
@@ -58,6 +77,19 @@ class BankQuestionMedia extends AbstractService
     
     public function getList($bank_question_id)
     {
-        return $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id));
+        return $this->getServiceLibrary()->getListByBankQuestion($bank_question_id);
+    }
+    
+    public function getListBankQuestion($bank_question_id)
+    {
+        return $this->getMapper()->getListBankQuestion($bank_question_id); 
+    }
+    
+    /**
+     * @return \Application\Service\Library
+     */
+    public function getServiceLibrary()
+    {
+        return $this->getServiceLocator()->get('app_service_library');
     }
 }

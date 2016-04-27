@@ -7,7 +7,6 @@ class Document extends AbstractService
 {
 
     /**
-     * @invokable
      * 
      * @param string $name
      * @param string $type
@@ -33,7 +32,6 @@ class Document extends AbstractService
         if(null !== $item_id) {
             $this->getMapper()->delete($this->getModel()->setItemId($item_id));
         }
-        
         
         $library_id = $this->getServiceLibrary()->add($name, $link, $token, $type, $folder_id)->getId();
         $m_document = $this->getModel()

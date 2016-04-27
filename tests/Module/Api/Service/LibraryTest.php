@@ -33,7 +33,7 @@ class LibraryTest extends AbstractService
         $this->assertEquals($data['result']['updated_date'] , null);
         $this->assertEquals($data['result']['folder_id'] , null);
         $this->assertEquals($data['result']['owner_id'] , 1);
-        $this->assertEquals(!empty($data['result']['box_id']) , true);
+        $this->assertEquals(!empty($data['result']['box_id']) , false);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
@@ -62,7 +62,7 @@ class LibraryTest extends AbstractService
     	$this->assertEquals(!empty($data['result']['updated_date']) , true);
     	$this->assertEquals($data['result']['folder_id'] , null);
     	$this->assertEquals($data['result']['owner_id'] , 1);
-    	$this->assertEquals(!empty($data['result']['box_id']) , true);
+    	$this->assertEquals(!empty($data['result']['box_id']) , false);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -102,14 +102,14 @@ class LibraryTest extends AbstractService
     	$this->assertEquals(!empty($data['result']['documents'][1]['updated_date']) , true);
     	$this->assertEquals($data['result']['documents'][1]['folder_id'] , null);
     	$this->assertEquals($data['result']['documents'][1]['owner_id'] , 1);
-    	$this->assertEquals(!empty($data['result']['documents'][1]['box_id']) , true);
+    	$this->assertEquals(!empty($data['result']['documents'][1]['box_id']) , false);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     /**
      * @depends testCanAddDocument
-     */
+     
     public function testCanGetSession($id)
     {
         $this->setIdentity(1);
@@ -125,7 +125,7 @@ class LibraryTest extends AbstractService
         $this->assertEquals($data['error']['data'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
+    }*/
 
     /**
      * @depends testCanAddDocument

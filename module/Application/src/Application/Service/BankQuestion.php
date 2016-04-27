@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Guzzle\Service\Resource\Model;
 
 class BankQuestion extends AbstractService
 {
@@ -45,11 +46,10 @@ class BankQuestion extends AbstractService
      */
     public function update($id, $question = null, $bank_question_type_id = null, $point = null, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name = null)
     {
-        
-        //$this->getServiceSubPollUser()->
+        $bank_question_id = $this->copy($id);
         
         $m_bank_question = $this->getModel()
-            ->setId($id)
+            ->setId($bank_question_id)
             ->setQuestion($question)
             ->setBankQuestionTypeId($bank_question_type_id)
             ->setPoint($point)
@@ -73,23 +73,63 @@ class BankQuestion extends AbstractService
     }
     
     /**
+     * @param integer $id
+     * @return NULL|\Application\Model\BankQuestion
+     */
+    public function getWithPollItemExist($id)
+    {
+        $res_bank_question = $this->getMapper()->getWithPollItemExist($id);
+        
+        return ($res_bank_question->count() > 0) ? 
+            $res_bank_question->current():
+            null;
+    }
+    
+    public function copy($id)
+    {
+        $m_bank_question = $this->getWithPollItemExist($id);
+        if(null === $m_bank_question) {
+            return $id;
+        }
+        
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+        $this->getMapper()->update($this->getModel()->setOlder($date), ['id' => $m_bank_question->getId()]);
+
+        $m_bank_question->setId(null)
+            ->setOlder(null)
+            ->setCreatedDate($date);
+        
+        $this->getMapper()->insert($m_bank_question);
+        $bank_question_id = $this->getMapper()->getLastInsertValue();
+        
+        $this->getServiceBankQuestionMedia()->copy($bank_question_id, $id);
+        $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
+        $this->getServiceBankQuestionItem()->copy($bank_question_id, $id); 
+        
+        return $bank_question_id;
+    }
+    
+    /**
      * @invokable
      *
      * @param integer $id
      */
     public function delete($id)
     {
+        $this->copy($id);
+        
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
     
-    public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item, $bank_question_tag, $bank_question_media, $name)
+    public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name)
     {
         $m_bank_question = $this->getModel()
             ->setQuestion($question)
             ->setBankQuestionTypeId($bank_question_type_id)
             ->setPoint($point)
             ->setName($name)
-            ->setCourseId($course_id);
+            ->setCourseId($course_id)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if($this->getMapper()->insert($m_bank_question) <= 0) {
             throw new \Exception('error add bank question');
@@ -97,9 +137,17 @@ class BankQuestion extends AbstractService
         
         $bank_question_id = $this->getMapper()->getLastInsertValue();
         
-        $this->getServiceBankQuestionMedia()->add($bank_question_id, $bank_question_media);
-        $this->getServiceBankQuestionTag()->add($bank_question_id, $bank_question_tag);
-        $this->getServiceBankQuestionItem()->add($bank_question_id, $bank_question_item);
+        if(null !== $bank_question_media) {
+            $this->getServiceBankQuestionMedia()->add($bank_question_id, $bank_question_media);
+        }
+        
+        if(null !== $bank_question_tag) {
+            $this->getServiceBankQuestionTag()->add($bank_question_id, $bank_question_tag);
+        }
+        
+        if(null !== $bank_question_item) {
+            $this->getServiceBankQuestionItem()->add($bank_question_id, $bank_question_item);
+        }
         
         return $bank_question_id;
     }
@@ -124,6 +172,15 @@ class BankQuestion extends AbstractService
     }
     
     /**
+     * @param integer $ids
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListLite($ids)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($ids));
+    }
+    
+    /**
      * 
      * @return \Application\Service\BankQuestionMedia
      */
@@ -139,15 +196,6 @@ class BankQuestion extends AbstractService
     public function getServiceBankQuestionTag()
     {
         return $this->getServiceLocator()->get('app_service_bank_question_tag');
-    }
-    
-    /**
-     *
-     * @return \Application\Service\SubPollUser
-     */
-    public function getServiceSubPollUser()
-    {
-        return $this->getServiceLocator()->get('app_service_sub_poll_user');
     }
     
     /**

@@ -176,6 +176,10 @@ class Item extends AbstractService
     
     public function addCmpPoll($data, $item_id)
     {
+        if(empty($data)) {
+            return;
+        }
+        
         $title = isset($data['title']) ? $data['title'] : null;
         $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
         $expiration = isset($data['expiration']) ? $data['expiration'] : null;
