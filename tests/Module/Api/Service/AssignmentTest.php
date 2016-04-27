@@ -238,7 +238,7 @@ class AssignmentTest extends AbstractService
     public function testCanAddDocument($submission_id)
     {
         $this->setIdentity(1);
-        $data = $this->jsonRpc('document.add', ['name' => 'monfile','link' => 'http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf','submission_id' => $submission_id]);
+        $data = $this->jsonRpc('submission.addDocument', ['name' => 'monfile','link' => 'http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf','submission_id' => $submission_id]);
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , 1);
@@ -255,21 +255,14 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('submission.getContent', ['submission_id' => $submission_id]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['text_editor']) , 1);
         $this->assertEquals(count($data['result']['text_editor'][0]) , 5);
         $this->assertEquals($data['result']['text_editor'][0]['id'] , 1);
-        $this->assertEquals($data['result']['text_editor'][0]['name'] , 'Text Editor');
+        $this->assertEquals($data['result']['text_editor'][0]['name'] , "Text Editor");
         $this->assertEquals($data['result']['text_editor'][0]['text'] , "");
         $this->assertEquals($data['result']['text_editor'][0]['submission_id'] , 1);
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
-        $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 5);
-        $this->assertEquals($data['result']['chat'][0]['id'] , 1);
-        $this->assertEquals($data['result']['chat'][0]['name'] , 'Chat');
-        $this->assertEquals($data['result']['chat'][0]['type'] , 5);
-        $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
-        $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
         $this->assertEquals(count($data['result']['document']) , 1);
         $this->assertEquals(count($data['result']['document'][0]) , 11);
         $this->assertEquals($data['result']['document'][0]['id'] , 3);
@@ -282,7 +275,15 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['document'][0]['updated_date'] , null);
         $this->assertEquals($data['result']['document'][0]['folder_id'] , null);
         $this->assertEquals($data['result']['document'][0]['owner_id'] , 1);
-        $this->assertEquals(!empty($data['result']['document'][0]['box_id']) , true);
+        $this->assertEquals(!empty($data['result']['document'][0]['box_id']) , false);
+        $this->assertEquals(count($data['result']['chat']) , 1);
+        $this->assertEquals(count($data['result']['chat'][0]) , 5);
+        $this->assertEquals($data['result']['chat'][0]['id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
+        $this->assertEquals($data['result']['chat'][0]['type'] , 5);
+        $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
+        $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['videoconf'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

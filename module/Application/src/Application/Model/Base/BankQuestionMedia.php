@@ -8,8 +8,7 @@ class BankQuestionMedia extends AbstractModel
 {
  	protected $id;
 	protected $bank_question_id;
-	protected $token;
-	protected $link;
+	protected $library_id;
 
 	protected $prefix = 'bank_question_media';
 
@@ -37,26 +36,14 @@ class BankQuestionMedia extends AbstractModel
 		return $this;
 	}
 
-	public function getToken()
+	public function getLibraryId()
 	{
-		return $this->token;
+		return $this->library_id;
 	}
 
-	public function setToken($token)
+	public function setLibraryId($library_id)
 	{
-		$this->token = $token;
-
-		return $this;
-	}
-
-	public function getLink()
-	{
-		return $this->link;
-	}
-
-	public function setLink($link)
-	{
-		$this->link = $link;
+		$this->library_id = $library_id;
 
 		return $this;
 	}

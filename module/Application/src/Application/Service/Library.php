@@ -17,17 +17,22 @@ class Library extends AbstractService
 	 * @param integer $folder_id
 	 * @throws \Exception
 	 * 
-	 * @return integer
+	 * @return \Application\Model\Library
 	 */
 	public function add($name, $link = null, $token = null, $type = null, $folder_id = null)
 	{
 	    $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
-	    $res_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token);
+	    
+	    $box_id = null;
+	    if($res_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token, $type) !== null) {
+	        $box_id = $res_box->getId();
+	    }
+	    
 		$m_library = $this->getModel()
 			->setName($name)
 			->setLink($link)
 			->setToken($token)
-			->setBoxId($res_box->getId())
+			->setBoxId($box_id)
 			->setFolderId($folder_id)
 			->setType($type)
 			->setOwnerId($this->getServiceUser()->getIdentity()['id'])
@@ -50,6 +55,8 @@ class Library extends AbstractService
 	 * @param string $link
 	 * @param string $token
 	 * @param integer $folder_id
+	 * 
+	 * @return \Application\Model\Library
 	 */
 	public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
 	{
@@ -116,6 +123,11 @@ class Library extends AbstractService
 	    return $this->getMapper()->getListByParentItem($item);
 	}
 	
+	public function getListByBankQuestion($bank_question_id)
+	{
+	    return $this->getMapper()->getListByBankQuestion($bank_question_id);
+	}
+	
 	/**
 	 * @invokable
 	 *
@@ -165,10 +177,12 @@ class Library extends AbstractService
 	 * @invokable
 	 * 
 	 * @param integer $id
+	 * 
+	 * @return \Application\Model\Library
 	 */
 	public function get($id)
 	{
-		return $this->getMapper()->select($this->getModel()->setId($id)->setOwnerId($this->getServiceUser()->getIdentity()['id']))->current();
+		return $this->getMapper()->select($this->getModel()->setId($id))->current();
 	}
 	
 	/**
@@ -184,7 +198,12 @@ class Library extends AbstractService
 	    }
 	    
 	    if(null !== $id) {
-	       $m_library = $this->getMapper()->select($this->getModel()->setId($id))->current();
+	       $res_library = $this->getMapper()->select($this->getModel()->setId($id));
+	       
+	       if($res_library->count() <= 0) {
+	           throw new \Exception();
+	       }
+	       $m_library = $res_library->current();
 	       $box_id=$m_library->getBoxId();
 	    }
 	    

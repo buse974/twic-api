@@ -106,7 +106,6 @@ class Submission extends AbstractService
     }
     
     /**
-     * 
      * @param integer $id
      * 
      * @return \Application\Model\Submission
@@ -183,7 +182,7 @@ class Submission extends AbstractService
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         
         // Les composants seulement par groupe
-        if($m_item->getSetId() !== null) {
+        if($m_item->getSetId() !== null && ! $m_item->getSetId() instanceof IsNull) {
             if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
             } else {
@@ -191,16 +190,15 @@ class Submission extends AbstractService
             }
             
             if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission);
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getListOrCreate($submission_id);
             } else {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission);
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
             }
         }
         
-        
-        
-        
-        
+        if(isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
+            $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
+        }
         
         //ret[ModelItem::CMP_DISCUSSION] = $this->getServic()->getListBySubmission($submission_id);
         /*$ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
@@ -318,12 +316,46 @@ class Submission extends AbstractService
     }
     
     /**
+     * @invokable
+     * 
+     * @param integer $submission_id
+     * @param string $name
+     * @param string $type
+     * @param string $link
+     * @param string $token
+     */
+    public function addDocument($submission_id, $name = null, $type = null, $link = null, $token = null)
+    {
+        return  $this->getServiceDocument()->add($name, $type, $link, $token,null, $submission_id);
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id
+     * @param integer $library_id
+     */
+    public function deleteDocument($submission_id, $library_id)
+    {
+        return  $this->getServiceDocument()->delete(null, $submission_id, $library_id);
+    }
+        
+    /**
      * 
      * @return \Application\Service\Library
      */
     public function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Document
+     */
+    public function getServiceDocument()
+    {
+        return $this->getServiceLocator()->get('app_service_document');
     }
     
     /**
@@ -387,6 +419,15 @@ class Submission extends AbstractService
     public function getServiceSubmissionUser()
     {
         return $this->getServiceLocator()->get('app_service_submission_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\SubQuiz
+     */
+    public function getServiceSubQuiz()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_quiz');
     }
     
     /**

@@ -18,6 +18,14 @@ INSERT IGNORE INTO `permission` (`libelle`) VALUES ('eventcomment.delete');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'eventcomment.delete'));
 
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.addDocument');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'submission.addDocument'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('submission.deleteDocument');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'submission.deleteDocument'));
+
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('component.getListEqCq');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'component.getListEqCq'));
@@ -1055,6 +1063,14 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('bankquestion.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'bankquestion.add'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('bankquestion.update');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'bankquestion.update'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('bankquestion.delete');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'bankquestion.delete'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('bankquestion.getList');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 

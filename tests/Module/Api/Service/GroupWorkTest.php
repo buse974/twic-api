@@ -205,8 +205,9 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('submission.getContent', ['submission_id' => $submission_id]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['text_editor']) , 0);
+        $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 1);
         $this->assertEquals(count($data['result']['chat'][0]) , 5);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
@@ -214,7 +215,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['document']) , 0);
+        $this->assertEquals($data['result']['videoconf'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
