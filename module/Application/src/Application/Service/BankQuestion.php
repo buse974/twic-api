@@ -157,9 +157,13 @@ class BankQuestion extends AbstractService
      * 
      * @param integer $course_id
      */
-    public function getList($course_id)
+    public function getList($course_id, $filter = null)
     {
-        $res_bank_question = $this->getMapper()->select($this->getModel()->setCourseId($course_id)->setOlder(new IsNull('older')));
+        $mapper = (null!==$filter)?
+            $this->getMapper()->usePaginator($filter):
+            $this->getMapper();
+        
+        $res_bank_question = $mapper->select($this->getModel()->setCourseId($course_id)->setOlder(new IsNull('older')));
         
         foreach ($res_bank_question as $m_bank_question) {
             $bank_question_id = $m_bank_question->getId();
@@ -168,7 +172,9 @@ class BankQuestion extends AbstractService
             $m_bank_question->setBankQuestionTag($this->getServiceBankQuestionTag()->getList($bank_question_id));
         }
         
-        return $res_bank_question;
+        return (null!==$filter)?
+            ['list' => $res_bank_question, 'count' => $mapper->count()]:
+            $res_bank_question;
     }
     
     /**
