@@ -64,10 +64,18 @@ class BankQuestionTag extends AbstractService
     
     }
     
-    public function getList($bank_question_id)
+    /**
+     * @invokable
+     * 
+     * @param integer $bank_question_id
+     * @param integer $course_id
+     * @param string $search
+     * @return NULL[]
+     */
+    public function getList($bank_question_id = null, $course_id = null, $search = null)
     {
         $ret = [];
-        $res_bank_question_tag = $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id));
+        $res_bank_question_tag = $this->getMapper()->getList($bank_question_id, $course_id, $search);
         foreach ($res_bank_question_tag as $m_bank_question_tag) {
             $ret[] = $m_bank_question_tag->getName();
         }

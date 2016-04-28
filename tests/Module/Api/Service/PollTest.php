@@ -521,6 +521,22 @@ class PollTest extends AbstractService
     }
     
     /**
+     * @depends testCreateInit
+     */
+    public function testCanBankQuestionTagGetList($course)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('bankquestiontag.getList', ['course_id' => $course['course_id'], 'search' => 'upt']);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result'][0] , "maquestion upt 1");
+        $this->assertEquals($data['result'][1] , "maquestion upt");
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
      * @depends testCanPollAdd
      */
     public function testCanPollUpadte($poll)
