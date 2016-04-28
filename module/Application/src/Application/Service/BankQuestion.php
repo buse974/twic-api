@@ -116,7 +116,13 @@ class BankQuestion extends AbstractService
      */
     public function delete($id)
     {
-        $this->copy($id);
+        if(!is_array($id)) {
+            $id = [$id];
+        }
+        
+        foreach ($id as $i) {
+            $this->copy($i);
+        }
         
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
