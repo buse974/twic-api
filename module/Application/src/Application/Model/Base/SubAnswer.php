@@ -7,7 +7,7 @@ use Dal\Model\AbstractModel;
 class SubAnswer extends AbstractModel
 {
  	protected $id;
-	protected $sub_quiz_id;
+	protected $sub_question_id;
 	protected $bank_question_item_id;
 	protected $answer;
 	protected $date;
@@ -27,14 +27,14 @@ class SubAnswer extends AbstractModel
 		return $this;
 	}
 
-	public function getSubQuizId()
+	public function getSubQuestionId()
 	{
-		return $this->sub_quiz_id;
+		return $this->sub_question_id;
 	}
 
-	public function setSubQuizId($sub_quiz_id)
+	public function setSubQuestionId($sub_question_id)
 	{
-		$this->sub_quiz_id = $sub_quiz_id;
+		$this->sub_question_id = $sub_question_id;
 
 		return $this;
 	}

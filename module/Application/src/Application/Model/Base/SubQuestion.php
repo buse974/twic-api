@@ -7,6 +7,7 @@ use Dal\Model\AbstractModel;
 class SubQuestion extends AbstractModel
 {
  	protected $id;
+	protected $sub_quiz_id;
 	protected $poll_item_id;
 	protected $bank_question_id;
 	protected $group_question_id;
@@ -23,6 +24,18 @@ class SubQuestion extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
+
+		return $this;
+	}
+
+	public function getSubQuizId()
+	{
+		return $this->sub_quiz_id;
+	}
+
+	public function setSubQuizId($sub_quiz_id)
+	{
+		$this->sub_quiz_id = $sub_quiz_id;
 
 		return $this;
 	}
