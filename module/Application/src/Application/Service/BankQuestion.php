@@ -120,11 +120,13 @@ class BankQuestion extends AbstractService
             $id = [$id];
         }
         
+        $ret = [];
         foreach ($id as $i) {
             $this->copy($i);
+            $ret[$i] = $this->getMapper()->delete($this->getModel()->setId($i));
         }
         
-        return $this->getMapper()->delete($this->getModel()->setId($id));
+        return $ret;
     }
     
     public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name)
