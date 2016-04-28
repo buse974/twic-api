@@ -23,6 +23,13 @@ class BankAnswerItem extends AbstractService
         return $this->getMapper()->insert($m_bank_answer_item);
     }
     
+    public function copy($bank_question_item_id_new, $bank_question_item_id_old)
+    {
+        $m_bank_answer_item = $this->getMapper()->select($this->getModel()->setBankQuestionItemId($bank_question_item_id_old))->current();
+        
+        return $this->getMapper()->insert($m_bank_answer_item->setBankQuestionItemId($bank_question_item_id_new));
+    }
+    
     public function get($bank_question_item_id)
     {
         $res_bank_answer_item = $this->getMapper()->select($this->getModel()->setBankQuestionItemId($bank_question_item_id));

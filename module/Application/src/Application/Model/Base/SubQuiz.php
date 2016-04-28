@@ -12,6 +12,7 @@ class SubQuiz extends AbstractModel
 	protected $end_date;
 	protected $user_id;
 	protected $submission_id;
+	protected $grade;
 
 	protected $prefix = 'sub_quiz';
 
@@ -83,6 +84,18 @@ class SubQuiz extends AbstractModel
 	public function setSubmissionId($submission_id)
 	{
 		$this->submission_id = $submission_id;
+
+		return $this;
+	}
+
+	public function getGrade()
+	{
+		return $this->grade;
+	}
+
+	public function setGrade($grade)
+	{
+		$this->grade = $grade;
 
 		return $this;
 	}

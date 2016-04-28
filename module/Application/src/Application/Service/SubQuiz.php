@@ -34,12 +34,7 @@ class SubQuiz extends AbstractService
             $ret[] = $ar;
         }
         
-        
-        
-        
-        
-        
-        return $this->getServicePoll()->getByItem($item_id);
+        return $ret;
     }
      
     /**
