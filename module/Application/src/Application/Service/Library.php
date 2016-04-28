@@ -24,7 +24,7 @@ class Library extends AbstractService
 	    $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
 	    
 	    $box_id = null;
-	    if($res_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token, $type) !== null) {
+	    if(($res_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token, $type)) !== null) {
 	        $box_id = $res_box->getId();
 	    }
 	    
