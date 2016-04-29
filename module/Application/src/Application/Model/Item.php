@@ -46,6 +46,9 @@ class Item extends BaseItem
     protected $videoconf;
     protected $thread;
     protected $submission;
+    protected $submitted;
+    protected $graded;
+    protected $due;
       
     public function exchangeArray(array &$data)
     {
@@ -60,6 +63,43 @@ class Item extends BaseItem
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
     }
 
+    public function getDue()
+    {
+        return $this->due;
+    }
+    
+    public function setDue($due)
+    {
+        $this->due = $due;
+    
+        return $this;
+    }
+    
+    
+    public function getGraded()
+    {
+        return $this->graded;
+    }
+    
+    public function setGraded($graded)
+    {
+        $this->graded = $graded;
+    
+        return $this;
+    }
+    
+    public function getSubmitted()
+    {
+        return $this->submitted;
+    }
+    
+    public function setSubmitted($submitted)
+    {
+        $this->submitted = $submitted;
+    
+        return $this;
+    }
+    
     public function getSubmission()
     {
         return $this->submission;

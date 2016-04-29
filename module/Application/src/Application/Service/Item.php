@@ -241,6 +241,45 @@ class Item extends AbstractService
     /**
      * @invokable
      * 
+     * @param array $filter
+     * @param string $type
+     * @param array $program
+     * @param array $course
+     * @param string $due
+     * @param bool $notgraded
+     * @param string $search
+     * 
+     */
+    public function getListSubmissions($filter = null, $type = null, $program = null, $course = null, $due = null, $notgraded = null, $search = null)
+    {
+         $mapper = $this->getMapper()->usePaginator($filter);
+         $u = $this->getServiceUser()->getIdentity();
+         $res_item = $mapper->getListSubmissions($u['school']['id'], $type, $program, $course, $due, $notgraded, $search);
+         
+         /*foreach ($res_item as $m_item) {
+             
+             if(null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull) {
+                 
+             } else {
+                 
+             }
+             
+             
+             
+             $m_item->setSubmission([
+                 'due' => '',
+                 'submitted' => '',
+                 'graded' => ''
+             ]);
+         }*/
+         
+         
+         return ['list' => $res_item, 'count' => $res_item->count()];
+    }
+    
+    /**
+     * @invokable
+     * 
      * @param integer $id
      * @param integer $grading_policy_id
      * @param string $title

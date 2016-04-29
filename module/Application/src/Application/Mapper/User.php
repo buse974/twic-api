@@ -9,7 +9,6 @@ use Zend\Db\Sql\Select;
 class User extends AbstractMapper
 {
     
-    
     public function getListUsersGroupByItemAndUser($item_id, $user)
     {
         $sub = $this->tableGateway->getSql()->select();
@@ -139,21 +138,10 @@ class User extends AbstractMapper
             $select->where(array('school.id' => $sub_select));
         }
         if (null !== $type) {
-            if (! is_array($type)) {
-                $type = array($type => true);
-            }
-            $ts = array();
-            foreach ($type as $key => $t) {
-                if ($t) {
-                    $ts[] = $key;
-                }
-            }
+            $select->join('user_role', 'user_role.user_id=user.id', array())
+                ->join('role', 'user_role.role_id=role.id', array())
+                ->where(array('role.name' => $type));
             
-            if (! empty($ts)) {
-                $select->join('user_role', 'user_role.user_id=user.id', array())
-                    ->join('role', 'user_role.role_id=role.id', array())
-                    ->where(array('role.name' => $ts));
-            }
         }
         if (! empty($program) || $level !== null || $course !== null || $search !== null) {
             $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);

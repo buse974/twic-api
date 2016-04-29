@@ -186,6 +186,86 @@ class Item extends AbstractMapper
         return (($res->count() > 0) ? $res->current()->getId() : null);
     }
     
+    public function  getListSubmissions($school_id, $type = null, $program = null, $course = null, $due = null, $notgraded = null, $search = null)
+    {
+        $sql = 'SELECT 
+                    COUNT(1) AS `item$due`,
+                    `item`.`id` AS `item$id`,
+                    `item`.`title` AS `item$title`,
+                    `item`.`type` AS `item$type`,
+                    `item`.`start` AS `item$start`,
+                    `item`.`end` AS `item$end`,
+                    IF(submission.is_graded IS NULL,0,submission.is_graded) AS `item$graded`,
+                    IF(submission.submit_date IS NULL, 0, 1) AS `item$submitted`,
+                    `course`.`title` AS `course$title`,
+                    `program`.`name` AS `program$name`
+                FROM
+                    `item`
+                        LEFT JOIN
+                    `ct_group` ON `ct_group`.`item_id` = `item`.`id`
+                        LEFT JOIN
+                    `group_user` ON `group_user`.`group_id` = `ct_group`.`group_id`
+                        LEFT JOIN
+                    `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id`
+                        AND `item`.`set_id` IS NULL
+                        AND ((`group_user`.`user_id` = `course_user_relation`.`user_id`
+                        AND `ct_group`.`item_id` IS NOT NULL)
+                        OR `ct_group`.`item_id` IS NULL)
+                        LEFT JOIN
+                    `set_group` ON `item`.`set_id` = `set_group`.`set_id`
+                        AND ((`ct_group`.`group_id` = `set_group`.`group_id`)
+                        OR `ct_group`.`item_id` IS NULL)
+                        LEFT JOIN
+                    `submission_user` ON `submission_user`.`user_id` = `course_user_relation`.`user_id`
+                        LEFT JOIN
+                    `submission` ON (`submission`.`id` = `submission_user`.`submission_id`)
+                        OR (`submission`.`group_id` = `set_group`.`group_id`)
+                        INNER JOIN
+                    `course` ON `item`.`course_id` = `course`.`id`
+                        INNER JOIN
+                    `program` ON `program`.`id` = `course`.`program_id`
+                WHERE ';
+        
+        
+        $where=[];
+        $val=[];
+        if (null !== $course) {
+            $val[':c'] = $course;
+            $where[] = 'course.id=:c';
+        }
+        if (null !== $program) {
+            $val[':p'] = $program;
+            $where[] = 'program.id=:p';
+        }
+        if (null !== $type) {
+            $val[':t'] = $type;
+            $where[] = 'item.type=:t';
+        }
+        if (null !== $search) {
+            $val[':s'] = '%'.$search.'%';
+            $where[] = 'item.title LIKE :s';
+        }
+        if ($due === true) {
+            $where[] = 'item.end < UTC_TIMESTAMP()';
+        }
+        if ($notgraded === true) {
+            $where[] = 'item.is_graded IS FALSE';
+        }
+        
+        $val[':sc'] = $school_id;
+        $where[] = 'program.school_id=:sc';
+        
+        $cw='';
+        $nb = count($where);
+        for($i=0; $i<$nb;$i++) {
+            $cw.=$where[$i] . ((($nb-1)===$i)?' ':'AND ');
+        }
+        
+        $sql.=$cw.' GROUP BY `item`.`id`';
+            
+        return $this->selectPdo($sql,$val);
+    }
+    
     /**
      * Get Last parent id.
      *

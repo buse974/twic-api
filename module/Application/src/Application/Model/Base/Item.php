@@ -20,6 +20,7 @@ class Item extends AbstractModel
 	protected $start;
 	protected $end;
 	protected $cut_off;
+	protected $is_graded;
 
 	protected $prefix = 'item';
 
@@ -187,6 +188,18 @@ class Item extends AbstractModel
 	public function setCutOff($cut_off)
 	{
 		$this->cut_off = $cut_off;
+
+		return $this;
+	}
+
+	public function getIsGraded()
+	{
+		return $this->is_graded;
+	}
+
+	public function setIsGraded($is_graded)
+	{
+		$this->is_graded = $is_graded;
 
 		return $this;
 	}
