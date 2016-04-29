@@ -11,7 +11,7 @@ class SubmissionComments extends AbstractModel
 	protected $audio;
 	protected $user_id;
 	protected $submission_id;
-	protected $file;
+	protected $file_token;
 	protected $file_name;
 	protected $created_date;
 	protected $read_date;
@@ -78,14 +78,14 @@ class SubmissionComments extends AbstractModel
 		return $this;
 	}
 
-	public function getFile()
+	public function getFileToken()
 	{
-		return $this->file;
+		return $this->file_token;
 	}
 
-	public function setFile($file)
+	public function setFileToken($file_token)
 	{
-		$this->file = $file;
+		$this->file_token = $file_token;
 
 		return $this;
 	}

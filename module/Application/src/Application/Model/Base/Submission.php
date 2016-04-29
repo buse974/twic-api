@@ -8,8 +8,10 @@ class Submission extends AbstractModel
 {
  	protected $id;
 	protected $item_id;
+	protected $group_id;
 	protected $group_name;
 	protected $submit_date;
+	protected $is_graded;
 
 	protected $prefix = 'submission';
 
@@ -37,6 +39,18 @@ class Submission extends AbstractModel
 		return $this;
 	}
 
+	public function getGroupId()
+	{
+		return $this->group_id;
+	}
+
+	public function setGroupId($group_id)
+	{
+		$this->group_id = $group_id;
+
+		return $this;
+	}
+
 	public function getGroupName()
 	{
 		return $this->group_name;
@@ -57,6 +71,18 @@ class Submission extends AbstractModel
 	public function setSubmitDate($submit_date)
 	{
 		$this->submit_date = $submit_date;
+
+		return $this;
+	}
+
+	public function getIsGraded()
+	{
+		return $this->is_graded;
+	}
+
+	public function setIsGraded($is_graded)
+	{
+		$this->is_graded = $is_graded;
 
 		return $this;
 	}
