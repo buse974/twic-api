@@ -256,7 +256,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result']['list']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]) , 10);
+        $this->assertEquals(count($data['result']['list'][0]) , 11);
         $this->assertEquals($data['result']['list'][0]['due'] , 3);
         $this->assertEquals($data['result']['list'][0]['graded'] , 0);
         $this->assertEquals($data['result']['list'][0]['submitted'] , 0);
@@ -269,6 +269,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['type'] , "WG");
         $this->assertEquals($data['result']['list'][0]['start'] , null);
         $this->assertEquals($data['result']['list'][0]['end'] , null);
+        $this->assertEquals($data['result']['list'][0]['cut_off'] , null);
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
