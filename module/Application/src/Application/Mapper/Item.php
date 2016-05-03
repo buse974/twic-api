@@ -193,8 +193,9 @@ class Item extends AbstractMapper
                     `item`.`id` AS `item$id`,
                     `item`.`title` AS `item$title`,
                     `item`.`type` AS `item$type`,
-                    `item`.`start` AS `item$start`,
-                    `item`.`end` AS `item$end`,
+                    DATE_FORMAT(item.start, "%Y-%m-%dT%TZ") AS `item$start`,
+                    DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ") AS `item$cut_off`,
+                    DATE_FORMAT(item.end, "%Y-%m-%dT%TZ") AS `item$end`,
                     IF(submission.is_graded IS NULL,0,submission.is_graded) AS `item$graded`,
                     IF(submission.submit_date IS NULL, 0, 1) AS `item$submitted`,
                     `course`.`title` AS `course$title`,
@@ -206,11 +207,13 @@ class Item extends AbstractMapper
                         LEFT JOIN
                     `group_user` ON `group_user`.`group_id` = `ct_group`.`group_id`
                         LEFT JOIN
-                    `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id`
+                    `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id` 
                         AND `item`.`set_id` IS NULL
                         AND ((`group_user`.`user_id` = `course_user_relation`.`user_id`
                         AND `ct_group`.`item_id` IS NOT NULL)
                         OR `ct_group`.`item_id` IS NULL)
+                        LEFT JOIN 
+                    `user_role` ON `user_role`.`user_id`=`course_user_relation`.`user_id`
                         LEFT JOIN
                     `set_group` ON `item`.`set_id` = `set_group`.`set_id`
                         AND ((`ct_group`.`group_id` = `set_group`.`group_id`)
@@ -218,7 +221,7 @@ class Item extends AbstractMapper
                         LEFT JOIN
                     `submission_user` ON `submission_user`.`user_id` = `course_user_relation`.`user_id`
                         LEFT JOIN
-                    `submission` ON (`submission`.`id` = `submission_user`.`submission_id`)
+                    `submission` ON (`submission`.`id` = `submission_user`.`submission_id` AND `user_role`.`role_id`='.ModelRole::ROLE_STUDENT_ID.')
                         OR (`submission`.`group_id` = `set_group`.`group_id`)
                         INNER JOIN
                     `course` ON `item`.`course_id` = `course`.`id`
