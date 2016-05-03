@@ -229,15 +229,15 @@ class Item extends AbstractMapper
         
         $where=[];
         $val=[];
-        if (null !== $course) {
+        if (!empty($course)) {
             $val[':c'] = $course;
             $where[] = 'course.id=:c';
         }
-        if (null !== $program) {
+        if (!empty($program)) {
             $val[':p'] = $program;
             $where[] = 'program.id=:p';
         }
-        if (null !== $type) {
+        if (!empty($type)) {
             $val[':t'] = $type;
             $where[] = 'item.type=:t';
         }
