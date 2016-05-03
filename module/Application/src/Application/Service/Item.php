@@ -256,7 +256,7 @@ class Item extends AbstractService
          $u = $this->getServiceUser()->getIdentity();
          $res_item = $mapper->getListSubmissions($u['school']['id'], $type, $program, $course, $due, $notgraded, $search);
 
-         return ['list' => $res_item, 'count' => $res_item->count()];
+         return ['list' => $res_item, 'count' => $mapper->count()];
     }
     
     /**
