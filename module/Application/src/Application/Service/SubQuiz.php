@@ -12,27 +12,33 @@ class SubQuiz extends AbstractService
         $res_sub_quiz = $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
         
         $ret = [];
-        foreach ($res_sub_quiz as $m_sub_quiz) {
-            $ar = $m_sub_quiz->toArray();
-            $ar['sub_questions'] = $this->getServiceSubQuestion()->getListLite($m_sub_quiz->getId());
-            
-            $sub_question_ids = [];
-            $bank_question_ids = [];
-            foreach ($ar['sub_questions'] as $m_sub_question) {
-                $sub_question_ids[] = $m_sub_question->getId();
-                $bank_question_ids[] = $m_sub_question->getBankQuestionId();
-            }
-            $ar['sub_answers'] = $this->getServiceSubAnswer()->getListLite($sub_question_ids)->toArray(['bank_question_item_id']);
-            $ar['bank_questions'] = $this->getServiceBankQuestion()->getListLite($bank_question_ids)->toArray(['id']);
-            $ar['bq_items'] = $this->getServiceBankQuestionItem()->getList($bank_question_ids);
-            $ar['medias'] = $this->getServiceBankQuestionMedia()->getListBankQuestion($bank_question_ids);
-            $ar['poll'] = $this->getServicePoll()->getLite($m_sub_quiz->getPollId());
-            $ar['poll_items'] = $this->getServicePollItem()->getListLite($poll_id)->toArray(['id']);
-                
-            $ret[] = $ar;
+        foreach ($res_sub_quiz as $m_sub_quiz) {     
+           $ret[] = $this->get($m_sub_quiz->getId());
         }
         
         return $ret;
+    }
+    
+    public function get($id) 
+    {
+        $m_sub_quiz = $this->getMapper()->select($this->getModel()->setId($id));
+        
+        $ar = $m_sub_quiz->toArray();
+        $ar['sub_questions'] = $this->getServiceSubQuestion()->getListLite($m_sub_quiz->getId());
+        $sub_question_ids = [];
+        $bank_question_ids = [];
+        foreach ($ar['sub_questions'] as $m_sub_question) {
+            $sub_question_ids[] = $m_sub_question->getId();
+            $bank_question_ids[] = $m_sub_question->getBankQuestionId();
+        }
+        $ar['sub_answers'] = $this->getServiceSubAnswer()->getListLite($sub_question_ids)->toArray(['bank_question_item_id']);
+        $ar['bank_questions'] = $this->getServiceBankQuestion()->getListLite($bank_question_ids)->toArray(['id']);
+        $ar['bq_items'] = $this->getServiceBankQuestionItem()->getList($bank_question_ids);
+        $ar['medias'] = $this->getServiceBankQuestionMedia()->getListBankQuestion($bank_question_ids);
+        $ar['poll'] = $this->getServicePoll()->getLite($m_sub_quiz->getPollId());
+        $ar['poll_items'] = $this->getServicePollItem()->getListLite($m_sub_quiz->getPollId())->toArray(['id']);
+        
+        return $ar;
     }
     
     public function start($submission_id = null, $item_id = null)
@@ -46,36 +52,12 @@ class SubQuiz extends AbstractService
         $me = $this->getServiceUser()->getIdentity()['id'];
         
         $m_sub_quiz = $this->getModel()->setUserId($me)->setPollId($m_poll->getId())->setSubmissionId($m_submission->getId());
-        
         $this->getMapper()->insert($m_sub_quiz);
         $sub_quiz_id = $this->getMapper()->getLastInsertValue();
         
+        $this->getServiceSubQuestion()->create($sub_quiz_id);
         
-        
-        
-        
-        
-        /*$m_sub_quiz = $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id))->current();
-
-        $ar = $m_sub_quiz->toArray();
-        
-        
-        $ar['sub_questions'] = $this->getServiceSubQuestion()->getListLite($m_sub_quiz->getId());
-        $sub_question_ids = [];
-        $bank_question_ids = [];
-        foreach ($ar['sub_questions'] as $m_sub_question) {
-            $sub_question_ids[] = $m_sub_question->getId();
-            $bank_question_ids[] = $m_sub_question->getBankQuestionId();
-        }
-        $ar['poll'] = $this->getServicePoll()->getLite($m_sub_quiz->getPollId());
-        $ar['sub_answers'] = $this->getServiceSubAnswer()->getListLite($sub_question_ids)->toArray(['bank_question_item_id']);
-        $ar['bank_questions'] = $this->getServiceBankQuestion()->getListLite($bank_question_ids)->toArray(['id']);
-        $ar['bq_items'] = $this->getServiceBankQuestionItem()->getList($bank_question_ids);
-        $ar['medias'] = $this->getServiceBankQuestionMedia()->getListBankQuestion($bank_question_ids);
-        $ar['poll'] = $this->getServicePoll()->getLite($m_sub_quiz->getPollId());
-        $ar['poll_items'] = $this->getServicePollItem()->getListLite($poll_id)->toArray(['id']);
-*/
-        return $ar;
+        return $this->get($sub_quiz_id);
     }
     
     

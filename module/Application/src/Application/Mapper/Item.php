@@ -233,16 +233,37 @@ class Item extends AbstractMapper
         $where=[];
         $val=[];
         if (!empty($course)) {
-            $val[':c'] = $course;
-            $where[] = 'course.id=:c';
+            $i = 0;
+            $s = [];
+            if(!is_array($course)) { $course = [$course]; }
+            foreach ($course as $c) {
+                $i++;
+                $val[':c'.$i] = $c;
+                $s[]=':c'.$i;
+            }
+            $where[] = 'course.id IN ('. implode(',', $s).')';
         }
         if (!empty($program)) {
-            $val[':p'] = $program;
-            $where[] = 'program.id=:p';
+            $i = 0;
+            $s = [];
+            if(!is_array($program)) { $program = [$program]; }
+            foreach ($program as $p) {
+                $i++;
+                $val[':p'.$i] = $p;
+                $s[]=':p'.$i;
+            }
+            $where[] = 'program.id IN ('. implode(',', $s).')';
         }
         if (!empty($type)) {
-            $val[':t'] = $type;
-            $where[] = 'item.type=:t';
+            $i = 0;
+            $s = [];
+            if(!is_array($type)) { $type = [$type]; }
+            foreach ($type as $t) {
+                $i++;
+                $val[':t'.$i] = $t;
+                $s[]=':t'.$i;
+            }
+            $where[] = 'item.type IN ('. implode(',', $s).')';
         }
         if (null !== $search) {
             $val[':s'] = '%'.$search.'%';
