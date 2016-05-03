@@ -251,7 +251,7 @@ class GroupWorkTest extends AbstractService
     public function testCanGetItemGetListSubmissions()
     {
         $this->setIdentity(1);
-        $data = $this->jsonRpc('item.getListSubmissions', []);
+        $data = $this->jsonRpc('item.getListSubmissions', ['filter' => ['n' => 10, 'p' => 1]]);
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);

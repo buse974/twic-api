@@ -36,7 +36,7 @@ class Course extends AbstractMapper
             ->where(array('school.deleted_date IS NULL'))
             ->group('course.id');
         
-        if (null !== $program) {
+        if (!empty($program)) {
             $select->where(array('course.program_id' => $program));
         }
         
