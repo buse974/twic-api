@@ -261,7 +261,7 @@ class Item extends AbstractMapper
         $cw='';
         $nb = count($where);
         for($i=0; $i<$nb;$i++) {
-            $cw.=$where[$i] . ((($nb-1)===$i)?' ':'AND ');
+            $cw.=$where[$i] . ((($nb-1)===$i)?' ':' AND ');
         }
         
         $sql.=$cw.' GROUP BY `item`.`id`';
