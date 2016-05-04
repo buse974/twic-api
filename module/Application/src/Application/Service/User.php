@@ -34,6 +34,11 @@ class User extends AbstractService
         return $this->getIdentity(true);
     }
 
+    public function getListUsersByGroup($group_id)
+    {
+        return $this->getMapper()->getListUsersByGroup($group_id);
+    }
+    
     public function _getCacheIdentity($init = false)
     {
         $user = [];

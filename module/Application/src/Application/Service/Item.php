@@ -290,7 +290,8 @@ class Item extends AbstractService
             ->setCutOff($cut_off)
             ->setType($type)
             ->setHasSubmission($has_submission)
-            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
+            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id)
+            ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
          if ($order_id !== null || $parent_id !== null ) {
          	$this->updateOrderId($id, $parent_id, $order_id);
@@ -315,9 +316,8 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setCourseId($course)
-            ->setParentId(($parent_id === 0 || null === $parent_id) ? new IsNull() : $parent_id))->toArrayParent('order_id');
+        
+        return $this->getMapper()->getList($course, $parent_id);
     }
     
       /**
