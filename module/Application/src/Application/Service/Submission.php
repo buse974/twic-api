@@ -6,6 +6,7 @@ use Dal\Service\AbstractService;
 use Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\IsNull;
 use JRpc\Json\Server\Exception\JrpcException;
+use Application\Model\SubmissionUser;
 
 class Submission extends AbstractService
 {
@@ -106,6 +107,38 @@ class Submission extends AbstractService
         } elseif ($submission_id !== null) {
             return $this->getBySubmission($submission_id);
         }
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $item_id
+     */
+    
+    public function getList($item_id = null)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id']; 
+        $res_submission = $this->getMapper()->getList($item_id, $me);
+        $m_item = $this->getServiceItem()->get($item_id);
+     
+        if(null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull) {
+            foreach ($res_submission as $m_submission) {
+                if(is_numeric($m_submission->getId())) {
+                    $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+                } else {
+                    $res_user = $this->getServiceUser()->getListUsersByGroup($m_submission->getGroupId());
+                    $su=[];
+                    foreach ($res_user as $m_user) {
+                        $m_submission_user = new SubmissionUser();
+                        $m_submission_user->setUser($m_user);
+                        $su[] = $m_submission_user;
+                    }
+                    $m_submission->setSubmissionUser($su);
+                }
+            }
+        }
+        
+        return $res_submission;
     }
     
     /**

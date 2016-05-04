@@ -5,6 +5,7 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
 use Dal\Db\Sql\Select;
+use Application\Model\Role as ModelRole;
 
 class Submission extends AbstractMapper
 {
@@ -62,6 +63,59 @@ class Submission extends AbstractMapper
             ->where(array('submission_user.user_id' => $user_id));
 
         return $this->selectWith($select);
+    }
+    
+    public function getList($item_id, $user_id)
+    {
+        $sql = '
+            SELECT 
+                     `submission`.`submit_date` AS `submission$submit_date`,
+                     `submission`.`id` AS `submission$id`,
+                     `group`.`id` AS `submission$group_id`,
+                     `group`.`name` AS `submission$group_name`,
+                     `submission`.`id` AS `submission$id`,
+                     `course_user_relation`.`user_id` as `submission_user$user_id`,
+                     `submission_user`.`grade` as `submission_user$grade`,
+                     `submission_user`.`submit_date` as `submission_user$submit_date`,
+                     `user`.`firstname` as `user$firstname`,
+                     `user`.`lastname` as `user$lastname`,
+                     `user`.`avatar` as `user$avatar`,
+                     `user`.`id` as `user$id`
+                FROM
+                    `item` 
+                        LEFT JOIN
+                    `ct_group` ON `ct_group`.`item_id` = `item`.`id`
+                        LEFT JOIN
+                    `group_user` ON `group_user`.`group_id` = `ct_group`.`group_id`
+                        LEFT JOIN
+                    `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id`
+                        AND `item`.`set_id` IS NULL
+                        AND ((`group_user`.`user_id` = `course_user_relation`.`user_id`
+                        AND `ct_group`.`item_id` IS NOT NULL)
+                        OR `ct_group`.`item_id` IS NULL)
+                        LEFT JOIN
+                    `user_role` ON `user_role`.`user_id`=`course_user_relation`.`user_id`
+                        LEFT JOIN
+                    `set_group` ON `item`.`set_id` = `set_group`.`set_id`
+                        AND ((`ct_group`.`group_id` = `set_group`.`group_id`)
+                        OR `ct_group`.`item_id` IS NULL)
+                        LEFT JOIN
+                    `group` ON `group`.`id` = `set_group`.`group_id`
+                         LEFT JOIN
+                    `submission_user` ON `submission_user`.`user_id` = `course_user_relation`.`user_id`
+						AND `user_role`.`role_id`='.ModelRole::ROLE_STUDENT_ID.'
+                        AND `submission_user`.`submission_id` IN (SELECT `id` FROM `submission` WHERE `submission`.`item_id`=:item)
+                        LEFT JOIN
+                    `submission` ON `submission`.`item_id`=`item`.`id` AND (`submission`.`id` = `submission_user`.`submission_id`)
+                        OR (`submission`.`group_id` = `set_group`.`group_id`) 
+						LEFT JOIN 
+					`user` ON `course_user_relation`.`user_id`=`user`.`id`
+                        LEFT JOIN
+	                `submission_comments` ON `submission_comments`.`submission_id`=`submission`.`id`
+                WHERE item.id = :item2  
+                GROUP BY `submission`.`id`, `submission_comments`.`submission_id`, `group`.`id`, `course_user_relation`.`user_id`';
+        
+        return $this->selectPdo($sql,[':item' => $item_id, ':item2' => $item_id]);
     }
     
     /**

@@ -676,7 +676,7 @@ class ScenarioTest extends AbstractService
         //"\n3:2:1\n";
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 3); 
-        $this->assertEquals(count($data['result'][0]) , 14); 
+        $this->assertEquals(count($data['result'][0]) , 15); 
         $this->assertEquals($data['result'][0]['id'] , 3); 
         $this->assertEquals($data['result'][0]['course_id'] , 1); 
         $this->assertEquals($data['result'][0]['grading_policy_id'] , 7); 
@@ -691,7 +691,8 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][0]['start'] , null); 
         $this->assertEquals($data['result'][0]['end'] , null); 
         $this->assertEquals($data['result'][0]['cut_off'] , null); 
-        $this->assertEquals(count($data['result'][1]) , 14); 
+        $this->assertEquals($data['result'][0]['is_graded'] , 0);
+        $this->assertEquals(count($data['result'][1]) , 15); 
         $this->assertEquals($data['result'][1]['id'] , 2); 
         $this->assertEquals($data['result'][1]['course_id'] , 1); 
         $this->assertEquals($data['result'][1]['grading_policy_id'] , 8); 
@@ -706,7 +707,8 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][1]['start'] , null); 
         $this->assertEquals($data['result'][1]['end'] , null); 
         $this->assertEquals($data['result'][1]['cut_off'] , null); 
-        $this->assertEquals(count($data['result'][2]) , 14); 
+        $this->assertEquals($data['result'][1]['is_graded'] , 0);
+        $this->assertEquals(count($data['result'][2]) , 15); 
         $this->assertEquals($data['result'][2]['id'] , 1); 
         $this->assertEquals($data['result'][2]['course_id'] , 1); 
         $this->assertEquals($data['result'][2]['grading_policy_id'] , 7); 
@@ -721,6 +723,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result'][2]['start'] , null); 
         $this->assertEquals($data['result'][2]['end'] , null); 
         $this->assertEquals($data['result'][2]['cut_off'] , null); 
+        $this->assertEquals($data['result'][2]['is_graded'] , 0);
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
     }
@@ -751,7 +754,7 @@ class ScenarioTest extends AbstractService
     	
     	$this->assertEquals(count($data) , 3);
     	$this->assertEquals(count($data['result']) , 3);
-    	$this->assertEquals(count($data['result'][0]) , 14);
+    	$this->assertEquals(count($data['result'][0]) , 15);
     	$this->assertEquals($data['result'][0]['id'] , 2);
     	$this->assertEquals($data['result'][0]['course_id'] , 1);
     	$this->assertEquals($data['result'][0]['grading_policy_id'] , 8);
@@ -766,7 +769,8 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][0]['start'] , null);
     	$this->assertEquals($data['result'][0]['end'] , null);
     	$this->assertEquals($data['result'][0]['cut_off'] , null);
-    	$this->assertEquals(count($data['result'][1]) , 14);
+    	$this->assertEquals($data['result'][0]['is_graded'] , 0);
+    	$this->assertEquals(count($data['result'][1]) , 15);
     	$this->assertEquals($data['result'][1]['id'] , 3);
     	$this->assertEquals($data['result'][1]['course_id'] , 1);
     	$this->assertEquals($data['result'][1]['grading_policy_id'] , 8);
@@ -781,7 +785,8 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][1]['start'] , null);
     	$this->assertEquals($data['result'][1]['end'] , null);
     	$this->assertEquals($data['result'][1]['cut_off'] , null);
-    	$this->assertEquals(count($data['result'][2]) , 14);
+    	$this->assertEquals($data['result'][1]['is_graded'] , 0);
+    	$this->assertEquals(count($data['result'][2]) , 15);
     	$this->assertEquals($data['result'][2]['id'] , 1);
     	$this->assertEquals($data['result'][2]['course_id'] , 1);
     	$this->assertEquals($data['result'][2]['grading_policy_id'] , 7);
@@ -796,6 +801,7 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][2]['start'] , null);
     	$this->assertEquals($data['result'][2]['end'] , null);
     	$this->assertEquals($data['result'][2]['cut_off'] , null);
+    	$this->assertEquals($data['result'][2]['is_graded'] , 0);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -824,7 +830,7 @@ class ScenarioTest extends AbstractService
     	
     	$this->assertEquals(count($data) , 3);
     	$this->assertEquals(count($data['result']) , 3);
-    	$this->assertEquals(count($data['result'][0]) , 14);
+    	$this->assertEquals(count($data['result'][0]) , 15);
     	$this->assertEquals($data['result'][0]['id'] , 3);
     	$this->assertEquals($data['result'][0]['course_id'] , 1);
     	$this->assertEquals($data['result'][0]['grading_policy_id'] , 8);
@@ -838,7 +844,8 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][0]['start'] , null);
     	$this->assertEquals($data['result'][0]['end'] , null);
     	$this->assertEquals($data['result'][0]['cut_off'] , null);
-    	$this->assertEquals(count($data['result'][1]) , 14);
+    	$this->assertEquals($data['result'][0]['is_graded'] , 0);
+    	$this->assertEquals(count($data['result'][1]) , 15);
     	$this->assertEquals($data['result'][1]['id'] , 2);
     	$this->assertEquals($data['result'][1]['course_id'] , 1);
     	$this->assertEquals($data['result'][1]['grading_policy_id'] , 8);
@@ -852,7 +859,8 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][1]['start'] , null);
     	$this->assertEquals($data['result'][1]['end'] , null);
     	$this->assertEquals($data['result'][1]['cut_off'] , null);
-    	$this->assertEquals(count($data['result'][2]) , 14);
+    	$this->assertEquals($data['result'][1]['is_graded'] , 0);
+    	$this->assertEquals(count($data['result'][2]) , 15);
     	$this->assertEquals($data['result'][2]['id'] , 1);
     	$this->assertEquals($data['result'][2]['course_id'] , 1);
     	$this->assertEquals($data['result'][2]['grading_policy_id'] , 7);
@@ -866,6 +874,7 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][2]['start'] , null);
     	$this->assertEquals($data['result'][2]['end'] , null);
     	$this->assertEquals($data['result'][2]['cut_off'] , null);
+    	$this->assertEquals($data['result'][2]['is_graded'] , 0);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -908,7 +917,7 @@ class ScenarioTest extends AbstractService
     	
     	$this->assertEquals(count($data) , 3);
     	$this->assertEquals(count($data['result']) , 1);
-    	$this->assertEquals(count($data['result'][0]) , 14);
+    	$this->assertEquals(count($data['result'][0]) , 15);
     	$this->assertEquals($data['result'][0]['id'] , 4);
     	$this->assertEquals($data['result'][0]['course_id'] , 1);
     	$this->assertEquals($data['result'][0]['grading_policy_id'] , 7);
@@ -923,6 +932,7 @@ class ScenarioTest extends AbstractService
     	$this->assertEquals($data['result'][0]['start'] , null);
     	$this->assertEquals($data['result'][0]['end'] , null);
     	$this->assertEquals($data['result'][0]['cut_off'] , null);
+    	$this->assertEquals($data['result'][0]['is_graded'] , 0);
     	$this->assertEquals($data['id'] , 1);
     	$this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -940,7 +950,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['submission_user']) , 1);
-        $this->assertEquals(count($data['result']['submission_user'][0]) , 6);
+        $this->assertEquals(count($data['result']['submission_user'][0]) , 5);
         $this->assertEquals(count($data['result']['submission_user'][0]['user']) , 12);
         $this->assertEquals($data['result']['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['contact_state'] , 0);
@@ -956,7 +966,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][0]['user']['has_email_notifier'] , 1);
         $this->assertEquals($data['result']['submission_user'][0]['submission_id'] , 1);
         $this->assertEquals($data['result']['submission_user'][0]['user_id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][0]['group_id'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['grade'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['submit_date'] , null);
         $this->assertEquals($data['result']['id'] , 1);

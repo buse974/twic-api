@@ -11,6 +11,13 @@ class Submission extends BaseSubmission
     protected $videoconf_archives;
     protected $users;
       
+    public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
+    
+        $this->submission_user = $this->requireModel('app_model_submission_user', $data);
+    }
+    
     public function getUsers() 
     {
         return $this->users;
@@ -33,13 +40,6 @@ class Submission extends BaseSubmission
         $this->videoconf_archives = $videoconf_archives;
         
         return $this;
-    }
-      
-    public function exchangeArray(array &$data)
-    {
-        parent::exchangeArray($data);
-    
-        $this->submission_user = $this->requireModel('app_model_submission_user', $data);
     }
     
     public function getSubmissionUser() 
