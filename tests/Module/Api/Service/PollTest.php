@@ -554,8 +554,8 @@ class PollTest extends AbstractService
                 ],
                 [
                     'nb_point' => 99,
-                    'nb' => 10,
-                    'group_question' => [1,2,3],
+                    'nb' => 2,
+                    'group_question' => [2,3],
                 ]
             ]
         ]);
@@ -582,6 +582,108 @@ class PollTest extends AbstractService
     /**
      * @depends testCanGetSubmission
      */
+    public function testCanGetSubQuiz($submission_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('subquiz.start', [
+            'submission_id' => $submission_id
+        ]);
+    
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 14); 
+        $this->assertEquals($data['result']['id'] , 1); 
+        $this->assertEquals($data['result']['poll_id'] , 1); 
+        $this->assertEquals($data['result']['start_date'] , null); 
+        $this->assertEquals($data['result']['end_date'] , null); 
+        $this->assertEquals($data['result']['user_id'] , 1); 
+        $this->assertEquals($data['result']['submission_id'] , 1); 
+        $this->assertEquals($data['result']['grade'] , null); 
+        $this->assertEquals(count($data['result']['sub_questions']) , 3); 
+        $this->assertEquals(count($data['result']['sub_questions'][0]) , 7); 
+        $this->assertEquals($data['result']['sub_questions'][0]['id'] , 1); 
+        $this->assertEquals($data['result']['sub_questions'][0]['sub_quiz_id'] , 1); 
+        $this->assertEquals($data['result']['sub_questions'][0]['poll_item_id'] , 5); 
+        $this->assertEquals($data['result']['sub_questions'][0]['bank_question_id'] , 1); 
+        $this->assertEquals($data['result']['sub_questions'][0]['group_question_id'] , null); 
+        $this->assertEquals($data['result']['sub_questions'][0]['point'] , null); 
+        $this->assertEquals($data['result']['sub_questions'][0]['answered_date'] , null); 
+        $this->assertEquals(count($data['result']['sub_questions'][1]) , 7); 
+        $this->assertEquals($data['result']['sub_questions'][1]['id'] , 2); 
+        $this->assertEquals($data['result']['sub_questions'][1]['sub_quiz_id'] , 1); 
+        $this->assertEquals($data['result']['sub_questions'][1]['poll_item_id'] , 6); 
+        $this->assertEquals(is_numeric($data['result']['sub_questions'][1]['bank_question_id']) , true); 
+        
+        $u = $data['result']['sub_questions'][1]['bank_question_id'];
+        
+        $this->assertEquals($data['result']['sub_questions'][1]['group_question_id'] , 3); 
+        $this->assertEquals($data['result']['sub_questions'][1]['point'] , null); 
+        $this->assertEquals($data['result']['sub_questions'][1]['answered_date'] , null); 
+        $this->assertEquals(count($data['result']['sub_questions'][2]) , 7); 
+        $this->assertEquals($data['result']['sub_questions'][2]['id'] , 3); 
+        $this->assertEquals($data['result']['sub_questions'][2]['sub_quiz_id'] , 1); 
+        $this->assertEquals($data['result']['sub_questions'][2]['poll_item_id'] , 6); 
+        $this->assertEquals(is_numeric($data['result']['sub_questions'][2]['bank_question_id']) , true); 
+        $this->assertEquals($data['result']['sub_questions'][2]['group_question_id'] , 3); 
+        $this->assertEquals($data['result']['sub_questions'][2]['point'] , null); 
+        $this->assertEquals($data['result']['sub_questions'][2]['answered_date'] , null); 
+        $this->assertEquals(count($data['result']['sub_answers']) , 0); 
+        $this->assertEquals(count($data['result']['bank_questions']) , 3); 
+        $this->assertEquals(count($data['result']['bank_questions'][1]) , 8); 
+        $this->assertEquals($data['result']['bank_questions'][1]['id'] , 1); 
+        $this->assertEquals($data['result']['bank_questions'][1]['name'] , "name"); 
+        $this->assertEquals($data['result']['bank_questions'][1]['question'] , "Ma question upt 1"); 
+        $this->assertEquals($data['result']['bank_questions'][1]['bank_question_type_id'] , 3); 
+        $this->assertEquals($data['result']['bank_questions'][1]['course_id'] , 1); 
+        $this->assertEquals($data['result']['bank_questions'][1]['point'] , 88); 
+        $this->assertEquals(!empty($data['result']['bank_questions'][1]['older']) , true); 
+        $this->assertEquals(!empty($data['result']['bank_questions'][1]['created_date']) , true); 
+        $this->assertEquals(count($data['result']['bank_questions'][$u]) , 8); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['id'] , $u); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['name'] , "name"); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['question'] , "Ma question"); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['bank_question_type_id'] , 3); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['course_id'] , 1); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['point'] , 99); 
+        $this->assertEquals($data['result']['bank_questions'][$u]['older'] , null); 
+        $this->assertEquals(!empty($data['result']['bank_questions'][$u]['created_date']) , true); 
+        $this->assertEquals(count($data['result']['medias']) , 2); 
+        $this->assertEquals(count($data['result']['medias'][0]) , 2); 
+        $this->assertEquals($data['result']['medias'][0]['bank_question_id'] , 1); 
+        $this->assertEquals($data['result']['medias'][0]['library_id'] , 4); 
+        $this->assertEquals(count($data['result']['medias'][1]) , 2); 
+        $this->assertEquals($data['result']['medias'][1]['bank_question_id'] , 1); 
+        $this->assertEquals($data['result']['medias'][1]['library_id'] , 5); 
+        $this->assertEquals(count($data['result']['poll']) , 5); 
+        $this->assertEquals($data['result']['poll']['id'] , 1); 
+        $this->assertEquals($data['result']['poll']['title'] , "un titre upd"); 
+        $this->assertEquals(!empty($data['result']['poll']['expiration_date']) , true); 
+        $this->assertEquals($data['result']['poll']['time_limit'] , 11); 
+        $this->assertEquals($data['result']['poll']['item_id'] , 1); 
+        $this->assertEquals(count($data['result']['poll_items']) , 2); 
+        $this->assertEquals(count($data['result']['poll_items'][5]) , 7); 
+        $this->assertEquals($data['result']['poll_items'][5]['id'] , 5); 
+        $this->assertEquals($data['result']['poll_items'][5]['poll_id'] , 1); 
+        $this->assertEquals($data['result']['poll_items'][5]['bank_question_id'] , 1); 
+        $this->assertEquals($data['result']['poll_items'][5]['group_question_id'] , null); 
+        $this->assertEquals($data['result']['poll_items'][5]['order_id'] , null); 
+        $this->assertEquals($data['result']['poll_items'][5]['is_mandatory'] , 0); 
+        $this->assertEquals($data['result']['poll_items'][5]['nb_point'] , 99); 
+        $this->assertEquals(count($data['result']['poll_items'][6]) , 7); 
+        $this->assertEquals($data['result']['poll_items'][6]['id'] , 6); 
+        $this->assertEquals($data['result']['poll_items'][6]['poll_id'] , 1); 
+        $this->assertEquals($data['result']['poll_items'][6]['bank_question_id'] , null); 
+        $this->assertEquals($data['result']['poll_items'][6]['group_question_id'] , 3); 
+        $this->assertEquals($data['result']['poll_items'][6]['order_id'] , null); 
+        $this->assertEquals($data['result']['poll_items'][6]['is_mandatory'] , 0); 
+        $this->assertEquals($data['result']['poll_items'][6]['nb_point'] , 99); 
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
+    }
+    
+    
+    /**
+     * @depends testCanGetSubmission
+     */
     public function testCanGetSubmissionContent($submission_id)
     {
         $this->setIdentity(1);
@@ -593,9 +695,97 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 0);
         $this->assertEquals($data['result']['videoconf'] , null);
-        $this->assertEquals(count($data['result']['poll']) , 0);
+        $this->assertEquals(count($data['result']['poll']) , 1);
+        $this->assertEquals(count($data['result']['poll'][0]) , 14);
+        $this->assertEquals($data['result']['poll'][0]['id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['poll_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['start_date'] , null);
+        $this->assertEquals($data['result']['poll'][0]['end_date'] , null);
+        $this->assertEquals($data['result']['poll'][0]['user_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['submission_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['grade'] , null);
+        $this->assertEquals(count($data['result']['poll'][0]['sub_questions']) , 3);
+        $this->assertEquals(count($data['result']['poll'][0]['sub_questions'][0]) , 7);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['sub_quiz_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['poll_item_id'] , 5);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['bank_question_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['group_question_id'] , null);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['point'] , null);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['answered_date'] , null);
+        $this->assertEquals(count($data['result']['poll'][0]['sub_questions'][1]) , 7);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['id'] , 2);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['sub_quiz_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['poll_item_id'] , 6);
+        $this->assertEquals(is_numeric($data['result']['poll'][0]['sub_questions'][1]['bank_question_id']) , true);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['group_question_id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['point'] , null);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['answered_date'] , null);
+        $this->assertEquals(count($data['result']['poll'][0]['sub_questions'][2]) , 7);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['sub_quiz_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['poll_item_id'] , 6);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['bank_question_id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['group_question_id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['point'] , null);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['answered_date'] , null);
+        $this->assertEquals(count($data['result']['poll'][0]['sub_answers']) , 0);
+        $this->assertEquals(count($data['result']['poll'][0]['bank_questions']) , 3);
+        $this->assertEquals(count($data['result']['poll'][0]['bank_questions'][1]) , 8);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['name'] , "name");
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['question'] , "Ma question upt 1");
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['bank_question_type_id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['course_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['point'] , 88);
+        $this->assertEquals(!empty($data['result']['poll'][0]['bank_questions'][1]['older']) , true);
+        $this->assertEquals(!empty($data['result']['poll'][0]['bank_questions'][1]['created_date']) , true);
+        $this->assertEquals(count($data['result']['poll'][0]['bank_questions'][3]) , 8);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['name'] , "name");
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['question'] , "Ma question");
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['bank_question_type_id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['course_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['point'] , 99);
+        $this->assertEquals($data['result']['poll'][0]['bank_questions'][3]['older'] , null);
+        $this->assertEquals(!empty($data['result']['poll'][0]['bank_questions'][3]['created_date']) , true);
+        $this->assertEquals(count($data['result']['poll'][0]['bq_items']) , 6);
+        $this->assertEquals(count($data['result']['poll'][0]['bq_items'][0]) , 5);
+        $this->assertEquals(count($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']) , 5);
+    
+        $this->assertEquals(count($data['result']['poll'][0]['medias']) , 2);
+        $this->assertEquals(count($data['result']['poll'][0]['medias'][0]) , 2);
+        $this->assertEquals($data['result']['poll'][0]['medias'][0]['bank_question_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['medias'][0]['library_id'] , 4);
+        $this->assertEquals(count($data['result']['poll'][0]['medias'][1]) , 2);
+        $this->assertEquals($data['result']['poll'][0]['medias'][1]['bank_question_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['medias'][1]['library_id'] , 5);
+        $this->assertEquals(count($data['result']['poll'][0]['poll']) , 5);
+        $this->assertEquals($data['result']['poll'][0]['poll']['id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['poll']['title'] , "un titre upd");
+        $this->assertEquals(!empty($data['result']['poll'][0]['poll']['expiration_date']) , true);
+        $this->assertEquals($data['result']['poll'][0]['poll']['time_limit'] , 11);
+        $this->assertEquals($data['result']['poll'][0]['poll']['item_id'] , 1);
+        $this->assertEquals(count($data['result']['poll'][0]['poll_items']) , 2);
+        $this->assertEquals(count($data['result']['poll'][0]['poll_items'][5]) , 7);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['id'] , 5);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['poll_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['bank_question_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['group_question_id'] , null);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['order_id'] , null);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['is_mandatory'] , 0);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][5]['nb_point'] , 99);
+        $this->assertEquals(count($data['result']['poll'][0]['poll_items'][6]) , 7);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['id'] , 6);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['poll_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['bank_question_id'] , null);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['group_question_id'] , 3);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['order_id'] , null);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['is_mandatory'] , 0);
+        $this->assertEquals($data['result']['poll'][0]['poll_items'][6]['nb_point'] , 99);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     /**
