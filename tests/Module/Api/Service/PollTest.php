@@ -607,7 +607,8 @@ class PollTest extends AbstractService
         $data = $this->jsonRpc('bankquestion.delete', ['id' => $init['course_id']]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][1] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     

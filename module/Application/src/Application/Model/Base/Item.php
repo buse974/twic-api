@@ -21,6 +21,7 @@ class Item extends AbstractModel
 	protected $end;
 	protected $cut_off;
 	protected $is_graded;
+	protected $updated_date;
 
 	protected $prefix = 'item';
 
@@ -200,6 +201,18 @@ class Item extends AbstractModel
 	public function setIsGraded($is_graded)
 	{
 		$this->is_graded = $is_graded;
+
+		return $this;
+	}
+
+	public function getUpdatedDate()
+	{
+		return $this->updated_date;
+	}
+
+	public function setUpdatedDate($updated_date)
+	{
+		$this->updated_date = $updated_date;
 
 		return $this;
 	}
