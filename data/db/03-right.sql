@@ -961,8 +961,12 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 (SELECT `id` FROM `permission` WHERE `libelle`= 'group.add'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('set.getList');
-INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'set.getList'));
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('set.get');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (5, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'set.get'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('set.add');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
@@ -1151,6 +1155,11 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4,
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('poll.update');
 INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
 (SELECT `id` FROM `permission` WHERE `libelle`= 'poll.update'));
+
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('item.getListForCalendar');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'item.getListForCalendar'));
 
 
 
