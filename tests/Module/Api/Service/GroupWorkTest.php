@@ -113,6 +113,19 @@ class GroupWorkTest extends AbstractService
     /**
      * @depends testAddItem
      */
+    public function testUpdateItem($item_id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('item.update',
+            [
+                'id' => $item_id
+            ]);
+    }
+    
+    /**
+     * @depends testAddItem
+     */
     public function testCanUpdateVideoconfoptUpdate($item_id)
     {
         $this->setIdentity(1);

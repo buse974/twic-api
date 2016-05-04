@@ -114,7 +114,6 @@ class Submission extends AbstractService
      *
      * @param integer $item_id
      */
-    
     public function getList($item_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id']; 
