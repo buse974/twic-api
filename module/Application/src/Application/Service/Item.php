@@ -290,7 +290,8 @@ class Item extends AbstractService
             ->setCutOff($cut_off)
             ->setType($type)
             ->setHasSubmission($has_submission)
-            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
+            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id)
+            ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
          if ($order_id !== null || $parent_id !== null ) {
          	$this->updateOrderId($id, $parent_id, $order_id);

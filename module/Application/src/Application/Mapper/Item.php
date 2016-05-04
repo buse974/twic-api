@@ -287,6 +287,8 @@ class Item extends AbstractMapper
                 $s[]=':t'.$i;
             }
             $where[] = 'item.type IN ('. implode(',', $s).')';
+        } else {
+            $where[] = "item.type IN ('WG', 'CP', 'IA', 'POLL', 'DISC', 'CHAT')";
         }
         if (null !== $search) {
             $val[':s'] = '%'.$search.'%';
@@ -301,6 +303,7 @@ class Item extends AbstractMapper
         
         $val[':sc'] = $school_id;
         $where[] = 'program.school_id=:sc';
+        $where[] = 'item.updated_date IS NOT NULL';
         
         $cw='';
         $nb = count($where);
