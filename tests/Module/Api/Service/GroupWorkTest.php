@@ -15,12 +15,7 @@ class GroupWorkTest extends AbstractService
 
     public function testCreateInit()
     {
-        // ADD SCHOOL
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','background' => 'background','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
-        $school_id = $data['result']['id'];
-        $this->reset();
-
+        $school_id = 1;
         // ADD SCHOOL USER
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.update', array('school_id' => $school_id));
@@ -45,7 +40,15 @@ class GroupWorkTest extends AbstractService
         
         // ADD SET
         $this->setIdentity(4);
-        $data = $this->jsonRpc('set.add', ['course' => $course_id,'name' => 'nameset','uid' => 'suid','groups'=>[['name' =>'namegroup','uid'=>'guid','users'=>[1,3,4]]]]);
+        $data = $this->jsonRpc('set.add', 
+            ['course' => $course_id,
+                'name' => 'nameset',
+                'uid' => 'suid',
+                'groups'=>[
+                    ['name' =>'namegroup','uid'=>'guid','users'=>[1,3,4]],
+                    ['name' =>'namegroup2','uid'=>'guid','users'=>[2,5]],
+                    ['name' =>'namegroup3','uid'=>'guid','users'=>[6,7]],
+                ]]);
         $set_id = $data['result']['id'];
         $this->reset();
         
@@ -94,7 +97,7 @@ class GroupWorkTest extends AbstractService
                     'videoconf' => [
                         'record' => 2,
                     ]
-                ],
+                ],  
                 'parent' => null,
                 'order' => null, 
             ]);
@@ -180,7 +183,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['cut_off'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
 
     /**
@@ -189,6 +191,19 @@ class GroupWorkTest extends AbstractService
     public function testCanGetSubmission($item_id)
     {
         $this->setIdentity(1);
+        $data = $this->jsonRpc('submission.get', [
+            'item_id' => $item_id
+        ]);
+    
+        return $data['result']['id'];
+    }
+    
+    /**
+     * @depends testAddItem
+     */
+    public function testCanGetSubmission2($item_id)
+    {
+        $this->setIdentity(2);
         $data = $this->jsonRpc('submission.get', [
             'item_id' => $item_id
         ]);
@@ -232,6 +247,35 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+    
+    public function testCanGetItemGetListSubmissions()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('item.getListSubmissions', ['filter' => ['n' => 10, 'p' => 1], 'course' => [1,2], 'program' => [1,2], 'type' => [1,2]]);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['list']) , 1);
+        $this->assertEquals(count($data['result']['list'][0]) , 11);
+        $this->assertEquals($data['result']['list'][0]['due'] , 3);
+        $this->assertEquals($data['result']['list'][0]['graded'] , 0);
+        $this->assertEquals($data['result']['list'][0]['submitted'] , 0);
+        $this->assertEquals(count($data['result']['list'][0]['program']) , 1);
+        $this->assertEquals($data['result']['list'][0]['program']['name'] , "program name");
+        $this->assertEquals(count($data['result']['list'][0]['course']) , 1);
+        $this->assertEquals($data['result']['list'][0]['course']['title'] , "IMERIR");
+        $this->assertEquals($data['result']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['title'] , "title");
+        $this->assertEquals($data['result']['list'][0]['type'] , "WG");
+        $this->assertEquals($data['result']['list'][0]['start'] , null);
+        $this->assertEquals($data['result']['list'][0]['end'] , null);
+        $this->assertEquals($data['result']['list'][0]['cut_off'] , null);
+        $this->assertEquals($data['result']['count'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+    }
+    
     
     public function setIdentity($id)
     {

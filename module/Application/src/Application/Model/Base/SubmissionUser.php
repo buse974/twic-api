@@ -8,7 +8,6 @@ class SubmissionUser extends AbstractModel
 {
  	protected $submission_id;
 	protected $user_id;
-	protected $group_id;
 	protected $grade;
 	protected $submit_date;
 
@@ -34,18 +33,6 @@ class SubmissionUser extends AbstractModel
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
-
-		return $this;
-	}
-
-	public function getGroupId()
-	{
-		return $this->group_id;
-	}
-
-	public function setGroupId($group_id)
-	{
-		$this->group_id = $group_id;
 
 		return $this;
 	}
