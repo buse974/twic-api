@@ -67,9 +67,8 @@ class Submission extends AbstractMapper
     
     public function getList($item_id, $user_id)
     {
-        $sql = '
-            SELECT 
-                     `submission`.`submit_date` AS `submission$submit_date`,
+        $sql = 'SELECT  
+                    `submission`.`submit_date` AS `submission$submit_date`,
                      `submission`.`id` AS `submission$id`,
                      `group`.`id` AS `submission$group_id`,
                      `group`.`name` AS `submission$group_name`,
@@ -90,9 +89,8 @@ class Submission extends AbstractMapper
                         LEFT JOIN
                     `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id`
                         AND `item`.`set_id` IS NULL
-                        AND ((`group_user`.`user_id` = `course_user_relation`.`user_id`
-                        AND `ct_group`.`item_id` IS NOT NULL)
-                        OR `ct_group`.`item_id` IS NULL)
+                        AND ((`group_user`.`user_id` = `course_user_relation`.`user_id` AND `ct_group`.`item_id` IS NOT NULL) OR `ct_group`.`item_id` IS NULL)
+                        AND `course_user_relation`.`user_id` IN (SELECT `user_id` FROM `user_role` WHERE `role_id`='.ModelRole::ROLE_STUDENT_ID.' )
                         LEFT JOIN
                     `user_role` ON `user_role`.`user_id`=`course_user_relation`.`user_id`
                         LEFT JOIN
@@ -101,10 +99,9 @@ class Submission extends AbstractMapper
                         OR `ct_group`.`item_id` IS NULL)
                         LEFT JOIN
                     `group` ON `group`.`id` = `set_group`.`group_id`
-                         LEFT JOIN
+                         LEFT JOIN 
                     `submission_user` ON `submission_user`.`user_id` = `course_user_relation`.`user_id`
-						AND `user_role`.`role_id`='.ModelRole::ROLE_STUDENT_ID.'
-                        AND `submission_user`.`submission_id` IN (SELECT `id` FROM `submission` WHERE `submission`.`item_id`=:item)
+                        AND `submission_user`.`submission_id` IN (SELECT `id` FROM `submission` WHERE `submission`.`item_id`=:item )
                         LEFT JOIN
                     `submission` ON `submission`.`item_id`=`item`.`id` AND (`submission`.`id` = `submission_user`.`submission_id`)
                         OR (`submission`.`group_id` = `set_group`.`group_id`) 
@@ -112,7 +109,7 @@ class Submission extends AbstractMapper
 					`user` ON `course_user_relation`.`user_id`=`user`.`id`
                         LEFT JOIN
 	                `submission_comments` ON `submission_comments`.`submission_id`=`submission`.`id`
-                WHERE item.id = :item2  
+                WHERE item.id = :item2   
                 GROUP BY `submission`.`id`, `submission_comments`.`submission_id`, `group`.`id`, `course_user_relation`.`user_id`';
         
         return $this->selectPdo($sql,[':item' => $item_id, ':item2' => $item_id]);
