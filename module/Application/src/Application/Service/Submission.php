@@ -69,7 +69,10 @@ class Submission extends AbstractService
     public function create($item_id)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        $m_submission = $this->getModel()->setItemId($item_id);
+        
+        $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $me);
+        
+        $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
         $this->getMapper()->insert($m_submission);
         $submission_id = $this->getMapper()->getLastInsertValue();
         
@@ -150,7 +153,7 @@ class Submission extends AbstractService
             $this->create($item_id);
             $res_submission = $this->getMapper()->get($item_id, $me);
         }
-    
+        
         $m_submission = $res_submission->current();
         $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
     
@@ -339,7 +342,16 @@ class Submission extends AbstractService
     {
         return  $this->getServiceDocument()->delete(null, $submission_id, $library_id);
     }
-        
+      
+    /**
+     *
+     * @return \Application\Service\GroupUser
+     */
+    public function getServiceGroupUser()
+    {
+        return $this->getServiceLocator()->get('app_service_group_user');
+    }
+    
     /**
      * 
      * @return \Application\Service\Library
