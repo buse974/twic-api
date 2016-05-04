@@ -298,6 +298,18 @@ class Item extends AbstractService
             ->setCourseId($course)
             ->setParentId(($parent_id === 0 || null === $parent_id) ? new IsNull() : $parent_id))->toArrayParent('order_id');
     }
+    
+      /**
+     * @invokable
+     *               
+     * @param string $start            
+     * @param string $end   
+     * @return array
+     */
+    public function getListForCalendar($start = null, $end = null)
+    {
+        return $this->getMapper()->getListForCalendar($this->getServiceUser()->getIdentity(),$start, $end);
+    }
 
     /**
      * @invokable
@@ -467,10 +479,16 @@ class Item extends AbstractService
             ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
             ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
             ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()))
-            ->setDocument($this->getServiceLibrary()->getListByItem($m_item->getId()))
             ->setVideoconf($this->getServiceVideoconfOpt()->getByItem($m_item->getId()))
             ->setThread($this->getServiceThread()->getByItem($m_item->getId()))
             ->setPoll($this->getServicePoll()->getByItem($m_item->getId()));
+        
+        if($m_item->getType() === ModelItem::TYPE_DOCUMENT){
+            $m_item->setDocument($this->getServiceLibrary()->getListByItem($m_item->getId()));
+        }
+        else{
+            $m_item->setDocument($this->getServiceLibrary()->getListByParentItem($m_item->getId()));
+        }
         
         return $m_item;
     }
