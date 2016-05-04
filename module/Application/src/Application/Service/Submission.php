@@ -114,14 +114,16 @@ class Submission extends AbstractService
      *
      * @param integer $item_id
      */
-    public function getList($item_id = null)
+    public function getList($item_id)
     {
         $me = $this->getServiceUser()->getIdentity()['id']; 
         $res_submission = $this->getMapper()->getList($item_id, $me);
         $m_item = $this->getServiceItem()->get($item_id);
      
-        if(null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull) {
-            foreach ($res_submission as $m_submission) {
+        $by_set = (null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull);
+        
+        foreach ($res_submission as $m_submission) {
+            if($by_set===true) {
                 if(is_numeric($m_submission->getId())) {
                     $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
                 } else {
@@ -134,6 +136,8 @@ class Submission extends AbstractService
                     }
                     $m_submission->setSubmissionUser($su);
                 }
+            } else {
+                $m_submission->setSubmissionUser([$m_submission->getSubmissionUser()]);
             }
         }
         
