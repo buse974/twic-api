@@ -11,6 +11,29 @@ use Application\Model\Role as ModelRole;
 
 class Item extends AbstractMapper
 {
+    public function getList($course_id, $parent_id = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'title', 'describe', 'duration', 'set_id', 'is_graded','type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission',
+            'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
+            'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
+            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
+        ])
+        ->join('document', 'document.item_id=item.id', [], $select::JOIN_LEFT)
+        ->join('library', 'document.library_id=library.id', array('library!id' => 'id', 'name', 'type'), $select::JOIN_LEFT)
+        ->where(array('item.course_id' => $course_id));
+        
+        if(null!==$parent_id) {
+            if($parent_id===0) {
+                $select->where(array('item.parent_id IS NULL'));
+            } else {
+                $select->where(array('item.parent_id' => $parent_id));
+            }
+        }
+        
+        return $this->selectWith($select);
+    }
+    
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
