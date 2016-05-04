@@ -315,9 +315,7 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setCourseId($course)
-            ->setParentId(($parent_id === 0 || null === $parent_id) ? new IsNull() : $parent_id))->toArrayParent('order_id');
+        return $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
     }
 
     /**

@@ -49,6 +49,7 @@ class Item extends BaseItem
     protected $submitted;
     protected $graded;
     protected $due;
+    protected $library;
       
     public function exchangeArray(array &$data)
     {
@@ -61,8 +62,21 @@ class Item extends BaseItem
         $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
         $this->item_grade = $this->requireModel('app_model_item_grading', $data);
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
+        $this->library = $this->requireModel('app_model_library', $data);
     }
 
+    public function getLibrary()
+    {
+        return $this->library;
+    }
+    
+    public function setLibrary($library)
+    {
+        $this->library = $library;
+    
+        return $this;
+    }
+    
     public function getDue()
     {
         return $this->due;
