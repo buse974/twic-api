@@ -11,6 +11,7 @@ use Application\Model\Role as ModelRole;
 
 class Item extends AbstractMapper
 {
+
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
