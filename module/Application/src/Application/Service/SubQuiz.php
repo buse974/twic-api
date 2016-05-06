@@ -21,7 +21,7 @@ class SubQuiz extends AbstractService
     
     public function get($id) 
     {
-        $m_sub_quiz = $this->getMapper()->select($this->getModel()->setId($id));
+        $m_sub_quiz = $this->getMapper()->select($this->getModel()->setId($id))->current();
         
         $ar = $m_sub_quiz->toArray();
         $ar['sub_questions'] = $this->getServiceSubQuestion()->getListLite($m_sub_quiz->getId());
@@ -41,6 +41,12 @@ class SubQuiz extends AbstractService
         return $ar;
     }
     
+    /**
+     * @invokable
+     * 
+     * @param integer $submission_id
+     * @param integer $item_id
+     */
     public function start($submission_id = null, $item_id = null)
     {
         if(null === $submission_id && null === $item_id) {
@@ -48,14 +54,30 @@ class SubQuiz extends AbstractService
         }
 
         $m_submission = $this->getServiceSubmission()->get($item_id,$submission_id);
+        
         $m_poll = $this->getServicePoll()->getLiteByItem($m_submission->getItemId());
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        $m_sub_quiz = $this->getModel()->setUserId($me)->setPollId($m_poll->getId())->setSubmissionId($m_submission->getId());
+        $m_sub_quiz = $this->getModel()
+            ->setUserId($me)
+            ->setPollId($m_poll->getId())
+            ->setSubmissionId($m_submission->getId());
+        
         $this->getMapper()->insert($m_sub_quiz);
         $sub_quiz_id = $this->getMapper()->getLastInsertValue();
+        $res_poll_item = $this->getServicePollItem()->getList($m_poll->getId());
         
-        $this->getServiceSubQuestion()->create($sub_quiz_id);
+        foreach ($res_poll_item as $m_poll_item) {
+            $m_group_question = $this->getServiceGroupQuestion()->getList($m_poll_item->getGroupQuestionId());
+            if(null !== $m_group_question) { 
+                $tab = $m_group_question->getBankQuestion();
+                foreach (array_rand($tab, $m_group_question->getNb())as $i) {
+                    $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $tab[$i], $m_poll_item->getGroupQuestionId());
+                }
+            } else {
+                $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $m_poll_item->getBankQuestionId(), $m_poll_item->getGroupQuestionId());
+            }
+        }
         
         return $this->get($sub_quiz_id);
     }
@@ -84,6 +106,14 @@ class SubQuiz extends AbstractService
     public function getServiceBankQuestion()
     {
         return $this->getServiceLocator()->get('app_service_bank_question');
+    }
+    
+    /**
+     * @return \Application\Service\GroupQuestion
+     */
+    public function getServiceGroupQuestion()
+    {
+        return $this->getServiceLocator()->get('app_service_group_question');
     }
     
     /**
