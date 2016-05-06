@@ -11,9 +11,10 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'name', 'link', 'token', 'type', 'created_date', 'deleted_date', 'updated_date', 'folder_id', 'owner_id', 'box_id'])
             ->join('document', 'document.library_id=library.id', [])
-            ->join('item', 'document.item_id=item.parent_id', [])
-            ->where(array('item.id' => $item));
+            ->join('item', 'document.item_id=item.id', [])
+            ->where(array('item.parent_id' => $item));
         
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
     

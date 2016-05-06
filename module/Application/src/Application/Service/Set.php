@@ -75,6 +75,8 @@ class Set extends AbstractService
     }
 
     /**
+     * 
+     * @invokable
      *
      * @param integer $id            
      *
@@ -91,7 +93,7 @@ class Set extends AbstractService
         
         $m_set = $res_set->current();
         $m_set->setGroups($this->getServiceGroup()
-            ->getList($m_set->getId()));
+            ->getList($m_set->getCourseId(),$m_set->getId()));
         
         return $m_set;
     }

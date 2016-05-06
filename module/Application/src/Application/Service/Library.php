@@ -120,6 +120,16 @@ class Library extends AbstractService
 	 */
 	public function getListByItem($item)
 	{
+	    return $this->getMapper()->getListByItem($item);
+	}
+        
+	/**
+	 * @invokable
+	 * 
+	 * @param integer $item
+	 */
+	public function getListByParentItem($item)
+	{
 	    return $this->getMapper()->getListByParentItem($item);
 	}
 	
