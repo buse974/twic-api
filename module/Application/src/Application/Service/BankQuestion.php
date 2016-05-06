@@ -93,7 +93,7 @@ class BankQuestion extends AbstractService
         }
         
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $this->getMapper()->update($this->getModel()->setOlder($date), ['id' => $m_bank_question->getId()]);
+        $this->getMapper()->update($this->getModel()->setOlder($id), ['id' => $m_bank_question->getId()]);
 
         $m_bank_question->setId(null)
             ->setOlder(null)
