@@ -23,12 +23,10 @@ class Item extends AbstractMapper
         ->join('library', 'document.library_id=library.id', array('library!id' => 'id', 'name', 'type'), $select::JOIN_LEFT)
         ->where(array('item.course_id' => $course_id));
         
-        if(null!==$parent_id) {
-            if($parent_id===0) {
-                $select->where(array('item.parent_id IS NULL'));
-            } else {
-                $select->where(array('item.parent_id' => $parent_id));
-            }
+        if($parent_id===0 || $parent_id === null) {
+            $select->where(array('item.parent_id IS NULL'));
+        } else {
+            $select->where(array('item.parent_id' => $parent_id));
         }
         
         return $this->selectWith($select);
