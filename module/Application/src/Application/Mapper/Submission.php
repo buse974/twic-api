@@ -68,8 +68,8 @@ class Submission extends AbstractMapper
                 if(null !== $group_id && null !== $item_id) {
                     $select->where(array('submission.group_id' => $group_id))
                         ->where(array('submission.item_id' => $item_id));
-                } elseif(null !== $group_id && null !== $item_id) {
-                    $select->where(array('submission_user.user_id' => $group_id))
+                } elseif(null !== $user_id && null !== $item_id) {
+                    $select->where(array('submission_user.user_id' => $user_id))
                         ->where(array('submission.item_id' => $item_id));
                 }
             }
