@@ -19,7 +19,7 @@ class BankQuestion extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($course_id, $search = null)
+    public function getList($course_id, $search = null, $older = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'name', 'question', 'bank_question_type_id', 'course_id', 'point', 'older', 'created_date'])
@@ -28,8 +28,10 @@ class BankQuestion extends AbstractMapper
             ->where(['bank_question.name LIKE ? ' => '%'.$search.'%'], Predicate::OP_OR)
             ->where(['bank_question.question LIKE ? )' => '%'.$search.'%'], Predicate::OP_OR)
             ->where(['bank_question.course_id' => $course_id])
-            ->where(['bank_question.older IS NULL'])
             ->quantifier('DISTINCT');
+        if($older !== true){
+            $select->where(['bank_question.older IS NULL']);
+        }
     
         return $this->selectWith($select);
     }
