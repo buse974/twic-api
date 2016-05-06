@@ -121,7 +121,6 @@ class Submission extends AbstractService
         $m_item = $this->getServiceItem()->get($item_id);
      
         $by_set = (null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull);
-        
         foreach ($res_submission as $m_submission) {
             if($by_set===true) {
                 if(is_numeric($m_submission->getId())) {

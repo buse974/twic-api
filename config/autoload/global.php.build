@@ -114,6 +114,7 @@ return [
 	    'app_service_text_editor',
             'app_service_videoconf_opt',
 	    'app_service_bank_question_tag',
+	    'app_service_sub_quiz',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class GroupQuestion extends AbstractService
 {
@@ -22,8 +23,8 @@ class GroupQuestion extends AbstractService
     
     public function getList($group_question_id)
     {
-        if(null === $group_question_id) {
-            null;
+        if(null === $group_question_id || $group_question_id instanceof IsNull) {
+            return null;
         }
         
         $res_group_question = $this->getMapper()->select($this->getModel()->setId($group_question_id));
