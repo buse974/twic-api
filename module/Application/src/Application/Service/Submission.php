@@ -117,7 +117,12 @@ class Submission extends AbstractService
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if(null === $item_id && null === $submission_id) {
+            throw new \Exception('error item and submission are null in submission.get');
+        }
+        if(null === $user_id && null === $submission_id && null === $group_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
         
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
         
@@ -130,15 +135,6 @@ class Submission extends AbstractService
         $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
         
         return $m_submission;
-        
-        
-        
-        
-        if(null !== $submission_id) {
-            return $this->getBySubmission($submission_id);
-        } elseif(null !== $item_id) {
-            return $this->getByItem($item_id, $user_id, $group_id);
-        }
     }
     
     /**
@@ -189,7 +185,9 @@ class Submission extends AbstractService
         $m_submission = $this->get($item, $submission, $group, $user);
 
         $this->getServiceSubmissionUser()->OverwrittenGrade($m_submission->getId(), $grade);
-          
+           
+        $this->getMapper()->update($this->getModel()->setIsGraded(true)->setId($m_submission->getId()));
+        
         return $m_submission->getId();
     }
     
