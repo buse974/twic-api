@@ -37,7 +37,7 @@ class SubmissionUser extends AbstractMapper
     
             return $this->selectWith($select);
     }
-
+        
     /**
      * @param integer $user
      * @return \Zend\Db\Sql\Select

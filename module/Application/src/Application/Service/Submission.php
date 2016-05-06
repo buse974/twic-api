@@ -67,28 +67,42 @@ class Submission extends AbstractService
         return $m_submission;
     }
     
-    public function create($item_id)
+    /**
+     * 
+     * @param integer $item_id
+     * @param integer $user_id
+     * @param integer $group_id
+     * 
+     * @return integer
+     */
+    public function create($item_id, $user_id = null, $group_id = null)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        
-        $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $me);
-        
         $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
         $this->getMapper()->insert($m_submission);
         $submission_id = $this->getMapper()->getLastInsertValue();
         
-        $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id, $me);
+        $res_user = null;
+        if(null !== $group_id) {
+            $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
+        } else {
+            if(null === $user_id) {
+                $user_id = $this->getServiceUser()->getIdentity()['id'];
+            }
+            $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id, $user_id);
+        }
         
         $users = [];
-        if($res_user->count() <= 0) {
-            $users[] = $me;
+        if(null === $res_user || $res_user->count() <= 0) {
+            $users[] = $user_id;
         } else {
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
             }
         }
         
-        return $this->getServiceSubmissionUser()->create($submission_id, $users);
+        $this->getServiceSubmissionUser()->create($submission_id, $users);
+        
+        return $submission_id;
     }
     
     /**
@@ -96,16 +110,34 @@ class Submission extends AbstractService
      * 
      * @param integer $item_id
      * @param integer $submission_id
+     * @param integer $group_id
+     * @param integer $user_id
      * 
-     *  @return \Application\Model\Submission
+     * @return \Application\Model\Submission
      */
-
-    public function get($item_id = null, $submission_id = null)
+    public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
-        if($item_id !== null) {
-            return $this->getByItem($item_id);
-        } elseif ($submission_id !== null) {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
+        
+        if($res_submission->count() <= 0) {
+            $submission_id = $this->create($item_id, $user_id, $group_id);
+            $res_submission = $this->getMapper()->get(null, null, $submission_id);
+        }
+        
+        $m_submission = $res_submission->current();
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        
+        return $m_submission;
+        
+        
+        
+        
+        if(null !== $submission_id) {
             return $this->getBySubmission($submission_id);
+        } elseif(null !== $item_id) {
+            return $this->getByItem($item_id, $user_id, $group_id);
         }
     }
     
@@ -144,20 +176,31 @@ class Submission extends AbstractService
     }
     
     /**
+     * @invokable
+     * 
+     * @param integer $grade
+     * @param integer $item
+     * @param integer $group
+     * @param integer $submission
+     * @param integer $user
+     */
+    public function updateSubmissionGrade($grade, $item = null, $group = null, $submission = null, $user = null) 
+    {
+        $m_submission = $this->get($item, $submission, $group, $user);
+
+        $this->getServiceSubmissionUser()->OverwrittenGrade($m_submission->getId(), $grade);
+          
+        return $m_submission->getId();
+    }
+    
+    /**
      * @param integer $id
      * 
      * @return \Application\Model\Submission
      */
     public function getBySubmission($id)
     {
-        $m_submission = null;
-        $res_submission = $this->getMapper()->select($this->getModel()->setId($id));
-        
-        if ($res_submission->count() > 0) {
-            $m_submission = $this->getByItem($res_submission->current()->getItemId()); 
-        }
-        
-        return $m_submission;
+        return $this->get(null, $id);
     }
     
     public function getListRecord($item, $user, $is_student)
@@ -173,26 +216,16 @@ class Submission extends AbstractService
     
     /**
      * @invokable
-     *
+     * 
      * @param integer $item_id
+     * @param integer $user_id
+     * @param integer $group_id
      * 
      * @return \Application\Model\Submission
      */
-    public function getByItem($item_id)
+    public function getByItem($item_id, $user_id = null, $group_id = null)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-    
-        $res_submission = $this->getMapper()->get($item_id, $me);
-    
-        if($res_submission->count() <= 0) {
-            $this->create($item_id);
-            $res_submission = $this->getMapper()->get($item_id, $me);
-        }
-        
-        $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
-    
-        return $m_submission;
+        return $this->get($item_id, null, $group_id, $user_id);
     }
     
     /**
@@ -237,13 +270,6 @@ class Submission extends AbstractService
         if(isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
             $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         }
-        
-        //ret[ModelItem::CMP_DISCUSSION] = $this->getServic()->getListBySubmission($submission_id);
-        /*$ret[ModelItem::CMP_DISCUSSION] = $this->getServiceConversation()->get($item_id);
-         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceConversation()->get($item_id);
-         $ret[ModelItem::CMP_EQCQ] = $this->getServiceConversation()->get($item_id);
-         $ret[ModelItem::CMP_POLL] = $this->getServiceConversation()->get($item_id);
-         */
         
         return $ret;
     }
