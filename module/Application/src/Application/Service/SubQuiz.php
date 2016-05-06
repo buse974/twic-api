@@ -3,8 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Zend\Db\Sql\Predicate\IsNull;
-use function Zend\Mvc\Controller\forward;
 
 class SubQuiz extends AbstractService
 {
