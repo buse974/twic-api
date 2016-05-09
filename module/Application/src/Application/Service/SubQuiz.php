@@ -82,7 +82,10 @@ class SubQuiz extends AbstractService
         return $this->get($sub_quiz_id);
     }
     
-    
+    public function answer()
+    {
+        
+    }
      
     /**
      * @return \Application\Service\BankQuestionMedia

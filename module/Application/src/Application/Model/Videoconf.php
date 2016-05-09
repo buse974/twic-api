@@ -23,6 +23,7 @@ class Videoconf extends BaseVideoconf
     protected $videoconf_archives;
     protected $conversations;
     protected $users;
+    protected $instructors;
     protected $docs;
     protected $item_assignment_id;
 
@@ -35,6 +36,18 @@ class Videoconf extends BaseVideoconf
         $this->videoconf_entity = $this->requireModel('app_model_videoconf_entity', $data);
     }
 
+    public function getInstructors()
+    {
+        return $this->instructors;
+    }
+    
+    public function setInstructors($instructors)
+    {
+        $this->instructors = $instructors;
+    
+        return $this;
+    }
+    
     public function getItemAssignmentId()
     {
         return $this->item_assignment_id;

@@ -19,7 +19,7 @@ class Submission extends AbstractService
         ModelItem::TYPE_WORKGROUP => [
             ModelItem::CMP_VIDEOCONF => true,
             ModelItem::CMP_CHAT => true,
-            ModelItem::CMP_TEXT_EDITOR => false,
+            ModelItem::CMP_TEXT_EDITOR => true,
         ],
         ModelItem::TYPE_LIVE_CLASS => [
             ModelItem::CMP_VIDEOCONF => true,
@@ -88,14 +88,24 @@ class Submission extends AbstractService
             $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $user_id);        
         }
         
-        $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
-        $this->getMapper()->insert($m_submission);
-        $submission_id = $this->getMapper()->getLastInsertValue();
-        
+        $submission_id = null;
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
+            $m_submission = $this->get($item_id);
+            if(null !== $m_submission) {
+                $submission_id = $m_submission->getId();
+            }
+        }
+        if(null === $submission_id) {
+            $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
+            $this->getMapper()->insert($m_submission);
+            $submission_id = $this->getMapper()->getLastInsertValue();
+        }
         
         $res_user = null;
         if(null !== $group_id) {
             $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
+        }elseif($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
+            $res_user = $this->getServiceUser()->getListByItem($item_id);
         }
         
         $users = [];
@@ -267,7 +277,7 @@ class Submission extends AbstractService
             }
             
             if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getListOrCreate($submission_id);
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
             } else {
                 $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
             }
