@@ -7,6 +7,7 @@ use Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\IsNull;
 use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\SubmissionUser;
+use Application\Model\Library as ModelLibrary;
 
 class Submission extends AbstractService
 {
@@ -77,18 +78,24 @@ class Submission extends AbstractService
      */
     public function create($item_id, $user_id = null, $group_id = null)
     {
+        $m_item = $this->getServiceItem()->get($item_id);
+        
+        if(null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
+        if(is_numeric($m_item->getSetId()) && $group_id===null) {
+            $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $user_id);        
+        }
+        
         $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
         $this->getMapper()->insert($m_submission);
         $submission_id = $this->getMapper()->getLastInsertValue();
         
+        
         $res_user = null;
         if(null !== $group_id) {
             $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
-        } else {
-            if(null === $user_id) {
-                $user_id = $this->getServiceUser()->getIdentity()['id'];
-            }
-            $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id, $user_id);
         }
         
         $users = [];
@@ -388,7 +395,7 @@ class Submission extends AbstractService
      */
     public function addDocument($submission_id, $name = null, $type = null, $link = null, $token = null)
     {
-        return  $this->getServiceDocument()->add($name, $type, $link, $token,null, $submission_id);
+        return  $this->getServiceDocument()->add($name, $type, $link, $token,null, $submission_id, ModelLibrary::FOLDER_OTHER_INT);
     }
     
     /**

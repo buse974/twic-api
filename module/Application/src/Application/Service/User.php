@@ -231,6 +231,34 @@ class User extends AbstractService
         return $this->getMapper()->getListUsersBySubmission($submission_id);
     }
     
+    /**
+     * @invokable
+     * 
+     * @param integer $item_id
+     */
+    public function getListUsersByItem($item_id)
+    {
+        $m_item = $this->getServiceItem()->get($item_id);
+        
+        $res_ct_group = $this->getServiceCtGroup()->get($item_id);
+        
+        if($res_ct_group->count() > 0) {
+            $grp = [];
+            foreach ($res_ct_group as $m_ct_group) {
+                $grp[] = $m_ct_group->getGroupId();
+            }
+            
+            $res_user = $this->getMapper()->getListUsersByGroup($grp);
+        } else {
+            if(is_numeric($m_item->getSetId())) {
+                $res_user = $this->getMapper()->getListUsersBySet($m_item->getSetId());
+            } else {
+                $res_user = $this->getMapper()->getListUsersByItemOfCourseUser($m_item->getId());
+            }
+        }
+        return $res_user;
+    }
+    
     public function getListBySchool($school)
     {
         return $this->getMapper()->getListBySchool($school);
@@ -689,7 +717,7 @@ class User extends AbstractService
 
     /**
      *
-     * @param int $conversation            
+     * @param integer $conversation            
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -838,6 +866,24 @@ class User extends AbstractService
         return $this->getServiceLocator()->get('app_service_event');
     }
 
+    /**
+     *
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+        return $this->getServiceLocator()->get('app_service_item');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\CtGroup
+     */
+    public function getServiceCtGroup()
+    {
+        return $this->getServiceLocator()->get('app_service_ct_group');
+    }
+    
     /**
      *
      * @return \Application\Service\Contact
