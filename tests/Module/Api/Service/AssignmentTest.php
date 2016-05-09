@@ -238,10 +238,7 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.addDocument', ['name' => 'monfile','link' => 'http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf','submission_id' => $submission_id]);
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->printCreateTest($data);
     }
     
     /**

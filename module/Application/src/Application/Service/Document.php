@@ -44,7 +44,7 @@ class Document extends AbstractService
             throw new \Exception();
         }
         
-        return $this->getMapper()->getLastInsertValue();
+        return  $this->getServiceLibrary()->get($library_id);
     }
     
     public function getListBySubmission($submission_id)
@@ -69,6 +69,7 @@ class Document extends AbstractService
      * @param integer $id
      * @param integer $submission_id
      * @param integer $library_id
+     * 
      * @return boolean
      */
     public function delete($id = null, $submission_id = null, $library_id = null) 
