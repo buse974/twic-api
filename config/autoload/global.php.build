@@ -115,6 +115,7 @@ return [
             'app_service_videoconf_opt',
 	    'app_service_bank_question_tag',
 	    'app_service_sub_quiz',
+	    'app_service_submission_comments',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

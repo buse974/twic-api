@@ -9,13 +9,14 @@ class PgUserCriteria extends AbstractService
     
     /**
      *
+     * @param integer $pg
      * @param integer $user
      * @param integer $criteria
      * @param integer $points
      */
-    public function add($user, $submission, $criteria, $points)
+    public function add($pg, $user, $submission, $criteria, $points)
     {
-        return  $this->getMapper()->insert($this->getModel()->setUserId($user)->setSubmissionId($submission)->setCriteriaId($criteria)->setPoints($points));
+        return  $this->getMapper()->insert($this->getModel()->setPgId($pg)->setUserId($user)->setSubmissionId($submission)->setCriteriaId($criteria)->setPoints($points));
     }
     
     
@@ -26,7 +27,7 @@ class PgUserCriteria extends AbstractService
      */
     public function deleteByUserAndSubmission($user, $submission)
     {
-        return  $this->getMapper()->delete($this->getModel()->setUserId($user)->setSubmissionId($submission));
+        return  $this->getMapper()->delete($this->getModel()->setPgId($user)->setSubmissionId($submission));
     }
     
 }

@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Box\Model\Document;
 
 class Library extends AbstractService
 {
@@ -24,8 +25,11 @@ class Library extends AbstractService
 	    $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
 	    
 	    $box_id = null;
-	    if(($m_box = $this->getServiceBox()->addFile(($link)?:$urldms.$token, $type)) instanceof Box\Model\Document) {
-	        $box_id = $res_box->getId();
+	    $u = (null !== $link)?$link:$urldms.$token;
+	    $m_box = $this->getServiceBox()->addFile($u, $type);
+	    
+	    if($m_box instanceof Document) {
+	        $box_id = $m_box->getId();
 	    }
 	    
 		$m_library = $this->getModel()

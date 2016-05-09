@@ -117,6 +117,7 @@ return [
             'app_service_sub_quiz',
             'app_service_criteria',
             'app_service_submission_user_criteria',
+            'app_service_submission_comments',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

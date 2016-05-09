@@ -14,7 +14,6 @@ class Library extends AbstractMapper
             ->join('item', 'document.item_id=item.id', [])
             ->where(array('item.parent_id' => $item));
         
-        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
     
