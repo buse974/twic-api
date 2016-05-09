@@ -102,7 +102,7 @@ return [
             'app_service_poll_item',
             'app_service_document',
             'app_service_set',
-        	'app_service_library',
+            'app_service_library',
             'app_service_group',
             'app_service_opt_grading',
             'app_service_bank_question',
@@ -115,6 +115,8 @@ return [
             'app_service_videoconf_opt',
             'app_service_bank_question_tag',
             'app_service_sub_quiz',
+            'app_service_criteria',
+            'app_service_submission_user_criteria',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
