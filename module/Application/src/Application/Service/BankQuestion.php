@@ -3,7 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Zend\Db\Sql\Predicate\IsNull;
 use Guzzle\Service\Resource\Model;
 
 class BankQuestion extends AbstractService

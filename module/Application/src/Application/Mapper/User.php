@@ -9,6 +9,33 @@ use Zend\Db\Sql\Select;
 class User extends AbstractMapper
 {
     
+    /**
+     *
+     * @param integer $item_id
+     */
+    public function getListUsersByItemOfCourseUser($item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([
+            'id',
+            'firstname',
+            'gender',
+            'lastname',
+            'email',
+            'has_email_notifier',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position',
+            'interest',
+            'avatar',
+            'school_id'
+        ])
+        ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
+        ->join('item', 'item.course_id=course_user_relation.course_id', array())
+        ->where(array('item.id' => $item_id));
+        
+        return $this->selectWith($select);
+    }
+    
     public function getListUsersGroupByItemAndUser($item_id, $user)
     {
         $sub = $this->tableGateway->getSql()->select();
@@ -42,7 +69,8 @@ class User extends AbstractMapper
     public function getListUsersByGroup($group_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['user$id' => new Expression('user.id'),
+        $select->columns([
+            'id',
             'firstname',
             'gender',
             'lastname',
@@ -56,6 +84,29 @@ class User extends AbstractMapper
         ])
         ->join('group_user', 'group_user.user_id=user.id', array())
         ->where(array('group_user.group_id' => $group_id));
+    
+        return $this->selectWith($select);
+    }
+    
+    public function getListUsersBySet($set_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([
+            'id',
+            'firstname',
+            'gender',
+            'lastname',
+            'email',
+            'has_email_notifier',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position',
+            'interest',
+            'avatar',
+            'school_id'
+        ])
+        ->join('group_user', 'group_user.user_id=user.id', array())
+        ->join('set_group', 'group_user.group_id=set_group.group_id', array())
+        ->where(array('set_group.set_id' => $set_id));
     
         return $this->selectWith($select);
     }
