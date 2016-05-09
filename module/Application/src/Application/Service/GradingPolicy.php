@@ -137,6 +137,23 @@ class GradingPolicy extends AbstractService
         
         return $res_grading_policy;
     }
+    
+        /**
+     * Get Grading Policy By submission Id.
+     *
+     * @invokable
+     *
+     * @param int $submission            
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getBySubmission($submission)
+    {
+        $m_grading_policy = $this->getMapper()->getBySubmission($submission)->current(); 
+        $m_grading_policy->setCriterias($this->getServiceCriteria()->getList($m_grading_policy->getId()));
+        
+        return $m_grading_policy;
+    }
 
     public function initTpl($course)
     {

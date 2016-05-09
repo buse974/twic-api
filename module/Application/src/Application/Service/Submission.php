@@ -401,6 +401,37 @@ class Submission extends AbstractService
     {
         return  $this->getServiceDocument()->delete(null, $submission_id, $library_id);
     }
+    
+     /**
+     * @invokable
+     * 
+     * @param array $id
+     * @param array $grades
+     * @param array $criterias
+     */
+    public function pairRates($id, $grades = null, $criterias = null) 
+    {
+        $gp_criterias = [];
+        $total_pts = 0;
+        $m_grading_policy = $this->getServiceGradingPolicy()->getBySubmission($id);;
+        $m_submission = $this->get($id);
+        foreach($m_grading_policy->getCriterias() as $c){
+            $gp_criterias[$c->getId()] = $c;
+            $total_pts += $c->getPoints();
+        }
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $this->getServicePgUserCriteria()->deleteByUserAndSubmission($me, $id);
+        if(null !== $criterias && count($criterias) > 0){
+            foreach($criterias as $criteria_id => $criteria){
+                if(null !== $gp_criterias[$criteria_id]){
+                    
+                }
+            }
+        }
+        else{
+            
+        }
+    }
       
     /**
      *
@@ -499,6 +530,24 @@ class Submission extends AbstractService
     public function getServiceSubQuiz()
     {
         return $this->getServiceLocator()->get('app_service_sub_quiz');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\GradingPolicy
+     */
+    public function getServiceGradingPolicy()
+    {
+        return $this->getServiceLocator()->get('app_service_grading_policy');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\PgUserCriteria
+     */
+    public function getServicePgUserCriteria()
+    {
+        return $this->getServiceLocator()->get('app_service_pg_user_criteria');
     }
     
     /**
