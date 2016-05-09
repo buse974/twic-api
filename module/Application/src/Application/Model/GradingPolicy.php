@@ -15,6 +15,7 @@ class GradingPolicy extends BaseGradingPolicy
     protected $nbr_comment;
     protected $processed_grade;
     protected $grading_policy_grade;
+    protected $criterias;
 
     public function exchangeArray(array &$data)
     {
@@ -26,7 +27,19 @@ class GradingPolicy extends BaseGradingPolicy
 
         $this->grading_policy_grade = $this->requireModel('app_model_grading_policy_grade', $data);
     }
+    
+    public function getCriterias()
+    {
+        return $this->criterias;
+    }
 
+    public function setCriterias($criterias)
+    {
+        $this->criterias = $criterias;
+
+        return $this;
+    }
+    
     public function getItems()
     {
         return $this->items;
