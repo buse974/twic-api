@@ -9,6 +9,7 @@ class PgUserCriteria extends AbstractModel
  	protected $pg_id;
 	protected $user_id;
 	protected $criteria_id;
+	protected $submission_id;
 	protected $points;
 
 	protected $prefix = 'pg_user_criteria';
@@ -45,6 +46,18 @@ class PgUserCriteria extends AbstractModel
 	public function setCriteriaId($criteria_id)
 	{
 		$this->criteria_id = $criteria_id;
+
+		return $this;
+	}
+
+	public function getSubmissionId()
+	{
+		return $this->submission_id;
+	}
+
+	public function setSubmissionId($submission_id)
+	{
+		$this->submission_id = $submission_id;
 
 		return $this;
 	}

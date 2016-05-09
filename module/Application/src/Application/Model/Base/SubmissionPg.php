@@ -9,6 +9,7 @@ class SubmissionPg extends AbstractModel
  	protected $user_id;
 	protected $submission_id;
 	protected $date;
+	protected $is_graded;
 
 	protected $prefix = 'submission_pg';
 
@@ -44,6 +45,18 @@ class SubmissionPg extends AbstractModel
 	public function setDate($date)
 	{
 		$this->date = $date;
+
+		return $this;
+	}
+
+	public function getIsGraded()
+	{
+		return $this->is_graded;
+	}
+
+	public function setIsGraded($is_graded)
+	{
+		$this->is_graded = $is_graded;
 
 		return $this;
 	}

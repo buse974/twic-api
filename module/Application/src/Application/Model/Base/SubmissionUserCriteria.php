@@ -11,6 +11,7 @@ class SubmissionUserCriteria extends AbstractModel
 	protected $user_id;
 	protected $criteria_id;
 	protected $points;
+	protected $overwritten;
 
 	protected $prefix = 'submission_user_criteria';
 
@@ -70,6 +71,18 @@ class SubmissionUserCriteria extends AbstractModel
 	public function setPoints($points)
 	{
 		$this->points = $points;
+
+		return $this;
+	}
+
+	public function getOverwritten()
+	{
+		return $this->overwritten;
+	}
+
+	public function setOverwritten($overwritten)
+	{
+		$this->overwritten = $overwritten;
 
 		return $this;
 	}
