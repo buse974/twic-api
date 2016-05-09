@@ -238,7 +238,21 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.addDocument', ['name' => 'monfile','link' => 'http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf','submission_id' => $submission_id]);
     
-        $this->printCreateTest($data);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 11);
+        $this->assertEquals($data['result']['id'] , 3);
+        $this->assertEquals($data['result']['name'] , "monfile");
+        $this->assertEquals($data['result']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
+        $this->assertEquals($data['result']['token'] , null);
+        $this->assertEquals($data['result']['type'] , null);
+        $this->assertEquals(!empty($data['result']['created_date']) , true);
+        $this->assertEquals($data['result']['deleted_date'] , null);
+        $this->assertEquals($data['result']['updated_date'] , null);
+        $this->assertEquals($data['result']['folder_id'] , 1);
+        $this->assertEquals($data['result']['owner_id'] , 1);
+        $this->assertEquals($data['result']['box_id'] , null);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     /**
