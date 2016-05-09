@@ -29,7 +29,7 @@ class Library extends AbstractService
 	    $m_box = $this->getServiceBox()->addFile($u, $type);
 	    
 	    if($m_box instanceof Document) {
-	        $box_id = $res_box->getId();
+	        $box_id = $m_box->getId();
 	    }
 	    
 		$m_library = $this->getModel()
