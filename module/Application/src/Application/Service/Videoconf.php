@@ -30,12 +30,13 @@ class Videoconf extends AbstractService
             $submission_id = $this->getServiceSubmission()->getByItem($item_id)->getId();
         }
         
+        $m_item = $this->getServiceItem()->getBySubmission($submission_id);
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
             ->setDescription($description)
             ->setSubmissionId($submission_id)
             ->setConversationId($conversation)
-            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
+            ->setStartDate($m_item->getStart())
             ->setToken($this->getServiceZOpenTok()->getSessionId())
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 

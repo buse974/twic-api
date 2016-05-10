@@ -65,6 +65,16 @@ class PollItem extends AbstractService
         return $this->getMapper()->delete($this->getModel()->setPollId($poll_id));
     }
     
+    /**
+     * @param integer $id
+     * 
+     * @return \Application\Model\PollItem
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+    
     public function getList($poll_id)
     {
         $res_poll_item = $this->getMapper()->select($this->getModel()

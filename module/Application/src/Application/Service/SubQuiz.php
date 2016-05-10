@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class SubQuiz extends AbstractService
 {
@@ -61,12 +62,12 @@ class SubQuiz extends AbstractService
         $m_sub_quiz = $this->getModel()
             ->setUserId($me)
             ->setPollId($m_poll->getId())
+            ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setSubmissionId($m_submission->getId());
         
         $this->getMapper()->insert($m_sub_quiz);
         $sub_quiz_id = $this->getMapper()->getLastInsertValue();
         $res_poll_item = $this->getServicePollItem()->getList($m_poll->getId());
-        
         foreach ($res_poll_item as $m_poll_item) {
             $m_group_question = $this->getServiceGroupQuestion()->getList($m_poll_item->getGroupQuestionId());
             if(null !== $m_group_question) { 
@@ -82,9 +83,38 @@ class SubQuiz extends AbstractService
         return $this->get($sub_quiz_id);
     }
     
-    public function answer()
+    /**
+     * @invokable
+     * 
+     * @param integer $sub_question_id
+     * @param array $sub_answer
+     * 
+     * @return boolean
+     */
+    public function answer($sub_question_id, $sub_answer)
     {
+        $sa = current($sub_answer);
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $m_sub_question = $this->getServiceSubQuestion()->get($sub_question_id);
+        $m_sub_quiz = $this->getMapper()->select($this->getModel()->setId($m_sub_question->getSubQuizId()))->current();
         
+        if(null === $m_sub_quiz ||
+            $m_sub_quiz->getUserId() !== $user_id ||
+            !( null === $m_sub_question->getAnsweredDate() || $m_sub_question->getAnsweredDate() instanceof IsNull)) {
+           return false;
+        }
+        $res_sub_answer = $this->getServiceSubAnswer()->getListLite($sub_question_id);
+        if($res_sub_answer->count() !== 0) {
+            return false;
+        }
+        foreach ($sub_answer as $sa) {
+            $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], $sa['answer']);
+        }
+        
+        $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
+        $this->getMapper()->checkFinish($m_sub_quiz->getId());
+       
+        return true;
     }
      
     /**
