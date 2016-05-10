@@ -304,7 +304,7 @@ class Videoconf extends AbstractService
                 $res[$instructor['id']] = $instructor;
             }
         }
-        
+        $m_videoconf_opt = $this->getServiceVideoconfOpt()->getByItem($m_item->getId());
         $convs = $this->getServiceConversation()->getListOrCreate($submission); 
         $finalconv = null;
         foreach ($convs as $conv) {
@@ -317,6 +317,7 @@ class Videoconf extends AbstractService
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getId()))
             ->setConversationId($finalconv)
             ->setInstructors($res)
+            ->setVideoconfOpt($m_videoconf_opt)
             ->setVideoconfAdmin(
                 $this->getServiceVideoconfAdmin()->add(
                     $m_videoconf->getId(), 
@@ -593,6 +594,14 @@ class Videoconf extends AbstractService
     public function getServiceItemAssignment()
     {
         return $this->getServiceLocator()->get('app_service_item_assignment');
+    }
+    
+    /**
+     * @return \Application\Service\VideoconfOpt
+     */
+    public function getServiceVideoconfOpt()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf_opt');
     }
 
     /**

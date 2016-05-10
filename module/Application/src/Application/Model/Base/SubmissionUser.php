@@ -11,6 +11,7 @@ class SubmissionUser extends AbstractModel
 	protected $grade;
 	protected $submit_date;
 	protected $overwritten;
+	protected $start_date;
 
 	protected $prefix = 'submission_user';
 
@@ -70,6 +71,18 @@ class SubmissionUser extends AbstractModel
 	public function setOverwritten($overwritten)
 	{
 		$this->overwritten = $overwritten;
+
+		return $this;
+	}
+
+	public function getStartDate()
+	{
+		return $this->start_date;
+	}
+
+	public function setStartDate($start_date)
+	{
+		$this->start_date = $start_date;
 
 		return $this;
 	}

@@ -122,9 +122,6 @@ class GroupWorkTest extends AbstractService
                 'item_id' => $item_id
             ]);
         
-        echo $this->printDocTest([
-                'item_id' => $item_id
-            ]);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['submission_user']) , 3);
@@ -194,13 +191,12 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 5);
+        $this->assertEquals(count($data['result']['chat'][0]) , 4);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
-        $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['videoconf']) , 15);
+        $this->assertEquals(count($data['result']['videoconf']) , 16);
         $this->assertEquals(count($data['result']['videoconf']['instructors']) , 0);
         $this->assertEquals(count($data['result']['videoconf']['videoconf_admin']) , 5);
         $this->assertEquals($data['result']['videoconf']['videoconf_admin']['id'] , 1);
@@ -210,7 +206,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['created_date']) , true);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
         $this->assertEquals(!empty($data['result']['videoconf']['token']) , true);
-        $this->assertEquals(!empty($data['result']['videoconf']['start_date']) , true);
+        $this->assertEquals($data['result']['videoconf']['start_date'] , null);
         $this->assertEquals($data['result']['videoconf']['duration'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_token'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_link'] , null);
@@ -221,8 +217,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['description'] , null);
         $this->assertEquals(!empty($data['result']['videoconf']['created_date']) , true);
         $this->assertEquals($data['result']['videoconf']['deleted_date'] , null);
+        $this->assertEquals(count($data['result']['videoconf']['videoconf_opt']) , 4);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['item_id'] , 1);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['record'] , 2);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['nb_user_autorecord'] , 2);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     /**
@@ -612,13 +614,12 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 5);
+        $this->assertEquals(count($data['result']['chat'][0]) , 4);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
-        $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['videoconf']) , 15);
+        $this->assertEquals(count($data['result']['videoconf']) , 16);
         $this->assertEquals(count($data['result']['videoconf']['instructors']) , 0);
         $this->assertEquals(count($data['result']['videoconf']['videoconf_admin']) , 5);
         $this->assertEquals($data['result']['videoconf']['videoconf_admin']['id'] , 2);
@@ -628,7 +629,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['created_date']) , true);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
         $this->assertEquals(!empty($data['result']['videoconf']['token']) , true);
-        $this->assertEquals(!empty($data['result']['videoconf']['start_date']) , true);
+        $this->assertEquals($data['result']['videoconf']['start_date'] , null);
         $this->assertEquals($data['result']['videoconf']['duration'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_token'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_link'] , null);
@@ -639,8 +640,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['description'] , null);
         $this->assertEquals(!empty($data['result']['videoconf']['created_date']) , true);
         $this->assertEquals($data['result']['videoconf']['deleted_date'] , null);
+        $this->assertEquals(count($data['result']['videoconf']['videoconf_opt']) , 4);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['item_id'] , 1);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['record'] , 1);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['nb_user_autorecord'] , 10);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     public function testCanGetItemGetListSubmissions()

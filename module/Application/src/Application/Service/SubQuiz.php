@@ -10,7 +10,7 @@ class SubQuiz extends AbstractService
     public function getBySubmission($submission_id)
     {
         $m_submission = $this->getServiceSubmission()->get(null,$submission_id);
-        $res_sub_quiz = $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+        $res_sub_quiz = $this->getMapper()->getList(null, $submission_id);
         
         $ret = [];
         foreach ($res_sub_quiz as $m_sub_quiz) {     
@@ -108,7 +108,7 @@ class SubQuiz extends AbstractService
             return false;
         }
         foreach ($sub_answer as $sa) {
-            $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], $sa['answer']);
+            $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], (isset($sa['answer'])?$sa['answer']:null));
         }
         
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
