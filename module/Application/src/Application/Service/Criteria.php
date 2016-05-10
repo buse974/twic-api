@@ -35,6 +35,20 @@ class Criteria extends AbstractService
     }  
     
     /**
+     * Get criteria list.
+     * 
+     * @invokable
+     *
+     * @param int $item 
+     *
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
+    public function getListByItem($item)
+    {
+        return $this->getMapper()->getListByItem($item);
+    }  
+    
+    /**
      * Insert criteria
      * 
      * @invokable

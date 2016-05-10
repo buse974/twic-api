@@ -37,6 +37,13 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->getListBySubmissionId($submission_id, $me);
     }
     
+    
+    
+    public function getList($submission_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+    }
+    
     /**
      * @param integer $submission_id
      * @param integer $user_id
