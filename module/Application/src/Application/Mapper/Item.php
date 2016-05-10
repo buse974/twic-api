@@ -419,7 +419,6 @@ class Item extends AbstractMapper
                 ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
                 ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
         }
-        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 }

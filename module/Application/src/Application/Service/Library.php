@@ -4,7 +4,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
-use Box\Model\Document;
 
 class Library extends AbstractService
 {

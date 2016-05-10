@@ -19,6 +19,25 @@ class PgUserCriteria extends AbstractService
         return  $this->getMapper()->insert($this->getModel()->setPgId($pg)->setUserId($user)->setSubmissionId($submission)->setCriteriaId($criteria)->setPoints($points));
     }
     
+    /**
+     * 
+     * @param integer $submission
+     * 
+     */
+    public function getListBySubmission($submission){
+        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission));
+    }
+    
+     /**
+     * 
+     * @param integer $submission
+     * @param integer $user
+     * 
+     */
+    public function getProcessedGrades($submission, $user = null){
+        return $this->getMapper()->getProcessedGrades($submission, $user);
+    }
+    
     
      /**
      *

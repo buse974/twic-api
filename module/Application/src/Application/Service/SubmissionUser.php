@@ -23,10 +23,17 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
     }
     
+    
+    
+    public function setGrade($submission_id, $user_id, $grade)
+    {
+        $r = $this->getMapper()->update($this->getModel()->setGrade($grade), ['submission_id' => $submission_id, 'user_id' => $user_id]);
+        
+    }
+    
     public function getListBySubmissionId($submission_id)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
         return $this->getMapper()->getListBySubmissionId($submission_id, $me);
     }
     
@@ -64,5 +71,14 @@ class SubmissionUser extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+        /**
+     * 
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 }
