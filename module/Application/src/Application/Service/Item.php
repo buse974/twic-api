@@ -345,6 +345,18 @@ class Item extends AbstractService
             ->setCourseId($course))
             ->toArray();
     }
+    
+    /**
+     * @invokable
+     *
+     * @param int $id            
+     *
+     * @return array
+     */
+    public function getCriterias($id)
+    {
+        return $this->getServiceCriteria()->getListByItem($id);
+    }
 
     public function getListRecord($course, $user, $is_student)
     {
@@ -705,6 +717,15 @@ class Item extends AbstractService
     public function getServiceVideoconfOpt()
     {
         return $this->getServiceLocator()->get('app_service_videoconf_opt');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Criteria
+     */
+    public function getServiceCriteria()
+    {
+        return $this->getServiceLocator()->get('app_service_criteria');
     }
     
 }

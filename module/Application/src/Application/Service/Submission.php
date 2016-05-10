@@ -429,7 +429,37 @@ class Submission extends AbstractService
      */
     public function getPairGraders($id) 
     {
-       return $this->getServiceUser()->getListBySubmission($id);
+       return $this->getServiceUser()->getListPairGraders($id);
+    }
+    
+     /**
+     * @invokable
+     * 
+     * @param integer $id
+     */
+    public function getPGCriterias($id) 
+    {
+       return $this->getServicePgUserCriteria()->getListBySubmission($id);
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     */
+    public function getUserCriterias($id) 
+    {
+       return $this->getServiceSubmissionUserCriteria()->getListBySubmission($id);
+    }
+    
+      /**
+     * @invokable
+     * 
+     * @param integer $id
+     */
+    public function getPGGrades($id) 
+    {
+       return $this->getServicePgUserGrade()->getListBySubmission($id);
     }
     
      /**
@@ -491,7 +521,7 @@ class Submission extends AbstractService
      */
     public function getUserGrades($id)
     {
-        return $this->getServiceSubmissionUser()->getListBySubmissionId($id);
+        return $this->getServiceSubmissionUser()->getList($id);
     }
       
     /**

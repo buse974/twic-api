@@ -38,7 +38,6 @@ class SubmissionUserCriteria extends AbstractService
      */
     public function getListBySubmission($submission)
     {
-        
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission));
     }
 }
