@@ -15,6 +15,25 @@ class SubQuestion extends AbstractService
         return $this->getMapper()->select($this->getModel()->setSubQuizId($sub_quiz_id));
     }
     
+    /**
+     * @param integer $id
+     * 
+     * @return \Application\Model\SubQuestion
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+   
+    public function updateAnswered($id)
+    {
+        $m_sub_question = $this->getModel()
+            ->setId($id)
+            ->setAnsweredDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
+        return $this->getMapper()->update($m_sub_question);
+    }
+    
     public function add($sub_quiz_id, $poll_item_id, $bank_question_id, $group_question_id)
     {
         $m_sub_question = $this->getModel()

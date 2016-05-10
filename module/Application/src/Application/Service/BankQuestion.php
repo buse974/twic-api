@@ -85,7 +85,13 @@ class BankQuestion extends AbstractService
             null;
     }
 
-    public function copy($id)
+    /**
+     * Si utiliser il copy et on retour le nouvelle id, 
+     * si utiliser mais for_delete alors on le passe simplement a older
+     * @param integer $id
+     * @param boolean $for_delete
+     */
+    public function copy($id, $for_delete = false)
     {
         $m_bank_question = $this->getWithPollItemExist($id);
         if(null === $m_bank_question) {
@@ -94,6 +100,22 @@ class BankQuestion extends AbstractService
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
+        if(!$for_delete) {
+            $m_bank_question->setId(null)
+                ->setOlder(null)
+                ->setCreatedDate($date);
+    
+            $this->getMapper()->insert($m_bank_question);
+            $bank_question_id = $this->getMapper()->getLastInsertValue();
+    
+            $this->getServiceBankQuestionMedia()->copy($bank_question_id, $id);
+            $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
+            $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
+    
+            return $bank_question_id;
+        }
+        
+        return true;
         $m_bank_question->setId(null)
             ->setOlder(null)
             ->setCreatedDate($date);
@@ -122,8 +144,11 @@ class BankQuestion extends AbstractService
 
         $ret = [];
         foreach ($id as $i) {
-            $this->copy($i);
-            $ret[$i] = $this->getMapper()->delete($this->getModel()->setId($i));
+            if($this->copy($i)===$i) {
+                $ret[$i] = $this->getMapper()->delete($this->getModel()->setId($i));
+            } else {
+                $ret[$i] = true;
+            }
         }
 
         return $ret;

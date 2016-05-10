@@ -19,7 +19,7 @@ class Submission extends AbstractService
         ModelItem::TYPE_WORKGROUP => [
             ModelItem::CMP_VIDEOCONF => true,
             ModelItem::CMP_CHAT => true,
-            ModelItem::CMP_TEXT_EDITOR => false,
+            ModelItem::CMP_TEXT_EDITOR => true,
         ],
         ModelItem::TYPE_LIVE_CLASS => [
             ModelItem::CMP_VIDEOCONF => true,
@@ -88,14 +88,24 @@ class Submission extends AbstractService
             $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $user_id);        
         }
         
-        $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
-        $this->getMapper()->insert($m_submission);
-        $submission_id = $this->getMapper()->getLastInsertValue();
-        
+        $submission_id = null;
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
+            $m_submission = $this->get($item_id);
+            if(null !== $m_submission) {
+                $submission_id = $m_submission->getId();
+            }
+        }
+        if(null === $submission_id) {
+            $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
+            $this->getMapper()->insert($m_submission);
+            $submission_id = $this->getMapper()->getLastInsertValue();
+        }
         
         $res_user = null;
         if(null !== $group_id) {
             $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
+        }elseif($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
+            $res_user = $this->getServiceUser()->getListByItem($item_id);
         }
         
         $users = [];
@@ -132,7 +142,6 @@ class Submission extends AbstractService
         }
         
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
-        
         if($res_submission->count() <= 0) {
             $submission_id = $this->create($item_id, $user_id, $group_id);
             $res_submission = $this->getMapper()->get(null, null, $submission_id);
@@ -267,7 +276,7 @@ class Submission extends AbstractService
             }
             
             if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getListOrCreate($submission_id);
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
             } else {
                 $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
             }
@@ -306,14 +315,13 @@ class Submission extends AbstractService
      */
     public function submitBySubmission($submission_id) 
     {
-        $ret = true;
         $me = $this->getServiceUser()->getIdentity()['id'];
         $submit = 1;
         
         $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id);
         foreach ($res_submission_user as $m_submission_user) {
             if($m_submission_user->getUserId() === $me) {
-                $ret = $this->getServiceSubmissionUser()->submit($submission_id, $me);
+                $this->getServiceSubmissionUser()->submit($submission_id, $me);
             } else {
                 $submit&=($m_submission_user->getSubmitDate()!==null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
             }
@@ -325,7 +333,7 @@ class Submission extends AbstractService
             $this->getMapper()->update($m_submission);
         }
         
-        return $ret;
+        return $submit;
     }
     
     /**

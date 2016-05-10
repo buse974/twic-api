@@ -18,14 +18,19 @@ class Conversation extends AbstractService
     {
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setSubmissionId($submission_id)
             ->setType($type);
 
         if ($this->getMapper()->insert($m_conversation) <= 0) {
             throw new \Exception('Error create conversation');
         }
 
-        return $this->getMapper()->getLastInsertValue();
+        $conversation_id = $this->getMapper()->getLastInsertValue();
+        
+        if(null !== $submission_id) {
+            $this->getServiceSubConversation()->add($conversation_id, $submission_id);
+        }
+        
+        return $conversation_id;         
     }
     
     /**
@@ -77,7 +82,7 @@ class Conversation extends AbstractService
      */
     public function getListBySubmission($submission_id)
     {
-        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+        return $this->getMapper()->getListBySubmission($submission_id);
     }
 
     /**
@@ -135,6 +140,14 @@ class Conversation extends AbstractService
         return $this->getServiceLocator()->get('app_service_conversation_user');
     }
 
+    /**
+     * @return \Application\Service\SubConversation
+     */
+    public function getServiceSubConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_conversation');
+    }
+    
     /**
      * @return \Application\Service\User
      */
