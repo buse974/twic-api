@@ -1695,7 +1695,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['user_id'] , 4);
         $this->assertEquals($data['result']['questionnaire_id'] , 1);
-        $this->assertEquals($data['result']['submission_id'] , 1);
+        $this->assertEquals($data['result']['submission_id'] , 2);
         $this->assertEquals($data['result']['state'] , null);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['end_date'] , null);

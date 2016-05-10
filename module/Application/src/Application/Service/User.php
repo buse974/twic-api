@@ -236,7 +236,7 @@ class User extends AbstractService
      * 
      * @param integer $item_id
      */
-    public function getListUsersByItem($item_id)
+    public function getListByItem($item_id)
     {
         $m_item = $this->getServiceItem()->get($item_id);
         

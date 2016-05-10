@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Box\Model\Document as ModelDocument;
 
 class Library extends AbstractService
 {
@@ -27,7 +28,7 @@ class Library extends AbstractService
 	    $u = (null !== $link)?$link:$urldms.$token;
 	    $m_box = $this->getServiceBox()->addFile($u, $type);
 	    
-	    if($m_box instanceof Document) {
+	    if($m_box instanceof ModelDocument) {
 	        $box_id = $m_box->getId();
 	    }
 	    

@@ -64,6 +64,11 @@ class VideoconfOpt extends AbstractService
         return $this->getMapper()->update($m_opt_videoconf, ['item_id' => $item_id]);
     }
     
+    /**
+     * @param integer $item_id
+     * 
+     * @return \Application\Model\VideoconfOpt
+     */
     public function getByItem($item_id)
     {
         $m_opt_videoconf = $this->getModel()->setItemId($item_id);

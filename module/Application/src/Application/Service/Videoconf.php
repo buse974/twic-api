@@ -9,6 +9,7 @@ use Application\Model\Videoconf as CVF;
 use OpenTok\Role as OpenTokRole;
 use Application\Model\Role as ModelRole;
 use Application\Model\Item as ModelItem;
+use Application\Model\Conversation as ModelConversation;
 
 class Videoconf extends AbstractService
 {
@@ -29,12 +30,13 @@ class Videoconf extends AbstractService
             $submission_id = $this->getServiceSubmission()->getByItem($item_id)->getId();
         }
         
+        $m_item = $this->getServiceItem()->getBySubmission($submission_id);
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
             ->setDescription($description)
             ->setSubmissionId($submission_id)
             ->setConversationId($conversation)
-            ->setStartDate((new \DateTime($start_date))->setTimezone(new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'))
+            ->setStartDate($m_item->getStart())
             ->setToken($this->getServiceZOpenTok()->getSessionId())
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
@@ -244,7 +246,7 @@ class Videoconf extends AbstractService
      */
     public function getListOrCreate($submission_id)
     {
-        $m_videoconf = $this->getBySubmission($submission_id);
+        $m_videoconf = $this->getBySubmission(null, $submission_id);
         if(null === $m_videoconf) {
             $this->add(null, null, null, $submission_id);
             $m_videoconf = $this->getBySubmission($submission_id);
@@ -279,43 +281,48 @@ class Videoconf extends AbstractService
     {
         if (null !== $id) {
             $res_videoconf = $this->getMapper()->get($id);
-        } elseif (null !== $item_prog) {
-            $res_videoconf = $this->getMapper()->getBySubmission($submission);
+            $m_videoconf = $res_videoconf->current();
+        } elseif (null !== $submission) {
+            $m_videoconf = $this->getListOrCreate($submission);
         } else {
             throw new \Exception('Error params joinUser');
         }
-
-        $identity = $this->getServiceUser()->getIdentity();
-
-        if ($res_videoconf->count() === 0) {
+        if (null === $m_videoconf) {
             throw new \Exception('Error select');
         }
-
-        $m_videoconf = $res_videoconf->current();
-        $optok = OpenTokRole::PUBLISHER;
-        if (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
-            $optok = OpenTokRole::MODERATOR;
+        if(null === $submission) {
+            $submission = $m_videoconf->getSubmissionId();
         }
-
-        $res_videoconf_conversation = $this->getServiceVideoconfConversation()->getByVideoconfUser($m_videoconf->getId(), $identity['id']);
-        $res = $this->getServiceUser()
-            ->getListByItemProg($m_videoconf->getItemProgId())
-            ->toArray(array('id'));
-
-        $m_item = $this->getServiceItem()->getByItemProg($m_videoconf->getItemProgId());
+        
+        $identity = $this->getServiceUser()->getIdentity();
+        
+        $m_item = $this->getServiceItem()->getBySubmission($submission);
+        $res=[];
         if ($m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
             $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
             foreach ($instructors['list'] as $instructor) {
                 $res[$instructor['id']] = $instructor;
             }
-        } else {
-            $m_videoconf->setItemAssignmentId($this->getServiceItemAssignment()->getIdBySubmission($m_videoconf->getItemProgId()));
         }
-
+        $m_videoconf_opt = $this->getServiceVideoconfOpt()->getByItem($m_item->getId());
+        $convs = $this->getServiceConversation()->getListOrCreate($submission); 
+        $finalconv = null;
+        foreach ($convs as $conv) {
+            if($conv->getName()===ModelConversation::DEFAULT_NAME) {
+                $finalconv=$conv->getId();
+                break;
+            }
+        }
+        
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getId()))
-            ->setUsers($res)
-            ->setVideoconfAdmin($this->getServiceVideoconfAdmin()->add($m_videoconf->getId(), $optok));
-
+            ->setConversationId($finalconv)
+            ->setInstructors($res)
+            ->setVideoconfOpt($m_videoconf_opt)
+            ->setVideoconfAdmin(
+                $this->getServiceVideoconfAdmin()->add(
+                    $m_videoconf->getId(), 
+                    (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ?OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER));
+    
         return $m_videoconf;
     }
 
@@ -459,6 +466,19 @@ class Videoconf extends AbstractService
 
         return $this->getServiceMessage()->sendVideoConf($text, null, $conversation);
     }
+    
+    /**
+     * @invokable 
+     * 
+     * @param integer $item_id
+     */
+    public function getByItem($item_id)
+    {
+        $ar_submission = $this->getServiceSubmission()->get($item_id)->toArray();
+        $ar_submission = $ar_submission + $this->getServiceSubmission()->getContent($ar_submission['id']);
+        
+        return $ar_submission;
+    }
 
     /**
      * @invokable
@@ -574,6 +594,14 @@ class Videoconf extends AbstractService
     public function getServiceItemAssignment()
     {
         return $this->getServiceLocator()->get('app_service_item_assignment');
+    }
+    
+    /**
+     * @return \Application\Service\VideoconfOpt
+     */
+    public function getServiceVideoconfOpt()
+    {
+        return $this->getServiceLocator()->get('app_service_videoconf_opt');
     }
 
     /**

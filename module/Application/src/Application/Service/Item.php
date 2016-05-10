@@ -307,6 +307,16 @@ class Item extends AbstractService
     }
 
     /**
+     * @param integer $submission_id
+     * 
+     * @return null|\Application\Model\Item
+     */
+    public function getBySubmission($submission_id)
+    {
+        return $this->getMapper()->getBySubmission($submission_id)->current();
+    }
+    
+    /**
      * @invokable
      *
      * @param int $course            
