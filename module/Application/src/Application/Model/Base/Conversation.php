@@ -9,7 +9,6 @@ class Conversation extends AbstractModel
  	protected $id;
 	protected $name;
 	protected $type;
-	protected $submission_id;
 	protected $created_date;
 
 	protected $prefix = 'conversation';
@@ -46,18 +45,6 @@ class Conversation extends AbstractModel
 	public function setType($type)
 	{
 		$this->type = $type;
-
-		return $this;
-	}
-
-	public function getSubmissionId()
-	{
-		return $this->submission_id;
-	}
-
-	public function setSubmissionId($submission_id)
-	{
-		$this->submission_id = $submission_id;
 
 		return $this;
 	}

@@ -142,7 +142,6 @@ class Submission extends AbstractService
         }
         
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
-        
         if($res_submission->count() <= 0) {
             $submission_id = $this->create($item_id, $user_id, $group_id);
             $res_submission = $this->getMapper()->get(null, null, $submission_id);
@@ -316,14 +315,13 @@ class Submission extends AbstractService
      */
     public function submitBySubmission($submission_id) 
     {
-        $ret = true;
         $me = $this->getServiceUser()->getIdentity()['id'];
         $submit = 1;
         
         $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id);
         foreach ($res_submission_user as $m_submission_user) {
             if($m_submission_user->getUserId() === $me) {
-                $ret = $this->getServiceSubmissionUser()->submit($submission_id, $me);
+                $this->getServiceSubmissionUser()->submit($submission_id, $me);
             } else {
                 $submit&=($m_submission_user->getSubmitDate()!==null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
             }
@@ -335,7 +333,7 @@ class Submission extends AbstractService
             $this->getMapper()->update($m_submission);
         }
         
-        return $ret;
+        return $submit;
     }
     
     /**

@@ -184,6 +184,8 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        return $data['result'][0];
     }
     
     /**
@@ -689,7 +691,7 @@ class PollTest extends AbstractService
         $data = $this->jsonRpc('subquiz.answer', [
             'sub_question_id' => $sub_question['id'],
             'sub_answer' => [
-                ['bank_question_item_id' => 1,'answer' => 'Une super réponse']
+                ['bank_question_item_id' => 11,'answer' => 'Une super réponse']
             ]
         ]);
         
@@ -748,13 +750,13 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['point'] , null);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][2]['answered_date'] , null);
         $this->assertEquals(count($data['result']['poll'][0]['sub_answers']) , 1);
-        $this->assertEquals(count($data['result']['poll'][0]['sub_answers'][1]) , 6);
-        $this->assertEquals($data['result']['poll'][0]['sub_answers'][1]['id'] , 1);
-        $this->assertEquals($data['result']['poll'][0]['sub_answers'][1]['sub_question_id'] , 1);
-        $this->assertEquals($data['result']['poll'][0]['sub_answers'][1]['bank_question_item_id'] , 1);
-        $this->assertEquals($data['result']['poll'][0]['sub_answers'][1]['answer'] , "Une super réponse");
-        $this->assertEquals($data['result']['poll'][0]['sub_answers'][1]['date'] , null);
-        $this->assertEquals($data['result']['poll'][0]['sub_answers'][1]['time'] , null);
+        $this->assertEquals(count($data['result']['poll'][0]['sub_answers'][11]) , 6);
+        $this->assertEquals($data['result']['poll'][0]['sub_answers'][11]['id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_answers'][11]['sub_question_id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['sub_answers'][11]['bank_question_item_id'] , 11);
+        $this->assertEquals($data['result']['poll'][0]['sub_answers'][11]['answer'] , "Une super réponse");
+        $this->assertEquals($data['result']['poll'][0]['sub_answers'][11]['date'] , null);
+        $this->assertEquals($data['result']['poll'][0]['sub_answers'][11]['time'] , null);
         $this->assertEquals(count($data['result']['poll'][0]['bank_questions']) , 3);
         $this->assertEquals(count($data['result']['poll'][0]['bank_questions'][1]) , 8);
         $this->assertEquals($data['result']['poll'][0]['bank_questions'][1]['id'] , 1);
@@ -910,12 +912,12 @@ class PollTest extends AbstractService
     }
     
     /**
-     * @depends testCreateInit
+     * @depends testCanQuestionAdd
      */
-    public function testCanBankQuestionDelete($init)
+    public function testCanBankQuestionDelete($id)
     {
         $this->setIdentity(4);
-        $data = $this->jsonRpc('bankquestion.delete', ['id' => $init['course_id']]);
+        $data = $this->jsonRpc('bankquestion.delete', ['id' => $id]);
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);

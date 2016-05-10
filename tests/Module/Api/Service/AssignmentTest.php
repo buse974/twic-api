@@ -286,11 +286,10 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['document'][0]['owner_id'] , 1);
         $this->assertEquals(!empty($data['result']['document'][0]['box_id']) , false);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 5);
+        $this->assertEquals(count($data['result']['chat'][0]) , 4);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
-        $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
         $this->assertEquals($data['result']['videoconf'] , null);
         $this->assertEquals($data['id'] , 1);
@@ -337,7 +336,7 @@ class AssignmentTest extends AbstractService
         ]);*/
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['result'] , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
