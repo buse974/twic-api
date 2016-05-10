@@ -138,23 +138,24 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         }
     }
     
-    public function printDocTest($datas) 
+    public function printDocTest($data, $has_data = false) 
     {
-    	return str_replace('"', '', json_encode($this->_printDocTest($datas)));
+    	return str_replace('"', '', json_encode($this->_printDocTest($data, $has_data), JSON_PRETTY_PRINT));
     }
     
-    public function _printDocTest($datas)
+    public function _printDocTest($data, $has_data = false)
     {
-    	if (is_array($datas)) {
-    		foreach ($datas as $key => $val) {
+    	if (is_array($data)) {
+    		foreach ($data as $key => $val) {
     			if (is_array($val)) {
-    				$datas[$key] = $this->_printDocTest($val);
+    				$data[$key] = $this->_printDocTest($val);
     			} else {
-    				$datas[$key] = "<" . gettype($val) . ">";
+    			    $data[$key] = ($has_data===true) ?
+    			          $val:"<" . gettype($val) . ">";
     			}
     		}
     	}
     	
-    	return $datas;
+    	return $data;
     }
 }

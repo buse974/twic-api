@@ -122,6 +122,9 @@ class GroupWorkTest extends AbstractService
                 'item_id' => $item_id
             ]);
         
+        echo $this->printDocTest([
+                'item_id' => $item_id
+            ]);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['submission_user']) , 3);
@@ -220,8 +223,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['deleted_date'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
-    
     }
     
     /**
