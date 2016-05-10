@@ -410,38 +410,88 @@ class Submission extends AbstractService
         return  $this->getServiceDocument()->delete(null, $submission_id, $library_id);
     }
     
+    
+      /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param array $users
+     */
+    public function assignGraders($id, $users) 
+    {
+       return $this->getServiceSubmissionPg()->replace($id, $users);
+    }
+    
+      /**
+     * @invokable
+     * 
+     * @param integer $id
+     */
+    public function getPairGraders($id) 
+    {
+       return $this->getServiceUser()->getListBySubmission($id);
+    }
+    
      /**
      * @invokable
      * 
-     * @param array $id
+     * @param integer $id
      * @param array $grades
      * @param array $criterias
      */
     public function pairRates($id, $grades = null, $criterias = null) 
     {
-        $gp_criterias = [];
-        $total_pts = 0;
-        $m_grading_policy = $this->getServiceGradingPolicy()->getBySubmission($id);
-        foreach($m_grading_policy->getCriterias() as $c){
-            $gp_criterias[$c->getId()] = $c;
-            $total_pts += $c->getPoints();
-        }
         $me = $this->getServiceUser()->getIdentity()['id'];
         $this->getServicePgUserCriteria()->deleteByUserAndSubmission($me, $id);
+        $this->getServicePgUserGrade()->deleteByUserAndSubmission($me, $id);
         if(null !== $criterias && count($criterias) > 0){
             foreach($criterias as $criteria_id => $criteria){
-                if(null !== $gp_criterias[$criteria_id]){
-                    foreach($criteria as $user => $points){
-                        if($points !== null){
-                            $this->getServicePgUserCriteria()->add($me, $user, $id, $criteria_id, $points);
-                        }
-                    }
+                foreach($criteria as $user => $points){
+                    $this->getServicePgUserCriteria()->add($me, $user, $id, $criteria_id, $points);
                 }
             }
         }
         else{
-            
+             foreach($grades as $user => $grade){
+                if($grade !== null){
+                    $this->getServicePgUserGrade()->add($me, $user, $id, $grade);
+                }
+            }
         }
+        $this->processSubmissionPairGrade($id, $me);
+        
+        return 1;
+    }
+    
+    
+    public function processSubmissionPairGrade($id, $user){
+        $res_pg_user_criteria = $this->getServicePgUserCriteria()->getProcessedGrades($id, $user);
+        foreach($res_pg_user_criteria as $m_pg_user_criteria){
+            $this->getServicePgUserGrade()->add($user, $m_pg_user_criteria->getUserId(), $id, $m_pg_user_criteria->getGrade());
+        }
+        $res_subm_user_criteria = $this->getServiceSubmissionUserCriteria()->getProcessedGrades($id);
+        foreach($res_subm_user_criteria as $m_sbm_user_criteria){
+            $this->getServiceSubmissionUserCriteria()->add($id, $m_sbm_user_criteria->getUserId(), $m_sbm_user_criteria->getCriteriaId(), $m_sbm_user_criteria->getPoints());
+        }
+        $res_pg_user_grade = $this->getServicePgUserGrade()->getProcessedGrades($id);
+        foreach($res_pg_user_grade as $m_pg_user_grade){
+            $this->getServiceSubmissionUser()->setGrade($id, $m_pg_user_grade->getUserId(), $m_pg_user_grade->getGrade());
+        }
+        $this->getServiceSubmissionPg()->checkGraded($id, $user);
+        $this->getMapper()->checkGraded($id);
+    }
+    
+      /**
+     * 
+     * @invokable
+       * 
+     * @param integer $id
+     * 
+     * @return array
+     */
+    public function getUserGrades($id)
+    {
+        return $this->getServiceSubmissionUser()->getListBySubmissionId($id);
     }
       
     /**
@@ -559,6 +609,34 @@ class Submission extends AbstractService
     public function getServicePgUserCriteria()
     {
         return $this->getServiceLocator()->get('app_service_pg_user_criteria');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\SubmissionUserCriteria
+     */
+    public function getServiceSubmissionUserCriteria()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_user_criteria');
+    }
+    
+
+    /**
+     *
+     * @return \Application\Service\PgUserCriteria
+     */
+    public function getServicePgUserGrade()
+    {
+        return $this->getServiceLocator()->get('app_service_pg_user_grade');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\SubmissionPg
+     */
+    public function getServiceSubmissionPg()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_pg');
     }
     
     /**
