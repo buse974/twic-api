@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use Application\Model\Role as ModelRole;
 
 class Conversation extends AbstractService
 {
@@ -82,7 +83,8 @@ class Conversation extends AbstractService
     public function getListBySubmission($submission_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id);
+        
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, true);
         
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
@@ -103,11 +105,12 @@ class Conversation extends AbstractService
         $ar = $this->getListBySubmission($submission_id);
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($m_submission->getItemId());
+            $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
             $users = [];
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
             }
+            
             $this->getServiceConversationUser()->createConversation($users, null, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id);
             $ar = $this->getListBySubmission($submission_id);
         }
