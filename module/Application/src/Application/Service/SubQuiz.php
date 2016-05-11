@@ -112,7 +112,9 @@ class SubQuiz extends AbstractService
         }
         
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
-        $this->getMapper()->checkFinish($m_sub_quiz->getId());
+        if($this->getMapper()->checkFinish($m_sub_quiz->getId())) {
+            $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
+        }
        
         return true;
     }
