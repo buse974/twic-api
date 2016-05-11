@@ -36,6 +36,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
     
+    
     public function getListUsersGroupByItemAndUser($item_id, $user)
     {
         $sub = $this->tableGateway->getSql()->select();
@@ -504,5 +505,24 @@ class User extends AbstractMapper
     		     ->where(['contact.user_id' => $user ]);
     
         return $select;
+    }
+    
+     /**
+     *
+     * @param integer $submission_id
+     */
+    public function getListPairGraders($submission_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([
+            'id',
+            'firstname',
+            'lastname',
+            'avatar'
+        ])
+        ->join('submission_pg', 'submission_pg.user_id=user.id', [])
+        ->where(array('submission_pg.submission_id' => $submission_id));
+        
+        return $this->selectWith($select);
     }
 }

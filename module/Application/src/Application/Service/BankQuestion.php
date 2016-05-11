@@ -99,7 +99,6 @@ class BankQuestion extends AbstractService
         }
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $this->getMapper()->update($this->getModel()->setOlder($id), ['id' => $m_bank_question->getId()]);
 
         if(!$for_delete) {
             $m_bank_question->setId(null)
@@ -117,6 +116,19 @@ class BankQuestion extends AbstractService
         }
         
         return true;
+        $m_bank_question->setId(null)
+            ->setOlder(null)
+            ->setCreatedDate($date);
+
+        $this->getMapper()->insert($m_bank_question);
+        $bank_question_id = $this->getMapper()->getLastInsertValue();
+        $this->getMapper()->update($this->getModel()->setOlder($bank_question_id), ['id' => $id]);
+        
+        $this->getServiceBankQuestionMedia()->copy($bank_question_id, $id);
+        $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
+        $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
+
+        return $bank_question_id;
     }
 
     /**
@@ -178,14 +190,14 @@ class BankQuestion extends AbstractService
      *
      * @param integer $course_id
      */
-    public function getList($course_id, $filter = null, $search = null)
+    public function getList($course_id, $filter = null, $search = null, $older = false)
     {
         $mapper = (null!==$filter)?
             $this->getMapper()->usePaginator($filter):
             $this->getMapper();
-
-        $res_bank_question = $mapper->getList($course_id, $search);
-
+        
+        $res_bank_question = $mapper->getList($course_id, $search, $older);
+        
         foreach ($res_bank_question as $m_bank_question) {
             $bank_question_id = $m_bank_question->getId();
             $m_bank_question->setBankQuestionItem($this->getServiceBankQuestionItem()->getList($bank_question_id));

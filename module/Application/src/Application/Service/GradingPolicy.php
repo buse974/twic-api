@@ -128,8 +128,31 @@ class GradingPolicy extends AbstractService
      */
     public function get($course)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setCourseId($course));
+        $res_grading_policy = $this->getMapper()->select($this->getModel()
+            ->setCourseId($course)); 
+        
+        foreach ($res_grading_policy as $m_grading_policy) {
+            $m_grading_policy->setCriterias($this->getServiceCriteria()->getList($m_grading_policy->getId()));
+        }
+        
+        return $res_grading_policy;
+    }
+    
+        /**
+     * Get Grading Policy By submission Id.
+     *
+     * @invokable
+     *
+     * @param int $submission            
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getBySubmission($submission)
+    {
+        $m_grading_policy = $this->getMapper()->getBySubmission($submission)->current(); 
+        $m_grading_policy->setCriterias($this->getServiceCriteria()->getList($m_grading_policy->getId()));
+        
+        return $m_grading_policy;
     }
 
     public function initTpl($course)
@@ -168,5 +191,14 @@ class GradingPolicy extends AbstractService
     public function getServiceGradingPolicyGrade()
     {
         return $this->getServiceLocator()->get('app_service_grading_policy_grade');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Criteria
+     */
+    public function getServiceCriteria()
+    {
+        return $this->getServiceLocator()->get('app_service_criteria');
     }
 }

@@ -682,6 +682,16 @@ class User extends AbstractService
      *
      * @param integer $submission_id            
      */
+    public function getListPairGraders($submission_id)
+    {
+        return $this->getMapper()->getListPairGraders($submission_id);
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id            
+     */
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
         return $this->getMapper()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
