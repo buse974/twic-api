@@ -12,11 +12,9 @@ class SubmissionUserCriteria extends AbstractMapper
     
      public function getProcessedGrades($submission){
         
-        $having = new \Zend\Db\Sql\Having();
-        $having->expression('COUNT(DISTINCT pg_user_criteria.pg_id) = COUNT(DISTINCT submission_pg.user_id)',[]);
         
         $select = new Select('pg_user_criteria');
-        $select->columns(['submission_user_criteria$user_id' => 'user_id','submission_user_criteria$criteria_id' => 'criteria_id', 'submission_user_criteria$points' => new Expression('AVG(pg_user_criteria.points)')])
+        $select->columns(['submission_user_criteria$user_id' => 'user_id','submission_user_criteria$criteria_id' => 'criteria_id', 'submission_user_criteria$points' => new Expression('IF(COUNT(DISTINCT pg_user_criteria.pg_id) = COUNT(DISTINCT submission_pg.user_id), AVG(pg_user_criteria.points), NULL)')])
            ->join('submission','pg_user_criteria.submission_id = submission.id',[])
             ->join('submission_pg','submission_pg.submission_id = submission.id',[])
             ->join(
@@ -29,8 +27,9 @@ class SubmissionUserCriteria extends AbstractMapper
             ->where(['pg_user_criteria.submission_id' => $submission])
             ->where(['( submission_user_criteria.overwritten IS NULL '])
             ->where([' submission_user_criteria.overwritten = FALSE )'], Predicate::OP_OR )
-            ->group(['pg_user_criteria.criteria_id','pg_user_criteria.user_id' ])
-            ->having($having); 
+            ->group(['pg_user_criteria.criteria_id','pg_user_criteria.user_id' ]); 
+        
+        
         return $this->selectWith($select);
     }
 }
