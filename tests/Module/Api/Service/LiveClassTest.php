@@ -122,7 +122,7 @@ class LiveClassTest extends AbstractService
      */
     public function testVideoconfGetByItem($item_id)
     {
-        $this->setIdentity(1);
+        $this->setIdentity(5);
     
         $data = $this->jsonRpc('videoconf.getByItem',
             [
@@ -153,7 +153,7 @@ class LiveClassTest extends AbstractService
         $this->assertEquals(count($data['result']['submission_user'][1]) , 5);
         $this->assertEquals(count($data['result']['submission_user'][1]['user']) , 12);
         $this->assertEquals($data['result']['submission_user'][1]['user']['gender'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['contact_state'] , 3);
+        $this->assertEquals($data['result']['submission_user'][1]['user']['contact_state'] , 0);
         $this->assertEquals($data['result']['submission_user'][1]['user']['id'] , 2);
         $this->assertEquals($data['result']['submission_user'][1]['user']['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['submission_user'][1]['user']['lastname'] , "Hoang");
@@ -197,11 +197,11 @@ class LiveClassTest extends AbstractService
         $this->assertEquals(count($data['result']['videoconf']['videoconf_admin']) , 5);
         $this->assertEquals($data['result']['videoconf']['videoconf_admin']['id'] , 1);
         $this->assertEquals($data['result']['videoconf']['videoconf_admin']['videoconf_id'] , 1);
-        $this->assertEquals($data['result']['videoconf']['videoconf_admin']['user_id'] , 1);
+        $this->assertEquals($data['result']['videoconf']['videoconf_admin']['user_id'] , 5);
         $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['token']) , true);
         $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['created_date']) , true);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
-        $this->assertEquals(!empty($data['result']['videoconf']['token']) , true);
+        $this->assertEquals(!empty($data['result']['videoconf']['token']) ,true);
         $this->assertEquals($data['result']['videoconf']['start_date'] , null);
         $this->assertEquals($data['result']['videoconf']['duration'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_token'] , null);
@@ -219,9 +219,8 @@ class LiveClassTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
-
+    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
