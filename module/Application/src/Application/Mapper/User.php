@@ -5,6 +5,7 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
+use Application\Model\Role as ModelRole;
 
 class User extends AbstractMapper
 {
@@ -31,7 +32,9 @@ class User extends AbstractMapper
         ])
         ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
         ->join('item', 'item.course_id=course_user_relation.course_id', array())
-        ->where(array('item.id' => $item_id));
+        ->join('user_role', 'user_role.user_id=user.id', [])
+        ->where(array('item.id' => $item_id))
+        ->where(array('user_role.role_id' => ModelRole::ROLE_STUDENT_ID));
         
         return $this->selectWith($select);
     }
