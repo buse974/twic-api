@@ -18,12 +18,13 @@ class Set extends AbstractService
      *
      * @return integer
      */
-    public function add($course, $name, $uid = null, $groups = null)
+    public function add($course, $name, $uid = null, $groups = null, $is_used = false)
     {
         $m_set = $this->getModel()
             ->setUid($uid)
             ->setName($name)
-            ->setCourseId($course);
+            ->setCourseId($course)
+            ->setIsUsed($is_used);
         
         if ($this->getMapper()->insert($m_set) <= 0) {
             throw new \Exception('error insert set group');

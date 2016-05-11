@@ -66,12 +66,12 @@ class Item extends BaseItem
         $this->library = $this->requireModel('app_model_library', $data);
     }
 
-    public function getis_started()
+    public function getIsStarted()
     {
         return $this->is_started;
     }
     
-    public function setis_started($is_started)
+    public function setIsStarted($is_started)
     {
         $this->is_started = $is_started;
     
