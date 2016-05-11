@@ -40,20 +40,7 @@ class ConversationUser extends AbstractService
      */
     public function getListConversationBySubmission($submission_id)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $res_conversation = $this->getServiceConversation()->getListBySubmission($submission_id);
-        if ($res_conversation->count() <= 0) {
-            $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($m_submission->getItemId());
-            $users = [];
-            foreach ($res_user as $m_user) {
-                $users[] = $m_user->getId();
-            }
-            $this->createConversation($users, null, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id);
-            $res_conversation = $this->getServiceConversation()->getListBySubmission($submission_id);
-        }
-    
-        return $res_conversation;
+        return $this->getServiceConversation()->getListBySubmission($submission_id);
     }
 
     /**
@@ -98,7 +85,6 @@ class ConversationUser extends AbstractService
         if(!is_array($user)) {
             $user = [$user];
         }
-        
         
         $ret = 0;
         $m_conversation_user = $this->getModel()->setConversationId($conversation);
