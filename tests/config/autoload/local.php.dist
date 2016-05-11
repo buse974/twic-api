@@ -1,4 +1,4 @@
-<?php
+local.php.build<?php
 /**
  * Local Configuration Override
  *
@@ -12,6 +12,11 @@
  */
 
 return array(
+    'app-conf' => [
+        'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
+        'secret_key_fb_debug' => false,
+        'urldms' => 'https://api.local/data/',
+     ],
         'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
 	'db' => array(
 		'adapters' => array(
@@ -32,6 +37,10 @@ return array(
 	'node' => array(
         'addr' => 'http://192.168.1.36:8282'
     ),
+    'zopentok-conf' => [
+        'api_key' => '45105812',
+        'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',
+    ],
 	'log' => array(
 		'log-system' => array(
 			'writers' => array(
