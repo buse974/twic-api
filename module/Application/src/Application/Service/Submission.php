@@ -98,8 +98,9 @@ class Submission extends AbstractService
          * Ici pour le type 3 (Live class concerné)
          */
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
-            $m_submission = $this->get($item_id);
-            if(null !== $m_submission) {
+            $res_submission = $this->getMapper()->get($item_id);
+            if($res_submission->count() > 0) {
+                $m_submission = $res_submission->current();
                 $submission_id = $m_submission->getId();
             }
         }
@@ -146,7 +147,10 @@ class Submission extends AbstractService
             throw new \Exception('error item and submission are null in submission.get');
         }
         if(null === $user_id && null === $submission_id && null === $group_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
+            $m_item = $this->getServiceItem()->get($item_id);
+            if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS) {
+                $user_id = $this->getServiceUser()->getIdentity()['id'];
+            }
         }
         
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
