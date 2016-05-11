@@ -36,8 +36,6 @@ class SubQuiz extends AbstractMapper
         $select->columns([
             'id', 
             'poll_id', 
-            'start_date', 
-            'end_date', 
             'sub_quiz$start_date' => new Expression('DATE_FORMAT(sub_quiz.start_date, "%Y-%m-%dT%TZ")'),
             'sub_quiz$end_date' => new Expression('DATE_FORMAT(sub_quiz.end_date, "%Y-%m-%dT%TZ")'),
             'user_id', 'submission_id', 'grade']);
