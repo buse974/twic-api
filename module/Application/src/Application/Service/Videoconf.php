@@ -308,8 +308,8 @@ class Videoconf extends AbstractService
         $convs = $this->getServiceConversation()->getListOrCreate($submission); 
         $finalconv = null;
         foreach ($convs as $conv) {
-            if($conv->getName()===ModelConversation::DEFAULT_NAME) {
-                $finalconv=$conv->getId();
+            if($conv['name']===ModelConversation::DEFAULT_NAME) {
+                $finalconv=$conv['id'];
                 break;
             }
         }
