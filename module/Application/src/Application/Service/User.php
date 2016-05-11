@@ -609,6 +609,22 @@ class User extends AbstractService
     }
 
     /**
+     * 
+     * @param integer $id
+     * 
+     * @return array
+     */
+    public function getRoleIds($id)
+    {
+        $id = [];
+        foreach ($this->getServiceRole()->getRoleByUser($id) as $m_role) {
+            $id[] = $m_role->getId();
+        }
+        
+        return $id;
+    }
+    
+    /**
      * @invokable
      *
      * @param int $id            

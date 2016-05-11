@@ -100,7 +100,6 @@ class LiveClassTest extends AbstractService
                         'pg_stars' => true
                     ], 
                 ],
-                
                 'parent' => null,
                 'order' => null, 
             ]);

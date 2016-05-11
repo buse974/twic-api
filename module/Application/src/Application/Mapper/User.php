@@ -345,20 +345,17 @@ class User extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','firstname','lastname','avatar'))
-            ->join('user_role', 'user_role.user_id=user.id', array())
-            ->join('school', 'user.school_id=school.id', array())
-            ->join('program', 'program.school_id=school.id', array())
-            ->join('course', 'course.program_id=program.id', array())
-            ->join('item', 'item.course_id=course.id', array())
-            ->join('submission', 'submission.item_id=item.id', array())
-            ->join('course_user_relation', 'course_user_relation.user_id=user.id AND course_user_relation.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('submission_user', 'submission_user.user_id=user.id AND submission_user.submission_id = submission.id', array(), $select::JOIN_LEFT)
+            ->join('user_role', 'user_role.user_id=user.id', [])
+            ->join('school', 'user.school_id=school.id', [])
+            ->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT)
+            ->join('submission_user', 'submission_user.user_id=user.id', [], $select::JOIN_LEFT)
+            ->join('submission', 'submission.id=submission_user.submission_id', [],  $select::JOIN_LEFT)
+            ->join('item', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
+            ->join('course', 'item.course_id=course.id OR course_user_relation.course_id=course.id', [])
+            ->join('program', 'course.program_id=program.id', [])
             ->where(array('submission.id' => $submission_id))
-            ->where(array(' (( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID))
-            ->where(array('course_user_relation.user_id IS NOT NULL ) '))
-            ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_STUDENT_ID), Predicate::OP_OR)
-            ->where(array('submission_user.submission_id IS NOT NULL ) )'));
-    
+            ->where(array(' ( submission.id IS NULL AND user_role.role_id = 5 ) '), Predicate::OP_OR);
+
         return $this->selectWith($select);
     }
     
