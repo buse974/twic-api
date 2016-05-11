@@ -16,10 +16,21 @@ class SubmissionUserCriteria extends AbstractService
      * @param integer $points
      * 
      */
-    public function add($submission, $user, $criteria, $points){
+    public function add($submission, $user, $criteria, $points, $overwritten = false){
         $m_sbm_user_criteria = $this->getModel()->setSubmissionId($submission)->setUserId($user)->setCriteriaId($criteria);
         $this->getMapper()->delete($m_sbm_user_criteria);
-        return $this->getMapper()->insert($m_sbm_user_criteria->setPoints($points));
+        return $this->getMapper()->insert($m_sbm_user_criteria->setPoints($points)->setOverwritten($overwritten));
+    }
+    
+     
+     /**
+     * 
+     * @param integer $submission
+     * 
+     */
+    public function deleteBySubmission($submission){
+        
+        return $this->getMapper()->delete($this->getModel()->setSubmissionId($submission));
     }
     
     /**

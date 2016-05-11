@@ -55,4 +55,22 @@ class SubmissionUser extends AbstractMapper
     
     		     return $select;
     }
+    
+     public function getProcessedGrades($submission){
+        
+        
+        $select = new Select('submission_user_criteria');
+        $select->columns([
+            'submission_user$submission_id' => 'submission_id',
+            'submission_user$user_id' => 'user_id',
+            'submission_user$grade' => new Expression('IF(COUNT(DISTINCT criteria.id) = COUNT(DISTINCT submission_user_criteria.criteria_id), ROUND(SUM(submission_user_criteria.points) * 100 / SUM(criteria.points)), NULL)')])
+           ->join('submission','submission_user_criteria.submission_id = submission.id',[])
+           ->join('item', 'submission.item_id = item.id', [])
+           ->join('grading_policy', 'item.grading_policy_id = grading_policy.id', [])
+           ->join('criteria', 'criteria.grading_policy_id = grading_policy.id', [])
+           ->where(['submission_user_criteria.submission_id' => $submission])
+           ->group(['submission_user_criteria.submission_id', 'submission_user_criteria.user_id']);
+        
+        return $this->selectWith($select);
+    }
 }

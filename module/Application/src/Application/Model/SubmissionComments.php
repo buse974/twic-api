@@ -15,12 +15,12 @@ class SubmissionComments extends BaseSubmissionComments
         $this->user = $this->requireModel('app_model_user', $data);
     }
     
-    public function getUsers() 
+    public function getUser() 
     {
         return $this->user;
     }
     
-    public function setUsers($user) 
+    public function setUser($user) 
     {
         $this->user = $user;
         

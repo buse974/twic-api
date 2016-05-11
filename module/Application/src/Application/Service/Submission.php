@@ -425,8 +425,14 @@ class Submission extends AbstractService
      * @param integer $id
      * @param array $users
      */
-    public function assignGraders($id, $users) 
+    public function assignGraders($id = null, $group = null, $user = null, $item = null, $users) 
     {
+        if(null === $id){
+            if(null === $item){
+                return 0;
+            }
+            $id = $this->create($item, $user, $group);
+        }
        return $this->getServiceSubmissionPg()->replace($id, $users);
     }
     
@@ -502,6 +508,45 @@ class Submission extends AbstractService
     }
     
       /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param array $grades
+     * @param array $criterias
+     */
+    public function instructorRates($id = null, $group = null, $user = null, $item = null, $grades = null, $criterias = null) 
+    {
+        if(null === $id){
+            if(null === $item){
+                return 0;
+            }
+            $id = $this->create($item, $user_id, $group);
+        }
+        $this->getServiceSubmissionUserCriteria()->deleteBySubmission($id);
+        if(null !== $criterias && count($criterias) > 0){
+            foreach($criterias as $criteria_id => $criteria){
+                foreach($criteria as $user => $points){
+                    $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points, true);
+                }
+                $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
+                foreach($res_submission_user as $m_submission_user){
+                    $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), !($m_submission_user->getGrade() instanceof IsNull));
+                }
+            }
+        }
+        else{
+             foreach($grades as $user => $grade){
+                if($grade !== null){
+                    $this->getServiceSubmissionUser()->setGrade($id, $user, $grade, true);
+                }
+            }
+        }
+        $this->getMapper()->checkGraded($id);
+        
+        return 1;
+    }
+    
+      /**
        * 
      * @invokable
      * 
@@ -513,10 +558,27 @@ class Submission extends AbstractService
      * @param string $audio
      * @param string $text
      */
-    public function addComment($id = null, $group = null, $user = null,  $file_name = null, $file_token = null, $audio = null, $text = null) 
+    public function addComment($id = null, $group = null, $user = null, $item = null,  $file_name = null, $file_token = null, $audio = null, $text = null) 
     {
+        if(null === $id){
+            if(null === $item){
+                return 0;
+            }
+            $id = $this->create($item, $user, $group);
+        }
        $me = $this->getServiceUser()->getIdentity()['id'];
        return $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
+    }
+    
+      /**
+       * 
+     * @invokable
+     * 
+     * @param integer $id
+     */
+    public function getComments($id = null) 
+    {
+       return $this->getServiceSubmissionComments()->getList($id);
     }
     
     
@@ -535,6 +597,11 @@ class Submission extends AbstractService
         }
         $this->getServiceSubmissionPg()->checkGraded($id, $user);
         $this->getMapper()->checkGraded($id);
+    }
+    
+        
+    public function processSubmissionInstructorGrade($id){
+       
     }
     
       /**
