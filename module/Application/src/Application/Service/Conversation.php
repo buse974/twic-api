@@ -4,7 +4,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
-use Application\Model\Role as ModelRole;
 
 class Conversation extends AbstractService
 {
@@ -84,13 +83,30 @@ class Conversation extends AbstractService
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, true);
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, false);
         
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
             $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
         }
         
+        return $ret;
+    }
+    
+    /**
+     * @param integer $submission_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListBySubmissionAndDefault($submission_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, true);
+        $ret = [];
+        foreach ($res_conversation as $m_conversation) {
+            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
+        }
+    
         return $ret;
     }
 
@@ -105,7 +121,7 @@ class Conversation extends AbstractService
         $ar = $this->getListBySubmission($submission_id);
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
+            $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
             $users = [];
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
