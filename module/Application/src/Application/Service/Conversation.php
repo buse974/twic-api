@@ -81,7 +81,8 @@ class Conversation extends AbstractService
      */
     public function getListBySubmission($submission_id)
     {
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id);
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id);
         
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
