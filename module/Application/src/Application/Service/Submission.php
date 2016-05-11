@@ -501,6 +501,24 @@ class Submission extends AbstractService
         return 1;
     }
     
+      /**
+       * 
+     * @invokable
+     * 
+     * @param integer $id
+     * @param integer $group
+     * @param integer $user
+     * @param string $file_name
+     * @param string $file_token
+     * @param string $audio
+     * @param string $text
+     */
+    public function addComment($id = null, $group = null, $user = null,  $file_name = null, $file_token = null, $audio = null, $text = null) 
+    {
+       $me = $this->getServiceUser()->getIdentity()['id'];
+       return $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
+    }
+    
     
     public function processSubmissionPairGrade($id, $user){
         $res_pg_user_criteria = $this->getServicePgUserCriteria()->getProcessedGrades($id, $user);
@@ -620,6 +638,15 @@ class Submission extends AbstractService
     public function getServiceSubmissionUser()
     {
         return $this->getServiceLocator()->get('app_service_submission_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\SubmissionComments
+     */
+    public function getServiceSubmissionComments()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_comments');
     }
     
     /**

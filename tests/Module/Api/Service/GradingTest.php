@@ -448,6 +448,27 @@ class GradingTest extends AbstractService
         return $data['result'];
     }
     
+     /**
+     * @depends testCreateInit 
+     */
+    public function testaddSubmissionComment($params)
+    {
+        $this->setIdentity(1); 
+        $data = $this->jsonRpc('submission.addComment', 
+            [
+                'id' => $params['submission_id'],
+                'file_name' => 'FILE NAME',
+                'file_token' => 'azerty',
+                'file_name' => 'FILE NAME',
+                
+            ]);
+        
+        $this->printCreateTest($data);
+
+
+        return $data['result'];
+    }
+    
       /**
      * @depends testAddCriteria
     public function testDeleteCriteria($criteria)
