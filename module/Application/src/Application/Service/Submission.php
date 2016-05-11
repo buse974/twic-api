@@ -147,7 +147,10 @@ class Submission extends AbstractService
             throw new \Exception('error item and submission are null in submission.get');
         }
         if(null === $user_id && null === $submission_id && null === $group_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
+            $m_item = $this->getServiceItem()->get($item_id);
+            if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS) {
+                $user_id = $this->getServiceUser()->getIdentity()['id'];
+            }
         }
         
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);

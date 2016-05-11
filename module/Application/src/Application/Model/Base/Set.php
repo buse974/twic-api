@@ -10,6 +10,7 @@ class Set extends AbstractModel
 	protected $uid;
 	protected $name;
 	protected $course_id;
+	protected $is_used;
 
 	protected $prefix = 'set';
 
@@ -57,6 +58,18 @@ class Set extends AbstractModel
 	public function setCourseId($course_id)
 	{
 		$this->course_id = $course_id;
+
+		return $this;
+	}
+
+	public function getIsUsed()
+	{
+		return $this->is_used;
+	}
+
+	public function setIsUsed($is_used)
+	{
+		$this->is_used = $is_used;
 
 		return $this;
 	}
