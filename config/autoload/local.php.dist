@@ -12,14 +12,19 @@
  */
 
 return array(
-        'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
+    'app-conf' => [
+        'secret_key_fb' => '****',
+        'secret_key_fb_debug' => ****,
+        'urldms' => '****',
+     ],
+    'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
 	'db' => array(
 		'adapters' => array(
 			'db-adapter' => array(
-				'driver' => 'pdo_Mysql',
-				'dsn' => 'mysql:dbname=*****;host=*****',
-				'username' =>  '******',
-				'password' =>  '******',
+				'driver' => '****',
+				'dsn' => 'mysql:dbname=****;host=****',
+				'username' =>  '****',
+				'password' =>  '****',
 				'driver_options' => array(
 					PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
 					PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'',
@@ -29,8 +34,8 @@ return array(
 			),
 		),	
 	),
-	'node' => array(
-        'addr' => 'http://127.0.0.1:8282'
+    'node' => array(
+        'addr' => '****'
     ),
     'dms-conf' => array(
         'size_allowed' => array(
@@ -41,8 +46,12 @@ return array(
             array('width' => 300),
         ),
         'check_size_allowed' => false,
-        'default_path' => '*********',
+        'default_path' => '****',
     ),
+    'zopentok-conf' => [
+        'api_key'     =>  '****',
+        'api_secret'  =>  '****',
+    ],
 	'log' => array(
 		'log-system' => array(
 			'writers' => array(
@@ -62,7 +71,7 @@ return array(
 		),
 	),
 	'http-adapter' => array(
-		'adapter' => 'Zend\Http\Client\Adapter\Socket',
+		'adapter' => 'Zend\Http\Client\Adapter\Curl',
 		'maxredirects'   => 5,
 		'sslverifypeer'  => false,
 		'timeout'        => 10,
@@ -73,8 +82,8 @@ return array(
 				'name' => 'memcached',
 				'options' => array(
 					'servers' => array(
-						array('host' => 'localhost' , 'port' => '11211', 'weight' => 66),
-						array('host' => 'localhost' , 'port' => '11211', 'weight' => 33)
+						array('host' => 'localhost' , 'port' => '****', 'weight' => 66),
+						array('host' => 'localhost' , 'port' => '****', 'weight' => 33)
 					),
 					'lib_options' => array(
 						array('option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true),

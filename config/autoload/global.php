@@ -16,9 +16,6 @@ return [
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
-        'secret_key_fb' => 'KR1inakD9ucyW7TPe9mPxUCYmlDi9VuzhjmUCnmd',
-        'secret_key_fb_debug' => false,
-        'urldms' => 'https://api.local/data/',
     ],
     'dal-conf' => [
         'adapter' => 'db-adapter',
@@ -173,8 +170,6 @@ return [
         ],
     ],
     'zopentok-conf' => [
-        'api_key' => '45105812',
-        'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
     ],

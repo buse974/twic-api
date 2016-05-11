@@ -12,6 +12,11 @@
  */
 
 return array(
+    'app-conf' => [
+        'secret_key_fb' => '${firebase.key}',
+        'secret_key_fb_debug' => ${firebase.debug},
+        'urldms' => '${dms.url}',
+     ],
     'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
 	'db' => array(
 		'adapters' => array(
@@ -43,6 +48,10 @@ return array(
         'check_size_allowed' => false,
         'default_path' => '${dms.uploaddir}',
     ),
+    'zopentok-conf' => [
+        'api_key'     =>  '${opentok.apikey}',
+        'api_secret'  =>  '${opentok.apisecret}',
+    ],
 	'log' => array(
 		'log-system' => array(
 			'writers' => array(
