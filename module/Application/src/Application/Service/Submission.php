@@ -89,6 +89,14 @@ class Submission extends AbstractService
         }
         
         $submission_id = null;
+        
+        /**
+         * 3 types =>   1 Par group set_id,  Une submission par group 
+         *              2 Individuel, Une submission pas éléve
+         *              3 Tout le monde, Une submission pour tout le monde
+         *              
+         * Ici pour le type 3 (Live class concerné)
+         */
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
             $m_submission = $this->get($item_id);
             if(null !== $m_submission) {
@@ -274,14 +282,13 @@ class Submission extends AbstractService
             } else {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
             }
-            
-            if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
-            } else {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
-            }
         }
         
+        if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
+            $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
+        } else {
+            $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
+        }
         if(isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
             $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         }
