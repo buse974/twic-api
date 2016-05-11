@@ -39,7 +39,6 @@ class SubmissionComments extends AbstractService
      */
     public function add($submission_id, $user_id, $file_name, $file_token, $audio, $text) 
     {
-        syslog(1, $submission_id);
         return $this->get($this->getMapper()->insert(
             $this->getModel()->setSubmissionId($submission_id)
                 ->setUserId($user_id)
