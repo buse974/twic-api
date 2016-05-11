@@ -43,10 +43,13 @@ class Item extends AbstractMapper
         $select->columns(['id', 'title', 'describe', 'duration', 'set_id', 'is_graded','type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
-            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
+            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),
+            'item$is_started' => new Expression('IF(SUM(IF(submission_user.start_date IS NULL, false, true)) > 0,1,0)')
         ])
         ->join('document', 'document.item_id=item.id', [], $select::JOIN_LEFT)
         ->join('library', 'document.library_id=library.id', array('library!id' => 'id', 'name', 'type'), $select::JOIN_LEFT)
+        ->join('submission', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
+        ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT)
         ->where(array('item.course_id' => $course_id));
         
         if($parent_id===0 || $parent_id === null) {
@@ -54,6 +57,8 @@ class Item extends AbstractMapper
         } else {
             $select->where(array('item.parent_id' => $parent_id));
         }
+        
+        $select->group('item.id');
         
         return $this->selectWith($select);
     }
@@ -275,7 +280,6 @@ class Item extends AbstractMapper
                         INNER JOIN
                     `program` ON `program`.`id` = `course`.`program_id`
                 WHERE ';
-        
         
         $where=[];
         $val=[];

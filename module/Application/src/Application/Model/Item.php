@@ -50,6 +50,7 @@ class Item extends BaseItem
     protected $graded;
     protected $due;
     protected $library;
+    protected $is_started;
       
     public function exchangeArray(array &$data)
     {
@@ -65,6 +66,18 @@ class Item extends BaseItem
         $this->library = $this->requireModel('app_model_library', $data);
     }
 
+    public function getis_started()
+    {
+        return $this->is_started;
+    }
+    
+    public function setis_started($is_started)
+    {
+        $this->is_started = $is_started;
+    
+        return $this;
+    }
+    
     public function getLibrary()
     {
         return $this->library;
