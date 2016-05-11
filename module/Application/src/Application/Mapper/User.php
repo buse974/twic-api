@@ -340,8 +340,6 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    
-
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -425,10 +423,8 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-
     /**
      * Get all students for the instructor.
-     *
      *
      * @param int $instructor            
      *
