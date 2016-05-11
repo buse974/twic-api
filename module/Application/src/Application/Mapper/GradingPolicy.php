@@ -21,4 +21,16 @@ class GradingPolicy extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    public function getBySubmission($submission)
+    {
+        $select = $this->tableGateway->getSql()->select();
+
+        $select->columns(array('id', 'name', 'grade'))
+                ->join('item', 'item.grading_policy_id=grading_policy.id', array(), $select::JOIN_LEFT)
+                ->join('submission', 'submission.item_id=item.id', array(), $select::JOIN_LEFT)
+                ->where(array('submission.id' => $submission));
+
+        return $this->selectWith($select);
+    }
 }
