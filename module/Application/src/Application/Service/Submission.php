@@ -98,8 +98,9 @@ class Submission extends AbstractService
          * Ici pour le type 3 (Live class concerné)
          */
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
-            $m_submission = $this->get($item_id);
-            if(null !== $m_submission) {
+            $res_submission = $this->getMapper()->get($item_id);
+            if($res_submission->count() > 0) {
+                $m_submission = $res_submission->current();
                 $submission_id = $m_submission->getId();
             }
         }
