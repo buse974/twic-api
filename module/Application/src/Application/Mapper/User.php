@@ -355,7 +355,8 @@ class User extends AbstractMapper
             ->join('course', 'item.course_id=course.id OR course_user_relation.course_id=course.id', [])
             ->join('program', 'course.program_id=program.id', [])
             ->where(array('submission.id' => $submission_id))
-            ->where(array(' ( submission.id IS NULL AND user_role.role_id = 5 ) '), Predicate::OP_OR);
+            ->where(array(' ( submission.id IS NULL AND user_role.role_id = 5 ) '), Predicate::OP_OR)
+            ->quantifier('DISTINCT');
 
         return $this->selectWith($select);
     }
