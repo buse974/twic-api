@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Conversation as ModelConversation;
 
 class Conversation extends AbstractService
 {
@@ -66,9 +67,7 @@ class Conversation extends AbstractService
      */
     public function getConversation($conversation, $filter = null)
     {
-        $conv['users'] = $this->getServiceUser()
-            ->getListByConversation($conversation)
-            ->toArray(array('id'));
+        $conv['users'] = $this->getServiceUser()->getListByConversation($conversation)->toArray(array('id'));
         $conv['messages'] = $this->getServiceMessage()->getList($conversation, $filter);
         $conv['id'] = $conversation;
 
@@ -82,18 +81,37 @@ class Conversation extends AbstractService
      */
     public function getListBySubmission($submission_id)
     {
-        return $this->getMapper()->getListBySubmission($submission_id);
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id);
+        
+        $ret = [];
+        foreach ($res_conversation as $m_conversation) {
+            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
+        }
+        
+        return $ret;
     }
 
     /**
      * 
      * @param integer $submission_id
      * 
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return []
      */
     public function getListOrCreate($submission_id)
     {
-        return $this->getServiceConversationUser()->getListConversationBySubmission($submission_id);
+        $ar = $this->getListBySubmission($submission_id);
+        if (count($ar) <= 0) {
+            $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
+            $res_user = $this->getServiceUser()->getListUsersGroupByItemAndUser($m_submission->getItemId());
+            $users = [];
+            foreach ($res_user as $m_user) {
+                $users[] = $m_user->getId();
+            }
+            $this->getServiceConversationUser()->createConversation($users, null, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id);
+            $ar = $this->getListBySubmission($submission_id);
+        }
+        
+        return $ar;
     }
     
     /**
@@ -162,6 +180,14 @@ class Conversation extends AbstractService
     public function getServiceMessageUser()
     {
         return $this->getServiceLocator()->get('app_service_message_user');
+    }
+    
+    /**
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
