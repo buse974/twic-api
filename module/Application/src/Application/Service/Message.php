@@ -6,7 +6,40 @@ use Application\Model\Conversation as ModelConversation;
 
 class Message extends AbstractService
 {
-
+    /**
+     * Send message.
+     *
+     * @invokable
+     *
+     * @param string $text
+     * @param integer $to
+     * @param integer $conversation
+     * @param integer $item
+     * @param integer $group
+     */
+    public function sendSubmission($text = null, $to = null, $conversation = null, $item = null, $group = null)
+    {
+        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item, $group);
+    }
+    
+    /**
+     * Send message.
+     *
+     * @invokable
+     *
+     * @param string $text
+     * @param int $to
+     * @param conversation $conversation
+     *
+     * @throws \Exception
+     *
+     * @return int
+     */
+    public function send($text = null, $to = null, $conversation = null, $type = ModelConversation::TYPE_CHAT)
+    {
+        return $this->_send($text, $to, $conversation, $type);
+    }
+    
     /**
      * @invokable
      *
@@ -54,7 +87,7 @@ class Message extends AbstractService
                 if (! in_array($me, $tmp)) {
                     $tmp[] = $me;
                 }
-                $conversation = $this->getServiceConversationUser()->createConversation($tmp, null, ModelConversation::TYPE_EMAIL);
+                $conversation = $this->getServiceConversation()->create(ModelConversation::TYPE_EMAIL,null,$tmp);
             }
             
             // Applies the params to a new model
@@ -87,59 +120,6 @@ class Message extends AbstractService
             ->getList($me, $message_id)['list']
             ->current();
     }
-
-    /**
-     * Send message for videoconf.
-     *
-     * @invokable
-     *
-     * @param string $text            
-     * @param int $to            
-     * @param conversation $conversation            
-     *
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function sendVideoConf($text = null, $to = null, $conversation = null)
-    {
-        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_VIDEOCONF);
-    }
-
-    /**
-     * Send message.
-     *
-     * @invokable
-     *
-     * @param string $text            
-     * @param int $to            
-     * @param conversation $conversation            
-     *
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function send($text = null, $to = null, $conversation = null, $type = ModelConversation::TYPE_CHAT)
-    {
-        return $this->_send($text, $to, $conversation, $type);
-    }
-    
-    /**
-     * Send message.
-     *
-     * @invokable
-     *
-     * @param string $text
-     * @param integer $to
-     * @param integer $conversation
-     * @param integer $item
-     * @param integer $group
-     */
-    public function sendAssignment($text = null, $to = null, $conversation = null, $item = null, $group = null)
-    {
-        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item, $group);
-    }
-    
     
     public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null, $group = null)
     {
@@ -154,9 +134,7 @@ class Message extends AbstractService
             }
             $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type, $item, $group);
         } elseif ($conversation !== null) {
-            if ($this->getServiceConversationUser()
-                ->getByConversationUser($conversation, $me)
-                ->count() !== 1) {
+            if ($this->getServiceMessageUser()->isInConversation($conversation_id, $user_id)) {
                 throw new \Exception('User ' . $me . ' is not in conversation ' . $conversation);
             }
         }
@@ -192,9 +170,9 @@ class Message extends AbstractService
      */
     public function getList($conversation, $filter = array())
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         
-        return $this->getServiceMessageUser()->getList($me, null, $conversation, $filter);
+        return $this->getServiceMessageUser()->getList($user_id, null, $conversation, $filter);
     }
 
     /**
@@ -277,22 +255,20 @@ class Message extends AbstractService
      */
     public function getListConversation($filter = null, $tag = null, $type = null, $search = null)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         
-        return $this->getServiceMessageUser()->getList($me, null, null, $filter, $tag, $type, $search);
+        return $this->getServiceMessageUser()->getList($user_id, null, null, $filter, $tag, $type, $search);
     }
 
     /**
      *
      * @param int $id            
      *
-     * @return \Application\Model\Message
+     * @return null|\Application\Model\Message
      */
     public function getMessage($id)
     {
-        $res_message = $this->getMapper()->select($this->getModel()
-            ->setId($id));
-        
+        $res_message = $this->getMapper()->select($this->getModel()->setId($id));
         if ($res_message->count() <= 0) {
             throw new \Exception('error get messge ');
         }
@@ -348,6 +324,15 @@ class Message extends AbstractService
         return $this->getServiceLocator()->get('app_service_conversation_user');
     }
 
+    /**
+     *
+     * @return \Application\Service\Conversation
+     */
+    public function getServiceConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation');
+    }
+    
     /**
      *
      * @return \Application\Service\Event

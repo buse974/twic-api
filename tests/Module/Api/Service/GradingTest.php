@@ -154,7 +154,9 @@ class GradingTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.assignGraders', array('id' => $params['submission_id'],'users' => [7, 6]));
-        $this->assertEquals(count($data) , 3); 
+        
+	print_r($data);
+	$this->assertEquals(count($data) , 3); 
         $this->assertEquals($data['result'] , 1); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
