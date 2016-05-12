@@ -168,7 +168,7 @@ class Message extends AbstractService
      *
      * @param int $conversation            
      */
-    public function getList($conversation, $filter = array())
+    public function getList($conversation, $filter = [])
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         
