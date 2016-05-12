@@ -49,7 +49,7 @@ class Conversation extends AbstractService
      * 
      * @param array $users
      * @param string $text
-     * @param integer $submission_id
+     * @param integer $submission
      */
     public function createSubmission($users, $text, $submission)
     {
