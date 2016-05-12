@@ -61,6 +61,10 @@ class ConversationUser extends AbstractService
      */
     public function add($conversation_id, $users)
     {
+        if(!is_array($users)) {
+            $users = [$users];
+        }
+        
         $ret = [];
         foreach ($users as $user) {
             $ret[$user] = $this->getMapper()->add($conversation_id, $user);
