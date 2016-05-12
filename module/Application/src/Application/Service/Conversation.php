@@ -51,13 +51,13 @@ class Conversation extends AbstractService
      * @param string $text
      * @param integer $submission_id
      */
-    public function createSubmission($users, $text, $submission_id)
+    public function createSubmission($users, $text, $submission)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         if (!in_array($user_id, $users)) {
             $users[] = $user_id;
         }
-        return $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT,$submission_id,$users,$text);
+        return $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT,$submission,$users,$text);
     }
     
     /**
