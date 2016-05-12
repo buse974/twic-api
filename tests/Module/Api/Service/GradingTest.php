@@ -359,6 +359,7 @@ class GradingTest extends AbstractService
     {
         $this->setIdentity(1); 
         $data = $this->jsonRpc('submission.getPGCriterias', ['id' => $params['submission_id']]);
+        $this->printCreateTest($data);
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 4); 
         $this->assertEquals(count($data['result'][0]) , 5); 

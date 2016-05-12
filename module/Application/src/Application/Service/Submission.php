@@ -427,9 +427,12 @@ class Submission extends AbstractService
      * @invokable
      * 
      * @param integer $id
+     * @param integer $group
+     * @param integer $user
+     * @param integer $item
      * @param array $users
      */
-    public function assignGraders($id = null, $group = null, $user = null, $item = null, $users) 
+    public function assignGraders($users, $id = null, $group = null, $user = null, $item = null ) 
     {
         if(null === $id){
             if(null === $item){
