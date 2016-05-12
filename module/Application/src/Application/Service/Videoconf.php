@@ -453,10 +453,11 @@ class Videoconf extends AbstractService
      * @invokable 
      * 
      * @param integer $item_id
+     * @param integer $group_id
      */
-    public function getByItem($item_id)
+    public function getByItem($item_id, $group_id = null)
     {
-        $ar_submission = $this->getServiceSubmission()->get($item_id)->toArray();
+        $ar_submission = $this->getServiceSubmission()->get($item_id, null, $group_id)->toArray();
         $ar_submission = $ar_submission + $this->getServiceSubmission()->getContent($ar_submission['id']);
         
         return $ar_submission;
