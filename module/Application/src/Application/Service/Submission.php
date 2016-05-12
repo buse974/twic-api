@@ -48,7 +48,6 @@ class Submission extends AbstractService
         ],
         ModelItem::TYPE_TXT => [
         ],
-        
     ];
     
     /**
