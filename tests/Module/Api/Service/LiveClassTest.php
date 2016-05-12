@@ -190,6 +190,25 @@ class LiveClassTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
+    /**
+     * @depends testAddItem
+     */
+    public function testVideoconfCreateSubmission()
+    {
+        $this->setIdentity(5);
+    
+        $data = $this->jsonRpc('conversation.createSubmission',
+            [
+                'users' => [1,2,3],
+                'text' => 'TOTOTO',
+                'submission_id' => 1 
+            ]);
+    
+        print_r($data);
+    }
+    
+    
+    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')

@@ -40,7 +40,7 @@ class Conversation extends AbstractService
         if (null !== $text) {
             switch ($type) {
                 case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT : 
-                    return $this->getServiceMessage()->sendVideoConf($text, null, $conversation_id);
+                    return $this->getServiceMessage()->sendSubmission($text, null, $conversation_id);
                     break;
             }
         }
