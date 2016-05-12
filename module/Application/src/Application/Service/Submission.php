@@ -142,11 +142,19 @@ class Submission extends AbstractService
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
+        $m_item = $this->getServiceItem()->get($item_id);
+        
+        /*
+         * 
+         * Si pas de set_id et pas de group_id et si le user n'est pas dans le cours_user et n'est pas etudiant 
+         * FUCK
+         * 
+         */
         if(null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
-        if(null === $user_id && null === $submission_id && null === $group_id) {
-            $m_item = $this->getServiceItem()->get($item_id);
+        
+        if(null !== $item_id && null === $user_id && null === $submission_id && null === $group_id) {
             if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS || $m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
                 $user_id = $this->getServiceUser()->getIdentity()['id'];
             }
@@ -301,12 +309,55 @@ class Submission extends AbstractService
      * @param integer $item_id
      * @return void|boolean
      */
-    public function submit($submission_id = null, $item_id = null) 
+    public function forceSubmit($submission_id = null, $item_id = null) 
     {
         if($submission_id === null && $item_id === null) {
             return;
         }
         
+        return ($submission_id !== null) ?
+            $this->forceSubmitBySubmission($submission_id) :
+            $this->forceSubmitByItem($item_id);
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $item_id
+     * @return boolean
+     */
+    public function forceSubmitByItem($item_id)
+    {
+        return $this->forceSubmitBySubmission($this->getByItem($item_id)->getId());
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id
+     * @return boolean
+     */
+    public function forceSubmitBySubmission($submission_id)
+    {
+        $m_submission = $this->getModel()
+            ->setSubmitDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+            ->setId($submission_id);
+        return $this->getMapper()->update($m_submission);
+    }
+   
+    /**
+     * @invokable
+     *
+     * @param integer $submission_id
+     * @param integer $item_id
+     * @return void|boolean
+     */
+    public function submit($submission_id = null, $item_id = null)
+    {
+        if($submission_id === null && $item_id === null) {
+            return;
+        }
+    
         return ($submission_id !== null) ?
             $this->submitBySubmission($submission_id) :
             $this->submitByItem($item_id);
@@ -332,10 +383,7 @@ class Submission extends AbstractService
             }
         }
         if($submit===1) {
-            $m_submission = $this->getModel()
-                ->setSubmitDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-                ->setId($submission_id);
-            $this->getMapper()->update($m_submission);
+            $this->forceSubmitBySubmission($submission_id);
         }
         
         return $submit;
