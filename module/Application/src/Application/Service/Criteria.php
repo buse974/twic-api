@@ -100,7 +100,7 @@ class Criteria extends AbstractService
      *
      * @return int
      */
-    public function update($id, $name, $points, $description)
+    public function _update($id, $name, $points, $description)
     {  
         $m_criteria = $this->getModel()
             ->setId($id)
@@ -109,5 +109,24 @@ class Criteria extends AbstractService
             ->setDescription($description);
 
         return $this->getMapper()->update($m_criteria);
+    }
+    
+    public function update($datas, $grading_policy){
+        $ret = [];
+        foreach ($datas as $criteria) {
+            $name = isset($criteria['name']) ? $criteria['name'] : null;
+            $description = isset($criteria['description']) ? $criteria['description'] : null;
+            $points = isset($criteria['points']) ? $criteria['points'] : null;
+            if (array_key_exists('id', $criteria)) {
+                $this->_update($criteria['id'], $name, $points, $description);
+                $ret[] = $criteria['id'];
+            } else {
+                $id = $this->add($name, $points, $description, $grading_policy);
+                $ret[] = $id;
+            }
+        }
+        
+        $this->getMapper()->deleteNotIn($ret, $grading_policy);
+        return $ret;
     }
 }
