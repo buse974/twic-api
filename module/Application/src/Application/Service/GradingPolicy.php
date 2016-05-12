@@ -34,37 +34,51 @@ class GradingPolicy extends AbstractService
      *
      * @param array $datas            
      */
-    public function update($datas)
+    public function update($datas, $course)
     {
         $ret = array();
+        $ids = [];
         foreach ($datas as $gp) {
             $name = isset($gp['name']) ? $gp['name'] : null;
             $grade = isset($gp['grade']) ? $gp['grade'] : null;
+            $criterias = isset($gp['criterias']) ? $gp['criterias'] : null;
             if (array_key_exists('id', $gp)) {
-                $ret[$gp['id']] = $this->_update($gp['id'], $name, $grade);
+                $ids[] = $gp['id'];
+                $ret[$gp['id']] = $this->_update($gp['id'], $name, $grade, $criterias);
             } else {
-                $id = $this->_add($name, $grade, 1);
-                $ret[$id] = $id;
+                $id = $this->_add($name, $grade, $course, $criterias);
+                $ids[] = $id;
+                $ret[$id] = null !== $criterias ? $this->getServiceCriteria()->update($criterias, $id) : [];
             }
         }
-        
+        $this->getMapper()->deleteNotIn($ids, $course);
         return $ret;
     }
 
+    public function _add($name, $grade, $course, $criterias)
+    {
+        $m_grading = $this->getModel()
+            ->setName($name)
+            ->setGrade($grade)
+            ->setCourseId($course);
+        
+        $this->getMapper()->insert($m_grading);
+        return $this->getMapper()->getLastInsertValue();
+    }
     /**
      *
      * @param int $id            
      * @param string $name            
      * @param int $grade            
      */
-    public function _update($id, $name = null, $grade = null)
+    public function _update($id, $name = null, $grade = null, $criterias = null)
     {
         $m_grading = $this->getModel()
             ->setName($name)
             ->setGrade($grade)
             ->setId($id);
-        
-        return $this->getMapper()->update($m_grading);
+        $this->getMapper()->update($m_grading);
+        return null !== $criterias ? $this->getServiceCriteria()->update($criterias, $id) : [];
     }
 
     /**
@@ -98,24 +112,16 @@ class GradingPolicy extends AbstractService
      *
      * @return int
      */
-    public function add($course_id, $name = null, $grade = null)
+    public function add($course_id, $name = null, $grade = null, $criterias)
     {
         if ($this->_add($name, $grade, $course_id) <= 0) {
             throw new \Exception('error insert grading policy');
         }
         
+        $this->getServiceCriteria()->update($criterias, $id);
         return $this->getMapper()->getLastInsertValue();
     }
 
-    public function _add($name, $grade, $course)
-    {
-        $m_grading = $this->getModel()
-            ->setName($name)
-            ->setGrade($grade)
-            ->setCourseId($course);
-        
-        return $this->getMapper()->insert($m_grading);
-    }
 
     /**
      * Get Grading Policy By course Id.
@@ -181,7 +187,11 @@ class GradingPolicy extends AbstractService
      */
     public function getListByCourse($course, $user)
     {
-        return $this->getMapper()->getListByCourse($course, $user);
+        $res_grading_policy = $this->getMapper()->getListByCourse($course, $user);
+        foreach($res_grading_policy as $m_grading_policy){
+            $m_grading_policy->setCriterias($this->getServiceCriteria()->getList($m_grading_policy->getId()));
+        }
+        return $res_grading_policy;
     }
 
     /**

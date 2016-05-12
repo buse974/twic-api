@@ -12,10 +12,10 @@ class GradingPolicy extends BaseGradingPolicy
     const GP_WORKGROUP = 'WG';
 
     protected $items;
+    protected $criterias;
     protected $nbr_comment;
     protected $processed_grade;
     protected $grading_policy_grade;
-    protected $criterias;
 
     public function exchangeArray(array &$data)
     {
@@ -26,6 +26,7 @@ class GradingPolicy extends BaseGradingPolicy
         parent::exchangeArray($data);
 
         $this->grading_policy_grade = $this->requireModel('app_model_grading_policy_grade', $data);
+        $this->criterias = $this->requireModel('app_model_criteria', $data);
     }
     
     public function getCriterias()
