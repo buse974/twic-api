@@ -241,7 +241,6 @@ class User extends AbstractService
         $m_item = $this->getServiceItem()->get($item_id);
         
         $res_ct_group = $this->getServiceCtGroup()->get($item_id);
-        
         if($res_ct_group->count() > 0) {
             $grp = [];
             foreach ($res_ct_group as $m_ct_group) {
