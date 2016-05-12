@@ -147,7 +147,7 @@ class Submission extends AbstractService
         }
         if(null === $user_id && null === $submission_id && null === $group_id) {
             $m_item = $this->getServiceItem()->get($item_id);
-            if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS) {
+            if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS || $m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
                 $user_id = $this->getServiceUser()->getIdentity()['id'];
             }
         }
