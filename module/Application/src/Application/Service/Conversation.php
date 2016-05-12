@@ -105,10 +105,10 @@ class Conversation extends AbstractService
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListBySubmission($submission_id, $with_default = false)
+    public function getListBySubmission($submission_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, $with_default);
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
             $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
