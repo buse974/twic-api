@@ -123,7 +123,7 @@ class LiveClassTest extends AbstractService
      */
     public function testVideoconfGetByItem($item_id)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(5);
     
         $data = $this->jsonRpc('videoconf.getByItem',
             [
@@ -139,12 +139,10 @@ class LiveClassTest extends AbstractService
      */
     public function testVideoconfGetByItem2($item_id)
     {
-        $this->setIdentity(5);
+        $this->setIdentity(3);
     
         $data = $this->jsonRpc('videoconf.getByItem',
-            [
-                'item_id' => $item_id
-            ]);
+            ['item_id' => $item_id]);
         
         print_r($data);
         

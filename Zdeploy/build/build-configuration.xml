@@ -46,7 +46,6 @@
         <echo msg="copy config" />
     	<copy todir="${tmp.basedir}/config/autoload/" overwrite="true">
 	        <filelist dir="${project.basedir}/config/autoload/" files="local.php.build" />
-	        <filelist dir="${project.basedir}/config/autoload/" files="global.php.build" />
 	        <mapper type="regexp" from="^(.*).build$" to="\1"/>
 	        <filterchain>
 	            <expandproperties />
