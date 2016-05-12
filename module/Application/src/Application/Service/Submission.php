@@ -96,7 +96,7 @@ class Submission extends AbstractService
          *              
          * Ici pour le type 3 (Live class concerné)
          */
-        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) {
             $res_submission = $this->getMapper()->get($item_id);
             if($res_submission->count() > 0) {
                 $m_submission = $res_submission->current();
@@ -112,7 +112,7 @@ class Submission extends AbstractService
         $res_user = null;
         if(null !== $group_id) {
             $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
-        }elseif($m_item->getType() === ModelItem::TYPE_LIVE_CLASS) {
+        }elseif($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) {
             $res_user = $this->getServiceUser()->getListByItem($item_id);
         }
         
