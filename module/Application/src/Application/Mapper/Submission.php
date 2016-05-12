@@ -20,8 +20,6 @@ class Submission extends AbstractMapper
      */
     public function checkGraded($id)
     {
-        
-        
         $select = new Select('submission_user');
         $select->columns(['has_graded' => new Expression('SUM(IF(submission_user.grade IS NULL,1,0)) = 0')])
                ->where(['submission_user.submission_id' => $id])
@@ -33,8 +31,6 @@ class Submission extends AbstractMapper
                ->where(['id'=>$id]);
         return $this->updateWith($update);
     }
-    
-   
     
     /**
      * 
