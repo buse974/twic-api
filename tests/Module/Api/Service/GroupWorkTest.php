@@ -114,7 +114,7 @@ class GroupWorkTest extends AbstractService
                 'describe' => 'description',
                 'duration' => 234,
                 'type' => 'WG',
-               // 'set_id' => $data['set_id'],
+                'set_id' => $data['set_id'],
                 'ct' => [
                     'date'  => [
                         ['date' => '2016-01-01', 'after' => true],
