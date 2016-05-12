@@ -142,8 +142,6 @@ class Submission extends AbstractService
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
-        $m_item = $this->getServiceItem()->get($item_id);
-        
         /*
          * 
          * Si pas de set_id et pas de group_id et si le user n'est pas dans le cours_user et n'est pas etudiant 
@@ -155,6 +153,7 @@ class Submission extends AbstractService
         }
         
         if(null !== $item_id && null === $user_id && null === $submission_id && null === $group_id) {
+            $m_item = $this->getServiceItem()->get($item_id);
             if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS || $m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
                 $user_id = $this->getServiceUser()->getIdentity()['id'];
             }
