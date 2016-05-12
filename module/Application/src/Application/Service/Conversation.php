@@ -95,7 +95,7 @@ class Conversation extends AbstractService
      *
      * @param int $conversation
      */
-    public function getConversation($conversation, $filter = null)
+    public function getConversation($conversation, $filter = [])
     {
         $conv['users'] = $this->getServiceUser()->getListByConversation($conversation)->toArray(array('id'));
         $conv['messages'] = $this->getServiceMessage()->getList($conversation, $filter);
