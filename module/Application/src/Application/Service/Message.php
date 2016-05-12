@@ -110,7 +110,7 @@ class Message extends AbstractService
         $this->getServiceMessageDoc()->replace($message_id, $document);
         // Delete all users and inserts them again
         $this->getServiceMessageUser()->hardDeleteByMessage($message_id);
-        $message_user_id = $this->getServiceMessageUser()->sendByTo($message_id, $conversation, $to);
+        $message_user_id = $this->getServiceMessageUser()->send($message_id, $conversation, $to);
         
         if ($draft === false) {
             $this->getServiceEvent()->messageNew($message_id, $to);
