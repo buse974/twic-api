@@ -33,4 +33,15 @@ class GradingPolicy extends AbstractMapper
 
         return $this->selectWith($select);
     }
+     public function deleteNotIn($ids, $course)
+    {
+        $delete = $this->tableGateway->getSql()->delete();
+        $delete->where(['course_id' => $course]); 
+        if(null !== $ids && count($ids) > 0){
+            $delete->where->notIn('id',$ids);
+        }
+        syslog(1, $this->printSql($delete));
+        return $this->deleteWith($delete);
+    }
+    
 }

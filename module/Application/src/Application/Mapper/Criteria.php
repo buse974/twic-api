@@ -18,4 +18,18 @@ class Criteria extends AbstractMapper
        
         return $this->selectWith($select);
     }
+    
+    
+     public function deleteNotIn($ids, $grading_policy)
+    {
+        $delete = $this->tableGateway->getSql()->delete();
+
+        $delete->where(['grading_policy_id' => $grading_policy]);
+        if(count($ids) > 0){
+            $delete->where->notIn('id',$ids);
+        }
+        
+        syslog(1, $this->printSql($delete));
+        return $this->deleteWith($delete);
+    }
 }
