@@ -54,6 +54,18 @@ class ConversationUser extends AbstractService
     }
 
     /**
+     * @param integer $conversation_id
+     * @param integer $user_id
+     * @return boolean
+     */
+    public function isInConversation($conversation_id, $user_id)
+    {
+        $res_conversation_user = $this->getMapper()->select($this->getModel()->setConversationId($conversation_id)->setUserId($user_id));
+    
+        return ($res_conversation_user->count() > 0);
+    }
+    
+    /**
      * @param intger $conversation_id
      * @param array $users
      * 

@@ -195,13 +195,43 @@ class LiveClassTest extends AbstractService
      */
     public function testVideoconfCreateSubmission()
     {
-        $this->setIdentity(5);
+        $this->setIdentity(2);
     
         $data = $this->jsonRpc('conversation.createSubmission',
             [
-                'users' => [1,2,3],
+                'users' => [1,2],
                 'text' => 'TOTOTO',
                 'submission_id' => 1 
+            ]);
+    
+        print_r($data);
+    }
+    
+    /**
+     * @depends testAddItem
+     */
+    public function testVideoconfSendMessage()
+    {
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('message.sendSubmission',
+            [
+                'text' => 'text 1',
+                'conversation' => 2
+            ]);
+    
+        print_r($data);
+    }
+    
+    /**
+     * @depends testAddItem
+     */
+    public function testVideoconfSendMessage3()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('message.sendSubmission',
+            [
+                'text' => 'text 2',
+                'conversation' => 2
             ]);
     
         print_r($data);

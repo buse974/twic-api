@@ -159,18 +159,7 @@ class MessageUser extends AbstractService
 
         return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNotNull('read_date')));
     }
-
-    /**
-     * @param integer $conversation_id
-     * @param integer $user_id
-     * @return boolean
-     */
-    public function isInConversation($conversation_id, $user_id)
-    {
-        $res_conversation_user = $this->getMapper()->select($this->getModel()->setConversationId($conversation_id)->setUserId($user_id));
-        
-        return ($res_conversation_user->count() === 1);
-    }
+    
     public function deleteByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];

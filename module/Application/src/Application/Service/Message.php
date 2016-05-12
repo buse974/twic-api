@@ -134,7 +134,7 @@ class Message extends AbstractService
             }
             $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type, $item, $group);
         } elseif ($conversation !== null) {
-            if ($this->getServiceMessageUser()->isInConversation($conversation, $me)) {
+            if (!$this->getServiceConversationUser()->isInConversation($conversation, $me)) {
                 throw new \Exception('User ' . $me . ' is not in conversation ' . $conversation);
             }
         }
