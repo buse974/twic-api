@@ -12,10 +12,10 @@ class Conversation extends AbstractService
      * 
      * @param integer $type
      * @param integer $submission_id
-     * 
-     * @return integer
+     * @param array $users
+     * @param string $text
      */
-    public function create($type = null, $submission_id = null)
+    public function create($type = null, $submission_id = null, $users = null, $text = null)
     {
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
@@ -26,12 +26,38 @@ class Conversation extends AbstractService
         }
 
         $conversation_id = $this->getMapper()->getLastInsertValue();
-        
+        if(null !== $users) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+            if (!in_array($user_id, $users)) {
+                $users[] = $user_id;
+            }
+            $this->getServiceConversationUser()->add($conversation_id, $users);
+        }
         if(null !== $submission_id) {
             $this->getServiceSubConversation()->add($conversation_id, $submission_id);
         }
         
+        if (null !== $text) {
+            switch ($type) {
+                case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT : 
+                    return $this->getServiceMessage()->sendVideoConf($text, null, $conversation_id);
+                    break;
+            }
+        }
+        
         return $conversation_id;         
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param array $users
+     * @param string $text
+     * @param integer $submission_id
+     */
+    public function createSubmission($users, $text, $submission_id)
+    {
+        return $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT,$submission_id,$users,$text);
     }
     
     /**
@@ -45,7 +71,7 @@ class Conversation extends AbstractService
      */
     public function add($users)
     {
-        return $this->getServiceConversationUser()->createConversation($users);
+        return $this->create(null,null,$users);
     }
     
     /**
@@ -57,7 +83,7 @@ class Conversation extends AbstractService
      */
     public function join($conversation)
     {
-        return $this->getServiceConversationUser()->join($this->getServiceUser()->getIdentity()['id'], $conversation);
+        return $this->getServiceConversationUser()->add($conversation, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -79,34 +105,15 @@ class Conversation extends AbstractService
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListBySubmission($submission_id)
+    public function getListBySubmission($submission_id, $with_default = false)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, false);
-        
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, $with_default);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
             $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
         }
         
-        return $ret;
-    }
-    
-    /**
-     * @param integer $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListBySubmissionAndDefault($submission_id)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id, true);
-        $ret = [];
-        foreach ($res_conversation as $m_conversation) {
-            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
-        }
-    
         return $ret;
     }
 
@@ -127,7 +134,7 @@ class Conversation extends AbstractService
                 $users[] = $m_user->getId();
             }
             
-            $this->getServiceConversationUser()->createConversation($users, null, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id);
+            $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id, $users);
             $ar = $this->getListBySubmission($submission_id);
         }
         

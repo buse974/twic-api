@@ -15,22 +15,22 @@ class ConversationUser extends AbstractService
      */
     public function getConversationByUser(array $users, $type = null)
     {
-        $conversation = null;
-        $identity = $this->getServiceUser()->getIdentity();
-        if (!in_array($identity['id'], $users)) {
-            $users[] = $identity['id'];
+        $conversation_id = null;
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if (!in_array($user_id , $users)) {
+            $users[] = $user_id;
         }
 
         $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type);  
         if ($res_conversation_user->count() === 1) {
-            $conversation = $res_conversation_user->current()->getConversationId();
+            $conversation_id = $res_conversation_user->current()->getConversationId();
         } elseif ($res_conversation_user->count() === 0) {
-            $conversation = $this->createConversation($users, null, $type);
+            $conversation_id = $this->getServiceConversation()->create($type, null, $users);
         } elseif ($res_conversation_user->count() > 1) {
             throw new \Exception('more of one conversation');
         }
 
-        return $conversation;
+        return $conversation_id;
     }
     
     /**
@@ -54,78 +54,31 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * @param array  $users
-     * @param string $videoconf
-     *
-     * @return int
+     * @param intger $conversation_id
+     * @param array $users
+     * 
+     * @return []
      */
-    public function createConversation($users = null, $videoconf = null, $type = null, $submission_id = null)
-    {
-        $conversation_id = $this->getServiceConversation()->create($type, $submission_id);
-
-        $m_conversation_user = $this->getModel()->setConversationId($conversation_id);
-        foreach ($users as $user) {
-            $m_conversation_user->setUserId($user);
-            $this->getMapper()->insert($m_conversation_user);
-        }
-
-        if ($videoconf !== null) {
-            $this->getServiceVideoconfConversation()->add($conversation_id, $videoconf);
-        }
-
-        return $conversation_id;
-    }
-
-    /**
-     * @param integer $user
-     * @param integer $conversation
-     */
-    public function join($user, $conversation)
-    {
-        if(!is_array($user)) {
-            $user = [$user];
-        }
-        
-        $ret = 0;
-        $m_conversation_user = $this->getModel()->setConversationId($conversation);
-        foreach ($user as $u) {
-            $m_conversation_user->setUserId($u);
-            if($this->getMapper()->select($m_conversation_user)->count() === 0) {
-                $ret =+ $this->getMapper()->insert($m_conversation_user);
-            }
-        }
-        
-        return $ret;
-    }
-
-    public function add($conversation, $users)
+    public function add($conversation_id, $users)
     {
         $ret = [];
         foreach ($users as $user) {
-            $ret[$user] = $this->getMapper()->add($conversation, $user);
+            $ret[$user] = $this->getMapper()->add($conversation_id, $user);
         }
 
         return $ret;
     }
 
-    public function replace($conversation, $users)
+    /**
+     * @param intger $conversation_id
+     * @param array $users
+     * @return []
+     */
+    public function replace($conversation_id, $users)
     {
         $this->getMapper()->deleteNotIn($conversation, $users);
 
         return $this->add($conversation, $users);
-    }
-
-    /**
-     * @param int $conversation
-     * @param int $user
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getByConversationUser($conversation, $user)
-    {
-        $m_conversation_user = $this->getModel()->setConversationId($conversation)->setUserId($user);
-
-        return $this->getMapper()->select($m_conversation_user);
     }
 
     /**
@@ -143,20 +96,5 @@ class ConversationUser extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
-    /**
-     * @return \Application\Service\Item
-     */
-    public function getServiceItem()
-    {
-        return $this->getServiceLocator()->get('app_service_item');
-    }
-    
-    /**
-     * @return \Application\Service\Submission
-     */
-    public function getServiceSubmission()
-    {
-        return $this->getServiceLocator()->get('app_service_submission');
-    }
+
 }

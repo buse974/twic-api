@@ -305,7 +305,7 @@ class Videoconf extends AbstractService
             }
         }
         $m_videoconf_opt = $this->getServiceVideoconfOpt()->getByItem($m_item->getId());
-        $convs = $this->getServiceConversation()->getListBySubmissionAndDefault($submission);
+        $convs = $this->getServiceConversation()->getListBySubmission($submission, true);
         $finalconv = null;
         foreach ($convs as $conv) {
             if($conv['name']===ModelConversation::DEFAULT_NAME) {
