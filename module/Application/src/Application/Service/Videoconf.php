@@ -305,7 +305,7 @@ class Videoconf extends AbstractService
             }
         }
         $m_videoconf_opt = $this->getServiceVideoconfOpt()->getByItem($m_item->getId());
-        $convs = $this->getServiceConversation()->getListOrCreate($submission); 
+        $convs = $this->getServiceConversation()->getListBySubmissionAndDefault($submission);
         $finalconv = null;
         foreach ($convs as $conv) {
             if($conv['name']===ModelConversation::DEFAULT_NAME) {
@@ -448,24 +448,6 @@ class Videoconf extends AbstractService
         return $ret;
     }
 
-    /**
-     * @invokable
-     *
-     * @param int   $videoconf
-     * @param array $users
-     */
-    public function addConversation($videoconf, $users, $text)
-    {
-        $user = $this->getServiceUser()->getIdentity();
-        if (!in_array($user['id'], $users)) {
-            $users[] = $user['id'];
-        }
-
-        $conversation = $this->getServiceConversationUser()->createConversation($users);
-        $this->getServiceVideoconfConversation()->add($conversation, $videoconf);
-
-        return $this->getServiceMessage()->sendVideoConf($text, null, $conversation);
-    }
     
     /**
      * @invokable 
@@ -546,14 +528,6 @@ class Videoconf extends AbstractService
     public function getServiceVideoconfDoc()
     {
         return $this->getServiceLocator()->get('app_service_videoconf_doc');
-    }
-
-    /**
-     * @return \Application\Service\VideoconfConversation
-     */
-    public function getServiceVideoconfConversation()
-    {
-        return $this->getServiceLocator()->get('app_service_videoconf_conversation');
     }
 
     /**
