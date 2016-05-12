@@ -2,6 +2,7 @@
 namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
+use Application\Model\Role as ModelRole;
 
 class GroupWorkTest extends AbstractService
 {
@@ -33,9 +34,47 @@ class GroupWorkTest extends AbstractService
         $course_id = $data['result']['id'];
         $this->reset();
 
+        
         // ADD COURSE USER
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.addCourse', array('user' => 1,'course' => $course_id));
+        $this->reset();
+        
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 2,'course' => $course_id));
+        $this->reset();
+        
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 3,'course' => $course_id));
+        $this->reset();
+        
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 4,'course' => $course_id));
+        $this->reset();
+        
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 5,'course' => $course_id));
+        $this->reset();
+        
+        // UPDATE COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 1, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 2, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 3, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 4, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
         $this->reset();
         
         // ADD SET
@@ -45,11 +84,12 @@ class GroupWorkTest extends AbstractService
                 'name' => 'nameset',
                 'uid' => 'suid',
                 'groups'=>[
-                    ['name' =>'namegroup','uid'=>'guid','users'=>[1,3,4]],
-                    ['name' =>'namegroup2','uid'=>'guid','users'=>[2,5]],
-                    ['name' =>'namegroup3','uid'=>'guid','users'=>[6,7]],
+                    ['name' =>'namegroup','uid'=>'guid','users'=>[1,2]],
+                    ['name' =>'namegroup2','uid'=>'guid','users'=>[3,4]],
                 ]]);
         $set_id = $data['result']['id'];
+        
+        print_r($data);
         $this->reset();
         
         return [
@@ -115,13 +155,17 @@ class GroupWorkTest extends AbstractService
      */
     public function testVideoconfGetByItem($item_id)
     {
-        $this->setIdentity(1);
+        $this->setIdentity(5);
     
         $data = $this->jsonRpc('videoconf.getByItem',
             [
-                'item_id' => $item_id
+                'item_id' => $item_id,
+                'group_id' => 1
             ]);
         
+        print_r($data);
+        
+        exit;
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['submission_user']) , 3);
