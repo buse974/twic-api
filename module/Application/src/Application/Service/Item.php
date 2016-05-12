@@ -285,7 +285,7 @@ class Item extends AbstractService
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setStart($start)
-            ->setSetId($set_id)
+            ->setSetId(null !== $set_id ? $set_id : new IsNull())
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setType($type)
