@@ -56,9 +56,9 @@ class GroupWorkTest extends AbstractService
         $this->reset();
         
         // ADD COURSE USER
-        $this->setIdentity(1);
+       /* $this->setIdentity(1);
         $data = $this->jsonRpc('user.addCourse', array('user' => 5,'course' => $course_id));
-        $this->reset();
+        $this->reset();*/
         
         // UPDATE COURSE USER
         $this->setIdentity(1);
@@ -155,7 +155,7 @@ class GroupWorkTest extends AbstractService
      */
     public function testVideoconfGetByItem($item_id)
     {
-        $this->setIdentity(5);
+        $this->setIdentity(1);
     
         $data = $this->jsonRpc('videoconf.getByItem',
             [
@@ -165,7 +165,6 @@ class GroupWorkTest extends AbstractService
         
         print_r($data);
         
-        exit();
     }
     
     /**
@@ -173,7 +172,24 @@ class GroupWorkTest extends AbstractService
      */
     public function testVideoconfGetByItem2($item_id)
     {
-        $this->setIdentity(1);
+        $this->setIdentity(5);
+    
+        $data = $this->jsonRpc('videoconf.getByItem',
+            [
+                'item_id' => $item_id,
+                //'group_id' => 1
+            ]);
+    
+        print_r($data);
+
+    }
+    
+    /**
+     * @depends testAddItem
+     */
+    public function testVideoconfGetByItem3($item_id)
+    {
+        $this->setIdentity(2);
     
         $data = $this->jsonRpc('videoconf.getByItem',
             [
