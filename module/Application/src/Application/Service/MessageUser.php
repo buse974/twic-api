@@ -16,68 +16,39 @@ class MessageUser extends AbstractService
      *
      * @throws \Exception
      *
-     * @return int
+     * @return integer
      */
-    public function send($message, $conversation)
+    public function send($message, $conversation, $to = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        $res_conversation_user = $this->getServiceConversationUser()->getUserByConversation($conversation);
-
-        foreach ($res_conversation_user as $m_conversation_user) {
-            $m_message_user = $this->getModel()
-                ->setMessageId($message)
-                ->setConversationId($conversation)
-                ->setFromId($me)
-                ->setType((($m_conversation_user->getUserId() == $me) ? 'S' : 'R'))
-                ->setUserId($m_conversation_user->getUserId())
-                ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
-            if ($me == $m_conversation_user->getUserId()) {
-                $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
+        $for_me = false;
+        if(null === $to) {
+            $res_conversation_user = $this->getServiceConversationUser()->getUserByConversation($conversation);
+            foreach ($res_conversation_user as $m_conversation_user) {
+                $to[] = $m_conversation_user->getUserId();
             }
-
-            if ($this->getMapper()->insert($m_message_user) <= 0) {
-                throw new \Exception('error insert message to');
+        } else {
+            $for_me = (in_array($me, $to));
+            if (!$for_me) {
+                $to[] = $me;
             }
+            $to = array_unique($to);
         }
-
-        return $this->getMapper()->getLastInsertValue();
-    }
-
-    /**
-     * Send message.
-     *
-     * @param int $message
-     * @param int $conversation
-     *
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function sendByTo($message, $conversation, $to)
-    {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-
-        $for_me = (in_array($me, $to));
-        if (!$for_me) {
-            $to[] = $me;
-        }
-
-        $to = array_unique($to);
         
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
-                ->setMessageId($message)
-                ->setConversationId($conversation)
-                ->setFromId($me)
-                ->setUserId($user)
-                ->setType((($user == $me) ? (($for_me) ? 'RS' : 'S') : 'R'))
-                ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+            ->setMessageId($message)
+            ->setConversationId($conversation)
+            ->setFromId($me)
+            ->setUserId($user)
+            ->setType((($user == $me) ? (($for_me) ? 'RS' : 'S') : 'R'))
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        
             if ($me == $user && !$for_me) {
                 $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             }
-
+        
             if ($this->getMapper()->insert($m_message_user) <= 0) {
                 throw new \Exception('error insert message to');
             }
@@ -136,7 +107,7 @@ class MessageUser extends AbstractService
     
     public function readByMessage($mesage)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
 
         if (!is_array($mesage)) {
             $mesage = [$mesage];
@@ -144,7 +115,7 @@ class MessageUser extends AbstractService
 
         $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNull('read_date')));
+        return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $user_id, new IsNull('read_date')));
     }
 
     public function UnReadByMessage($mesage)
