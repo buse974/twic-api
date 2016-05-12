@@ -38,7 +38,9 @@ class SubQuiz extends AbstractMapper
             'poll_id', 
             'sub_quiz$start_date' => new Expression('DATE_FORMAT(sub_quiz.start_date, "%Y-%m-%dT%TZ")'),
             'sub_quiz$end_date' => new Expression('DATE_FORMAT(sub_quiz.end_date, "%Y-%m-%dT%TZ")'),
-            'user_id', 'submission_id', 'grade']);
+            'user_id', 
+            'submission_id', 
+            'grade']);
         
         if(null !== $id) {
             $select->where(array('sub_quiz.id' => $id));
@@ -47,6 +49,23 @@ class SubQuiz extends AbstractMapper
             $select->where(array('sub_quiz.submission_id' => $submission_id));
         }
     
+        return  $this->selectWith($select);
+    }
+    
+    public function get($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+    
+        $select->columns([
+            'id',
+            'poll_id',
+            'sub_quiz$start_date' => new Expression('DATE_FORMAT(sub_quiz.start_date, "%Y-%m-%dT%TZ")'),
+            'sub_quiz$end_date' => new Expression('DATE_FORMAT(sub_quiz.end_date, "%Y-%m-%dT%TZ")'),
+            'user_id',
+            'submission_id',
+            'grade'])
+        ->where(array('sub_quiz.id' => $id));
+
         return  $this->selectWith($select);
     }
 

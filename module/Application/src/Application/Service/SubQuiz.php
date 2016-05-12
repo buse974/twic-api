@@ -22,7 +22,7 @@ class SubQuiz extends AbstractService
     
     public function get($id) 
     {
-        $m_sub_quiz = $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $m_sub_quiz = $this->getMapper()->get($id)->current();
         
         $ar = $m_sub_quiz->toArray();
         $ar['sub_questions'] = $this->getServiceSubQuestion()->getListLite($m_sub_quiz->getId());
