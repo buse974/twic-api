@@ -31,17 +31,15 @@ class Videoconf extends AbstractService
         }
         
         $m_item = $this->getServiceItem()->getBySubmission($submission_id);
-
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
             ->setDescription($description)
             ->setSubmissionId($submission_id)
             ->setConversationId($conversation)
+            ->setStartDate($m_item->getStart())
             ->setToken($this->getServiceZOpenTok()->getSessionId())
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-            if(is_string($m_item->getStart())) {
-                $m_videoconf->setStartDate((new \DateTime($dateTime, new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-            }
+
         if ($this->getMapper()->insert($m_videoconf) === 0) {
             throw new \Exception('Error insert');
         }
