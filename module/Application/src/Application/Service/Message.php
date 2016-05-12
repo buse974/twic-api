@@ -174,24 +174,6 @@ class Message extends AbstractService
         
         return $this->getServiceMessageUser()->getList($user_id, null, $conversation, $filter);
     }
-
-    /**
-     * Get Message.
-     *
-     * @return \Application\Model\Message
-     */
-    public function get($id)
-    {
-        $m_message = $this->getModel()->setId($id);
-        $res_message = $this->getMapper()->select($m_message);
-    
-        // Throws an error if the message does not exist
-        if ($res_message->count() <= 0) {
-            throw new \Exception('error select message with id :' . $id);
-        }
-        // Fetches the entity and stores the message and conversation ids
-        return $res_message->current();
-    }
     
     /**
      * 
@@ -259,20 +241,19 @@ class Message extends AbstractService
         
         return $this->getServiceMessageUser()->getList($user_id, null, null, $filter, $tag, $type, $search);
     }
-
+    
     /**
-     *
-     * @param int $id            
+     * Get Message.
      *
      * @return null|\Application\Model\Message
      */
-    public function getMessage($id)
+    public function get($id)
     {
         $res_message = $this->getMapper()->select($this->getModel()->setId($id));
         if ($res_message->count() <= 0) {
-            throw new \Exception('error get messge ');
+            throw new \Exception('error select message with id :' . $id);
         }
-        
+    
         return $res_message->current();
     }
 

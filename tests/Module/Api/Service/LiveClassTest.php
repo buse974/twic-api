@@ -103,12 +103,7 @@ class LiveClassTest extends AbstractService
                 'parent' => null,
                 'order' => null, 
             ]);
-        
-       /* $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-        */
+
         return $data['result'];
     }
     
@@ -124,18 +119,17 @@ class LiveClassTest extends AbstractService
                 'item_id' => $item_id
             ]);
         
-        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 8);
-        $this->assertEquals(count($data['result']['submission_user']) , 3);
+        $this->assertEquals(count($data['result']['submission_user']) , 1);
         $this->assertEquals(count($data['result']['submission_user'][0]) , 5);
         $this->assertEquals(count($data['result']['submission_user'][0]['user']) , 12);
         $this->assertEquals($data['result']['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['contact_state'] , 0);
-        $this->assertEquals($data['result']['submission_user'][0]['user']['id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][0]['user']['firstname'] , "Paul");
-        $this->assertEquals($data['result']['submission_user'][0]['user']['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
+        $this->assertEquals($data['result']['submission_user'][0]['user']['id'] , 5);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['firstname'] , "Sébastien");
+        $this->assertEquals($data['result']['submission_user'][0]['user']['lastname'] , "Sayegh");
+        $this->assertEquals($data['result']['submission_user'][0]['user']['email'] , "ssayegh@thestudnet.com");
         $this->assertEquals($data['result']['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['position'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 1);
@@ -143,52 +137,30 @@ class LiveClassTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['has_email_notifier'] , 1);
         $this->assertEquals($data['result']['submission_user'][0]['submission_id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][0]['user_id'] , 1);
+        $this->assertEquals($data['result']['submission_user'][0]['user_id'] , 5);
         $this->assertEquals($data['result']['submission_user'][0]['grade'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['submit_date'] , null);
-        $this->assertEquals(count($data['result']['submission_user'][1]) , 5);
-        $this->assertEquals(count($data['result']['submission_user'][1]['user']) , 12);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['gender'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['contact_state'] , 0);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['id'] , 2);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['firstname'] , "Xuan-Anh");
-        $this->assertEquals($data['result']['submission_user'][1]['user']['lastname'] , "Hoang");
-        $this->assertEquals($data['result']['submission_user'][1]['user']['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['submission_user'][1]['user']['birth_date'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['position'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['school_id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['interest'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['avatar'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['user']['has_email_notifier'] , 1);
-        $this->assertEquals($data['result']['submission_user'][1]['submission_id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][1]['user_id'] , 2);
-        $this->assertEquals($data['result']['submission_user'][1]['grade'] , null);
-        $this->assertEquals($data['result']['submission_user'][1]['submit_date'] , null);
-        $this->assertEquals(count($data['result']['submission_user'][2]) , 5);
-        $this->assertEquals(count($data['result']['submission_user'][2]['user']) , 12);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['gender'] , null);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['contact_state'] , 0);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['id'] , 3);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['firstname'] , "Christophe");
-        $this->assertEquals($data['result']['submission_user'][2]['user']['lastname'] , "Robert");
-        $this->assertEquals($data['result']['submission_user'][2]['user']['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['submission_user'][2]['user']['birth_date'] , null);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['position'] , null);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['school_id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['interest'] , null);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['avatar'] , null);
-        $this->assertEquals($data['result']['submission_user'][2]['user']['has_email_notifier'] , 1);
-        $this->assertEquals($data['result']['submission_user'][2]['submission_id'] , 1);
-        $this->assertEquals($data['result']['submission_user'][2]['user_id'] , 3);
-        $this->assertEquals($data['result']['submission_user'][2]['grade'] , null);
-        $this->assertEquals($data['result']['submission_user'][2]['submit_date'] , null);
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['item_id'] , 1);
         $this->assertEquals($data['result']['submit_date'] , null);
         $this->assertEquals(count($data['result']['text_editor']) , 0);
         $this->assertEquals(count($data['result']['document']) , 0);
-        $this->assertEquals(count($data['result']['chat']) , 0);
-        $this->assertEquals(count($data['result']['videoconf']) , 15);
+        $this->assertEquals(count($data['result']['chat']) , 1);
+        $this->assertEquals(count($data['result']['chat'][0]) , 6);
+        $this->assertEquals(count($data['result']['chat'][0]['users']) , 1);
+        $this->assertEquals(count($data['result']['chat'][0]['users'][5]) , 4);
+        $this->assertEquals($data['result']['chat'][0]['users'][5]['id'] , 5);
+        $this->assertEquals($data['result']['chat'][0]['users'][5]['firstname'] , "Sébastien");
+        $this->assertEquals($data['result']['chat'][0]['users'][5]['lastname'] , "Sayegh");
+        $this->assertEquals($data['result']['chat'][0]['users'][5]['avatar'] , null);
+        $this->assertEquals(count($data['result']['chat'][0]['messages']) , 2);
+        $this->assertEquals(count($data['result']['chat'][0]['messages']['list']) , 0);
+        $this->assertEquals($data['result']['chat'][0]['messages']['count'] , 0);
+        $this->assertEquals($data['result']['chat'][0]['id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
+        $this->assertEquals($data['result']['chat'][0]['type'] , 5);
+        $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
+        $this->assertEquals(count($data['result']['videoconf']) , 16);
         $this->assertEquals(count($data['result']['videoconf']['instructors']) , 0);
         $this->assertEquals(count($data['result']['videoconf']['videoconf_admin']) , 5);
         $this->assertEquals($data['result']['videoconf']['videoconf_admin']['id'] , 1);
@@ -197,12 +169,13 @@ class LiveClassTest extends AbstractService
         $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['token']) , true);
         $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['created_date']) , true);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
-        $this->assertEquals(!empty($data['result']['videoconf']['token']) ,true);
+        $this->assertEquals(!empty($data['result']['videoconf']['token']) , true);
         $this->assertEquals($data['result']['videoconf']['start_date'] , null);
         $this->assertEquals($data['result']['videoconf']['duration'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_token'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_link'] , null);
         $this->assertEquals($data['result']['videoconf']['archive_status'] , null);
+        $this->assertEquals($data['result']['videoconf']['conversation_id'] , 1);
         $this->assertEquals($data['result']['videoconf']['submission_id'] , 1);
         $this->assertEquals($data['result']['videoconf']['title'] , null);
         $this->assertEquals($data['result']['videoconf']['description'] , null);
@@ -210,7 +183,7 @@ class LiveClassTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['deleted_date'] , null);
         $this->assertEquals(count($data['result']['videoconf']['videoconf_opt']) , 4);
         $this->assertEquals($data['result']['videoconf']['videoconf_opt']['item_id'] , 1);
-        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['record'] , 2);
+        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['record'] , 1);
         $this->assertEquals($data['result']['videoconf']['videoconf_opt']['nb_user_autorecord'] , 2);
         $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 1);
         $this->assertEquals($data['id'] , 1);
