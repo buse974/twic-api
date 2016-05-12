@@ -27,10 +27,6 @@ class Conversation extends AbstractService
 
         $conversation_id = $this->getMapper()->getLastInsertValue();
         if(null !== $users) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
-            if (!in_array($user_id, $users)) {
-                $users[] = $user_id;
-            }
             $this->getServiceConversationUser()->add($conversation_id, $users);
         }
         if(null !== $submission_id) {
@@ -57,6 +53,10 @@ class Conversation extends AbstractService
      */
     public function createSubmission($users, $text, $submission_id)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if (!in_array($user_id, $users)) {
+            $users[] = $user_id;
+        }
         return $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT,$submission_id,$users,$text);
     }
     
@@ -71,6 +71,10 @@ class Conversation extends AbstractService
      */
     public function add($users)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if (!in_array($user_id, $users)) {
+            $users[] = $user_id;
+        }
         return $this->create(null,null,$users);
     }
     
@@ -105,10 +109,10 @@ class Conversation extends AbstractService
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListBySubmission($submission_id)
+    public function getListBySubmission($submission_id, $all = false)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-        $res_conversation = $this->getMapper()->getListBySubmission($submission_id);
+        $user_id = (true===$all) ? null: $this->getServiceUser()->getIdentity()['id'];
+        $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
             $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
@@ -125,7 +129,7 @@ class Conversation extends AbstractService
      */
     public function getListOrCreate($submission_id)
     {
-        $ar = $this->getListBySubmission($submission_id);
+        $ar = $this->getListBySubmission($submission_id, true);
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
             $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
@@ -135,10 +139,9 @@ class Conversation extends AbstractService
             }
             
             $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id, $users);
-            $ar = $this->getListBySubmission($submission_id);
         }
         
-        return $ar;
+        return $this->getListBySubmission($submission_id);
     }
     
     /**

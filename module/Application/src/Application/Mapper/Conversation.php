@@ -8,7 +8,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Conversation extends AbstractMapper
 {
-    public function getListBySubmission($submission_id, $with_default = false)
+    public function getListBySubmission($submission_id, $user_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'name', 'type', 'created_date'])
@@ -17,9 +17,8 @@ class Conversation extends AbstractMapper
             ->where(array('sub_conversation.submission_id = ? ' => $submission_id))
             ->quantifier('DISTINCT');
 
-            if($with_default===true) {
-                    $select->where(array('conversation.name' => ModelConversation::DEFAULT_NAME));
-                
+            if(null !== $user_id)  {
+                $select->where(array('conversation_user.user_id' => $user_id));
             }
             
         return $this->selectWith($select);
