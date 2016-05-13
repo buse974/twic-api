@@ -271,7 +271,9 @@ class Item extends AbstractMapper
                         AND ((`ct_group`.`group_id` = `set_group`.`group_id`)
                         OR `ct_group`.`item_id` IS NULL)
                         LEFT JOIN
-                    `submission_user` ON `submission_user`.`user_id` = `course_user_relation`.`user_id` AND `user_role`.`role_id`='.ModelRole::ROLE_STUDENT_ID.'
+                    `submission_user` ON 
+            `submission_user`.`user_id` = `course_user_relation`.`user_id` AND 
+            `user_role`.`role_id`='.ModelRole::ROLE_STUDENT_ID.'
                         LEFT JOIN
                     `submission` ON (`submission`.`id` = `submission_user`.`submission_id`)
                         OR (`submission`.`group_id` = `set_group`.`group_id`)
@@ -343,6 +345,8 @@ class Item extends AbstractMapper
         
         $sql.=$cw.' GROUP BY `item`.`id`';
 
+        print_r($sql);
+        exit();
         return $this->selectPdo($sql,$val);
     }
     
