@@ -141,8 +141,9 @@ class Conversation extends AbstractService
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
             
+            
             if($by_item) {
-                $res_user = $this->getServiceUser()->getListByItem($item_id = $m_item->getId());
+                $res_user = $this->getServiceUser()->getListByItem($m_item->getId());
             } else {
                 $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
             }

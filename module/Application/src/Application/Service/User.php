@@ -255,6 +255,7 @@ class User extends AbstractService
                 $res_user = $this->getMapper()->getListUsersByItemOfCourseUser($m_item->getId());
             }
         }
+        
         return $res_user;
     }
     
