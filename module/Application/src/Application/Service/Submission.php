@@ -284,15 +284,15 @@ class Submission extends AbstractService
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         
         if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
+            if(!(!is_numeric($m_item->getSetId()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
+            }
         } else {
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
         }
         
         if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-            if(!(!is_numeric($m_item->getSetId()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
-                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
-            }
+            $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
         } else {
             $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
         }
