@@ -320,8 +320,7 @@ class Submission extends AbstractService
         $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
-        $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getListBySubmission($submission_id);
-        
+        $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
         $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
         $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         
