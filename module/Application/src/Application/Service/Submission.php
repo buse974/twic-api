@@ -624,7 +624,7 @@ class Submission extends AbstractService
         }
         $this->getMapper()->checkGraded($id);
         
-        return 1;
+        return $id;
     }
     
       /**
@@ -648,7 +648,7 @@ class Submission extends AbstractService
             $id = $this->create($item, $user, $group);
         }
        $me = $this->getServiceUser()->getIdentity()['id'];
-       return $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
+       return [ 'submission_id' => $id, 'comment' => $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text)];
     }
     
       /**
