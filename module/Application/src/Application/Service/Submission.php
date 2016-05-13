@@ -619,7 +619,7 @@ class Submission extends AbstractService
                 }
             }
         }
-        else{
+        if(null !== $grades){
              foreach($grades as $user => $grade){
                 if($grade !== null && isset($grade['grade'])){
                     $this->getServiceSubmissionUser()->setGrade($id, $user, $grade['grade'], true);
