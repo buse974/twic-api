@@ -597,13 +597,13 @@ class Submission extends AbstractService
      * @param array $grades
      * @param array $criterias
      */
-    public function instructorRates($id = null, $group = null, $user = null, $item = null, $grades = null, $criterias = null) 
+    public function instructorRates($id = null, $group_id = null, $user_id = null, $item = null, $grades = null, $criterias = null) 
     {
         if(null === $id){
             if(null === $item){
                 return 0;
             }
-            $id = $this->create($item, $user_id, $group);
+            $id = $this->create($item, $user_id, $group_id);
         }
         $this->getServiceSubmissionUserCriteria()->deleteBySubmission($id);
         if(null !== $criterias && count($criterias) > 0){
