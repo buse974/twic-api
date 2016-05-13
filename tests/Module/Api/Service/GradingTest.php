@@ -496,6 +496,7 @@ class GradingTest extends AbstractService
                 'text' => 'COMMENT 1memzr!',
                 
             ]);
+        $this->printCreateTest($data);
        $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 2); 
         $this->assertEquals($data['result']['submission_id'] , 1); 
