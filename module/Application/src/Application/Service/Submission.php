@@ -290,7 +290,9 @@ class Submission extends AbstractService
         }
         
         if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-            $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
+            if(!(!is_numeric($m_item->getSetId()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
+                $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
+            }
         } else {
             $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
         }

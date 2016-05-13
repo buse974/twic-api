@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use Application\Model\Item as ModelItem;
 
 class Conversation extends AbstractService
 {
@@ -129,7 +130,14 @@ class Conversation extends AbstractService
      */
     public function getListOrCreate($submission_id)
     {
-        $ar = $this->getListBySubmission($submission_id, true);
+        $m_item = $this->getServiceItem()->getBySubmission($submission_id);
+        $item_id = null;
+        
+        if($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId())) {
+            $item_id = $m_item->getId();
+        }
+        
+        $ar = $this->getListBySubmission($submission_id, true, $item_id);
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
             $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
@@ -202,6 +210,14 @@ class Conversation extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+        return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**

@@ -16,7 +16,7 @@ class User extends BaseUser
     protected $gender;
     protected $nationality;
     protected $origin;
-    protected $item_prog_user;
+    protected $submission_user;
     protected $role;
     protected $nb_user;
     protected $role_id;
@@ -33,7 +33,7 @@ class User extends BaseUser
         $this->school = $this->requireModel('app_model_school', $data);
         $this->nationality = $this->requireModel('addr_model_country', $data, 'nationality');
         $this->origin = $this->requireModel('addr_model_country', $data, 'origin');
-        $this->item_prog_user = $this->requireModel('app_model_item_prog_user', $data);
+        $this->submission_user = $this->requireModel('app_model_submission_user', $data);
     }
 
     public function getRoleId()
@@ -74,12 +74,12 @@ class User extends BaseUser
 
     public function getItemProgUser()
     {
-        return $this->item_prog_user;
+        return $this->submission_user;
     }
 
-    public function setItemProgUser($item_prog_user)
+    public function setItemProgUser($submission_user)
     {
-        $this->item_prog_user = $item_prog_user;
+        $this->submission_user = $submission_user;
 
         return $this;
     }

@@ -26,7 +26,7 @@ class ActivityTest extends AbstractService
                 'event' => 'event',
                 'object' => [
                     'id' => 3,
-                    'name' => 'item_prog',
+                    'name' => 'submission',
                     'value' => 7,
                     'data' => 'dataobj'],
                 'target' => [
@@ -39,7 +39,7 @@ class ActivityTest extends AbstractService
                 'event' => 'event',
                 'object' => [
                     'id' => 3,
-                    'name' => 'item_prog',
+                    'name' => 'submission',
                     'value' => 5,
                     'data' => 'dataobj'],
                 'target' => [
@@ -103,7 +103,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][0]['id'] , 2);
         $this->assertEquals($data['result'][0]['event'] , "event");
         $this->assertEquals($data['result'][0]['object_id'] , 3);
-        $this->assertEquals($data['result'][0]['object_name'] , "item_prog");
+        $this->assertEquals($data['result'][0]['object_name'] , "submission");
         $this->assertEquals($data['result'][0]['object_value'] , 5);
         $this->assertEquals($data['result'][0]['object_data'] , "dataobj");
         $this->assertEquals($data['result'][0]['target_id'] , 3);
@@ -136,7 +136,7 @@ class ActivityTest extends AbstractService
             'event' => 'event',
             'user' => 4,
             'object_id' => 3,
-            'object_name' => 'item_prog'
+            'object_name' => 'submission'
         ));
         
         $this->assertEquals(count($data) , 3);
@@ -162,7 +162,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][0]['id'] , 1);
         $this->assertEquals($data['result'][0]['event'] , "event");
         $this->assertEquals($data['result'][0]['object_id'] , 3);
-        $this->assertEquals($data['result'][0]['object_name'] , "item_prog");
+        $this->assertEquals($data['result'][0]['object_name'] , "submission");
         $this->assertEquals($data['result'][0]['object_value'] , 7);
         $this->assertEquals($data['result'][0]['object_data'] , 'dataobj');
         $this->assertEquals($data['result'][0]['target_id'] , 3);
@@ -174,7 +174,7 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['result'][1]['id'] , 2);
         $this->assertEquals($data['result'][1]['event'] , "event");
         $this->assertEquals($data['result'][1]['object_id'] , 3);
-        $this->assertEquals($data['result'][1]['object_name'] , "item_prog");
+        $this->assertEquals($data['result'][1]['object_name'] , "submission");
         $this->assertEquals($data['result'][1]['object_value'] , 5);
         $this->assertEquals($data['result'][1]['object_data'] , 'dataobj');
         $this->assertEquals($data['result'][1]['target_id'] , 3);

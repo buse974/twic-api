@@ -327,7 +327,7 @@ class Course extends AbstractService
      */
     public function getServiceItemProg()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**

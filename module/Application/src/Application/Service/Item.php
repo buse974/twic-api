@@ -285,7 +285,7 @@ class Item extends AbstractService
             ->setDescribe($describe)
             ->setDuration($duration)
             ->setStart($start)
-            ->setSetId(null !== $set_id ? $set_id : new IsNull())
+            ->setSetId(0 !== $set_id ? $set_id : new IsNull())
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setType($type)
@@ -422,12 +422,12 @@ class Item extends AbstractService
      * @param bool $new_message            
      * @param array $filter            
      */
-    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $item_prog = null, $user = null)
+    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $submission = null, $user = null)
     {
         $mapper = $this->getMapper();
         $me = $this->getServiceUser()->getIdentity();
         
-        $res_item = $mapper->usePaginator($filter)->getListGrade($me, $program, $course, $type, $not_graded, $new_message, $filter, $item_prog, $user);
+        $res_item = $mapper->usePaginator($filter)->getListGrade($me, $program, $course, $type, $not_graded, $new_message, $filter, $submission, $user);
         
         foreach ($res_item as $m_item) {
             $item_assigment_id = $m_item->getItemProg()
@@ -470,25 +470,25 @@ class Item extends AbstractService
      * @param int $grading_policy_id           
      * @param int $course            
      * @param int $user            
-     * @param int $item_prog            
+     * @param int $submission            
      */
-    public function getListGradeItem($grading_policy_id= null, $course = null, $user = null, $item_prog = null)
+    public function getListGradeItem($grading_policy_id= null, $course = null, $user = null, $submission = null)
     {
-        return $this->getMapper()->getListGradeItem($grading_policy_id, $course, $user, $item_prog);
+        return $this->getMapper()->getListGradeItem($grading_policy_id, $course, $user, $submission);
     }
 
     /**
      * @invokable
      *
-     * @param int $item_prog            
+     * @param int $submission            
      *
      * @throws \Exception
      *
      * @return \Application\Model\Item
      */
-    public function getByItemProg($item_prog)
+    public function getByItemProg($submission)
     {
-        $res_item = $this->getMapper()->getByItemProg($item_prog);
+        $res_item = $this->getMapper()->getByItemProg($submission);
         
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item by itemprog');

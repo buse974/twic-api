@@ -15,10 +15,10 @@ class ItemAssignmentComment extends AbstractMapper
             ->join('user', 'user.id=item_assignment_comment.user_id', array('id', 'firstname', 'lastname', 'avatar'))
             ->join('item_assignment', 'item_assignment.id=item_assignment_comment.item_assignment_id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())
-            ->join('item_prog_user', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
-            ->join('item_prog', 'item_prog.id=item_prog_user.item_prog_id', array())
-            ->where(array('item_prog.item_id' => $item))
-            ->where(array('item_prog_user.user_id' => $user));
+            ->join('submission_user', 'item_assignment_relation.submission_user_id=submission_user.id', array())
+            ->join('submission', 'submission.id=submission_user.submission_id', array())
+            ->where(array('submission.item_id' => $item))
+            ->where(array('submission_user.user_id' => $user));
 
         return $this->selectWith($select);
     }

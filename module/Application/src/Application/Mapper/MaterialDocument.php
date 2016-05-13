@@ -38,14 +38,14 @@ class MaterialDocument extends AbstractMapper
             ->join('item', 'item.id = item_material_document_relation.item_id', array())
             ->join('course', 'item.course_id = course.id', array())
             ->join('program', 'course.program_id = program.id', array())
-            ->join('item_prog', 'item_prog.id = item_material_document_relation.item_id', array())
-            ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array('material_document$user' => 'user_id'))
+            ->join('submission', 'submission.id = item_material_document_relation.item_id', array())
+            ->join('submission_user', 'submission_user.submission_id = submission.id', array('material_document$user' => 'user_id'))
             ->where(array('program.school_id' => $school))
             ->where(array(' ( material_document.link IS NOT NULL OR material_document.token IS NOT NULL ) '))
             ->quantifier('DISTINCT');
         
         if (null !== $day) {
-            $select->where(array('((item_prog.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'CP\' OR item.type = \'IA\'))'))->where(array('(item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
+            $select->where(array('((submission.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'CP\' OR item.type = \'IA\'))'))->where(array('(submission.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
         }
         
         return $this->selectWith($select);
@@ -64,9 +64,9 @@ class MaterialDocument extends AbstractMapper
             ->join('item', 'item.id = item_material_document_relation.item_id', array())
             ->join('course', 'item.course_id = course.id', array())
             ->join('program', 'course.program_id = program.id', array())
-            ->join('item_prog', 'item_prog.id = item_material_document_relation.item_id', array())
-            ->join('item_prog_user', 'item_prog_user.item_prog_id = item_prog.id', array('material_document$user' => 'user_id'))
-            ->join('activity', 'activity.object_id=material_document.id AND activity.user_id=item_prog_user.user_id', array())
+            ->join('submission', 'submission.id = item_material_document_relation.item_id', array())
+            ->join('submission_user', 'submission_user.submission_id = submission.id', array('material_document$user' => 'user_id'))
+            ->join('activity', 'activity.object_id=material_document.id AND activity.user_id=submission_user.user_id', array())
             ->where(array('activity.event' => 'course.material.view'))
             ->where(array('activity.object_name' => 'course.material'))
             ->where(array('program.school_id' => $school))
@@ -74,11 +74,11 @@ class MaterialDocument extends AbstractMapper
             ->quantifier('DISTINCT');
         
         if (null !== $day) {
-            $select->where(array('(( item_prog.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND item_prog.due_date < UTC_TIMESTAMP() AND (item.type = \'CP\' OR item.type = \'IA\'))'))
-                ->where(array('( item_prog.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND item_prog.start_date < UTC_TIMESTAMP() AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
+            $select->where(array('(( submission.due_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND submission.due_date < UTC_TIMESTAMP() AND (item.type = \'CP\' OR item.type = \'IA\'))'))
+                ->where(array('( submission.start_date > DATE_ADD(UTC_TIMESTAMP(), INTERVAL -' . $day . ' DAY) AND submission.start_date < UTC_TIMESTAMP() AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
         } else {
-            $select->where(array('(( item_prog.due_date < UTC_TIMESTAMP() AND (item.type = \'CP\' OR item.type = \'IA\'))'))
-                ->where(array('( item_prog.start_date < UTC_TIMESTAMP() AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
+            $select->where(array('(( submission.due_date < UTC_TIMESTAMP() AND (item.type = \'CP\' OR item.type = \'IA\'))'))
+                ->where(array('( submission.start_date < UTC_TIMESTAMP() AND (item.type = \'LC\' OR item.type = \'WG\')))'), Predicate::OP_OR);
         }
         
         return $this->selectWith($select);
