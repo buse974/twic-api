@@ -145,6 +145,54 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageTwo
      */
+    public function testGetFullList($conv)
+    {
+        $this->setIdentity(2);
+    
+        $data = $this->jsonRpc('message.getFullList', array('conversation_id' => $conv['conversation_id']));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result'][0]) , 9);
+        $this->assertEquals(count($data['result'][0]['message_user']) , 1);
+        $this->assertEquals($data['result'][0]['message_user']['from_id'] , 2);
+        $this->assertEquals($data['result'][0]['id'] , 2);
+        $this->assertEquals($data['result'][0]['title'] , null);
+        $this->assertEquals($data['result'][0]['text'] , "super message deux qwerty 1");
+        $this->assertEquals($data['result'][0]['token'] , null);
+        $this->assertEquals($data['result'][0]['is_draft'] , 0);
+        $this->assertEquals($data['result'][0]['type'] , 2);
+        $this->assertEquals($data['result'][0]['conversation_id'] , 2);
+        $this->assertEquals(!empty($data['result'][0]['created_date']) , true);
+        $this->assertEquals(count($data['result'][1]) , 9);
+        $this->assertEquals(count($data['result'][1]['message_user']) , 1);
+        $this->assertEquals($data['result'][1]['message_user']['from_id'] , 3);
+        $this->assertEquals($data['result'][1]['id'] , 3);
+        $this->assertEquals($data['result'][1]['title'] , null);
+        $this->assertEquals($data['result'][1]['text'] , "super message un azerty 2");
+        $this->assertEquals($data['result'][1]['token'] , null);
+        $this->assertEquals($data['result'][1]['is_draft'] , 0);
+        $this->assertEquals($data['result'][1]['type'] , 2);
+        $this->assertEquals($data['result'][1]['conversation_id'] , 2);
+        $this->assertEquals(!empty($data['result'][1]['created_date']) , true);
+        $this->assertEquals(count($data['result'][2]) , 9);
+        $this->assertEquals(count($data['result'][2]['message_user']) , 1);
+        $this->assertEquals($data['result'][2]['message_user']['from_id'] , 2);
+        $this->assertEquals($data['result'][2]['id'] , 4);
+        $this->assertEquals($data['result'][2]['title'] , null);
+        $this->assertEquals($data['result'][2]['text'] , "dernier message");
+        $this->assertEquals($data['result'][2]['token'] , null);
+        $this->assertEquals($data['result'][2]['is_draft'] , 0);
+        $this->assertEquals($data['result'][2]['type'] , 2);
+        $this->assertEquals($data['result'][2]['conversation_id'] , 2);
+        $this->assertEquals(!empty($data['result'][2]['created_date']) , true);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanSendMessageTwo
+     */
     public function testCanGetList($conv)
     {
         $this->setIdentity(2);
