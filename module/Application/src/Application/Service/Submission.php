@@ -609,7 +609,7 @@ class Submission extends AbstractService
         if(null !== $criterias && count($criterias) > 0){
             foreach($criterias as $criteria_id => $criteria){
                 foreach($criteria as $user => $points){
-                    if(null !== $points && $points['points']){
+                    if(null !== $points && isset($points['points'])){
                         $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points['points'], true);
                     }
                 }
