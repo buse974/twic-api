@@ -149,6 +149,7 @@ class Conversation extends AbstractService
         $m_item = $this->getServiceItem()->getBySubmission($submission_id);
         $item_id = null;
         
+        // Dans le cas d'un type chat sans set_id il faut tt créer par item
         $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId()));
 
         if($by_item) {
@@ -168,14 +169,13 @@ class Conversation extends AbstractService
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
             }
-            
             $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id, $users);
         }
         
-        // Vérifier si la conversation est liker sur la submission par un byItem
         if($by_item) { 
+            // Vérifier si la conversation est liker sur la submission par un byItem
             $res = $this->getListByItem($m_item->getId(), $submission_id);
-            if($res->count() <= 0) {
+            if(count($res) <= 0) {
                 if (count($ar) <= 0) {
                     $ar = $this->getListByItem($m_item->getId());
                 }
