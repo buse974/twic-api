@@ -121,6 +121,22 @@ class Conversation extends AbstractService
         
         return $ret;
     }
+    
+    /**
+     * @param integer $submission_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByItem($item_id, $submission_id = null)
+    {
+        $res_conversation = $this->getMapper()->getListByItem($item_id, $submission_id);
+        $ret = [];
+        foreach ($res_conversation as $m_conversation) {
+            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
+        }
+    
+        return $ret;
+    }
 
     /**
      * 
@@ -134,14 +150,15 @@ class Conversation extends AbstractService
         $item_id = null;
         
         $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId()));
+
+        if($by_item) {
+            $ar = $this->getListByItem($m_item->getId());
+        } else {
+            $ar = $this->getListBySubmission($submission_id, true);
+        }
         
-            
-            
-        $ar = $this->getListBySubmission($submission_id, true);
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            
-            
             if($by_item) {
                 $res_user = $this->getServiceUser()->getListByItem($m_item->getId());
             } else {
@@ -155,6 +172,17 @@ class Conversation extends AbstractService
             $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id, $users);
         }
         
+        // Vérifier si la conversation est liker sur la submission par un byItem
+        if($by_item) { 
+            $res = $this->getListByItem($m_item->getId(), $submission_id);
+            if($res->count() <= 0) {
+                if (count($ar) <= 0) {
+                    $ar = $this->getListByItem($m_item->getId());
+                }
+                $conv = current($ar);
+                $this->getServiceSubConversation()->add($conv['id'], $submission_id);
+            }
+        }
         
         return $this->getListBySubmission($submission_id);
     }

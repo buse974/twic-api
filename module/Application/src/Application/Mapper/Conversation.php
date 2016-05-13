@@ -21,4 +21,20 @@ class Conversation extends AbstractMapper
             
         return $this->selectWith($select);
     }
+    
+    public function getListByItem($item_id, $submission_id = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'name', 'type', 'created_date'])
+            ->join('sub_conversation', 'sub_conversation.conversation_id=conversation.id', array())
+            ->join('submission', 'submission.id=sub_conversation.submission_id', array())
+            ->where(array('submission.item_id = ? ' => $item_id))
+            ->quantifier('DISTINCT');
+
+        if(null !== $submission_id)  {
+            $select->where(array('submission.id' => $submission_id));
+        }
+            
+        return $this->selectWith($select);
+    }
 }
