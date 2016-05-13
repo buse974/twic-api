@@ -149,7 +149,7 @@ class Questionnaire extends AbstractService
      */
     public function getServiceItemProg()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
@@ -173,7 +173,7 @@ class Questionnaire extends AbstractService
      */
     public function getServiceItemProgUser()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog_user');
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**

@@ -59,7 +59,7 @@ class Item extends BaseItem
         $this->module = $this->requireModel('app_model_module', $data);
         $this->program = $this->requireModel('app_model_program', $data);
         $this->course = $this->requireModel('app_model_course', $data);
-        $this->item_prog = $this->requireModel('app_model_item_prog', $data);
+        $this->submission = $this->requireModel('app_model_submission', $data);
         $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
         $this->item_grade = $this->requireModel('app_model_item_grading', $data);
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
@@ -235,16 +235,16 @@ class Item extends BaseItem
         return $this->course;
     }
 
-    public function setItemProg($item_prog)
+    public function setItemProg($submission)
     {
-        $this->item_prog = $item_prog;
+        $this->submission = $submission;
 
         return $this;
     }
 
     public function getItemProg()
     {
-        return $this->item_prog;
+        return $this->submission;
     }
 
     public function setItemAssignment($item_assignment)

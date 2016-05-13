@@ -8,7 +8,7 @@ class ItemAssignment extends AbstractModel
 {
     protected $id;
     protected $response;
-    protected $item_prog_id;
+    protected $submission_id;
     protected $submit_date;
 
     protected $prefix = 'item_assignment';
@@ -39,12 +39,12 @@ class ItemAssignment extends AbstractModel
 
     public function getItemProgId()
     {
-        return $this->item_prog_id;
+        return $this->submission_id;
     }
 
-    public function setItemProgId($item_prog_id)
+    public function setItemProgId($submission_id)
     {
-        $this->item_prog_id = $item_prog_id;
+        $this->submission_id = $submission_id;
 
         return $this;
     }

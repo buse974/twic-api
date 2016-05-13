@@ -19,7 +19,7 @@ class Thread extends AbstractService
      * 
      * @throws \Exception
      *
-     * @return int
+     * @return integer
      */
     public function add($title, $course, $message = null, $item_id = null)
     {
