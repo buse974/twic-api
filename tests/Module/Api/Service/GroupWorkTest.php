@@ -163,7 +163,7 @@ class GroupWorkTest extends AbstractService
                // 'group_id' => 1
             ]);
         
-        print_r($data);
+        //print_r($data);
         
     }
     
@@ -180,7 +180,7 @@ class GroupWorkTest extends AbstractService
                 //'group_id' => 1
             ]);
     
-        print_r($data);
+        //print_r($data);
 
     }
     
@@ -197,9 +197,8 @@ class GroupWorkTest extends AbstractService
                 //'group_id' => 1
             ]);
     
-        print_r($data);
+        //print_r($data);
     
-        exit;
     
     
     }
@@ -645,6 +644,19 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
     }
+    
+
+    /**
+     * @depends testCanGetSubmission
+     */
+    public function testCanGetSubmissionContentSg($submission_id)
+    {
+        $this->setIdentity(5);
+        $data = $this->jsonRpc('submission.getContentSg', ['submission_id' => $submission_id]);
+        
+        print_r($data);
+    }
+    
     
     public function testCanGetItemGetListSubmissions()
     {

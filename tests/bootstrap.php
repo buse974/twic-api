@@ -13,9 +13,9 @@ class bootstrap
     {
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
         
-        if (session_status() == PHP_SESSION_NONE) {
+        /*if (session_status() == PHP_SESSION_NONE) {
             session_start();
-        }
+        }*/
         
         //system('phing init-conf');
         static::initAutoloader();
