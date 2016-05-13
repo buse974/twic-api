@@ -335,7 +335,6 @@ class Item extends AbstractMapper
         $where[] = 'course.deleted_date IS NULL';
         $where[] = 'program.deleted_date IS NULL';
         
-        
         $cw='';
         $nb = count($where);
         for($i=0; $i<$nb;$i++) {
