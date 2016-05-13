@@ -246,7 +246,7 @@ class Videoconf extends AbstractService
      */
     public function getListOrCreate($submission_id)
     {
-        $m_videoconf = $this->getBySubmission(null, $submission_id);
+        $m_videoconf = $this->getBySubmission($submission_id);
         if(null === $m_videoconf) {
             $this->add(null, null, null, $submission_id);
             $m_videoconf = $this->getBySubmission($submission_id);
