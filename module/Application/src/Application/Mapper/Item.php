@@ -332,6 +332,7 @@ class Item extends AbstractMapper
         $val[':sc'] = $school_id;
         $where[] = 'program.school_id=:sc';
         $where[] = 'item.updated_date IS NOT NULL';
+        $where[] = 'item.deleted_date IS NULL';
         
         $cw='';
         $nb = count($where);
