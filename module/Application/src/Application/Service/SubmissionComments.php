@@ -24,7 +24,7 @@ class SubmissionComments extends AbstractService
      */
     public function get($id) 
     {
-        return $this->getMapper()->get($id);
+        return $this->getMapper()->get($id)->current();
     }
     
     /**
