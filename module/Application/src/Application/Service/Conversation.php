@@ -104,16 +104,10 @@ class Conversation extends AbstractService
 
         return $conv;
     }
-    
+
     /**
      * @param integer $submission_id
-     * 
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    
-    /**
-     * @param integer $submission_id
-     * @param boolean $all Si false on teste 
+     * @param boolean $all Si false on teste pour tous le monde sinon on filtre l'utilisateur courant
      * 
      * @return []
      */
