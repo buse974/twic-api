@@ -6,7 +6,7 @@ use Application\Model\Base\ItemAssignment as BaseItemAssignment;
 
 class ItemAssignment extends BaseItemAssignment
 {
-    protected $item_prog;
+    protected $submission;
     protected $students;
     protected $documents;
     protected $comments;
@@ -15,19 +15,19 @@ class ItemAssignment extends BaseItemAssignment
     {
         parent::exchangeArray($data);
 
-        $this->item_prog = $this->module = $this->requireModel('app_model_item_prog', $data);
+        $this->submission = $this->module = $this->requireModel('app_model_submission', $data);
     }
 
-    public function setItemProg($item_prog)
+    public function setItemProg($submission)
     {
-        $this->item_prog = $item_prog;
+        $this->submission = $submission;
 
         return $this;
     }
 
     public function getItemProg()
     {
-        return $this->item_prog;
+        return $this->submission;
     }
 
     public function setStudents($students)

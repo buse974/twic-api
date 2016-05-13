@@ -52,10 +52,11 @@ class GradingPolicy extends AbstractService
             }
         }
         $this->getMapper()->deleteNotIn($ids, $course);
+        
         return $ret;
     }
 
-    public function _add($name, $grade, $course, $criterias)
+    public function _add($name, $grade, $course)
     {
         $m_grading = $this->getModel()
             ->setName($name)
@@ -105,20 +106,23 @@ class GradingPolicy extends AbstractService
      * add grading.
      *
      * @invokable
-     *
-     * @param int $course_id            
-     * @param string $name            
-     * @param string $grade            
-     *
-     * @return int
+     * 
+     * @param integer $course_id
+     * @param string $name
+     * @param integer $grade
+     * @param integer $criterias
+     * 
+     * @return integer
      */
-    public function add($course_id, $name = null, $grade = null, $criterias)
+    public function add($course_id, $name = null, $grade = null, $criterias = null)
     {
         if ($this->_add($name, $grade, $course_id) <= 0) {
             throw new \Exception('error insert grading policy');
         }
+        if(null !== $criterias) {
+            $this->getServiceCriteria()->update($criterias, $id);
+        }
         
-        $this->getServiceCriteria()->update($criterias, $id);
         return $this->getMapper()->getLastInsertValue();
     }
 

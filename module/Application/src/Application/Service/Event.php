@@ -291,11 +291,11 @@ class Event extends AbstractService
             self::TARGET_TYPE_USER);
     }
 
-    public function eqcqAvailable($item_prog)
+    public function eqcqAvailable($submission)
     {
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+        $m_submission = $this->getServiceItemProg()->get($submission);
 
-        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_item_prog), [], $this->getListByItemProgWithInstrutorAndAcademic($m_item_prog->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_submission), [], $this->getListByItemProgWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
     }
 
     public function courseUpdated($course, $dataupdated)
@@ -316,15 +316,15 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
 
-    public function programmationNew($item_prog)
+    public function programmationNew($submission)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutorAndAcademic($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListByItemProgWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function programmationUpdated($item_prog)
+    public function programmationUpdated($submission)
     {
-        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($item_prog), $this->getListByItemProgWithInstrutorAndAcademic($item_prog), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListByItemProgWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -403,13 +403,13 @@ class Event extends AbstractService
         return ['id' => $user,'name' => 'user','data' => ['updated' => array_keys($dataupdated)]];
     }
 
-    public function getDataProgrammation($item_prog)
+    public function getDataProgrammation($submission)
     {
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+        $m_submission = $this->getServiceItemProg()->get($submission);
 
-        return ['id' => $m_item_prog->getId(),'name' => 'programmation','data' => ['start_date' => $m_item_prog->getStartDate(),'due_date' => $m_item_prog->getDueDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType(),'duration' => $m_item_prog->getItem()->getDuration(),'course' => ['id' => $m_item_prog->getItem()
+        return ['id' => $m_submission->getId(),'name' => 'programmation','data' => ['start_date' => $m_submission->getStartDate(),'due_date' => $m_submission->getDueDate(),'item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType(),'duration' => $m_submission->getItem()->getDuration(),'course' => ['id' => $m_submission->getItem()
             ->getCourse()
-            ->getId(),'title' => $m_item_prog->getItem()
+            ->getId(),'title' => $m_submission->getItem()
             ->getCourse()
             ->getTitle(), ]]]];
     }
@@ -442,28 +442,28 @@ class Event extends AbstractService
         return ['id' => $m_videoconf_archive->getId(),'name' => 'archive','data' => ['archive_link' => $m_videoconf_archive->getArchiveLink()]];
     }
 
-    public function getDataItemProgWihtUser(\Application\Model\ItemProg $m_item_prog)
+    public function getDataItemProgWihtUser(\Application\Model\ItemProg $m_submission)
     {
-        $res_user = $this->getServiceUser()->getListByItemProg($m_item_prog->getId());
+        $res_user = $this->getServiceUser()->getListByItemProg($m_submission->getId());
 
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = ['firstname' => $m_user->getFirstname(),'lastname' => $m_user->getLastname(),'avatar' => $m_user->getAvatar()];
         }
 
-        return ['id' => $m_item_prog->getId(),'name' => 'programming','data' => ['start_date' => $m_item_prog->getStartDate(),'item' => ['id' => $m_item_prog->getItem()->getId(),'title' => $m_item_prog->getItem()->getTitle(),'type' => $m_item_prog->getItem()->getType()],'users' => $users]];
+        return ['id' => $m_submission->getId(),'name' => 'programming','data' => ['start_date' => $m_submission->getStartDate(),'item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()],'users' => $users]];
     }
 
-    public function getDataItemProg(\Application\Model\ItemProg $m_item_prog)
+    public function getDataItemProg(\Application\Model\ItemProg $m_submission)
     {
         return [
-            'id' => $m_item_prog->getId(),
+            'id' => $m_submission->getId(),
             'name' => 'programming',
             'data' => [
-                'start_date' => $m_item_prog->getStartDate(),
-                'item' => ['id' => $m_item_prog->getItem()->getId(),
-                    'title' => $m_item_prog->getItem()->getTitle(),
-                    'type' => $m_item_prog->getItem()->getType()]]];
+                'start_date' => $m_submission->getStartDate(),
+                'item' => ['id' => $m_submission->getItem()->getId(),
+                    'title' => $m_submission->getItem()->getTitle(),
+                    'type' => $m_submission->getItem()->getType()]]];
     }
     
 
@@ -535,9 +535,9 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getListByItemProgWithInstrutorAndAcademic($item_prog)
+    public function getListByItemProgWithInstrutorAndAcademic($submission)
     {
-        $res_user = $this->getServiceUser()->getListByItemProgWithInstrutorAndAcademic($item_prog);
+        $res_user = $this->getServiceUser()->getListByItemProgWithInstrutorAndAcademic($submission);
 
         $users = [];
         foreach ($res_user as $m_user) {
@@ -559,9 +559,9 @@ class Event extends AbstractService
         return $users;
     }
     
-    public function getDataUserByItemProg($item_prog)
+    public function getDataUserByItemProg($submission)
     {
-        $res_user = $this->getServiceUser()->getListByItemProg($item_prog);
+        $res_user = $this->getServiceUser()->getListByItemProg($submission);
 
         $users = [];
         foreach ($res_user as $m_user) {
@@ -609,7 +609,7 @@ class Event extends AbstractService
             'id' => $m_item_assignment->getId(),
             'name' => 'assignment',
             'data' => [
-                'item_prog' => [
+                'submission' => [
                     'id' => $m_item_assignment->getItemProg()->getId()
                 ],'item' => [
                     'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
@@ -635,7 +635,7 @@ class Event extends AbstractService
             'id' => $m_item_assignment->getId(),
             'name' => 'assignment',
             'data' => [
-                'item_prog' => [
+                'submission' => [
                     'id' => $m_item_assignment->getItemProg()->getId()
                 ],
                 'item' => [
@@ -668,7 +668,7 @@ class Event extends AbstractService
                     'title' => $m_item_assignment->getItemProg()->getItem()->getTitle(),
                     'type' => $m_item_assignment->getItemProg()->getItem()->getType(), 
                 ],
-                'item_prog' => [
+                'submission' => [
                     'id' => $m_item_assignment->getItemProg()->getId()
                 ],
                 /*'module' => [
@@ -794,7 +794,7 @@ class Event extends AbstractService
      */
     public function getServiceItemProg()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**

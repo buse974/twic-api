@@ -82,8 +82,8 @@ class Course extends AbstractMapper
             ->join('program', 'course.program_id=program.id', array('id','name'), $select::JOIN_INNER)
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_INNER)
             ->join('grading_policy', 'grading_policy.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('grading_policy_grade', 'grading_policy.id=grading_policy_grade.grading_policy_id AND grading_policy_grade.user_id=item_prog_user.user_id', array('course$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade)/SUM(IF(grading_policy_grade.grade IS NULL,0, grading_policy.grade)) AS DECIMAL )')), $select::JOIN_LEFT)
-            ->where(array('item_prog_user.user_id' => $user))
+            ->join('grading_policy_grade', 'grading_policy.id=grading_policy_grade.grading_policy_id AND grading_policy_grade.user_id=submission_user.user_id', array('course$avg' => new Expression('CAST(SUM(grading_policy.grade * grading_policy_grade.grade)/SUM(IF(grading_policy_grade.grade IS NULL,0, grading_policy.grade)) AS DECIMAL )')), $select::JOIN_LEFT)
+            ->where(array('submission_user.user_id' => $user))
             ->group('course.id');
         
         if (in_array(\Application\Model\Role::ROLE_ACADEMIC_STR, $me['roles'])) {
@@ -118,7 +118,7 @@ class Course extends AbstractMapper
             $select->where(array('course_user_relation.user_id' => $user));
         }
         if ($is_student !== false) {
-            $select->join('item_prog_user', 'item_prog.id=item_prog_user.item_prog_id', array(), $select::JOIN_INNER)->where(array('item_prog_user.user_id' => $user));
+            $select->join('submission_user', 'submission.id=submission_user.submission_id', array(), $select::JOIN_INNER)->where(array('submission_user.user_id' => $user));
         }
         
         return $this->selectWith($select);

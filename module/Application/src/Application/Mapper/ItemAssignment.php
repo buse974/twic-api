@@ -13,10 +13,10 @@ class ItemAssignment extends AbstractMapper
 
         $select->columns(array('id', 'response', 'item_assignment$submit_date' => new Expression("DATE_FORMAT(submit_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())
-            ->join('item_prog_user', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
-            ->join('item_prog', 'item_prog.id=item_prog_user.item_prog_id', array('id', 'item_prog$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') "), 'item_prog$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
-            ->join('item_grading', 'item_grading.item_prog_user_id=item_prog_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
-            ->join('item', 'item.id=item_prog.item_id', array('id', 'title', 'describe', 'type'))
+            ->join('submission_user', 'item_assignment_relation.submission_user_id=submission_user.id', array())
+            ->join('submission', 'submission.id=submission_user.submission_id', array('id', 'submission$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') "), 'submission$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+            ->join('item_grading', 'item_grading.submission_user_id=submission_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
+            ->join('item', 'item.id=submission.item_id', array('id', 'title', 'describe', 'type'))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
             ->where(array('item_assignment.id' => $id));
@@ -27,20 +27,20 @@ class ItemAssignment extends AbstractMapper
     /**
      * @invokable
      *
-     * @param int $item_prog
+     * @param int $submission
      *
      * @throws \Exception
      *
      * @return array
      */
-    public function getFromItemProg($user, $item_prog)
+    public function getFromItemProg($user, $submission)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id'))
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())
-            ->join('item_prog_user', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
-            ->where(array('item_prog_user.user_id' => $user))
-            ->where(array('item_prog_user.item_prog_id' => $item_prog));
+            ->join('submission_user', 'item_assignment_relation.submission_user_id=submission_user.id', array())
+            ->where(array('submission_user.user_id' => $user))
+            ->where(array('submission_user.submission_id' => $submission));
 
         return $this->selectWith($select);
     }
