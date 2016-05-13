@@ -609,7 +609,9 @@ class Submission extends AbstractService
         if(null !== $criterias && count($criterias) > 0){
             foreach($criterias as $criteria_id => $criteria){
                 foreach($criteria as $user => $points){
-                    $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points['points'], true);
+                    if(null !== $points && $points['points']){
+                        $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points['points'], true);
+                    }
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
                 foreach($res_submission_user as $m_submission_user){
@@ -619,7 +621,7 @@ class Submission extends AbstractService
         }
         else{
              foreach($grades as $user => $grade){
-                if($grade !== null){
+                if($grade !== null && isset($grade['grade'])){
                     $this->getServiceSubmissionUser()->setGrade($id, $user, $grade['grade'], true);
                 }
             }
