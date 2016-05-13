@@ -115,6 +115,7 @@ return [
             'app_service_criteria',
             'app_service_submission_user_criteria',
             'app_service_submission_comments',
+            'app_service_submission_user',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
