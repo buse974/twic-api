@@ -303,6 +303,31 @@ class Submission extends AbstractService
     
     /**
      * @invokable
+     *
+     * @param integer $submission_id
+     */
+    public function getContentSg($submission_id)
+    {
+        if(null === ($m_submission = $this->getBySubmission($submission_id))) {
+            throw new JrpcException("Error no submission", 999);
+        }
+    
+        $ret = [];
+        $item_id = $m_submission->getItemId();
+        $m_item = $this->getServiceItem()->get($item_id);
+        $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
+         
+        $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
+        $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
+        $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
+        $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
+        $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
+        
+        return $ret;
+    }
+    
+    /**
+     * @invokable
      * 
      * @param integer $submission_id
      * @param integer $item_id
