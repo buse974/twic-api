@@ -7,7 +7,7 @@ use Dal\Model\AbstractModel;
 class ItemGrading extends AbstractModel
 {
     protected $id;
-    protected $item_prog_user_id;
+    protected $submission_user_id;
     protected $grade;
     protected $created_date;
 
@@ -27,12 +27,12 @@ class ItemGrading extends AbstractModel
 
     public function getItemProgUserId()
     {
-        return $this->item_prog_user_id;
+        return $this->submission_user_id;
     }
 
-    public function setItemProgUserId($item_prog_user_id)
+    public function setItemProgUserId($submission_user_id)
     {
-        $this->item_prog_user_id = $item_prog_user_id;
+        $this->submission_user_id = $submission_user_id;
 
         return $this;
     }

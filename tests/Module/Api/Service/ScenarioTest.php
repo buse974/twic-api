@@ -1591,10 +1591,10 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    /*public function testCanUpdateProgrmItem($item_prog)
+    /*public function testCanUpdateProgrmItem($submission)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemprog.update', array('id' => $item_prog,'start_date' => '2017-06-01 12:10','users' => array(6)));
+        $data = $this->jsonRpc('itemprog.update', array('id' => $submission,'start_date' => '2017-06-01 12:10','users' => array(6)));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
@@ -1607,10 +1607,10 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    /*public function testCanAddItemsProgUSer($item_prog)
+    /*public function testCanAddItemsProgUSer($submission)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemprog.addUser', array('submission' => $item_prog,'user' => array(1,2,6,4)));
+        $data = $this->jsonRpc('itemprog.addUser', array('submission' => $submission,'user' => array(1,2,6,4)));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
@@ -2320,17 +2320,17 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(! empty($data['result']['docs'][0]['created_date']), true);
         $this->assertEquals(count($data['result']['users']), 2);
         $this->assertEquals(count($data['result']['users'][4]), 5);
-        $this->assertEquals(count($data['result']['users'][4]['item_prog_user']), 2);
-        $this->assertEquals($data['result']['users'][4]['item_prog_user']['started_date'], null);
-        $this->assertEquals($data['result']['users'][4]['item_prog_user']['finished_date'], null);
+        $this->assertEquals(count($data['result']['users'][4]['submission_user']), 2);
+        $this->assertEquals($data['result']['users'][4]['submission_user']['started_date'], null);
+        $this->assertEquals($data['result']['users'][4]['submission_user']['finished_date'], null);
         $this->assertEquals($data['result']['users'][4]['id'], 4);
         $this->assertEquals($data['result']['users'][4]['firstname'], "Salim");
         $this->assertEquals($data['result']['users'][4]['lastname'], "Bendacha");
         $this->assertEquals($data['result']['users'][4]['avatar'], null);
         $this->assertEquals(count($data['result']['users'][6]), 5);
-        $this->assertEquals(count($data['result']['users'][6]['item_prog_user']), 2);
-        $this->assertEquals($data['result']['users'][6]['item_prog_user']['started_date'], null);
-        $this->assertEquals($data['result']['users'][6]['item_prog_user']['finished_date'], null);
+        $this->assertEquals(count($data['result']['users'][6]['submission_user']), 2);
+        $this->assertEquals($data['result']['users'][6]['submission_user']['started_date'], null);
+        $this->assertEquals($data['result']['users'][6]['submission_user']['finished_date'], null);
         $this->assertEquals($data['result']['users'][6]['id'], 6);
         $this->assertEquals($data['result']['users'][6]['firstname'], "Guillaume");
         $this->assertEquals($data['result']['users'][6]['lastname'], "Masmejean");
@@ -2508,7 +2508,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['archive_link'], null);
         $this->assertEquals($data['result']['archive_status'], null);
         $this->assertEquals($data['result']['conversation_id'], 1);
-        $this->assertEquals($data['result']['item_prog_id'], 1);
+        $this->assertEquals($data['result']['submission_id'], 1);
         $this->assertEquals($data['result']['title'], null);
         $this->assertEquals($data['result']['description'], null);
         $this->assertEquals(! empty($data['result']['created_date']), true);
@@ -2520,7 +2520,7 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddItemsProgUSer
      */
-    public function testCanItemProgForCalendar($item_prog_user)
+    public function testCanItemProgForCalendar($submission_user)
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('itemprog.getList', array('start' => '2013-06-01 00:00','end' => '2018-07-01 00:00'));
@@ -2528,25 +2528,25 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals(count($data['result'][0]), 7);
-        $this->assertEquals(count($data['result'][0]['item_prog_user']), 5);
-        $this->assertEquals($data['result'][0]['item_prog_user']['id'], 3);
-        $this->assertEquals($data['result'][0]['item_prog_user']['user_id'], 4);
-        $this->assertEquals($data['result'][0]['item_prog_user']['item_prog_id'], 1);
-        $this->assertEquals($data['result'][0]['item_prog_user']['started_date'], null);
-        $this->assertEquals($data['result'][0]['item_prog_user']['finished_date'], null);
+        $this->assertEquals(count($data['result'][0]['submission_user']), 5);
+        $this->assertEquals($data['result'][0]['submission_user']['id'], 3);
+        $this->assertEquals($data['result'][0]['submission_user']['user_id'], 4);
+        $this->assertEquals($data['result'][0]['submission_user']['submission_id'], 1);
+        $this->assertEquals($data['result'][0]['submission_user']['started_date'], null);
+        $this->assertEquals($data['result'][0]['submission_user']['finished_date'], null);
         $this->assertEquals(count($data['result'][0]['users']), 2);
         $this->assertEquals(count($data['result'][0]['users'][0]), 5);
-        $this->assertEquals(count($data['result'][0]['users'][0]['item_prog_user']), 2);
-        $this->assertEquals($data['result'][0]['users'][0]['item_prog_user']['started_date'], null);
-        $this->assertEquals($data['result'][0]['users'][0]['item_prog_user']['finished_date'], null);
+        $this->assertEquals(count($data['result'][0]['users'][0]['submission_user']), 2);
+        $this->assertEquals($data['result'][0]['users'][0]['submission_user']['started_date'], null);
+        $this->assertEquals($data['result'][0]['users'][0]['submission_user']['finished_date'], null);
         $this->assertEquals($data['result'][0]['users'][0]['id'], 4);
         $this->assertEquals($data['result'][0]['users'][0]['firstname'], "Salim");
         $this->assertEquals($data['result'][0]['users'][0]['lastname'], "Bendacha");
         $this->assertEquals($data['result'][0]['users'][0]['avatar'], null);
         $this->assertEquals(count($data['result'][0]['users'][1]), 5);
-        $this->assertEquals(count($data['result'][0]['users'][1]['item_prog_user']), 2);
-        $this->assertEquals($data['result'][0]['users'][1]['item_prog_user']['started_date'], null);
-        $this->assertEquals($data['result'][0]['users'][1]['item_prog_user']['finished_date'], null);
+        $this->assertEquals(count($data['result'][0]['users'][1]['submission_user']), 2);
+        $this->assertEquals($data['result'][0]['users'][1]['submission_user']['started_date'], null);
+        $this->assertEquals($data['result'][0]['users'][1]['submission_user']['finished_date'], null);
         $this->assertEquals($data['result'][0]['users'][1]['id'], 6);
         $this->assertEquals($data['result'][0]['users'][1]['firstname'], "Guillaume");
         $this->assertEquals($data['result'][0]['users'][1]['lastname'], "Masmejean");
@@ -2668,11 +2668,11 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    public function testCanVideoconfStart($item_prog)
+    public function testCanVideoconfStart($submission)
     {
         $this->setIdentity(4);
         
-        $data = $this->jsonRpc('itemproguser.start', array('submission' => $item_prog));
+        $data = $this->jsonRpc('itemproguser.start', array('submission' => $submission));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
@@ -2712,11 +2712,11 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    public function testCanVideoconfEnd($item_prog)
+    public function testCanVideoconfEnd($submission)
     {
         $this->setIdentity(4);
         
-        $data = $this->jsonRpc('itemproguser.end', array('submission' => $item_prog));
+        $data = $this->jsonRpc('itemproguser.end', array('submission' => $submission));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
@@ -2830,10 +2830,10 @@ class ScenarioTest extends AbstractService
      * @depends testCanAddProgrmItem
      * @depends testCanAddUserCourse
      */
-    public function testCanAddItemAssigment($item_prog)
+    public function testCanAddItemAssigment($submission)
     {
         $this->setIdentity(1);
-        $data = $this->jsonRpc('itemassignment.add', array('submission' => $item_prog,'response' => 'response','documents' => array(array('type' => 'type','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => 'date'))));
+        $data = $this->jsonRpc('itemassignment.add', array('submission' => $submission,'response' => 'response','documents' => array(array('type' => 'type','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => 'date'))));
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 2);
@@ -2890,10 +2890,10 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    public function testCanIsGroupWorkSubmittedFalse($item_prog)
+    public function testCanIsGroupWorkSubmittedFalse($submission)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemassignment.isGroupWorkSubmitted', array('submission' => $item_prog));
+        $data = $this->jsonRpc('itemassignment.isGroupWorkSubmitted', array('submission' => $submission));
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , false);
@@ -2932,11 +2932,11 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    public function testCanGetSubmissionTrue($item_prog)
+    public function testCanGetSubmissionTrue($submission)
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('itemassignment.getSubmission', array(
-            'submission' => $item_prog
+            'submission' => $submission
         ));
         
         $this->assertEquals(count($data) , 3);
@@ -3054,10 +3054,10 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    public function testCanIsGroupWorkSubmitted($item_prog)
+    public function testCanIsGroupWorkSubmitted($submission)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemassignment.isGroupWorkSubmitted', array('submission' => $item_prog));
+        $data = $this->jsonRpc('itemassignment.isGroupWorkSubmitted', array('submission' => $submission));
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , true);
@@ -3277,8 +3277,8 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result'][2]['items']) , 1);
         $this->assertEquals(count($data['result'][2]['items'][0]) , 6);
         $this->assertEquals(count($data['result'][2]['items'][0]['submission']) , 3);
-        $this->assertEquals(count($data['result'][2]['items'][0]['submission']['item_prog_user']) , 1);
-        $this->assertEquals($data['result'][2]['items'][0]['submission']['item_prog_user']['user_id'] , 4);
+        $this->assertEquals(count($data['result'][2]['items'][0]['submission']['submission_user']) , 1);
+        $this->assertEquals($data['result'][2]['items'][0]['submission']['submission_user']['user_id'] , 4);
         $this->assertEquals(count($data['result'][2]['items'][0]['submission']['item']) , 1);
         $this->assertEquals(count($data['result'][2]['items'][0]['submission']['item']['item_assignment']) , 2);
         $this->assertEquals($data['result'][2]['items'][0]['submission']['item']['item_assignment']['id'] , 2);
@@ -4048,10 +4048,10 @@ class ScenarioTest extends AbstractService
     /**
      * @depends testCanAddProgrmItem
      */
-    public function testCanDeleteItemProg($item_prog)
+    public function testCanDeleteItemProg($submission)
     {
         $this->setIdentity(3);
-        $data = $this->jsonRpc('itemprog.delete', array('id' => $item_prog));
+        $data = $this->jsonRpc('itemprog.delete', array('id' => $submission));
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);

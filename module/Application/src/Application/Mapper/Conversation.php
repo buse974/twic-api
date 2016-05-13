@@ -3,8 +3,6 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
-use Application\Model\Conversation as ModelConversation;
-use Zend\Db\Sql\Predicate\Predicate;
 
 class Conversation extends AbstractMapper
 {

@@ -6,7 +6,6 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
 use Dal\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
-use Zend\Db\Sql\Predicate\Predicate;
 
 class Submission extends AbstractMapper
 {
@@ -24,7 +23,6 @@ class Submission extends AbstractMapper
         $select->columns(['has_graded' => new Expression('SUM(IF(submission_user.grade IS NULL,1,0)) = 0')])
                ->where(['submission_user.submission_id' => $id])
                ->group('submission_user.submission_id');
-        
         
         $update = $this->tableGateway->getSql()->update();
         $update->set(['is_graded' => $select])

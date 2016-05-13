@@ -13,25 +13,25 @@ class ItemGrading extends AbstractService
         return $this->getMapper()->getList();
     }
 
-    public function deleteByItemProgUser($item_prog_user)
+    public function deleteByItemProgUser($submission_user)
     {
-        return $this->getMapper()->delete($this->getModel()->setItemProgUserId($item_prog_user));
+        return $this->getMapper()->delete($this->getModel()->setItemProgUserId($submission_user));
     }
 
-    public function add($item_prog_user, $grade)
+    public function add($submission_user, $grade)
     {
-        $res_item_grading = $this->getMapper()->select($this->getModel()->setItemProgUserId($item_prog_user));
+        $res_item_grading = $this->getMapper()->select($this->getModel()->setItemProgUserId($submission_user));
         if ($res_item_grading->count() > 0) {
             return $this->_update($res_item_grading->current()->getId(), $grade);
         } else {
-            return $this->_add($item_prog_user, $grade);
+            return $this->_add($submission_user, $grade);
         }
     }
 
-    public function _add($item_prog_user, $grade)
+    public function _add($submission_user, $grade)
     {
         return $this->getMapper()->insert($this->getModel()
-                ->setItemProgUserId($item_prog_user)
+                ->setItemProgUserId($submission_user)
                 ->setGrade($grade)
                 ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
                 );

@@ -315,14 +315,14 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','firstname','lastname','avatar'))
             ->join('school', 'school.id=user.school_id', array('id','name','short_name','logo', 'background'), $select::JOIN_LEFT)
-            ->join('item_prog_user', 'item_prog_user.user_id=user.id', array())
-            ->join('item_assignment_relation', 'item_assignment_relation.item_prog_user_id=item_prog_user.id', array())
+            ->join('submission_user', 'submission_user.user_id=user.id', array())
+            ->join('item_assignment_relation', 'item_assignment_relation.submission_user_id=submission_user.id', array())
             ->where(array('item_assignment_relation.item_assignment_id' => $item_assignment));
         
         return $this->selectWith($select);
     }
 
-    public function getListByItemProgWithInstrutor($item_prog)
+    public function getListByItemProgWithInstrutor($submission)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','firstname','lastname','avatar'))
@@ -331,14 +331,14 @@ class User extends AbstractMapper
             ->join('program', 'program.school_id=school.id', array())
             ->join('course', 'course.program_id=program.id', array())
             ->join('item', 'item.course_id=course.id', array())
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
+            ->join('submission', 'submission.item_id=item.id', array())
             ->join('course_user_relation', 'course_user_relation.user_id=user.id AND course_user_relation.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('item_prog_user', 'item_prog_user.user_id=user.id AND item_prog_user.item_prog_id = item_prog.id', array('started_date','finished_date'), $select::JOIN_LEFT)
-            ->where(array('item_prog.id' => $item_prog))
+            ->join('submission_user', 'submission_user.user_id=user.id AND submission_user.submission_id = submission.id', array('started_date','finished_date'), $select::JOIN_LEFT)
+            ->where(array('submission.id' => $submission))
             ->where(array(' (( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID))
             ->where(array('course_user_relation.user_id IS NOT NULL ) '))
             ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_STUDENT_ID), Predicate::OP_OR)
-            ->where(array('item_prog_user.id IS NOT NULL ) )'));
+            ->where(array('submission_user.id IS NOT NULL ) )'));
         
         return $this->selectWith($select);
     }
@@ -362,7 +362,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getListByItemProgWithInstrutorAndAcademic($item_prog)
+    public function getListByItemProgWithInstrutorAndAcademic($submission)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','firstname','lastname','avatar'))
@@ -371,14 +371,14 @@ class User extends AbstractMapper
             ->join('program', 'program.school_id=school.id', array())
             ->join('course', 'course.program_id=program.id', array())
             ->join('item', 'item.course_id=course.id', array())
-            ->join('item_prog', 'item_prog.item_id=item.id', array())
+            ->join('submission', 'submission.item_id=item.id', array())
             ->join('course_user_relation', 'course_user_relation.user_id=user.id AND course_user_relation.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('item_prog_user', 'item_prog_user.user_id=user.id AND item_prog_user.item_prog_id = item_prog.id', array('started_date','finished_date'), $select::JOIN_LEFT)
-            ->where(array('item_prog.id' => $item_prog))
+            ->join('submission_user', 'submission_user.user_id=user.id AND submission_user.submission_id = submission.id', array('started_date','finished_date'), $select::JOIN_LEFT)
+            ->where(array('submission.id' => $submission))
             ->where(array(' (( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID))
             ->where(array('course_user_relation.user_id IS NOT NULL ) '))
             ->where(array(' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_STUDENT_ID), Predicate::OP_OR)
-            ->where(array('item_prog_user.id IS NOT NULL ) )'));
+            ->where(array('submission_user.id IS NOT NULL ) )'));
         
         return $this->selectWith($select);
     }

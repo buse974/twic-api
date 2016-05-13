@@ -83,17 +83,17 @@ class GradingPolicyGrade extends AbstractMapper
         $subselect = new Select('grading_policy');
         $subselect->columns(array('id'))
             ->join('item', 'grading_policy.id = item.grading_policy_id', array())
-            ->join('item_prog', 'item.id = item_prog.item_id', array())
-            ->join('item_assignment', 'item_assignment.item_prog_id = item_prog.id', array())
+            ->join('submission', 'item.id = submission.item_id', array())
+            ->join('item_assignment', 'item_assignment.submission_id = submission.id', array())
             ->where(array('item_assignment.id' => $item_assignment));
 
         $selectgp = new Select('grading_policy');
         $selectgp->columns(array('grade' => new Expression('SUM(item_grading.grade * item.weight) / SUM(item.weight)')))
             ->join('item', 'grading_policy.id = item.grading_policy_id', array())
-            ->join('item_prog', 'item.id = item_prog.item_id', array())
-            ->join('item_prog_user', 'item_prog.id = item_prog_user.item_prog_id ', array())
-            ->join('item_grading', 'item_prog_user.id = item_grading.item_prog_user_id ', array())
-            ->where(array('item_prog_user.user_id' => $user))
+            ->join('submission', 'item.id = submission.item_id', array())
+            ->join('submission_user', 'submission.id = submission_user.submission_id ', array())
+            ->join('item_grading', 'submission_user.id = item_grading.submission_user_id ', array())
+            ->where(array('submission_user.user_id' => $user))
             ->where(array('grading_policy.id' => $subselect));
 
         $select = $this->tableGateway->getSql()->select();

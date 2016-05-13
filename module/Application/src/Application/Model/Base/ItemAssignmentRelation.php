@@ -7,7 +7,7 @@ use Dal\Model\AbstractModel;
 class ItemAssignmentRelation extends AbstractModel
 {
     protected $item_assignment_id;
-    protected $item_prog_user_id;
+    protected $submission_user_id;
 
     protected $prefix = 'item_assignment_relation';
 
@@ -25,12 +25,12 @@ class ItemAssignmentRelation extends AbstractModel
 
     public function getItemProgUserId()
     {
-        return $this->item_prog_user_id;
+        return $this->submission_user_id;
     }
 
-    public function setItemProgUserId($item_prog_user_id)
+    public function setItemProgUserId($submission_user_id)
     {
-        $this->item_prog_user_id = $item_prog_user_id;
+        $this->submission_user_id = $submission_user_id;
 
         return $this;
     }
