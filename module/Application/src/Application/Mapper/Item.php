@@ -345,8 +345,6 @@ class Item extends AbstractMapper
         
         $sql.=$cw.' GROUP BY `item`.`id`';
 
-        print_r($sql);
-        exit();
         return $this->selectPdo($sql,$val);
     }
     

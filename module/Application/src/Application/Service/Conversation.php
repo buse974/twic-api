@@ -110,6 +110,13 @@ class Conversation extends AbstractService
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
+    
+    /**
+     * @param integer $submission_id
+     * @param boolean $all Si false on teste 
+     * 
+     * @return []
+     */
     public function getListBySubmission($submission_id, $all = false)
     {
         $user_id = (true===$all) ? null: $this->getServiceUser()->getIdentity()['id'];
@@ -123,9 +130,10 @@ class Conversation extends AbstractService
     }
     
     /**
+     * @param integer $item_id
      * @param integer $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
+     * 
+     * @return []
      */
     public function getListByItem($item_id, $submission_id = null)
     {
@@ -151,7 +159,6 @@ class Conversation extends AbstractService
         
         // Dans le cas d'un type chat sans set_id il faut tt créer par item
         $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId()));
-
         if($by_item) {
             $ar = $this->getListByItem($m_item->getId());
         } else {
