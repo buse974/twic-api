@@ -133,14 +133,19 @@ class Conversation extends AbstractService
         $m_item = $this->getServiceItem()->getBySubmission($submission_id);
         $item_id = null;
         
-        if($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId())) {
-            $item_id = $m_item->getId();
-        }
+        $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId()));
         
-        $ar = $this->getListBySubmission($submission_id, true, $item_id);
+            
+            
+        $ar = $this->getListBySubmission($submission_id, true);
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
+            
+            if($by_item) {
+                $res_user = $this->getServiceUser()->getListByItem($item_id = $m_item->getId());
+            } else {
+                $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
+            }
             $users = [];
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
@@ -148,6 +153,7 @@ class Conversation extends AbstractService
             
             $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id, $users);
         }
+        
         
         return $this->getListBySubmission($submission_id);
     }
