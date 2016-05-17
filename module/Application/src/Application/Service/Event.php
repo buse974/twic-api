@@ -442,7 +442,7 @@ class Event extends AbstractService
         return ['id' => $m_videoconf_archive->getId(),'name' => 'archive','data' => ['archive_link' => $m_videoconf_archive->getArchiveLink()]];
     }
 
-    public function getDataItemProgWihtUser(\Application\Model\ItemProg $m_submission)
+    public function getDataItemProgWihtUser(\Application\Model\Submission $m_submission)
     {
         $res_user = $this->getServiceUser()->getListUsersBySubmission($m_submission->getId());
 
