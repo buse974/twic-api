@@ -111,7 +111,8 @@ class Criteria extends AbstractService
         return $this->getMapper()->update($m_criteria);
     }
     
-    public function update($datas, $grading_policy){
+    public function update($datas, $grading_policy)
+    {
         $ret = [];
         foreach ($datas as $criteria) {
             $name = isset($criteria['name']) ? $criteria['name'] : null;
@@ -127,6 +128,7 @@ class Criteria extends AbstractService
         }
         
         $this->getMapper()->deleteNotIn($ret, $grading_policy);
+        
         return $ret;
     }
 }

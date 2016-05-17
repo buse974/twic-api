@@ -13,40 +13,40 @@ class ItemAssignment extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $item_prog
+     * @param integer $submission
      *
      * @return array
      */
-    public function getSubmission($item_prog)
+    public function getSubmission($submission)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
-        $res_item_assignment = $this->getFromItemProg($user, $item_prog);
+        $res_item_assignment = $this->getFromItemProg($user, $submission);
         if ($res_item_assignment->count() > 0) {
             return $this->_get($res_item_assignment->current()
                 ->getId());
         }
         
-        return $this->_get($this->add($item_prog));
+        return $this->_get($this->add($submission));
     }
 
     /**
      * @invokable
      *
-     * @param integer $item_prog
+     * @param integer $submission
      *
      * @return boolean
      */
-    public function isGroupWorkSubmitted($item_prog)
+    public function isGroupWorkSubmitted($submission)
     {
         $res_item_assignment = $this->getMapper()->select($this->getModel()
-            ->setItemProgId($item_prog));
+            ->setItemProgId($submission));
     
         return ($res_item_assignment->count() > 0 && !$res_item_assignment->current()->getSubmitDate() instanceof IsNull);
     }
     
-    public function getIdByItemProg($item_prog)
+    public function getIdByItemProg($submission)
     {
-        $m_item_assigment = $this->getModel()->setItemProgId($item_prog);
+        $m_item_assigment = $this->getModel()->setItemProgId($submission);
         
         $res_item_assigment = $this->getMapper()->select($m_item_assigment);
         
@@ -68,9 +68,9 @@ class ItemAssignment extends AbstractService
      */
     public function get($id)
     {
-        $m_item_prog = $this->getServiceItemProg()->getByItemAssignment($id);
+        $m_submission = $this->getServiceItemProg()->getByItemAssignment($id);
         
-        $datetime1 = new \DateTime($m_item_prog->getStartDate(), new DateTimeZone('UTC'));
+        $datetime1 = new \DateTime($m_submission->getStartDate(), new DateTimeZone('UTC'));
         $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
         
         if ($datetime1 > $datetime2) {
@@ -112,29 +112,29 @@ class ItemAssignment extends AbstractService
      * @invokable
      *
      * @param int $user            
-     * @param int $item_prog            
+     * @param int $submission            
      *
      * @return array
      */
-    public function getFromItemProg($user, $item_prog)
+    public function getFromItemProg($user, $submission)
     {
-        return $this->getMapper()->getFromItemProg($user, $item_prog);
+        return $this->getMapper()->getFromItemProg($user, $submission);
     }
 
     /**
      * @invokable
      *
-     * @param int $item_prog            
+     * @param int $submission            
      * @param string $response            
      * @param array $documents            
      * @param bool $submit            
      */
-    public function add($item_prog, $response = null, $documents = null, $submit = false)
+    public function add($submission, $response = null, $documents = null, $submit = false)
     {
-        $m_item_prog = $this->getServiceItemProg()->get($item_prog);
+        $m_submission = $this->getServiceItemProg()->get($submission);
         
         /*
-         * $datetime1 = new \DateTime($m_item_prog->getStartDate());
+         * $datetime1 = new \DateTime($m_submission->getStartDate());
          * $datetime2 = new \DateTime('now', new DateTimeZone('UTC'));
          *
          * condition a voir
@@ -145,7 +145,7 @@ class ItemAssignment extends AbstractService
          */
         
         $m_item_assignment = $this->getModel()
-            ->setItemProgId($item_prog)
+            ->setItemProgId($submission)
             ->setResponse($response);
         if ($submit) {
             $m_item_assignment->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -155,7 +155,7 @@ class ItemAssignment extends AbstractService
             throw new \Exception('error insert item assignment');
         }
         
-        $m_item = $this->getServiceItem()->getByItemProg($item_prog);
+        $m_item = $this->getServiceItem()->getByItemProg($submission);
         $item_assigment_id = $this->getMapper()->getLastInsertValue();
         
         if (is_array($documents)) {
@@ -166,23 +166,23 @@ class ItemAssignment extends AbstractService
         
         switch ($m_item->getType()) {
             case CItem::TYPE_WORKGROUP:
-                $res_item_prog_user = $this->getServiceItemProgUser()->getListByItemProg($item_prog);
-                foreach ($res_item_prog_user as $m_item_prog_user) {
-                    $this->getServiceItemAssignmentRelation()->add($m_item_prog_user->getId(), $item_assigment_id);
+                $res_submission_user = $this->getServiceItemProgUser()->getListByItemProg($submission);
+                foreach ($res_submission_user as $m_submission_user) {
+                    $this->getServiceItemAssignmentRelation()->add($m_submission_user->getId(), $item_assigment_id);
                 }
                 break;
             
             case (CItem::TYPE_INDIVIDUAL_ASSIGNMENT || CItem::TYPE_CAPSTONE_PROJECT):
-                $res_item_prog_user = $this->getServiceItemProgUser()->getListByItemProg($item_prog, $this->getServiceAuth()
+                $res_submission_user = $this->getServiceItemProgUser()->getListByItemProg($submission, $this->getServiceAuth()
                     ->getIdentity()
                     ->getId());
                 
-                if ($res_item_prog_user->count() <= 0) {
+                if ($res_submission_user->count() <= 0) {
                     $this->getMapper()->delete($this->getModel()
                         ->setId($item_assigment_id));
                     throw new \Exception('error insert item assignment');
                 }
-                $this->getServiceItemAssignmentRelation()->add($res_item_prog_user->current()
+                $this->getServiceItemAssignmentRelation()->add($res_submission_user->current()
                     ->getId(), $item_assigment_id);
                 break;
         }
@@ -245,7 +245,7 @@ class ItemAssignment extends AbstractService
      */
     public function setGrade($item_assignment, $score)
     {
-        $item_prog_id = $this->getMapper()
+        $submission_id = $this->getMapper()
             ->select($this->getModel()
             ->setId($item_assignment))
             ->current()
@@ -254,12 +254,12 @@ class ItemAssignment extends AbstractService
         $res_item_assignment_relation = $this->getServiceItemAssignmentRelation()->getByItemAssignment($item_assignment);
         $u = [];
         foreach ($res_item_assignment_relation as $m_item_assignment_relation) {
-            $m_item_prog_user = $this->getServiceItemProgUser()
+            $m_submission_user = $this->getServiceItemProgUser()
                 ->getById($m_item_assignment_relation->getItemProgUserId())
                 ->current();
             $this->getServiceItemGrading()->add($m_item_assignment_relation->getItemProgUserId(), $score);
-            $this->getServiceGradingPolicyGrade()->process($m_item_assignment_relation->getItemAssignmentId(), $m_item_prog_user->getUserId());
-            $u[] = $m_item_prog_user->getUserId();
+            $this->getServiceGradingPolicyGrade()->process($m_item_assignment_relation->getItemAssignmentId(), $m_submission_user->getUserId());
+            $u[] = $m_submission_user->getUserId();
         }
         
         $this->getServiceEvent()->assignmentGraded($item_assignment, $u);
@@ -336,20 +336,20 @@ class ItemAssignment extends AbstractService
         return $ret;
     }
 
-    public function submitByItemProg($item_prog)
+    public function submitByItemProg($submission)
     {
         $ret = $this->getMapper()->update($this->getModel()
-            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('item_prog_id' => $item_prog));
+            ->setSubmitDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('submission_id' => $submission));
         
-        $this->getServiceEvent()->studentSubmitAssignment($this->getIdByItemProg($item_prog));
+        $this->getServiceEvent()->studentSubmitAssignment($this->getIdByItemProg($submission));
         
         return $ret;
     }
 
-    public function deleteByItemProg($item_prog)
+    public function deleteByItemProg($submission)
     {
         $res_item_assignment = $this->getMapper()->select($this->getModel()
-            ->setItemProgId($item_prog));
+            ->setItemProgId($submission));
         
         foreach ($res_item_assignment as $m_item_assignment) {
             $this->getServiceItemAssignmentDocument()->deleteByItemAssignment($m_item_assignment->getId());
@@ -358,7 +358,7 @@ class ItemAssignment extends AbstractService
         }
         
         return $this->getMapper()->delete($this->getModel()
-            ->setItemProgId($item_prog));
+            ->setItemProgId($submission));
     }
 
     /**
@@ -403,7 +403,7 @@ class ItemAssignment extends AbstractService
      */
     public function getServiceItemProgUser()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog_user');
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**
@@ -412,7 +412,7 @@ class ItemAssignment extends AbstractService
      */
     public function getServiceItemProg()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**

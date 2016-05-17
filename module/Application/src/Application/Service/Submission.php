@@ -284,7 +284,9 @@ class Submission extends AbstractService
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         
         if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
-            $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
+            if(!(!is_numeric($m_item->getSetId()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
+                $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
+            }
         } else {
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
         }
@@ -319,9 +321,8 @@ class Submission extends AbstractService
          
         $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
-        $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
-        $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getListBySubmission($submission_id);
-        
+        $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id, true);
+        $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
         $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
         $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         
@@ -596,19 +597,21 @@ class Submission extends AbstractService
      * @param array $grades
      * @param array $criterias
      */
-    public function instructorRates($id = null, $group = null, $user = null, $item = null, $grades = null, $criterias = null) 
+    public function instructorRates($id = null, $group_id = null, $user_id = null, $item = null, $grades = null, $criterias = null) 
     {
         if(null === $id){
             if(null === $item){
                 return 0;
             }
-            $id = $this->create($item, $user_id, $group);
+            $id = $this->create($item, $user_id, $group_id);
         }
         $this->getServiceSubmissionUserCriteria()->deleteBySubmission($id);
         if(null !== $criterias && count($criterias) > 0){
             foreach($criterias as $criteria_id => $criteria){
                 foreach($criteria as $user => $points){
-                    $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points, true);
+                    if(null !== $points && isset($points['points'])){
+                        $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points['points'], true);
+                    }
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
                 foreach($res_submission_user as $m_submission_user){
@@ -616,16 +619,16 @@ class Submission extends AbstractService
                 }
             }
         }
-        else{
+        if(null !== $grades){
              foreach($grades as $user => $grade){
-                if($grade !== null){
-                    $this->getServiceSubmissionUser()->setGrade($id, $user, $grade, true);
+                if($grade !== null && isset($grade['grade'])){
+                    $this->getServiceSubmissionUser()->setGrade($id, $user, $grade['grade'], true);
                 }
             }
         }
         $this->getMapper()->checkGraded($id);
         
-        return 1;
+        return $id;
     }
     
       /**
@@ -649,7 +652,7 @@ class Submission extends AbstractService
             $id = $this->create($item, $user, $group);
         }
        $me = $this->getServiceUser()->getIdentity()['id'];
-       return $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
+       return [ 'submission_id' => $id, 'comment' => $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text)];
     }
     
       /**

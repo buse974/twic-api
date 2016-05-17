@@ -32,7 +32,12 @@ class ThreadMessage extends AbstractService
         }
 
         $thread_message_id = $this->getMapper()->getLastInsertValue();
-
+        $m_thread = $this->getServiceThread()->get($thread);
+        
+        if(is_numeric($m_thread->getItemId())) {
+            $m_submission = $this->getServiceSubmission()->get($m_thread->getItemId());
+            $this->getServiceSubThread()->add($thread_id, $thread_id);
+        }
         if (!$is_new) {
             $this->getServiceEvent()->threadMessage($thread_message_id);
         }
@@ -127,6 +132,22 @@ class ThreadMessage extends AbstractService
             ->getList(null, $thread_message)
             ->current();
     }
+    
+    /**
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
+    }
+    
+    /**
+     * @return \Application\Service\SubThread
+     */
+    public function getServiceSubThread()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_thread');
+    }
 
     /**
      * @return \Application\Service\Event
@@ -150,6 +171,14 @@ class ThreadMessage extends AbstractService
     public function getServiceRole()
     {
         return $this->getServiceLocator()->get('app_service_role');
+    }
+    
+    /**
+     * @return \Application\Service\Thread
+     */
+    public function getServiceThread()
+    {
+        return $this->getServiceLocator()->get('app_service_thread');
     }
     
     /**

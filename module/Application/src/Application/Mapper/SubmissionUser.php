@@ -5,7 +5,6 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Dal\Db\Sql\Select;
-use Zend\Db\Sql\Predicate\IsNull;
 
 class SubmissionUser extends AbstractMapper
 {
@@ -19,7 +18,7 @@ class SubmissionUser extends AbstractMapper
     public function getListBySubmissionId($submission_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['submission_id', 'user_id', 'grade', 'submit_date'])
+        $select->columns(['submission_id', 'user_id', 'grade', 'submit_date','start_date'])
             ->join('user', 'user.id=submission_user.user_id', ['user$id' => new Expression('user.id'),
                 'firstname',
                 'gender',
@@ -72,5 +71,19 @@ class SubmissionUser extends AbstractMapper
            ->group(['submission_user_criteria.submission_id', 'submission_user_criteria.user_id']);
         
         return $this->selectWith($select);
+    }
+    
+      public function checkAllFinish($submission)
+    {
+          
+          return false;
+        $select = $this->tableGateway->getSql()->select();
+        
+        $select->columns(array('id'))
+            ->where(array('submission_user.finished_date IS NULL'))
+            ->where(array('item_prog_user.started_date IS NOT NULL'))
+            ->where(array('item_prog_user.item_prog_id' => $item_prog));
+        
+        return ($this->selectWith($select)->count() === 0) ? true : false;
     }
 }

@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use Application\Model\Item as ModelItem;
 
 class Conversation extends AbstractService
 {
@@ -103,11 +104,12 @@ class Conversation extends AbstractService
 
         return $conv;
     }
-    
+
     /**
      * @param integer $submission_id
+     * @param boolean $all Si false on teste pour tous le monde sinon on filtre l'utilisateur courant
      * 
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return []
      */
     public function getListBySubmission($submission_id, $all = false)
     {
@@ -120,6 +122,23 @@ class Conversation extends AbstractService
         
         return $ret;
     }
+    
+    /**
+     * @param integer $item_id
+     * @param integer $submission_id
+     * 
+     * @return []
+     */
+    public function getListByItem($item_id, $submission_id = null)
+    {
+        $res_conversation = $this->getMapper()->getListByItem($item_id, $submission_id);
+        $ret = [];
+        foreach ($res_conversation as $m_conversation) {
+            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
+        }
+    
+        return $ret;
+    }
 
     /**
      * 
@@ -129,16 +148,41 @@ class Conversation extends AbstractService
      */
     public function getListOrCreate($submission_id)
     {
-        $ar = $this->getListBySubmission($submission_id, true);
+        $m_item = $this->getServiceItem()->getBySubmission($submission_id);
+        $item_id = null;
+        
+        // Dans le cas d'un type chat sans set_id il faut tt créer par item
+        $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId()));
+        if($by_item) {
+            $ar = $this->getListByItem($m_item->getId());
+        } else {
+            $ar = $this->getListBySubmission($submission_id, true);
+        }
+        
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
+            if($by_item) {
+                $res_user = $this->getServiceUser()->getListByItem($m_item->getId());
+            } else {
+                $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
+            }
             $users = [];
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
             }
-            
             $this->create(ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $submission_id, $users);
+        }
+        
+        if($by_item) { 
+            // Vérifier si la conversation est liker sur la submission par un byItem
+            $res = $this->getListByItem($m_item->getId(), $submission_id);
+            if(count($res) <= 0) {
+                if (count($ar) <= 0) {
+                    $ar = $this->getListByItem($m_item->getId());
+                }
+                $conv = current($ar);
+                $this->getServiceSubConversation()->add($conv['id'], $submission_id);
+            }
         }
         
         return $this->getListBySubmission($submission_id);
@@ -202,6 +246,14 @@ class Conversation extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Application\Service\Item
+     */
+    public function getServiceItem()
+    {
+        return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**
