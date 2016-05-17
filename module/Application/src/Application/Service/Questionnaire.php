@@ -77,10 +77,12 @@ class Questionnaire extends AbstractService
         $nbrq = $this->getNbrQuestionNoCompleted($item);
         if (is_numeric($nbrq) && $nbrq == 0) {
             $this->getServiceSubmissionUser()->end($m_submission->getId());
+            
+            $this->getServiceSubmission()->submit($m_submission->getId());
             $has_all_finish = $this->getServiceSubmissionUser()->checkAllFinish($m_submission->getId());
             if ($has_all_finish) {
-                $this->getServiceSubmissionUser()->submit($m_submission->getId());
-               // $this->getServiceEvent()->eqcqAvailable($item);
+                $this->getServiceSubmission()->forceSubmit($m_submission->getId());
+                $this->getServiceEvent()->eqcqAvailable($item);
             }
         }
 
