@@ -444,7 +444,7 @@ class Event extends AbstractService
 
     public function getDataItemProgWihtUser(\Application\Model\ItemProg $m_submission)
     {
-        $res_user = $this->getServiceUser()->getListByItemProg($m_submission->getId());
+        $res_user = $this->getServiceUser()->getListUsersBySubmission($m_submission->getId());
 
         $users = [];
         foreach ($res_user as $m_user) {
@@ -537,7 +537,7 @@ class Event extends AbstractService
 
     public function getListByItemProgWithInstrutorAndAcademic($submission)
     {
-        $res_user = $this->getServiceUser()->getListByItemProgWithInstrutorAndAcademic($submission);
+        $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission);
 
         $users = [];
         foreach ($res_user as $m_user) {
