@@ -104,7 +104,7 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->update($this->getModel()
             ->setEndDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
                 'user_id' => $this->getServiceUser()->getIdentity()['id'], 
-                'submission_id' => $item_prog
+                'submission_id' => $submission
             ]);
     }
     
