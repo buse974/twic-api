@@ -19,7 +19,7 @@ class Thread extends AbstractService
      * 
      * @throws \Exception
      *
-     * @return int
+     * @return integer
      */
     public function add($title, $course, $message = null, $item_id = null)
     {
@@ -99,6 +99,25 @@ class Thread extends AbstractService
         }
 
         return array('count' => $mapper->count(),'list' => $res_thread);
+    }
+    
+    /**
+     * @param integer $submission_id
+     * 
+     * @return void|\Application\Model\Thread
+     */
+    public function getBySubmission($submission_id)
+    {
+        $res_thread = $this->getMapper()->getList(null, null, null, $submission_id);
+        
+        if($res_thread->count() <= 0) {
+            return;
+        }
+        
+        $m_thread = $res_thread->current();
+        $m_thread->setMessage($this->getServiceThreadMessage()->getLast($m_thread->getId()));
+        
+        return $m_thread;
     }
 
     /**

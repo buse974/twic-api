@@ -259,6 +259,16 @@ class Message extends AbstractService
 
     /**
      * @invokable
+     * 
+     * @param integer $conversation_id
+     */
+    public function getFullList($conversation_id)
+    {
+        return $this->getMapper()->getFullList($conversation_id);
+    }
+    
+    /**
+     * @invokable
      *
      * @param int $school            
      *

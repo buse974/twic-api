@@ -3,7 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Conversation as ModelConversation;
 
 class ConversationUser extends AbstractService
 {

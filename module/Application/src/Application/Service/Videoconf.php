@@ -172,17 +172,17 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int    $item_prog
+     * @param int    $submission
      * @param string $start_date
      *
      * @return int
      */
-    public function updateByItemProg($item_prog, $start_date)
+    public function updateByItemProg($submission, $start_date)
     {
         $m_videoconf = $this->getModel();
         $m_videoconf->setStartDate($start_date);
 
-        return $this->getMapper()->update($m_videoconf, array('item_prog_id' => $item_prog));
+        return $this->getMapper()->update($m_videoconf, array('submission_id' => $submission));
     }
 
     /**
@@ -482,21 +482,21 @@ class Videoconf extends AbstractService
     /**
      * @invokable
      * 
-     * @param int $item_prog
+     * @param int $submission
      */
-    public function start($item_prog)
+    public function start($submission)
     {
-        return $this->getServiceItemProgUser()->start($item_prog);
+        return $this->getServiceItemProgUser()->start($submission);
     }
 
     /**
      * @invokable
      *
-     * @param int $item_prog
+     * @param int $submission
      */
-    public function end($item_prog)
+    public function end($submission)
     {
-        return $this->getServiceItemProgUser()->end($item_prog);
+        return $this->getServiceItemProgUser()->end($submission);
     }
 
     /**

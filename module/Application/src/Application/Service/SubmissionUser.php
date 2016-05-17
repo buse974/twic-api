@@ -76,6 +76,31 @@ class SubmissionUser extends AbstractService
         return $ret;
     }
     
+     /**
+     * @invokable
+     *
+     * @param int $submission
+     *
+     * @return int
+     */
+    public function start($submission)
+    {
+        return $this->getMapper()->update($this->getModel()
+            ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
+            ->getIdentity()['id'], 'submission_id' => $submission, 'start_date IS NULL', ));
+    }
+
+   
+    /**
+     * @param int $submission
+     *
+     * @return bool
+     */
+    public function checkAllFinish($submission)
+    {
+        return $this->getMapper()->checkAllFinish($submission);
+    }
+    
     /**
      * 
      * @return \Application\Service\User

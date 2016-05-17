@@ -73,15 +73,15 @@ class Questionnaire extends AbstractService
             $user,
             $scale);
 
-        $nbrq = $this->getNbrQuestionNoCompleted($item);
+       /* $nbrq = $this->getNbrQuestionNoCompleted($item);
         if (is_numeric($nbrq) && $nbrq == 0) {
-            $this->getServiceItemProgUser()->end($item);
+            $this->getServiceSubmissionUser()->end($item);
             $has_all_finish = $this->getServiceItemProgUser()->checkAllFinish($item);
             if ($has_all_finish) {
                 $this->getServiceItemAssignment()->submitByItemProg($item);
                 $this->getServiceEvent()->eqcqAvailable($item);
             }
-        }
+        }*/
 
         return $ret;
     }
@@ -149,7 +149,7 @@ class Questionnaire extends AbstractService
      */
     public function getServiceItemProg()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog');
+        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
@@ -173,7 +173,7 @@ class Questionnaire extends AbstractService
      */
     public function getServiceItemProgUser()
     {
-        return $this->getServiceLocator()->get('app_service_item_prog_user');
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**

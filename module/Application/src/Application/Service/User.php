@@ -255,6 +255,7 @@ class User extends AbstractService
                 $res_user = $this->getMapper()->getListUsersByItemOfCourseUser($m_item->getId());
             }
         }
+        
         return $res_user;
     }
     
@@ -699,27 +700,27 @@ class User extends AbstractService
     /**
      * @invokable
      *
-     * @param int $item_prog            
+     * @param int $submission            
      */
-    public function getListByItemProgWithInstrutor($item_prog)
+    public function getListByItemProgWithInstrutor($submission)
     {
-        return $this->getMapper()->getListByItemProgWithInstrutor($item_prog);
+        return $this->getMapper()->getListByItemProgWithInstrutor($submission);
     }
 
     /**
-     * Get user list for item_prog and those available.
+     * Get user list for submission and those available.
      *
      * @invokable
      *
-     * @param int $item_prog            
+     * @param int $submission            
      * @param int $item            
      * @param int $course            
      *
      * @return array
      */
-    public function getListForItemProg($item_prog, $item, $course)
+    public function getListForItemProg($submission, $item, $course)
     {
-        return $this->getMapper()->getListForItemProg($item_prog, $item, $course);
+        return $this->getMapper()->getListForItemProg($submission, $item, $course);
     }
 
     /**

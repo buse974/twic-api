@@ -10,7 +10,27 @@ class Message extends BaseMessage
     protected $to;
     protected $from;
     protected $nb_message;
-
+    protected $message_user;
+      
+    public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
+    
+        $this->message_user = $this->requireModel('app_model_message_user', $data);  
+    }
+    
+    public function getMessageUser()
+    {
+        return $this->message_user;
+    }
+    
+    public function setMessageUser($message_user)
+    {
+        $this->message_user = $message_user;
+    
+        return $this;
+    }
+    
     public function getNbMessage()
     {
         return $this->nb_message;

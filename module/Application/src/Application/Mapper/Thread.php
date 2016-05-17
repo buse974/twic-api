@@ -7,14 +7,13 @@ use Zend\Db\Sql\Predicate\Expression;
 
 class Thread extends AbstractMapper
 {   
-    public function getList($course = null, $thread = null, $name = null)
+    public function getList($course = null, $thread = null, $name = null, $submission_id = null)
     {
-        if (null === $course && null === $thread) {
+        if (null === $course && null === $thread && null === $submission_id) {
             throw new \Exception('no params');
         }
 
         $select = $this->tableGateway->getSql()->select();
-
         $select->columns(array('id', 'title', 'thread$created_date' => new Expression('DATE_FORMAT(thread.created_date, "%Y-%m-%dT%TZ")'), 'thread$deleted_date' => new Expression('DATE_FORMAT(thread.deleted_date, "%Y-%m-%dT%TZ")')))
             ->join(array('thread_user' => 'user'), 'thread_user.id=thread.user_id', array('id', 'firstname', 'lastname', 'avatar', 'thread$nb_message' => new Expression('SUM(IF(thread_message.id IS NULL OR thread_message.deleted_date IS NOT NULL, 0,1))')))
             ->join('thread_message', 'thread_message.thread_id=thread.id', array(), $select::JOIN_LEFT)
@@ -31,7 +30,12 @@ class Thread extends AbstractMapper
         if (null !== $thread) {
             $select->where(array('thread.id' => $thread));
         }
+        if (null !== $submission_id) {
+            $select->join('sub_thread', 'sub_thread.thread_id=sub_thread.thread_id', array())
+            ->where(array('sub_thread.submission_id' => $submission_id));
+        }
 
+        
         return $this->selectWith($select);
     }
 
