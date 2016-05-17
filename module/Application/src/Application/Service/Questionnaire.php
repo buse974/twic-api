@@ -80,7 +80,7 @@ class Questionnaire extends AbstractService
             $has_all_finish = $this->getServiceSubmissionUser()->checkAllFinish($m_submission->getId());
             if ($has_all_finish) {
                 $this->getServiceSubmissionUser()->submit($m_submission->getId());
-                $this->getServiceEvent()->eqcqAvailable($item);
+               // $this->getServiceEvent()->eqcqAvailable($item);
             }
         }
 
