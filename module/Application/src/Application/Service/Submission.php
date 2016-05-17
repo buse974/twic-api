@@ -77,18 +77,17 @@ class Submission extends AbstractService
      */
     public function create($item_id, $user_id = null, $group_id = null)
     {
+        /// INIT VARIABLE
         $m_item = $this->getServiceItem()->get($item_id);
-        
         if(null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
-        
         if(is_numeric($m_item->getSetId()) && $group_id===null) {
             $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $user_id);        
         }
+        /// FIN INIT VARIABLE
         
         $submission_id = null;
-        
         /**
          * 3 types =>   1 Par group set_id,  Une submission par group 
          *              2 Individuel, Une submission pas éléve
@@ -103,6 +102,7 @@ class Submission extends AbstractService
                 $submission_id = $m_submission->getId();
             }
         }
+        
         if(null === $submission_id) {
             $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
             $this->getMapper()->insert($m_submission);
@@ -142,6 +142,8 @@ class Submission extends AbstractService
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
+        
+        //// ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         if(null!==$item_id) {
             $m_item = $this->getServiceItem()->get($item_id);
         }
@@ -171,7 +173,11 @@ class Submission extends AbstractService
                 $user_id = $this->getServiceUser()->getIdentity()['id'];
             }
         }
+        //// FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
+        ////  syslog(1, $item_id . ' ' . $submission_id . ' ' . $group_id . ' ' . $user_id);
         
+        
+        // On récupére la submission si elle existe 
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
         if($res_submission->count() <= 0) {
             $submission_id = $this->create($item_id, $user_id, $group_id);
