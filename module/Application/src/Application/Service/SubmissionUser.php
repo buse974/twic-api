@@ -23,12 +23,9 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
     }
     
-    
-    
     public function setGrade($submission_id, $user_id, $grade, $overwritten = false)
     {
-        $r = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
-        
+        return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]); 
     }
     
     public function getListBySubmissionId($submission_id)
@@ -42,8 +39,6 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->getProcessedGrades($submission_id);
     }
     
-    
-    
     public function getList($submission_id)
     {
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
@@ -52,10 +47,15 @@ class SubmissionUser extends AbstractService
     /**
      * @param integer $submission_id
      * @param integer $user_id
+     * 
      * @return integer
      */
-    public function submit($submission_id, $user_id)
+    public function submit($submission_id, $user_id = null)
     {
+        if(null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
         $m_submission_user = $this->getModel()->setSubmitDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         return $this->getMapper()->update($m_submission_user, ['user_id' => $user_id, 'submission_id' => $submission_id]);
@@ -86,11 +86,28 @@ class SubmissionUser extends AbstractService
     public function start($submission)
     {
         return $this->getMapper()->update($this->getModel()
-            ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'], 'submission_id' => $submission, 'start_date IS NULL', ));
+            ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
+                'user_id' => $this->getServiceUser()->getIdentity()['id'], 
+                'submission_id' => $submission, 'start_date IS NULL'
+            ]);
     }
 
-   
+    /**
+     * @invokable
+     *
+     * @param int $submission
+     *
+     * @return int
+     */
+    public function end($submission)
+    {
+        return $this->getMapper()->update($this->getModel()
+            ->setEndDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
+                'user_id' => $this->getServiceUser()->getIdentity()['id'], 
+                'submission_id' => $item_prog
+            ]);
+    }
+    
     /**
      * @param int $submission
      *

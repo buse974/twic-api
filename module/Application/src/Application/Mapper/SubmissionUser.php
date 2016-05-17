@@ -52,12 +52,15 @@ class SubmissionUser extends AbstractMapper
     		     ->where(array('user.id=`user$id`'))
     		     ->where(['contact.user_id' => $user ]);
     
-    		     return $select;
+    	return $select;
     }
     
-     public function getProcessedGrades($submission){
-        
-        
+    /**
+     * @param integer $submission
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getProcessedGrades($submission)
+    {
         $select = new Select('submission_user_criteria');
         $select->columns([
             'submission_user$submission_id' => 'submission_id',
@@ -73,16 +76,17 @@ class SubmissionUser extends AbstractMapper
         return $this->selectWith($select);
     }
     
-      public function checkAllFinish($submission)
+    /**
+     * @param integer $submission
+     * @return boolean
+     */
+    public function checkAllFinish($submission_id)
     {
-          
-          return false;
         $select = $this->tableGateway->getSql()->select();
-        
         $select->columns(array('id'))
-            ->where(array('submission_user.finished_date IS NULL'))
-            ->where(array('item_prog_user.started_date IS NOT NULL'))
-            ->where(array('item_prog_user.item_prog_id' => $item_prog));
+            ->where(array('submission_user.end_date IS NULL'))
+            ->where(array('submission_user.started_date IS NOT NULL'))
+            ->where(array('submission_user.submission_id' => $submission_id));
         
         return ($this->selectWith($select)->count() === 0) ? true : false;
     }

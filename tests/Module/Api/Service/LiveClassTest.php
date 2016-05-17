@@ -129,9 +129,6 @@ class LiveClassTest extends AbstractService
             [
                 'item_id' => $item_id
             ]);
-        
-        print_r($data);
-        
     }
     
     /**
@@ -143,10 +140,6 @@ class LiveClassTest extends AbstractService
     
         $data = $this->jsonRpc('videoconf.getByItem',
             ['item_id' => $item_id]);
-        
-        print_r($data);
-        
-        exit();
     }
     /**
      * @depends testAddItem
@@ -161,8 +154,6 @@ class LiveClassTest extends AbstractService
                 'text' => 'TOTOTO',
                 'submission_id' => 1 
             ]);
-    
-        print_r($data);
     }
     
     /**
@@ -176,8 +167,6 @@ class LiveClassTest extends AbstractService
                 'text' => 'text 1',
                 'conversation' => 2
             ]);
-    
-        print_r($data);
     }
     
     /**
@@ -191,8 +180,6 @@ class LiveClassTest extends AbstractService
                 'text' => 'text 2',
                 'conversation' => 2
             ]);
-    
-        print_r($data);
     }
     
     
