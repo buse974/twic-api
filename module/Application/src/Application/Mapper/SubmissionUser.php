@@ -34,7 +34,7 @@ class SubmissionUser extends AbstractMapper
             ])
             ->where(array('submission_user.submission_id' => $submission_id));
     
-            return $this->selectWith($select);
+        return $this->selectWith($select);
     }
         
     /**
@@ -83,7 +83,7 @@ class SubmissionUser extends AbstractMapper
     public function checkAllFinish($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id'))
+        $select->columns(array('submission_id'))
             ->where(array('submission_user.end_date IS NULL'))
             ->where(array('submission_user.started_date IS NOT NULL'))
             ->where(array('submission_user.submission_id' => $submission_id));

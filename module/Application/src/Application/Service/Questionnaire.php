@@ -88,7 +88,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * @param int $item
+     * @param integer $item
      *
      * @return NULL|integer
      */
