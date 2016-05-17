@@ -85,7 +85,7 @@ class SubmissionUser extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('submission_id'))
             ->where(array('submission_user.end_date IS NULL'))
-            ->where(array('submission_user.started_date IS NOT NULL'))
+            ->where(array('submission_user.start_date IS NOT NULL'))
             ->where(array('submission_user.submission_id' => $submission_id));
         
         return ($this->selectWith($select)->count() === 0) ? true : false;
