@@ -451,16 +451,25 @@ class Event extends AbstractService
             $users[] = ['firstname' => $m_user->getFirstname(),'lastname' => $m_user->getLastname(),'avatar' => $m_user->getAvatar()];
         }
 
-        return ['id' => $m_submission->getId(),'name' => 'programming','data' => ['start_date' => $m_submission->getStartDate(),'item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()],'users' => $users]];
+        return [
+            'id' => $m_submission->getId(),
+            'name' => 'programming',
+            'data' => [
+                'item' => [
+                    'id' => $m_submission->getItem()->getId(),
+                    'title' => $m_submission->getItem()->getTitle(),
+                    'type' => $m_submission->getItem()->getType()],
+                'users' => $users
+            ]
+        ];
     }
 
-    public function getDataItemProg(\Application\Model\ItemProg $m_submission)
+    public function getDataItemProg(\Application\Model\Submission $m_submission)
     {
         return [
             'id' => $m_submission->getId(),
             'name' => 'programming',
             'data' => [
-                'start_date' => $m_submission->getStartDate(),
                 'item' => ['id' => $m_submission->getItem()->getId(),
                     'title' => $m_submission->getItem()->getTitle(),
                     'type' => $m_submission->getItem()->getType()]]];
