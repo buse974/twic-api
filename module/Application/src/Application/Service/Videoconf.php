@@ -52,7 +52,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param interger $id
      */
     public function delete($id)
     {
@@ -66,7 +66,7 @@ class Videoconf extends AbstractService
     /**
      * Get token videoconf by id.
      *
-     * @param int $id
+     * @param interger $id
      *
      * @throws \Exception
      *
@@ -88,7 +88,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param interger $id
      *
      * @throws \Exception
      *
@@ -137,7 +137,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
+     * @param interger    $id
      * @param string $title
      * @param string $description
      * @param string $start_date
@@ -172,12 +172,12 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int    $submission
+     * @param interger    $submission
      * @param string $start_date
      *
      * @return int
      */
-    public function updateByItemProg($submission, $start_date)
+    public function updateBySubmission($submission, $start_date)
     {
         $m_videoconf = $this->getModel();
         $m_videoconf->setStartDate($start_date);
@@ -258,7 +258,7 @@ class Videoconf extends AbstractService
     /**
      * Get videoconf by videoconf archive.
      
-     * @param int $videoconf_archive
+     * @param interger $videoconf_archive
      *
      * @throws \Exception
      *
@@ -272,8 +272,8 @@ class Videoconf extends AbstractService
     /**
      * @invokable
      *
-     * @param int $id
-     * @param int $submission
+     * @param interger $id
+     * @param interger $submission
      *
      * @throws \Exception
      */
@@ -357,7 +357,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param interger $id
      */
     public function startRecord($id)
     {
@@ -377,7 +377,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param interger $id
      */
     public function stopRecord($id)
     {
@@ -422,7 +422,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param int    $videoconf_archive
+     * @param interger    $videoconf_archive
      * @param string $url
      *
      * @return int
@@ -466,21 +466,21 @@ class Videoconf extends AbstractService
     /**
      * @invokable
      * 
-     * @param int $submission
+     * @param interger $submission
      */
     public function start($submission)
     {
-        return $this->getServiceItemProgUser()->start($submission);
+        return $this->getServiceSubmissionUser()->start($submission);
     }
 
     /**
      * @invokable
      *
-     * @param int $submission
+     * @param interger $submission
      */
     public function end($submission)
     {
-        return $this->getServiceItemProgUser()->end($submission);
+        return $this->getServiceSubmissionUser()->end($submission);
     }
 
     /**
@@ -489,6 +489,14 @@ class Videoconf extends AbstractService
     public function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
+    }
+    
+    /**
+     * @return \Application\Service\SubmissionUser
+     */
+    public function getServiceSubmissionUser()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**

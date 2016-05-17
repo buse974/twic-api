@@ -62,6 +62,7 @@ class Questionnaire extends AbstractService
      */
     public function answer($item, $user, $question, $scale)
     {
+        $m_submission = $this->getServiceSubmission()->getByItem($item);
         $m_questionnaire = $this->getMapper()->getByItem($item)->current();
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
         $m_questionnaire_question = $this->getServiceQuestionnaireQuestion()->getByQuestion($m_questionnaire->getId(), $question);
@@ -73,15 +74,15 @@ class Questionnaire extends AbstractService
             $user,
             $scale);
 
-       /* $nbrq = $this->getNbrQuestionNoCompleted($item);
+        $nbrq = $this->getNbrQuestionNoCompleted($item);
         if (is_numeric($nbrq) && $nbrq == 0) {
-            $this->getServiceSubmissionUser()->end($item);
-            $has_all_finish = $this->getServiceItemProgUser()->checkAllFinish($item);
+            $this->getServiceSubmissionUser()->end($m_submission->getId());
+            $has_all_finish = $this->getServiceSubmissionUser()->checkAllFinish($m_submission->getId());
             if ($has_all_finish) {
-                $this->getServiceItemAssignment()->submitByItemProg($item);
+                $this->getServiceSubmissionUser()->submit($m_submission->getId());
                 $this->getServiceEvent()->eqcqAvailable($item);
             }
-        }*/
+        }
 
         return $ret;
     }
@@ -135,7 +136,23 @@ class Questionnaire extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_dimension');
     }
+    
+    /**
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
+    }
 
+    /**
+     * @return \Application\Service\SubmissionUser
+     */
+    public function getServiceSubmissionUser()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_user');
+    }
+    
     /**
      * @return \Application\Service\User
      */
