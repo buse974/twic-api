@@ -462,6 +462,22 @@ class Videoconf extends AbstractService
         
         return $ar_submission;
     }
+    /**
+     * @invokable 
+     * 
+     * @param integer $program_id
+     * @param integer $course_id
+     * @param integer $item_id
+     */
+    public function getListId($program_id = null, $course_id = null, $item_id = null){
+       $me = $this->getServiceUser()->getIdentity();
+       $res_videoconf = $this->getMapper()->getListId($me['school']['id'], $program_id, $course_id, $item_id);
+       $ids = [];
+       foreach($res_videoconf as $m_videoconf){
+           $ids[] = $m_videoconf->getId();
+       }
+       return $ids;
+    }
 
     /**
      * @invokable
