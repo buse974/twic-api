@@ -126,20 +126,31 @@ class SubQuiz extends AbstractService
             if($is_ok === true) {
                 $final_point +=  $point*($m_bank_answer_item->getPercent()/100);
             }
-            
             $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], (isset($sa['answer'])?$sa['answer']:null));
         }
         $this->getServiceSubQuestion()->updatePoint($sub_question_id, $final_point);
 
+        
+        
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
         if($this->getMapper()->checkFinish($m_sub_quiz->getId())) {
             $total_final_grade = 0;
+            $total_final = 0;
             $res_sub_question = $this->getServiceSubQuestion()->getListLite($m_sub_question->getSubQuizId());
+            
+            
+            
             foreach ($res_sub_question as $m_sub_question) {
                 $total_final_grade += $m_sub_question->getPoint();
             }
             
-            $this->getMapper()->update($this->getModel()->setGrade($total_final_grade)->setId($m_sub_question->getSubQuizId()));
+            $res_poll_item = $this->getServicePollItem()->getList($m_poll_item->getPollId());
+            
+            foreach ($res_poll_item as $m_poll_item) {
+                $total_final += $m_poll_item->getNbPoint();
+            }
+            
+            $this->getMapper()->update($this->getModel()->setGrade(100*$total_final_grade/$total_final)->setId($m_sub_question->getSubQuizId()));
             $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
         }
        
