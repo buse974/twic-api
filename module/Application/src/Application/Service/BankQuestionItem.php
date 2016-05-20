@@ -87,6 +87,16 @@ class BankQuestionItem extends AbstractService
     }
     
     /**
+     * @param integer $id
+     * 
+     * @return \Application\Model\BankQuestionItem
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+    
+    /**
      *
      * @return \Application\Service\BankAnswerItem
      */

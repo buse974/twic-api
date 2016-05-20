@@ -218,6 +218,16 @@ class BankQuestion extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setId($ids));
     }
+    
+    /**
+     * @param integer $id
+     * 
+     * @return \Application\Model\BankQuestion
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
 
     /**
      *
