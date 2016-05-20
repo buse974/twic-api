@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Application\Model\BankQuestionType as ModelBankQuestionType;
 
 class SubQuiz extends AbstractService
 {
@@ -107,12 +108,38 @@ class SubQuiz extends AbstractService
         if($res_sub_answer->count() !== 0) {
             return false;
         }
-        foreach ($sub_answer as $sa) {
+        
+        $m_poll_item = $this->getServicePollItem()->get($m_sub_question->getPollItemId());
+        $m_bank_question = $this->getServiceBankQuestion()->get($m_poll_item->getBankQuestionId());
+
+        $final_point = 0;
+        $point = $m_poll_item->getNbPoint();
+        $type = $m_bank_question->getBankQuestionTypeId();
+        foreach ($sub_answer as $sa) { 
+            $m_bank_answer_item = $this->getServiceBankAnswerItem()->get($sa['bank_question_item_id']);
+            $is_ok = true;
+            if($type === ModelBankQuestionType::TYPE_TEXT_INT) {
+                if($sa['answer'] != $m_bank_answer_item->getAnswer()) {
+                    $is_ok = false;
+                }
+            }
+            if($is_ok === true) {
+                $final_point +=  $point*($m_bank_answer_item->getPercent()/100);
+            }
+            
             $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], (isset($sa['answer'])?$sa['answer']:null));
         }
-        
+        $this->getServiceSubQuestion()->updatePoint($sub_question_id, $final_point);
+
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
         if($this->getMapper()->checkFinish($m_sub_quiz->getId())) {
+            $total_final_grade = 0;
+            $res_sub_question = $this->getServiceSubQuestion()->getListLite($m_sub_question->getSubQuizId());
+            foreach ($res_sub_question as $m_sub_question) {
+                $total_final_grade += $m_sub_question->getPoint();
+            }
+            
+            $this->getMapper()->update($this->getModel()->setGrade($total_final_grade)->setId($m_sub_question->getSubQuizId()));
             $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
         }
        
@@ -157,6 +184,14 @@ class SubQuiz extends AbstractService
     public function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
+    }
+    
+    /**
+     * @return \Application\Service\BankAnswerItem
+     */
+    public function getServiceBankAnswerItem()
+    {
+        return $this->getServiceLocator()->get('app_service_bank_answer_item');
     }
     
     /**

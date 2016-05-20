@@ -34,6 +34,15 @@ class SubQuestion extends AbstractService
         return $this->getMapper()->update($m_sub_question);
     }
     
+    public function updatePoint($id, $point)
+    {
+        $m_sub_question = $this->getModel()
+            ->setId($id)
+            ->setPoint($point);
+    
+        return $this->getMapper()->update($m_sub_question);
+    }
+    
     public function add($sub_quiz_id, $poll_item_id, $bank_question_id, $group_question_id)
     {
         $m_sub_question = $this->getModel()

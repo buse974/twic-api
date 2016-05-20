@@ -731,7 +731,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['poll_item_id'] , 5);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['bank_question_id'] , 1);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['group_question_id'] , null);
-        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['point'] , null);
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['point'] , '9899.01');
         $this->assertEquals(!empty($data['result']['poll'][0]['sub_questions'][0]['answered_date']) , true);
         $this->assertEquals(count($data['result']['poll'][0]['sub_questions'][1]) , 7);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['id'] , 2);
