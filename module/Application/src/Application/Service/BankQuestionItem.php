@@ -24,7 +24,7 @@ class BankQuestionItem extends AbstractService
             $percent = (isset($bqm['percent'])) ? $bqm['percent']:null;
             $order_id = (isset($bqm['order_id'])) ? $bqm['order_id']:null;
             
-            $ret[] = $this->_add($bank_question_id, $libelle, $percent, $answer = null, $order_id = null);
+            $ret[] = $this->_add($bank_question_id, $libelle, $percent, $answer, $order_id);
         }
     
         return $ret;
@@ -84,6 +84,16 @@ class BankQuestionItem extends AbstractService
     public function getList($bank_question_id)
     {
         return $this->getMapper()->getList($bank_question_id);
+    }
+    
+    /**
+     * @param integer $id
+     * 
+     * @return \Application\Model\BankQuestionItem
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
     
     /**
