@@ -76,7 +76,7 @@ class GradingPolicyGrade extends AbstractMapper
         return $this->selectBridge($sel);
     }
 
-    public function updateGrade($item_assignment, $user)
+    public function updateGrade($submission, $user = null)
     {
         $res = [];
 
@@ -84,18 +84,18 @@ class GradingPolicyGrade extends AbstractMapper
         $subselect->columns(array('id'))
             ->join('item', 'grading_policy.id = item.grading_policy_id', array())
             ->join('submission', 'item.id = submission.item_id', array())
-            ->join('item_assignment', 'item_assignment.submission_id = submission.id', array())
-            ->where(array('item_assignment.id' => $item_assignment));
+            ->where(array('submission.id' => $submission));
 
         $selectgp = new Select('grading_policy');
-        $selectgp->columns(array('grade' => new Expression('SUM(item_grading.grade * item.weight) / SUM(item.weight)')))
+        $selectgp->columns(array('grade' => new Expression('SUM(submission_user.grade) / COUNT(submission_user.grade)')))
             ->join('item', 'grading_policy.id = item.grading_policy_id', array())
             ->join('submission', 'item.id = submission.item_id', array())
             ->join('submission_user', 'submission.id = submission_user.submission_id ', array())
-            ->join('item_grading', 'submission_user.id = item_grading.submission_user_id ', array())
-            ->where(array('submission_user.user_id' => $user))
             ->where(array('grading_policy.id' => $subselect));
 
+        if(null !== $user){
+            $selectgp->where(array('submission_user.user_id' => $user));
+        }
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id'))
             ->where(array('user_id' => $user))
@@ -106,7 +106,6 @@ class GradingPolicyGrade extends AbstractMapper
             $update->set(array('grade' => $selectgp))
                 ->where(array('user_id' => $user))
                 ->where(array('grading_policy_id' => $subselect));
-
             $res = $this->updateWith($update);
         } else {
             $insert = $this->tableGateway->getSql()->insert();

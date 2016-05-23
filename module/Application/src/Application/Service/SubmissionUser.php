@@ -20,12 +20,26 @@ class SubmissionUser extends AbstractService
     
     public function OverwrittenGrade($submission_id, $grade)
     {
-        return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
+        $return = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
+                
+        $this->getServiceGradingPolicyGrade()->process($submission_id);
+        return $return;
     }
     
+     /**
+     * @invokable
+     *
+     * @param int  $submission_id
+     * @param int  $user_id
+     * @param int  $grade
+     * @param bool  $overwritten
+     */
     public function setGrade($submission_id, $user_id, $grade, $overwritten = false)
     {
-        return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]); 
+        $return = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]); 
+        
+        $this->getServiceGradingPolicyGrade()->process($submission_id, $user_id);
+        return $return;
     }
     
     public function getListBySubmissionId($submission_id)
@@ -42,6 +56,21 @@ class SubmissionUser extends AbstractService
     public function getList($submission_id)
     {
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+    }
+    
+       /**
+     * @invokable
+     *
+     * @param array  $avg
+     * @param array  $filter
+     * @param string $search
+     */
+    public function getListGrade($avg = array(), $filter = array(), $search = null)
+    {
+        $mapper = $this->getMapper();
+        $res_submission_user = $mapper->usePaginator($filter)->getListGrade($avg, $filter, $search, $this->getServiceUser()->getIdentity());
+
+        return ['count' => $mapper->count(),'list' => $res_submission_user];
     }
     
     /**
@@ -134,5 +163,14 @@ class SubmissionUser extends AbstractService
     public function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
+    }
+    
+        /**
+     * 
+     * @return \Application\Service\GradingPolicyGrade
+     */
+    public function getServiceGradingPolicyGrade()
+    {
+        return $this->getServiceLocator()->get('app_service_grading_policy_grade');
     }
 }

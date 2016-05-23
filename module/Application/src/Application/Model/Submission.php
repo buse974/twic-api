@@ -54,12 +54,12 @@ class Submission extends BaseSubmission
         return $this;
     }
       
-    public function getPropertyName() 
+    public function getChat() 
     {
         return $this->chat;
     }
     
-    public function setPropertyName($chat) 
+    public function setChat($chat) 
     {
         $this->chat = $chat;
         
