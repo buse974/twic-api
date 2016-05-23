@@ -20,11 +20,11 @@ class BankQuestionItem extends AbstractService
         $ret = [];
         foreach ($data as $bqm) {
             $libelle = $bqm['libelle'];
-            $answer = (!isset($bqm['answer'])) ? $bqm['answer']:null;
-            $percent = (!isset($bqm['percent'])) ? $bqm['percent']:null;
-            $order_id = (!isset($bqm['order_id'])) ? $bqm['order_id']:null;
+            $answer = (isset($bqm['answer'])) ? $bqm['answer']:null;
+            $percent = (isset($bqm['percent'])) ? $bqm['percent']:null;
+            $order_id = (isset($bqm['order_id'])) ? $bqm['order_id']:null;
             
-            $ret[] = $this->_add($bank_question_id, $libelle, $percent, $answer = null, $order_id = null);
+            $ret[] = $this->_add($bank_question_id, $libelle, $percent, $answer, $order_id);
         }
     
         return $ret;
