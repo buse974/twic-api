@@ -429,15 +429,11 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('CAST(SUM(IF(item_assignment_comment.id IS NOT NULL, 1, 0)) AS DECIMAL )')))
+        $select->columns(array('id', 'title', 'grading_policy_id', 'item$nbr_comment' => new Expression('SUM(IF(submission_comments.id IS NOT NULL, 1, 0)  )')))
             ->join('submission', 'submission.item_id=item.id', array('id'))
-            ->join('submission_user', 'submission_user.submission_id=submission.id', array('user_id'))
-            ->join('item_assignment_relation', 'item_assignment_relation.submission_id=submission_user.id', array(), $select::JOIN_LEFT)
-            ->join('item_assignment', 'item_assignment.id=item_assignment_relation.item_assignment_id', array('item_item_grading$assignmentId' => 'id',
-                'item_assignment$submit_date' => new Expression('DATE_FORMAT(item_assignment.submit_date, "%Y-%m-%dT%TZ")'), 'id', ), $select::JOIN_LEFT)
-            ->join(array('item_item_grading' => 'item_grading'), 'item_item_grading.submission_user_id=submission_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
-            ->join('item_assignment_comment', 'item_assignment_comment.item_assignment_id=item_assignment.id', array(), $select::JOIN_LEFT)
-            ->where('item_assignment.submit_date IS NOT NULL');
+            ->join('submission_user', 'submission_user.submission_id=submission.id', array('grade','user_id', 'submission_id'))
+            ->join('submission_comments', 'submission_comments.submission_id=submission.id', array(),$select::JOIN_LEFT)
+            ->where('submission.submit_date IS NOT NULL');
         if (null !== $course) {
             $select->where(array('item.course_id' => $course));
         }
@@ -453,7 +449,7 @@ class Item extends AbstractMapper
         } else {
             $select->group('item.id');
         }
-
+        
         return $this->selectWith($select);
     }
     

@@ -53,9 +53,9 @@ class GradingPolicyGrade extends AbstractService
      * @param int $item_assignment
      * @param int $user
      */
-    public function process($item_assignment, $user)
+    public function process($submission, $user = null)
     {
-        $ret = $this->getMapper()->updateGrade($item_assignment, $user);
+        $ret = $this->getMapper()->updateGrade($submission, $user);
 
         return $ret;
     }

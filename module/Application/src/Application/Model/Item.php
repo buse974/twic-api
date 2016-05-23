@@ -31,9 +31,7 @@ class Item extends BaseItem
     protected $module;
     protected $program;
     protected $course;
-    protected $item_assignment;
     protected $users;
-    protected $item_grade;
     protected $new_message;
     protected $nbr_comment;
     protected $ct_done;
@@ -60,8 +58,6 @@ class Item extends BaseItem
         $this->program = $this->requireModel('app_model_program', $data);
         $this->course = $this->requireModel('app_model_course', $data);
         $this->submission = $this->requireModel('app_model_submission', $data);
-        $this->item_assignment = $this->requireModel('app_model_item_assignment', $data);
-        $this->item_grade = $this->requireModel('app_model_item_grading', $data);
         $this->opt_grading = $this->requireModel('app_model_opt_grading', $data);
         $this->library = $this->requireModel('app_model_library', $data);
     }
@@ -234,31 +230,7 @@ class Item extends BaseItem
     {
         return $this->course;
     }
-
-    public function setItemProg($submission)
-    {
-        $this->submission = $submission;
-
-        return $this;
-    }
-
-    public function getItemProg()
-    {
-        return $this->submission;
-    }
-
-    public function setItemAssignment($item_assignment)
-    {
-        $this->item_assignment = $item_assignment;
-
-        return $this;
-    }
-
-    public function getItemAssignment()
-    {
-        return $this->item_assignment;
-    }
-
+    
     public function setUsers($users)
     {
         $this->users = $users;
@@ -271,17 +243,6 @@ class Item extends BaseItem
         return $this->users;
     }
 
-    public function setItemGrade($item_grade)
-    {
-        $this->item_grade = $item_grade;
-
-        return $this;
-    }
-
-    public function getItemGrade()
-    {
-        return $this->item_grade;
-    }
 
     public function setNewMessage($new_message)
     {
