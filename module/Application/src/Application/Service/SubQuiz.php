@@ -119,7 +119,7 @@ class SubQuiz extends AbstractService
             $m_bank_answer_item = $this->getServiceBankAnswerItem()->get($sa['bank_question_item_id']);
             $is_ok = true;
             if($type === ModelBankQuestionType::TYPE_TEXT_INT) {
-                if($sa['answer'] != $m_bank_answer_item->getAnswer()) {
+                if(strtolower(trim($sa['answer'])) != strtolower(trim($m_bank_answer_item->getAnswer()))) {
                     $is_ok = false;
                 }
             }
@@ -129,16 +129,11 @@ class SubQuiz extends AbstractService
             $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], (isset($sa['answer'])?$sa['answer']:null));
         }
         $this->getServiceSubQuestion()->updatePoint($sub_question_id, $final_point);
-
-        
-        
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
         if($this->getMapper()->checkFinish($m_sub_quiz->getId())) {
             $total_final_grade = 0;
             $total_final = 0;
             $res_sub_question = $this->getServiceSubQuestion()->getListLite($m_sub_question->getSubQuizId());
-            
-            
             
             foreach ($res_sub_question as $m_sub_question) {
                 $total_final_grade += $m_sub_question->getPoint();
