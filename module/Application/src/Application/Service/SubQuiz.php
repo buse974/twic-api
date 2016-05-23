@@ -121,7 +121,7 @@ class SubQuiz extends AbstractService
             if($type === ModelBankQuestionType::TYPE_TEXT_INT) {
                 
                 $v1 = (isset($sa['answer'])?$sa['answer']:"");
-                $v2 = (isset($m_bank_answer_item->getAnswer())?$m_bank_answer_item->getAnswer():"");
+                $v2 = ($m_bank_answer_item->getAnswer()!==null?$m_bank_answer_item->getAnswer():"");
                 
                 if(strtolower(trim($v1)) != strtolower(trim($v2))) {
                     $is_ok = false;
