@@ -30,6 +30,11 @@ class BankAnswerItem extends AbstractService
         return $this->getMapper()->insert($m_bank_answer_item->setBankQuestionItemId($bank_question_item_id_new));
     }
     
+    /**
+     * @param integer $bank_question_item_id
+     * 
+     * @return \Application\Model\BankAnswerItem|NULL
+     */
     public function get($bank_question_item_id)
     {
         $res_bank_answer_item = $this->getMapper()->select($this->getModel()->setBankQuestionItemId($bank_question_item_id));
