@@ -326,8 +326,22 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null)
     {
-        return $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
+        $ar_item =  $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
+       /* foreach ($ar_item as &$item) {
+            print_r($item);
+        }*/
+        
+        return $ar_item;
     }
+    
+   /* public function checkAllow($id, $user = null)
+    {
+        if(null === $user) {
+            $user = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
+       
+    }*/
     
       /**
      * @invokable
