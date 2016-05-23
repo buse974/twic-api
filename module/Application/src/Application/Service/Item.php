@@ -209,7 +209,7 @@ class Item extends AbstractService
             $course = isset($data['course']) ? $data['course'] : null;
             $describe = isset($data['describe']) ? $data['describe'] : null;
             $title = isset($data['title']) ? $data['title'] : null;
-            return $this->getServiceThread()->add(null, $course, $describe, $item_id);
+            return $this->getServiceThread()->add($title, $course, $describe, $item_id);
         }
     }
     
@@ -460,7 +460,6 @@ class Item extends AbstractService
             $m_grading_policy->setItems($this->getMapper()
                 ->getListGradeItem($m_grading_policy->getId(), $course, $user));
         }
-        
         return $res_grading_policy;
     }
 

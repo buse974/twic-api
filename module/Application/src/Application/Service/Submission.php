@@ -702,11 +702,7 @@ class Submission extends AbstractService
         $this->getServiceSubmissionPg()->checkGraded($id, $user);
         $this->getMapper()->checkGraded($id);
     }
-    
-        
-    public function processSubmissionInstructorGrade($id){
        
-    }
     
       /**
      * 
