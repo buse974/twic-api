@@ -626,7 +626,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCanGetListItem($course)
     {
-        $this->setIdentity(3);
+        $this->setIdentity(4);
         
         $data = $this->jsonRpc('item.getList', array('course' => $course));
         
