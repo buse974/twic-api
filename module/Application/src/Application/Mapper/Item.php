@@ -453,8 +453,6 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    
-    
     /**
      * @param array $me
      */

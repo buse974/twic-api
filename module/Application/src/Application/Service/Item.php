@@ -335,6 +335,8 @@ class Item extends AbstractService
             if($this->checkAllow($item, $user_id) === false) {
                 unset($ar_item[$k]);
             }
+            
+            $item['check'] = $this->checkVisibility($item, $user_id);
         }
         
         return $ar_item;
@@ -348,6 +350,57 @@ class Item extends AbstractService
         
         return $this->getServiceUser()->doBelongs($item['id'], $user_id);
          
+    }
+    
+    public function checkVisibility($item, $user_id = null)
+    {
+        if(null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
+        $done = 0x10;
+        $rate = 0x01;
+        
+        if(isset($item['done']) && count($item['done']) > 0) {
+            foreach ($item['done'] as $i) {
+                $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
+                if(null !== $m_submission) {
+                    if($i['all'] == 1) {
+                        if($m_submission->getSubmitDate() !== null && 
+                            !$m_submission->getSubmitDate() instanceof IsNull) {
+                            $done = 0;
+                            break;
+                        }
+                    } else {
+                        if($m_submission->getSubmissionUser()->getSubmitDate() !== null && 
+                            !$m_submission->getSubmissionUser()->getSubmitDate() instanceof IsNull) {
+                            $done = 0;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if(isset($item['rate']) && count($item['rate']) > 0) {
+            foreach ($item['rate'] as $i) {
+                $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
+                if(null !== $m_submission) {
+                    $grade = $m_submission->getSubmissionUser()->getGrade();
+                    if(is_numeric($grade)) {
+                        if(is_numeric($i['inf'])) {
+                            $i['inf'] > $grade;
+                            $rate = 0;
+                        }
+                        if(is_numeric($i['sup'])) {
+                            $i['sup'] < $grade;
+                            $rate = 0;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return $done & $rate;
     }
     
       /**

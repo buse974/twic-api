@@ -67,7 +67,7 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('item.add', 
             [
                 'course' => (int)$data['course_id'],
-                'grading_policy_id' => 6,
+               // 'grading_policy_id' => 6,
                 'title' => 'title',
                 'describe' => 'description',
                 'duration' => 234,
@@ -138,7 +138,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['opt_grading']['pg_stars'] , 1);
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['course_id'] , 1);
-        $this->assertEquals($data['result']['grading_policy_id'] , 6);
+        $this->assertEquals($data['result']['grading_policy_id'] , null);
         $this->assertEquals($data['result']['title'] , "title");
         $this->assertEquals($data['result']['describe'] , "description");
         $this->assertEquals($data['result']['has_submission'] , true);

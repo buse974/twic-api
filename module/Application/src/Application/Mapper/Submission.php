@@ -68,6 +68,39 @@ class Submission extends AbstractMapper
     }
     
     /**
+     *
+     * @param integer $item_id
+     * @param integer $user_id
+     * @param integer $submission_id
+     * @param integer $group_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getSubmissionUser($item_id = null, $user_id = null, $submission_id = null, $group_id = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'item_id', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
+            ->join('submission_user', 'submission_user.submission_id=submission.id', 
+                ['user_id', 'grade', 'submit_date', 'overwritten', 'start_date', 'end_date']);
+    
+        if(null !== $submission_id) {
+            $select->where(array('submission.id' => $submission_id));
+        } else {
+            if(null !== $group_id && null !== $item_id) {
+                $select->where(array('submission.group_id' => $group_id))
+                ->where(array('submission.item_id' => $item_id));
+            } elseif(null !== $user_id && null !== $item_id) {
+                $select->where(array('submission_user.user_id' => $user_id))
+                ->where(array('submission.item_id' => $item_id));
+            } elseif(null !== $item_id) {
+                $select->where(array('submission.item_id' => $item_id));
+            }
+        }
+    
+        return $this->selectWith($select);
+    }
+    
+    /**
      * 
      * @param integer $item_id
      * @param integer $user_id
