@@ -176,7 +176,6 @@ class Submission extends AbstractService
         //// FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         ////  syslog(1, $item_id . ' ' . $submission_id . ' ' . $group_id . ' ' . $user_id);
         
-        
         // On récupére la submission si elle existe 
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
         if($res_submission->count() <= 0) {

@@ -70,6 +70,44 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
     
+    
+    public function doBelongsByGroup($group_id, $user_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id'])
+        ->join('group_user', 'group_user.user_id=user.id', [])
+        ->where(array('group_user.group_id' => $group_id))
+        ->where(array('group_user.user_id' => $user_id));
+    
+        return ($this->selectWith($select)->count() > 0);
+    }
+    
+    public function doBelongsBySet($set_id, $user_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id'])
+            ->join('group_user', 'group_user.user_id=user.id', [])
+            ->join('set_group', 'group_user.group_id=set_group.group_id', [])
+            ->where(array('set_group.set_id' => $set_id))
+            ->where(array('user.id' => $user_id));
+    
+        return ($this->selectWith($select)->count() > 0);
+    }
+    
+    public function doBelongsByItemOfCourseUser($item_id, $user_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id'])
+            ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
+            ->join('item', 'item.course_id=course_user_relation.course_id', array())
+            ->join('user_role', 'user_role.user_id=user.id', [])
+            ->where(array('item.id' => $item_id))
+            ->where(array('user.id' => $user_id));
+    
+        return ($this->selectWith($select)->count() > 0);
+    }
+    
+    
     public function getListUsersByGroup($group_id)
     {
         $select = $this->tableGateway->getSql()->select();
