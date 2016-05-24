@@ -326,22 +326,29 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $ar_item =  $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
-       /* foreach ($ar_item as &$item) {
-            print_r($item);
-        }*/
+        
+        foreach ($ar_item as $k => &$item) {
+            $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
+            $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
+            if($this->checkAllow($item, $user_id) === false) {
+                unset($ar_item[$k]);
+            }
+        }
         
         return $ar_item;
     }
     
-   /* public function checkAllow($id, $user = null)
+    public function checkAllow($item, $user_id = null)
     {
-        if(null === $user) {
-            $user = $this->getServiceUser()->getIdentity()['id'];
+        if(null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
         
-       
-    }*/
+        return $this->getServiceUser()->doBelongs($item['id'], $user_id);
+         
+    }
     
       /**
      * @invokable

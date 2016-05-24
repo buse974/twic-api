@@ -259,6 +259,19 @@ class User extends AbstractService
         return $res_user;
     }
     
+    /**
+     * @param integer $item_id
+     * @param integer $user_id
+     */
+    public function doBelongs($item_id, $user_id)
+    {
+        $m_item = $this->getServiceItem()->get($item_id);
+        
+        return (is_numeric($m_item->getSetId())) ? 
+            $this->getMapper()->doBelongsBySet($m_item->getSetId(), $user_id):
+            $this->getMapper()->doBelongsByItemOfCourseUser($m_item->getId(), $user_id);
+    }
+    
     public function getListBySchool($school)
     {
         return $this->getMapper()->getListBySchool($school);
