@@ -131,6 +131,23 @@ class Submission extends AbstractService
     }
     
     /**
+     * @param integer $item_id
+     * @param integer $user_id
+     * @param integer $submission_id
+     * @param integer $group_id
+     * 
+     * @return NULL|\Application\Model\Submission
+     */
+    public function getSubmissionUser($item_id = null, $user_id = null, $submission_id = null, $group_id = null) 
+    {
+        $res_submission = $this->getMapper()->getSubmissionUser($item_id, $user_id, $submission_id, $group_id);
+        
+        return ($res_submission->count() === 1) ? 
+            $res_submission->current():
+            null;
+    }
+    
+    /**
      * @invokable
      * 
      * @param integer $item_id
@@ -142,7 +159,6 @@ class Submission extends AbstractService
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
-        
         //// ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         if(null!==$item_id) {
             $m_item = $this->getServiceItem()->get($item_id);

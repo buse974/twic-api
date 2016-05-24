@@ -58,8 +58,9 @@ class Course extends AbstractService
         }
 
         $course_id = $this->getMapper()->getLastInsertValue();
-        $this->getServiceGradingPolicy()->initTpl($course_id);
-
+        
+        // On ne crée plus les grading policy par default
+        //$this->getServiceGradingPolicy()->initTpl($course_id);
         foreach ($material_document as $md) {
             if (isset($md['type'])) {
                 $type = (isset($md['type']) ? $md['type'] : null);
