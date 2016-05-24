@@ -341,7 +341,7 @@ class Item extends AbstractService
                 if($this->checkAllow($item, $user_id) === false) {
                     unset($ar_item[$k]);
                 }
-                $item['check'] = $this->checkVisibility($item, $user_id);
+                $item['checked'] = $this->checkVisibility($item, $user_id);
             }
         }
         
@@ -364,8 +364,8 @@ class Item extends AbstractService
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
         
-        $done = 0x10;
-        $rate = 0x01;
+        $done = 1;
+        $rate = 2;
         
         if(isset($item['done']) && count($item['done']) > 0) {
             foreach ($item['done'] as $i) {
@@ -406,7 +406,7 @@ class Item extends AbstractService
             }
         }
         
-        return $done & $rate;
+        return $done | $rate;
     }
     
       /**
