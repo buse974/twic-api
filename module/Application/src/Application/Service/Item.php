@@ -6,6 +6,7 @@ use Zend\Db\Sql\Predicate\IsNull;
 use \Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
 use Application\Model\Library as ModelLibrary;
+use Application\Model\Role as ModelRole;
 
 class Item extends AbstractService
 {
@@ -326,17 +327,22 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $ar_user = $this->getServiceUser()->getIdentity();
+        $roles = $ar_user['roles'];  
+        $user_id = $ar_user['id']; 
+        
         $ar_item =  $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
         
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
             $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
-            if($this->checkAllow($item, $user_id) === false) {
-                unset($ar_item[$k]);
-            }
             
-            $item['check'] = $this->checkVisibility($item, $user_id);
+            if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+                if($this->checkAllow($item, $user_id) === false) {
+                    unset($ar_item[$k]);
+                }
+                $item['check'] = $this->checkVisibility($item, $user_id);
+            }
         }
         
         return $ar_item;
