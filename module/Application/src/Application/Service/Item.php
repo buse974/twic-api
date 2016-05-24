@@ -384,9 +384,13 @@ class Item extends AbstractService
                             break;
                         }
                     }
+                } else {
+                    $done = 0;
+                    break;
                 }
             }
-        }
+        } 
+        
         if(isset($item['rate']) && count($item['rate']) > 0) {
             foreach ($item['rate'] as $i) {
                 $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
@@ -396,12 +400,17 @@ class Item extends AbstractService
                         if(is_numeric($i['inf'])) {
                             $i['inf'] > $grade;
                             $rate = 0;
+                            break;
                         }
                         if(is_numeric($i['sup'])) {
                             $i['sup'] < $grade;
                             $rate = 0;
+                            break;
                         }
                     }
+                } else {
+                    $rate = 0;
+                    break;
                 }
             }
         }
