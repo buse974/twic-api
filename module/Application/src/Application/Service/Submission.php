@@ -142,6 +142,14 @@ class Submission extends AbstractService
      */
     public function getSubmissionUser($item_id = null, $user_id = null, $submission_id = null, $group_id = null) 
     {
+        if(null === $item_id && null === $submission_id) {
+            return null;
+        }
+        
+        if(null === $submission_id && null === $user_id && null !== $item_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
         $res_submission = $this->getMapper()->getSubmissionUser($item_id, $user_id, $submission_id, $group_id);
         
         return ($res_submission->count() === 1) ? 
