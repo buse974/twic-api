@@ -697,15 +697,15 @@ class ScenarioTest extends AbstractService
      */
     public function testCanGetListItemuu($course)
     {
-    	$this->setIdentity(1);
+        $this->setIdentity(1);
     	
-    	$this->jsonRpc('item.update', [
-    			'id' => 3,
-    			//'grading_policy_id' => 8,
-    			'duration' => 123,
-    			'title' => 'titl2e',
-    			'describe' => 'description2',
-    			'order_id' => 2
+	    $this->jsonRpc('item.update', [
+			'id' => 3,
+			//'grading_policy_id' => 8,
+			'duration' => 123,
+			'title' => 'titl2e',
+			'describe' => 'description2',
+			'order_id' => 2
     	]);
     	
     	$this->reset();

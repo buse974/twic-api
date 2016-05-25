@@ -366,7 +366,6 @@ class Item extends AbstractService
         
         $done = 1;
         $rate = 2;
-        
         if(isset($item['done']) && count($item['done']) > 0) {
             foreach ($item['done'] as $i) {
                 $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
@@ -398,12 +397,12 @@ class Item extends AbstractService
                     $grade = $m_submission->getSubmissionUser()->getGrade();
                     if(is_numeric($grade)) {
                         if(is_numeric($i['inf'])) {
-                            $i['inf'] > $grade;
+                            $i['inf'] >= $grade;
                             $rate = 0;
                             break;
                         }
                         if(is_numeric($i['sup'])) {
-                            $i['sup'] < $grade;
+                            $i['sup'] <= $grade;
                             $rate = 0;
                             break;
                         }
