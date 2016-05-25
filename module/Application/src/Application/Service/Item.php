@@ -396,11 +396,11 @@ class Item extends AbstractService
                 if(null !== $m_submission) {
                     $grade = $m_submission->getSubmissionUser()->getGrade();
                     if(is_numeric($grade)) {
-                        if(is_numeric($i['inf']) && $i['inf'] >= $grade) {
+                        if(is_numeric($i['inf']) && $i['inf'] < $grade) {
                             $rate = 0;
                             break;
                         }
-                        if(is_numeric($i['sup']) && $i['sup'] <= $grade) {
+                        if(is_numeric($i['sup']) && $i['sup'] > $grade) {
                             $rate = 0;
                             break;
                         }
