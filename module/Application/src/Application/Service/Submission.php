@@ -131,6 +131,8 @@ class Submission extends AbstractService
     }
     
     /**
+     * @invokable
+     * 
      * @param integer $item_id
      * @param integer $user_id
      * @param integer $submission_id
