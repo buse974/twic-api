@@ -371,14 +371,14 @@ class Item extends AbstractService
                 $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
                 if(null !== $m_submission) {
                     if($i['all'] == 1) {
-                        if($m_submission->getSubmitDate() !== null && 
-                            !$m_submission->getSubmitDate() instanceof IsNull) {
+                        if($m_submission->getSubmitDate() === null || 
+                            $m_submission->getSubmitDate() instanceof IsNull) {
                             $done = 0;
                             break;
                         }
                     } else {
-                        if($m_submission->getSubmissionUser()->getSubmitDate() !== null && 
-                            !$m_submission->getSubmissionUser()->getSubmitDate() instanceof IsNull) {
+                        if($m_submission->getSubmissionUser()->getSubmitDate() === null || 
+                            $m_submission->getSubmissionUser()->getSubmitDate() instanceof IsNull) {
                             $done = 0;
                             break;
                         }
@@ -396,13 +396,11 @@ class Item extends AbstractService
                 if(null !== $m_submission) {
                     $grade = $m_submission->getSubmissionUser()->getGrade();
                     if(is_numeric($grade)) {
-                        if(is_numeric($i['inf'])) {
-                            $i['inf'] >= $grade;
+                        if(is_numeric($i['inf']) && $i['inf'] >= $grade) {
                             $rate = 0;
                             break;
                         }
-                        if(is_numeric($i['sup'])) {
-                            $i['sup'] <= $grade;
+                        if(is_numeric($i['sup']) && $i['sup'] <= $grade) {
                             $rate = 0;
                             break;
                         }
