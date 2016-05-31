@@ -218,9 +218,19 @@ class Submission extends AbstractService
     public function add($data, $item_id)
     {
         foreach ($data as $su) {
-            $this->getMapper()->insert($this->getModel()->setItemId($item_id));
-            $s_id = $this->getMapper()->getLastInsertValue();
-            $this->getServiceSubmissionUser()->create($s_id, $su);
+            
+            if(is_numeric($su['submision_id'])) {
+                $s_id = $su['submision_id'];
+            } else {
+                $this->getMapper()->insert($this->getModel()
+                    ->setItemId($item_id)
+                    ->setGroupName($su['group_name'])
+                    ->setGroupId($su['group_id']));
+                
+                $s_id = $this->getMapper()->getLastInsertValue();
+            }
+            
+            $this->getServiceSubmissionUser()->create($s_id, $su['submision_user']);
         }
     }
     
