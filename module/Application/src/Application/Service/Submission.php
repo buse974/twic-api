@@ -205,8 +205,10 @@ class Submission extends AbstractService
         // On récupére la submission si elle existe 
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
         if($res_submission->count() <= 0) {
-            $submission_id = $this->create($item_id, $user_id, $group_id);
-            $res_submission = $this->getMapper()->get(null, null, $submission_id);
+            //$submission_id = $this->create($item_id, $user_id, $group_id);
+            //$res_submission = $this->getMapper()->get(null, null, $submission_id);
+            
+            return null;
         }
         
         $m_submission = $res_submission->current();
