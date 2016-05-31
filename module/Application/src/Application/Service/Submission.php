@@ -217,8 +217,22 @@ class Submission extends AbstractService
     
     public function add($data, $item_id)
     {
+        $res_submission = $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        
+        foreach ($res_submission as $m_submission) {
+            $is_present = false;
+            foreach ($data as $su) {
+                if($m_submission->getId() === $su['submision_id']) {
+                    $is_present = true;
+                    break;
+                }
+            }
+            if($is_present===false) {
+                $this->getMapper()->delete($this->getModel()->setId($m_submission->getId()));
+            }
+        }
+        
         foreach ($data as $su) {
-            
             if(is_numeric($su['submision_id'])) {
                 $s_id = $su['submision_id'];
             } else {
@@ -226,10 +240,8 @@ class Submission extends AbstractService
                     ->setItemId($item_id)
                     ->setGroupName($su['group_name'])
                     ->setGroupId($su['group_id']));
-                
                 $s_id = $this->getMapper()->getLastInsertValue();
             }
-            
             $this->getServiceSubmissionUser()->create($s_id, $su['submision_user']);
         }
     }
