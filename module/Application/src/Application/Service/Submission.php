@@ -221,7 +221,7 @@ class Submission extends AbstractService
         foreach ($res_submission as $m_submission) {
             $is_present = false;
             foreach ($data as $su) {
-                if($m_submission->getId() === $su['submision_id']) {
+                if($m_submission->getId() === $su['submission_id']) {
                     $is_present = true;
                     break;
                 }
@@ -232,8 +232,8 @@ class Submission extends AbstractService
         }
         
         foreach ($data as $su) {
-            if(is_numeric($su['submision_id'])) {
-                $s_id = $su['submision_id'];
+            if(is_numeric($su['submission_id'])) {
+                $s_id = $su['submission_id'];
             } else {
                 $this->getMapper()->insert($this->getModel()
                     ->setItemId($item_id)
@@ -241,7 +241,7 @@ class Submission extends AbstractService
                     ->setGroupId($su['group_id']));
                 $s_id = $this->getMapper()->getLastInsertValue();
             }
-            $this->getServiceSubmissionUser()->create($s_id, $su['submision_user']);
+            $this->getServiceSubmissionUser()->create($s_id, $su['submission_user']);
         }
     }
     
