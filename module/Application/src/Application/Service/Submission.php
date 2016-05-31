@@ -253,24 +253,14 @@ class Submission extends AbstractService
     public function getList($item_id)
     {
         $me = $this->getServiceUser()->getIdentity()['id']; 
-        $res_submission = $this->getMapper()->getList($item_id, $me);
+        $res_submission = $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        
         $m_item = $this->getServiceItem()->get($item_id);
 
         $by_set = (null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull);
         foreach ($res_submission as $m_submission) {
             if($by_set===true) {
-                if(is_numeric($m_submission->getId())) {
-                    $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
-                } else {
-                    $res_user = $this->getServiceUser()->getListUsersByGroup($m_submission->getGroupId());
-                    $su=[];
-                    foreach ($res_user as $m_user) {
-                        $m_submission_user = new SubmissionUser();
-                        $m_submission_user->setUser($m_user);
-                        $su[] = $m_submission_user;
-                    }
-                    $m_submission->setSubmissionUser($su);
-                }
+                $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
             } else {
                 $m_submission->setSubmissionUser([$m_submission->getSubmissionUser()]);
             }
