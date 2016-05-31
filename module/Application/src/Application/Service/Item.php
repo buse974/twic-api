@@ -277,7 +277,9 @@ class Item extends AbstractService
      * @param integer $parent_id
      * @param integer $order_id
      */
-    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
+    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, 
+        $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -290,6 +292,8 @@ class Item extends AbstractService
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setType($type)
+            ->setHasAllStudent($has_all_student)
+            ->setIsGrouped($is_grouped)
             ->setHasSubmission($has_submission)
             ->setParentId(($parent_id === 0) ? new IsNull():$parent_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -304,6 +308,11 @@ class Item extends AbstractService
              }
              $this->initCmp($type, $data, $id);
          }
+         
+         if(null !== $submission) {
+            $this->getServiceSubmission()->add($submission, $id);
+         }
+         
          return $this->getMapper()->update($m_item);
     }
 
@@ -366,6 +375,7 @@ class Item extends AbstractService
         
         $done = 1;
         $rate = 2;
+        $date = 0;//3;
         if(isset($item['done']) && count($item['done']) > 0) {
             foreach ($item['done'] as $i) {
                 $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
@@ -384,11 +394,11 @@ class Item extends AbstractService
                         }
                     }
                 } else {
-                    $done = 0;
+                    $done = 0;  
                     break;
                 }
             }
-        } 
+        }
         
         if(isset($item['rate']) && count($item['rate']) > 0) {
             foreach ($item['rate'] as $i) {
@@ -412,7 +422,7 @@ class Item extends AbstractService
             }
         }
         
-        return $done | $rate;
+        return $done | $rate | $date;
     }
     
       /**

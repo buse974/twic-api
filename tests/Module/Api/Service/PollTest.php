@@ -68,7 +68,7 @@ class PollTest extends AbstractService
         $data = $this->jsonRpc('item.add',
             [
                 'course' => (int)$data['course_id'],
-                'grading_policy_id' => 6,
+               // 'grading_policy_id' => 6,
                 'title' => 'quiz',
                 'describe' => 'description',
                 'duration' => 234,
@@ -364,7 +364,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['bank_question_item'][0]['bank_answer_item']) , 5);
         $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 11);
         $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['percent'] , 9999);
-        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['answer'] , 'super pas cool upt2');
         $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result'][0]['bank_question_item'][0]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result'][0]['bank_question_item'][0]['id'] , 11);
@@ -423,7 +423,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result'][1]['bank_question_item'][0]['bank_answer_item']) , 5);
         $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 3);
         $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
-        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['answer'] , 'super pas cool');
         $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result'][1]['bank_question_item'][0]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result'][1]['bank_question_item'][0]['id'] , 3);
@@ -457,7 +457,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result'][2]['bank_question_item'][0]['bank_answer_item']) , 5);
         $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 5);
         $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
-        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['answer'] , 'super pas cool');
         $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result'][2]['bank_question_item'][0]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result'][2]['bank_question_item'][0]['id'] , 5);
@@ -491,7 +491,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result'][3]['bank_question_item'][0]['bank_answer_item']) , 5);
         $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['bank_question_item_id'] , 7);
         $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['percent'] , 100);
-        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['answer'] , 'super pas cool');
         $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result'][3]['bank_question_item'][0]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result'][3]['bank_question_item'][0]['id'] , 7);
@@ -790,7 +790,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']) , 5);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']['bank_question_item_id'] , 3);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']['percent'] , 100);
-        $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']['answer'] , 'super pas cool');
         $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][0]['id'] , 3);
@@ -812,7 +812,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']) , 5);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']['bank_question_item_id'] , 5);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']['percent'] , 100);
-        $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']['answer'] , 'super pas cool');
         $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][2]['id'] , 5);
@@ -834,7 +834,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']) , 5);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']['bank_question_item_id'] , 11);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']['percent'] , 9999);
-        $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']['answer'] , null);
+        $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']['answer'] , 'super pas cool upt2');
         $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']['date'] , null);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['bank_answer_item']['time'] , null);
         $this->assertEquals($data['result']['poll'][0]['bq_items'][4]['id'] , 11);
