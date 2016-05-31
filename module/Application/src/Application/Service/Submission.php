@@ -257,7 +257,7 @@ class Submission extends AbstractService
         
         $m_item = $this->getServiceItem()->get($item_id);
 
-        $by_set = (null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull);
+        $by_set = (null !== $m_item->getIsGrouped() && !$m_item->getIsGrouped() instanceof IsNull);
         foreach ($res_submission as $m_submission) {
             if($by_set===true) {
                 $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
