@@ -22,6 +22,8 @@ class Item extends AbstractModel
 	protected $cut_off;
 	protected $is_graded;
 	protected $updated_date;
+	protected $is_grouped;
+	protected $has_all_student;
 
 	protected $prefix = 'item';
 
@@ -213,6 +215,30 @@ class Item extends AbstractModel
 	public function setUpdatedDate($updated_date)
 	{
 		$this->updated_date = $updated_date;
+
+		return $this;
+	}
+
+	public function getIsGrouped()
+	{
+		return $this->is_grouped;
+	}
+
+	public function setIsGrouped($is_grouped)
+	{
+		$this->is_grouped = $is_grouped;
+
+		return $this;
+	}
+
+	public function getHasAllStudent()
+	{
+		return $this->has_all_student;
+	}
+
+	public function setHasAllStudent($has_all_student)
+	{
+		$this->has_all_student = $has_all_student;
 
 		return $this;
 	}

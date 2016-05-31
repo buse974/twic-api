@@ -88,7 +88,7 @@ class LiveClassTest extends AbstractService
         $data = $this->jsonRpc('item.add', 
             [
                 'course' => (int)$data['course_id'],
-                'grading_policy_id' => 6,
+                //'grading_policy_id' => 6,
                 'title' => 'title',
                 'describe' => 'description',
                 'duration' => 234,

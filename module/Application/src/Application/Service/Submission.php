@@ -215,6 +215,15 @@ class Submission extends AbstractService
         return $m_submission;
     }
     
+    public function add($data, $item_id)
+    {
+        foreach ($data as $s) {
+            $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+            $s_id = $this->getMapper()->getLastInsertValue();
+            $this->getServiceSubmissionUser()->create($s_id, $su);
+        }
+    }
+    
     /**
      * @invokable
      *
@@ -225,7 +234,7 @@ class Submission extends AbstractService
         $me = $this->getServiceUser()->getIdentity()['id']; 
         $res_submission = $this->getMapper()->getList($item_id, $me);
         $m_item = $this->getServiceItem()->get($item_id);
-     
+
         $by_set = (null !== $m_item->getSetId() && !$m_item->getSetId() instanceof IsNull);
         foreach ($res_submission as $m_submission) {
             if($by_set===true) {
