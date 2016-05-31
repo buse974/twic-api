@@ -10,6 +10,21 @@ class SubmissionUser extends AbstractService
 {
     public function create($submission_id, array $users)
     {
+        $res_submission_user = $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+        foreach ($res_submission_user as $m_submission_user) {
+            $is_present = false;
+            foreach ($users as $k => $u) {
+                if($m_submission_user->getUserId() === $u) {
+                    unset($users[$k]);
+                    $is_present = true;
+                    break;
+                }
+            }
+            if($is_present===false) {
+                $this->getMapper()->delete($this->getModel()->setUserId($m_submission->getUserId())->setSubmissionId($submission_id));
+            }
+        }
+        
         $ret = [];
         foreach ($users as $user) {
              $ret[$user] = $this->getMapper()->insert($this->getModel()->setSubmissionId($submission_id)->setUserId($user));
