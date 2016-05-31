@@ -21,7 +21,7 @@ class SubmissionUser extends AbstractService
                 }
             }
             if($is_present===false) {
-                $this->getMapper()->delete($this->getModel()->setUserId($m_submission->getUserId())->setSubmissionId($submission_id));
+                $this->getMapper()->delete($this->getModel()->setUserId($m_submission_user->getUserId())->setSubmissionId($submission_id));
             }
         }
         
