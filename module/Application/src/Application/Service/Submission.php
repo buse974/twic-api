@@ -218,7 +218,6 @@ class Submission extends AbstractService
     public function add($data, $item_id)
     {
         $res_submission = $this->getMapper()->select($this->getModel()->setItemId($item_id));
-        
         foreach ($res_submission as $m_submission) {
             $is_present = false;
             foreach ($data as $su) {
