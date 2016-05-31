@@ -67,7 +67,9 @@ class Item extends AbstractService
      * @param integer $parent_id
      * @param integer $order_id
      */
-    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, $parent_id = null, $order_id = null)
+    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, 
+        $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null)
     {
         if(!isset($this->conf[$type])) {
             return;
@@ -81,6 +83,8 @@ class Item extends AbstractService
             ->setDuration($duration)
             ->setType($type)
             ->setStart($start)
+            ->setHasAllStudent($has_all_student)
+            ->setIsGrouped($is_grouped)
             ->setEnd($end)
             ->setCutOff($cut_off)
             ->setSetId($set_id)
@@ -93,6 +97,10 @@ class Item extends AbstractService
         
         $item_id = $this->getMapper()->getLastInsertValue();
         $this->updateOrderId($item_id,$parent_id, $order_id);
+        
+        if(null !== $submission) {
+            $this->getServiceSubmission()->add($submission, $item_id);
+        }
         
         // CONTRAINTE
         if(null !== $ct) {

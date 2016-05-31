@@ -27,6 +27,8 @@ class Item extends AbstractMapper
             'parent_id', 
             'order_id', 
             'has_submission',
+            'has_all_student',
+            'is_grouped',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
@@ -40,7 +42,21 @@ class Item extends AbstractMapper
     public function getList($course_id, $parent_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'title', 'describe', 'duration', 'set_id', 'is_graded','type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission',
+        $select->columns([
+            'id', 
+            'title', 
+            'describe', 
+            'duration', 
+            'set_id', 
+            'is_graded',
+            'type', 
+            'course_id', 
+            'grading_policy_id', 
+            'parent_id', 
+            'order_id', 
+            'has_submission',
+            'has_all_student',
+            'is_grouped',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),
@@ -66,7 +82,17 @@ class Item extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission',
+        $select->columns([
+            'id', 
+            'title', 
+            'type', 
+            'course_id', 
+            'grading_policy_id', 
+            'parent_id', 
+            'order_id', 
+            'has_submission',
+            'has_all_student',
+            'is_grouped',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
@@ -93,6 +119,8 @@ class Item extends AbstractMapper
             'parent_id', 
             'order_id', 
             'has_submission',
+            'has_all_student',
+            'is_grouped',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
