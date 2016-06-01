@@ -43,16 +43,9 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('user.addCourse', array('user' => 1,'course' => $course_id));
         $this->reset();
         
-        // ADD SET
-        $this->setIdentity(4);
-        $data = $this->jsonRpc('set.add', ['course' => $course_id,'name' => 'nameset','uid' => 'suid',
-            'groups'=>[['name' =>'namegroup','uid'=>'guid','users'=>[1,3,4]]]]);
-        $set_id = $data['result']['id'];
-        $this->reset();
-        
+       
         return [
             'school_id' => $school_id,
-            'set_id' => $set_id,
             'course_id' => $course_id
         ];
     }
@@ -94,6 +87,9 @@ class AssignmentTest extends AbstractService
                 'data' => null,
                 'parent' => null,
                 'order' => null, 
+                'submission' => [
+                    [1,3,4]
+                ]
             ]);
        
         $this->assertEquals(count($data) , 3);
@@ -165,8 +161,10 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('submission.get', [
             'item_id' => $item_id
         ]);
-       $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 4); 
+        
+        
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['submission_user']) , 3); 
         $this->assertEquals(count($data['result']['submission_user'][0]) , 6); 
         $this->assertEquals(count($data['result']['submission_user'][0]['user']) , 12); 
