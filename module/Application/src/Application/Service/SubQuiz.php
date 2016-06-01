@@ -79,10 +79,7 @@ class SubQuiz extends AbstractService
                 }
                 $final = [];
                 foreach ($key as $k) {
-                    $final[] = $tab[$k];
-                }
-                foreach ($final as $i) {
-                    $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $tab[$i], $m_poll_item->getGroupQuestionId());
+                    $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $tab[$k], $m_poll_item->getGroupQuestionId());
                 }
             } else {
                 $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $m_poll_item->getBankQuestionId(), $m_poll_item->getGroupQuestionId());
