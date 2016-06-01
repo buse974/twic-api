@@ -365,7 +365,11 @@ class Item extends AbstractService
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
             $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
             if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
-                if($this->checkAllow($item, $user_id) === false) {
+                if($item['type'] !== ModelItem::TYPE_TXT &&
+                    $item['type'] !== ModelItem::TYPE_DOCUMENT &&
+                    $item['type'] !== ModelItem::TYPE_MODULE &&
+                    $this->checkAllow($item, $user_id) === false
+                    ) {
                    unset($ar_item[$k]);
                 }
                 $item['checked'] = $this->checkVisibility($item, $user_id);

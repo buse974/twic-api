@@ -65,7 +65,6 @@ class AssignmentTest extends AbstractService
                 'describe' => 'description',
                 'duration' => 234,
                 'type' => 'IA',
-                'set_id' => $data['set_id'],
                 'ct' => [
                     'date'  => [
                         ['date' => '2016-01-01', 'after' => true],
@@ -89,7 +88,9 @@ class AssignmentTest extends AbstractService
                 'order' => null, 
                 'submission' => [
                     [1,3,4]
-                ]
+                ],
+                'has_all_student' => false,
+                'is_grouped' => true,
             ]);
        
         $this->assertEquals(count($data) , 3);
