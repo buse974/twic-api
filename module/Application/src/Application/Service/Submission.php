@@ -173,24 +173,8 @@ class Submission extends AbstractService
         if(null!==$item_id) {
             $m_item = $this->getServiceItem()->get($item_id);
         }
-        /*
-         * 
-         * Si pas de set_id et pas de group_id et si le user n'est pas dans le cours_user et n'est pas etudiant 
-         * FUCK
-         * 
-         */
         if(null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
-        }
-        
-        /**
-         * Si il n'y a que l'item et si il  pas de group_id et que l'item a un set on cherche si le user apartien a un group
-         */
-        if(null !== $item_id && null === $group_id && is_numeric($m_item->getSetId())) {
-            $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $this->getServiceUser()->getIdentity()['id']); 
-            if(null === $group_id) {
-                return;
-            }
         }
         
         if(null !== $item_id && null === $user_id && null === $submission_id && null === $group_id) {
@@ -200,14 +184,10 @@ class Submission extends AbstractService
             }
         }
         //// FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
-        ////  syslog(1, $item_id . ' ' . $submission_id . ' ' . $group_id . ' ' . $user_id);
+
         
-        // On récupére la submission si elle existe 
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
         if($res_submission->count() <= 0) {
-            //$submission_id = $this->create($item_id, $user_id, $group_id);
-            //$res_submission = $this->getMapper()->get(null, null, $submission_id);
-            
             return null;
         }
         
@@ -250,7 +230,7 @@ class Submission extends AbstractService
     
     public function addSubmissionUser($user_id, $item_id)
     {
-        if($this->getByItem($item_id, $user_id) !== null) {
+        if($this->getByItem($item_id, $user_id) === null) {
             $this->getMapper()->insert($this->getModel()->setItemId($item_id));
             $this->getServiceSubmissionUser()->add($this->getMapper()->getLastInsertValue(), $user_id);
         }
