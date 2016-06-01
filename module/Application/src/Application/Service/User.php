@@ -267,9 +267,8 @@ class User extends AbstractService
     {
         $m_item = $this->getServiceItem()->get($item_id);
         
-        return (is_numeric($m_item->getSetId())) ? 
-            $this->getMapper()->doBelongsBySet($m_item->getSetId(), $user_id):
-            $this->getMapper()->doBelongsByItemOfCourseUser($m_item->getId(), $user_id);
+        return ($this->getMapper()->doBelongsByItemOfCourseUser($m_item->getId(), $user_id) && 
+            $this->getMapper()->doBelongsByItemHaveSubmission($m_item->getId(), $user_id));
     }
     
     public function getListBySchool($school)
