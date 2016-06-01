@@ -441,7 +441,6 @@ class AssignmentTest extends AbstractService
         
     }
     
-    
     /**
      * @depends testAddItem
      */
@@ -544,9 +543,10 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('submission.getList', [
             'item_id' => $item_id
         ]);
+        
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 1); 
-        $this->assertEquals(count($data['result'][0]) , 5); 
+        $this->assertEquals(count($data['result'][0]) , 7); 
         $this->assertEquals(count($data['result'][0]['submission_user']) , 3); 
         $this->assertEquals(count($data['result'][0]['submission_user'][0]) , 6); 
         $this->assertEquals(count($data['result'][0]['submission_user'][0]['user']) , 12); 
@@ -606,12 +606,13 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result'][0]['submission_user'][2]['submit_date'] , null); 
         $this->assertEquals($data['result'][0]['submission_user'][2]['start_date'] , null); 
         $this->assertEquals($data['result'][0]['id'] , 1); 
-        $this->assertEquals($data['result'][0]['group_id'] , 1); 
-        $this->assertEquals($data['result'][0]['group_name'] , "namegroup"); 
+        $this->assertEquals($data['result'][0]['group_id'] , null); 
+        $this->assertEquals($data['result'][0]['group_name'] , null); 
         $this->assertEquals($data['result'][0]['submit_date'] , null); 
+        $this->assertEquals($data['result'][0]['is_graded'] , 0);
+        $this->assertEquals($data['result'][0]['item_id'] , 1);
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
-
     }
         
     public function setIdentity($id)

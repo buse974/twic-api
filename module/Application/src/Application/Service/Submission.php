@@ -248,11 +248,14 @@ class Submission extends AbstractService
         }
     }
     
-    public function addSubmissionUser($user, $item_id)
+    public function addSubmissionUser($user_id, $item_id)
     {
-        $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+        if($this->getByItem($item_id, $user_id) !== null) {
+            $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+            $this->getServiceSubmissionUser()->add($this->getMapper()->getLastInsertValue(), $user_id);
+        }
         
-        return $this->getServiceSubmissionUser()->add($this->getMapper()->getLastInsertValue(), $user);
+        return true;
     }
     
     /**
