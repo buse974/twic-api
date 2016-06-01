@@ -82,6 +82,18 @@ class User extends AbstractMapper
         return ($this->selectWith($select)->count() > 0);
     }
     
+    public function doBelongsByItemHaveSubmission($item_id, $user_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id'])
+        ->join('submission_user', 'submission_user.user_id=user.id', [])
+        ->join('submission', 'submission_user.submission_id=submission.id', [])
+        ->where(['submission.item_id' => $item_id])
+        ->where(['user.id' => $user_id]);
+    
+        return ($this->selectWith($select)->count() > 0);
+    }
+    
     public function doBelongsBySet($set_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
