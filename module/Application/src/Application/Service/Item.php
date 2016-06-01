@@ -7,6 +7,7 @@ use \Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
 use Application\Model\Library as ModelLibrary;
 use Application\Model\Role as ModelRole;
+use Dal\Db\ResultSet\ResultSet;
 
 class Item extends AbstractService
 {
@@ -332,6 +333,16 @@ class Item extends AbstractService
     public function getBySubmission($submission_id)
     {
         return $this->getMapper()->getBySubmission($submission_id)->current();
+    }
+
+    /**
+     * @param integer $submission_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByCourse($course_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setCourseId($course_id));
     }
     
     /**

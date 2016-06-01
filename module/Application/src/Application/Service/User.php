@@ -401,6 +401,20 @@ class User extends AbstractService
             $course = array($course);
         }
         
+        foreach ($user as $u) {
+            foreach ($course as $c) {
+                $r = $this->getRoleIds($u);
+                if(in_array(ModelRole::ROLE_STUDENT_ID, $r)) {
+                    $res_item = $this->getServiceItem()->getListByCourse($c);
+                    foreach ($res_item as $m_item) {
+                        if($m_item->getHasAllStudent()===true) {
+                            $this->getServiceSubmission()->add($u, $m_item->getId());
+                        }
+                    }
+                }
+            }
+        }
+        
         return $this->getServiceCourseUserRelation()->add($user, $course);
     }
 
@@ -921,6 +935,15 @@ class User extends AbstractService
     public function getServiceCtGroup()
     {
         return $this->getServiceLocator()->get('app_service_ct_group');
+    }
+
+    /**
+     *
+     * @return \Application\Service\Submission
+     */
+    public function getServiceSubmission()
+    {
+        return $this->getServiceLocator()->get('app_service_submission');
     }
     
     /**

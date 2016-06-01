@@ -27,10 +27,15 @@ class SubmissionUser extends AbstractService
         
         $ret = [];
         foreach ($users as $user) {
-             $ret[$user] = $this->getMapper()->insert($this->getModel()->setSubmissionId($submission_id)->setUserId($user));
+             $ret[$user] = add($submission_id, $user);
         }
         
         return $ret;
+    }
+    
+    public function add($submission_id, $user) 
+    {
+        return $this->getMapper()->insert($this->getModel()->setSubmissionId($submission_id)->setUserId($user));
     }
     
     public function OverwrittenGrade($submission_id, $grade)
