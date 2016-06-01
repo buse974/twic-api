@@ -642,12 +642,12 @@ class User extends AbstractService
      */
     public function getRoleIds($id)
     {
-        $id = [];
+        $ids = [];
         foreach ($this->getServiceRole()->getRoleByUser($id) as $m_role) {
-            $id[] = $m_role->getId();
+            $ids[] = $m_role->getId();
         }
         
-        return $id;
+        return $ids;
     }
     
     /**
