@@ -73,7 +73,7 @@ class SubQuiz extends AbstractService
             $m_group_question = $this->getServiceGroupQuestion()->getList($m_poll_item->getGroupQuestionId());
             if(null !== $m_group_question) { 
                 $tab = $m_group_question->getBankQuestion();
-                sylog(1, "tab: ".json_encode($tab));
+                syslog(1, "tab: ".json_encode($tab));
                 foreach (array_rand($tab, $m_group_question->getNb())as $i) {
                     $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $tab[$i], $m_poll_item->getGroupQuestionId());
                 }
