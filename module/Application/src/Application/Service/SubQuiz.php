@@ -77,7 +77,6 @@ class SubQuiz extends AbstractService
                 if(!is_array($key)) {
                     $key = [$key];
                 }
-                $final = [];
                 foreach ($key as $k) {
                     $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $tab[$k], $m_poll_item->getGroupQuestionId());
                 }
