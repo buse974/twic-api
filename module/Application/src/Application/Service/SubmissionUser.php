@@ -27,7 +27,7 @@ class SubmissionUser extends AbstractService
         
         $ret = [];
         foreach ($users as $user) {
-             $ret[$user] = add($submission_id, $user);
+             $ret[$user] = $this->add($submission_id, $user);
         }
         
         return $ret;
