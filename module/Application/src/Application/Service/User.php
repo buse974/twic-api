@@ -407,7 +407,7 @@ class User extends AbstractService
                     $res_item = $this->getServiceItem()->getListByCourse($c);
                     foreach ($res_item as $m_item) {
                         if($m_item->getHasAllStudent()===true) {
-                            $this->getServiceSubmission()->add($u, $m_item->getId());
+                            $this->getServiceSubmission()->addSubmissionUser($u, $m_item->getId());
                         }
                     }
                 }

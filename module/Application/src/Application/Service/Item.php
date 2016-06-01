@@ -358,16 +358,15 @@ class Item extends AbstractService
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
         $user_id = $ar_user['id']; 
-        
         $ar_item =  $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
         
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
             $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
             if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
-                if($item['type'] !== ModelItem::TYPE_TXT &&
+                if($item['type'] !== ModelItem::TYPE_TXT       &&
                     $item['type'] !== ModelItem::TYPE_DOCUMENT &&
-                    $item['type'] !== ModelItem::TYPE_MODULE &&
+                    $item['type'] !== ModelItem::TYPE_MODULE   &&
                     $this->checkAllow($item, $user_id) === false
                     ) {
                    unset($ar_item[$k]);
