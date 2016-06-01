@@ -132,7 +132,6 @@ class Thread extends AbstractService
     public function get($id)
     {
         $mapper = $this->getMapper();
-
         $res_thread = $mapper->getList(null, $id);
 
         if ($res_thread->count() <= 0) {

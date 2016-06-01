@@ -112,9 +112,9 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         
         $data = $this->jsonRpc('item.get', array('id' => $item_id));
-        
+
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 18);
+        $this->assertEquals(count($data['result']) , 20);
         $this->assertEquals(count($data['result']['program']) , 2);
         $this->assertEquals($data['result']['program']['id'] , 1);
         $this->assertEquals($data['result']['program']['name'] , "program name");
@@ -141,15 +141,17 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['grading_policy_id'] , null);
         $this->assertEquals($data['result']['title'] , "title");
         $this->assertEquals($data['result']['describe'] , "description");
-        $this->assertEquals($data['result']['has_submission'] , true);
         $this->assertEquals($data['result']['duration'] , 234);
         $this->assertEquals($data['result']['type'] , "IA");
         $this->assertEquals($data['result']['set_id'] , 1);
         $this->assertEquals($data['result']['parent_id'] , null);
         $this->assertEquals($data['result']['order_id'] , null);
+        $this->assertEquals($data['result']['has_submission'] , 1);
         $this->assertEquals($data['result']['start'] , null);
         $this->assertEquals($data['result']['end'] , null);
         $this->assertEquals($data['result']['cut_off'] , null);
+        $this->assertEquals($data['result']['is_grouped'] , 0);
+        $this->assertEquals($data['result']['has_all_student'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
