@@ -348,15 +348,15 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $course            
-     * @param integer $parent_id            
-     *
-     * @return array
+     * @param integer $course
+     * @param integer $parent_id
+     * @param integer $start
+     * @param integer $end
      */
-    public function getList($course, $parent_id = null)
+    public function getList($course, $parent_id = null, $start = null, $end = null)
     {
         $ar_user = $this->getServiceUser()->getIdentity();
-        $roles = $ar_user['roles'];  
+        $roles = $ar_user['roles'];
         $user_id = $ar_user['id']; 
         
         $ar_item =  $this->getMapper()->getList($course, $parent_id)->toArrayParent('order_id');
@@ -364,16 +364,15 @@ class Item extends AbstractService
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
             $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
-            
             if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
                 if($this->checkAllow($item, $user_id) === false) {
-                    unset($ar_item[$k]);
+                   unset($ar_item[$k]);
                 }
                 $item['checked'] = $this->checkVisibility($item, $user_id);
             }
         }
         
-        return $ar_item;
+        return array_values($ar_item);
     }
     
     public function checkAllow($item, $user_id = null)
