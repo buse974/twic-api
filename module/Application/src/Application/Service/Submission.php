@@ -234,13 +234,14 @@ class Submission extends AbstractService
         }
         
         foreach ($data as $su) {
-            if(is_numeric($su['submission_id'])) {
+            
+            if(isset($su['submission_id']) && is_numeric($su['submission_id'])) {
                 $s_id = $su['submission_id'];
             } else {
                 $this->getMapper()->insert($this->getModel()
                     ->setItemId($item_id)
-                    ->setGroupName($su['group_name'])
-                    ->setGroupId($su['group_id']));
+                    ->setGroupName((isset($su['group_name'])?$su['group_name']:null))
+                    ->setGroupId((isset($su['group_id'])?$su['group_id']:null)));
                 $s_id = $this->getMapper()->getLastInsertValue();
             }
             $this->getServiceSubmissionUser()->create($s_id, $su['submission_user']);
@@ -357,7 +358,7 @@ class Submission extends AbstractService
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         
         if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
-            if(!(!is_numeric($m_item->getSetId()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
+            if(!(!is_numeric($m_item->getIsGrouped()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
             }
         } else {

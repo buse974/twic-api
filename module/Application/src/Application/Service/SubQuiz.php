@@ -74,7 +74,7 @@ class SubQuiz extends AbstractService
             if(null !== $m_group_question) { 
                 $tab = $m_group_question->getBankQuestion();
                 $key = array_rand($tab, $m_group_question->getNb());
-                if(!is_array($key)) {
+                if(!is_array($key)) {   
                     $key = [$key];
                 }
                 foreach ($key as $k) {

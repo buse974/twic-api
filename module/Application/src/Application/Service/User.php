@@ -8,6 +8,7 @@ use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Role as ModelRole;
 use Firebase\Token\TokenGenerator;
 use Zend\Db\Sql\Predicate\IsNull;
+use Application\Model\Item as ModelItem;
 
 class User extends AbstractService
 {
@@ -406,7 +407,10 @@ class User extends AbstractService
                 if(in_array(ModelRole::ROLE_STUDENT_ID, $r)) {
                     $res_item = $this->getServiceItem()->getListByCourse($c);
                     foreach ($res_item as $m_item) {
-                        if($m_item->getHasAllStudent()===true) {
+                        if( $m_item->getType() !== ModelItem::TYPE_TXT       &&
+                            $m_item->getType() !== ModelItem::TYPE_DOCUMENT &&
+                            $m_item->getType() !== ModelItem::TYPE_MODULE   &&
+                            $m_item->getHasAllStudent()===1) {
                             $this->getServiceSubmission()->addSubmissionUser($u, $m_item->getId());
                         }
                     }
