@@ -45,7 +45,7 @@ class Item extends AbstractMapper
         $select->columns([
             'id', 
             'title', 
-            'describe', 
+           // 'describe', 
             'duration', 
             'set_id', 
             'is_graded',
@@ -313,42 +313,26 @@ class Item extends AbstractMapper
         */
         
        $sql = 'SELECT 
-                    COUNT(DISTINCT COALESCE(set_group.group_id, user_role.user_id)) AS `item$due`,
+                    COUNT(1) AS `item$due`,
                     `item`.`id` AS `item$id`,
                     `item`.`title` AS `item$title`,
                     `item`.`type` AS `item$type`,
+                    `item`.`is_grouped`,
                     DATE_FORMAT(item.start, "%Y-%m-%dT%TZ") AS `item$start`,
                     DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ") AS `item$cut_off`,
                     DATE_FORMAT(item.end, "%Y-%m-%dT%TZ") AS `item$end`,
-                    SUM(IF(submission.is_graded IS NULL,
-                        0,
-                        submission.is_graded)) AS `item$graded`,
+                    SUM(IF(submission.is_graded IS NULL, 0, submission.is_graded)) AS `item$graded`,
                     SUM(IF(submission.submit_date IS NULL, 0, 1)) AS `item$submitted`,
                     `course`.`title` AS `course$title`,
                     `program`.`name` AS `program$name`
-                FROM
+                FROM 
                     `item`
-                        LEFT JOIN
-                    `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id`
-                        AND item.set_id IS NULL
-                        LEFT JOIN
-                    `user_role` ON `user_role`.`user_id` = `course_user_relation`.`user_id`
-                        AND `user_role`.`role_id` = '.ModelRole::ROLE_STUDENT_ID.' 
-                        LEFT JOIN
-                    `set_group` ON `item`.`set_id` = `set_group`.`set_id`
-                        LEFT JOIN
-                    `group_user` ON `set_group`.`group_id` = `group_user`.`group_id`
-                        LEFT JOIN
-                    `submission_user` ON (`submission_user`.`user_id` = `user_role`.`user_id`)
-                        OR (`user_role`.`user_id` IS NULL
-                        AND `submission_user`.`user_id` = `group_user`.`user_id`)
-                        LEFT JOIN
-                    `submission` ON (`submission`.`id` = `submission_user`.`submission_id`
-                        AND `submission`.`item_id` = `item`.`id`)
-                        INNER JOIN
-                    `course` ON `item`.`course_id` = `course`.`id`
-                        INNER JOIN
-                    `program` ON `program`.`id` = `course`.`program_id`
+                        LEFT JOIN 
+                    `submission` ON `submission`.`item_id` = `item`.`id` 
+                        INNER JOIN 
+                    `course` ON `item`.`course_id` = `course`.`id` 
+                        INNER JOIN 
+                    `program` ON `program`.`id` = `course`.`program_id` 
                WHERE ';
         
         $where=[];

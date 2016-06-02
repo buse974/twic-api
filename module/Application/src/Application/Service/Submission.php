@@ -562,21 +562,19 @@ class Submission extends AbstractService
     }
     
     
-      /**
+    /**
      * @invokable
      * 
      * @param integer $id
-     * @param integer $group
-     * @param integer $user
-
+     * 
      * @param array $users
      */
-    public function assignGraders($users, $id, $group = null, $user = null) 
+    public function assignGraders($users, $id) 
     {
        return $this->getServiceSubmissionPg()->replace($id, $users);
     }
     
-      /**
+    /**
      * @invokable
      * 
      * @param integer $id
