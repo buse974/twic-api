@@ -114,7 +114,7 @@ class SubQuiz extends AbstractService
         }
         
         $m_poll_item = $this->getServicePollItem()->get($m_sub_question->getPollItemId());
-        $m_bank_question = $this->getServiceBankQuestion()->get($m_poll_item->getBankQuestionId());
+        $m_bank_question = $this->getServiceBankQuestion()->get($m_sub_question->getBankQuestionId());
 
         $final_point = 0;
         $point = $m_poll_item->getNbPoint();
