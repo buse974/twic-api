@@ -62,15 +62,20 @@ class Item extends AbstractService
      * @param array $ct
      * @param array $opt
      * @param integer $set_id
+     * @param integer $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
      * @param integer $parent_id
      * @param integer $order_id
+     * @param integer $has_all_student
+     * @param integer $is_grouped
+     * @param array $submission
+     * @param integer $is_complete
      */
     public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, 
         $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
-        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null)
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null)
     {
         if(!isset($this->conf[$type])) {
             return;
@@ -87,6 +92,7 @@ class Item extends AbstractService
             ->setHasAllStudent($has_all_student)
             ->setIsGrouped($is_grouped)
             ->setEnd($end)
+            ->setIsComplete($is_complete)
             ->setCutOff($cut_off)
             ->setSetId($set_id)
             ->setHasSubmission($has_submission)
@@ -280,15 +286,20 @@ class Item extends AbstractService
      * @param string $type
      * @param array $data
      * @param integer $set_id
+     * @param integer $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
      * @param integer $parent_id
      * @param integer $order_id
+     * @param integer $has_all_student
+     * @param integer $is_grouped
+     * @param array $submission
+     * @param integer $is_complete
      */
     public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, 
         $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
-        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null)
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -299,6 +310,7 @@ class Item extends AbstractService
             ->setStart($start)
             ->setSetId(0 !== $set_id ? $set_id : new IsNull())
             ->setEnd($end)
+            ->setIsComplete($is_complete)
             ->setCutOff($cut_off)
             ->setType($type)
             ->setHasAllStudent($has_all_student)
