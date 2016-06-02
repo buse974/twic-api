@@ -809,7 +809,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
-    
 
     /**
      * @depends testCanGetSubmission
