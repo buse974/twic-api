@@ -239,25 +239,7 @@ class User extends AbstractService
      */
     public function getListByItem($item_id)
     {
-        $m_item = $this->getServiceItem()->get($item_id);
-        
-        $res_ct_group = $this->getServiceCtGroup()->get($item_id);
-        if($res_ct_group->count() > 0) {
-            $grp = [];
-            foreach ($res_ct_group as $m_ct_group) {
-                $grp[] = $m_ct_group->getGroupId();
-            }
-            
-            $res_user = $this->getMapper()->getListUsersByGroup($grp);
-        } else {
-            if(is_numeric($m_item->getSetId())) {
-                $res_user = $this->getMapper()->getListUsersBySet($m_item->getSetId());
-            } else {
-                $res_user = $this->getMapper()->getListUsersByItemOfCourseUser($m_item->getId());
-            }
-        }
-        
-        return $res_user;
+       return  $this->getMapper()->getListByItem($item_id);
     }
     
     /**

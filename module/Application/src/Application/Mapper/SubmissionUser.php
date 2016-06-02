@@ -90,7 +90,13 @@ class SubmissionUser extends AbstractMapper
     public function getListBySubmissionId($submission_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['submission_id', 'user_id', 'grade', 'submit_date','start_date'])
+        $select->columns([
+            'submission_id', 
+            'user_id', 
+            'grade', 
+            'submission_user$submit_date' => new Expression('DATE_FORMAT(submission_user.submit_date, "%Y-%m-%dT%TZ")'),
+            'submission_user$start_date' => new Expression('DATE_FORMAT(submission_user.start_date, "%Y-%m-%dT%TZ")')        
+        ])
             ->join('user', 'user.id=submission_user.user_id', ['user$id' => new Expression('user.id'),
                 'firstname',
                 'gender',

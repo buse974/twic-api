@@ -808,10 +808,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
-        
     }
-    
 
     /**
      * @depends testCanGetSubmission
