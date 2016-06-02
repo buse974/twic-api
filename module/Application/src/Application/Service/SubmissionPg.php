@@ -43,7 +43,6 @@ class SubmissionPg extends AbstractService
         if(!$m_opt_grading->getHasPg() && !$m_opt_grading->getPgAuto()) {
             return false;
         }
-        
         $ar_s = []; 
         $ar_u = [];
         $res_submission = $this->getServiceSubmission()->getList($item_id);
@@ -56,33 +55,60 @@ class SubmissionPg extends AbstractService
             }
         }
         $nb = $m_opt_grading->getPgNb();
-        
-        
-        
-        
-        
-        
+        $nbu = count($ar_u);
+        $start = $ar_u;
         $final = [];
         foreach ($ar_s as $s_id => $s_user) {
+            if(count($ar_u) === 0) {
+                $ar_u = $start;
+            }
             $tmp = $ar_u;
-            foreach ($s_user as $uu)
-            unset($tmp[array_search($uu, $tmp)]);
-            
+            foreach ($s_user as $uu) {
+                $search = array_search($uu, $tmp);
+                if($search !== false) {
+                    unset($tmp[$search]);
+                }
+            }
             if(count($tmp) >= $nb) {
                 $keys = array_rand($tmp, $nb);
                 if(!is_array($keys)) {$keys = [$keys];}
                 foreach ($keys as $k) {
-                    $final[$s_id] = $ar_u[$k];
+                    $final[$s_id][] = $ar_u[$k];
                     unset($ar_u[$k]);
+                }
+            } else {
+                $nbmin = count($tmp);
+                $ar_u = $start;
+                foreach ($tmp as $k => $t) {
+                    $final[$s_id][] = $ar_u[$k];
+                    unset($ar_u[$k]);
+                }
+                $tmp = $ar_u;
+                foreach ($s_user as $uu) {
+                    $search = array_search($uu, $tmp);
+                    if($search !== false) {
+                        unset($tmp[$search]);
+                    }
+                }
+                if(count($tmp) >= $nb) {
+                    $keys = array_rand($tmp, $nb - $nbmin);
+                    if(!is_array($keys)) {$keys = [$keys];}
+                    foreach ($keys as $k) {
+                        $final[$s_id][] = $ar_u[$k];
+                        unset($ar_u[$k]);
+                    }
+                } else {
+                    foreach ($tmp as $k => $t) {
+                        $final[$s_id][] = $ar_u[$k];
+                        unset($ar_u[$k]);
+                    }
                 }
             }
         }
         
-        
-        print_r($nb);
-        print_r($ar_u);
-        print_r($ar_s);
-        print_r($final);
+        foreach ($final as $s => $u) {
+            $this->replace($s, $u);
+        }
     }
     
     /**
