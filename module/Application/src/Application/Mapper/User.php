@@ -371,6 +371,28 @@ class User extends AbstractMapper
         
         return $this->selectWith($select);
     }
+    
+    public function getListByItem($item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['user$id' => new Expression('user.id'),
+            'firstname',
+            'gender',
+            'lastname',
+            'email',
+            'has_email_notifier',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position',
+            'interest',
+            'avatar',
+            'school_id'
+        ])
+            ->join('submission_user', 'submission_user.user_id=user.id', [])
+            ->join('submission', 'submission.id=submission_user.submission_id', [])
+            ->where(['submission.item_id' => $item_id]);
+        
+        return $this->selectWith($select);
+    }
 
     public function getListByItemProgWithInstrutor($submission)
     {
