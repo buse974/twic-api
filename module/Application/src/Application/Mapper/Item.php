@@ -39,7 +39,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($course_id, $parent_id = null, $is_complete = null)
+    public function getList($course_id, $parent_id = null, $is_incomplete = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -69,7 +69,7 @@ class Item extends AbstractMapper
         ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT)
         ->where(array('item.course_id' => $course_id));
         
-        if($is_complete !== true) {
+        if($is_incomplete !== true) {
             $select->where(array('item.is_complete IS TRUE'));
         }
         if($parent_id===0 || $parent_id === null) {
