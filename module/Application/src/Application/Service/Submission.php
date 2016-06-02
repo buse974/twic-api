@@ -176,17 +176,18 @@ class Submission extends AbstractService
         if(null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
-        
-        if(null !== $item_id && null === $user_id && null === $submission_id && null === $group_id) {
+        if(null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        /*if(null !== $item_id && null === $user_id && null === $submission_id && null === $group_id) {
             $m_item = $this->getServiceItem()->get($item_id);
             if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS && $m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
                 $user_id = $this->getServiceUser()->getIdentity()['id'];
             }
-        }
+        }*/
         //// FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
 
-        
-        $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id, $group_id);
+        $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
         if($res_submission->count() <= 0) {
             return null;
         }
@@ -567,17 +568,11 @@ class Submission extends AbstractService
      * @param integer $id
      * @param integer $group
      * @param integer $user
-     * @param integer $item
+
      * @param array $users
      */
-    public function assignGraders($users, $id = null, $group = null, $user = null, $item = null ) 
+    public function assignGraders($users, $id, $group = null, $user = null) 
     {
-        if(null === $id){
-            if(null === $item){
-                return 0;
-            }
-            $id = $this->create($item, $user, $group);
-        }
        return $this->getServiceSubmissionPg()->replace($id, $users);
     }
     

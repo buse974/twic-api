@@ -407,11 +407,14 @@ class User extends AbstractService
                 if(in_array(ModelRole::ROLE_STUDENT_ID, $r)) {
                     $res_item = $this->getServiceItem()->getListByCourse($c);
                     foreach ($res_item as $m_item) {
+                        // Si item est différent de Txt Document et Module 
                         if( $m_item->getType() !== ModelItem::TYPE_TXT       &&
                             $m_item->getType() !== ModelItem::TYPE_DOCUMENT &&
                             $m_item->getType() !== ModelItem::TYPE_MODULE   &&
                             $m_item->getHasAllStudent()===1) {
+                                
                             $this->getServiceSubmission()->addSubmissionUser($u, $m_item->getId());
+                            
                         }
                     }
                 }

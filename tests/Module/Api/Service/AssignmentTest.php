@@ -79,7 +79,7 @@ class AssignmentTest extends AbstractService
                         'pg_due_date' => 
                         '2016-10-10', 
                         'pg_can_view' => true, 
-                        'user_can_view' => true, 
+                        'user_can_view' => true,
                         'pg_stars' => true
                     ], 
                 ],
