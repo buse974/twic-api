@@ -70,6 +70,13 @@ class GradingTest extends AbstractService
                 'desc' => 'blablabla', 
                 'course' => $course_id, 
                 'grading_policy_id' => $grading_policy_id,  
+                'submission' => [
+                    [ 'submission_user' => [4]],
+                    [ 'submission_user' => [7]],
+                    [ 'submission_user' => [6]]
+                ],
+                'has_all_student' => false,
+                'is_grouped' => true,
                 'opt' => [ 
                         'grading' => [ 
                             'mode' => 'average', 
@@ -87,7 +94,6 @@ class GradingTest extends AbstractService
         $this->reset();
         
         // ADD SUBMISSION
-        
         $this->setIdentity(4);
         $data = $this->jsonRpc('submission.get', array('item_id' => $item_id));
         $submission_id = $data['result']['id'];
@@ -95,7 +101,6 @@ class GradingTest extends AbstractService
         
         
         // ADD SUBMISSION2
-        
         $this->setIdentity(7);
         $data = $this->jsonRpc('submission.get', array('item_id' => $item_id));
         $submission_id2 = $data['result']['id'];

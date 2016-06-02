@@ -77,23 +77,10 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('user.update', array('id' => 4, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
         $this->reset();
         
-        // ADD SET
-        $this->setIdentity(4);
-        $data = $this->jsonRpc('set.add', 
-            ['course' => $course_id,
-                'name' => 'nameset',
-                'uid' => 'suid',
-                'groups'=>[
-                    ['name' =>'namegroup','uid'=>'guid','users'=>[1,2]],
-                    ['name' =>'namegroup2','uid'=>'guid','users'=>[3,4]],
-                ]]);
-        
-        $set_id = $data['result']['id'];
         $this->reset();
         
         return [
             'school_id' => $school_id,
-            'set_id' => $set_id,
             'course_id' => $course_id
         ];
     }
@@ -109,11 +96,16 @@ class GroupWorkTest extends AbstractService
             [
                 'course' => (int)$data['course_id'],
                 //'grading_policy_id' => 6,
+                'submission' => [
+                    [ 'submission_user' => [1,2]],
+                    [ 'submission_user' => [3,4]]
+                ],
+                'has_all_student' => false,
+                'is_grouped' => true,
                 'title' => 'title',
                 'describe' => 'description',
                 'duration' => 234,
                 'type' => 'WG',
-                'set_id' => $data['set_id'],
                 'ct' => [
                     'date'  => [
                         ['date' => '2016-01-01', 'after' => true],
@@ -152,14 +144,26 @@ class GroupWorkTest extends AbstractService
     /**
      * @depends testAddItem
      */
+    public function testautoAssign($item_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('submissionpg.autoAssign',
+            [
+                'item_id' => $item_id
+            ]);
+        
+        print_r($data);
+    }
+    
+    /**
+     * @depends testAddItem
+     */
     public function testVideoconfGetByItem($item_id)
     {
         $this->setIdentity(1);
-    
         $data = $this->jsonRpc('videoconf.getByItem',
             [
-                'item_id' => $item_id,
-               // 'group_id' => 1
+                'item_id' => $item_id
             ]);
         
         $this->assertEquals(count($data) , 3);
@@ -262,7 +266,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
     
     /**
@@ -275,7 +278,6 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('videoconf.getByItem',
             [
                 'item_id' => $item_id,
-                'group_id' => 1
             ]);
     
         $this->assertEquals(count($data) , 3);
