@@ -24,6 +24,7 @@ class Item extends AbstractModel
 	protected $updated_date;
 	protected $is_grouped;
 	protected $has_all_student;
+	protected $is_complete;
 
 	protected $prefix = 'item';
 
@@ -239,6 +240,18 @@ class Item extends AbstractModel
 	public function setHasAllStudent($has_all_student)
 	{
 		$this->has_all_student = $has_all_student;
+
+		return $this;
+	}
+
+	public function getIsComplete()
+	{
+		return $this->is_complete;
+	}
+
+	public function setIsComplete($is_complete)
+	{
+		$this->is_complete = $is_complete;
 
 		return $this;
 	}
