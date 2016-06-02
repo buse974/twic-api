@@ -39,7 +39,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($course_id, $parent_id = null)
+    public function getList($course_id, $parent_id = null, $is_complete = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -57,6 +57,7 @@ class Item extends AbstractMapper
             'has_submission',
             'has_all_student',
             'is_grouped',
+            'is_complete',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),
@@ -68,6 +69,9 @@ class Item extends AbstractMapper
         ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT)
         ->where(array('item.course_id' => $course_id));
         
+        if($is_complete !== true) {
+            $select->where(array('item.is_complete IS TRUE'));
+        }
         if($parent_id===0 || $parent_id === null) {
             $select->where(array('item.parent_id IS NULL'));
         } else {
