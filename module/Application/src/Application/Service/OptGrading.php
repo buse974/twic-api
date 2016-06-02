@@ -81,4 +81,15 @@ class OptGrading extends AbstractService
     
         return $this->getMapper()->delete($m_opt_grading);
     }
+    
+    /**
+     * @param integer $item_id
+     * @return \Application\Model\OptGrading
+     */
+    public function get($item_id)
+    {
+        $m_opt_grading = $this->getModel()->setItemId($item_id);
+        
+        return $this->getMapper()->select($m_opt_grading)->current();
+    }
 }
