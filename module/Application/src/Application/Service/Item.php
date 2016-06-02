@@ -367,14 +367,17 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null, $start = null, $end = null)
     {
+        
+        
+        $ar_user = $this->getServiceUser()->getIdentity();
+        $roles = $ar_user['roles'];
+        $user_id = $ar_user['id']; 
+        
         $is_student = false;
         if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
             $is_student = true;
         }
         
-        $ar_user = $this->getServiceUser()->getIdentity();
-        $roles = $ar_user['roles'];
-        $user_id = $ar_user['id']; 
         $ar_item =  $this->getMapper()->getList($course, $parent_id, $is_student)->toArrayParent('order_id');
 
         foreach ($ar_item as $k => &$item) {
