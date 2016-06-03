@@ -385,7 +385,7 @@ class Item extends AbstractService
                 if($item['type'] !== ModelItem::TYPE_TXT       &&
                     $item['type'] !== ModelItem::TYPE_DOCUMENT &&
                     $item['type'] !== ModelItem::TYPE_MODULE   &&
-                    $this->checkAllow($item, $user_id) === false
+                    $this->checkAllow($item['id'], $user_id) === false
                     ) {
                    unset($ar_item[$k]);
                 }
@@ -396,13 +396,13 @@ class Item extends AbstractService
         return array_values($ar_item);
     }
     
-    public function checkAllow($item, $user_id = null)
+    public function checkAllow($item_id, $user_id = null)
     {
         if(null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
         
-        return $this->getServiceUser()->doBelongs($item['id'], $user_id);
+        return $this->getServiceUser()->doBelongs($item_id, $user_id);
          
     }
     
@@ -644,6 +644,14 @@ class Item extends AbstractService
      */
     public function get($id)
     {
+        $ar_user = $this->getServiceUser()->getIdentity();
+        $roles = $ar_user['roles'];
+        if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+            if(!$this->checkAllow($id)) {
+                throw new \Exception('no autorisation for this item');
+            }
+        }
+       
         $is_allow = true;
         $res_item = ($is_allow) ? $this->getMapper()->getAllow($id) : $this->getMapper()->get($id);
         if ($res_item->count() <= 0) {
