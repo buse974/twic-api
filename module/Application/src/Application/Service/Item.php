@@ -165,6 +165,7 @@ class Item extends AbstractService
             }
         }
     }
+    
     private function factorieComponent($component, $data, $item_id) 
     {
         $cmp = false;
