@@ -15,8 +15,8 @@ class Thread extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
-            'id', 
-            'title', 
+            'id',
+            'title',
             'item_id',
             'thread$created_date' => new Expression('DATE_FORMAT(thread.created_date, "%Y-%m-%dT%TZ")'), 
             'thread$deleted_date' => new Expression('DATE_FORMAT(thread.deleted_date, "%Y-%m-%dT%TZ")')))
@@ -36,8 +36,8 @@ class Thread extends AbstractMapper
             $select->where(array('thread.id' => $thread));
         }
         if (null !== $submission_id) {
-            $select->join('sub_thread', 'sub_thread.thread_id=sub_thread.thread_id', array())
-            ->where(array('sub_thread.submission_id' => $submission_id));
+            $select->join('submission', 'submission.item_id=thread.item_id', [])
+            ->where(array('submission.id' => $submission_id));
         }
 
         
