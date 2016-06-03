@@ -340,7 +340,6 @@ class Submission extends AbstractService
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         }
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
-        
         if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
             if(!(!is_numeric($m_item->getIsGrouped()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
@@ -348,7 +347,6 @@ class Submission extends AbstractService
         } else {
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
         }
-        
         if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
             $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
         } else {
@@ -357,7 +355,9 @@ class Submission extends AbstractService
         if(isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
             $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         }
-        
+        if(isset($type[ModelItem::CMP_DISCUSSION])) {
+            $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
+        }
         return $ret;
     }
     
