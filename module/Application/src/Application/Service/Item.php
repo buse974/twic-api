@@ -365,8 +365,12 @@ class Item extends AbstractService
      * @param integer $start
      * @param integer $end
      */
-    public function getList($course, $parent_id = null, $start = null, $end = null)
+    public function getList($course = null, $parent_id = null, $start = null, $end = null)
     {
+        if(null === $course && $start === null && $end === null) {
+            throw new \Exception("error course is not declarer");
+        }
+        
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
         $user_id = $ar_user['id']; 
