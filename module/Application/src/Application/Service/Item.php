@@ -376,7 +376,7 @@ class Item extends AbstractService
             $is_student = true;
         }
         
-        $ar_item =  $this->getMapper()->getList($course, $parent_id, !$is_student)->toArrayParent('order_id');
+        $ar_item =  $this->getMapper()->getList($course, $parent_id, !$is_student, $start, $end)->toArrayParent('order_id');
 
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
@@ -657,7 +657,7 @@ class Item extends AbstractService
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item');
         }
-        
+            
         $m_item = $res_item->current();
         $m_item->setCtDate($this->getServiceCtDate()->get($m_item->getId()))
             ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))

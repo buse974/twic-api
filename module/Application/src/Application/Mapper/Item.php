@@ -39,7 +39,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($course_id, $parent_id = null, $is_incomplete = null)
+    public function getList($course_id, $parent_id = null, $is_incomplete = null, $start = null, $end = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -72,16 +72,63 @@ class Item extends AbstractMapper
         if($is_incomplete !== true) {
             $select->where(array('item.is_complete IS TRUE'));
         }
-        if($parent_id===0 || $parent_id === null) {
-            $select->where(array('item.parent_id IS NULL'));
-        } else {
-            $select->where(array('item.parent_id' => $parent_id));
+        
+        if(null === $start && null === $end) {
+            if($parent_id===0 || $parent_id === null) {
+                $select->where(array('item.parent_id IS NULL'));
+            } else {
+                $select->where(array('item.parent_id' => $parent_id));
+            }
+        }
+        
+        if (null != $start && null !== $end) {
+            $select->where(['( item.start BETWEEN ? AND ? ' => [$start,$end]])
+                ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
+                ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
         }
         
         $select->group('item.id');
         
         return $this->selectWith($select);
     }
+    
+    /**
+     * @param array $me
+     */
+    public function getListForCalendar($me, $start = null, $end = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission', 'set_id',
+            'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
+            'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
+            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
+        ])
+        ->join('course', 'course.id=item.course_id', ['id', 'title'])
+        ->join('program', 'program.id=course.program_id', ['id', 'name'])
+        ->where(array('program.school_id' => $me['school']['id']))
+        ->where('item.title IS NOT NULL')
+        ->where('item.start IS NOT NULL');
+        if (!array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $me['roles'])) {
+            $select->join('course_user_relation','course.id = course_user_relation.course_id', [])
+            ->where(array('course_user_relation.user_id' => $me['id']));
+        }
+    
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
+            $select->join('set','set.id = item.set_id', [], $select::JOIN_LEFT)
+            ->join('set_group','set.id = set_group.set_id', [], $select::JOIN_LEFT)
+            ->join('group','group.id = set_group.group_id', [], $select::JOIN_LEFT)
+            ->join('group_user','group.id = group_user.group_id', [], $select::JOIN_LEFT)
+            ->where('( item.set_id IS NULL ')
+            ->where(['group_user.user_id = ? )' => $me['id']], Predicate::OP_OR);
+        }
+        if (null != $start && null !== $end) {
+            $select->where(['( item.start BETWEEN ? AND ? ' => [$start,$end]])
+            ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
+            ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
+        }
+        return $this->selectWith($select);
+    }
+    
     
     public function get($id)
     {
@@ -466,43 +513,6 @@ class Item extends AbstractMapper
             $select->group('item.id');
         }
         
-        return $this->selectWith($select);
-    }
-    
-    /**
-     * @param array $me
-     */
-    public function getListForCalendar($me, $start = null, $end = null)
-    {
-      $select = $this->tableGateway->getSql()->select();
-      $select->columns(['id', 'title', 'type', 'course_id', 'grading_policy_id', 'parent_id', 'order_id', 'has_submission', 'set_id',
-            'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
-            'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
-            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
-        ])
-            ->join('course', 'course.id=item.course_id', ['id', 'title'])
-            ->join('program', 'program.id=course.program_id', ['id', 'name'])
-            ->where(array('program.school_id' => $me['school']['id']))
-            ->where('item.title IS NOT NULL')
-            ->where('item.start IS NOT NULL');
-        if (!array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $me['roles'])) {
-            $select->join('course_user_relation','course.id = course_user_relation.course_id', [])
-                    ->where(array('course_user_relation.user_id' => $me['id']));
-        }
-        
-        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
-            $select->join('set','set.id = item.set_id', [], $select::JOIN_LEFT)
-                   ->join('set_group','set.id = set_group.set_id', [], $select::JOIN_LEFT)
-                   ->join('group','group.id = set_group.group_id', [], $select::JOIN_LEFT)
-                   ->join('group_user','group.id = group_user.group_id', [], $select::JOIN_LEFT)
-                ->where('( item.set_id IS NULL ')
-                ->where(['group_user.user_id = ? )' => $me['id']], Predicate::OP_OR);
-        }
-        if (null != $start && null !== $end) {
-            $select->where(['( item.start BETWEEN ? AND ? ' => [$start,$end]])
-                ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
-                ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
-        }
         return $this->selectWith($select);
     }
 }
