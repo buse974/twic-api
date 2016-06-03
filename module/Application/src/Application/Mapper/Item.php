@@ -39,7 +39,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($course_id, $parent_id = null, $is_incomplete = null, $start = null, $end = null)
+    public function getList($course_id = null, $parent_id = null, $is_incomplete = null, $start = null, $end = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -66,8 +66,11 @@ class Item extends AbstractMapper
         ->join('document', 'document.item_id=item.id', [], $select::JOIN_LEFT)
         ->join('library', 'document.library_id=library.id', array('library!id' => 'id', 'name', 'type'), $select::JOIN_LEFT)
         ->join('submission', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
-        ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT)
-        ->where(array('item.course_id' => $course_id));
+        ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT);
+        
+        if(null !== $course_id) {
+            $select->where(array('item.course_id' => $course_id));
+        }
         
         if($is_incomplete !== true) {
             $select->where(array('item.is_complete IS TRUE'));
@@ -81,7 +84,7 @@ class Item extends AbstractMapper
             }
         }
         
-        if (null != $start && null !== $end) {
+        if (null !== $start && null !== $end) {
             $select->where(['( item.start BETWEEN ? AND ? ' => [$start,$end]])
                 ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
                 ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
