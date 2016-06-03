@@ -248,10 +248,8 @@ class User extends AbstractService
      */
     public function doBelongs($item_id, $user_id)
     {
-        $m_item = $this->getServiceItem()->get($item_id);
-        
-        return ($this->getMapper()->doBelongsByItemOfCourseUser($m_item->getId(), $user_id) && 
-            $this->getMapper()->doBelongsByItemHaveSubmission($m_item->getId(), $user_id));
+        return ($this->getMapper()->doBelongsByItemOfCourseUser($item_id, $user_id) && 
+            $this->getMapper()->doBelongsByItemHaveSubmission($item_id, $user_id));
     }
     
     public function getListBySchool($school)
