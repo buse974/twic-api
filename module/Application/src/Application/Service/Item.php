@@ -367,8 +367,6 @@ class Item extends AbstractService
      */
     public function getList($course, $parent_id = null, $start = null, $end = null)
     {
-        
-        
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
         $user_id = $ar_user['id']; 
