@@ -357,7 +357,9 @@ class Submission extends AbstractService
         if(isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
             $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         }
-        
+        if(isset($type[ModelItem::CMP_DISCUSSION])) {
+            $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
+        }
         return $ret;
     }
     
