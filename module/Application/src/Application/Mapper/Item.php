@@ -39,7 +39,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getList($course_id = null, $parent_id = null, $is_incomplete = null, $start = null, $end = null)
+    public function getList($course_id = null, $parent_id = null, $start = null, $end = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -70,10 +70,6 @@ class Item extends AbstractMapper
         
         if(null !== $course_id) {
             $select->where(array('item.course_id' => $course_id));
-        }
-        
-        if($is_incomplete !== true) {
-            $select->where(array('item.is_complete IS TRUE'));
         }
         
         if(null === $start && null === $end) {
