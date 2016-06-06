@@ -273,13 +273,14 @@ class Submission extends AbstractService
      * @param boolean $submitted
      * @param boolean $graded
      * @param boolean $late
+     * @param string $search
      */
-    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null)
+    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null, $search = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $mapper = $this->getMapper();
         
-        $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late);
+        $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late, $search);
         foreach ($res_submission as $m_submission) {
             $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
         }
