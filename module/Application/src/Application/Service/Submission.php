@@ -262,6 +262,27 @@ class Submission extends AbstractService
         
         return $res_submission;
     }
+
+    /**
+     * @invokable
+     * 
+     * @param array $filter
+     * @param array $type
+     * @param array $course
+     * @param boolean $started
+     * @param boolean $submitted
+     * @param boolean $graded
+     * @param boolean $late
+     */
+    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $mapper = $this->getMapper();
+        
+        $res_item = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late);
+    
+        return ['list' => $res_item, 'count' => $mapper->count()];
+    }
     
     /**
      * @invokable
