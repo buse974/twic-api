@@ -279,9 +279,12 @@ class Submission extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $mapper = $this->getMapper();
         
-        $res_item = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late);
-    
-        return ['list' => $res_item, 'count' => $mapper->count()];
+        $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late);
+        foreach ($res_submission as $m_submission) {
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        }
+        
+        return ['list' => $res_submission, 'count' => $mapper->count()];
     }
     
     /**
