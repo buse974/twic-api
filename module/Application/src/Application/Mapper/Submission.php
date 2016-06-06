@@ -6,6 +6,7 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
 use Dal\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
+use Zend\Db\Sql\Predicate\Predicate;
 
 class Submission extends AbstractMapper
 {
@@ -129,7 +130,7 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null)
+    public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
@@ -141,6 +142,10 @@ class Submission extends AbstractMapper
             
             ->where(['submission_user.user_id' => $user_id]);
             
+        if(null !== $search) {
+            $select->where(array('( submission_item_course.title LIKE ?' => '%'.$search.'%'))
+                   ->where(array('submission_item_program.name LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
+        }
         if(!empty($type)) {
             $select->where(array('item.type' => $type));
         } 
