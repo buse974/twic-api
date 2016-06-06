@@ -152,16 +152,16 @@ class Submission extends AbstractMapper
         if(!empty($course)) {
             $select->where(array('submission_item_course.id' => $course));
         }
-        if(null !== $started) {
+        if(true === $started) {
             $select->where(array('item.start < UTC_TIMESTAMP()'));
         }
-        if(null !== $submitted) {
+        if(true === $submitted) {
             $select->where(array('submission.submit_date IS NOT NULL'));
         }
-        if(null !== $graded) {  
+        if(true === $graded) {  
             $select->where(array('submission.is_graded IS TRUE'));
         }
-        if(null !== $late) {
+        if(true === $late) {
             $select->where(array('item.end < UTC_TIMESTAMP() AND submission.submit_date IS NULL'));
         }
     
