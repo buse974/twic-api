@@ -381,16 +381,17 @@ class Item extends AbstractService
             $is_student = true;
         }
         
-        $ar_item =  $this->getMapper()->getList($course, $parent_id, !$is_student, $start, $end)->toArrayParent('order_id');
+        $ar_item =  $this->getMapper()->getList($course, $parent_id, $start, $end)->toArrayParent('order_id');
 
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
             $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
             if($is_student === true) {
-                if($item['type'] !== ModelItem::TYPE_TXT       &&
+                if($item['is_complete'] === 0 || 
+                    ( $item['type'] !== ModelItem::TYPE_TXT &&
                     $item['type'] !== ModelItem::TYPE_DOCUMENT &&
                     $item['type'] !== ModelItem::TYPE_MODULE   &&
-                    $this->checkAllow($item['id'], $user_id) === false
+                    $this->checkAllow($item['id'], $user_id) === false )
                     ) {
                    unset($ar_item[$k]);
                 }
