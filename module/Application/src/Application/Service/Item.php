@@ -381,7 +381,9 @@ class Item extends AbstractService
             $is_student = true;
         }
         
-        $ar_item =  $this->getMapper()->getList($course, $parent_id, $start, $end)->toArrayParent('order_id');
+        $res_item = $this->getMapper()->getList($course, $parent_id, $start, $end);
+        
+        $ar_item =   (null !== $start || null !== $end) ? $res_item->toArray(): $res_item->toArrayParent('order_id');
 
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
