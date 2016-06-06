@@ -142,10 +142,10 @@ class Submission extends AbstractMapper
             
             ->where(['submission_user.user_id' => $user_id]);
             
-        if(null !== $type) {
+        if(!empty($type)) {
             $select->where(array('item.type' => $type));
         } 
-        if(null !== $course) {
+        if(!empty($course)) {
             $select->where(array('submission_item_course.id' => $course));
         }
         if(null !== $started) {
