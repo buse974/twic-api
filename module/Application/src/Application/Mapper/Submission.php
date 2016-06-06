@@ -129,6 +129,41 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
     
+    public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
+            ->join('submission_user', 'submission_user.submission_id=submission.id', [ 'user_id' ,'grade', 'submission_user$submit_date' => new Expression('DATE_FORMAT(submission_user.submit_date, "%Y-%m-%dT%TZ")')  ])
+            ->join('user', 'user.id=submission_user.user_id',['id', 'gender', 'firstname', 'lastname', 'email' ])
+            ->join('sub_thread', 'sub_thread.submission_id=submission.id',['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
+            ->join('item', 'item.id=submission.item_id',['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
+            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['title'])
+            ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
+            
+            ->where(['submission_user.user_id' => $user_id]);
+            
+        if(null !== $type) {
+            $select->where(array('item.type' => $type));
+        } 
+        if(null !== $course) {
+            $select->where(array('submission_item_course.id' => $course));
+        }
+        if(null !== $started) {
+            $select->where(array('item.start < UTC_TIMESTAMP()'));
+        }
+        if(null !== $submitted) {
+            $select->where(array('submission.submit_date IS NOT NULL'));
+        }
+        if(null !== $graded) {  
+            $select->where(array('submission.is_graded IS TRUE'));
+        }
+        if(null !== $late) {
+            $select->where(array('item.end < UTC_TIMESTAMP() AND submission.submit_date IS NULL'));
+        }
+    
+        return $this->selectWith($select);
+    }
+    
     public function getList($item_id, $user_id)
     {
         $sql = 'SELECT  
