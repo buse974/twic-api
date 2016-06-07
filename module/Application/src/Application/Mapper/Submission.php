@@ -139,7 +139,8 @@ class Submission extends AbstractMapper
             ->join('item', 'item.id=submission.item_id',['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
             ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['title'])
             ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
-            
+           
+            ->where(['item.is_complete IS TRUE'])
             ->where(['submission_item_course.deleted_date IS NULL'])
             ->where(['submission_item_program.deleted_date IS NULL'])
             ->where(['submission_user.user_id' => $user_id]);
