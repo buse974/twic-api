@@ -672,7 +672,7 @@ class Submission extends AbstractService
     
       /**
      * @invokable
-     * 
+     *  
      * @param integer $id
      * @param array $grades
      * @param array $criterias
@@ -688,6 +688,7 @@ class Submission extends AbstractService
                     }
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
+                
                 foreach($res_submission_user as $m_submission_user){
                     $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), !($m_submission_user->getGrade() instanceof IsNull));
                 }
