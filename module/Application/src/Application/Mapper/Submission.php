@@ -140,6 +140,8 @@ class Submission extends AbstractMapper
             ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['title'])
             ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
             
+            ->where(['submission_item_course.deleted_date IS NULL'])
+            ->where(['submission_item_program.deleted_date IS NULL'])
             ->where(['submission_user.user_id' => $user_id]);
             
         if(null !== $search) {
