@@ -262,6 +262,31 @@ class Submission extends AbstractService
         
         return $res_submission;
     }
+
+    /**
+     * @invokable
+     * 
+     * @param array $filter
+     * @param array $type
+     * @param array $course
+     * @param boolean $started
+     * @param boolean $submitted
+     * @param boolean $graded
+     * @param boolean $late
+     * @param string $search
+     */
+    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null, $search = null)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $mapper = $this->getMapper();
+        
+        $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late, $search);
+        foreach ($res_submission as $m_submission) {
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        }
+        
+        return ['list' => $res_submission, 'count' => $mapper->count()];
+    }
     
     /**
      * @invokable
@@ -647,19 +672,13 @@ class Submission extends AbstractService
     
       /**
      * @invokable
-     * 
+     *  
      * @param integer $id
      * @param array $grades
      * @param array $criterias
      */
-    public function instructorRates($id = null, $group_id = null, $user_id = null, $item = null, $grades = null, $criterias = null) 
+    public function instructorRates($id, $group_id = null, $user_id = null, $item = null, $grades = null, $criterias = null) 
     {
-        if(null === $id){
-            if(null === $item){
-                return 0;
-            }
-            $id = $this->create($item, $user_id, $group_id);
-        }
         $this->getServiceSubmissionUserCriteria()->deleteBySubmission($id);
         if(null !== $criterias && count($criterias) > 0){
             foreach($criterias as $criteria_id => $criteria){
@@ -669,6 +688,7 @@ class Submission extends AbstractService
                     }
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
+                
                 foreach($res_submission_user as $m_submission_user){
                     $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), !($m_submission_user->getGrade() instanceof IsNull));
                 }
@@ -698,14 +718,8 @@ class Submission extends AbstractService
      * @param string $audio
      * @param string $text
      */
-    public function addComment($id = null, $group = null, $user = null, $item = null,  $file_name = null, $file_token = null, $audio = null, $text = null) 
+    public function addComment($id, $group = null, $user = null, $item = null,  $file_name = null, $file_token = null, $audio = null, $text = null) 
     {
-        if(null === $id){
-            if(null === $item){
-                return 0;
-            }
-            $id = $this->create($item, $user, $group);
-        }
        $me = $this->getServiceUser()->getIdentity()['id'];
        return [ 'submission_id' => $id, 'comment' => $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text)];
     }

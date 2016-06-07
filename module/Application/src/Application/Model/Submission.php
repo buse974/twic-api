@@ -10,12 +10,39 @@ class Submission extends BaseSubmission
     protected $submission_user;
     protected $videoconf_archives;
     protected $users;
+    protected $item;
+    protected $thread_id;
       
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
     
         $this->submission_user = $this->requireModel('app_model_submission_user', $data);
+        $this->item = $this->requireModel('app_model_item', $data);
+    }
+    
+    public function getThreadId()
+    {
+        return $this->thread_id;
+    }
+    
+    public function setThreadId($thread_id)
+    {
+        $this->thread_id = $thread_id;
+    
+        return $this;
+    }
+    
+    public function getItem()
+    {
+        return $this->item;
+    }
+    
+    public function setItem($item)
+    {
+        $this->item = $item;
+    
+        return $this;
     }
     
     public function getUsers() 

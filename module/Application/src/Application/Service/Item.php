@@ -654,11 +654,6 @@ class Item extends AbstractService
     {
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
-        if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
-            if(!$this->checkAllow($id)) {
-                throw new \Exception('no autorisation for this item');
-            }
-        }
        
         $is_allow = true;
         $res_item = ($is_allow) ? $this->getMapper()->getAllow($id) : $this->getMapper()->get($id);
@@ -667,6 +662,17 @@ class Item extends AbstractService
         }
             
         $m_item = $res_item->current();
+        if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+            if($m_item->getIsComplete() === 0 ||
+                ( $m_item->getType() !== ModelItem::TYPE_TXT &&
+                    $m_item->getType() !== ModelItem::TYPE_DOCUMENT &&
+                    $m_item->getType() !== ModelItem::TYPE_MODULE   &&
+                    $this->checkAllow($id) === false )
+                ) {
+                    throw new \Exception('no autorisation for this item');
+                }
+        }
+        
         $m_item->setCtDate($this->getServiceCtDate()->get($m_item->getId()))
             ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
             ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
