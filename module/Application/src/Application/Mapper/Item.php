@@ -66,8 +66,12 @@ class Item extends AbstractMapper
         ->join('document', 'document.item_id=item.id', [], $select::JOIN_LEFT)
         ->join('library', 'document.library_id=library.id', array('library!id' => 'id', 'name', 'type'), $select::JOIN_LEFT)
         ->join('submission', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
-        ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT);
-        
+        ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT)
+        ->join('course', 'course.id=item.course_id', [])
+        ->join('program', 'program.id=course.program_id', [])
+        ->where(array('course.deleted_date IS NULL'))
+        ->where(array('program.deleted_date IS NULL'));
+
         if(null !== $course_id) {
             $select->where(array('item.course_id' => $course_id));
         }
@@ -438,6 +442,7 @@ class Item extends AbstractMapper
         $where[] = 'item.updated_date IS NOT NULL';
         $where[] = 'course.deleted_date IS NULL';
         $where[] = 'program.deleted_date IS NULL';
+        $where[] = 'item.is_complete IS TRUE';
         
         $cw='';
         $nb = count($where);
