@@ -215,7 +215,6 @@ class Submission extends AbstractService
         }
         
         foreach ($data as $su) {
-            
             if(isset($su['submission_id']) && is_numeric($su['submission_id'])) {
                 $s_id = $su['submission_id'];
             } else {
@@ -227,6 +226,8 @@ class Submission extends AbstractService
             }
             $this->getServiceSubmissionUser()->create($s_id, $su['submission_user']);
         }
+        
+        $this->getServiceSubmissionPg()->autoAssign($item_id);
     }
     
     public function addSubmissionUser($user_id, $item_id)
@@ -901,7 +902,6 @@ class Submission extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission_user_criteria');
     }
-    
 
     /**
      *

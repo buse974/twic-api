@@ -10,10 +10,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Submission extends AbstractMapper
 {
-    
-    
-      /**
-     * 
+    /**
      * @param integer $id
      * 
      * @return \Application\Model\Submission
@@ -28,11 +25,11 @@ class Submission extends AbstractMapper
         $update = $this->tableGateway->getSql()->update();
         $update->set(['is_graded' => $select])
                ->where(['id'=>$id]);
+        
         return $this->updateWith($update);
     }
     
     /**
-     * 
      * @param integer $user
      * @param integer $questionnaire
      * 
@@ -69,7 +66,6 @@ class Submission extends AbstractMapper
     }
     
     /**
-     *
      * @param integer $item_id
      * @param integer $user_id
      * @param integer $submission_id
@@ -102,7 +98,6 @@ class Submission extends AbstractMapper
     }
     
     /**
-     * 
      * @param integer $item_id
      * @param integer $user_id
      * @param integer $submission_id
