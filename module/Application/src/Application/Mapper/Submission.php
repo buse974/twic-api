@@ -10,10 +10,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Submission extends AbstractMapper
 {
-    
-    
-      /**
-     * 
+    /**
      * @param integer $id
      * 
      * @return \Application\Model\Submission
@@ -28,11 +25,11 @@ class Submission extends AbstractMapper
         $update = $this->tableGateway->getSql()->update();
         $update->set(['is_graded' => $select])
                ->where(['id'=>$id]);
+        
         return $this->updateWith($update);
     }
     
     /**
-     * 
      * @param integer $user
      * @param integer $questionnaire
      * 
@@ -69,7 +66,6 @@ class Submission extends AbstractMapper
     }
     
     /**
-     *
      * @param integer $item_id
      * @param integer $user_id
      * @param integer $submission_id
@@ -102,7 +98,6 @@ class Submission extends AbstractMapper
     }
     
     /**
-     * 
      * @param integer $item_id
      * @param integer $user_id
      * @param integer $submission_id
@@ -130,6 +125,24 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
     
+    public function getListToGrade($user_id, $item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
+            ->join('submission_pg', 'submission_pg.submission_id=submission.id', [])
+            ->join('sub_thread', 'sub_thread.submission_id=submission.id',['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
+            ->join('item', 'item.id=submission.item_id',['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
+            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['id', 'title'])
+            ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
+            ->where(['item.is_complete IS TRUE'])
+            ->where(['item.id' => $item_id])
+            ->where(['submission_pg.user_id' => $user_id])
+            ->where(['submission_item_course.deleted_date IS NULL'])
+            ->where(['submission_item_program.deleted_date IS NULL']);
+        
+        return $this->selectWith($select);
+    }
+    
     public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -137,9 +150,12 @@ class Submission extends AbstractMapper
             ->join('submission_user', 'submission_user.submission_id=submission.id', [])
             ->join('sub_thread', 'sub_thread.submission_id=submission.id',['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
             ->join('item', 'item.id=submission.item_id',['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
-            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['title'])
+            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['id', 'title'])
             ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
-            
+           
+            ->where(['item.is_complete IS TRUE'])
+            ->where(['submission_item_course.deleted_date IS NULL'])
+            ->where(['submission_item_program.deleted_date IS NULL'])
             ->where(['submission_user.user_id' => $user_id]);
             
         if(null !== $search) {
