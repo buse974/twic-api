@@ -69,6 +69,15 @@ class SubmissionPg extends AbstractService
             }
         }
         $nb = $m_opt_grading->getPgNb();
+        while (($final = $this->_autoAssign($ar_u, $ar_s, $nb)) === false);
+        
+        foreach ($final as $s => $u) {
+            $this->replace($s, $u);
+        }
+    }
+    
+    public function _autoAssign($ar_u, $ar_s, $nb)
+    {
         $nbu = count($ar_u);
         $start = $ar_u;
         $final = [];
@@ -90,6 +99,8 @@ class SubmissionPg extends AbstractService
                     $final[$s_id][] = $ar_u[$k];
                     unset($ar_u[$k]);
                 }
+            } elseif (count($ar_s) === count($start)){
+                return false;
             } else {
                 $nbmin = count($tmp);
                 $ar_u = $start;
@@ -119,10 +130,8 @@ class SubmissionPg extends AbstractService
                 }
             }
         }
-        
-        foreach ($final as $s => $u) {
-            $this->replace($s, $u);
-        }
+    
+        return $final;
     }
     
     /**
