@@ -215,7 +215,6 @@ class Submission extends AbstractService
         }
         
         foreach ($data as $su) {
-            
             if(isset($su['submission_id']) && is_numeric($su['submission_id'])) {
                 $s_id = $su['submission_id'];
             } else {
@@ -227,7 +226,28 @@ class Submission extends AbstractService
             }
             $this->getServiceSubmissionUser()->create($s_id, $su['submission_user']);
         }
+        
+        $this->getServiceSubmissionPg()->autoAssign($item_id);
     }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $item_id
+     */
+    public function getListToGrade($item_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+
+        $res_submission =  $this->getMapper()->getListToGrade($user_id, $item_id);
+        foreach ($res_submission as $m_submission) {
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        }
+        
+        return $res_submission;
+    }
+    
+    
     
     public function addSubmissionUser($user_id, $item_id)
     {
@@ -529,8 +549,8 @@ class Submission extends AbstractService
         }
     
         return ($submission_id !== null) ?
-        $this->cancelsubmitBySubmission($submission_id) :
-        $this->cancelsubmitByItem($item_id);
+            $this->cancelsubmitBySubmission($submission_id) :
+            $this->cancelsubmitByItem($item_id);
     }
     
     /**
@@ -901,7 +921,6 @@ class Submission extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission_user_criteria');
     }
-    
 
     /**
      *

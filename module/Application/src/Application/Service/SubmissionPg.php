@@ -18,6 +18,17 @@ class SubmissionPg extends AbstractService
         return  $this->getMapper()->delete($this->getModel()->setUserId($user)->setSubmissionId($submission));
     }
     
+    public function deleteByItem($item_id)
+    {
+        $res_submission = $this->getServiceSubmission()->getList($item_id);
+        
+        foreach ($res_submission as $m_submission) {
+            $this->getMapper()->delete($this->getModel()->setSubmissionId($m_submission->getId()));
+        }
+        
+        return true;
+    }
+    
     public function checkGraded($submission, $user)
     {
         return  $this->getMapper()->checkGraded($submission, $user);
@@ -40,9 +51,12 @@ class SubmissionPg extends AbstractService
     public function autoAssign($item_id)
     {
         $m_opt_grading = $this->getServiceOptGrading()->get($item_id);
-        if(!$m_opt_grading->getHasPg() && !$m_opt_grading->getPgAuto()) {
+        if($m_opt_grading === false || (!$m_opt_grading->getHasPg() && !$m_opt_grading->getPgAuto())) {
             return false;
         }
+        
+        $this->deleteByItem($item_id);
+        
         $ar_s = []; 
         $ar_u = [];
         $res_submission = $this->getServiceSubmission()->getList($item_id);
