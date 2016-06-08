@@ -114,7 +114,7 @@ class GroupWorkTest extends AbstractService
                 ],
                 'opt' => [
                     'grading' => [
-                        'mode' => 'average', 
+                        'mode' => 'average',
                         'has_pg' => true, 
                         'pg_nb' => 10, 
                         'pg_auto' => true, 
