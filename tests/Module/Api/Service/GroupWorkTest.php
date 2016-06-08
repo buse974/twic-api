@@ -114,7 +114,7 @@ class GroupWorkTest extends AbstractService
                 ],
                 'opt' => [
                     'grading' => [
-                        'mode' => 'average', 
+                        'mode' => 'average',
                         'has_pg' => true, 
                         'pg_nb' => 10, 
                         'pg_auto' => true, 
@@ -153,8 +153,10 @@ class GroupWorkTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result'][0]) , 9);
+        $this->assertEquals(count($data['result'][0]) , 10);
         $this->assertEquals($data['result'][0]['thread_id'] , null);
+        $this->assertEquals(count($data['result'][0]['submission_pg']) , 1);
+        $this->assertEquals($data['result'][0]['submission_pg']['has_graded'] , 0);
         $this->assertEquals(count($data['result'][0]['item']) , 10);
         $this->assertEquals(count($data['result'][0]['item']['program']) , 1);
         $this->assertEquals($data['result'][0]['item']['program']['name'] , "program name");
@@ -233,8 +235,10 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][0]['group_name'] , null);
         $this->assertEquals($data['result'][0]['submit_date'] , null);
         $this->assertEquals($data['result'][0]['is_graded'] , 0);
-        $this->assertEquals(count($data['result'][1]) , 9);
+        $this->assertEquals(count($data['result'][1]) , 10);
         $this->assertEquals($data['result'][1]['thread_id'] , null);
+        $this->assertEquals(count($data['result'][1]['submission_pg']) , 1);
+        $this->assertEquals($data['result'][1]['submission_pg']['has_graded'] , 0);
         $this->assertEquals(count($data['result'][1]['item']) , 10);
         $this->assertEquals(count($data['result'][1]['item']['program']) , 1);
         $this->assertEquals($data['result'][1]['item']['program']['name'] , "program name");
