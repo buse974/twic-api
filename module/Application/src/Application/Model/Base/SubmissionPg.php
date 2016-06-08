@@ -9,7 +9,7 @@ class SubmissionPg extends AbstractModel
  	protected $user_id;
 	protected $submission_id;
 	protected $date;
-	protected $is_graded;
+	protected $has_graded;
 
 	protected $prefix = 'submission_pg';
 
@@ -49,14 +49,14 @@ class SubmissionPg extends AbstractModel
 		return $this;
 	}
 
-	public function getIsGraded()
+	public function getHasGraded()
 	{
-		return $this->is_graded;
+		return $this->has_graded;
 	}
 
-	public function setIsGraded($is_graded)
+	public function setHasGraded($has_graded)
 	{
-		$this->is_graded = $is_graded;
+		$this->has_graded = $has_graded;
 
 		return $this;
 	}
