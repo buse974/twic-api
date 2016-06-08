@@ -230,6 +230,25 @@ class Submission extends AbstractService
         $this->getServiceSubmissionPg()->autoAssign($item_id);
     }
     
+    /**
+     * @invokable
+     * 
+     * @param integer $item_id
+     */
+    public function getListToGrade($item_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+
+        $res_submission =  $this->getMapper()->getListToGrade($user_id, $item_id);
+        foreach ($res_submission as $m_submission) {
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        }
+        
+        return $res_submission;
+    }
+    
+    
+    
     public function addSubmissionUser($user_id, $item_id)
     {
         if($this->getByItem($item_id, $user_id) === null) {
@@ -530,8 +549,8 @@ class Submission extends AbstractService
         }
     
         return ($submission_id !== null) ?
-        $this->cancelsubmitBySubmission($submission_id) :
-        $this->cancelsubmitByItem($item_id);
+            $this->cancelsubmitBySubmission($submission_id) :
+            $this->cancelsubmitByItem($item_id);
     }
     
     /**

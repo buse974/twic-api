@@ -105,9 +105,7 @@ class Item extends AbstractService
         $item_id = $this->getMapper()->getLastInsertValue();
         $this->updateOrderId($item_id,$parent_id, $order_id);
         
-        if(null !== $submission) {
-            $this->getServiceSubmission()->add($submission, $item_id);
-        }
+        
         
         // CONTRAINTE
         if(null !== $ct) {
@@ -147,6 +145,10 @@ class Item extends AbstractService
                     (isset($opt['grading']['user_can_view'])) ? $opt['grading']['user_can_view'] : null,
                     (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
+        }
+        
+        if(null !== $submission) {
+            $this->getServiceSubmission()->add($submission, $item_id);
         }
         
         $this->initCmp($type, $data, $item_id);
