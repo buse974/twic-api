@@ -12,6 +12,7 @@ class Submission extends BaseSubmission
     protected $users;
     protected $item;
     protected $thread_id;
+    protected $submission_pg;
       
     public function exchangeArray(array &$data)
     {
@@ -19,6 +20,8 @@ class Submission extends BaseSubmission
     
         $this->submission_user = $this->requireModel('app_model_submission_user', $data);
         $this->item = $this->requireModel('app_model_item', $data);
+        $this->submission_pg = $this->requireModel('app_model_submission_pg', $data);
+        
     }
     
     public function getThreadId()
@@ -29,6 +32,18 @@ class Submission extends BaseSubmission
     public function setThreadId($thread_id)
     {
         $this->thread_id = $thread_id;
+    
+        return $this;
+    }
+    
+    public function getSubmissionPg()
+    {
+        return $this->submission_pg;
+    }
+    
+    public function setSubmissionPg($submission_pg)
+    {
+        $this->submission_pg = $submission_pg;
     
         return $this;
     }
