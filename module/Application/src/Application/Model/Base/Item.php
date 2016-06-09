@@ -25,6 +25,7 @@ class Item extends AbstractModel
 	protected $is_grouped;
 	protected $has_all_student;
 	protected $is_complete;
+	protected $coefficient;
 
 	protected $prefix = 'item';
 
@@ -252,6 +253,18 @@ class Item extends AbstractModel
 	public function setIsComplete($is_complete)
 	{
 		$this->is_complete = $is_complete;
+
+		return $this;
+	}
+
+	public function getCoefficient()
+	{
+		return $this->coefficient;
+	}
+
+	public function setCoefficient($coefficient)
+	{
+		$this->coefficient = $coefficient;
 
 		return $this;
 	}
