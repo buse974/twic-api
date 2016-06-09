@@ -432,11 +432,6 @@ class Submission extends AbstractService
         return $ret;
     }
     
-    public function rateQuiz()
-    {
-        
-    }
-    
     /**
      * @invokable
      * 
