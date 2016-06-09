@@ -95,7 +95,6 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('item.add', 
             [
                 'course' => (int)$data['course_id'],
-                //'grading_policy_id' => 6,
                 'submission' => [
                     [ 'submission_user' => [1,2]],
                     [ 'submission_user' => [3,4, 5]],
@@ -1109,7 +1108,26 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals($data['result']['discussion'] , null);
+        $this->assertEquals(count($data['result']['chat'][0]) , 6);
+        $this->assertEquals(count($data['result']['chat'][0]['users']) , 2);
+        $this->assertEquals(count($data['result']['chat'][0]['users'][1]) , 4);
+        $this->assertEquals($data['result']['chat'][0]['users'][1]['id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['users'][1]['firstname'] , "Paul");
+        $this->assertEquals($data['result']['chat'][0]['users'][1]['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['chat'][0]['users'][1]['avatar'] , null);
+        $this->assertEquals(count($data['result']['chat'][0]['users'][2]) , 4);
+        $this->assertEquals($data['result']['chat'][0]['users'][2]['id'] , 2);
+        $this->assertEquals($data['result']['chat'][0]['users'][2]['firstname'] , "Xuan-Anh");
+        $this->assertEquals($data['result']['chat'][0]['users'][2]['lastname'] , "Hoang");
+        $this->assertEquals($data['result']['chat'][0]['users'][2]['avatar'] , null);
+        $this->assertEquals(count($data['result']['chat'][0]['messages']) , 2);
+        $this->assertEquals(count($data['result']['chat'][0]['messages']['list']) , 0);
+        $this->assertEquals($data['result']['chat'][0]['messages']['count'] , 0);
+        $this->assertEquals($data['result']['chat'][0]['id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
+        $this->assertEquals($data['result']['chat'][0]['type'] , 5);
+        $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['thread'] , null);
         $this->assertEquals(count($data['result']['videoconf']) , 13);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
         $this->assertEquals(!empty($data['result']['videoconf']['token']) , true);

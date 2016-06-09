@@ -88,6 +88,19 @@ class SubQuiz extends AbstractService
         return $this->get($sub_quiz_id);
     }
     
+    public function getStarted()
+    {
+        $m_submission = $this->getServiceSubmission()->get(null,$submission_id);
+        $res_sub_quiz = $this->getMapper()->getList(null, $submission_id);
+        
+        $ret = [];
+        foreach ($res_sub_quiz as $m_sub_quiz) {
+            $ret[] = $this->get($m_sub_quiz->getId());
+        }
+        
+        return $ret;
+    }
+    
     /**
      * @invokable
      * 
@@ -150,16 +163,49 @@ class SubQuiz extends AbstractService
             $res_poll_item = $this->getServicePollItem()->getList($m_poll_item->getPollId());
             
             foreach ($res_poll_item as $m_poll_item) {
-                $total_final += $m_poll_item->getNbPoint();
+                $gq = $m_poll_item->getGroupQuestion();
+                $nbq = 1;
+                if(null !== $gq) {
+                    $nbq = $gq->getNb();
+                }
+                $total_final += $m_poll_item->getNbPoint()*$nbq;
             }
             
-            $this->getMapper()->update($this->getModel()->setGrade(100*$total_final_grade/$total_final)->setId($m_sub_question->getSubQuizId()));
+            $grade = 100*$total_final_grade/$total_final;
+            $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($m_sub_question->getSubQuizId()));
+            $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
             $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
         }
        
         return true;
     }
-     
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param integer $grade
+     * @param array $questions
+     * 
+     * @return boolean
+     */
+    public function rate($id, $grade, $questions)
+    {
+        $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($id));
+        $m_sub_quiz = $this->getMapper()->get($id)->current();
+        $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $m_sub_quiz->getUserId(), $grade);
+        foreach ($questions as $qid => $qgrade) {
+            $this->getServiceSubQuestion()->updatePoint($qid, $qgrade);
+        }
+        
+        return true;
+    }
+    
+    public function checkGrade()
+    {
+        
+    }
+    
     /**
      * @return \Application\Service\BankQuestionMedia
      */
@@ -222,6 +268,14 @@ class SubQuiz extends AbstractService
     public function getServiceSubQuestion()
     {
         return $this->getServiceLocator()->get('app_service_sub_question');
+    }
+    
+    /**
+     * @return \Application\Service\SubmissionUser
+     */
+    public function getServiceSubmissionUser()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
     
     /**

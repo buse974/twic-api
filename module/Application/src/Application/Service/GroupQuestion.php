@@ -21,6 +21,11 @@ class GroupQuestion extends AbstractService
         return $group_question_id;
     }
     
+    /**
+     * 
+     * @param integer $group_question_id
+     * @return \Application\Model\GroupQuestion
+     */
     public function getList($group_question_id)
     {
         if(null === $group_question_id || $group_question_id instanceof IsNull) {
