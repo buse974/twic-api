@@ -20,7 +20,7 @@ class GradingPolicyGrade extends AbstractMapper
             ->join('user_role', 'user.id = user_role.user_id', array())
             ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_STUDENT_ID))
             ->where(array('program.deleted_date IS NULL'))
-            ->where(array('course.deleted_date IS NULL'));
+            ->where(array('course.deleted_date IS NULL'));  
 
         if (array_key_exists(\Application\Model\Role::ROLE_ACADEMIC_ID, $user['roles'])) {
             $selectProgram->where(array('program.school_id' => $user['school']['id']));

@@ -469,9 +469,9 @@ class Videoconf extends AbstractService
     /**
      * @invokable 
      * 
-     * @param integer $program_id
-     * @param integer $course_id
-     * @param integer $item_id
+     * @param integer $program_id 
+     * @param integer $course_id 
+     * @param integer $item_id 
      */
     public function getListId($program_id = null, $course_id = null, $item_id = null)
     {

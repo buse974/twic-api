@@ -158,13 +158,41 @@ class SubQuiz extends AbstractService
                 $total_final += $m_poll_item->getNbPoint()*$nbq;
             }
             
-            $this->getMapper()->update($this->getModel()->setGrade(100*$total_final_grade/$total_final)->setId($m_sub_question->getSubQuizId()));
+            $grade = 100*$total_final_grade/$total_final;
+            $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($m_sub_question->getSubQuizId()));
+            $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
             $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
         }
        
         return true;
     }
-     
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param integer $grade
+     * @param array $questions
+     * 
+     * @return boolean
+     */
+    public function rate($id, $grade, $questions)
+    {
+        $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($id));
+        $m_sub_quiz = $this->getMapper()->get($id)->current();
+        $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $m_sub_quiz->getUserId(), $grade);
+        foreach ($questions as $qid => $qgrade) {
+            $this->getServiceSubQuestion()->updatePoint($qid, $qgrade);
+        }
+        
+        return true;
+    }
+    
+    public function checkGrade()
+    {
+        
+    }
+    
     /**
      * @return \Application\Service\BankQuestionMedia
      */
@@ -227,6 +255,14 @@ class SubQuiz extends AbstractService
     public function getServiceSubQuestion()
     {
         return $this->getServiceLocator()->get('app_service_sub_question');
+    }
+    
+    /**
+     * @return \Application\Service\SubmissionUser
+     */
+    public function getServiceSubmissionUser()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
     
     /**
