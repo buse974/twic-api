@@ -36,7 +36,9 @@ class ThreadMessage extends AbstractService
         
         if(is_numeric($m_thread->getItemId())) {
             $m_submission = $this->getServiceSubmission()->get($m_thread->getItemId());
-            $this->getServiceSubThread()->add($thread, $m_submission->getId());
+            if(null !== $m_submission) {
+                $this->getServiceSubThread()->add($thread, $m_submission->getId());
+            }
         }
         if (!$is_new) {
             $this->getServiceEvent()->threadMessage($thread_message_id);
