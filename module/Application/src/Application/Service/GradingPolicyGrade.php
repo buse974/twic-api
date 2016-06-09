@@ -26,6 +26,7 @@ class GradingPolicyGrade extends AbstractService
 
         return $this->getMapper()->insert($model->setGrade($grade));
     }
+    
     /**
      * @invokable
      *

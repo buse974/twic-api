@@ -150,7 +150,12 @@ class SubQuiz extends AbstractService
             $res_poll_item = $this->getServicePollItem()->getList($m_poll_item->getPollId());
             
             foreach ($res_poll_item as $m_poll_item) {
-                $total_final += $m_poll_item->getNbPoint();
+                $gq = $m_poll_item->getGroupQuestion();
+                $nbq = 1;
+                if(null !== $gq) {
+                    $nbq = $gq->getNb();
+                }
+                $total_final += $m_poll_item->getNbPoint()*$nbq;
             }
             
             $this->getMapper()->update($this->getModel()->setGrade(100*$total_final_grade/$total_final)->setId($m_sub_question->getSubQuizId()));
