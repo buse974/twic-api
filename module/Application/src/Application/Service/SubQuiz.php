@@ -88,11 +88,13 @@ class SubQuiz extends AbstractService
         return $this->get($sub_quiz_id);
     }
     
+    /**
+     * @invokable
+     */
     public function getStarted()
     {
-        $m_submission = $this->getServiceSubmission()->get(null,$submission_id);
-        $res_sub_quiz = $this->getMapper()->getList(null, $submission_id);
-        
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $res_sub_quiz = $this->getMapper()->getList(null,null,$user_id, false);
         $ret = [];
         foreach ($res_sub_quiz as $m_sub_quiz) {
             $ret[] = $this->get($m_sub_quiz->getId());

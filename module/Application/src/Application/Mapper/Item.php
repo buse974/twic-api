@@ -199,7 +199,7 @@ class Item extends AbstractMapper
         $select->columns(array('id', 'title', 'item$new_message' => $select_new_message))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
             ->join('program', 'program.id=course.program_id', array('id', 'name'))
-            ->join('submission', 'submission.item_id=item.id', array('id', 'submission$due_date' => new Expression('DATE_FORMAT(due_date, "%Y-%m-%dT%TZ")'), 'submission$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))
+            ->join('submission', 'submission.item_id=item.id', array('id', 'submission$start_date' => new Expression('DATE_FORMAT(start_date, "%Y-%m-%dT%TZ")')))
             ->join('submission_user', 'submission_user.submission_id = submission.id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.submission_user_id = submission_user.id', array(), $select::JOIN_LEFT)
             ->join(array('item_submission_item_assignment' => 'item_assignment'), 'item_submission_item_assignment.id=item_assignment_relation.item_assignment_id', array('id', 'item_submission_item_assignment$submit_date' => new Expression('DATE_FORMAT(submit_date, "%Y-%m-%dT%TZ")')), $select::JOIN_LEFT)
