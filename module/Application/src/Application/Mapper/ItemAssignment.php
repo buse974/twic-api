@@ -14,7 +14,7 @@ class ItemAssignment extends AbstractMapper
         $select->columns(array('id', 'response', 'item_assignment$submit_date' => new Expression("DATE_FORMAT(submit_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())
             ->join('submission_user', 'item_assignment_relation.submission_user_id=submission_user.id', array())
-            ->join('submission', 'submission.id=submission_user.submission_id', array('id', 'submission$due_date' => new Expression("DATE_FORMAT(due_date, '%Y-%m-%dT%TZ') "), 'submission$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
+            ->join('submission', 'submission.id=submission_user.submission_id', array('id', 'submission$start_date' => new Expression("DATE_FORMAT(start_date, '%Y-%m-%dT%TZ') ")))
             ->join('item_grading', 'item_grading.submission_user_id=submission_user.id', array('grade', 'created_date'), $select::JOIN_LEFT)
             ->join('item', 'item.id=submission.item_id', array('id', 'title', 'describe', 'type'))
             ->join('course', 'course.id=item.course_id', array('id', 'title'))
