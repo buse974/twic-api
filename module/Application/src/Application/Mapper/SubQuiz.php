@@ -29,17 +29,25 @@ class SubQuiz extends AbstractMapper
         return false;
     }
     
-    public function getList($id = null, $submission_id = null)
+    /**
+     * 
+     * @param integer $id
+     * @param integer $submission_id
+     * @param integer $user_id
+     * @param boolean $is_finish
+     * 
+     * @return \Zend\Db\ResultSet\ResultSet
+     */
+    public function getList($id = null, $submission_id = null, $user_id = null, $is_finish = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        
         $select->columns([
             'id', 
-            'poll_id', 
+            'poll_id',
             'sub_quiz$start_date' => new Expression('DATE_FORMAT(sub_quiz.start_date, "%Y-%m-%dT%TZ")'),
             'sub_quiz$end_date' => new Expression('DATE_FORMAT(sub_quiz.end_date, "%Y-%m-%dT%TZ")'),
-            'user_id', 
-            'submission_id', 
+            'user_id',
+            'submission_id',
             'grade']);
         
         if(null !== $id) {
@@ -47,6 +55,15 @@ class SubQuiz extends AbstractMapper
         }
         if(null !== $submission_id) {
             $select->where(array('sub_quiz.submission_id' => $submission_id));
+        }
+        if(null !== $user_id) {
+            $select->where(array('sub_quiz.user_id' => $user_id));
+        }
+        if($is_finish===true) {
+            $select->where(array('sub_quiz.end_date IS NOT NULL'));
+        }
+        if($is_finish===false) {
+            $select->where(array('sub_quiz.end_date IS NULL'));
         }
     
         return  $this->selectWith($select);
@@ -64,7 +81,7 @@ class SubQuiz extends AbstractMapper
             'user_id',
             'submission_id',
             'grade'])
-        ->where(array('sub_quiz.id' => $id));
+            ->where(array('sub_quiz.id' => $id));
 
         return  $this->selectWith($select);
     }
