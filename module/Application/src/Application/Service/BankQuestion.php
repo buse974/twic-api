@@ -98,9 +98,9 @@ class BankQuestion extends AbstractService
             return $id;
         }
 
+        $bank_question_id = null;
         if(!$for_delete) {
             $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-            
             $m_bank_question->setId(null)
                 ->setOlder(null)
                 ->setCreatedDate($date);
@@ -112,24 +112,14 @@ class BankQuestion extends AbstractService
             $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
             $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
     
-            return $bank_question_id;
+
         }
         
-        return true;
-        /*$m_bank_question->setId(null)
-            ->setOlder(null)
-            ->setCreatedDate($date);
+        $this->getMapper()->update($this->getModel()->setOlder((null === $bank_question_id) ? $id:$bank_question_id), ['id' => $id]);
 
-        $this->getMapper()->insert($m_bank_question);
-        $bank_question_id = $this->getMapper()->getLastInsertValue();
-        $this->getMapper()->update($this->getModel()->setOlder($bank_question_id), ['id' => $id]);
-        
-        $this->getServiceBankQuestionMedia()->copy($bank_question_id, $id);
-        $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
-        $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
-
-        return $bank_question_id;*/
+        return $bank_question_id;
     }
+    
 
     /**
      * @invokable
