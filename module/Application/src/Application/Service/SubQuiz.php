@@ -193,7 +193,6 @@ class SubQuiz extends AbstractService
         
         $grade = 100*$total_final_grade/$total_final;
         $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($sub_quiz_id));
-        $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
         $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
         
         return true;
