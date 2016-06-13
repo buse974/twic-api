@@ -211,7 +211,7 @@ class SubQuiz extends AbstractService
     {
         $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($id));
         $m_sub_quiz = $this->getMapper()->get($id)->current();
-        $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $m_sub_quiz->getUserId(), $grade);
+        
         foreach ($questions as $qid => $qgrade) {
             $this->getServiceSubQuestion()->updatePoint($qid, $qgrade);
         }
