@@ -407,7 +407,12 @@ class Event extends AbstractService
     {
         $m_submission = $this->getServiceItemProg()->get($submission);
 
-        return ['id' => $m_submission->getId(),'name' => 'programmation','data' => ['start_date' => $m_submission->getStartDate(),'due_date' => $m_submission->getDueDate(),'item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType(),'duration' => $m_submission->getItem()->getDuration(),'course' => ['id' => $m_submission->getItem()
+        return ['id' => $m_submission->getId(),
+            'name' => 'programmation',
+            'data' => 
+                [
+                    'start_date' => $m_submission->getStartDate(),
+                    'item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType(),'duration' => $m_submission->getItem()->getDuration(),'course' => ['id' => $m_submission->getItem()
             ->getCourse()
             ->getId(),'title' => $m_submission->getItem()
             ->getCourse()
