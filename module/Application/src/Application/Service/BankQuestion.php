@@ -111,8 +111,6 @@ class BankQuestion extends AbstractService
             $this->getServiceBankQuestionMedia()->copy($bank_question_id, $id);
             $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
             $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
-    
-
         }
         
         $this->getMapper()->update($this->getModel()->setOlder((null === $bank_question_id) ? $id:$bank_question_id), ['id' => $id]);
