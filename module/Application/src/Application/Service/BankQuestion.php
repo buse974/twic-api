@@ -98,9 +98,9 @@ class BankQuestion extends AbstractService
             return $id;
         }
 
-        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-
         if(!$for_delete) {
+            $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+            
             $m_bank_question->setId(null)
                 ->setOlder(null)
                 ->setCreatedDate($date);
@@ -116,7 +116,7 @@ class BankQuestion extends AbstractService
         }
         
         return true;
-        $m_bank_question->setId(null)
+        /*$m_bank_question->setId(null)
             ->setOlder(null)
             ->setCreatedDate($date);
 
@@ -128,7 +128,7 @@ class BankQuestion extends AbstractService
         $this->getServiceBankQuestionTag()->copy($bank_question_id, $id);
         $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
 
-        return $bank_question_id;
+        return $bank_question_id;*/
     }
 
     /**
@@ -144,7 +144,7 @@ class BankQuestion extends AbstractService
 
         $ret = [];
         foreach ($id as $i) {
-            if($this->copy($i)===$i) {
+            if($this->copy($i, true)===$i) {
                 $ret[$i] = $this->getMapper()->delete($this->getModel()->setId($i));
             } else {
                 $ret[$i] = true;
