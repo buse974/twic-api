@@ -1139,6 +1139,19 @@ class PollTest extends AbstractService
     }
     
     /**
+     * @depends testCanGetSubQuiz
+     */
+    public function testCanCheckGrade($sub_quiz)
+    {
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('subquiz.checkGrade',
+            []);
+    
+        print_r($data);
+        exit();  
+    }
+    
+    /**
      * @depends testCanQuestionAdd
      */
     public function testCanBankQuestionDelete($id)
