@@ -59,7 +59,6 @@ class Submission extends AbstractService
     public function getByUserAndQuestionnaire($user_id, $questionnaire_id, $item_id)
     {
         $res_submission = $this->getMapper()->getByUserAndQuestionnaire($user_id, $questionnaire_id);
-        
         $m_submission = ($res_submission->count() <= 0) ?
              $this->get($item_id) :
              $res_submission->current();
