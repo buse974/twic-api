@@ -59,7 +59,6 @@ class Submission extends AbstractService
     public function getByUserAndQuestionnaire($user_id, $questionnaire_id, $item_id)
     {
         $res_submission = $this->getMapper()->getByUserAndQuestionnaire($user_id, $questionnaire_id);
-        
         $m_submission = ($res_submission->count() <= 0) ?
              $this->get($item_id) :
              $res_submission->current();
@@ -698,20 +697,19 @@ class Submission extends AbstractService
         if(null !== $criterias && count($criterias) > 0){
             foreach($criterias as $criteria_id => $criteria){
                 foreach($criteria as $user => $points){
-                    if(null !== $points && isset($points['points'])){
+                    if(!is_numeric($user) && null !== $points && isset($points['points'])){
                         $this->getServiceSubmissionUserCriteria()->add($id, $user, $criteria_id, $points['points'], true);
                     }
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
-                
                 foreach($res_submission_user as $m_submission_user){
                     $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), !($m_submission_user->getGrade() instanceof IsNull));
                 }
             }
         }
         else{
-             foreach($grades as $user => $grade){
-                if($grade !== null && isset($grade['grade'])){
+            foreach($grades as $user => $grade){
+                if(!is_numeric($user) && $grade !== null && isset($grade['grade'])){
                     $this->getServiceSubmissionUser()->setGrade($id, $user, $grade['grade'], true);
                 }
             }

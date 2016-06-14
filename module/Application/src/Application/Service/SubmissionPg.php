@@ -51,7 +51,8 @@ class SubmissionPg extends AbstractService
     public function autoAssign($item_id)
     {
         $m_opt_grading = $this->getServiceOptGrading()->get($item_id);
-        if($m_opt_grading === false || (!$m_opt_grading->getHasPg() && !$m_opt_grading->getPgAuto())) {
+        if($m_opt_grading === false || ($m_opt_grading->getHasPg() == 0 && $m_opt_grading->getPgAuto() == 0)) {
+            $this->deleteByItem($item_id);
             return false;
         }
         

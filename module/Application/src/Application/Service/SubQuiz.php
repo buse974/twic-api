@@ -134,51 +134,69 @@ class SubQuiz extends AbstractService
         $final_point = 0;
         $point = $m_poll_item->getNbPoint();
         $type = $m_bank_question->getBankQuestionTypeId();
-        foreach ($sub_answer as $sa) { 
+        $point_initial = $m_bank_question->getPoint();
+        foreach ($sub_answer as $sa) {
             $m_bank_answer_item = $this->getServiceBankAnswerItem()->get($sa['bank_question_item_id']);
             $is_ok = true;
             if($type === ModelBankQuestionType::TYPE_TEXT_INT) {
-                
                 $v1 = (isset($sa['answer'])?$sa['answer']:"");
                 $v2 = (is_string($m_bank_answer_item->getAnswer())?$m_bank_answer_item->getAnswer():"");
-                
                 if(strtolower(trim($v1)) != strtolower(trim($v2))) {
                     $is_ok = false;
                 }
             }
-            if($is_ok === true) {
-                $final_point +=  $point*($m_bank_answer_item->getPercent()/100);
+            if($is_ok === true) { 
+                $final_point +=  $m_bank_answer_item->getPercent(); 
             }
             $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], (isset($sa['answer'])?$sa['answer']:null));
         }
-        $this->getServiceSubQuestion()->updatePoint($sub_question_id, $final_point);
+        
+        $this->getServiceSubQuestion()->updatePoint($sub_question_id, ($final_point*$point/$point_initial));
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
         if($this->getMapper()->checkFinish($m_sub_quiz->getId())) {
-            $total_final_grade = 0;
-            $total_final = 0;
-            $res_sub_question = $this->getServiceSubQuestion()->getListLite($m_sub_question->getSubQuizId());
-            
-            foreach ($res_sub_question as $m_sub_question) {
-                $total_final_grade += $m_sub_question->getPoint();
-            }
-            
-            $res_poll_item = $this->getServicePollItem()->getList($m_poll_item->getPollId());
-            
-            foreach ($res_poll_item as $m_poll_item) {
-                $gq = $m_poll_item->getGroupQuestion();
-                $nbq = 1;
-                if(null !== $gq) {
-                    $nbq = $gq->getNb();
-                }
-                $total_final += $m_poll_item->getNbPoint()*$nbq;
-            }
-            
-            $grade = 100*$total_final_grade/$total_final;
-            $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($m_sub_question->getSubQuizId()));
-            $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
-            $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
+            $this->calc(null, null, $m_sub_quiz->getId());
         }
        
+        return true;
+    }
+
+    public function calc($submission_id = null, $item_id = null, $sub_quiz_id = null)
+    {
+        if(null === $submission_id && null === $item_id && null === $sub_quiz_id) {
+            return false;
+        }
+        
+        if((null !== $submission_id || null !== $item_id) && null === $sub_quiz_id) {
+            $m_submission = $this->getServiceSubmission()->get($item_id,$submission_id);
+            $m_sub_quiz = $this->getBySubmission($m_submission->getId());
+            $sub_quiz_id = $m_sub_quiz->getId();
+        }   
+        
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $m_sub_quiz = $this->getMapper()->get($sub_quiz_id)->current();
+        
+        $total_final_grade = 0;
+        $res_sub_question = $this->getServiceSubQuestion()->getListLite($sub_quiz_id);
+        foreach ($res_sub_question as $m_sub_question) {
+            $total_final_grade += $m_sub_question->getPoint();
+        }
+
+        $total_final = 0;
+        $res_poll_item = $this->getServicePollItem()->getList($m_sub_quiz->getPollId());
+        foreach ($res_poll_item as $m_poll_item) {
+            $gq = $m_poll_item->getGroupQuestion();
+            $nbq = 1;
+            if(null !== $gq) {
+                $nbq = $gq->getNb();
+            }
+            $total_final += $m_poll_item->getNbPoint()*$nbq;
+        }
+        
+        $grade = 100*$total_final_grade/$total_final;
+        $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($sub_quiz_id));
+        $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
+        $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
+        
         return true;
     }
     
@@ -195,7 +213,6 @@ class SubQuiz extends AbstractService
     {
         $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($id));
         $m_sub_quiz = $this->getMapper()->get($id)->current();
-        $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $m_sub_quiz->getUserId(), $grade);
         foreach ($questions as $qid => $qgrade) {
             $this->getServiceSubQuestion()->updatePoint($qid, $qgrade);
         }
@@ -203,9 +220,20 @@ class SubQuiz extends AbstractService
         return true;
     }
     
+    /**
+     * @invokable
+     */
     public function checkGrade()
     {
+        $res_sub_quiz = $this->getMapper()->getList(null, null, null, null, true);
+        foreach ($res_sub_quiz as $m_sub_quiz) {
+            $id = $m_sub_quiz->getId();
+            $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+            $this->getMapper()->update($this->getModel()->setId($id)->setEndDate($date));
+            $this->calc(null,null,$m_sub_quiz->getId());
+        }
         
+        return  $res_sub_quiz;
     }
     
     /**
