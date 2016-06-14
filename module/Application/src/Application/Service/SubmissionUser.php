@@ -42,7 +42,6 @@ class SubmissionUser extends AbstractService
     {
         $return = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
                 
-        $this->getServiceGradingPolicyGrade()->process($submission_id);
         return $return;
     }
     
@@ -58,7 +57,6 @@ class SubmissionUser extends AbstractService
     {
         $return = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]); 
         
-        $this->getServiceGradingPolicyGrade()->process($submission_id, $user_id);
         return $return;
     }
     
