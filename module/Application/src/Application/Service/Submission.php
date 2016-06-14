@@ -385,7 +385,7 @@ class Submission extends AbstractService
         }
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         if(isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
-            if(!(!is_numeric($m_item->getIsGrouped()) && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
+            if(!(!$m_item->getIsGrouped() && $m_item->getType()===ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
             }
         } else {
