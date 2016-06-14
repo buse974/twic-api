@@ -149,23 +149,19 @@ class Conversation extends AbstractService
     public function getListOrCreate($submission_id)
     {
         $m_item = $this->getServiceItem()->getBySubmission($submission_id);
-        $item_id = null;
         
         // Dans le cas d'un type chat sans set_id il faut tt créer par item
-        $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !is_numeric($m_item->getSetId()));
-        if($by_item) {
-            $ar = $this->getListByItem($m_item->getId());
-        } else {
-            $ar = $this->getListBySubmission($submission_id, true);
-        }
+        $by_item = ($m_item->getType()===ModelItem::TYPE_CHAT && !$m_item->getIsGrouped());
+        $ar = ($by_item) ? 
+            $this->getListByItem($m_item->getId()) : 
+            $this->getListBySubmission($submission_id, true);
         
         if (count($ar) <= 0) {
             $m_submission = $this->getServiceSubmission()->getBySubmission($submission_id);
-            if($by_item) {
-                $res_user = $this->getServiceUser()->getListByItem($m_item->getId());
-            } else {
-                $res_user = $this->getServiceUser()->getListUsersBySubmission($submission_id);
-            }
+            $res_user = ($by_item) ?
+                $this->getServiceUser()->getListByItem($m_item->getId()) :
+                $this->getServiceUser()->getListUsersBySubmission($submission_id);
+            
             $users = [];
             foreach ($res_user as $m_user) {
                 $users[] = $m_user->getId();
@@ -174,7 +170,7 @@ class Conversation extends AbstractService
         }
         
         if($by_item) { 
-            // Vérifier si la conversation est liker sur la submission par un byItem
+            // Vérifier si la conversation est linker sur la submission par un byItem
             $res = $this->getListByItem($m_item->getId(), $submission_id);
             if(count($res) <= 0) {
                 if (count($ar) <= 0) {
