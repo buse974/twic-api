@@ -38,7 +38,7 @@ class SubQuiz extends AbstractMapper
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $submission_id = null, $user_id = null, $is_finish = null)
+    public function getList($id = null, $submission_id = null, $user_id = null, $is_finish = null, $is_timeover = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -59,11 +59,24 @@ class SubQuiz extends AbstractMapper
         if(null !== $user_id) {
             $select->where(array('sub_quiz.user_id' => $user_id));
         }
-        if($is_finish===true) {
+        if($is_finish === true) {
             $select->where(array('sub_quiz.end_date IS NOT NULL'));
         }
-        if($is_finish===false) {
+        if($is_finish === false) {
             $select->where(array('sub_quiz.end_date IS NULL'));
+        }
+        if($is_timeover === true) {
+            $select->join('poll', 'poll.id=sub_quiz.poll_id', [])
+                   ->join('item', 'item.id=poll.item_id', [])
+                   ->where(["sub_quiz.end_date IS NULL AND sub_quiz.grade IS NULL 
+                            AND (
+                            (poll.expiration_date IS NOT NULL AND poll.expiration_date < UTC_TIMESTAMP())
+                            OR
+                            (poll.time_limit IS NOT NULL AND DATE_ADD(sub_quiz.start_date, INTERVAL poll.time_limit MINUTE) < UTC_TIMESTAMP())
+                            OR 
+                            (item.cut_off IS NOT NULL AND item.cut_off < UTC_TIMESTAMP())
+                            OR 
+                            (item.cut_off IS NULL AND item.end IS NOT NULL AND item.end < UTC_TIMESTAMP()))"]);
         }
     
         return  $this->selectWith($select);
