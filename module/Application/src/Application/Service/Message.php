@@ -15,11 +15,10 @@ class Message extends AbstractService
      * @param integer $to
      * @param integer $conversation
      * @param integer $item
-     * @param integer $group
      */
-    public function sendSubmission($text = null, $to = null, $conversation = null, $item = null, $group = null)
+    public function sendSubmission($text = null, $to = null, $conversation = null, $item = null)
     {
-        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item, $group);
+        return $this->_send($text, $to, $conversation, ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT, $item);
     }
     
     /**
@@ -121,7 +120,7 @@ class Message extends AbstractService
             ->current();
     }
     
-    public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null, $group = null)
+    public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
 
@@ -132,7 +131,7 @@ class Message extends AbstractService
             if (! in_array($me, $to)) {
                 $to[] = $me;
             }
-            $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type, $item, $group);
+            $conversation = $this->getServiceConversationUser()->getConversationByUser($to, $type, $item);
         } elseif ($conversation !== null) {
             if (!$this->getServiceConversationUser()->isInConversation($conversation, $me)) {
                 throw new \Exception('User ' . $me . ' is not in conversation ' . $conversation);

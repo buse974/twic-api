@@ -258,7 +258,6 @@ class ItemAssignment extends AbstractService
                 ->getById($m_item_assignment_relation->getItemProgUserId())
                 ->current();
             $this->getServiceItemGrading()->add($m_item_assignment_relation->getItemProgUserId(), $score);
-            $this->getServiceGradingPolicyGrade()->process($m_item_assignment_relation->getItemAssignmentId(), $m_submission_user->getUserId());
             $u[] = $m_submission_user->getUserId();
         }
         
@@ -458,14 +457,5 @@ class ItemAssignment extends AbstractService
     public function getServiceAuth()
     {
         return $this->getServiceLocator()->get('auth.service');
-    }
-
-    /**
-     *
-     * @return \Application\Service\GradingPolicyGrade
-     */
-    public function getServiceGradingPolicyGrade()
-    {
-        return $this->getServiceLocator()->get('app_service_grading_policy_grade');
     }
 }
