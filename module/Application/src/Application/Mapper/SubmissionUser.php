@@ -18,8 +18,8 @@ class SubmissionUser extends AbstractMapper
             'submission_user$avg' => new Expression('SUM(item.coefficient * submission_user.grade) / SUM(item.coefficient)')))
             ->join('submission', 'submission_user.submission_id=submission.id', [])
             ->join('item', 'submission.item_id=item.id', [])
-            ->join('course', 'item.course_id = course.id', array('id'))
-            ->join('program', 'course.program_id = program.id', array('id'))
+            ->join('course', 'item.course_id = course.id', array('id', 'title'))
+            ->join('program', 'course.program_id = program.id', array('id', 'name'))
             ->where(array('program.deleted_date IS NULL'))
             ->where(array('course.deleted_date IS NULL'))
             ->where(array('submission_user.grade IS NOT NULL'));
@@ -69,7 +69,9 @@ class SubmissionUser extends AbstractMapper
                     ->where(array('course_instructor_relation.user_id' => $user['id']));
             }
         */
-        return $this->selectBridge($select);
+        
+        //return $this->selectBridge($select);
+        return $this->selectWith($select);
     }
 
     
