@@ -40,10 +40,7 @@ class SubmissionUser extends AbstractService
     
     public function OverwrittenGrade($submission_id, $grade)
     {
-        $return = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
-                
-        $this->getServiceGradingPolicyGrade()->process($submission_id);
-        return $return;
+        return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
     }
     
      /**
@@ -56,10 +53,7 @@ class SubmissionUser extends AbstractService
      */
     public function setGrade($submission_id, $user_id, $grade, $overwritten = false)
     {
-        $return = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]); 
-        
-        $this->getServiceGradingPolicyGrade()->process($submission_id, $user_id);
-        return $return;
+        return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]); 
     }
     
     public function getListBySubmissionId($submission_id)
@@ -78,7 +72,7 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
     }
     
-       /**
+    /**
      * @invokable
      *
      * @param array  $avg
@@ -183,14 +177,5 @@ class SubmissionUser extends AbstractService
     public function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
-    }
-    
-        /**
-     * 
-     * @return \Application\Service\GradingPolicyGrade
-     */
-    public function getServiceGradingPolicyGrade()
-    {
-        return $this->getServiceLocator()->get('app_service_grading_policy_grade');
     }
 }

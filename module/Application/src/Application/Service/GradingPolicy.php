@@ -164,7 +164,7 @@ class GradingPolicy extends AbstractService
      * @invokable
      *
      * @param int $course            
-     * @param int $user            
+     * @param int $user  
      */
     public function getListByCourse($course, $user)
     {
@@ -172,16 +172,8 @@ class GradingPolicy extends AbstractService
         foreach($res_grading_policy as $m_grading_policy){
             $m_grading_policy->setCriterias($this->getServiceCriteria()->getList($m_grading_policy->getId()));
         }
+        
         return $res_grading_policy;
-    }
-
-    /**
-     *
-     * @return \Application\Service\GradingPolicyGrade
-     */
-    public function getServiceGradingPolicyGrade()
-    {
-        return $this->getServiceLocator()->get('app_service_grading_policy_grade');
     }
     
     /**

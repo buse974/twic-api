@@ -22,6 +22,7 @@ class Videoconf extends AbstractService
      * @param integer $submission_id
      * @param integer $item_id
      * @param integer $conversation
+     * 
      * @throws \Exception
      */
     public function add($title, $description, $start_date, $submission_id = null, $item_id = null, $conversation = null)
@@ -152,17 +153,6 @@ class Videoconf extends AbstractService
             ->setTitle($title)
             ->setDescription($description)
             ->setStartDate($start_date);
-
-        if ($start_date !== null && $m_videoconf_tmp->getStartDate() !== $start_date) {
-            $res_videoconf_invitation = $this->getServiceVideoConfInvitation()->getByVideoconfId($id);
-            if ($res_videoconf_invitation->count() > 0) {
-                foreach ($res_videoconf_invitation as $m_videoconf_invitation) {
-                    $this->getServiceMail()->sendTpl('tpl1', $m_videoconf_invitation->getEmail(), array('firstname' => $m_videoconf_invitation->getFirstname(), 'lastname' => $m_videoconf_invitation->getLastname(), 'link' => $this->getServiceLocator()
-                        ->get('config')['path_videoconf_guest'].$m_videoconf_tmp->getToken(), 'start_date' => (new DateTime($start_date, new DateTimeZone('UTC')))->setTimezone(new DateTimeZone($m_videoconf_invitation->getUtc()))
-                        ->format('Y-m-d H:i:s'), ));
-                }
-            }
-        }
 
         return $this->getMapper()->update($m_videoconf);
     }
