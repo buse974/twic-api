@@ -37,7 +37,7 @@ class SubmissionUser extends AbstractMapper
             $select->where(array('program$id' => $filter['program']));
         }
         if (isset($filter['user'])) {
-            $select->where(array('user$id' => $filter['user']));
+            $select->where(array('submission_user$user' => $filter['user']));
         }
         if (isset($filter['course'])) {
             $select->where(array('course$id' => $filter['course']));
