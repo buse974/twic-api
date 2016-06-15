@@ -69,7 +69,7 @@ class SubmissionUser extends AbstractMapper
                     ->where(array('course_instructor_relation.user_id' => $user['id']));
             }
         */
-        return $this->selectBridge($sel);
+        return $this->selectBridge($select);
     }
 
     
