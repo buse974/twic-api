@@ -49,7 +49,6 @@ return [
             'app_service_course',
             'app_service_grading',
             'app_service_grading_policy',
-            'app_service_videoconf_invitation',
             'mail.service',
             'app_service_material_document',
             'app_service_faq',
