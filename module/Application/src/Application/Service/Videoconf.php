@@ -104,9 +104,6 @@ class Videoconf extends AbstractService
         }
 
         $m_videoconf = $res_videoconf->current();
-        $m_videoconf->setVideoconfInvitation($this->getServiceVideoConfInvitation()
-            ->getByVideoconfId($m_videoconf->getId())
-            ->toArray());
 
         return $m_videoconf;
     }
@@ -516,14 +513,6 @@ class Videoconf extends AbstractService
     public function getServiceVideoconfArchive()
     {
         return $this->getServiceLocator()->get('app_service_videoconf_archive');
-    }
-
-    /**
-     * @return \Application\Service\VideoconfInvitation
-     */
-    public function getServiceVideoConfInvitation()
-    {
-        return $this->getServiceLocator()->get('app_service_videoconf_invitation');
     }
 
     /**
