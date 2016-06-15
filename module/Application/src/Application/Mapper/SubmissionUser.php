@@ -12,6 +12,7 @@ class SubmissionUser extends AbstractMapper
     
     public function getListGrade($avg = array(), $filter = array(), $search = null, $user = null)
     {
+        $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
             'submission_user$user' => 'user_id',
             'submission_user$avg' => new Expression('SUM(item.coefficient * submission_user.grade) / SUM(item.coefficient)')))
