@@ -28,7 +28,7 @@ class SubmissionUser extends AbstractMapper
             $select->group('program$id');
         }
         if (isset($avg['user'])) {
-            $select->group('user$id');
+            $select->group('submission_user$user');
         }
         if (isset($avg['course'])) {
             $select->group('course$id');
