@@ -29,7 +29,7 @@ class Conversation extends AbstractService
 
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setToken($this->getServiceZOpenTok()->getSessionId())
+            //->setToken($this->getServiceZOpenTok()->getSessionId())
             ->setType($type);
 
         if ($this->getMapper()->insert($m_conversation) <= 0) {
