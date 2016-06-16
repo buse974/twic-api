@@ -75,7 +75,7 @@ class Item extends AbstractService
      */
     public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, 
         $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
-        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null)
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null, $coefficient = null)
     {
         if(!isset($this->conf[$type])) {
             return;
@@ -96,6 +96,7 @@ class Item extends AbstractService
             ->setCutOff($cut_off)
             ->setSetId($set_id)
             ->setHasSubmission($has_submission)
+            ->setCoefficient($coefficient)
             ->setParentId(($parent_id === 0) ? null : $parent_id);
         
         if ($this->getMapper()->insert($m_item) <= 0) {
@@ -302,7 +303,7 @@ class Item extends AbstractService
      */
     public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, 
         $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
-        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null)
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null, $coefficient = null)
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -319,6 +320,7 @@ class Item extends AbstractService
             ->setHasAllStudent($has_all_student)
             ->setIsGrouped($is_grouped)
             ->setHasSubmission($has_submission)
+            ->setCoefficient($coefficient)
             ->setParentId(($parent_id === 0) ? new IsNull():$parent_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         

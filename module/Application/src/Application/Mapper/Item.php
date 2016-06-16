@@ -29,6 +29,7 @@ class Item extends AbstractMapper
             'has_submission',
             'has_all_student',
             'is_grouped',
+            'coefficient',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
@@ -58,6 +59,7 @@ class Item extends AbstractMapper
             'has_all_student',
             'is_grouped',
             'is_complete',
+            'coefficient',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),
@@ -147,6 +149,7 @@ class Item extends AbstractMapper
             'has_submission',
             'has_all_student',
             'is_grouped',
+            'coefficient',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
@@ -175,6 +178,7 @@ class Item extends AbstractMapper
             'has_submission',
             'has_all_student',
             'is_grouped',
+            'coefficient',
             'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
             'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
             'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")')
