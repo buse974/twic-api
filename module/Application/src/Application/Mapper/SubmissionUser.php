@@ -42,18 +42,18 @@ class SubmissionUser extends AbstractMapper
         if (isset($filter['course'])) {
             $select->where(array('course.id' => $filter['course']));
         }
-        if (null !== $search) {
+        if (!empty($search)) {
             if (isset($avg['program'])) {
-                $select->where(array(' program$name LIKE ? ' => '%'.$search.'%'));
+                $select->where(array(' program.name LIKE ? ' => '%'.$search.'%'));
             } elseif (isset($avg['user'])) {
-                $select->where(array('( user$firstname LIKE ?' => '%'.$search.'%'))->where(array(' user$lastname LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
+                $select->where(array('( user.firstname LIKE ?' => '%'.$search.'%'))->where(array(' user.lastname LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
             } elseif (isset($avg['course'])) {
-                $select->where(array('course$title LIKE ?' => '%'.$search.'%'));
+                $select->where(array('course.title LIKE ?' => '%'.$search.'%'));
             } else {
                 $select->where(array('( user$firstname LIKE ?' => '%'.$search.'%'))
-                    ->where(array(' user$lastname LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
-                    ->where(array(' program$name LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
-                    ->where(array(' course$title LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
+                    ->where(array(' user.lastname LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array(' program.name LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array(' course.title LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
             }
         }
         
