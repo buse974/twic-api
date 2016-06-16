@@ -300,7 +300,7 @@ class Submission extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
        
-        if(null === $user_id || key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) {
+        if(null === $user_id || key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
             $user_id = $identity['id'];
         }
         
