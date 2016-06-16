@@ -8,6 +8,7 @@ use Zend\Db\Sql\Predicate\IsNull;
 use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\SubmissionUser;
 use Application\Model\Library as ModelLibrary;
+use Application\Model\Role as ModelRole;
 
 class Submission extends AbstractService
 {
@@ -293,10 +294,16 @@ class Submission extends AbstractService
      * @param boolean $graded
      * @param boolean $late
      * @param string $search
+     * @param string $user_id
      */
-    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null, $search = null)
+    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null, $search = null, $user_id = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $identity = $this->getServiceUser()->getIdentity();
+       
+        if(null === $user_id || key_exists(ModelRole::ROLE_STUDENT_ID, $user['roles'])) {
+            $user_id = $identity['id'];
+        }
+        
         $mapper = $this->getMapper();
         
         $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late, $search);
