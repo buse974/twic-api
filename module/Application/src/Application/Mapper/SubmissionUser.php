@@ -25,22 +25,22 @@ class SubmissionUser extends AbstractMapper
             ->where(array('submission_user.grade IS NOT NULL'));
         
         if (isset($avg['program'])) {
-            $select->group('program$id');
+            $select->group('program.id');
         }
         if (isset($avg['user'])) {
             $select->group('user.id');
         }
         if (isset($avg['course'])) {
-            $select->group('course$id');
+            $select->group('course.id');
         }
         if (isset($filter['program'])) {
-            $select->where(array('program$id' => $filter['program']));
+            $select->where(array('program.id' => $filter['program']));
         }
         if (isset($filter['user'])) {
             $select->where(array('user.id' => $filter['user']));
         }
         if (isset($filter['course'])) {
-            $select->where(array('course$id' => $filter['course']));
+            $select->where(array('course.id' => $filter['course']));
         }
         if (null !== $search) {
             if (isset($avg['program'])) {
