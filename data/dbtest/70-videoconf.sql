@@ -34,3 +34,7 @@ ADD CONSTRAINT `fk_conversation_1`
   REFERENCES `conversation_opt` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+
+INSERT IGNORE INTO `permission` (`libelle`) VALUES ('conversationopt.update');
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (4, 
+(SELECT `id` FROM `permission` WHERE `libelle`= 'conversationopt.update'));
