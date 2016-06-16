@@ -143,7 +143,7 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null)
+    public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null, $tograde = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
