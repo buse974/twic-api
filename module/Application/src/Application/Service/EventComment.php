@@ -1,69 +1,69 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class EventComment extends AbstractService
 {
-
     /**
      * @invokable
      *
-     * @param int $comment            
-     * @param string $content            
+     * @param int    $comment
+     * @param string $content
      */
     public function add($event, $content)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_comment = $this->getModel()
             ->setEventId($event)
             ->setUserId($me)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setContent($content);
-        
+
         $this->getMapper()->insert($m_comment);
-        
+
         $id = $this->getMapper()->getLastInsertValue();
-        
+
         $this->getServiceEvent()->userComment($m_comment->setId($id));
-        
+
         return $id;
     }
 
     /**
      * @invokable
      *
-     * @param int $comment            
-     * @param string $content            
+     * @param int    $comment
+     * @param string $content
      */
     public function update($comment, $content)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         return $this->getMapper()->update($this->getModel()
             ->setId($comment)
-            ->setContent($content), ['user_id' => $me,'id' => $comment]);
+            ->setContent($content), ['user_id' => $me, 'id' => $comment]);
     }
 
     /**
      * @invokable
      *
-     * @param int $comment            
+     * @param int $comment
      */
     public function delete($comment)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         return $this->getMapper()->update($this->getModel()
             ->setId($comment)
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), ['user_id' => $me,'id' => $comment]);
+            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), ['user_id' => $me, 'id' => $comment]);
     }
 
     /**
      * @invokable
      *
-     * @param int $event            
+     * @param int $event
      */
     public function getList($event)
     {
@@ -71,7 +71,6 @@ class EventComment extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()
@@ -80,7 +79,6 @@ class EventComment extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()

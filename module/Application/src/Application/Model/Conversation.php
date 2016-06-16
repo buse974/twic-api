@@ -11,6 +11,6 @@ class Conversation extends BaseConversation
     const TYPE_VIDEOCONF = 3;
     const TYPE_ITEM_CHAT = 4;
     const TYPE_ITEM_GROUP_ASSIGNMENT = 5;
-    
+
     const DEFAULT_NAME = 'Chat';
 }

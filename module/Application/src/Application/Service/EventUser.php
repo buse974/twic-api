@@ -1,23 +1,23 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class EventUser extends AbstractService
 {
-
     public function add($user, $notification)
     {
-        if (! is_array($user)) {
+        if (!is_array($user)) {
             $user = [$user];
         }
         $m_event_user = $this->getModel()->setEventId($notification);
-        
+
         foreach ($user as $u) {
             $m_event_user->setUserId($u);
             $this->getMapper()->insert($m_event_user);
         }
-        
+
         return true;
     }
 
@@ -28,9 +28,9 @@ class EventUser extends AbstractService
     {
         $nb = 0;
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         if (null !== $ids) {
             $m_event = $this->getModel()
                 ->setUserId($me)
@@ -41,7 +41,7 @@ class EventUser extends AbstractService
             $nb += $this->getMapper()->insertUpdate($date, $me, $event);
             $nb += $this->getMapper()->updateReadMe($date, $me, $event);
         }
-        
+
         return $nb;
     }
 
@@ -54,18 +54,17 @@ class EventUser extends AbstractService
     {
         $nb = 0;
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_event_user = $this->getModel()->setUserId($me)->setEventId($id);
         $count = $this->getMapper()->select($m_event_user)->count();
         $m_event_user->setViewDate($date);
-        
+
         return ($count > 0) ? $this->getMapper()->update($m_event_user) : $this->getMapper()->insert($m_event_user);
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()

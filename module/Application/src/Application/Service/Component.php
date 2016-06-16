@@ -3,7 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Satooshi\Bundle\CoverallsBundle\Console\Application;
 
 class Component extends AbstractService
 {
@@ -21,7 +20,7 @@ class Component extends AbstractService
         $res_component = $mapper->usePaginator($filter)->getList($dimension, $search);
 
         return (null !== $filter) ?
-            array('count' => $mapper->count(),'list' => $res_component) :
+            array('count' => $mapper->count(), 'list' => $res_component) :
             $res_component;
     }
 
@@ -80,7 +79,7 @@ class Component extends AbstractService
 
         return $ret;
     }
-    
+
     /**
      * @invokable
      * 
@@ -93,20 +92,20 @@ class Component extends AbstractService
     public function getListEqCq($schools, $gender = null, $nationality = null, $origin = null, $program = null)
     {
         $nbr_school = $this->getServiceUser()->nbrBySchool($schools);
-        
+
         $ns = [];
         foreach ($nbr_school as $nbr) {
             $ns[$nbr->getSchoolId()][] = $nbr->toArray();
         }
-        
+
         $ret = [];
         foreach ($schools as $school) {
             $ret[$school] = [
                 'eqcq' => $this->getEqCq($school, $gender, $nationality, $origin, $program),
-                'nbr' => $ns[$school]
+                'nbr' => $ns[$school],
             ];
         }
-        
+
         return $ret;
     }
 
@@ -150,7 +149,7 @@ class Component extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_component_scale');
     }
-    
+
     /**
      * @return \Application\Service\User
      */

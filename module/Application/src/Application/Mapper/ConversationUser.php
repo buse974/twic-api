@@ -12,8 +12,8 @@ class ConversationUser extends AbstractMapper
 {
     /**
      * @param array $users
-     * @param integer $type
-     * @param integer $submission_id
+     * @param int   $type
+     * @param int   $submission_id
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
@@ -26,9 +26,9 @@ class ConversationUser extends AbstractMapper
         $select_sub->columns(array('conversation_id'))
                    ->group(array('conversation_id'))
                    ->having($having);
-    
+
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('conversation_id'))  
+        $select->columns(array('conversation_id'))
                ->join('videoconf', 'videoconf.conversation_id=conversation_user.conversation_id', array(), $select::JOIN_LEFT)
                ->join('conversation', 'conversation.id=conversation_user.conversation_id', array())
                ->where(array('user_id' => $users))
@@ -48,8 +48,8 @@ class ConversationUser extends AbstractMapper
     {
         $delete = $this->tableGateway->getSql()->delete();
         $delete->where(array('conversation_id' => $conversation));
-        
-        if(empty($users)) {
+
+        if (empty($users)) {
             $delete->where(new NotIn('user_id', $users));
         }
 

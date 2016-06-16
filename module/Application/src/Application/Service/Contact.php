@@ -21,11 +21,11 @@ class Contact extends AbstractService
         }
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_contact = $this->getModel()
             ->setUserId($identity['id'])
             ->setContactId($user);
-        
+
         $m_contact_me = $this->getModel()
             ->setRequestDate($date)
             ->setAcceptedDate(new IsNull())
@@ -33,7 +33,7 @@ class Contact extends AbstractService
             ->setRequested(true)
             ->setAccepted(false)
             ->setDeleted(false);
-        
+
         $m_contact_you = $this->getModel()
             ->setRequestDate($date)
             ->setAcceptedDate(new IsNull())
@@ -41,8 +41,8 @@ class Contact extends AbstractService
             ->setRequested(false)
             ->setAccepted(false)
             ->setDeleted(false);
-        
-        if($this->getMapper()->select($m_contact)->count() === 0 ) {
+
+        if ($this->getMapper()->select($m_contact)->count() === 0) {
             $m_contact_me->setUserId($identity['id'])->setContactId($user);
             $m_contact_you->setUserId($user)->setContactId($identity['id']);
             $this->getMapper()->insert($m_contact_me);
@@ -51,9 +51,8 @@ class Contact extends AbstractService
             $this->getMapper()->update($m_contact_me, array('user_id' => $user, 'contact_id' => $identity['id']));
             $ret = $this->getMapper()->update($m_contact_you, array('user_id' => $identity['id'], 'contact_id' => $user));
         }
-        
+
        // $this->getServiceEvent()->userRequestconnection($user);
-        
 
         return $ret;
     }
@@ -67,7 +66,7 @@ class Contact extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_contact = $this->getModel()->setAcceptedDate($date)->setAccepted(false);
         $this->getMapper()->update($m_contact, array('user_id' => $user, 'contact_id' => $identity['id']));
 
@@ -75,7 +74,7 @@ class Contact extends AbstractService
         $this->getMapper()->update($m_contact, array('user_id' => $identity['id'], 'contact_id' => $user));
 
         $this->getServiceEvent()->userAddConnection($identity['id'], $user);
-        
+
         return true;
     }
 
@@ -88,15 +87,15 @@ class Contact extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_contact = $this->getModel()->setDeletedDate($date)->setDeleted(false);
         $this->getMapper()->update($m_contact, array('user_id' => $user, 'contact_id' => $identity['id']));
-        
+
         $m_contact = $this->getModel()->setDeletedDate($date)->setDeleted(true);
         $this->getMapper()->update($m_contact, array('user_id' => $identity['id'], 'contact_id' => $user));
-        
+
         $this->getServiceEvent()->userDeleteConnection($identity['id'], $user);
-        
+
         return true;
     }
 
@@ -129,8 +128,8 @@ class Contact extends AbstractService
     /**
      * @invokable 
      *
-     * @param int   $user 
-     * @param array $exclude 
+     * @param int   $user
+     * @param array $exclude
      */
     public function getList($user = null, $exclude = null)
     {
@@ -148,7 +147,7 @@ class Contact extends AbstractService
             $request->setContact($this->getServiceUser()->get($request->getContactId()));
         }
 
-        return $listRequest; 
+        return $listRequest;
     }
 
     public function getListId($user = null)

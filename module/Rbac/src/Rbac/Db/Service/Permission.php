@@ -128,7 +128,7 @@ class Permission extends AbstractService
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList($filter, $roleId, $search);
 
-        return array('list' => $res,'count' => $mapper->count());
+        return array('list' => $res, 'count' => $mapper->count());
     }
 
     /**

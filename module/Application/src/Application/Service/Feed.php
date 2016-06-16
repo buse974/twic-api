@@ -26,7 +26,7 @@ class Feed extends AbstractService
      * 
      * @return int
      */
-    public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, 
+    public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null,
         $name_document = null, $link_desc = null, $link_title = null, $type = null)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
@@ -51,12 +51,11 @@ class Feed extends AbstractService
 
         $feed_id = $this->getMapper()->getLastInsertValue();
 
-        if($type === ModelFeed::TYPE_ACADEMIC) {
+        if ($type === ModelFeed::TYPE_ACADEMIC) {
             $this->getServiceEvent()->userAnnouncement($feed_id);
         } else {
             $this->getServiceEvent()->userPublication($feed_id);
         }
-        
 
         return $feed_id;
     }

@@ -1,19 +1,18 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
-use \Application\Model\Item as ModelItem;
+use Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
 use Application\Model\Library as ModelLibrary;
 use Application\Model\Role as ModelRole;
-use Dal\Db\ResultSet\ResultSet;
 
 class Item extends AbstractService
 {
-
     protected $conf = [
-            ModelItem::TYPE_CAPSTONE_PROJECT => [     
+            ModelItem::TYPE_CAPSTONE_PROJECT => [
                 ModelItem::CMP_CHAT => false,
             ],
             ModelItem::TYPE_CHAT => [
@@ -48,39 +47,39 @@ class Item extends AbstractService
                 ModelItem::CMP_EQCQ => false,
             ],
         ];
-    
+
     /**
      * @invokable
      *
-     * @param integer $course
-     * @param integer $grading_policy_id
+     * @param int    $course
+     * @param int    $grading_policy_id
      * @param string $title
      * @param string $describe
-     * @param integer $duration
+     * @param int    $duration
      * @param string $type
-     * @param array $data
-     * @param array $ct
-     * @param array $opt
-     * @param integer $set_id
-     * @param integer $has_submission
+     * @param array  $data
+     * @param array  $ct
+     * @param array  $opt
+     * @param int    $set_id
+     * @param int    $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
-     * @param integer $parent_id
-     * @param integer $order_id
-     * @param integer $has_all_student
-     * @param integer $is_grouped
-     * @param array $submission
-     * @param integer $is_complete
+     * @param int    $parent_id
+     * @param int    $order_id
+     * @param int    $has_all_student
+     * @param int    $is_grouped
+     * @param array  $submission
+     * @param int    $is_complete
      */
-    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, 
-        $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
+    public function add($course, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null,
+        $data = null, $ct = null, $opt = null, $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null,
         $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null, $coefficient = null)
     {
-        if(!isset($this->conf[$type])) {
+        if (!isset($this->conf[$type])) {
             return;
         }
-        
+
         $m_item = $this->getModel()
             ->setCourseId($course)
             ->setGradingPolicyId($grading_policy_id)
@@ -98,45 +97,41 @@ class Item extends AbstractService
             ->setHasSubmission($has_submission)
             ->setCoefficient($coefficient)
             ->setParentId(($parent_id === 0) ? null : $parent_id);
-        
+
         if ($this->getMapper()->insert($m_item) <= 0) {
             throw new \Exception('error insert item');
         }
-        
+
         $item_id = $this->getMapper()->getLastInsertValue();
-        $this->updateOrderId($item_id,$parent_id, $order_id);
-        
-        
-        
+        $this->updateOrderId($item_id, $parent_id, $order_id);
+
         // CONTRAINTE
-        if(null !== $ct) {
-            if(isset($ct['date'])) {
+        if (null !== $ct) {
+            if (isset($ct['date'])) {
                 foreach ($ct['date'] as $date) {
                     $this->getServiceCtDate()->add($item_id, $date['date'], (isset($date['after'])) ? $date['after'] : null);
                 }
             }
-            if(isset($ct['done'])) {
+            if (isset($ct['done'])) {
                 foreach ($ct['done'] as $done) {
                     $this->getServiceCtDone()->add($item_id, $done['target'], (isset($done['all'])) ? $done['all'] : null);
                 }
-            
             }
-            if(isset($ct['group'])) {
+            if (isset($ct['group'])) {
                 foreach ($ct['group'] as $group) {
                     $this->getServiceCtGroup()->add($item_id, $group['group'], (isset($group['belongs'])) ? $group['belongs'] : null);
                 }
-            
             }
-            if(isset($ct['rate'])) {
+            if (isset($ct['rate'])) {
                 foreach ($ct['rate'] as $rate) {
                     $this->getServiceCtRate()->add($item_id, $rate['target'], (isset($rate['inf'])) ? $rate['inf'] : null, (isset($rate['sup'])) ? $rate['sup'] : null);
                 }
             }
         }
         // OPTION GRADING
-        if(null !== $opt) {
-            if(isset($opt['grading'])) {
-                $this->getServiceOptGrading()->add($item_id, 
+        if (null !== $opt) {
+            if (isset($opt['grading'])) {
+                $this->getServiceOptGrading()->add($item_id,
                     (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,
                     (isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,
                     (isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,
@@ -147,13 +142,13 @@ class Item extends AbstractService
                     (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
         }
-        
-        if(null !== $submission) {
+
+        if (null !== $submission) {
             $this->getServiceSubmission()->add($submission, $item_id);
         }
-        
+
         $this->initCmp($type, $data, $item_id);
-        
+
         return $item_id;
     }
 
@@ -161,15 +156,15 @@ class Item extends AbstractService
     {
         $tconf = $this->conf[$type];
         foreach ($tconf as $component => $v) {
-            if($v === true) {
-                $this->factorieComponent($component, ((isset($data[$component]))?$data[$component]:[]), $item_id);
-            } elseif(isset($data[$component]) && $data[$component] !== false) {
+            if ($v === true) {
+                $this->factorieComponent($component, ((isset($data[$component])) ? $data[$component] : []), $item_id);
+            } elseif (isset($data[$component]) && $data[$component] !== false) {
                 $this->factorieComponent($component, $data[$component], $item_id);
             }
         }
     }
-    
-    private function factorieComponent($component, $data, $item_id) 
+
+    private function factorieComponent($component, $data, $item_id)
     {
         $cmp = false;
         switch ($component) {
@@ -190,119 +185,119 @@ class Item extends AbstractService
                 $cmp = $this->addCmpVideoconf($data, $item_id);
                 break;
         }
-        
+
         return $cmp;
     }
-    
+
     public function addCmpPoll($data, $item_id)
     {
-        if(empty($data)) {
+        if (empty($data)) {
             return;
         }
-        
+
         $title = isset($data['title']) ? $data['title'] : null;
-        $poll_item  = isset($data['poll_item']) ? $data['poll_item'] : null;
+        $poll_item = isset($data['poll_item']) ? $data['poll_item'] : null;
         $expiration = isset($data['expiration']) ? $data['expiration'] : null;
         $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
-        
+
         return $this->getServicePoll()->addOrUpdate($item_id, $title, $poll_item, $expiration, $time_limit);
     }
-    
+
     public function addCmpVideoconf($data, $item_id)
     {
         $record = isset($data['record']) ? $data['record'] : null;
         $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
         $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
-        
-        return $this->getServiceVideoconfOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor);
+
+        return $this->getServiceConversationOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor);
     }
-    
+
     public function addCmpThread($data, $item_id)
     {
-        if(empty($data)) {
+        if (empty($data)) {
             return;
         }
-        
-        if($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
-            return $this->getServiceThread()->update($thread_id,null,$item_id);
+
+        if ($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
+            return $this->getServiceThread()->update($thread_id, null, $item_id);
         } else {
             $course = isset($data['course']) ? $data['course'] : null;
             $describe = isset($data['describe']) ? $data['describe'] : null;
             $title = isset($data['title']) ? $data['title'] : null;
+
             return $this->getServiceThread()->add($title, $course, $describe, $item_id);
         }
     }
-    
+
     public function addCmpDocument($data, $item_id)
     {
-        if(empty($data)) {
+        if (empty($data)) {
             return;
         }
-        
+
         $name = isset($data['name']) ? $data['name'] : null;
-        $type  = isset($data['type']) ? $data['type'] : null;
+        $type = isset($data['type']) ? $data['type'] : null;
         $link = isset($data['link']) ? $data['link'] : null;
         $token = isset($data['token']) ? $data['token'] : null;
-        
-        return $this->getServiceDocument()->add($name,$type,$link,$token,$item_id, null, ModelLibrary::FOLDER_OTHER_INT);
+
+        return $this->getServiceDocument()->add($name, $type, $link, $token, $item_id, null, ModelLibrary::FOLDER_OTHER_INT);
     }
-    
+
     /**
      * @invokable
      * 
-     * @param integer $item_id
-     * @param integer $user_id
+     * @param int $item_id
+     * @param int $user_id
      */
     public function getListUsers($item_id, $user_id = null)
     {
         return $this->getServiceUser()->getListUsersGroupByItemAndUser($item_id, $user_id);
     }
-    
+
     /**
      * @invokable
      * 
-     * @param array $filter
+     * @param array  $filter
      * @param string $type
-     * @param array $program
-     * @param array $course
+     * @param array  $program
+     * @param array  $course
      * @param string $due
-     * @param bool $notgraded
+     * @param bool   $notgraded
      * @param string $search
-     * 
      */
     public function getListSubmissions($filter = null, $type = null, $program = null, $course = null, $due = null, $notgraded = null, $search = null)
     {
-         $mapper = $this->getMapper()->usePaginator($filter);
-         $u = $this->getServiceUser()->getIdentity();
-         $res_item = $mapper->getListSubmissions($u['school']['id'], $type, $program, $course, $due, $notgraded, $search);
+        $mapper = $this->getMapper()->usePaginator($filter);
+        $u = $this->getServiceUser()->getIdentity();
+        $res_item = $mapper->getListSubmissions($u['school']['id'], $type, $program, $course, $due, $notgraded, $search);
 
-         return ['list' => $res_item, 'count' => $mapper->count()];
+        return ['list' => $res_item, 'count' => $mapper->count()];
     }
-    
+
     /**
      * @invokable
      * 
-     * @param integer $id
-     * @param integer $grading_policy_id
+     * @param int    $id
+     * @param int    $grading_policy_id
      * @param string $title
      * @param string $describe
-     * @param integer $duration
+     * @param int    $duration
      * @param string $type
-     * @param array $data
-     * @param integer $set_id
-     * @param integer $has_submission
+     * @param array  $data
+     * @param int    $set_id
+     * @param int    $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
-     * @param integer $parent_id
-     * @param integer $order_id
-     * @param integer $has_all_student
-     * @param integer $is_grouped
-     * @param array $submission
-     * @param integer $is_complete
+     * @param int    $parent_id
+     * @param int    $order_id
+     * @param int    $has_all_student
+     * @param int    $is_grouped
+     * @param array  $submission
+     * @param int    $is_complete
      */
-    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null, 
-        $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null, 
+    public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null,
+        $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null,
         $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null, $coefficient = null)
     {
         $m_item = $this->getModel()
@@ -321,29 +316,29 @@ class Item extends AbstractService
             ->setIsGrouped($is_grouped)
             ->setHasSubmission($has_submission)
             ->setCoefficient($coefficient)
-            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id)
+            ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
-         if ($order_id !== null || $parent_id !== null ) {
-         	$this->updateOrderId($id, $parent_id, $order_id);
-         }
 
-         if(null !== $data) {
-             if(null === $type) {
-                 $type = $this->get($id)->getType();
-             }
-             $this->initCmp($type, $data, $id);
-         }
-         
-         if(null !== $submission) {
+        if ($order_id !== null || $parent_id !== null) {
+            $this->updateOrderId($id, $parent_id, $order_id);
+        }
+
+        if (null !== $data) {
+            if (null === $type) {
+                $type = $this->get($id)->getType();
+            }
+            $this->initCmp($type, $data, $id);
+        }
+
+        if (null !== $submission) {
             $this->getServiceSubmission()->add($submission, $id);
-         }
-         
-         return $this->getMapper()->update($m_item);
+        }
+
+        return $this->getMapper()->update($m_item);
     }
 
     /**
-     * @param integer $submission_id
+     * @param int $submission_id
      * 
      * @return null|\Application\Model\Item
      */
@@ -353,7 +348,7 @@ class Item extends AbstractService
     }
 
     /**
-     * @param integer $submission_id
+     * @param int $submission_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -361,107 +356,106 @@ class Item extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setCourseId($course_id));
     }
-    
+
     /**
      * @invokable
      *
-     * @param integer $course
-     * @param integer $parent_id
-     * @param integer $start
-     * @param integer $end
+     * @param int $course
+     * @param int $parent_id
+     * @param int $start
+     * @param int $end
      */
     public function getList($course = null, $parent_id = null, $start = null, $end = null)
     {
-        if(null === $course && $start === null && $end === null) {
-            throw new \Exception("error course is not declarer");
+        if (null === $course && $start === null && $end === null) {
+            throw new \Exception('error course is not declarer');
         }
-        
+
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
-        $user_id = $ar_user['id']; 
-        
+        $user_id = $ar_user['id'];
+
         $is_student = false;
-        if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
             $is_student = true;
         }
-        
+
         $res_item = $this->getMapper()->getList($course, $parent_id, $start, $end);
-        
-        $ar_item =   (null !== $start || null !== $end) ? $res_item->toArray(): $res_item->toArrayParent('order_id');
+
+        $ar_item = (null !== $start || null !== $end) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
 
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()->get($item['id'])->toArray();
             $item['rate'] = $this->getServiceCtRate()->get($item['id'])->toArray();
-            if($is_student === true) {
-                if($item['is_complete'] === 0 || 
-                    ( $item['type'] !== ModelItem::TYPE_TXT &&
+            if ($is_student === true) {
+                if ($item['is_complete'] === 0 ||
+                    ($item['type'] !== ModelItem::TYPE_TXT &&
                     $item['type'] !== ModelItem::TYPE_DOCUMENT &&
                     $item['type'] !== ModelItem::TYPE_MODULE   &&
-                    $this->checkAllow($item['id'], $user_id) === false )
+                    $this->checkAllow($item['id'], $user_id) === false)
                     ) {
-                   unset($ar_item[$k]);
+                    unset($ar_item[$k]);
                 }
                 $item['checked'] = $this->checkVisibility($item, $user_id);
             }
         }
-        
+
         return array_values($ar_item);
     }
-    
+
     public function checkAllow($item_id, $user_id = null)
     {
-        if(null === $user_id) {
+        if (null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
-        
+
         return $this->getServiceUser()->doBelongs($item_id, $user_id);
-         
     }
-    
+
     public function checkVisibility($item, $user_id = null)
     {
-        if(null === $user_id) {
+        if (null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
-        
+
         $done = 1;
         $rate = 2;
         $date = 0;//3;
-        if(isset($item['done']) && count($item['done']) > 0) {
+        if (isset($item['done']) && count($item['done']) > 0) {
             foreach ($item['done'] as $i) {
                 $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
-                if(null !== $m_submission) {
-                    if($i['all'] == 1) {
-                        if($m_submission->getSubmitDate() === null || 
+                if (null !== $m_submission) {
+                    if ($i['all'] == 1) {
+                        if ($m_submission->getSubmitDate() === null ||
                             $m_submission->getSubmitDate() instanceof IsNull) {
                             $done = 0;
                             break;
                         }
                     } else {
-                        if($m_submission->getSubmissionUser()->getSubmitDate() === null || 
+                        if ($m_submission->getSubmissionUser()->getSubmitDate() === null ||
                             $m_submission->getSubmissionUser()->getSubmitDate() instanceof IsNull) {
                             $done = 0;
                             break;
                         }
                     }
                 } else {
-                    $done = 0;  
+                    $done = 0;
                     break;
                 }
             }
         }
-        
-        if(isset($item['rate']) && count($item['rate']) > 0) {
+
+        if (isset($item['rate']) && count($item['rate']) > 0) {
             foreach ($item['rate'] as $i) {
                 $m_submission = $this->getServiceSubmission()->getSubmissionUser($i['target_id'], $user_id);
-                if(null !== $m_submission) {
+                if (null !== $m_submission) {
                     $grade = $m_submission->getSubmissionUser()->getGrade();
-                    if(is_numeric($grade)) {
-                        if(is_numeric($i['inf']) && $i['inf'] < $grade) {
+                    if (is_numeric($grade)) {
+                        if (is_numeric($i['inf']) && $i['inf'] < $grade) {
                             $rate = 0;
                             break;
                         }
-                        if(is_numeric($i['sup']) && $i['sup'] > $grade) {
+                        if (is_numeric($i['sup']) && $i['sup'] > $grade) {
                             $rate = 0;
                             break;
                         }
@@ -472,26 +466,27 @@ class Item extends AbstractService
                 }
             }
         }
-        
+
         return $done | $rate | $date;
     }
-    
-      /**
+
+    /**
      * @invokable
      *               
-     * @param string $start            
-     * @param string $end   
+     * @param string $start
+     * @param string $end
+     *
      * @return array
      */
     public function getListForCalendar($start = null, $end = null)
     {
-        return $this->getMapper()->getListForCalendar($this->getServiceUser()->getIdentity(),$start, $end);
+        return $this->getMapper()->getListForCalendar($this->getServiceUser()->getIdentity(), $start, $end);
     }
 
     /**
      * @invokable
      *
-     * @param int $user            
+     * @param int $user
      *
      * @return array
      */
@@ -502,11 +497,11 @@ class Item extends AbstractService
             ->setCourseId($course))
             ->toArray();
     }
-    
+
     /**
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return array
      */
@@ -518,11 +513,11 @@ class Item extends AbstractService
     public function getListRecord($course, $user, $is_student)
     {
         $res_item = $this->getMapper()->getListRecord($course, $user, $is_student);
-        
+
         foreach ($res_item as $m_item) {
             $m_item->setSubmission($this->getServiceSubmission()->getListRecord($m_item->getId(), $user, $is_student));
         }
-        
+
         return $res_item;
     }
 
@@ -531,8 +526,8 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course            
-     * @param int $type            
+     * @param int $course
+     * @param int $type
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -541,59 +536,59 @@ class Item extends AbstractService
         $m_item = $this->getModel()
             ->setType($type)
             ->setCourse($course);
-        
+
         return $this->getMapper()->select($m_item);
     }
 
     /**
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return int
      */
     public function delete($id)
     {
-    	$this->sort($id);
-    	
+        $this->sort($id);
+
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
 
     /**
      * @invokable
      *
-     * @param array $program            
-     * @param array $course            
-     * @param string $type            
-     * @param bool $not_graded            
-     * @param bool $new_message            
-     * @param array $filter            
+     * @param array  $program
+     * @param array  $course
+     * @param string $type
+     * @param bool   $not_graded
+     * @param bool   $new_message
+     * @param array  $filter
      */
     public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $submission = null, $user = null)
     {
         $mapper = $this->getMapper();
         $me = $this->getServiceUser()->getIdentity();
-        
+
         $res_item = $mapper->usePaginator($filter)->getListGrade($me, $program, $course, $type, $not_graded, $new_message, $filter, $submission, $user);
-        
+
         foreach ($res_item as $m_item) {
             $item_assigment_id = $m_item->getItemProg()
                 ->getItemAssignment()
                 ->getId();
-            if ($item_assigment_id !== null && ! $item_assigment_id instanceof IsNull) {
+            if ($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
                 $m_item->setUsers($this->getServiceUser()
                     ->getListByItemAssignment($item_assigment_id));
             }
         }
-        
-        return array('count' => $mapper->count(),'list' => $res_item);
+
+        return array('count' => $mapper->count(), 'list' => $res_item);
     }
 
     /**
      * @invokable
      *
-     * @param int $course            
-     * @param int $user            
+     * @param int $course
+     * @param int $user
      */
     public function getListGradeDetail($course, $user = null)
     {
@@ -602,23 +597,24 @@ class Item extends AbstractService
             $user = $identity['id'];
         }
         $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
-        
+
         foreach ($res_grading_policy as $m_grading_policy) {
             $m_grading_policy->setItems($this->getMapper()
                 ->getListGradeItem($m_grading_policy->getId(), $course, $user));
         }
+
         return $res_grading_policy;
     }
 
     /**
      * @invokable
      *
-     * @param int $grading_policy_id           
-     * @param int $course            
-     * @param int $user            
-     * @param int $submission            
+     * @param int $grading_policy_id
+     * @param int $course
+     * @param int $user
+     * @param int $submission
      */
-    public function getListGradeItem($grading_policy_id= null, $course = null, $user = null, $submission = null)
+    public function getListGradeItem($grading_policy_id = null, $course = null, $user = null, $submission = null)
     {
         return $this->getMapper()->getListGradeItem($grading_policy_id, $course, $user, $submission);
     }
@@ -626,7 +622,7 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $submission            
+     * @param int $submission
      *
      * @throws \Exception
      *
@@ -635,11 +631,11 @@ class Item extends AbstractService
     public function getByItemProg($submission)
     {
         $res_item = $this->getMapper()->getByItemProg($submission);
-        
+
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item by itemprog');
         }
-        
+
         return $res_item->current();
     }
 
@@ -648,7 +644,7 @@ class Item extends AbstractService
      *
      * @TODO CHECK RIGHT
      * 
-     * @param int $id            
+     * @param int $id
      *
      * @throws \Exception
      *
@@ -658,103 +654,100 @@ class Item extends AbstractService
     {
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
-       
+
         $is_allow = true;
         $res_item = ($is_allow) ? $this->getMapper()->getAllow($id) : $this->getMapper()->get($id);
         if ($res_item->count() <= 0) {
             throw new \Exception('error select item');
         }
-            
+
         $m_item = $res_item->current();
-        if(array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
-            if($m_item->getIsComplete() === 0 ||
-                ( $m_item->getType() !== ModelItem::TYPE_TXT &&
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+            if ($m_item->getIsComplete() === 0 ||
+                ($m_item->getType() !== ModelItem::TYPE_TXT &&
                     $m_item->getType() !== ModelItem::TYPE_DOCUMENT &&
                     $m_item->getType() !== ModelItem::TYPE_MODULE   &&
-                    $this->checkAllow($id) === false )
+                    $this->checkAllow($id) === false)
                 ) {
-                    throw new \Exception('no autorisation for this item');
-                }
+                throw new \Exception('no autorisation for this item');
+            }
         }
-        
+
         $m_item->setCtDate($this->getServiceCtDate()->get($m_item->getId()))
             ->setCtDone($this->getServiceCtDone()->get($m_item->getId()))
             ->setCtRate($this->getServiceCtRate()->get($m_item->getId()))
             ->setCtGroup($this->getServiceCtGroup()->get($m_item->getId()))
-            ->setVideoconf($this->getServiceVideoconfOpt()->getByItem($m_item->getId()))
+            ->setVideoconf($this->getServiceConversationOpt()->getByItem($m_item->getId()))
             ->setThread($this->getServiceThread()->getByItem($m_item->getId()))
             ->setPoll($this->getServicePoll()->getByItem($m_item->getId()));
-        
-        if($m_item->getType() === ModelItem::TYPE_DOCUMENT){
+
+        if ($m_item->getType() === ModelItem::TYPE_DOCUMENT) {
             $m_item->setDocument($this->getServiceLibrary()->getListByItem($m_item->getId()));
-        }
-        else{
+        } else {
             $m_item->setDocument($this->getServiceLibrary()->getListByParentItem($m_item->getId()));
         }
-        
+
         return $m_item;
     }
 
-    public function updateOrderId($item, $parent_target = null,$order_id = null)
+    public function updateOrderId($item, $parent_target = null, $order_id = null)
     {
         $me_item = $this->getMapper()
         ->select($this->getModel()
             ->setId($item))
             ->current();
-    
-            $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull)?new IsNull('parent_id'): ['parent_id' => $me_item->getParentId()];
-            $sort 	 = ['order_id' => $item,'course_id' => $me_item->getCourseId()];
-            $rentre  = [new Operator('id',Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
-            $sortp = $rentrep = [];
-    
-            $parent_target = ($parent_target === null) ? $parent_id: (($parent_target === 0) ? new IsNull('parent_id'):['parent_id' => $parent_target]);
-            $order  = ($order_id === null || $order_id === 0)?new IsNull('order_id'): ['order_id' => $order_id];
-    
-            if(is_array($parent_id)) {
-                $sort	= array_merge($sort,$parent_id);
-            }else {
-                $sortp[]   = $parent_id;
-            }
-            if(is_array($parent_target)) {
-                $rentre = array_merge($rentre,$parent_target);
-            }else {
-                $rentrep[] = $parent_target;
-            }
-            if(is_array($order)) {
-                $rentre = array_merge($rentre,$order);
-            }else {
-                $rentrep[] = $order;
-            }
-    
-            $sort = array_merge($sortp, $sort);
-            $rentre = array_merge($rentrep, $rentre);
-    
+
+        $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull) ? new IsNull('parent_id') : ['parent_id' => $me_item->getParentId()];
+        $sort = ['order_id' => $item, 'course_id' => $me_item->getCourseId()];
+        $rentre = [new Operator('id', Operator::OP_NE, $item), 'course_id' => $me_item->getCourseId()];
+        $sortp = $rentrep = [];
+
+        $parent_target = ($parent_target === null) ? $parent_id : (($parent_target === 0) ? new IsNull('parent_id') : ['parent_id' => $parent_target]);
+        $order = ($order_id === null || $order_id === 0) ? new IsNull('order_id') : ['order_id' => $order_id];
+
+        if (is_array($parent_id)) {
+            $sort = array_merge($sort, $parent_id);
+        } else {
+            $sortp[] = $parent_id;
+        }
+        if (is_array($parent_target)) {
+            $rentre = array_merge($rentre, $parent_target);
+        } else {
+            $rentrep[] = $parent_target;
+        }
+        if (is_array($order)) {
+            $rentre = array_merge($rentre, $order);
+        } else {
+            $rentrep[] = $order;
+        }
+
+        $sort = array_merge($sortp, $sort);
+        $rentre = array_merge($rentrep, $rentre);
+
             // JE SORT
             $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
-    
+
             // JE RENTRE
             $this->getMapper()->update($this->getModel()->setOrderId($item), $rentre);
-            $this->getMapper()->update($this->getModel()
+        $this->getMapper()->update($this->getModel()
                 ->setId($item)
-                ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull():$order_id));
-    
+                ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull() : $order_id));
     }
-    
+
     public function sort($item)
     {
         $me_item = $this->getMapper()
         ->select($this->getModel()
             ->setId($item))
             ->current();
-             
-            return $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), [
+
+        return $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), [
                 'order_id' => $me_item->getId(),
-                'course_id' => $me_item->getCourseId()
+                'course_id' => $me_item->getCourseId(),
             ]);
     }
-    
+
     /**
-     *
      * @return \Application\Service\ItemMaterialDocumentRelation
      */
     public function getServiceItemMaterialDocumentRelation()
@@ -763,7 +756,6 @@ class Item extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Submission
      */
     public function getServiceSubmission()
@@ -772,7 +764,6 @@ class Item extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\GradingPolicy
      */
     public function getServiceGradingPolicy()
@@ -781,7 +772,6 @@ class Item extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -790,16 +780,14 @@ class Item extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Library
      */
     public function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }
-    
+
     /**
-     *
      * @return \Application\Service\Document
      */
     public function getServiceDocument()
@@ -808,94 +796,82 @@ class Item extends AbstractService
     }
 
     /**
-     *
      * @return \Application\Service\Poll
      */
     public function getServicePoll()
     {
         return $this->getServiceLocator()->get('app_service_poll');
     }
-    
-    
+
     /**
-     *
      * @return \Application\Service\CtDate
      */
     public function getServiceCtDate()
     {
         return $this->getServiceLocator()->get('app_service_ct_date');
     }
-    
+
     /**
-     *
      * @return \Application\Service\CtDone
      */
     public function getServiceCtDone()
     {
         return $this->getServiceLocator()->get('app_service_ct_done');
     }
-    
+
     /**
-     *
      * @return \Application\Service\CtGroup
      */
     public function getServiceCtGroup()
     {
         return $this->getServiceLocator()->get('app_service_ct_group');
     }
-    
+
     /**
-     *
      * @return \Application\Service\CtRate
      */
     public function getServiceCtRate()
     {
         return $this->getServiceLocator()->get('app_service_ct_rate');
     }
-    
+
     /**
-     *
      * @return \Application\Service\OptGrading
      */
     public function getServiceOptGrading()
     {
         return $this->getServiceLocator()->get('app_service_opt_grading');
     }
-    
+
     /**
-     *
      * @return \Application\Service\Conversation
      */
     public function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
-    
+
     /**
-     *
      * @return \Application\Service\Thread
      */
     public function getServiceThread()
     {
         return $this->getServiceLocator()->get('app_service_thread');
     }
-    
+
     /**
-     *
-     * @return \Application\Service\VideoconfOpt
+     * @return \Application\Service\ConversationOpt
      */
-    public function getServiceVideoconfOpt()
+    public function getServiceConversationOpt()
     {
-        return $this->getServiceLocator()->get('app_service_videoconf_opt');
+        return $this->getServiceLocator()->get('app_service_conversation_opt');
     }
-    
+
     /**
-     *
      * @return \Application\Service\Criteria
      */
     public function getServiceCriteria()
     {
         return $this->getServiceLocator()->get('app_service_criteria');
     }
-    
 }

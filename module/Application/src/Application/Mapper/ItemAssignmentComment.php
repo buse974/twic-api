@@ -11,7 +11,7 @@ class ItemAssignmentComment extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'text', 'audio','file', 'file_name', 'item_assignment_id', 'item_assignment_comment$created_date' => new Expression("DATE_FORMAT(created_date, '%Y-%m-%dT%TZ') "), 'item_assignment_comment$read_date' => new Expression("DATE_FORMAT(read_date, '%Y-%m-%dT%TZ') ")))
+        $select->columns(array('id', 'text', 'audio', 'file', 'file_name', 'item_assignment_id', 'item_assignment_comment$created_date' => new Expression("DATE_FORMAT(created_date, '%Y-%m-%dT%TZ') "), 'item_assignment_comment$read_date' => new Expression("DATE_FORMAT(read_date, '%Y-%m-%dT%TZ') ")))
             ->join('user', 'user.id=item_assignment_comment.user_id', array('id', 'firstname', 'lastname', 'avatar'))
             ->join('item_assignment', 'item_assignment.id=item_assignment_comment.item_assignment_id', array())
             ->join('item_assignment_relation', 'item_assignment_relation.item_assignment_id = item_assignment.id', array())

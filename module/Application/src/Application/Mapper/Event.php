@@ -7,7 +7,7 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Predicate\Predicate;
 
 class Event extends AbstractMapper
-{ 
+{
     public function getList($me, $events = null, $id = null, $source = null)
     {
         $select = $this->tableGateway->getSql()->select();

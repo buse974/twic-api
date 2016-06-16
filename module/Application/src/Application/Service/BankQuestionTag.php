@@ -7,13 +7,12 @@ use Dal\Service\AbstractService;
 class BankQuestionTag extends AbstractService
 {
     /**
-     *
-     * @param integer $bank_question_id
+     * @param int $bank_question_id
      * @param $data
      *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function add($bank_question_id, $data)
     {
@@ -21,56 +20,55 @@ class BankQuestionTag extends AbstractService
         foreach ($data as $name) {
             $ret[] = $this->_add($bank_question_id, $name);
         }
-    
+
         return $ret;
     }
-    
+
     public function replace($bank_question_id, $data)
     {
         $this->getMapper()->delete($this->getModel()->setBankQuestionId($bank_question_id));
-    
+
         return $this->add($bank_question_id, $data);
     }
-    
+
     public function copy($bank_question_id_new, $bank_question_id_old)
     {
         $res_bank_question_tag = $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id_old));
-    
+
         foreach ($res_bank_question_tag as $m_bank_question_tag) {
             $this->getMapper()->insert($m_bank_question_tag->setBankQuestionId($bank_question_id_new));
         }
-    
+
         return true;
     }
-    
+
     /**
-     * @param integer $bank_question_id
+     * @param int    $bank_question_id
      * @param string $name
+     *
      * @throws \Exception
      * 
-     * @return integer
+     * @return int
      */
     public function _add($bank_question_id, $name)
     {
         $m_bank_question_tag = $this->getModel()
             ->setBankQuestionId($bank_question_id)
             ->setName($name);
-    
-        if($this->getMapper()->insert($m_bank_question_tag) <=0) {
+
+        if ($this->getMapper()->insert($m_bank_question_tag) <= 0) {
             throw new \Exception('error insert tag');
         }
-    
+
         return $this->getMapper()->getLastInsertValue();
-    
     }
-    
+
     /**
      * @invokable
      * 
-     * @param integer $bank_question_id
-     * @param integer $course_id
+     * @param int    $bank_question_id
+     * @param int    $course_id
      * @param string $search
-     * @return NULL[]
      */
     public function getList($bank_question_id = null, $course_id = null, $search = null)
     {
@@ -79,16 +77,7 @@ class BankQuestionTag extends AbstractService
         foreach ($res_bank_question_tag as $m_bank_question_tag) {
             $ret[] = $m_bank_question_tag->getName();
         }
-        
+
         return $ret;
     }
 }
-
-
-
-
-
-
-
-
-

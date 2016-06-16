@@ -17,7 +17,7 @@ class Item extends BaseItem
     const TYPE_CHAT = 'CHAT';
     const TYPE_DISCUSSION = 'DISC';
     const TYPE_EQCQ = 'EQCQ';
-    
+
     const CMP_VIDEOCONF = 'videoconf';
     const CMP_POLL = 'poll';
     const CMP_DOCUMENT = 'document';
@@ -26,7 +26,7 @@ class Item extends BaseItem
     const CMP_CHAT = 'chat';
     const CMP_DISCUSSION = 'thread';
     const CMP_EQCQ = 'eqcq';
-    
+
     protected $materials;
     protected $module;
     protected $program;
@@ -38,7 +38,7 @@ class Item extends BaseItem
     protected $ct_rate;
     protected $ct_date;
     protected $ct_group;
-    protected $opt_grading; 
+    protected $opt_grading;
     protected $poll;
     protected $document;
     protected $videoconf;
@@ -49,7 +49,7 @@ class Item extends BaseItem
     protected $due;
     protected $library;
     protected $is_started;
-      
+
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
@@ -66,123 +66,122 @@ class Item extends BaseItem
     {
         return $this->is_started;
     }
-    
+
     public function setIsStarted($is_started)
     {
         $this->is_started = $is_started;
-    
+
         return $this;
     }
-    
+
     public function getLibrary()
     {
         return $this->library;
     }
-    
+
     public function setLibrary($library)
     {
         $this->library = $library;
-    
+
         return $this;
     }
-    
+
     public function getDue()
     {
         return $this->due;
     }
-    
+
     public function setDue($due)
     {
         $this->due = $due;
-    
+
         return $this;
     }
-    
-    
+
     public function getGraded()
     {
         return $this->graded;
     }
-    
+
     public function setGraded($graded)
     {
         $this->graded = $graded;
-    
+
         return $this;
     }
-    
+
     public function getSubmitted()
     {
         return $this->submitted;
     }
-    
+
     public function setSubmitted($submitted)
     {
         $this->submitted = $submitted;
-    
+
         return $this;
     }
-    
+
     public function getSubmission()
     {
         return $this->submission;
     }
-    
+
     public function setSubmission($submission)
     {
         $this->submission = $submission;
-    
+
         return $this;
     }
-    
+
     public function getThread()
     {
         return $this->thread;
     }
-    
+
     public function setThread($thread)
     {
         $this->thread = $thread;
-    
+
         return $this;
     }
-    
+
     public function getDocument()
     {
         return $this->document;
     }
-    
+
     public function setDocument($document)
     {
         $this->document = $document;
-    
+
         return $this;
     }
-    
+
     public function getVideoconf()
     {
         return $this->videoconf;
     }
-    
+
     public function setVideoconf($videoconf)
     {
         $this->videoconf = $videoconf;
-    
+
         return $this;
     }
-    
+
     public function getPoll()
     {
         return $this->poll;
     }
-    
+
     public function setPoll($poll)
     {
         $this->poll = $poll;
-    
+
         return $this;
     }
-    
+
     public function setMaterials($materials)
     {
         $this->materials = $materials;
@@ -230,7 +229,7 @@ class Item extends BaseItem
     {
         return $this->course;
     }
-    
+
     public function setUsers($users)
     {
         $this->users = $users;
@@ -242,7 +241,6 @@ class Item extends BaseItem
     {
         return $this->users;
     }
-
 
     public function setNewMessage($new_message)
     {
@@ -267,64 +265,64 @@ class Item extends BaseItem
 
         return $this;
     }
-    
+
     public function getCtGroup()
     {
         return $this->ct_group;
     }
-    
+
     public function setCtGroup($ct_group)
     {
         $this->ct_group = $ct_group;
-    
+
         return $this;
     }
-    
+
     public function getCtDate()
     {
         return $this->ct_date;
     }
-    
+
     public function setCtDate($ct_date)
     {
         $this->ct_date = $ct_date;
-    
+
         return $this;
     }
-    
+
     public function getCtRate()
     {
         return $this->ct_rate;
     }
-    
+
     public function setCtRate($ct_rate)
     {
         $this->ct_rate = $ct_rate;
-    
+
         return $this;
     }
-    
+
     public function getCtDone()
     {
         return $this->ct_done;
     }
-    
+
     public function setCtDone($ct_done)
     {
         $this->ct_done = $ct_done;
-    
+
         return $this;
     }
-    
+
     public function getOptGrading()
     {
         return $this->opt_grading;
     }
-    
+
     public function setOptGrading($opt_grading)
     {
         $this->opt_grading = $opt_grading;
-    
+
         return $this;
     }
 }

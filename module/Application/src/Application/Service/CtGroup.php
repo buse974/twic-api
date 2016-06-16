@@ -1,19 +1,19 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class CtGroup extends AbstractService
 {
-
     /**
      * @invokable
      *
-     * @param integer $item_id            
-     * @param integer $group            
-     * @param bool $belongs            
+     * @param int  $item_id
+     * @param int  $group
+     * @param bool $belongs
      *
-     * @return integer
+     * @return int
      */
     public function add($item_id, $group, $belongs = true)
     {
@@ -22,18 +22,18 @@ class CtGroup extends AbstractService
             ->setGroupId($group)
             ->setBelongs($belongs);
         $this->getMapper()->insert($m_ct_group);
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param string $group            
-     * @param bool $belongs            
+     * @param int    $id
+     * @param string $group
+     * @param bool   $belongs
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $group = null, $belongs = null)
     {
@@ -41,24 +41,25 @@ class CtGroup extends AbstractService
             ->setId($id)
             ->setGroupId($group)
             ->setBelongs($belongs);
-        
+
         return $this->getMapper()->update($m_ct_group);
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @return integer
+     * @param int $id
+     *
+     * @return int
      */
     public function delete($id)
     {
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
     }
-    
+
     /**
-     * @param integer $item_id
+     * @param int $item_id
      */
     public function get($item_id)
     {

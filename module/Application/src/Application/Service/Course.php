@@ -14,7 +14,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param integer $program_id
+     * @param int    $program_id
      * @param string $title
      * @param string $abstract
      * @param string $description
@@ -30,7 +30,7 @@ class Course extends AbstractService
      *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function add($program_id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, array $material_document = array())
     {
@@ -58,7 +58,7 @@ class Course extends AbstractService
         }
 
         $course_id = $this->getMapper()->getLastInsertValue();
-        
+
         // On ne crée plus les grading policy par default
         //$this->getServiceGradingPolicy()->initTpl($course_id);
         foreach ($material_document as $md) {
@@ -82,7 +82,7 @@ class Course extends AbstractService
      *  
      * @invokable
      *
-     * @param integer $id
+     * @param int    $id
      * @param string $title
      * @param string $abstract
      * @param string $description
@@ -209,7 +209,7 @@ class Course extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $program
+     * @param int    $program
      * @param string $search
      * @param array  $filter
      * @param string $user
@@ -225,11 +225,11 @@ class Course extends AbstractService
 
         //si il est academic on enleve le user puis on recupere tous les cour de l'ecole
         $school = null;
-        if($is_academic===true && $program===null) {
+        if ($is_academic === true && $program === null) {
             $school = $u['school']['id'];
             $user = null;
         }
-        
+
         $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school);
 
         foreach ($res_course as $m_course) {
@@ -239,29 +239,30 @@ class Course extends AbstractService
                 ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
         }
 
-        return array('count' => $mapper->count(),'list' => $res_course);
+        return array('count' => $mapper->count(), 'list' => $res_course);
     }
 
     /**
-     * get Nbr Course by program
+     * get Nbr Course by program.
      * 
-     * @param integer $program
-     * @return integer
+     * @param int $program
+     *
+     * @return int
      */
-    public function count($program) 
+    public function count($program)
     {
         $res_course = $this->getMapper()->getCount($program);
-        
-        return ($res_course->count() > 0) ? $res_course->current()->getNbrCourse():0;
+
+        return ($res_course->count() > 0) ? $res_course->current()->getNbrCourse() : 0;
     }
-    
+
     /**
      * @invokable
      */
     public function getListRecord()
     {
         $user = $this->getServiceUser()->getIdentity();
-        $is_student  = (array_key_exists(ModelRole::ROLE_STUDENT_ID,  $user['roles'])) ? true : false;
+        $is_student = (array_key_exists(ModelRole::ROLE_STUDENT_ID,  $user['roles'])) ? true : false;
         $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $user['roles'])) ? true : false;
         $res_course = $this->getMapper()->getListRecord($user['id'], $is_student, $is_academic);
 

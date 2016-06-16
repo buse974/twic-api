@@ -22,14 +22,14 @@ class MessageUser extends BaseMessageUser
     {
         return $this->count;
     }
-    
+
     public function setCount($count)
     {
         $this->count = $count;
-    
+
         return $this;
     }
-    
+
     public function getMessage()
     {
         return $this->message;

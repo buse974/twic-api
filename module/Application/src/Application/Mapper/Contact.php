@@ -45,7 +45,7 @@ class Contact extends AbstractMapper
                 requested IS false AND 
                 accepted IS false AND 
                 deleted IS false'));
-        
+
         return $this->selectWith($select);
     }
 

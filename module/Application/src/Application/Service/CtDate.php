@@ -1,19 +1,19 @@
 <?php
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class CtDate extends AbstractService
 {
-
     /**
      * @invokable
      *
-     * @param integer $item_id            
-     * @param string $date            
-     * @param string $after            
+     * @param int    $item_id
+     * @param string $date
+     * @param string $after
      *
-     * @return integer
+     * @return int
      */
     public function add($item_id, $date, $after = true)
     {
@@ -22,18 +22,18 @@ class CtDate extends AbstractService
             ->setDate($date)
             ->setAfter($after);
         $this->getMapper()->insert($m_ct_date);
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param string $date            
-     * @param string $after            
+     * @param int    $id
+     * @param string $date
+     * @param string $after
      *
-     * @return integer
+     * @return int
      */
     public function update($id, $date = null, $after = null)
     {
@@ -41,12 +41,12 @@ class CtDate extends AbstractService
             ->setId($id)
             ->setDate($date)
             ->setAfter($after);
-        
+
         return $this->getMapper()->update($m_ct_date);
     }
-    
+
     /**
-     * @param integer $item_id
+     * @param int $item_id
      */
     public function get($item_id)
     {
@@ -56,9 +56,9 @@ class CtDate extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id            
+     * @param int $id
      *
-     * @return integer
+     * @return int
      */
     public function delete($id)
     {

@@ -43,7 +43,7 @@ class QuestionnaireUser extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
+
     /**
      * @return \Application\Service\Submission
      */

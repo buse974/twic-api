@@ -8,15 +8,15 @@ class Set extends BaseSet
 {
     protected $groups;
 
-    public function getGroups() 
+    public function getGroups()
     {
         return $this->groups;
     }
 
-    public function setGroups($groups) 
+    public function setGroups($groups)
     {
         $this->groups = $groups;
-        
+
         return $this;
     }
 }

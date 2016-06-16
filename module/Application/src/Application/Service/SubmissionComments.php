@@ -9,37 +9,35 @@ class SubmissionComments extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $submission
+     * @param int $submission
      */
-    public function getList($submission) 
+    public function getList($submission)
     {
         return $this->getMapper()->getList($submission);
     }
-    
-    
-     /**
-     * @invokable
-     * 
-     * @param integer $id
-     */
-    public function get($id) 
-    {
-        return $this->getMapper()->get($id)->current();
-    }
-    
+
     /**
      * @invokable
      * 
-     * @param integer $submission_id
-     * @param integer $user_id
+     * @param int $id
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->get($id)->current();
+    }
+
+    /**
+     * @invokable
+     * 
+     * @param int    $submission_id
+     * @param int    $user_id
      * @param string $file_name
      * @param string $file_token
      * @param string $audio
      * @param string $text
      */
-    public function add($submission_id, $user_id, $file_name, $file_token, $audio, $text) 
+    public function add($submission_id, $user_id, $file_name, $file_token, $audio, $text)
     {
-        
         $this->getMapper()->insert(
             $this->getModel()->setSubmissionId($submission_id)
                 ->setUserId($user_id)
@@ -48,6 +46,7 @@ class SubmissionComments extends AbstractService
                 ->setAudio($audio)
                 ->setText($text)
         );
+
         return $this->get($this->getMapper()->getLastInsertValue());
     }
 }

@@ -15,29 +15,32 @@ class Videoconf extends AbstractService
 {
     /**
      * @invokable
-     *
+     * 
      * @param string $title
      * @param string $description
      * @param string $start_date
-     * @param integer $submission_id
-     * @param integer $item_id
-     * @param integer $conversation
+     * @param int    $submission_id
+     * @param int    $item_id
+     * @param int    $conversation
      * 
      * @throws \Exception
      */
     public function add($title, $description, $start_date, $submission_id = null, $item_id = null, $conversation = null)
     {
-        if(null === $submission_id && null !==$item_id) {
+        if (null === $submission_id && null !== $item_id) {
             $submission_id = $this->getServiceSubmission()->getByItem($item_id)->getId();
+            if (null === $start_date) {
+                $start_date = $m_item->getStart();
+            }
         }
-        
+
         $m_item = $this->getServiceItem()->getBySubmission($submission_id);
         $m_videoconf = $this->getModel();
         $m_videoconf->setTitle($title)
             ->setDescription($description)
             ->setSubmissionId($submission_id)
             ->setConversationId($conversation)
-            ->setStartDate($m_item->getStart())
+            ->setStartDate()
             ->setToken($this->getServiceZOpenTok()->getSessionId())
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
@@ -135,10 +138,10 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param interger    $id
-     * @param string $title
-     * @param string $description
-     * @param string $start_date
+     * @param interger $id
+     * @param string   $title
+     * @param string   $description
+     * @param string   $start_date
      *
      * @return int
      */
@@ -159,8 +162,8 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param interger    $submission
-     * @param string $start_date
+     * @param interger $submission
+     * @param string   $start_date
      *
      * @return int
      */
@@ -187,7 +190,7 @@ class Videoconf extends AbstractService
         $mapper = $this->getMapper();
         $res_videoconf = $mapper->usePaginator($filter)->select($m_videoconf);
 
-        return array('count' => $mapper->count(),'results' => $res_videoconf);
+        return array('count' => $mapper->count(), 'results' => $res_videoconf);
     }
 
     /**
@@ -208,7 +211,7 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param integer $submission
+     * @param int $submission
      *
      * @return \Application\Model\Videoconf
      */
@@ -217,7 +220,7 @@ class Videoconf extends AbstractService
         $res_videoconf = $this->getMapper()->getBySubmission($submission);
 
         if ($res_videoconf->count() === 0) {
-            return null;
+            return;
         }
 
         $m_videoconf = $res_videoconf->current();
@@ -225,20 +228,20 @@ class Videoconf extends AbstractService
 
         return $m_videoconf;
     }
-    
+
     /**
-     * @param integer $submission_id
+     * @param int $submission_id
      * 
      * @return \Application\Model\Videoconf
      */
     public function getListOrCreate($submission_id)
     {
         $m_videoconf = $this->getBySubmission($submission_id);
-        if(null === $m_videoconf) {
+        if (null === $m_videoconf) {
             $this->add(null, null, null, $submission_id);
             $m_videoconf = $this->getBySubmission($submission_id);
         }
-        
+
         return $m_videoconf;
     }
 
@@ -255,7 +258,7 @@ class Videoconf extends AbstractService
     {
         return $this->getMapper()->getByVideoconfArchive($videoconf_archive)->current();
     }
-    
+
     /**
      * @invokable
      *
@@ -277,14 +280,14 @@ class Videoconf extends AbstractService
         if (null === $m_videoconf) {
             throw new \Exception('Error select');
         }
-        if(null === $submission) {
+        if (null === $submission) {
             $submission = $m_videoconf->getSubmissionId();
         }
-        
+
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         $m_item = $this->getServiceItem()->getBySubmission($submission);
-        $res=[];
+        $res = [];
         if ($m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
             $instructors = $this->getServiceUser()->getList(array(), ModelRole::ROLE_INSTRUCTOR_STR, null, $m_item->getCourseId());
             foreach ($instructors['list'] as $instructor) {
@@ -295,21 +298,21 @@ class Videoconf extends AbstractService
         $convs = $this->getServiceConversation()->getListBySubmission($submission, true);
         $finalconv = null;
         foreach ($convs as $conv) {
-            if($conv['name']===ModelConversation::DEFAULT_NAME) {
-                $finalconv=$conv['id'];
+            if ($conv['name'] === ModelConversation::DEFAULT_NAME) {
+                $finalconv = $conv['id'];
                 break;
             }
         }
-        
+
         $m_videoconf->setDocs($this->getServiceVideoconfDoc()->getListByVideoconf($m_videoconf->getId()))
             ->setConversationId($finalconv)
             ->setInstructors($res)
             ->setVideoconfOpt($m_videoconf_opt)
             ->setVideoconfAdmin(
                 $this->getServiceVideoconfAdmin()->add(
-                    $m_videoconf->getId(), 
-                    (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ?OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER));
-    
+                    $m_videoconf->getId(),
+                    (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ? OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER));
+
         return $m_videoconf;
     }
 
@@ -409,8 +412,8 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param interger    $videoconf_archive
-     * @param string $url
+     * @param interger $videoconf_archive
+     * @param string   $url
      *
      * @return int
      */
@@ -419,56 +422,56 @@ class Videoconf extends AbstractService
         $event_send = true;
         $m_videoconf = $this->getByVideoconfArchive($videoconf_archive);
         $res_videoconf_archive = $this->getServiceVideoconfArchive()->getListByVideoConf($m_videoconf->getId());
-        
+
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
-            if(CVF::ARV_AVAILABLE===$m_videoconf_archive->getArchiveStatus()) {
-                $event_send=false;
+            if (CVF::ARV_AVAILABLE === $m_videoconf_archive->getArchiveStatus()) {
+                $event_send = false;
             }
         }
-        
+
         $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
-        
-        if($event_send) {
-            $this->getServiceEvent()->recordAvailable($m_videoconf->getSubmissionId(),$videoconf_archive);
+
+        if ($event_send) {
+            $this->getServiceEvent()->recordAvailable($m_videoconf->getSubmissionId(), $videoconf_archive);
         }
-        
+
         return $ret;
     }
 
-    
     /**
      * @invokable 
      * 
-     * @param integer $item_id
+     * @param int $item_id
      */
     public function getByItem($item_id = null, $submission_id = null)
     {
         $res_submission = $this->getServiceSubmission()->get($item_id, $submission_id);
-        if(null === $res_submission) {
-            return null;
+        if (null === $res_submission) {
+            return;
         }
-        
+
         $ar_submission = $res_submission->toArray();
         $ar_submission = $ar_submission + $this->getServiceSubmission()->getContent($ar_submission['id']);
-        
+
         return $ar_submission;
     }
     /**
      * @invokable 
      * 
-     * @param integer $program_id 
-     * @param integer $course_id 
-     * @param integer $item_id 
+     * @param int $program_id
+     * @param int $course_id
+     * @param int $item_id
      */
     public function getListId($program_id = null, $course_id = null, $item_id = null)
     {
-       $me = $this->getServiceUser()->getIdentity();
-       $res_videoconf = $this->getMapper()->getListId($me['school']['id'], $program_id, $course_id, $item_id);
-       $ids = [];
-       foreach($res_videoconf as $m_videoconf){
-           $ids[] = $m_videoconf->getId();
-       }
-       return $ids;
+        $me = $this->getServiceUser()->getIdentity();
+        $res_videoconf = $this->getMapper()->getListId($me['school']['id'], $program_id, $course_id, $item_id);
+        $ids = [];
+        foreach ($res_videoconf as $m_videoconf) {
+            $ids[] = $m_videoconf->getId();
+        }
+
+        return $ids;
     }
 
     /**
@@ -498,7 +501,7 @@ class Videoconf extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
-    
+
     /**
      * @return \Application\Service\SubmissionUser
      */
@@ -578,7 +581,7 @@ class Videoconf extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_item_assignment');
     }
-    
+
     /**
      * @return \Application\Service\VideoconfOpt
      */
@@ -593,14 +596,6 @@ class Videoconf extends AbstractService
     public function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
-    }
-
-    /**
-     * @return \ZOpenTok\Service\OpenTok
-     */
-    public function getServiceZOpenTok()
-    {
-        return $this->getServiceLocator()->get('opentok.service');
     }
 
     /**

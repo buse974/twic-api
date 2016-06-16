@@ -253,7 +253,11 @@ class GradingTest extends AbstractService
     public function testInstructorRates($params, $criteria, $criteria2)
     {
         $this->setIdentity(1);
-        $data = $this->jsonRpc('submission.instructorRates', ['id' => $params['submission_id'], 'criterias' => [ $criteria => [ 4 => 10 ], $criteria2 => [ 4 => 10]]]);
+        $data = $this->jsonRpc('submission.instructorRates', [
+            'id' => $params['submission_id'], 
+            'criterias' => [ 
+                $criteria => [ 4 => 10 ], 
+                $criteria2 => [ 4 => 10]]]);
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals($data['result'] , 1); 
         $this->assertEquals($data['id'] , 1); 
@@ -326,7 +330,7 @@ class GradingTest extends AbstractService
         $this->assertEquals(count($data['result'][0]) , 7); 
         $this->assertEquals($data['result'][0]['submission_id'] , 1); 
         $this->assertEquals($data['result'][0]['user_id'] , 4); 
-        $this->assertEquals($data['result'][0]['grade'] , 95); 
+        $this->assertEquals($data['result'][0]['grade'] , 94.5); 
         $this->assertEquals($data['result'][0]['submit_date'] , null); 
         $this->assertEquals($data['result'][0]['overwritten'] , 0); 
         $this->assertEquals($data['result'][0]['start_date'] , null); 

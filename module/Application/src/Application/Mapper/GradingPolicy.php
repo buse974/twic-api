@@ -21,7 +21,7 @@ class GradingPolicy extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     public function getBySubmission($submission)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -33,17 +33,18 @@ class GradingPolicy extends AbstractMapper
 
         return $this->selectWith($select);
     }
-     public function deleteNotIn($ids, $course)
+    public function deleteNotIn($ids, $course)
     {
         $delete = $this->tableGateway->getSql()->delete();
-        $delete->where(['course_id' => $course]); 
-        if(null !== $ids && count($ids) > 0){
-            $delete->where->notIn('id',$ids);
+        $delete->where(['course_id' => $course]);
+        if (null !== $ids && count($ids) > 0) {
+            $delete->where->notIn('id', $ids);
         }
         syslog(1, $this->printSql($delete));
+
         return $this->deleteWith($delete);
     }
-    
+
     /*
      *     public function getList($avg = array(), $filter = array(), $search = null, $user = null)
     {

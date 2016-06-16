@@ -12,11 +12,11 @@ class ThreadMessage extends AbstractService
      * @invokable
      * 
      * @param string $message
-     * @param int $thread
-     * @param int $is_new
-     * @param int $parent_id
+     * @param int    $thread
+     * @param int    $is_new
+     * @param int    $parent_id
      * 
-     * @return integer
+     * @return int
      */
     public function add($message, $thread, $is_new = false, $parent_id = null)
     {
@@ -33,10 +33,10 @@ class ThreadMessage extends AbstractService
 
         $thread_message_id = $this->getMapper()->getLastInsertValue();
         $m_thread = $this->getServiceThread()->get($thread);
-        
-        if(is_numeric($m_thread->getItemId())) {
+
+        if (is_numeric($m_thread->getItemId())) {
             $m_submission = $this->getServiceSubmission()->get($m_thread->getItemId());
-            if(null !== $m_submission) {
+            if (null !== $m_submission) {
                 $this->getServiceSubThread()->add($thread, $m_submission->getId());
             }
         }
@@ -64,11 +64,11 @@ class ThreadMessage extends AbstractService
     public function update($message, $id, $parent_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_threadmessage = $this->getModel()
             ->setMessage($message)
-            ->setParentId(($parent_id === 0) ? new IsNull():$parent_id);
-                
+            ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id);
+
         return $this->getMapper()->update($m_threadmessage, [
             'user_id' => $me,
             'id' => $id,
@@ -95,14 +95,14 @@ class ThreadMessage extends AbstractService
      *
      * @invokable
      *
-     * @param integer $thread
-     * @param integer $parent_id
+     * @param int    $thread
+     * @param int    $parent_id
      * @param string $filter
      */
     public function getList($thread, $parent_id = null, $filter = null)
     {
         $mapper = ($filter !== null) ? $this->getMapper()->usePaginator($filter) : $this->getMapper();
-        
+
         $res_thread_message = $mapper->getList($thread, null, $parent_id);
 
         foreach ($res_thread_message as $m_thread_message) {
@@ -114,7 +114,7 @@ class ThreadMessage extends AbstractService
             $m_thread_message->getUser()->setRoles($roles);
         }
 
-        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_thread_message]:$res_thread_message;
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_thread_message] : $res_thread_message;
     }
 
     public function getLast($thread)
@@ -125,7 +125,8 @@ class ThreadMessage extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $thread_message
+     * @param int $thread_message
+     *
      * @return \Application\Model\ThreadMessage
      */
     public function get($thread_message)
@@ -134,7 +135,7 @@ class ThreadMessage extends AbstractService
             ->getList(null, $thread_message)
             ->current();
     }
-    
+
     /**
      * @return \Application\Service\Submission
      */
@@ -142,7 +143,7 @@ class ThreadMessage extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
-    
+
     /**
      * @return \Application\Service\SubThread
      */
@@ -174,7 +175,7 @@ class ThreadMessage extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_role');
     }
-    
+
     /**
      * @return \Application\Service\Thread
      */
@@ -182,7 +183,7 @@ class ThreadMessage extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_thread');
     }
-    
+
     /**
      * @return \Application\Service\User
      */
