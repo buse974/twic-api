@@ -17,7 +17,7 @@ class PollQuestion extends AbstractMapper
     {
         $req = 'SELECT id FROM poll_question WHERE id NOT IN (SELECT parent_id FROM poll_question WHERE parent_id IS NOT null) AND poll_id = :poll';
         $res = $this->selectPdo($req, array(':poll' => $poll));
-    
-        return (($res->count() > 0) ? $res->current()->getId() : null);
+
+        return ($res->count() > 0) ? $res->current()->getId() : null;
     }
 }

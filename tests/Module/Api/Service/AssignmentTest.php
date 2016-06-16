@@ -111,7 +111,7 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('item.get', array('id' => $item_id));
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 20);
+        $this->assertEquals(count($data['result']) , 21);
         $this->assertEquals(count($data['result']['program']) , 2);
         $this->assertEquals($data['result']['program']['id'] , 1);
         $this->assertEquals($data['result']['program']['name'] , "program name");
@@ -148,6 +148,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['cut_off'] , null);
         $this->assertEquals($data['result']['is_grouped'] , 1);
         $this->assertEquals($data['result']['has_all_student'] , 0);
+        $this->assertEquals($data['result']['coefficient'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -266,7 +267,7 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('submission.getContent', ['submission_id' => $submission_id]);
         
         $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 4); 
+        $this->assertEquals(count($data['result']) , 3); 
         $this->assertEquals(count($data['result']['text_editor']) , 1); 
         $this->assertEquals(count($data['result']['text_editor'][0]) , 5); 
         $this->assertEquals($data['result']['text_editor'][0]['id'] , 1); 
@@ -312,7 +313,6 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat"); 
         $this->assertEquals($data['result']['chat'][0]['type'] , 5); 
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true); 
-        $this->assertEquals($data['result']['videoconf'] , null); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
     }

@@ -16,14 +16,14 @@ class MessageUser extends AbstractService
      *
      * @throws \Exception
      *
-     * @return integer
+     * @return int
      */
     public function send($message, $conversation, $to = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $for_me = false;
-        if(null === $to) {
+        if (null === $to) {
             $res_conversation_user = $this->getServiceConversationUser()->getUserByConversation($conversation);
             foreach ($res_conversation_user as $m_conversation_user) {
                 $to[] = $m_conversation_user->getUserId();
@@ -35,7 +35,7 @@ class MessageUser extends AbstractService
             }
             $to = array_unique($to);
         }
-        
+
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
             ->setMessageId($message)
@@ -44,11 +44,11 @@ class MessageUser extends AbstractService
             ->setUserId($user)
             ->setType((($user == $me) ? (($for_me) ? 'RS' : 'S') : 'R'))
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
             if ($me == $user && !$for_me) {
                 $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             }
-        
+
             if ($this->getMapper()->insert($m_message_user) <= 0) {
                 throw new \Exception('error insert message to');
             }
@@ -80,7 +80,7 @@ class MessageUser extends AbstractService
 
         $list->rewind();
 
-        return array('list' => $list,'count' => $mapper->count());
+        return array('list' => $list, 'count' => $mapper->count());
     }
 
     /**
@@ -94,17 +94,16 @@ class MessageUser extends AbstractService
     }
 
     /**
-     * 
      * @param string $tag
-     * @param integer $type
+     * @param int    $type
      * 
-     * @return integer
+     * @return int
      */
     public function countTag($tag, $type)
     {
         return  $this->getMapper()->countTag($this->getServiceUser()->getIdentity()['id'], $tag, $type)->count();
     }
-    
+
     public function readByMessage($mesage)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -130,7 +129,7 @@ class MessageUser extends AbstractService
 
         return $this->getMapper()->update($m_message_user, array('message_id' => $mesage, 'user_id' => $me, new IsNotNull('read_date')));
     }
-    
+
     public function deleteByConversation($conversation)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];

@@ -65,6 +65,6 @@ class Scale extends AbstractService
         $mapper = $this->getMapper();
         $res_scale = $mapper->usePaginator($filter)->fetchAll();
 
-        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_scale] : $res_scale;
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_scale] : $res_scale;
     }
 }

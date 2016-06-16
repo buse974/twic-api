@@ -89,7 +89,7 @@ class Program extends AbstractService
 
         return $res_program;
     }
-    
+
     public function getListUser($user)
     {
         return $this->getMapper()->getListUser($user);
@@ -98,17 +98,17 @@ class Program extends AbstractService
     public function getListByUser($filter = null, $user = null, $search = null, $school = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         if ($user === null) {
             $user = $identity['id'];
         }
         $mapper = $this->getMapper();
         $is_sadmin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']));
         $res = $mapper->usePaginator($filter)->getList($user, $search, $school, $is_sadmin);
-    
+
         return array('list' => $res, 'count' => $mapper->count());
     }
-    
+
     public function getListBySchool($school)
     {
         return $this->getMapper()->select($this->getModel()->setSchoolId($school)->setDeletedDate(new IsNull()));

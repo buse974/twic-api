@@ -72,7 +72,7 @@ class CacheStorage extends AbstractStorage
     {
         $ssesion = $this->cache->getItem($this->getPrefixToken());
         $ssesion_user = $this->cache->getItem($ssesion->getId());
-        if($ssesion_user->offsetExists($this->getPrefixToken())) {
+        if ($ssesion_user->offsetExists($this->getPrefixToken())) {
             $ssesion_user->offsetUnset($this->getPrefixToken());
         }
         $this->cache->setItem($ssesion->getId(), $ssesion_user);

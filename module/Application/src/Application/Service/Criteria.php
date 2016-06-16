@@ -5,13 +5,13 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 
 class Criteria extends AbstractService
-{ 
+{
     /**
      * Get criteria.
      * 
      * @invokable
      *
-     * @param int $id 
+     * @param int $id
      *
      * @return \Application\Model\Criteria
      */
@@ -19,67 +19,66 @@ class Criteria extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
-    
+
     /**
      * Get criteria list.
      * 
      * @invokable
      *
-     * @param int $grading_policy 
+     * @param int $grading_policy
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($grading_policy)
     {
         return $this->getMapper()->select($this->getModel()->setGradingPolicyId($grading_policy));
-    }  
-    
+    }
+
     /**
      * Get criteria list.
      * 
      * @invokable
      *
-     * @param int $item 
+     * @param int $item
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getListByItem($item)
     {
         return $this->getMapper()->getListByItem($item);
-    }  
-    
+    }
+
     /**
-     * Insert criteria
+     * Insert criteria.
      * 
      * @invokable
      *
      * @param string $name
-     * @param int $points
-     * @param string $description 
-     * @param int $grading_policy 
+     * @param int    $points
+     * @param string $description
+     * @param int    $grading_policy
      *
      * @return int
      */
-    public function add( $name, $points, $description, $grading_policy)
-    { 
-        
+    public function add($name, $points, $description, $grading_policy)
+    {
         $m_criteria = $this->getModel()
             ->setName($name)
             ->setPoints($points)
             ->setDescription($description)
             ->setGradingPolicyId($grading_policy);
 
-        $this->getMapper()->insert($m_criteria);  
-        
+        $this->getMapper()->insert($m_criteria);
+
         return $this->getMapper()->getLastInsertValue();
     }
-      
+
     /**
-     * Delete criteria
+     * Delete criteria.
      * 
      * @invokable
      *
-     * @param int $id 
+     * @param int $id
      *
      * @return int
      */
@@ -87,21 +86,21 @@ class Criteria extends AbstractService
     {
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
-    
+
     /**
-     * Update criteria
+     * Update criteria.
      * 
      * @invokable
      *
-     * @param int $id 
+     * @param int    $id
      * @param string $name
-     * @param int $points
-     * @param string $description 
+     * @param int    $points
+     * @param string $description
      *
      * @return int
      */
     public function _update($id, $name, $points, $description)
-    {  
+    {
         $m_criteria = $this->getModel()
             ->setId($id)
             ->setName($name)
@@ -110,7 +109,7 @@ class Criteria extends AbstractService
 
         return $this->getMapper()->update($m_criteria);
     }
-    
+
     public function update($datas, $grading_policy)
     {
         $ret = [];
@@ -126,9 +125,9 @@ class Criteria extends AbstractService
                 $ret[] = $id;
             }
         }
-        
+
         $this->getMapper()->deleteNotIn($ret, $grading_policy);
-        
+
         return $ret;
     }
 }

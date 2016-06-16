@@ -33,7 +33,7 @@ class Questionnaire extends AbstractService
     public function getByItem($item)
     {
         $m_item = $this->getServiceItem()->get($item);
-        
+
         if ($m_item->getType() !== CI::TYPE_WORKGROUP) {
             throw new  \Exception('No Workgroup');
         }
@@ -77,7 +77,7 @@ class Questionnaire extends AbstractService
         $nbrq = $this->getNbrQuestionNoCompleted($item);
         if (is_numeric($nbrq) && $nbrq == 0) {
             $this->getServiceSubmissionUser()->end($m_submission->getId());
-            
+
             $this->getServiceSubmission()->submit($m_submission->getId());
             $has_all_finish = $this->getServiceSubmissionUser()->checkAllFinish($m_submission->getId());
             if ($has_all_finish) {
@@ -90,9 +90,9 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * @param integer $item
+     * @param int $item
      *
-     * @return NULL|integer
+     * @return null|int
      */
     public function getNbrQuestionNoCompleted($item)
     {
@@ -138,7 +138,7 @@ class Questionnaire extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_dimension');
     }
-    
+
     /**
      * @return \Application\Service\Submission
      */
@@ -154,7 +154,7 @@ class Questionnaire extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission_user');
     }
-    
+
     /**
      * @return \Application\Service\User
      */
@@ -210,7 +210,7 @@ class Questionnaire extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_item');
     }
-    
+
     /**
      * @return \Application\Service\Answer
      */

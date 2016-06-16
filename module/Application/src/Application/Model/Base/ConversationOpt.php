@@ -4,14 +4,29 @@ namespace Application\Model\Base;
 
 use Dal\Model\AbstractModel;
 
-class VideoconfOpt extends AbstractModel
+class ConversationOpt extends AbstractModel
 {
- 	protected $item_id;
+ 	protected $id;
+	protected $item_id;
 	protected $record;
 	protected $nb_user_autorecord;
 	protected $allow_intructor;
+	protected $start_date;
+	protected $duration;
 
-	protected $prefix = 'videoconf_opt';
+	protected $prefix = 'conversation_opt';
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
 
 	public function getItemId()
 	{
@@ -57,6 +72,30 @@ class VideoconfOpt extends AbstractModel
 	public function setAllowIntructor($allow_intructor)
 	{
 		$this->allow_intructor = $allow_intructor;
+
+		return $this;
+	}
+
+	public function getStartDate()
+	{
+		return $this->start_date;
+	}
+
+	public function setStartDate($start_date)
+	{
+		$this->start_date = $start_date;
+
+		return $this;
+	}
+
+	public function getDuration()
+	{
+		return $this->duration;
+	}
+
+	public function setDuration($duration)
+	{
+		$this->duration = $duration;
 
 		return $this;
 	}

@@ -11,7 +11,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 class Submission extends AbstractMapper
 {
     /**
-     * @param integer $id
+     * @param int $id
      * 
      * @return \Application\Model\Submission
      */
@@ -21,17 +21,17 @@ class Submission extends AbstractMapper
         $select->columns(['has_graded' => new Expression('SUM(IF(submission_user.grade IS NULL,1,0)) = 0')])
                ->where(['submission_user.submission_id' => $id])
                ->group('submission_user.submission_id');
-        
+
         $update = $this->tableGateway->getSql()->update();
         $update->set(['is_graded' => $select])
-               ->where(['id'=>$id]);
-        
+               ->where(['id' => $id]);
+
         return $this->updateWith($update);
     }
-    
+
     /**
-     * @param integer $user
-     * @param integer $questionnaire
+     * @param int $user
+     * @param int $questionnaire
      * 
      * @return \Application\Model\Submission
      */
@@ -43,33 +43,33 @@ class Submission extends AbstractMapper
             ->join('submission_user', 'submission_user.submission_id=submission.id', array())
             ->where(array('submission_user.user_id' => $user))
             ->where(array('questionnaire.id' => $questionnaire));
-    
+
         return $this->selectWith($select);
     }
-    
+
     public function getListRecord($item, $user, $is_student = false)
     {
         $select = $this->tableGateway->getSql()->select();
-    
+
         $select->columns(array('id'))
         ->join('videoconf', 'submission.id=videoconf.submission_id', array(), $select::JOIN_INNER)
         ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
         ->where(array('videoconf_archive.archive_link IS NOT NULL'))
         ->where(array('submission.item_id' => $item));
-    
+
         if ($is_student !== false) {
             $select->join('submission_user', 'submission.id=submission_user.submission_id', array(), $select::JOIN_INNER)
                 ->where(array('submission_user.user_id' => $user));
         }
-    
+
         return $this->selectWith($select);
     }
-    
+
     /**
-     * @param integer $item_id
-     * @param integer $user_id
-     * @param integer $submission_id
-     * @param integer $group_id
+     * @param int $item_id
+     * @param int $user_id
+     * @param int $submission_id
+     * @param int $group_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -77,31 +77,31 @@ class Submission extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
-            ->join('submission_user', 'submission_user.submission_id=submission.id', 
+            ->join('submission_user', 'submission_user.submission_id=submission.id',
                 ['user_id', 'grade', 'submit_date', 'overwritten', 'start_date', 'end_date']);
-    
-        if(null !== $submission_id) {
+
+        if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
         } else {
-            if(null !== $group_id && null !== $item_id) {
+            if (null !== $group_id && null !== $item_id) {
                 $select->where(array('submission.group_id' => $group_id))
                 ->where(array('submission.item_id' => $item_id));
-            } elseif(null !== $user_id && null !== $item_id) {
+            } elseif (null !== $user_id && null !== $item_id) {
                 $select->where(array('submission_user.user_id' => $user_id))
                 ->where(array('submission.item_id' => $item_id));
-            } elseif(null !== $item_id) {
+            } elseif (null !== $item_id) {
                 $select->where(array('submission.item_id' => $item_id));
             }
         }
-    
+
         return $this->selectWith($select);
     }
-    
+
     /**
-     * @param integer $item_id
-     * @param integer $user_id
-     * @param integer $submission_id
-     * @param integer $group_id
+     * @param int $item_id
+     * @param int $user_id
+     * @param int $submission_id
+     * @param int $group_id
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
@@ -110,80 +110,80 @@ class Submission extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
             ->join('submission_user', 'submission_user.submission_id=submission.id', array());
-            
-            if(null !== $submission_id) {
-                $select->where(array('submission.id' => $submission_id));
-            } else {
-                if(null !== $user_id) {
-                    $select->where(array('submission_user.user_id' => $user_id));
-                } 
-                if(null !== $item_id) {
-                    $select->where(array('submission.item_id' => $item_id));
-                }
+
+        if (null !== $submission_id) {
+            $select->where(array('submission.id' => $submission_id));
+        } else {
+            if (null !== $user_id) {
+                $select->where(array('submission_user.user_id' => $user_id));
             }
+            if (null !== $item_id) {
+                $select->where(array('submission.item_id' => $item_id));
+            }
+        }
 
         return $this->selectWith($select);
     }
-    
+
     public function getListToGrade($user_id, $item_id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
             ->join(['submission_submission_pg' => 'submission_pg'], 'submission_submission_pg.submission_id=submission.id', ['has_graded'])
-            ->join('sub_thread', 'sub_thread.submission_id=submission.id',['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
-            ->join('item', 'item.id=submission.item_id',['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
-            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['id', 'title'])
-            ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
+            ->join('sub_thread', 'sub_thread.submission_id=submission.id', ['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
+            ->join('item', 'item.id=submission.item_id', ['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'), 'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
+            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id', ['id', 'title'])
+            ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id', ['name'])
             ->where(['item.is_complete IS TRUE'])
             ->where(['item.id' => $item_id])
             ->where(['submission_submission_pg.user_id' => $user_id])
             ->where(['submission_item_course.deleted_date IS NULL'])
             ->where(['submission_item_program.deleted_date IS NULL']);
-        
+
         return $this->selectWith($select);
     }
-    
+
     public function getListStudent($user_id, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
             ->join('submission_user', 'submission_user.submission_id=submission.id', [])
-            ->join('sub_thread', 'sub_thread.submission_id=submission.id',['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
-            ->join('item', 'item.id=submission.item_id',['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
-            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id',['id', 'title'])
-            ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id',['name'])
-           
+            ->join('sub_thread', 'sub_thread.submission_id=submission.id', ['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
+            ->join('item', 'item.id=submission.item_id', ['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'), 'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
+            ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id', ['id', 'title'])
+            ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id', ['name'])
+
             ->where(['item.is_complete IS TRUE'])
             ->where(['submission_item_course.deleted_date IS NULL'])
             ->where(['submission_item_program.deleted_date IS NULL'])
             ->where(['submission_user.user_id' => $user_id]);
-            
-        if(null !== $search) {
+
+        if (null !== $search) {
             $select->where(array('( submission_item_course.title LIKE ?' => '%'.$search.'%'))
                    ->where(array('submission_item_program.name LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
         }
-        if(!empty($type)) {
+        if (!empty($type)) {
             $select->where(array('item.type' => $type));
-        } 
-        if(!empty($course)) {
+        }
+        if (!empty($course)) {
             $select->where(array('submission_item_course.id' => $course));
         }
-        if(true === $started) {
+        if (true === $started) {
             $select->where(array('item.start < UTC_TIMESTAMP()'));
         }
-        if(true === $submitted) {
+        if (true === $submitted) {
             $select->where(array('submission.submit_date IS NOT NULL'));
         }
-        if(true === $graded) {  
+        if (true === $graded) {
             $select->where(array('submission.is_graded IS TRUE'));
         }
-        if(true === $late) {
+        if (true === $late) {
             $select->where(array('item.end < UTC_TIMESTAMP() AND submission.submit_date IS NULL'));
         }
-    
+
         return $this->selectWith($select);
     }
-    
+
     public function getList($item_id, $user_id)
     {
         $sql = 'SELECT  
@@ -230,25 +230,26 @@ class Submission extends AbstractMapper
 	                `submission_comments` ON `submission_comments`.`submission_id`=`submission`.`id`
                 WHERE item.id = :item2   
                 GROUP BY `submission`.`id`, `submission_comments`.`submission_id`, `group`.`id`, `course_user_relation`.`user_id`';
-        
-        return $this->selectPdo($sql,[':item' => $item_id, ':item2' => $item_id]);
+
+        return $this->selectPdo($sql, [':item' => $item_id, ':item2' => $item_id]);
     }
-    
+
     /**
-     * @param integer $user
+     * @param int $user
+     *
      * @return \Zend\Db\Sql\Select
      */
     private function getSelectContactState($user)
     {
         $select = new Select('user');
-        $select->columns(array('user$contact_state' =>  new Expression(
+        $select->columns(array('user$contact_state' => new Expression(
             'IF(contact.accepted_date IS NOT NULL, 3,
 	         IF(contact.request_date IS NOT  NULL AND contact.requested <> 1, 2,
 		     IF(contact.request_date IS NOT  NULL AND contact.requested = 1, 1,0)))')))
-    		     ->join('contact', 'contact.contact_id = user.id', array())
-    		     ->where(array('user.id=`user$id`'))
-    		     ->where(['contact.user_id' => $user ]);
-    
-    		     return $select;
+                 ->join('contact', 'contact.contact_id = user.id', array())
+                 ->where(array('user.id=`user$id`'))
+                 ->where(['contact.user_id' => $user]);
+
+        return $select;
     }
 }

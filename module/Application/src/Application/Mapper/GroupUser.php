@@ -7,9 +7,8 @@ use Dal\Mapper\AbstractMapper;
 class GroupUser extends AbstractMapper
 {
     /**
-     * 
-     * @param integer $item_id
-     * @param integer $user
+     * @param int $item_id
+     * @param int $user
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
@@ -21,7 +20,7 @@ class GroupUser extends AbstractMapper
             ->join('item', 'item.set_id=set_group.set_id', [])
             ->where(array('group_user.user_id' => $user_id))
             ->where(array('item.id' => $item_id));
-        
+
         return $this->selectWith($select);
     }
 }

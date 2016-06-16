@@ -76,6 +76,6 @@ class ComponentScale extends AbstractService
         $mapper = $this->getMapper();
         $res_component_scale = $mapper->usePaginator($filter)->getList($component_id);
 
-        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_component_scale] : $res_component_scale;
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_component_scale] : $res_component_scale;
     }
 }

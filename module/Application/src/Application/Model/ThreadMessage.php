@@ -35,11 +35,11 @@ class ThreadMessage extends BaseThreadMessage
     {
         return $this->parent;
     }
-    
+
     public function setParent($parent)
     {
         $this->parent = $parent;
-        
+
         return $this;
     }
 

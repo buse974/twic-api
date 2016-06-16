@@ -15,13 +15,13 @@ class Conversation extends AbstractMapper
             ->where(array('sub_conversation.submission_id = ? ' => $submission_id))
             ->quantifier('DISTINCT');
 
-            if(null !== $user_id)  {
-                $select->where(array('conversation_user.user_id' => $user_id));
-            }
-            
+        if (null !== $user_id) {
+            $select->where(array('conversation_user.user_id' => $user_id));
+        }
+
         return $this->selectWith($select);
     }
-    
+
     public function getListByItem($item_id, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -31,10 +31,10 @@ class Conversation extends AbstractMapper
             ->where(array('submission.item_id = ? ' => $item_id))
             ->quantifier('DISTINCT');
 
-        if(null !== $submission_id)  {
+        if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
         }
-            
+
         return $this->selectWith($select);
     }
 }

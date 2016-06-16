@@ -17,22 +17,22 @@ class SubmissionUser extends BaseSubmissionUser
         $this->user = $this->requireModel('app_model_user', $data);
         $this->program = $this->requireModel('app_model_program', $data);
         $this->course = $this->requireModel('app_model_course', $data);
-        
+
         parent::exchangeArray($data);
     }
 
-    public function getUser() 
+    public function getUser()
     {
         return $this->user;
     }
-    
-    public function setUser($user) 
+
+    public function setUser($user)
     {
         $this->user = $user;
-        
+
         return $this;
     }
-      
+
     public function getProgram()
     {
         return $this->program;

@@ -28,7 +28,7 @@ class GradingPolicy extends BaseGradingPolicy
         $this->grading_policy_grade = $this->requireModel('app_model_grading_policy_grade', $data);
         $this->criterias = $this->requireModel('app_model_criteria', $data);
     }
-    
+
     public function getCriterias()
     {
         return $this->criterias;
@@ -40,7 +40,7 @@ class GradingPolicy extends BaseGradingPolicy
 
         return $this;
     }
-    
+
     public function getItems()
     {
         return $this->items;

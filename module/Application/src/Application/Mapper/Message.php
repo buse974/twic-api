@@ -25,24 +25,24 @@ class Message extends AbstractMapper
 
         return $this->selectWith($select)->current()->getNbMessage();
     }
-    
+
     public function getFullList($conversation_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        
+
         $select->columns(array(
-            'id', 
-            'title', 
-            'text', 
-            'token', 
-            'is_draft', 
-            'type', 
-            'conversation_id', 
-            'message$created_date' => new Expression('DATE_FORMAT(message.created_date, "%Y-%m-%dT%TZ")')))
+            'id',
+            'title',
+            'text',
+            'token',
+            'is_draft',
+            'type',
+            'conversation_id',
+            'message$created_date' => new Expression('DATE_FORMAT(message.created_date, "%Y-%m-%dT%TZ")'), ))
             ->join('message_user', 'message_user.message_id=message.id', ['from_id'])
             ->where(array('message_user.user_id=from_id'))
             ->where(array('message.conversation_id' => $conversation_id));
-        
+
         return $this->selectWith($select);
     }
 }

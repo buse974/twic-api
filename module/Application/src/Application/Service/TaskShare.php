@@ -24,16 +24,16 @@ class TaskShare extends AbstractService
         $uok = [];
         foreach ($users as $u) {
             $m_task_share->setUserId($u);
-            if($ret[$u] = $this->getMapper()->insert($m_task_share)) {
+            if ($ret[$u] = $this->getMapper()->insert($m_task_share)) {
                 $uok[] = $u;
             }
         }
-        
+
         $this->getServiceEvent()->taskshared($task, $uok);
-        
+
         return $ret;
     }
-    
+
     /**
      * @return \Application\Service\Event
      */

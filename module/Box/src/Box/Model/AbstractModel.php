@@ -7,19 +7,19 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 
 abstract class AbstractModel implements JsonSerializable
 {
-	/**
-	 * 
-	 * @param array $data  
-	 */
+    /**
+     * @param array $data
+     */
     public function __construct(array $data = array())
     {
-    	$this->exchangeArray($data);
+        $this->exchangeArray($data);
     }
 
     /**
-     * Populate from an array
+     * Populate from an array.
      * 
-     * @param  array $data
+     * @param array $data
+     *
      * @return AbstractModel
      */
     public function exchangeArray(array $data)
@@ -31,7 +31,8 @@ abstract class AbstractModel implements JsonSerializable
     }
 
     /**
-     * Convert the model to an array
+     * Convert the model to an array.
+     *
      * @return array
      */
     public function toArray()
@@ -56,9 +57,9 @@ abstract class AbstractModel implements JsonSerializable
 
         return $vars;
     }
-    
+
     public function jsonSerialize()
     {
-    	return $this->toArray();
+        return $this->toArray();
     }
 }

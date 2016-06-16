@@ -83,7 +83,7 @@ class Question extends AbstractService
         $res_question = $mapper->usePaginator($filter)->getList($questionnaire, $dimension, $search);
 
         return (null !== $filter) ?
-            array('count' => $mapper->count(),'list' => $res_question) :
+            array('count' => $mapper->count(), 'list' => $res_question) :
             $res_question;
     }
 }

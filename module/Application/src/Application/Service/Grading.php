@@ -12,7 +12,7 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param array $datas
-     * @param integer   $school
+     * @param int   $school
      *
      * @return bool
      */
@@ -25,14 +25,14 @@ class Grading extends AbstractService
 
         return true;
     }
-    
+
     /**
      * update grading policy by program.
      *
      * @invokable
      *
      * @param array $datas
-     * @param integer   $program
+     * @param int   $program
      *
      * @return bool
      */
@@ -42,7 +42,7 @@ class Grading extends AbstractService
         foreach ($datas as $gp) {
             $this->_add($gp['letter'], $gp['min'], $gp['max'], $gp['grade'], $gp['description'], null, $program);
         }
-    
+
         return true;
     }
 
@@ -51,7 +51,7 @@ class Grading extends AbstractService
      *
      * @invokable
      *
-     * @param integer $school
+     * @param int $school
      */
     public function getBySchool($school = null)
     {
@@ -61,13 +61,13 @@ class Grading extends AbstractService
 
         return $this->getMapper()->select($this->getModel()->setSchoolId($school));
     }
-    
+
     /**
      * Get Grading by program id.
      *
      * @invokable
      *
-     * @param integer $program
+     * @param int $program
      */
     public function getByProgram($program)
     {
@@ -79,15 +79,14 @@ class Grading extends AbstractService
      *
      * @invokable
      *
-     * @param integer $school
-     *
+     * @param int $school
      */
     public function getByCourse($course)
     {
         return $this->getMapper()->getByCourse($course);
     }
 
-    public function _add($letter, $min, $max, $grade, $description, $school= null, $program= null)
+    public function _add($letter, $min, $max, $grade, $description, $school = null, $program = null)
     {
         $m_grading = $this->getModel()
                            ->setLetter($letter)

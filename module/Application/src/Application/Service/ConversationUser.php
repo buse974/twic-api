@@ -16,11 +16,11 @@ class ConversationUser extends AbstractService
     {
         $conversation_id = null;
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        if (!in_array($user_id , $users)) {
+        if (!in_array($user_id, $users)) {
             $users[] = $user_id;
         }
 
-        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type);  
+        $res_conversation_user = $this->getMapper()->getConversationByUser($users, $type);
         if ($res_conversation_user->count() === 1) {
             $conversation_id = $res_conversation_user->current()->getConversationId();
         } elseif ($res_conversation_user->count() === 0) {
@@ -31,11 +31,11 @@ class ConversationUser extends AbstractService
 
         return $conversation_id;
     }
-    
+
     /**
      * @invokable
      *
-     * @param integer $submission_id
+     * @param int $submission_id
      */
     public function getListConversationBySubmission($submission_id)
     {
@@ -53,29 +53,30 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * @param integer $conversation_id
-     * @param integer $user_id
-     * @return boolean
+     * @param int $conversation_id
+     * @param int $user_id
+     *
+     * @return bool
      */
     public function isInConversation($conversation_id, $user_id)
     {
         $res_conversation_user = $this->getMapper()->select($this->getModel()->setConversationId($conversation_id)->setUserId($user_id));
-    
-        return ($res_conversation_user->count() > 0);
+
+        return $res_conversation_user->count() > 0;
     }
-    
+
     /**
      * @param intger $conversation_id
-     * @param array $users
+     * @param array  $users
      * 
      * @return []
      */
     public function add($conversation_id, $users)
     {
-        if(!is_array($users)) {
+        if (!is_array($users)) {
             $users = [$users];
         }
-        
+
         $ret = [];
         foreach ($users as $user) {
             $ret[$user] = $this->getMapper()->add($conversation_id, $user);
@@ -86,7 +87,8 @@ class ConversationUser extends AbstractService
 
     /**
      * @param intger $conversation_id
-     * @param array $users
+     * @param array  $users
+     *
      * @return []
      */
     public function replace($conversation_id, $users)
@@ -111,5 +113,4 @@ class ConversationUser extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-
 }

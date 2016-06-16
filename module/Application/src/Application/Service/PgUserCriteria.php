@@ -6,47 +6,40 @@ use Dal\Service\AbstractService;
 
 class PgUserCriteria extends AbstractService
 {
-    
     /**
-     *
-     * @param integer $pg
-     * @param integer $user
-     * @param integer $criteria
-     * @param integer $points
+     * @param int $pg
+     * @param int $user
+     * @param int $criteria
+     * @param int $points
      */
     public function add($pg, $user, $submission, $criteria, $points)
     {
         return  $this->getMapper()->insert($this->getModel()->setPgId($pg)->setUserId($user)->setSubmissionId($submission)->setCriteriaId($criteria)->setPoints($points));
     }
-    
+
     /**
-     * 
-     * @param integer $submission
-     * 
+     * @param int $submission
      */
-    public function getListBySubmission($submission){
+    public function getListBySubmission($submission)
+    {
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission));
     }
-    
-     /**
-     * 
-     * @param integer $submission
-     * @param integer $user
-     * 
+
+    /**
+     * @param int $submission
+     * @param int $user
      */
-    public function getProcessedGrades($submission, $user = null){
+    public function getProcessedGrades($submission, $user = null)
+    {
         return $this->getMapper()->getProcessedGrades($submission, $user);
     }
-    
-    
-     /**
-     *
-     * @param integer $user
-     * @param integer $submission
+
+    /**
+     * @param int $user
+     * @param int $submission
      */
     public function deleteByUserAndSubmission($user, $submission)
     {
         return  $this->getMapper()->delete($this->getModel()->setPgId($user)->setSubmissionId($submission));
     }
-    
 }

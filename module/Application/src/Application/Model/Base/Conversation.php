@@ -9,6 +9,8 @@ class Conversation extends AbstractModel
  	protected $id;
 	protected $name;
 	protected $type;
+	protected $token;
+	protected $conversation_opt_id;
 	protected $created_date;
 
 	protected $prefix = 'conversation';
@@ -45,6 +47,30 @@ class Conversation extends AbstractModel
 	public function setType($type)
 	{
 		$this->type = $type;
+
+		return $this;
+	}
+
+	public function getToken()
+	{
+		return $this->token;
+	}
+
+	public function setToken($token)
+	{
+		$this->token = $token;
+
+		return $this;
+	}
+
+	public function getConversationOptId()
+	{
+		return $this->conversation_opt_id;
+	}
+
+	public function setConversationOptId($conversation_opt_id)
+	{
+		$this->conversation_opt_id = $conversation_opt_id;
 
 		return $this;
 	}

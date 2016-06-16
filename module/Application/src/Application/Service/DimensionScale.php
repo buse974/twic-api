@@ -71,6 +71,6 @@ class DimensionScale extends AbstractService
         $mapper = $this->getMapper();
         $res_dimension_scale = $mapper->usePaginator($filter)->getList();
 
-        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_dimension_scale] : $res_dimension_scale;
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_dimension_scale] : $res_dimension_scale;
     }
 }

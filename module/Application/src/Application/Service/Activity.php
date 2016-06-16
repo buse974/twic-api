@@ -28,7 +28,7 @@ class Activity extends AbstractService
         }
 
         $this->getServiceConnection()->add();
-        
+
         return $ret;
     }
 
@@ -92,7 +92,7 @@ class Activity extends AbstractService
      * @param array  $user
      * @param string $start_date
      * @param string $end_date
-     * @param array $filter
+     * @param array  $filter
      */
     public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null, $filter = null)
     {
@@ -130,7 +130,7 @@ class Activity extends AbstractService
         $mapper = ($filter !== null) ?
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
-        
+
         $res_activity = $mapper->select($m_activity, array('date' => 'ASC'));
 
         foreach ($res_activity as $m_activity) {
@@ -147,18 +147,18 @@ class Activity extends AbstractService
 
         return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_activity] : $res_activity;
     }
-    
+
     /**
      * @invokable
      * 
-     * @param array $filter
+     * @param array  $filter
      * @param string $search
      */
     public function getListWithUser($filter = null, $search = null)
     {
         $mapper = $this->getMapper();
         $res_activity = $mapper->usePaginator($filter)->getListWithUser($search);
-       
+
         return ['count' => $mapper->count(), 'list' => $res_activity];
     }
 
@@ -191,7 +191,6 @@ class Activity extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
-    
 
     /**
      * @return \Application\Service\Connection

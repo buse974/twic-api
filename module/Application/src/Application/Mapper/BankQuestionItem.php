@@ -12,7 +12,7 @@ class BankQuestionItem extends AbstractMapper
         $select->columns(array('id', 'libelle', 'bank_question_id', 'order_id'))
             ->join('bank_answer_item', 'bank_answer_item.bank_question_item_id=bank_question_item.id', array('bank_question_item_id', 'percent', 'answer', 'date', 'time'))
             ->where(array('bank_question_item.bank_question_id' => $bank_question_id));
-        
+
         return $this->selectWith($select);
     }
 }

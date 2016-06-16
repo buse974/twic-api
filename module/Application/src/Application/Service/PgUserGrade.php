@@ -6,45 +6,38 @@ use Dal\Service\AbstractService;
 
 class PgUserGrade extends AbstractService
 {
-    
     /**
-     *
-     * @param integer $user
-     * @param integer $submission
+     * @param int $user
+     * @param int $submission
      */
     public function deleteByUserAndSubmission($user, $submission)
     {
         return  $this->getMapper()->delete($this->getModel()->setPgId($user)->setSubmissionId($submission));
     }
-    
-      /**
-     *
-     * @param integer $submission
+
+    /**
+     * @param int $submission
      */
     public function getProcessedGrades($submission)
     {
         return  $this->getMapper()->getProcessedGrades($submission);
     }
-    
-     /**
-     * 
-     * @param integer $submission
-     * 
+
+    /**
+     * @param int $submission
      */
-    public function getListBySubmission($submission){
+    public function getListBySubmission($submission)
+    {
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission));
     }
-    
-     /**
-     *
-     * @param integer $pg
-     * @param integer $user
-     * @param integer $points
+
+    /**
+     * @param int $pg
+     * @param int $user
+     * @param int $points
      */
     public function add($pg, $user, $submission, $grade)
     {
         return  $this->getMapper()->insert($this->getModel()->setPgId($pg)->setUserId($user)->setSubmissionId($submission)->setGrade($grade));
     }
-    
-    
 }

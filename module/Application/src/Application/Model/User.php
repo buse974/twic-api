@@ -40,26 +40,26 @@ class User extends BaseUser
     {
         return $this->role_id;
     }
-    
+
     public function setRoleId($role_id)
     {
         $this->role_id = $role_id;
-    
+
         return $this;
     }
-    
+
     public function getNbUser()
     {
         return $this->nb_user;
     }
-    
+
     public function setNbUser($nb_user)
     {
         $this->nb_user = $nb_user;
-    
+
         return $this;
     }
-    
+
     public function getRole()
     {
         return $this->role;
@@ -125,7 +125,7 @@ class User extends BaseUser
 
     public function setContactState($contact_state)
     {
-        $this->contact_state = ($contact_state===null || $contact_state instanceof IsNull) ? 0:$contact_state;
+        $this->contact_state = ($contact_state === null || $contact_state instanceof IsNull) ? 0 : $contact_state;
 
         return $this;
     }
@@ -137,7 +137,7 @@ class User extends BaseUser
 
     public function setContactsCount($contacts_count)
     {
-        $this->contacts_count = ($contacts_count===null || $contacts_count instanceof IsNull) ? 0:$contacts_count;
+        $this->contacts_count = ($contacts_count === null || $contacts_count instanceof IsNull) ? 0 : $contacts_count;
 
         return $this;
     }

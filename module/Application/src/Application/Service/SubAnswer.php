@@ -7,14 +7,15 @@ use Dal\Service\AbstractService;
 class SubAnswer extends AbstractService
 {
     /**
-     * @param integer $sub_question_id
+     * @param int $sub_question_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListLite($sub_question_ids)
     {
         return $this->getMapper()->select($this->getModel()->setSubQuestionId($sub_question_ids));
     }
-    
+
     public function add($sub_question_id, $bank_question_item_id, $answer)
     {
         return $this->getMapper()->insert($this->getModel()
@@ -22,5 +23,4 @@ class SubAnswer extends AbstractService
             ->setAnswer($answer)
             ->setBankQuestionItemId($bank_question_item_id));
     }
-    
 }

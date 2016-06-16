@@ -105,7 +105,7 @@ return [
             'app_service_submission',
             'app_service_submission_pg',
             'app_service_text_editor',
-            'app_service_videoconf_opt',
+            'app_service_conversation_opt',
             'app_service_bank_question_tag',
             'app_service_sub_quiz',
             'app_service_criteria',

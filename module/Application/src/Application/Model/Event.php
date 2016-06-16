@@ -9,22 +9,22 @@ class Event extends BaseEvent
     protected $nb_like;
 
     protected $is_like;
-    
+
     protected $comment;
 
     protected $read_date;
 
     protected $view_date;
 
-    public function getViewDate() 
+    public function getViewDate()
     {
         return $this->view_date;
     }
 
-    public function setViewDate($view_date) 
+    public function setViewDate($view_date)
     {
         $this->view_date = $view_date;
-        
+
         return $this;
     }
     public function getComment()
@@ -38,7 +38,7 @@ class Event extends BaseEvent
 
         return $this;
     }
-    
+
     public function getIsLike()
     {
         return $this->is_like;

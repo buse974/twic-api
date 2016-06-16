@@ -8,7 +8,7 @@ class Feed extends BaseFeed
 {
     const TYPE_SOCIAL = 'social';
     const TYPE_ACADEMIC = 'academic';
-    
+
     protected $user;
     protected $nb_comment;
     protected $nb_like;

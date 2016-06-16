@@ -40,14 +40,14 @@ class Videoconf extends BaseVideoconf
     {
         return $this->instructors;
     }
-    
+
     public function setInstructors($instructors)
     {
         $this->instructors = $instructors;
-    
+
         return $this;
     }
-    
+
     public function getItemAssignmentId()
     {
         return $this->item_assignment_id;

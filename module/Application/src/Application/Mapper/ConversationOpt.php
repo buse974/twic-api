@@ -4,6 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
-class VideoconfOpt extends AbstractMapper
+class ConversationOpt extends AbstractMapper
 {
 }

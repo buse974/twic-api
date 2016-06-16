@@ -10,16 +10,14 @@ class Activity extends BaseActivity
     protected $value_user;
     protected $value_total;
 
-    
-     public function exchangeArray(array &$data)
+    public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
 
         $this->user = $this->requireModel('app_model_user', $data);
     }
 
-    
-     public function getUser()
+    public function getUser()
     {
         return $this->user;
     }
@@ -30,7 +28,7 @@ class Activity extends BaseActivity
 
         return $this;
     }
-    
+
     public function getValueTotal()
     {
         return $this->value_total;

@@ -13,23 +13,23 @@ class Connection extends BaseConnection
     {
         return $this->nbr_session;
     }
-    
+
     public function setNbrSession($nbr_session)
     {
         $this->nbr_session = $nbr_session;
-    
+
         return $this;
     }
-    
-    public function getAvg() 
+
+    public function getAvg()
     {
         return $this->avg;
     }
-    
-    public function setAvg($avg) 
+
+    public function setAvg($avg)
     {
         $this->avg = $avg;
-        
+
         return $this;
     }
 }
