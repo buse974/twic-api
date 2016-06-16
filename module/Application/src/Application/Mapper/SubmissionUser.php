@@ -14,10 +14,10 @@ class SubmissionUser extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
-            'submission_user$user' => 'user_id',
             'submission_user$avg' => new Expression('SUM(item.coefficient * submission_user.grade) / SUM(item.coefficient)')))
             ->join('submission', 'submission_user.submission_id=submission.id', [])
             ->join('item', 'submission.item_id=item.id', [])
+            ->join('user', 'submission_user.user_id=user.id', ['id', 'firstname', 'lastname', 'avatar'])
             ->join('course', 'item.course_id = course.id', array('id', 'title'))
             ->join('program', 'course.program_id = program.id', array('id', 'name'))
             ->where(array('program.deleted_date IS NULL'))

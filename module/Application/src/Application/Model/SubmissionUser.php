@@ -14,8 +14,6 @@ class SubmissionUser extends BaseSubmissionUser
 
     public function exchangeArray(array &$data)
     {
-        
-
         $this->user = $this->requireModel('app_model_user', $data);
         $this->program = $this->requireModel('app_model_program', $data);
         $this->course = $this->requireModel('app_model_course', $data);
