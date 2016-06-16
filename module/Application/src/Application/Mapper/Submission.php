@@ -147,9 +147,9 @@ class Submission extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'group_id', 'group_name', 'is_graded', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
-            ->join('submission_user', 'submission_user.submission_id=submission.id', [])
+            ->join('submission_user', 'submission_user.submission_id=submission.id', ['grade'])
             ->join('sub_thread', 'sub_thread.submission_id=submission.id', ['submission$thread_id' => 'thread_id'], $select::JOIN_LEFT)
-            ->join('item', 'item.id=submission.item_id', ['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'), 'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title'])
+            ->join('item', 'item.id=submission.item_id', ['id', 'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'), 'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'), 'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'), 'describe', 'type', 'is_grouped', 'title', 'coefficient'])
             ->join(['submission_item_course' => 'course'], 'submission_item_course.id=item.course_id', ['id', 'title'])
             ->join(['submission_item_program' => 'program'], 'submission_item_program.id=submission_item_course.program_id', ['name'])
 
@@ -180,7 +180,10 @@ class Submission extends AbstractMapper
         if (true === $late) {
             $select->where(array('item.end < UTC_TIMESTAMP() AND submission.submit_date IS NULL'));
         }
-
+        if(true === $tograde) {
+            $select->join('opt_grading','opt_grading.item_id = item.id')
+                   ->where(array('opt_grading.mode <> "none"'));
+        }
         return $this->selectWith($select);
     }
 
