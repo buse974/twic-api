@@ -19,22 +19,34 @@ class Conversation extends AbstractService
      * @param array  $text_editors
      * @param array  $whiteboards
      * @param array  $documents
+     * @param boolean $has_video
      */
-    public function create($type = null, $submission_id = null, $users = null, $text = null, $item_id = null, $text_editors = null, $whiteboards = null, $documents = null)
+    public function create(
+        $type = null, 
+        $submission_id = null,  
+        $users = null, 
+        $text = null, 
+        $item_id = null, 
+        $text_editors = null, 
+        $whiteboards = null, 
+        $documents = null, 
+        $has_video = null)
     {
         $start_date = null;
-        if (null === $submission_id && null !== $item_id) {
-            $submission_id = $this->getServiceSubmission()->getByItem($item_id)->getId();
-        }
+        if (null === $submission_id && null !== $item_id) { 
+            $submission_id = $this->getServiceSubmission()->getByItem($item_id)->getId(); 
+        } 
 
-        $m_conversation = $this->getModel()
-            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            //->setToken($this->getServiceZOpenTok()->getSessionId())
-            ->setType($type);
+        $m_conversation = $this->getModel() 
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')) 
+            ->setType($type); 
 
-        if ($this->getMapper()->insert($m_conversation) <= 0) {
-            throw new \Exception('Error create conversation');
-        }
+        if($has_video === true) { 
+            $m_conversation->setToken($this->getServiceZOpenTok()->getSessionId()); 
+        } 
+        if ($this->getMapper()->insert($m_conversation) <= 0) { 
+            throw new \Exception('Error create conversation'); 
+        } 
 
         $conversation_id = $this->getMapper()->getLastInsertValue();
         if (null !== $users) {
@@ -108,11 +120,11 @@ class Conversation extends AbstractService
      *
      * @param int $conversation
      */
-    public function getConversation($conversation, $filter = [])
+    public function get($id, $filter = [])
     {
-        $conv['users'] = $this->getServiceUser()->getListByConversation($conversation)->toArray(array('id'));
-        $conv['messages'] = $this->getServiceMessage()->getList($conversation, $filter);
-        $conv['id'] = $conversation;
+        $conv['users'] = $this->getServiceUser()->getListByConversation($id)->toArray(array('id'));
+        $conv['messages'] = $this->getServiceMessage()->getList($id, $filter);
+        $conv['id'] = $id;
 
         return $conv;
     }
@@ -129,7 +141,7 @@ class Conversation extends AbstractService
         $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
-            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
+            $ret[] = $this->get($m_conversation->getId()) + $m_conversation->toArray();
         }
 
         return $ret;
@@ -146,7 +158,7 @@ class Conversation extends AbstractService
         $res_conversation = $this->getMapper()->getListByItem($item_id, $submission_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
-            $ret[] = $this->getConversation($m_conversation->getId()) + $m_conversation->toArray();
+            $ret[] = $this->get($m_conversation->getId()) + $m_conversation->toArray();
         }
 
         return $ret;

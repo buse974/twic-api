@@ -549,9 +549,17 @@ class Item extends AbstractService
      */
     public function delete($id)
     {
-        $this->sort($id);
-
-        return $this->getMapper()->delete($this->getModel()->setId($id));
+        if(!is_array($id)) {
+            $id = [$id];
+        }
+        
+        foreach ($id as $i) {
+            if($this->sort($i) > 0) {
+                $this->getMapper()->delete($this->getModel()->setId($i));
+            }
+        }
+        
+        return true;
     }
 
     /**
