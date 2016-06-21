@@ -50,7 +50,6 @@ return [
             'app_service_grading',
             'app_service_grading_policy',
             'mail.service',
-            'app_service_material_document',
             'app_service_faq',
             'app_service_thread',
             'app_service_thread_message',

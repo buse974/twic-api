@@ -61,19 +61,7 @@ class Course extends AbstractService
 
         // On ne crée plus les grading policy par default
         //$this->getServiceGradingPolicy()->initTpl($course_id);
-        foreach ($material_document as $md) {
-            if (isset($md['type'])) {
-                $type = (isset($md['type']) ? $md['type'] : null);
-                $title = (isset($md['title']) ? $md['title'] : null);
-                $author = (isset($md['author']) ? $md['author'] : null);
-                $link = (isset($md['link']) ? $md['link'] : null);
-                $source = (isset($md['source']) ? $md['source'] : null);
-                $token = (isset($md['token']) ? $md['token'] : null);
-                $date = (isset($md['date']) ? $md['date'] : null);
-                $this->getServiceMaterialDocument()->add($course_id, $type, $title, $author, $link, $source, $token, $date);
-            }
-        }
-
+       
         return $this->get($course_id);
     }
 
@@ -146,9 +134,7 @@ class Course extends AbstractService
         $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         foreach ($id as $idc) {
-            if ($ret[$idc] = $this->getMapper()->update($m_course, array('id' => $idc)) > 0) {
-                $this->getServiceMaterialDocument()->deleteByCourseId($idc);
-            }
+            $ret[$idc] = $this->getMapper()->update($m_course, array('id' => $idc));
         }
 
         return $ret;
@@ -284,20 +270,10 @@ class Course extends AbstractService
         $res_course = $this->getMapper()->getListDetail($user, $me);
 
         foreach ($res_course as $m_course) {
-            $m_course->setMaterialDocument($this->getServiceMaterialDocument()
-                ->getListByCourse($m_course->getId())->toArray(array('id')));
             $m_course->setItemProg($this->getServiceItemProg()->getListByUserAndCourse($m_course->getId(), $user));
         }
 
         return $res_course;
-    }
-
-    /**
-     * @return \Application\Service\MaterialDocument
-     */
-    public function getServiceMaterialDocument()
-    {
-        return $this->getServiceLocator()->get('app_service_material_document');
     }
 
     /**
