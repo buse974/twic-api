@@ -606,8 +606,6 @@ class GradingTest extends AbstractService
         return $data['result'];
     }  */
     
-   
-    
     public function setIdentity($id)
     {
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
