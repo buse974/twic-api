@@ -21,9 +21,6 @@ ALTER TABLE `conversation_opt`
 ADD COLUMN `start_date` DATETIME NULL AFTER `allow_intructor`,
 ADD COLUMN `duration` INT UNSIGNED NULL AFTER `start_date`;
 
-
-  
-
 ALTER TABLE `conversation` 
 ADD COLUMN `token` VARCHAR(255) NULL AFTER `type`,
 ADD COLUMN `conversation_opt_id` INT UNSIGNED NULL AFTER `token`,
