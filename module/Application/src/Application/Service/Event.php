@@ -422,9 +422,8 @@ class Event extends AbstractService
     public function getDataCourseAddMaterial($course, $material)
     {
         $m_course = $this->getServiceCourse()->get($course);
-        $m_material_document = $this->getServiceMaterialDocument()->get($material);
-
-        return ['id' => $course, 'name' => 'course', 'data' => ['title' => $m_course->getTitle(), 'picture' => $m_course->getPicture(), 'material' => ['type' => $m_material_document->getType(), 'title' => $m_material_document->getTitle(), 'author' => $m_material_document->getAuthor(), 'link' => $m_material_document->getLink(), 'source' => $m_material_document->getSource(), 'token' => $m_material_document->getToken()]]];
+        
+        return ['id' => $course, 'name' => 'course', 'data' => ['title' => $m_course->getTitle(), 'picture' => $m_course->getPicture()]];
     }
 
     public function getDataCourseUpdate($course, $dataupdated)
@@ -735,14 +734,6 @@ class Event extends AbstractService
     public function getServiceThreadMessage()
     {
         return $this->getServiceLocator()->get('app_service_thread_message');
-    }
-
-    /**
-     * @return \Application\Service\MaterialDocument
-     */
-    public function getServiceMaterialDocument()
-    {
-        return $this->getServiceLocator()->get('app_service_material_document');
     }
 
     /**

@@ -98,9 +98,7 @@ class ItemAssignment extends AbstractService
             ->getListByItemAssignment($id));
 
         $m_item = $m_item_assignment->getItemProg()->getItem();
-        $m_item->setMaterials($this->getServiceMaterialDocument()
-            ->getListByItem($m_item->getId()));
-
+      
         $m_course = $m_item->getCourse();
         $m_course->setInstructor($this->getServiceUser()
             ->getListOnly(\Application\Model\Role::ROLE_INSTRUCTOR_STR, $m_course->getId()));
@@ -406,14 +404,6 @@ class ItemAssignment extends AbstractService
     public function getServiceItemProg()
     {
         return $this->getServiceLocator()->get('app_service_submission');
-    }
-
-    /**
-     * @return \Application\Service\MaterialDocument
-     */
-    public function getServiceMaterialDocument()
-    {
-        return $this->getServiceLocator()->get('app_service_material_document');
     }
 
     /**

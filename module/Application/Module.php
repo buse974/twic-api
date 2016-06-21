@@ -35,15 +35,14 @@ class Module
                 $identity['roles'] = Role::STR_GUEST;
             }
             $rbacService = $event->getApplication()->getServiceManager()->get('rbac.service');
-
             if (!$rbacService->isGranted($identity['roles'], $permission)) {
                 if ($e->getTarget()->getServiceMap()->getService($permission) === false) {
-                    throw new JrpcException('Method not found', -32028);
+                    throw new JrpcException('Method not found: '.$permission, -32028);
                 }
                 if (!$authService->hasIdentity()) {
-                    throw new JrpcException('Not connected', -32027);
+                    throw new JrpcException('Not connected: '.$permission, -32027);
                 }
-                throw new JrpcException('No authorization', -32029);
+                throw new JrpcException('No authorization: '.$permission, -32029);
             }
         });
 
