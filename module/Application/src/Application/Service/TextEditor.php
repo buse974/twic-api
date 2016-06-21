@@ -39,8 +39,9 @@ class TextEditor extends AbstractService
      * @param string $name
      * @param string $text
      * @param string $submit_date
+     * @param integer $conversation_id
      */
-    public function add($submission_id, $name = null, $text = null, $submit_date = null)
+    public function add($submission_id, $name = null, $text = null, $submit_date = null, $conversation_id = null)
     {
         $m_text_editor = $this->getModel()
             ->setSubmissionId($submission_id)

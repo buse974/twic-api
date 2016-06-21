@@ -26,8 +26,6 @@ class Criteria extends AbstractMapper
             $delete->where->notIn('id', $ids);
         }
 
-        syslog(1, $this->printSql($delete));
-
         return $this->deleteWith($delete);
     }
 }

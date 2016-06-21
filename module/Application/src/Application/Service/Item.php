@@ -277,28 +277,34 @@ class Item extends AbstractService
     /**
      * @invokable
      * 
-     * @param int    $id
-     * @param int    $grading_policy_id
+     * @param integer $id
+     * @param integer $grading_policy_id
      * @param string $title
      * @param string $describe
-     * @param int    $duration
+     * @param integer $duration
      * @param string $type
-     * @param array  $data
-     * @param int    $set_id
-     * @param int    $has_submission
+     * @param string $data
+     * @param integer $set_id
+     * @param boolean $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
-     * @param int    $parent_id
-     * @param int    $order_id
-     * @param int    $has_all_student
-     * @param int    $is_grouped
-     * @param array  $submission
-     * @param int    $is_complete
+     * @param integer $parent_id
+     * @param integer $order_id
+     * @param boolean $has_all_student
+     * @param boolean $is_grouped
+     * @param array $submission
+     * @param boolean $is_complete
+     * @param integer $coefficient
+     * @param array $opt
+     * 
      */
     public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null,
         $set_id = null, $has_submission = null, $start = null, $end = null, $cut_off = null,
-        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null, $coefficient = null)
+        $parent_id = null, $order_id = null, $has_all_student = null, $is_grouped = null, $submission = null, $is_complete = null, 
+        $coefficient = null,
+        $opt = null
+        )
     {
         $m_item = $this->getModel()
             ->setId($id)
@@ -334,6 +340,21 @@ class Item extends AbstractService
             $this->getServiceSubmission()->add($submission, $id);
         }
 
+        // OPTION GRADING
+        if (null !== $opt) {
+            if (isset($opt['grading'])) {
+                $this->getServiceOptGrading()->add($item_id,
+                    (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,
+                    (isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,
+                    (isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,
+                    (isset($opt['grading']['pg_auto'])) ? $opt['grading']['pg_auto'] : null,
+                    (isset($opt['grading']['pg_due_date'])) ? $opt['grading']['pg_due_date'] : null,
+                    (isset($opt['grading']['pg_can_view'])) ? $opt['grading']['pg_can_view'] : null,
+                    (isset($opt['grading']['user_can_view'])) ? $opt['grading']['user_can_view'] : null,
+                    (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
+            }
+        }
+        
         return $this->getMapper()->update($m_item);
     }
 
