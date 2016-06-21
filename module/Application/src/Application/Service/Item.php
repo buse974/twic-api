@@ -343,7 +343,7 @@ class Item extends AbstractService
         // OPTION GRADING
         if (null !== $opt) {
             if (isset($opt['grading'])) {
-                $this->getServiceOptGrading()->add($item_id,
+                $this->getServiceOptGrading()->add($id,
                     (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,
                     (isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,
                     (isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,
