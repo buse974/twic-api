@@ -336,14 +336,10 @@ class Item extends AbstractService
             $this->initCmp($type, $data, $id);
         }
 
-        if (null !== $submission) {
-            $this->getServiceSubmission()->add($submission, $id);
-        }
-
         // OPTION GRADING
         if (null !== $opt) {
             if (isset($opt['grading'])) {
-                $this->getServiceOptGrading()->add($item_id,
+                $this->getServiceOptGrading()->add($id,
                     (isset($opt['grading']['mode'])) ? $opt['grading']['mode'] : null,
                     (isset($opt['grading']['has_pg'])) ? $opt['grading']['has_pg'] : null,
                     (isset($opt['grading']['pg_nb'])) ? $opt['grading']['pg_nb'] : null,
@@ -353,6 +349,10 @@ class Item extends AbstractService
                     (isset($opt['grading']['user_can_view'])) ? $opt['grading']['user_can_view'] : null,
                     (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
+        }
+        
+        if (null !== $submission) {
+            $this->getServiceSubmission()->add($submission, $id);
         }
         
         return $this->getMapper()->update($m_item);
