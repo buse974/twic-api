@@ -23,16 +23,18 @@ class OptGrading extends AbstractService
      */
     public function add($item_id, $mode = null, $has_pg = null, $pg_nb = null, $pg_auto = null, $pg_due_date = null, $pg_can_view = null, $user_can_view = null, $pg_stars = null)
     {
+        $this->delete($item_id);
+        
         $m_opt_grading = $this->getModel()
-        ->setItemId($item_id)
-        ->setMode($mode)
-        ->setHasPg($has_pg)
-        ->setPgNb($pg_nb)
-        ->setPgAuto($pg_auto)
-        ->setPgDueDate($pg_due_date)
-        ->setPgCanView($pg_can_view)
-        ->setUserCanView($user_can_view)
-        ->setPgStars($pg_stars);
+            ->setItemId($item_id)
+            ->setMode($mode)
+            ->setHasPg($has_pg)
+            ->setPgNb($pg_nb)
+            ->setPgAuto($pg_auto)
+            ->setPgDueDate($pg_due_date)
+            ->setPgCanView($pg_can_view)
+            ->setUserCanView($user_can_view)
+            ->setPgStars($pg_stars);
 
         return $this->getMapper()->insert($m_opt_grading);
     }
@@ -55,15 +57,15 @@ class OptGrading extends AbstractService
     public function update($item_id, $mode = null, $has_pg = null, $pg_nb = null, $pg_auto = null, $pg_due_date = null, $pg_can_view = null, $user_can_view = null, $pg_stars = null)
     {
         $m_opt_grading = $this->getModel()
-        ->setItemId($item_id)
-        ->setMode($mode)
-        ->setHasPg($has_pg)
-        ->setPgNb($pg_nb)
-        ->setPgAuto($pg_auto)
-        ->setPgDueDate($pg_due_date)
-        ->setPgCanView($pg_can_view)
-        ->setUserCanView($user_can_view)
-        ->setPgStars($pg_stars);
+            ->setItemId($item_id)
+            ->setMode($mode)
+            ->setHasPg($has_pg)
+            ->setPgNb($pg_nb)
+            ->setPgAuto($pg_auto)
+            ->setPgDueDate($pg_due_date)
+            ->setPgCanView($pg_can_view)
+            ->setUserCanView($user_can_view)
+            ->setPgStars($pg_stars);
 
         return $this->getMapper()->update($m_opt_grading);
     }
