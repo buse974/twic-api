@@ -10,6 +10,7 @@ use Application\Model\Role as ModelRole;
 use Firebase\Token\TokenGenerator;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Item as ModelItem;
+use Symfony\CS\Fixer\Symfony\ReturnFixer;
 
 class User extends AbstractService
 {
@@ -113,7 +114,7 @@ class User extends AbstractService
     }
 
     /**
-     * Add User.
+     * Add User
      *
      * @invokable
      *
@@ -121,20 +122,38 @@ class User extends AbstractService
      * @param string $lastname
      * @param string $email
      * @param string $gender
-     * @param int    $origin
-     * @param int    $nationality
+     * @param string $origin
+     * @param string $nationality
+     * @param string $sis
      * @param string $password
      * @param string $birth_date
      * @param string $position
-     * @param int    $school_id
+     * @param integer $school_id
      * @param string $interest
      * @param string $avatar
-     *
-     * @throws \Exception
-     *
-     * @return int
+     * @param array $roles
+     * @param string $timezone
+     * @param string $background
+     * 
+     * @return integer
      */
-    public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null)
+    public function add(
+        $firstname, 
+        $lastname, 
+        $email, 
+        $gender = null, 
+        $origin = null, 
+        $nationality = null, 
+        $sis = null, 
+        $password = null, 
+        $birth_date = null, 
+        $position = null, 
+        $school_id = null, 
+        $interest = null, 
+        $avatar = null, 
+        $roles = null,
+        $timezone = null,
+        $background = null)
     {
         if ($birth_date !== null && \DateTime::createFromFormat('Y-m-d H:i:s', $birth_date) === false) {
             $birth_date = null;
@@ -156,7 +175,9 @@ class User extends AbstractService
             ->setPosition($position)
             ->setSchoolId($school_id)
             ->setInterest($interest)
-            ->setAvatar($avatar);
+            ->setAvatar($avatar)
+            ->setTimezone($timezone)
+            ->setBackground($background);
 
         /*
          * @TODO schoolid vérifier que si il n'est pas admin le school id est
@@ -430,26 +451,49 @@ class User extends AbstractService
      * Update User.
      *
      * @invokable
-     *
-     * @param int    $id
+     * 
+     * @param integer $id
      * @param string $gender
-     * @param int    $origin
-     * @param int    $nationality
+     * @param string $origin
+     * @param string $nationality
      * @param string $firstname
      * @param string $lastname
+     * @param string $sis
      * @param string $email
      * @param string $birth_date
      * @param string $position
-     * @param int    $school_id
+     * @param integer $school_id
      * @param string $interest
      * @param string $avatar
-     * @param array  $roles
-     * @param array  $programs
-     * @param array  $resetpassword
-     *
-     * @return int
+     * @param array $roles
+     * @param array $programs
+     * @param string $resetpassword
+     * @param boolean $has_email_notifier
+     * @param string $timezone
+     * @param string $background
+     * 
+     * @return integer
      */
-    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null)
+    public function update(
+        $id = null, 
+        $gender = null, 
+        $origin = null, 
+        $nationality = null, 
+        $firstname = null, 
+        $lastname = null, 
+        $sis = null, 
+        $email = null, 
+        $birth_date = null, 
+        $position = null, 
+        $school_id = null, 
+        $interest = null, 
+        $avatar = null, 
+        $roles = null, 
+        $programs = null, 
+        $resetpassword = null, 
+        $has_email_notifier = null,
+        $timezone = null,
+        $background = null)
     {
         if ($birth_date !== null
             && \DateTime::createFromFormat('Y-m-d', $birth_date) === false
@@ -479,7 +523,9 @@ class User extends AbstractService
             ->setPosition($position)
             ->setInterest($interest)
             ->setAvatar($avatar)
-            ->setHasEmailNotifier($has_email_notifier);
+            ->setHasEmailNotifier($has_email_notifier)
+            ->setTimezone($timezone)
+            ->setBackground($background);
 
         if ($school_id !== null) {
             if ($school_id === 'null') {
