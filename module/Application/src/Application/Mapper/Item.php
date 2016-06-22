@@ -4,6 +4,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\NotIn;
+use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\Expression;
 use Dal\Db\Sql\Select;
@@ -532,10 +533,16 @@ class Item extends AbstractMapper
     
     public function cancelSort($id, $order_id){
         $update = $this->tableGateway->getSql()->update();
-        $update->set(['order_id'=> $id])
-               ->where(['order_id' => $order_id])
-               ->where('[id <> ?]', $id);
+        $update->set(['order_id'=> $id]);
+        if($order_id instanceof IsNull){
+            $update->where(['order_id IS NULL']);
+        }
+        else{
+            $update->where(['order_id' => $order_id]);
+        }
         
+        
+        $update->where(['id <> ?' => $id]);
         return $this->updateWith($update);    
     }
 }
