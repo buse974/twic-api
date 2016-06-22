@@ -930,6 +930,6 @@ class Submission extends AbstractService
      */
     public function getServiceVideoconfArchive()
     {
-        return $this->getServiceLocator()->get('app_service_videoconf_archive');
+        return $this->getServiceLocator()->get('app_service_video_archive');
     }
 }

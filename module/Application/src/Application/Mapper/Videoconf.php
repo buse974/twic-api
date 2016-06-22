@@ -52,13 +52,13 @@ class Videoconf extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getByVideoconfArchive($videoconf_archive)
+    public function getByVideoconfArchive($video_archive)
     {
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'submission_id'))
-            ->join('videoconf_archive', 'videoconf_archive.videoconf_id=videoconf.id', array())
-            ->where(array('videoconf_archive.id' => $videoconf_archive));
+            ->join('video_archive', 'video_archive.videoconf_id=videoconf.id', array())
+            ->where(array('video_archive.id' => $video_archive));
 
         return $this->selectWith($select);
     }

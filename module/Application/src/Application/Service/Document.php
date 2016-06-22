@@ -7,19 +7,20 @@ use Dal\Service\AbstractService;
 class Document extends AbstractService
 {
     /**
-     * @param string $name
-     * @param string $type
-     * @param string $link
-     * @param string $token
-     * @param string $item_id
-     * @param int    $submission_id
-     * @param int    $folder_id
+     * @param string  $name
+     * @param string  $type
+     * @param string  $link
+     * @param string  $token
+     * @param string  $item_id
+     * @param int     $submission_id
+     * @param int     $folder_id
+     * @param integer $conversation_id
      * 
      * @throws \Exception
      * 
      * @return int
      */
-    public function add($name = null, $type = null, $link = null, $token = null, $item_id = null, $submission_id = null, $folder_id = null)
+    public function add($name = null, $type = null, $link = null, $token = null, $item_id = null, $submission_id = null, $folder_id = null, $conversation_id = null)
     {
         if (null === $link && null === $token && null === $name) {
             return 0;
@@ -41,9 +42,27 @@ class Document extends AbstractService
 
         if ($this->getMapper()->insert($m_document) <= 0) {
             throw new \Exception();
-        }
+        }   
 
+        if(null !== $conversation_id) {
+            $this->getServiceConversationDoc()->add($conversation_id, $library_id);
+        }
+        
         return  $this->getServiceLibrary()->get($library_id);
+    }
+    
+    public function addConversation($data)
+    {
+        return $this->add(
+            $data['name'],
+            $data['type'],
+            $data['link'],
+            $data['token'],
+            $data['item_id'],
+            $data['submission_id'],
+            $data['folder_id'],
+            $data['conversation_id']
+            );
     }
 
     public function getListBySubmission($submission_id)
@@ -89,5 +108,13 @@ class Document extends AbstractService
     public function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
+    }
+    
+    /**
+     * @return \Application\Service\ConversationDoc
+     */
+    public function getServiceConversationDoc()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_doc');
     }
 }

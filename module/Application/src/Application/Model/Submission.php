@@ -8,7 +8,7 @@ class Submission extends BaseSubmission
 {
     protected $chat;
     protected $submission_user;
-    protected $videoconf_archives;
+    protected $video_archives;
     protected $users;
     protected $item;
     protected $thread_id;
@@ -73,12 +73,12 @@ class Submission extends BaseSubmission
 
     public function getVideoconfArchives()
     {
-        return $this->videoconf_archives;
+        return $this->video_archives;
     }
 
-    public function setVideoconfArchives($videoconf_archives)
+    public function setVideoconfArchives($video_archives)
     {
-        $this->videoconf_archives = $videoconf_archives;
+        $this->video_archives = $video_archives;
 
         return $this;
     }

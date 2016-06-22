@@ -248,15 +248,15 @@ class Videoconf extends AbstractService
     /**
      * Get videoconf by videoconf archive.
      
-     * @param interger $videoconf_archive
+     * @param interger $video_archive
      *
      * @throws \Exception
      *
      * @return \Application\Model\Videoconf
      */
-    public function getByVideoconfArchive($videoconf_archive)
+    public function getByVideoconfArchive($video_archive)
     {
-        return $this->getMapper()->getByVideoconfArchive($videoconf_archive)->current();
+        return $this->getMapper()->getByVideoconfArchive($video_archive)->current();
     }
 
     /**
@@ -371,9 +371,9 @@ class Videoconf extends AbstractService
      */
     public function stopRecord($id)
     {
-        $m_videoconf_archive = $this->getServiceVideoconfArchive()->getLastArchiveId($id);
+        $m_video_archive = $this->getServiceVideoconfArchive()->getLastArchiveId($id);
 
-        return $this->getServiceZOpenTok()->stopArchive($m_videoconf_archive->getArchiveToken());
+        return $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
     }
 
     /**
@@ -389,12 +389,12 @@ class Videoconf extends AbstractService
 
         $res_video_no_upload = $this->getServiceVideoconfArchive()->getListVideoUpload();
 
-        foreach ($res_video_no_upload as $m_videoconf_archive) {
+        foreach ($res_video_no_upload as $m_video_archive) {
             try {
-                $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_videoconf_archive->getArchiveToken()), true);
+                $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_video_archive->getArchiveToken()), true);
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
-                    $this->getServiceVideoconfArchive()->updateByArchiveToken($m_videoconf_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
-                    $arr = $m_videoconf_archive->toArray();
+                    $this->getServiceVideoconfArchive()->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
+                    $arr = $m_video_archive->toArray();
                     $arr['url'] = $archive['url'];
                     $ret[] = $arr;
                 }
@@ -412,27 +412,27 @@ class Videoconf extends AbstractService
      *
      * @invokable
      *
-     * @param interger $videoconf_archive
+     * @param interger $video_archive
      * @param string   $url
      *
      * @return int
      */
-    public function validTransfertVideo($videoconf_archive, $url)
+    public function validTransfertVideo($video_archive, $url)
     {
         $event_send = true;
-        $m_videoconf = $this->getByVideoconfArchive($videoconf_archive);
-        $res_videoconf_archive = $this->getServiceVideoconfArchive()->getListByVideoConf($m_videoconf->getId());
+        $m_videoconf = $this->getByVideoconfArchive($video_archive);
+        $res_video_archive = $this->getServiceVideoconfArchive()->getListByVideoConf($m_videoconf->getId());
 
-        foreach ($res_videoconf_archive as $m_videoconf_archive) {
-            if (CVF::ARV_AVAILABLE === $m_videoconf_archive->getArchiveStatus()) {
+        foreach ($res_video_archive as $m_video_archive) {
+            if (CVF::ARV_AVAILABLE === $m_video_archive->getArchiveStatus()) {
                 $event_send = false;
             }
         }
 
-        $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($videoconf_archive, CVF::ARV_AVAILABLE, null, $url);
+        $ret = $this->getServiceVideoconfArchive()->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
 
         if ($event_send) {
-            $this->getServiceEvent()->recordAvailable($m_videoconf->getSubmissionId(), $videoconf_archive);
+            $this->getServiceEvent()->recordAvailable($m_videoconf->getSubmissionId(), $video_archive);
         }
 
         return $ret;
@@ -515,7 +515,7 @@ class Videoconf extends AbstractService
      */
     public function getServiceVideoconfArchive()
     {
-        return $this->getServiceLocator()->get('app_service_videoconf_archive');
+        return $this->getServiceLocator()->get('app_service_video_archive');
     }
 
     /**

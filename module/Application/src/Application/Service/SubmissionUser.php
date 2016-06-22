@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Application\Model\Role as ModelRole;
 
 class SubmissionUser extends AbstractService
 {
@@ -81,8 +82,13 @@ class SubmissionUser extends AbstractService
      */
     public function getListGrade($avg = array(), $filter = array(), $search = null)
     {
+        $me = $this->getServiceUser()->getIdentity();
+        if (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
+            $filter['user'] = $me['id'];
+        }
+        
         $mapper = $this->getMapper();
-        $res_submission_user = $mapper->usePaginator($filter)->getListGrade($avg, $filter, $search, $this->getServiceUser()->getIdentity());
+        $res_submission_user = $mapper->usePaginator($filter)->getListGrade($avg, $filter, $search, $me);
 
         return ['count' => $mapper->count(), 'list' => $res_submission_user];
     }

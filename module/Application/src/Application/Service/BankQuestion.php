@@ -157,16 +157,16 @@ class BankQuestion extends AbstractService
 
         $bank_question_id = $this->getMapper()->getLastInsertValue();
 
-        if (null !== $bank_question_media) {
-            $this->getServiceBankQuestionMedia()->add($bank_question_id, $bank_question_media);
-        }
-
         if (null !== $bank_question_tag) {
             $this->getServiceBankQuestionTag()->add($bank_question_id, $bank_question_tag);
         }
 
         if (null !== $bank_question_item) {
             $this->getServiceBankQuestionItem()->add($bank_question_id, $bank_question_item);
+        }
+        
+        if (null !== $bank_question_media) {
+            $this->getServiceBankQuestionMedia()->add($bank_question_id, $bank_question_media);
         }
 
         return $bank_question_id;

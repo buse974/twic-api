@@ -1146,9 +1146,6 @@ class PollTest extends AbstractService
         $this->setIdentity(4);
         $data = $this->jsonRpc('subquiz.checkGrade',
             []);
-    
-        print_r($data);
-        exit();  
     }
     
     /**

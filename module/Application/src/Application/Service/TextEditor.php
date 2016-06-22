@@ -50,7 +50,7 @@ class TextEditor extends AbstractService
             ->setSubmitDate($submit_date);
 
         if ($this->getMapper()->insert($m_text_editor) <= 0) {
-            // @TODO error
+            //@TODO error
         }
 
         return $this->getMapper()->getLastInsertValue();

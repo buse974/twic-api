@@ -15,13 +15,13 @@ class VideoconfArchive extends AbstractService
      */
     public function add($videoconf, $token)
     {
-        $m_videoconf_archive = $this->getModel();
-        $m_videoconf_archive->setVideoconfId($videoconf)
+        $m_video_archive = $this->getModel();
+        $m_video_archive->setVideoconfId($videoconf)
             ->setArchiveToken($token)
             ->setArchiveStatus(CVF::ARV_STARTED)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        $this->getMapper()->insert($m_videoconf_archive);
+        $this->getMapper()->insert($m_video_archive);
 
         return $this->getMapper()->getLastInsertValue();
     }
@@ -36,13 +36,13 @@ class VideoconfArchive extends AbstractService
      */
     public function updateByArchiveToken($id, $status, $duration = null, $link = null)
     {
-        $m_videoconf_archive = $this->getModel();
-        $m_videoconf_archive->setId($id)
+        $m_video_archive = $this->getModel();
+        $m_video_archive->setId($id)
             ->setArchiveDuration($duration)
             ->setArchiveStatus($status)
             ->setArchiveLink($link);
 
-        return $this->getMapper()->update($m_videoconf_archive);
+        return $this->getMapper()->update($m_video_archive);
     }
 
     /**

@@ -11,7 +11,7 @@
         "php": ">=5.4",
         "zendframework/zendframework": "*",
         "zendframework/zend-file": "2.4.9",
-	"blanchonvincent/simple-page-crawler": "dev-master",
+	    "blanchonvincent/simple-page-crawler": "dev-master",
         "buse974/dms":"*",
         "firebase/token-generator":"2.*",
         "buse974/dal":"dev-master",

@@ -403,7 +403,7 @@ class GroupWorkTest extends AbstractService
             ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 8);
+        $this->assertEquals(count($data['result']) , 7);
         $this->assertEquals(count($data['result']['submission_user']) , 2);
         $this->assertEquals(count($data['result']['submission_user'][0]) , 6);
         $this->assertEquals(count($data['result']['submission_user'][0]['user']) , 12);
@@ -474,32 +474,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['videoconf']) , 16);
-        $this->assertEquals(count($data['result']['videoconf']['instructors']) , 0);
-        $this->assertEquals(count($data['result']['videoconf']['videoconf_admin']) , 5);
-        $this->assertEquals($data['result']['videoconf']['videoconf_admin']['id'] , 2);
-        $this->assertEquals($data['result']['videoconf']['videoconf_admin']['videoconf_id'] , 1);
-        $this->assertEquals($data['result']['videoconf']['videoconf_admin']['user_id'] , 2);
-        $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['token']) , true);
-        $this->assertEquals(!empty($data['result']['videoconf']['videoconf_admin']['created_date']) , true);
-        $this->assertEquals($data['result']['videoconf']['id'] , 1);
-        $this->assertEquals(!empty($data['result']['videoconf']['token']) , true);
-        $this->assertEquals($data['result']['videoconf']['start_date'] , null);
-        $this->assertEquals($data['result']['videoconf']['duration'] , null);
-        $this->assertEquals($data['result']['videoconf']['archive_token'] , null);
-        $this->assertEquals($data['result']['videoconf']['archive_link'] , null);
-        $this->assertEquals($data['result']['videoconf']['archive_status'] , null);
-        $this->assertEquals($data['result']['videoconf']['conversation_id'] , 1);
-        $this->assertEquals($data['result']['videoconf']['submission_id'] , 1);
-        $this->assertEquals($data['result']['videoconf']['title'] , null);
-        $this->assertEquals($data['result']['videoconf']['description'] , null);
-        $this->assertEquals(!empty($data['result']['videoconf']['created_date']) , true);
-        $this->assertEquals($data['result']['videoconf']['deleted_date'] , null);
-        $this->assertEquals(count($data['result']['videoconf']['videoconf_opt']) , 4);
-        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['item_id'] , 1);
-        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['record'] , 2);
-        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['nb_user_autorecord'] , 2);
-        $this->assertEquals($data['result']['videoconf']['videoconf_opt']['allow_intructor'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -620,12 +594,12 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(count($data['result']['list']) , 1);
         $this->assertEquals(count($data['result']['list'][0]) , 9);
         $this->assertEquals($data['result']['list'][0]['thread_id'] , null);
-        $this->assertEquals(count($data['result']['list'][0]['item']) , 10);
+        $this->assertEquals(count($data['result']['list'][0]['item']) , 11);
         $this->assertEquals(count($data['result']['list'][0]['item']['program']) , 1);
         $this->assertEquals($data['result']['list'][0]['item']['program']['name'] , "program name");
         $this->assertEquals(count($data['result']['list'][0]['item']['course']) , 2);
-        $this->assertEquals($data['result']['list'][0]['item']['course']['title'] , "IMERIR");
         $this->assertEquals($data['result']['list'][0]['item']['course']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['item']['course']['title'] , "IMERIR");
         $this->assertEquals($data['result']['list'][0]['item']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['item']['title'] , "title");
         $this->assertEquals($data['result']['list'][0]['item']['describe'] , "description");
@@ -634,6 +608,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['item']['end'] , null);
         $this->assertEquals($data['result']['list'][0]['item']['cut_off'] , null);
         $this->assertEquals($data['result']['list'][0]['item']['is_grouped'] , 1);
+        $this->assertEquals($data['result']['list'][0]['item']['coefficient'] , 1);
         $this->assertEquals(count($data['result']['list'][0]['submission_user']) , 3);
         $this->assertEquals(count($data['result']['list'][0]['submission_user'][0]) , 6);
         $this->assertEquals(count($data['result']['list'][0]['submission_user'][0]['user']) , 12);
@@ -702,6 +677,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
+        
     }
     
 
@@ -748,12 +724,15 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('item.get', array('id' => $item_id));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 21);
-        $this->assertEquals(count($data['result']['videoconf']) , 4);
+        $this->assertEquals(count($data['result']) , 22);
+        $this->assertEquals(count($data['result']['videoconf']) , 7);
+        $this->assertEquals($data['result']['videoconf']['id'] , 1);
         $this->assertEquals($data['result']['videoconf']['item_id'] , 1);
         $this->assertEquals($data['result']['videoconf']['record'] , 1);
         $this->assertEquals($data['result']['videoconf']['nb_user_autorecord'] , 10);
         $this->assertEquals($data['result']['videoconf']['allow_intructor'] , 0);
+        $this->assertEquals($data['result']['videoconf']['start_date'] , null);
+        $this->assertEquals($data['result']['videoconf']['duration'] , null);
         $this->assertEquals(count($data['result']['program']) , 2);
         $this->assertEquals($data['result']['program']['id'] , 1);
         $this->assertEquals($data['result']['program']['name'] , "program name");
@@ -791,9 +770,9 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['cut_off'] , null);
         $this->assertEquals($data['result']['is_grouped'] , 1);
         $this->assertEquals($data['result']['has_all_student'] , 0);
+        $this->assertEquals($data['result']['coefficient'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
 
     /**

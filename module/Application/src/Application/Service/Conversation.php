@@ -30,7 +30,8 @@ class Conversation extends AbstractService
         $text_editors = null, 
         $whiteboards = null, 
         $documents = null, 
-        $has_video = null)
+        $has_video = null,
+        $conversation = null)
     {
         $start_date = null;
         if (null === $submission_id && null !== $item_id) { 
@@ -41,7 +42,7 @@ class Conversation extends AbstractService
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')) 
             ->setType($type); 
 
-        if($has_video === true) { 
+        if($has_video === true) {
             $m_conversation->setToken($this->getServiceZOpenTok()->getSessionId()); 
         } 
         if ($this->getMapper()->insert($m_conversation) <= 0) { 
@@ -55,7 +56,24 @@ class Conversation extends AbstractService
         if (null !== $submission_id) {
             $this->getServiceSubConversation()->add($conversation_id, $submission_id);
         }
-
+        
+        /*if (null === $text_editors) {
+            $this->getServiceConversationConversation()->add($conversation_id, $conversation_id);
+        }
+        if (null === $whiteboards) {
+            $this->getServiceConversationConversation()->add($conversation_id, $conversation_id);
+        }
+        if (null === $documents) {
+            if(is_numeric($documents)) {
+                $this->getServiceConversationDoc()->add($conversation_id, $documents);
+            } else if(is_array($documents)) {
+                
+            }
+            //Conversation()->add($conversation_id, $conversation_id);
+        }*/
+        if (null !== $conversation) {
+            $this->getServiceConversationConversation()->add($conversation_id, $conversation);
+        }
         if (null !== $text) {
             switch ($type) {
                 case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT :
@@ -290,7 +308,23 @@ class Conversation extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
-
+    
+    /**
+     * @return \Application\Service\ConversationConversation
+     */
+    public function getServiceConversationConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_conversation');
+    }
+    
+    /**
+     * @return \Application\Service\ConversationDoc
+     */
+    public function getServiceConversationDoc()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_doc');
+    }
+    
     /**
      * @return \Application\Service\Message
      */

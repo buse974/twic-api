@@ -279,15 +279,15 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
 
-    public function recordAvailable($submission_id, $videoconf_archive)
+    public function recordAvailable($submission_id, $video_archive)
     {
-        $m_videoconf_archive = $this->getServiceVideoconfArchive()->get($videoconf_archive);
+        $m_video_archive = $this->getServiceVideoconfArchive()->get($video_archive);
 
         $m_submission = $this->getServiceSubmission()->get(null, $submission_id);
 
         return $this->create('record.available',
             $this->getDataSubmission($m_submission),
-            $this->getDataVideoArchive($m_videoconf_archive),
+            $this->getDataVideoArchive($m_video_archive),
             $this->getListBySubmissionWithInstrutorAndAcademic($submission_id),
             self::TARGET_TYPE_USER);
     }
@@ -441,9 +441,9 @@ class Event extends AbstractService
             'updated' => array_keys($dataupdated), ]];
     }
 
-    public function getDataVideoArchive(\Application\Model\VideoconfArchive $m_videoconf_archive)
+    public function getDataVideoArchive(\Application\Model\VideoconfArchive $m_video_archive)
     {
-        return ['id' => $m_videoconf_archive->getId(), 'name' => 'archive', 'data' => ['archive_link' => $m_videoconf_archive->getArchiveLink()]];
+        return ['id' => $m_video_archive->getId(), 'name' => 'archive', 'data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
     }
 
     public function getDataItemProgWihtUser(\Application\Model\Submission $m_submission)
@@ -789,7 +789,7 @@ class Event extends AbstractService
      */
     public function getServiceVideoconfArchive()
     {
-        return $this->getServiceLocator()->get('app_service_videoconf_archive');
+        return $this->getServiceLocator()->get('app_service_video_archive');
     }
 
     /**

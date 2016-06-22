@@ -21,9 +21,9 @@ class VideoconfArchive extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'archive_link', 'archive_token', 'archive_duration'))
-            ->join('videoconf', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
+            ->join('videoconf', 'videoconf.id=video_archive.videoconf_id', array(), $select::JOIN_INNER)
             ->where(array('videoconf.submission_id' => $submission_id))
-            ->where(array('videoconf_archive.archive_status' => CVF::ARV_AVAILABLE));
+            ->where(array('video_archive.archive_status' => CVF::ARV_AVAILABLE));
 
         return $this->selectWith($select);
     }
@@ -38,8 +38,8 @@ class VideoconfArchive extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'archive_link', 'archive_token', 'archive_duration'))
-            ->where(array('videoconf_archive.videoconf_id' => $videoconf))
-            ->order(array('videoconf_archive.id' => 'DESC'))
+            ->where(array('video_archive.videoconf_id' => $videoconf))
+            ->order(array('video_archive.id' => 'DESC'))
             ->limit(1);
 
         return $this->selectWith($select)->current();
@@ -55,8 +55,8 @@ class VideoconfArchive extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'archive_link', 'archive_token', 'archive_duration'))
-            ->where(array('videoconf_archive.videoconf_id' => $videoconf))
-            ->order(array('videoconf_archive.id' => 'ASC'));
+            ->where(array('video_archive.videoconf_id' => $videoconf))
+            ->order(array('video_archive.id' => 'ASC'));
 
         return $this->selectWith($select)->current();
     }

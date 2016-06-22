@@ -268,8 +268,8 @@ class Item extends AbstractMapper
         $select->columns(array('id', 'title', 'type'))
             ->join('submission', 'submission.item_id=item.id', array(), $select::JOIN_INNER)
             ->join('videoconf', 'submission.id=videoconf.submission_id', array(), $select::JOIN_INNER)
-            ->join('videoconf_archive', 'videoconf.id=videoconf_archive.videoconf_id', array(), $select::JOIN_INNER)
-            ->where(array('videoconf_archive.archive_link IS NOT NULL'))
+            ->join('video_archive', 'videoconf.id=video_archive.videoconf_id', array(), $select::JOIN_INNER)
+            ->where(array('video_archive.archive_link IS NOT NULL'))
             ->where(array('item.course_id' => $course))
             ->group('item.id');
 

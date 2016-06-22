@@ -14,7 +14,7 @@ class VideoconfArchive extends AbstractModel
     protected $videoconf_id;
     protected $created_date;
 
-    protected $prefix = 'videoconf_archive';
+    protected $prefix = 'video_archive';
 
     public function getId()
     {
