@@ -279,24 +279,24 @@ class Item extends AbstractService
      * 
      * @param integer $id
      * @param integer $grading_policy_id
-     * @param string $title
-     * @param string $describe
+     * @param string  $title
+     * @param string  $describe
      * @param integer $duration
-     * @param string $type
-     * @param string $data
+     * @param string  $type
+     * @param string  $data
      * @param integer $set_id
      * @param boolean $has_submission
-     * @param string $start
-     * @param string $end
-     * @param string $cut_off
+     * @param string  $start
+     * @param string  $end
+     * @param string  $cut_off
      * @param integer $parent_id
      * @param integer $order_id
      * @param boolean $has_all_student
      * @param boolean $is_grouped
-     * @param array $submission
+     * @param array   $submission
      * @param boolean $is_complete
      * @param integer $coefficient
-     * @param array $opt
+     * @param array   $opt
      * 
      */
     public function update($id, $grading_policy_id = null, $title = null, $describe = null, $duration = null, $type = null, $data = null,
@@ -575,22 +575,19 @@ class Item extends AbstractService
         }
         
         foreach ($id as $i) {
-            if($this->sort($i) > 0) {
-                try {
-                    if($this->getMapper()->delete($this->getModel()->setId($i)) === 0){
-                        $this->cancelSort($i);
-                        return false;
-                    };
-                } catch (\Exception $e) {
-                    syslog(1, 'Error on item deletion : '.$e->getMessage());
+            $this->sort($i);
+            try {
+                if($this->getMapper()->delete($this->getModel()->setId($i)) === 0){
                     $this->cancelSort($i);
                     return false;
-                }
-            }
-            else{
+                };
+            } catch (\Exception $e) {
+                syslog(1, 'Error on item deletion : '.$e->getMessage());
+                $this->cancelSort($i);
                 return false;
             }
         }
+        
         
         return true;
     }
