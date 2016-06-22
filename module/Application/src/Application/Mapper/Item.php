@@ -529,4 +529,13 @@ class Item extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    public function cancelSort($id, $order_id){
+        $update = $this->tableGateway->getSql()->update();
+        $update->set(['order_id'=> $id])
+               ->where(['order_id' => $order_id])
+               ->where('[id <> ?]', $id);
+        
+        return $this->updateWith($update);    
+    }
 }

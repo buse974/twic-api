@@ -679,7 +679,9 @@ class Submission extends AbstractService
         if (null !== $criterias && count($criterias) > 0) {
             foreach ($criterias as $criteria_id => $criteria) {
                 foreach ($criteria as $user => $points) {
-                    $this->getServicePgUserCriteria()->add($me, $user, $id, $criteria_id, $points);
+                    if (is_numeric($user) && null !== $points) {
+                        $this->getServicePgUserCriteria()->add($me, $user, $id, $criteria_id, $points);
+                    }
                 }
             }
         } else {
