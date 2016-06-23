@@ -83,7 +83,7 @@ class SubmissionUser extends AbstractService
     public function getListGrade($avg = array(), $filter = array(), $search = null)
     {
         $me = $this->getServiceUser()->getIdentity();
-        if (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
             $filter['user'] = $me['id'];
         }
         
