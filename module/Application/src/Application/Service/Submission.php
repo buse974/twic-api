@@ -693,7 +693,7 @@ class Submission extends AbstractService
             }
         } else {
             foreach ($grades as $user => $grade) {
-                if ($grade !== null) {
+                if ($grade !== null && is_numeric($user) && is_numeric($grade)) {
                     $this->getServicePgUserGrade()->add($me, $user, $id, $grade);
                 }
             }
