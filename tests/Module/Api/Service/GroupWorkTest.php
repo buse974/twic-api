@@ -1025,7 +1025,7 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('submission.getContentSg', ['submission_id' => $submission_id]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 6);
+        $this->assertEquals(count($data['result']) , 5);
         $this->assertEquals(count($data['result']['text_editor']) , 1);
         $this->assertEquals(count($data['result']['text_editor'][0]) , 5);
         $this->assertEquals($data['result']['text_editor'][0]['id'] , 1);

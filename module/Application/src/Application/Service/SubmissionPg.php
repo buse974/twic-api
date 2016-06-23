@@ -104,9 +104,9 @@ class SubmissionPg extends AbstractService
                     $final[$s_id][] = $ar_u[$k];
                     unset($ar_u[$k]);
                 }
-            } elseif (count($ar_s) === count($start)) {
+            } /*elseif (count($ar_s) === count($start)) {
                 return false;
-            } else {
+            }*/ else {
                 $nbmin = count($tmp);
                 $ar_u = $start;
                 foreach ($tmp as $k => $t) {

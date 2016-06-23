@@ -198,6 +198,7 @@ class Submission extends AbstractService
 
     public function add($data, $item_id)
     {
+        $has_modif = false;
         $res_submission = $this->getMapper()->select($this->getModel()->setItemId($item_id));
         foreach ($res_submission as $m_submission) {
             $is_present = false;
@@ -208,6 +209,7 @@ class Submission extends AbstractService
                 }
             }
             if ($is_present === false) {
+                $has_modif = true;
                 $this->getMapper()->delete($this->getModel()->setId($m_submission->getId()));
             }
         }
@@ -222,10 +224,15 @@ class Submission extends AbstractService
                     ->setGroupId((isset($su['group_id']) ? $su['group_id'] : null)));
                 $s_id = $this->getMapper()->getLastInsertValue();
             }
-            $this->getServiceSubmissionUser()->create($s_id, $su['submission_user']);
+            // si il y a eu une modification des submission_user je has_modif a true
+            if($this->getServiceSubmissionUser()->create($s_id, $su['submission_user'])) {
+                $has_modif = true;
+            }
         }
 
-        $this->getServiceSubmissionPg()->autoAssign($item_id);
+        if($has_modif === true) {
+            $this->getServiceSubmissionPg()->autoAssign($item_id);
+        }
     }
 
     /**

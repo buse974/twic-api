@@ -728,7 +728,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['sub_questions'][0]['poll_item_id'] , 5);
         $this->assertEquals($data['result'][0]['sub_questions'][0]['bank_question_id'] , 1);
         $this->assertEquals($data['result'][0]['sub_questions'][0]['group_question_id'] , null);
-        $this->assertEquals($data['result'][0]['sub_questions'][0]['point'] , 9899);
+        $this->assertEquals($data['result'][0]['sub_questions'][0]['point'] , 11122);
         $this->assertEquals(!empty($data['result'][0]['sub_questions'][0]['answered_date']) , true);
         $this->assertEquals(count($data['result'][0]['sub_questions'][1]) , 7);
         $this->assertEquals($data['result'][0]['sub_questions'][1]['id'] , 2);
@@ -908,8 +908,6 @@ class PollTest extends AbstractService
         
     }
     
-    
-    
     /**
      * @depends testCanGetSubmission
      */
@@ -917,13 +915,13 @@ class PollTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getContent', ['submission_id' => $submission_id]);
+       
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 5);
+        $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['text_editor']) , 0);
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 0);
-        $this->assertEquals($data['result']['videoconf'] , null);
         $this->assertEquals(count($data['result']['poll']) , 1);
         $this->assertEquals(count($data['result']['poll'][0]) , 14);
         $this->assertEquals($data['result']['poll'][0]['id'] , 1);
@@ -940,7 +938,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['poll_item_id'] , 5);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['bank_question_id'] , 1);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['group_question_id'] , null);
-        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['point'] , '9899');
+        $this->assertEquals($data['result']['poll'][0]['sub_questions'][0]['point'] , '11122');
         $this->assertEquals(!empty($data['result']['poll'][0]['sub_questions'][0]['answered_date']) , true);
         $this->assertEquals(count($data['result']['poll'][0]['sub_questions'][1]) , 7);
         $this->assertEquals($data['result']['poll'][0]['sub_questions'][1]['id'] , 2);

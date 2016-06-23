@@ -8,8 +8,15 @@ use Application\Model\Role as ModelRole;
 
 class SubmissionUser extends AbstractService
 {
+    /**
+     * 
+     * @param unknown $submission_id
+     * @param array $users
+     * @return boolean if submission_user has be modifyer
+     */
     public function create($submission_id, array $users)
     {
+        $has_modif = false;
         $res_submission_user = $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
         foreach ($res_submission_user as $m_submission_user) {
             $is_present = false;
@@ -21,16 +28,18 @@ class SubmissionUser extends AbstractService
                 }
             }
             if ($is_present === false) {
+                $has_modif = true;
                 $this->getMapper()->delete($this->getModel()->setUserId($m_submission_user->getUserId())->setSubmissionId($submission_id));
             }
         }
 
         $ret = [];
         foreach ($users as $user) {
+            $has_modif = true;
             $ret[$user] = $this->add($submission_id, $user);
         }
 
-        return $ret;
+        return $has_modif;
     }
 
     public function add($submission_id, $user)
