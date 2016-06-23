@@ -40,6 +40,10 @@ class SubmissionUser extends AbstractService
 
     public function OverwrittenGrade($submission_id, $grade)
     {
+        if($grade < 0) {
+            $grade = 0;
+        }
+        
         return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
     }
 
@@ -53,6 +57,9 @@ class SubmissionUser extends AbstractService
      */
     public function setGrade($submission_id, $user_id, $grade, $overwritten = false)
     {
+        if($grade < 0) {
+            $grade = 0;
+        }
         return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
     }
 

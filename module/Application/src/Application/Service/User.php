@@ -10,7 +10,6 @@ use Application\Model\Role as ModelRole;
 use Firebase\Token\TokenGenerator;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Item as ModelItem;
-use Symfony\CS\Fixer\Symfony\ReturnFixer;
 
 class User extends AbstractService
 {

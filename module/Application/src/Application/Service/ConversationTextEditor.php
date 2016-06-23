@@ -8,6 +8,6 @@ class ConversationTextEditor extends AbstractService
 {
     public function add()
     {
-        $this->getModel()->set
+       // $this->getModel()->set
     }
 }   
