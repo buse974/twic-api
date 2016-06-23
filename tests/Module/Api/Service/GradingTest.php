@@ -330,7 +330,7 @@ class GradingTest extends AbstractService
         $this->assertEquals(count($data['result'][0]) , 7); 
         $this->assertEquals($data['result'][0]['submission_id'] , 1); 
         $this->assertEquals($data['result'][0]['user_id'] , 4); 
-        $this->assertEquals($data['result'][0]['grade'] , 94.5); 
+        $this->assertEquals($data['result'][0]['grade'] , 95); 
         $this->assertEquals($data['result'][0]['submit_date'] , null); 
         $this->assertEquals($data['result'][0]['overwritten'] , 0); 
         $this->assertEquals($data['result'][0]['start_date'] , null); 
