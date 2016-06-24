@@ -6,188 +6,189 @@ use Dal\Model\AbstractModel;
 
 class School extends AbstractModel
 {
-    protected $id;
-    protected $name;
-    protected $next_name;
-    protected $short_name;
-    protected $logo;
-    protected $describe;
-    protected $website;
-    protected $programme;
-    protected $background;
-    protected $phone;
-    protected $contact;
-    protected $contact_id;
-    protected $address_id;
-    protected $deleted_date;
+ 	protected $id;
+	protected $name;
+	protected $next_name;
+	protected $short_name;
+	protected $logo;
+	protected $describe;
+	protected $website;
+	protected $background;
+	protected $phone;
+	protected $contact;
+	protected $contact_id;
+	protected $address_id;
+	protected $deleted_date;
+	protected $url_sso_cas;
 
-    protected $prefix = 'school';
+	protected $prefix = 'school';
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
+	public function setId($id)
+	{
+		$this->id = $id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getName()
-    {
-        return $this->name;
-    }
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    public function setName($name)
-    {
-        $this->name = $name;
+	public function setName($name)
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getNextName()
-    {
-        return $this->next_name;
-    }
+	public function getNextName()
+	{
+		return $this->next_name;
+	}
 
-    public function setNextName($next_name)
-    {
-        $this->next_name = $next_name;
+	public function setNextName($next_name)
+	{
+		$this->next_name = $next_name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getShortName()
-    {
-        return $this->short_name;
-    }
+	public function getShortName()
+	{
+		return $this->short_name;
+	}
 
-    public function setShortName($short_name)
-    {
-        $this->short_name = $short_name;
+	public function setShortName($short_name)
+	{
+		$this->short_name = $short_name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLogo()
-    {
-        return $this->logo;
-    }
+	public function getLogo()
+	{
+		return $this->logo;
+	}
 
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
+	public function setLogo($logo)
+	{
+		$this->logo = $logo;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDescribe()
-    {
-        return $this->describe;
-    }
+	public function getDescribe()
+	{
+		return $this->describe;
+	}
 
-    public function setDescribe($describe)
-    {
-        $this->describe = $describe;
+	public function setDescribe($describe)
+	{
+		$this->describe = $describe;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getWebsite()
-    {
-        return $this->website;
-    }
+	public function getWebsite()
+	{
+		return $this->website;
+	}
 
-    public function setWebsite($website)
-    {
-        $this->website = $website;
+	public function setWebsite($website)
+	{
+		$this->website = $website;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getProgramme()
-    {
-        return $this->programme;
-    }
+	public function getBackground()
+	{
+		return $this->background;
+	}
 
-    public function setProgramme($programme)
-    {
-        $this->programme = $programme;
+	public function setBackground($background)
+	{
+		$this->background = $background;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getBackground()
-    {
-        return $this->background;
-    }
+	public function getPhone()
+	{
+		return $this->phone;
+	}
 
-    public function setBackground($background)
-    {
-        $this->background = $background;
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getPhone()
-    {
-        return $this->phone;
-    }
+	public function getContact()
+	{
+		return $this->contact;
+	}
 
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
+	public function setContact($contact)
+	{
+		$this->contact = $contact;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getContact()
-    {
-        return $this->contact;
-    }
+	public function getContactId()
+	{
+		return $this->contact_id;
+	}
 
-    public function setContact($contact)
-    {
-        $this->contact = $contact;
+	public function setContactId($contact_id)
+	{
+		$this->contact_id = $contact_id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getContactId()
-    {
-        return $this->contact_id;
-    }
+	public function getAddressId()
+	{
+		return $this->address_id;
+	}
 
-    public function setContactId($contact_id)
-    {
-        $this->contact_id = $contact_id;
+	public function setAddressId($address_id)
+	{
+		$this->address_id = $address_id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getAddressId()
-    {
-        return $this->address_id;
-    }
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
 
-    public function setAddressId($address_id)
-    {
-        $this->address_id = $address_id;
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getDeletedDate()
-    {
-        return $this->deleted_date;
-    }
+	public function getUrlSsoCas()
+	{
+		return $this->url_sso_cas;
+	}
 
-    public function setDeletedDate($deleted_date)
-    {
-        $this->deleted_date = $deleted_date;
+	public function setUrlSsoCas($url_sso_cas)
+	{
+		$this->url_sso_cas = $url_sso_cas;
 
-        return $this;
-    }
+		return $this;
+	}
+
 }
