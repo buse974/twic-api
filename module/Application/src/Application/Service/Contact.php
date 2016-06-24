@@ -52,7 +52,7 @@ class Contact extends AbstractService
             $ret = $this->getMapper()->update($m_contact_you, array('user_id' => $identity['id'], 'contact_id' => $user));
         }
 
-       // $this->getServiceEvent()->userRequestconnection($user);
+        $this->getServiceEvent()->userRequestconnection($user);
 
         return $ret;
     }
