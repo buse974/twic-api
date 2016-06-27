@@ -44,4 +44,20 @@ class SubmissionPg extends AbstractMapper
 
         return $this->updateWith($update);
     }
+    
+      /**
+     * 
+     * @param int $item_id
+     * 
+     * 
+     * @return \Application\Model\Submission
+     */
+    public function getListByItem($item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->join('submission', 'submission_pg.submission_id=submission.id', array())
+            ->where(array('submission.item_id' => $item_id));
+
+        return $this->selectWith($select);
+    }
 }
