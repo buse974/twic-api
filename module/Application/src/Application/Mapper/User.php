@@ -323,7 +323,14 @@ class User extends AbstractMapper
     public function getListContact($me, $type = null, $date = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'school_id', 'email', 'password', 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'avatar'))
+        $select->columns(array('id', 
+            'firstname', 
+            'lastname', 
+            'school_id', 'email', 'password', 
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 
+            'position', 
+            'interest', 
+        'avatar'))
             ->join('contact', 'contact.contact_id=user.id', array('request_date', 'accepted_date', 'deleted_date', 'requested', 'accepted', 'deleted'))
             ->where('user.deleted_date IS NULL')
             ->where(array('contact.user_id' => $me))
