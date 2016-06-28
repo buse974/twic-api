@@ -178,7 +178,12 @@ class SubQuiz extends AbstractService
         $total_final_grade = 0;
         $res_sub_question = $this->getServiceSubQuestion()->getListLite($sub_quiz_id);
         foreach ($res_sub_question as $m_sub_question) {
-            $total_final_grade += $m_sub_question->getPoint();
+            
+            $p = $m_sub_question->getPoint();
+            if(!is_numeric($p)) {
+                $p = 0;
+            }
+            $total_final_grade += $p;
         }
 
         $total_final = 0;
