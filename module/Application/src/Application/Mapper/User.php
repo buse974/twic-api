@@ -190,6 +190,7 @@ class User extends AbstractMapper
             'gender',
             'lastname',
             'email',
+            'background',
             'has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position',
