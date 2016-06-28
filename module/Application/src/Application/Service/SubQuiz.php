@@ -177,8 +177,7 @@ class SubQuiz extends AbstractService
 
         $total_final_grade = 0;
         $res_sub_question = $this->getServiceSubQuestion()->getListLite($sub_quiz_id);
-        foreach ($res_sub_question as $m_sub_question) {
-            
+        foreach ($res_sub_question as $m_sub_question) {  
             $p = $m_sub_question->getPoint();
             if(!is_numeric($p)) {
                 $p = 0;
@@ -200,7 +199,7 @@ class SubQuiz extends AbstractService
         $grade = 100 * $total_final_grade / $total_final;
         $this->getMapper()->update($this->getModel()->setGrade($grade)->setId($sub_quiz_id));
         $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
-        $this->getServiceSubmission()->submit($m_sub_quiz->getSubmissionId());
+        $this->getServiceSubmission()->_submit($m_sub_quiz->getSubmissionId(), null, $user_id);
 
         return true;
     }

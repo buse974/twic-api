@@ -499,15 +499,49 @@ class Submission extends AbstractService
      */
     public function submit($submission_id = null, $item_id = null)
     {
+        return $this->_submit($submission_id, $item_id);
+    }
+
+    public function _submit($submission_id = null, $item_id = null, $user_id = null)
+    {
+        $ret = null;
+        
         if ($submission_id === null && $item_id === null) {
             return;
         }
 
-        return ($submission_id !== null) ?
-            $this->submitBySubmission($submission_id) :
-            $this->submitByItem($item_id);
+        if ($submission_id !== null) {
+            if ($user_id !== null) {
+                $ret = $this->_submitBySubmission($submission_id, $user_id);
+            } else {
+                $ret = $this->submitBySubmission($submission_id);
+            }
+        } else {
+            $ret = $this->submitByItem($item_id);
+        }     
+        
+        return $ret;
     }
-
+    
+    public function _submitBySubmission($submission_id, $user_id) 
+    {
+        $submit = 1;
+        
+        $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id);
+        foreach ($res_submission_user as $m_submission_user) {
+            if ($m_submission_user->getUserId() === $user_id) {
+                $this->getServiceSubmissionUser()->submit($submission_id, $user_id);
+            } else {
+                $submit &= ($m_submission_user->getSubmitDate() !== null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
+            }
+        }
+        if ($submit === 1) {
+            $this->forceSubmitBySubmission($submission_id);
+        }
+        
+        return $submit;
+    }
+    
     /**
      * @invokable
      * 
@@ -517,22 +551,9 @@ class Submission extends AbstractService
      */
     public function submitBySubmission($submission_id)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $submit = 1;
-
-        $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id);
-        foreach ($res_submission_user as $m_submission_user) {
-            if ($m_submission_user->getUserId() === $me) {
-                $this->getServiceSubmissionUser()->submit($submission_id, $me);
-            } else {
-                $submit &= ($m_submission_user->getSubmitDate() !== null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
-            }
-        }
-        if ($submit === 1) {
-            $this->forceSubmitBySubmission($submission_id);
-        }
-
-        return $submit;
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->_submitBySubmission($submission_id, $user_id);
     }
 
     /**
