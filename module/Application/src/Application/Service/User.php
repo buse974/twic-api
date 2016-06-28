@@ -343,11 +343,11 @@ class User extends AbstractService
      * @param int    $type
      * @param string $date
      */
-    public function getListContact($type = 5, $date = null)
+    public function getListContact($type = 5, $date = null, $user = null)
     {
-        $me = $this->getServiceAuth()->getIdentity()->getId();
+        $user = $user === null ? $this->getServiceAuth()->getIdentity()->getId() : $user;
 
-        return $this->getMapper()->getListContact($me, $type, $date);
+        return $this->getMapper()->getListContact($user, $type, $date);
     }
 
     public function getListUserBycourse($course)
@@ -652,7 +652,7 @@ class User extends AbstractService
 
         $users = $res_user->toArray();
         foreach ($users as &$user) {
-            $user['contacts_count'] = $this->getListContact(5)->count();
+            $user['contacts_count'] = $this->getListContact(5, null, $id)->count();
             $user['roles'] = [];
             $user['program'] = [];
             $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
