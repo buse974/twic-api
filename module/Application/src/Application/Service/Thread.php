@@ -134,7 +134,7 @@ class Thread extends AbstractService
         $res_thread = $mapper->getList(null, $id);
 
         if ($res_thread->count() <= 0) {
-            throw new \Exception('not thread with course id: '.$course);
+            throw new \Exception('not thread with id: '.$id);
         }
 
         $m_thread = $res_thread->current();
