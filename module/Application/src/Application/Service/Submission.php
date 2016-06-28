@@ -527,7 +527,7 @@ class Submission extends AbstractService
     {
         $submit = 1;
         
-        $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id);
+        $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id, $user_id);
         foreach ($res_submission_user as $m_submission_user) {
             if ($m_submission_user->getUserId() === $user_id) {
                 $this->getServiceSubmissionUser()->submit($submission_id, $user_id);
