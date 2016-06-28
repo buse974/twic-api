@@ -18,6 +18,16 @@ class SubmissionPg extends AbstractService
         return  $this->getMapper()->delete($this->getModel()->setUserId($user)->setSubmissionId($submission));
     }
 
+    /**
+     * @invokable
+     * 
+     * @param int $item_id
+     */
+    public function getListByItem($item_id)
+    {
+        return  $this->getMapper()->getListByItem($item_id);
+    }
+
     public function deleteByItem($item_id)
     {
         $res_submission = $this->getServiceSubmission()->getList($item_id);
