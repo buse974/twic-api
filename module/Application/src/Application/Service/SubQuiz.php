@@ -172,8 +172,8 @@ class SubQuiz extends AbstractService
             $sub_quiz_id = $m_sub_quiz->getId();
         }
 
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_sub_quiz = $this->getMapper()->get($sub_quiz_id)->current();
+        $user_id = $m_sub_quiz->getUserId();
 
         $total_final_grade = 0;
         $res_sub_question = $this->getServiceSubQuestion()->getListLite($sub_quiz_id);
