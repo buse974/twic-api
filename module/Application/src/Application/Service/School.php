@@ -22,13 +22,11 @@ class School extends AbstractService
      * @param string $contact
      * @param integer $contact_id
      * @param array $address
-     * @param string $url_sso_cas
      * 
      * @throws \Exception
      */
     public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null,
-            $background = null, $phone = null, $contact = null, $contact_id = null, $address = null,
-            $url_sso_cas = null)
+            $background = null, $phone = null, $contact = null, $contact_id = null, $address = null)
     {
         $m_school = $this->getModel();
         $m_school->setName($name)
@@ -40,8 +38,7 @@ class School extends AbstractService
                  ->setBackground($background)
                  ->setPhone($phone)
                  ->setContact($contact)
-                 ->setContactId($contact_id)
-                 ->setUrlSsoCas($url_sso_cas);
+                 ->setContactId($contact_id);
 
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);
@@ -76,10 +73,9 @@ class School extends AbstractService
      * @param string $phone
      * @param array $address
      * @param string $background
-     * @param string $url_sso_cas
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, 
-        $address = null, $background = null, $url_sso_cas = null)
+        $address = null, $background = null)
     {
         $m_school = $this->getModel();
 
@@ -90,8 +86,7 @@ class School extends AbstractService
                  ->setWebsite($website)
                  ->setShortName($short_name)
                  ->setPhone($phone)
-                 ->setBackground($background)
-                 ->setUrlSsoCas($url_sso_cas);
+                 ->setBackground($background);
 
         if ($address !== null) {
             $address_id = $this->getServiceAddress()->getAddress($address)->getId();

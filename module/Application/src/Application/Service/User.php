@@ -176,7 +176,8 @@ class User extends AbstractService
             ->setInterest($interest)
             ->setAvatar($avatar)
             ->setTimezone($timezone)
-            ->setBackground($background);
+            ->setBackground($background)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         /*
          * @TODO schoolid vérifier que si il n'est pas admin le school id est
@@ -523,8 +524,9 @@ class User extends AbstractService
             ->setInterest($interest)
             ->setAvatar($avatar)
             ->setHasEmailNotifier($has_email_notifier)
-            ->setTimezone($timezone)
-            ->setBackground($background);
+            ->setTimezone($timezone)    
+            ->setBackground($background)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($school_id !== null) {
             if ($school_id === 'null') {

@@ -55,6 +55,17 @@ class TextEditor extends AbstractService
 
         return $this->getMapper()->getLastInsertValue();
     }
+    
+    public function _add($data)
+    {
+        $submission_id = ((isset($data['submission_id']))? $data['submission_id']:null);
+        $name = ((isset($data['name']))? $data['name']:null);
+        $text = ((isset($data['text']))? $data['text']:null);
+        $submit_date = ((isset($data['submit_date']))? $data['submit_date']:null);
+        $conversation_id = ((isset($data['conversation_id']))? $data['conversation_id']:null);
+        
+        return $this->add($submission_id, $name, $text, $submit_date, $conversation_id);
+    }
 
     /**
      * @invokable

@@ -19,7 +19,6 @@ class School extends AbstractModel
 	protected $contact_id;
 	protected $address_id;
 	protected $deleted_date;
-	protected $url_sso_cas;
 
 	protected $prefix = 'school';
 
@@ -175,18 +174,6 @@ class School extends AbstractModel
 	public function setDeletedDate($deleted_date)
 	{
 		$this->deleted_date = $deleted_date;
-
-		return $this;
-	}
-
-	public function getUrlSsoCas()
-	{
-		return $this->url_sso_cas;
-	}
-
-	public function setUrlSsoCas($url_sso_cas)
-	{
-		$this->url_sso_cas = $url_sso_cas;
 
 		return $this;
 	}

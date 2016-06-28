@@ -52,6 +52,17 @@ class Library extends AbstractService
         return $this->get($id);
     }
 
+    public function _add($data)
+    {
+        $name       = ((isset($data['name']))? $data['name']:null);
+        $link       = ((isset($data['link']))? $data['link']:null);
+        $token      = ((isset($data['token']))? $data['token']:null);
+        $type       = ((isset($data['type']))? $data['type']:null);
+        $folder_id  = ((isset($data['folder_id']))? $data['folder_id']:null);
+        
+        return $this->add($name, $link, $token, $type, $folder_id);
+    }
+    
     /**
      * @invokable
      *

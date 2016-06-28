@@ -6,8 +6,10 @@ use Dal\Service\AbstractService;
 
 class ConversationTextEditor extends AbstractService
 {
-    public function add()
+    public function add($conversation_id, $text_editor_id) 
     {
-       // $this->getModel()->set
+        return $this->getMapper()->insert($this->getModel()
+            ->setConversationId($conversation_id)
+            ->setTextEditorId($text_editor_id));
     }
 }   

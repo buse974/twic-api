@@ -26,6 +26,7 @@ class User extends AbstractModel
 	protected $timezone;
 	protected $background;
 	protected $sis;
+	protected $created_date;
 
 	protected $prefix = 'user';
 
@@ -265,6 +266,18 @@ class User extends AbstractModel
 	public function setSis($sis)
 	{
 		$this->sis = $sis;
+
+		return $this;
+	}
+
+	public function getCreatedDate()
+	{
+		return $this->created_date;
+	}
+
+	public function setCreatedDate($created_date)
+	{
+		$this->created_date = $created_date;
 
 		return $this;
 	}

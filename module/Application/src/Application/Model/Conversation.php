@@ -13,4 +13,19 @@ class Conversation extends BaseConversation
     const TYPE_ITEM_GROUP_ASSIGNMENT = 5;
 
     const DEFAULT_NAME = 'Chat';
+    
+    protected $messages;
+    
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+    
+    public function setMessages($messages)
+    {
+        $this->messages = $messages;
+        
+        return $this;
+    }
+    
 }

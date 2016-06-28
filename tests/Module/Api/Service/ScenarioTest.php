@@ -20,7 +20,7 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','background' => 'background','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 14);
+        $this->assertEquals(count($data['result']) , 13);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 2);
         $this->assertEquals($data['result']['address']['city']['id'] , 19064);
@@ -58,7 +58,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['logo'] , "token");
         $this->assertEquals($data['result']['describe'] , "une description");
         $this->assertEquals($data['result']['website'] , "www.ium.com");
-        $this->assertEquals($data['result']['programme'] , "super programme");
         $this->assertEquals($data['result']['background'] , "background");
         $this->assertEquals($data['result']['phone'] , +33480547852);
         $this->assertEquals($data['result']['contact'] , "contact@ium.com");
@@ -116,7 +115,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals($data['result']['count'] , 2);
         $this->assertEquals(count($data['result']['list']) , 2);
-        $this->assertEquals(count($data['result']['list'][0]) , 12);
+        $this->assertEquals(count($data['result']['list'][0]) , 11);
         $this->assertEquals(count($data['result']['list'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['address']) , 0);
         $this->assertEquals($data['result']['list'][0]['id'] , 1);
@@ -126,10 +125,9 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['logo'] , null);
         $this->assertEquals($data['result']['list'][0]['describe'] , "vel, mauris. Integer sem elit, pharetra ut, pharetra sed, hendrerit a, arcu. Sed et libero. Proin mi. Aliquam gravida mauris ut mi. Duis risus odio, auctor vitae, aliquet nec, imperdiet nec, leo. Morbi neque tellus, imperdiet non,");
         $this->assertEquals($data['result']['list'][0]['website'] , "http://");
-        $this->assertEquals($data['result']['list'][0]['programme'] , "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur");
         $this->assertEquals($data['result']['list'][0]['background'] , null);
         $this->assertEquals($data['result']['list'][0]['phone'] , "04 17 21 41 32");
-        $this->assertEquals(count($data['result']['list'][1]) , 12);
+        $this->assertEquals(count($data['result']['list'][1]) , 11);
         $this->assertEquals(count($data['result']['list'][1]['program']) , 1);
         $this->assertEquals(count($data['result']['list'][1]['program'][0]) , 8);
         $this->assertEquals($data['result']['list'][1]['program'][0]['id'] , 1);
@@ -167,7 +165,6 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['logo'] , "token");
         $this->assertEquals($data['result']['list'][1]['describe'] , "une description");
         $this->assertEquals($data['result']['list'][1]['website'] , "www.ium.com");
-        $this->assertEquals($data['result']['list'][1]['programme'] , "super programme");
         $this->assertEquals($data['result']['list'][1]['background'] , "background");
         $this->assertEquals($data['result']['list'][1]['phone'] , +33480547852);
         $this->assertEquals($data['id'] , 1);

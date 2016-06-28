@@ -9,6 +9,9 @@ use Application\Model\Item as ModelItem;
 class Conversation extends AbstractService
 {
     /**
+     * 
+     * @invokable
+     * 
      * Create Conversation.
      * 
      * @param int    $type
@@ -42,49 +45,130 @@ class Conversation extends AbstractService
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')) 
             ->setType($type); 
 
-        if($has_video === true) {
+        if ($has_video === true) {
             $m_conversation->setToken($this->getServiceZOpenTok()->getSessionId()); 
-        } 
+        }
         if ($this->getMapper()->insert($m_conversation) <= 0) { 
             throw new \Exception('Error create conversation'); 
-        } 
-
+        }
         $conversation_id = $this->getMapper()->getLastInsertValue();
+        
         if (null !== $users) {
             $this->getServiceConversationUser()->add($conversation_id, $users);
         }
         if (null !== $submission_id) {
             $this->getServiceSubConversation()->add($conversation_id, $submission_id);
         }
-        
-        /*if (null === $text_editors) {
-            $this->getServiceConversationConversation()->add($conversation_id, $conversation_id);
+        if (null !== $text_editors) {
+            $this->addTextEditor($conversation_id, $text_editors);
         }
-        if (null === $whiteboards) {
-            $this->getServiceConversationConversation()->add($conversation_id, $conversation_id);
+        if (null !== $whiteboards) {
+            $this->addWhiteboard($conversation_id, $whiteboards);
         }
-        if (null === $documents) {
-            if(is_numeric($documents)) {
-                $this->getServiceConversationDoc()->add($conversation_id, $documents);
-            } else if(is_array($documents)) {
-                
-            }
-            //Conversation()->add($conversation_id, $conversation_id);
-        }*/
+        if (null !== $documents) {
+            $this->addDocument($conversation_id, $documents);
+        }
         if (null !== $conversation) {
-            $this->getServiceConversationConversation()->add($conversation_id, $conversation);
+            $this->addConversation($conversation_id, $conversation);
         }
         if (null !== $text) {
             switch ($type) {
                 case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT :
-                    return $this->getServiceMessage()->sendSubmission($text, null, $conversation_id);
+                    $this->getServiceMessage()->sendSubmission($text, null, $conversation_id);
                     break;
+                default :
+                    $this->getServiceMessage()->send($text, null, $conversation_id);
             }
         }
 
         return $conversation_id;
     }
 
+    /**
+     * @invokable
+     *
+     * @param integer $conversation_id
+     * @param array $text_editors
+     */
+    public function addTextEditor($conversation_id, $text_editors)
+    {
+        if(!is_array($text_editors) || isset($text_editors['name'])) {
+            $text_editors = [$text_editors];
+        }
+    
+        foreach ($text_editors as $text_editor) {
+            if(isset($text_editor['name'])) {
+                $m_library = $this->getServiceTextEditor()->_add($text_editor);
+                $text_editor = $m_library->getId();
+            }
+    
+            if(is_numeric($text_editor)) {
+                $this->getServiceConversationTextEditor()->add($conversation_id, $text_editor);
+            }
+        }
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $conversation_id
+     * @param array $text_editors
+     */
+    public function addWhiteboard($conversation_id, $whiteboards)
+    {
+        if(!is_array($whiteboards) || isset($whiteboards['name'])) {
+            $whiteboards = [$whiteboards];
+        }
+    
+        foreach ($whiteboards as $whiteboard) {
+            if(isset($whiteboard['name'])) {
+                $m_library = $this->getServiceWhiteboard()->_add($whiteboard);
+                $whiteboard = $m_library->getId();
+            }
+    
+            if(is_numeric($whiteboard)) {
+                $this->getServiceConversationWhiteboard()->add($conversation_id, $whiteboard);
+            }
+        }
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $conversation_id
+     * @param array $documents
+     */
+    public function addDocument($conversation_id, $documents)
+    {
+        if(!is_array($documents) || isset($documents['name'])) {
+            $documents = [$documents];
+        }
+        
+        foreach ($documents as $document) {
+            if(isset($document['name'])) { 
+                $m_library = $this->getServiceLibrary()->_add($document);
+                $document = $m_library->getId();
+            } 
+            
+            if(is_numeric($document)) {
+            $this->getServiceConversationDoc()->add($conversation_id, $document);
+            }
+        }
+    }
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $id
+     * @param integer $conversation_id
+     * 
+     * @return integer
+     */
+    public function addConversation($id, $conversation_id)
+    {
+        return $this->getServiceConversationConversation()->add($id, $conversation_id);
+    }
+    
     /**
      * @invokable
      * 
@@ -142,9 +226,31 @@ class Conversation extends AbstractService
     {
         $conv['users'] = $this->getServiceUser()->getListByConversation($id)->toArray(array('id'));
         $conv['messages'] = $this->getServiceMessage()->getList($id, $filter);
+        $conv['conversations'] = $this->getListConversationByConversation($id);
         $conv['id'] = $id;
+        
 
         return $conv;
+    }
+    
+    public function _get($id)
+    {
+        $conv = $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $conv->setMessages($this->getServiceMessage()->getList($id, []));
+        
+        return $conv;
+    }
+    
+    public function getListConversationByConversation($id)
+    {
+        $res_conversation_conversation = $this->getServiceConversationConversation()->getList($id);
+        
+        $ret = [];
+        foreach ($res_conversation_conversation as $m_conversation_conversation) {
+            $ret[] = $this->_get($m_conversation_conversation->getConversationId());
+        }
+        
+        return $ret;
     }
 
     /**
@@ -310,6 +416,14 @@ class Conversation extends AbstractService
     }
     
     /**
+     * @return \Application\Service\Library
+     */
+    public function getServiceLibrary()
+    {
+        return $this->getServiceLocator()->get('app_service_library');
+    }
+    
+    /**
      * @return \Application\Service\ConversationConversation
      */
     public function getServiceConversationConversation()
@@ -326,11 +440,43 @@ class Conversation extends AbstractService
     }
     
     /**
+     * @return \Application\Service\ConversationTextEditor
+     */
+    public function getServiceConversationTextEditor()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_text_editor');
+    }
+    
+    /**
      * @return \Application\Service\Message
      */
     public function getServiceMessage()
     {
         return $this->getServiceLocator()->get('app_service_message');
+    }
+    
+    /**
+     * @return \Application\Service\TextEditor
+     */
+    public function getServiceTextEditor()
+    {
+        return $this->getServiceLocator()->get('app_service_text_editor');
+    }
+    
+    /**
+     * @return \Application\Service\ConversationWhiteboard
+     */
+    public function getServiceConversationWhiteboard()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_whiteboard');
+    }
+    
+    /**
+     * @return \Application\Service\Whiteboard
+     */
+    public function getServiceWhiteboard()
+    {
+        return $this->getServiceLocator()->get('app_service_whiteboard');
     }
     
     /**

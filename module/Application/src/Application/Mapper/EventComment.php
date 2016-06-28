@@ -15,7 +15,7 @@ class EventComment extends AbstractMapper
      public function getList($event)
      {
          $select = $this->tableGateway->getSql()->select();
-         $select->columns(array('id', 'content', 'event_comment$created_date' => new Expression("DATE_FORMAT(created_date, '%Y-%m-%dT%TZ') ")))
+         $select->columns(array('id', 'content', 'event_comment$created_date' => new Expression("DATE_FORMAT(event_comment.created_date, '%Y-%m-%dT%TZ') ")))
             ->join('user', 'event_comment.user_id = user.id', array('id', 'firstname', 'lastname', 'avatar'))
             ->join('school', 'user.school_id = school.id', array('id', 'name', 'logo'), $select::JOIN_LEFT)
             ->where(array('event_comment.event_id' => $event))
