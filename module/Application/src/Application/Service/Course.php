@@ -198,23 +198,14 @@ class Course extends AbstractService
      * @param int    $program
      * @param string $search
      * @param array  $filter
-     * @param string $user
+     * @param int $user
+     * @param int    $school
      *
      * @return array
      */
-    public function getList($program = null, $search = null, $filter = null, $user = null)
+    public function getList($program = null, $search = null, $filter = null, $user = null, $school = null)
     {
         $mapper = $this->getMapper();
-
-        $u = $this->getServiceUser()->getIdentity();
-        $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $u['roles'])) ? true : false;
-
-        //si il est academic on enleve le user puis on recupere tous les cour de l'ecole
-        $school = null;
-        if ($is_academic === true && $program === null) {
-            $school = $u['school']['id'];
-            $user = null;
-        }
 
         $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school);
 
