@@ -37,6 +37,16 @@ class Library extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListByConversation($conversation_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'name', 'link', 'token', 'type', 'created_date', 'deleted_date', 'updated_date', 'folder_id', 'owner_id', 'box_id'])
+        ->join('conversation_doc', 'conversation_doc.library_id=library.id', [])
+        ->where(array('conversation_doc.conversation_id' =>  $conversation_id));
+    
+        return $this->selectWith($select);
+    }
+    
     public function getListBySubmission($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();

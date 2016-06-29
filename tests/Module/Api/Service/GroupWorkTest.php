@@ -365,7 +365,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 6);
+        $this->assertEquals(count($data['result']['chat'][0]) , 7);
         $this->assertEquals(count($data['result']['chat'][0]['users']) , 2);
         $this->assertEquals(count($data['result']['chat'][0]['users'][1]) , 4);
         $this->assertEquals($data['result']['chat'][0]['users'][1]['id'] , 1);
@@ -380,12 +380,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(count($data['result']['chat'][0]['messages']) , 2);
         $this->assertEquals(count($data['result']['chat'][0]['messages']['list']) , 0);
         $this->assertEquals($data['result']['chat'][0]['messages']['count'] , 0);
+        $this->assertEquals(count($data['result']['chat'][0]['conversations']) , 0);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     
@@ -442,7 +444,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][1]['user_id'] , 2);
         $this->assertEquals($data['result']['submission_user'][1]['grade'] , null);
         $this->assertEquals($data['result']['submission_user'][1]['submit_date'] , null);
-        $this->assertEquals($data['result']['submission_user'][0]['start_date'] , null);
+        $this->assertEquals($data['result']['submission_user'][1]['start_date'] , null);
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['item_id'] , 1);
         $this->assertEquals($data['result']['submit_date'] , null);
@@ -455,7 +457,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['document']) , 0);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 6);
+        $this->assertEquals(count($data['result']['chat'][0]) , 7);
         $this->assertEquals(count($data['result']['chat'][0]['users']) , 2);
         $this->assertEquals(count($data['result']['chat'][0]['users'][1]) , 4);
         $this->assertEquals($data['result']['chat'][0]['users'][1]['id'] , 1);
@@ -470,12 +472,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(count($data['result']['chat'][0]['messages']) , 2);
         $this->assertEquals(count($data['result']['chat'][0]['messages']['list']) , 0);
         $this->assertEquals($data['result']['chat'][0]['messages']['count'] , 0);
+        $this->assertEquals(count($data['result']['chat'][0]['conversations']) , 0);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     /**
@@ -981,6 +985,9 @@ class GroupWorkTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getContent', ['submission_id' => $submission_id]);
+        
+        print_r($data);
+        $this->printCreateTest($data);
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 3);

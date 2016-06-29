@@ -87,10 +87,27 @@ class Conversation extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $conversation_id
+     * @param int $conversation
+     */
+    public function get($id, $filter = [])
+    {
+        $conv = $this->_get($id)->toArray();
+        $conv['conversations'] = $this->getListByConversation($id);
+        $conv['editors'] = $this->getServiceTextEditor()->getListByConversation($id);
+        $conv['whiteboards'] = $this->getServiceWhiteboard()->getListByConversation($id);
+        $conv['documents'] = $this->getServiceLibrary()->getListByConversation($id);
+        $conv['id'] = $id;
+    
+        return $conv;
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param integer $conversation
      * @param array $text_editors
      */
-    public function addTextEditor($conversation_id, $text_editors)
+    public function addTextEditor($conversation, $text_editors)
     {
         if(!is_array($text_editors) || isset($text_editors['name'])) {
             $text_editors = [$text_editors];
@@ -98,12 +115,11 @@ class Conversation extends AbstractService
     
         foreach ($text_editors as $text_editor) {
             if(isset($text_editor['name'])) {
-                $m_library = $this->getServiceTextEditor()->_add($text_editor);
-                $text_editor = $m_library->getId();
+                $text_editor = $this->getServiceTextEditor()->_add($text_editor);
             }
     
             if(is_numeric($text_editor)) {
-                $this->getServiceConversationTextEditor()->add($conversation_id, $text_editor);
+                $this->getServiceConversationTextEditor()->add($conversation, $text_editor);
             }
         }
     }
@@ -111,10 +127,10 @@ class Conversation extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $conversation_id
+     * @param integer $conversation
      * @param array $text_editors
      */
-    public function addWhiteboard($conversation_id, $whiteboards)
+    public function addWhiteboard($conversation, $whiteboards)
     {
         if(!is_array($whiteboards) || isset($whiteboards['name'])) {
             $whiteboards = [$whiteboards];
@@ -122,12 +138,11 @@ class Conversation extends AbstractService
     
         foreach ($whiteboards as $whiteboard) {
             if(isset($whiteboard['name'])) {
-                $m_library = $this->getServiceWhiteboard()->_add($whiteboard);
-                $whiteboard = $m_library->getId();
+                $whiteboard = $this->getServiceWhiteboard()->_add($whiteboard);
             }
     
             if(is_numeric($whiteboard)) {
-                $this->getServiceConversationWhiteboard()->add($conversation_id, $whiteboard);
+                $this->getServiceConversationWhiteboard()->add($conversation, $whiteboard);
             }
         }
     }
@@ -135,10 +150,10 @@ class Conversation extends AbstractService
     /**
      * @invokable
      * 
-     * @param integer $conversation_id
+     * @param integer $conversation
      * @param array $documents
      */
-    public function addDocument($conversation_id, $documents)
+    public function addDocument($conversation, $documents)
     {
         if(!is_array($documents) || isset($documents['name'])) {
             $documents = [$documents];
@@ -151,7 +166,7 @@ class Conversation extends AbstractService
             } 
             
             if(is_numeric($document)) {
-            $this->getServiceConversationDoc()->add($conversation_id, $document);
+            $this->getServiceConversationDoc()->add($conversation, $document);
             }
         }
     }
@@ -160,13 +175,13 @@ class Conversation extends AbstractService
      * @invokable
      * 
      * @param integer $id
-     * @param integer $conversation_id
+     * @param integer $conversation
      * 
      * @return integer
      */
-    public function addConversation($id, $conversation_id)
+    public function addConversation($id, $conversation)
     {
-        return $this->getServiceConversationConversation()->add($id, $conversation_id);
+        return $this->getServiceConversationConversation()->add($id, $conversation);
     }
     
     /**
@@ -216,38 +231,22 @@ class Conversation extends AbstractService
     {
         return $this->getServiceConversationUser()->add($conversation, $this->getServiceUser()->getIdentity()['id']);
     }
-
-    /**
-     * @invokable
-     *
-     * @param int $conversation
-     */
-    public function get($id, $filter = [])
-    {
-        $conv['users'] = $this->getServiceUser()->getListByConversation($id)->toArray(array('id'));
-        $conv['messages'] = $this->getServiceMessage()->getList($id, $filter);
-        $conv['conversations'] = $this->getListConversationByConversation($id);
-        $conv['id'] = $id;
-        
-
-        return $conv;
-    }
     
     public function _get($id)
     {
         $conv = $this->getMapper()->select($this->getModel()->setId($id))->current();
         $conv->setMessages($this->getServiceMessage()->getList($id, []));
+        $conv->setUsers($this->getServiceUser()->getListByConversation($id)->toArray(array('id')));
         
         return $conv;
     }
     
-    public function getListConversationByConversation($id)
+    public function getListByConversation($id)
     {
         $res_conversation_conversation = $this->getServiceConversationConversation()->getList($id);
-        
         $ret = [];
         foreach ($res_conversation_conversation as $m_conversation_conversation) {
-            $ret[] = $this->_get($m_conversation_conversation->getConversationId());
+            $ret[$m_conversation_conversation->getConversationId()] = $this->_get($m_conversation_conversation->getConversationId());
         }
         
         return $ret;

@@ -437,9 +437,6 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submit_date'] , null); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
-
-    
-        
     }
     
     /**

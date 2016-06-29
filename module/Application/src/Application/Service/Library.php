@@ -163,6 +163,11 @@ class Library extends AbstractService
     {
         return $this->getMapper()->getListBySubmission($submission_id);
     }
+    
+    public function getListByConversation($conversation_id)
+    {
+        return $this->getMapper()->getListByConversation($conversation_id);
+    }
 
     /**
      * @param int $item_id

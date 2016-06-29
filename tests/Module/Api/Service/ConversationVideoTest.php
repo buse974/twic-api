@@ -19,13 +19,13 @@ class ConversationVideoTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('conversation.create', [
             'users' => [1,2,3,4], 
-            'text' => 'un text de la mort qui tue', 
-            'text_editors' => [''], 
-            'whiteboards' => [''], 
+            'text' => 'un text de la mort qui tue',
+            'text_editors' => ['name' => 'name'],
+            'whiteboards' => ['name' => 'name'],
             'documents' => [
                 'name' => 'un document', 
                 'link' => 'http://www.cellie.fr/wp-content/uploads/2015/01/Tutoriel_Google_Drive_Cellie.pdf'
-            ], 
+            ],
             'has_video' => true,
         ]);
         
@@ -43,7 +43,7 @@ class ConversationVideoTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('conversation.addConversation', [
             'id' => 1,
-            'conversation_id' => 2,
+            'conversation' => 2,
         ]);
     
         print_r($data);
@@ -62,7 +62,7 @@ class ConversationVideoTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('conversation.addConversation', [
             'id' => 1,
-            'conversation_id' => 3,
+            'conversation' => 3,
         ]);
         
         print_r($data);
@@ -78,6 +78,8 @@ class ConversationVideoTest extends AbstractService
         ]);
     
         print_r($data);
+        
+        echo $this->printDocTest($data);
     }
    
 

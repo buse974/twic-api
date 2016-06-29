@@ -15,6 +15,7 @@ class Conversation extends BaseConversation
     const DEFAULT_NAME = 'Chat';
     
     protected $messages;
+    protected $users;
     
     public function getMessages()
     {
@@ -25,6 +26,18 @@ class Conversation extends BaseConversation
     {
         $this->messages = $messages;
         
+        return $this;
+    }
+    
+    public function getUsers()
+    {
+        return $this->users;
+    }
+    
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    
         return $this;
     }
     

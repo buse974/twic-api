@@ -15,7 +15,7 @@ class Whiteboard extends AbstractService
     {
         $m_whiteboard = $this->getModel()
             ->setName($name)
-            ->setOwner_id($this->getServiceUser()->getIdentity()['id']);
+            ->setOwnerId($this->getServiceUser()->getIdentity()['id']);
         
         if ($this->getMapper()->insert($m_whiteboard) <= 0) {
             //@TODO error
@@ -29,6 +29,11 @@ class Whiteboard extends AbstractService
         $name = ((isset($data['name']))? $data['name']:null);
 
         return $this->add($name);
+    }
+    
+    public function getListByConversation($conversation_id)
+    {
+        return $this->getMapper()->getListByConversation($conversation_id);
     }
     
     /**
