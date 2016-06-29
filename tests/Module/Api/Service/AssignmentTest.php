@@ -163,6 +163,7 @@ class AssignmentTest extends AbstractService
             'item_id' => $item_id
         ]);
         
+        print_r($data);
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result']['submission_user']) , 3); 
@@ -266,7 +267,6 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getContent', ['submission_id' => $submission_id]);
         
-        print_r($data);
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 3); 
         $this->assertEquals(count($data['result']['text_editor']) , 1); 

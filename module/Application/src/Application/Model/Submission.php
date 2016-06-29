@@ -13,6 +13,7 @@ class Submission extends BaseSubmission
     protected $item;
     protected $thread_id;
     protected $submission_pg;
+    protected $nbr_comments;
 
     public function exchangeArray(array &$data)
     {
@@ -23,6 +24,18 @@ class Submission extends BaseSubmission
         $this->submission_pg = $this->requireModel('app_model_submission_pg', $data);
     }
 
+    public function getNbrComments()
+    {
+        return $this->nbr_comments;
+    }
+    
+    public function setNbrComments($nbr_comments)
+    {
+        $this->nbr_comments = $nbr_comments;
+    
+        return $this;
+    }
+    
     public function getThreadId()
     {
         return $this->thread_id;

@@ -3,10 +3,10 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
-use Zend\Db\Sql\Expression;
 use Dal\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\Predicate\Expression;
 
 class Submission extends AbstractMapper
 {
@@ -101,15 +101,23 @@ class Submission extends AbstractMapper
      * @param int $item_id
      * @param int $user_id
      * @param int $submission_id
-     * @param int $group_id
      * 
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function get($item_id = null, $user_id = null, $submission_id = null, $group_id = null)
+    public function get($item_id = null, $user_id = null, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'item_id', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
-            ->join('submission_user', 'submission_user.submission_id=submission.id', array());
+        $select->columns([ 
+            'submission$id' => new Expression('submission.id'),
+            'item_id', 
+            'group_name',
+            'group_id',
+            'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
+            'is_graded',
+            'submission$nbr_comments' => $this->getSelectNbrComments(),
+        ])
+            ->join('submission_user', 'submission_user.submission_id=submission.id', array())
+            ->quantifier('DISTINCT');
 
         if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
@@ -125,6 +133,19 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    /**
+     * @return \Zend\Db\Sql\Select
+     */
+    private function getSelectNbrComments()
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('submission$nbr_comments' => new Expression('COUNT(true)')))
+    		     ->join('submission_comments', 'submission.id = submission_comments.submission_id', [])
+    		     ->where(array('submission.id=`submission$id`'));
+    
+        return $select;
+    }
+    
     public function getListToGrade($user_id, $item_id)
     {
         $select = $this->tableGateway->getSql()->select();

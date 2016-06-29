@@ -49,7 +49,7 @@ class SubmissionUser extends AbstractService
 
     public function OverwrittenGrade($submission_id, $grade)
     {
-        if($grade < 0) {
+        if($grade < 0 || !is_numeric($grade)) {
             $grade = 0;
         }
         
