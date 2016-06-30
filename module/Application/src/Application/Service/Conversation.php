@@ -102,6 +102,18 @@ class Conversation extends AbstractService
     }
     
     /**
+     * 
+     * @param integer $id
+     * 
+     * @return \Application\Model\Conversation
+     */
+    public function getLite($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+    
+    
+    /**
      * @invokable
      *
      * @param integer $conversation

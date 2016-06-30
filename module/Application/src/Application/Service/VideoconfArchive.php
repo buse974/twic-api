@@ -70,6 +70,66 @@ class VideoconfArchive extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
+    /**
+     * Start record video conf.
+     *
+     * @invokable
+     *
+     * @param interger $id
+     */
+    public function startRecord($id)
+    {
+        $m_videoconf = $this->get($id);
+    
+        $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_videoconf->getToken()), true);
+    
+        if ($arr_archive['status'] == 'started') {
+            $this->getServiceVideoconfArchive()->add($m_videoconf->getId(), $arr_archive['id']);
+        }
+    
+        return $arr_archive;
+    }
+    
+    /**
+     * Start record video conf.
+     *
+     * @invokable
+     *
+     * @param string $token
+     */
+    public function record($token)
+    {
+        $res_videoconf = $this->getMapper()->getVideoconfTokenByTokenAdmin($token);
+    
+        if ($res_videoconf->count() === 0) {
+            throw new \Exception('Error no videoconf');
+        }
+    
+        $videoconf = $res_videoconf->current();
+    
+        $arr_archive = $this->getServiceZOpenTok()->startArchive($videoconf->getToken());
+    
+        if ($arr_archive['status'] == 'started') {
+            $this->getServiceVideoconfArchive()->add($videoconf->getId(), $arr_archive['id']);
+        }
+    
+        return true;
+    }
+    
+    /**
+     * Stop record video conf.
+     *
+     * @invokable
+     *
+     * @param interger $id
+     */
+    public function stopRecord($id)
+    {
+        $m_video_archive = $this->getServiceVideoconfArchive()->getLastArchiveId($id);
+    
+        return $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
+    }
+    
     public function getListVideoUpload()
     {
         return $this->getMapper()->getListVideoUpload();
