@@ -5,6 +5,8 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
 use Application\Model\Item as ModelItem;
+use OpenTok\Role as OpenTokRole;
+use Application\Model\Role as ModelRole;
 
 class Conversation extends AbstractService
 {
@@ -97,7 +99,16 @@ class Conversation extends AbstractService
         $conv['whiteboards'] = $this->getServiceWhiteboard()->getListByConversation($id);
         $conv['documents'] = $this->getServiceLibrary()->getListByConversation($id);
         $conv['id'] = $id;
-    
+        
+        $identity = $this->getServiceUser()->getIdentity();
+
+        if(isset($conv['token']) && !empty($conv['token'])) {
+            $conv['user_token'] = $this->getServiceZOpenTok()->createToken(
+                $conv['token'],
+                '{"id":'.$identity['id'].',"firstname":"'.urlencode($identity['firstname']).'","lastname":"'.urlencode($identity['lastname']).'","avatar":"'.$identity['avatar'].'"}', 
+                (!array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ? OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER);
+        }
+        
         return $conv;
     }
     
@@ -467,7 +478,7 @@ class Conversation extends AbstractService
     }
     
     /**
-     * @return \Application\Service\TextEditor
+     * @return \Application\Service\TextEditor  
      */
     public function getServiceTextEditor()
     {

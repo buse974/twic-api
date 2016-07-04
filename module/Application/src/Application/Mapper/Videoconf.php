@@ -20,7 +20,6 @@ class Videoconf extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-
         $select->columns(array(
             'id',
             'title',

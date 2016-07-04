@@ -111,6 +111,7 @@ return [
             'app_service_submission_user_criteria',
             'app_service_submission_comments',
             'app_service_submission_user',
+            'app_service_video_archive',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

@@ -228,7 +228,7 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
             'user$id' => new Expression('user.id'),
-            'firstname', 'lastname', 'email', 'password',
+            'firstname', 'lastname', 'email',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position', 'interest', 'avatar',
             'user$contact_state' => $this->getSelectContactState($user_school),
@@ -327,7 +327,7 @@ class User extends AbstractMapper
         $select->columns(array('id', 
             'firstname', 
             'lastname', 
-            'school_id', 'email', 'password', 
+            'school_id', 'email',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 
             'position', 
             'interest', 

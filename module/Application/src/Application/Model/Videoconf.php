@@ -6,16 +6,6 @@ use Application\Model\Base\Videoconf as BaseVideoconf;
 
 class Videoconf extends BaseVideoconf
 {
-    const FINISHED = 'finished';
-    const ONGOING = 'ongoing';
-    const NOTSTARTED = 'notstarted';
-
-    const ARV_AVAILABLE = 'available';
-    const ARV_EXPIRED = 'expired';
-    const ARV_FAILED = 'failed';
-    const ARV_STARTED = 'started';
-    const ARV_STOPPED = 'stopped';
-    const ARV_UPLOAD = 'uploaded';
 
     protected $videoconf_entity;
     protected $videoconf_invitation;

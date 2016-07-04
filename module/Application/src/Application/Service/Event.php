@@ -281,7 +281,7 @@ class Event extends AbstractService
 
     public function recordAvailable($submission_id, $video_archive)
     {
-        $m_video_archive = $this->getServiceVideoconfArchive()->get($video_archive);
+        $m_video_archive = $this->getServiceVideoArchive()->get($video_archive);
 
         $m_submission = $this->getServiceSubmission()->get(null, $submission_id);
 
@@ -441,7 +441,7 @@ class Event extends AbstractService
             'updated' => array_keys($dataupdated), ]];
     }
 
-    public function getDataVideoArchive(\Application\Model\VideoconfArchive $m_video_archive)
+    public function getDataVideoArchive(\Application\Model\VideoArchive $m_video_archive)
     {
         return ['id' => $m_video_archive->getId(), 'name' => 'archive', 'data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
     }
@@ -785,9 +785,9 @@ class Event extends AbstractService
     }
 
     /**
-     * @return \Application\Service\VideoconfArchive
+     * @return \Application\Service\VideoArchive
      */
-    public function getServiceVideoconfArchive()
+    public function getServiceVideoArchive()
     {
         return $this->getServiceLocator()->get('app_service_video_archive');
     }

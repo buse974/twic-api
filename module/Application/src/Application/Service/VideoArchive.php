@@ -3,9 +3,40 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\VideoArchive as CVF;
 
 class VideoArchive extends AbstractService
 {
+    
+    /**
+     * @invokable
+     * 
+     * @param integer $submission_id
+     */
+    public function getList($submission_id)
+    {
+        $res_videoconf_archive = $this->getMapper()->getList($submission_id);
+        
+        $ret = [];
+        foreach ($res_videoconf_archive as $m_videoconf_archive) {
+            $ret[$m_videoconf_archive->getSubmissionId()][] = $m_videoconf_archive->toArray();
+        }
+        
+        return $ret;
+    }
+    
+    /**
+     * @param integer $id
+     */
+    public function get($id)
+    {
+        $res_videoconf_archive = $this->getMapper()->get($id);
+        if($res_videoconf_archive->count() <= 0) {
+            throw new \Exception("video_conf");
+        }
+    
+        return $res_videoconf_archive->current();
+    }
     
     /**
      * Start record video conf.
@@ -53,11 +84,8 @@ class VideoArchive extends AbstractService
     public function validTransfertVideo($video_archive, $url)
     {
         $event_send = true;
-        $m_videoconf = $this->getByVideoconfArchive($video_archive);
-        
-        
-        $res_video_archive = $this->getListByVideoConf($m_videoconf->getId());
-    
+        // regarder si une video na pas etait déja notifier pour cette conversation 
+        $res_video_archive = $this->getMapper()->getListSameConversation($video_archive);
         foreach ($res_video_archive as $m_video_archive) {
             if (CVF::ARV_AVAILABLE === $m_video_archive->getArchiveStatus()) {
                 $event_send = false;
@@ -65,12 +93,30 @@ class VideoArchive extends AbstractService
         }
     
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
-    
-        /*if ($event_send) {
-            $this->getServiceEvent()->recordAvailable($m_videoconf->getSubmissionId(), $video_archive);
-        }*/
-    
+        if ($event_send) {
+            $this->getServiceEvent()->recordAvailable($m_video_archive->getSubmissionId(), $video_archive);
+        }
+
         return $ret;
+    }
+    
+    /**
+     * @param string $token
+     * @param string $status
+     * @param int    $duration
+     * @param string $link
+     *
+     * @return int
+     */
+    public function updateByArchiveToken($id, $status, $duration = null, $link = null)
+    {
+        $m_video_archive = $this->getModel();
+        $m_video_archive->setId($id)
+            ->setArchiveDuration($duration)
+            ->setArchiveStatus($status)
+            ->setArchiveLink($link);
+    
+        return $this->getMapper()->update($m_video_archive);
     }
     
     /**
@@ -82,15 +128,13 @@ class VideoArchive extends AbstractService
      */
     public function getListVideoUpload()
     {
-        $ret[] = array();
-    
-        $res_video_no_upload = $this->getServiceVideoconfArchive()->getListVideoUpload();
-    
+        $ret=[];
+        $res_video_no_upload = $this->getMapper()->getListVideoUpload();
         foreach ($res_video_no_upload as $m_video_archive) {
             try {
                 $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_video_archive->getArchiveToken()), true);
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
-                    $this->getServiceVideoconfArchive()->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
+                    $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
                     $arr = $m_video_archive->toArray();
                     $arr['url'] = $archive['url'];
                     $ret[] = $arr;
@@ -130,4 +174,21 @@ class VideoArchive extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
+    
+    /**
+     * @return \ZOpenTok\Service\OpenTok
+     */
+    public function getServiceZOpenTok()
+    {
+        return $this->getServiceLocator()->get('opentok.service');
+    }
+    
+    /**
+     * @return \Application\Service\Event
+     */
+    public function getServiceEvent()
+    {
+        return $this->getServiceLocator()->get('app_service_event');
+    }
+    
 }
