@@ -381,12 +381,13 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param int $course
-     * @param int $parent_id
-     * @param int $start
-     * @param int $end
+     * @param int    $course
+     * @param int    $parent_id
+     * @param int    $start
+     * @param int    $end
+     * @param array  $type
      */
-    public function getList($course = null, $parent_id = null, $start = null, $end = null)
+    public function getList($course = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
         if (null === $course && $start === null && $end === null) {
             throw new \Exception('error course is not declarer');
@@ -401,7 +402,7 @@ class Item extends AbstractService
             $is_student = true;
         }
 
-        $res_item = $this->getMapper()->getList($course, $parent_id, $start, $end);
+        $res_item = $this->getMapper()->getList($course, $parent_id, $start, $end, $type);
 
         $ar_item = (null !== $start || null !== $end) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
 

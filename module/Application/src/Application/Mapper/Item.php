@@ -41,7 +41,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($course_id = null, $parent_id = null, $start = null, $end = null)
+    public function getList($course_id = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
@@ -78,7 +78,6 @@ class Item extends AbstractMapper
         if (null !== $course_id) {
             $select->where(array('item.course_id' => $course_id));
         }
-
         if (null === $start && null === $end) {
             if ($parent_id === 0 || $parent_id === null) {
                 $select->where(array('item.parent_id IS NULL'));
@@ -86,7 +85,9 @@ class Item extends AbstractMapper
                 $select->where(array('item.parent_id' => $parent_id));
             }
         }
-
+        if(null !== $type) {
+            $select->where(array('item.type' => $type));
+        }
         if (null !== $start && null !== $end) {
             $select->where(['( item.start BETWEEN ? AND ? ' => [$start, $end]])
                 ->where(['item.end BETWEEN ? AND ?  ' => [$start, $end]], Predicate::OP_OR)
