@@ -133,6 +133,25 @@ class Conversation extends AbstractService
     }
 
     /**
+     * @invokable 
+     * 
+     * @param int $program_id
+     * @param int $course_id 
+     * @param int $item_id   
+     */
+    public function getListId($program_id = null, $course_id = null, $item_id = null)
+    {
+        $identity = $this->getServiceUser()->getIdentity();
+        $res_videoconf = $this->getMapper()->getListId($identity['school']['id'], $program_id, $course_id, $item_id);
+        $ids = [];
+        foreach ($res_videoconf as $m_videoconf) {
+            $ids[] = $m_videoconf->getId();
+        }
+    
+        return $ids;
+    }
+    
+    /**
      * @invokable
      * 
      * @param integer $text_editor
