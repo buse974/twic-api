@@ -94,7 +94,6 @@ class Conversation extends AbstractService
         }
         
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
-        
         if((!is_array($editors) && $editors->count() > 0) || (is_array($editors) && !empty($editors))) {
             $conv['editors'] = $editors;
         }

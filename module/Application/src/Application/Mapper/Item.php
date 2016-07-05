@@ -47,7 +47,6 @@ class Item extends AbstractMapper
         $select->columns([
             'id',
             'title',
-           // 'describe', 
             'duration',
             'set_id',
             'is_graded',

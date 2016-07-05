@@ -45,7 +45,7 @@ class Answer extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
 
-        return $this->getMapper()->getList($item, $peer, $me);
+        return $this->getMapper()->getList($submission_id, $peer, $me);
     }
 
     /**
