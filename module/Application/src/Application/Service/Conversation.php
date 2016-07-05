@@ -107,6 +107,12 @@ class Conversation extends AbstractService
         if((!is_array($documents) && $documents->count() > 0) || (is_array($documents) && !empty($documents))) {
             $conv['documents'] = $documents;
         }
+        
+        $conversation_opt = $this->getServiceConversationOpt()->get($conv['conversation_opt_id']);
+        if(null !== $conversation_opt) {
+            $conv['conversation_opt'] = $conversation_opt;
+        }   
+        
         $conv['id'] = $id;
         $identity = $this->getServiceUser()->getIdentity();
         
@@ -328,19 +334,18 @@ class Conversation extends AbstractService
             ->getIdentity()['id']);
     }
 
+    /**
+     * @param integer $id
+     * @return \Application\Model\Conversation
+     */
     public function _get($id)
     {
-        $conv = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id))
-            ->current();
-        $conv->setMessages($this->getServiceMessage()
-            ->getList($id, []));
-        $conv->setUsers($this->getServiceUser()
+        $conv = $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $conv->setMessages($this->getServiceMessage()->getList($id, []));
+        $conv->setUsers($this
+            ->getServiceUser()
             ->getListByConversation($id)
-            ->toArray(array(
-            'id'
-        )));
+            ->toArray(array('id')));
         
         return $conv;
     }
@@ -540,6 +545,15 @@ class Conversation extends AbstractService
     public function getServiceConversationConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation_conversation');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\ConversationOpt
+     */
+    public function getServiceConversationOpt()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_opt');
     }
 
     /**

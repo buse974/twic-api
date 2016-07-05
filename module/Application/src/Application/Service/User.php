@@ -803,7 +803,17 @@ class User extends AbstractService
      */
     public function getListByConversation($conversation)
     {
-        return $this->getMapper()->getListByConversation($conversation);
+        $res_user = $this->getMapper()->getListByConversation($conversation);
+        
+        foreach ($res_user as $m_user) {
+            $roles = [];
+            foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {
+                $roles[] = $role->getName();
+            }
+            $m_user->setRoles($roles);
+        }
+        
+        return $res_user;
     }
 
     /**

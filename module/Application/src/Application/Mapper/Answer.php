@@ -6,7 +6,7 @@ use Dal\Mapper\AbstractMapper;
 
 class Answer extends AbstractMapper
 {
-    public function getList($submission_id, $me, $peer = null)
+    public function getList($submission_id, $user_id, $peer = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'peer_id', 'type', 'created_date'))
@@ -19,7 +19,7 @@ class Answer extends AbstractMapper
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('answer$origin' => 'id', 'answer$origin_name' => 'short_name'), $select::JOIN_LEFT)
             ->join('questionnaire', 'questionnaire.id=questionnaire_user.questionnaire_id', array())
             ->join('item', 'item.id=questionnaire.item_id', array('answer$item' => 'id', 'answer$course' => 'course_id'))
-            ->where(array("( answer.type='PEER' OR (answer.type='SELF' AND user.id = ? )) " => $me))
+            ->where(array("( answer.type='PEER' OR (answer.type='SELF' AND user.id = ? )) " => $user_id))
             ->where(array('scale.value <> 0'));
 
         if (null !== $peer) {

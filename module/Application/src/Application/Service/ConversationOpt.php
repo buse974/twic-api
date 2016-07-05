@@ -39,12 +39,12 @@ class ConversationOpt extends AbstractService
     
     /**
      * @invokable
-     *
+     * 
      * @param int  $item_id
      * @param bool $record
      * @param int  $nb_user_autorecord
      * @param bool $allow_intructor
-     *
+     * 
      * @return int
      */
     public function update($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
@@ -54,17 +54,29 @@ class ConversationOpt extends AbstractService
         }
     
         $m_opt_videoconf = $this->getModel()
-        ->setRecord($record)
-        ->setNbUserAutorecord($nb_user_autorecord)
-        ->setAllowIntructor($allow_intructor);
+            ->setRecord($record)
+            ->setNbUserAutorecord($nb_user_autorecord)
+            ->setAllowIntructor($allow_intructor);
     
         return $this->getMapper()->update($m_opt_videoconf, ['item_id' => $item_id]);
     }
     
     /**
+     * @param int $id
+     *
+     * @return \Application\Model\ConversationOpt
+     */
+    public function get($id)
+    {
+        $res_opt_videoconf = $this->getMapper()->select($this->getModel()->setId($id));
+    
+        return ($res_opt_videoconf->count() > 0) ? $res_opt_videoconf->current() : null;
+    }
+    
+    /**
      * @param int $item_id
      *
-     * @return \Application\Model\VideoconfOpt
+     * @return \Application\Model\ConversationOpt
      */
     public function getByItem($item_id)
     {
