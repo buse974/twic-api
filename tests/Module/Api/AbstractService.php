@@ -148,7 +148,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     	if (is_array($data)) {
     		foreach ($data as $key => $val) {
     			if (is_array($val)) {
-    				$data[$key] = $this->_printDocTest($val);
+    				$data[$key] = $this->_printDocTest($val, $has_data);
     			} else {
     			    $data[$key] = ($has_data===true) ?
     			          $val:"<" . gettype($val) . ">";

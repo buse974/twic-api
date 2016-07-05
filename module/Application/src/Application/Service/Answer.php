@@ -38,10 +38,10 @@ class Answer extends AbstractService
     /**
      * @invokable
      * 
-     * @param int $item
-     * @param int $peer
+     * @param integer $submission_id
+     * @param integer $peer
      */
-    public function getList($item = null, $peer = null)
+    public function getList($submission_id = null, $peer = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
 

@@ -241,7 +241,6 @@ class ScenarioTest extends AbstractService
     public function testCanAddUserCourse($course)
     {
         $this->setIdentity(1);
-        
         $data = $this->jsonRpc('user.addCourse', array('user' => 1,'course' => $course));
         
         $this->assertEquals(count($data), 3);
@@ -381,7 +380,6 @@ class ScenarioTest extends AbstractService
     public function testAddItemONEONE($id)
     {
         $this->setIdentity(1);
-    
         $data = $this->jsonRpc('item.add', array(
             'course' => $id,
             'duration' => 234,
@@ -404,7 +402,6 @@ class ScenarioTest extends AbstractService
     public function testGetListUsers($item)
     {
         $this->setIdentity(3);
-        
         $data = $this->jsonRpc('item.getListUsers', [
             'item_id' => $item
         ]);
@@ -452,7 +449,6 @@ class ScenarioTest extends AbstractService
         $data = $this->jsonRpc('item.add', 
             [
                 'course' => (int)$id,
-               // 'grading_policy_id' => 6,
                 'title' => 'title',
                 'describe' => 'description',
                 'duration' => 234,
@@ -589,7 +585,6 @@ class ScenarioTest extends AbstractService
         
         $data = $this->jsonRpc('item.add', array(
             'course' => $id,
-           // 'grading_policy_id' => 7,
             'duration' => 234,
             'title' => 'titl2e',
             'describe' => 'description2',
@@ -629,7 +624,7 @@ class ScenarioTest extends AbstractService
      */
     public function testCanGetListItem($course)
     {
-        $this->setIdentity(4);
+        $this->setIdentity(1);
         
         $data = $this->jsonRpc('item.getList', array('course' => $course));
         
@@ -704,7 +699,6 @@ class ScenarioTest extends AbstractService
     	
 	    $this->jsonRpc('item.update', [
 			'id' => 3,
-			//'grading_policy_id' => 8,
 			'duration' => 123,
 			'title' => 'titl2e',
 			'describe' => 'description2',
@@ -904,7 +898,6 @@ class ScenarioTest extends AbstractService
     
     	$data = $this->jsonRpc('item.add', array(
     			'course' => $id,
-    			//'grading_policy_id' => 7,
     			'duration' => 234,
     			'title' => 'titl2e',
     			'describe' => 'description2',

@@ -23,20 +23,19 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['message']) , 10);
         $this->assertEquals(count($data['result']['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]) , 14);
-        $this->assertEquals($data['result']['message']['from'][0]['contacts_count'] , 1);
+        $this->assertEquals(count($data['result']['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['message']['from'][0]['contact_state'] , 0);
+        $this->assertEquals($data['result']['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['message']['from'][0]['school']) , 5);
         $this->assertEquals($data['result']['message']['from'][0]['school']['id'] , 1);
-        $this->assertEquals($data['result']['message']['from'][0]['school']['background'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['school']['name'] , "Morbi Corporation");
         $this->assertEquals($data['result']['message']['from'][0]['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['message']['from'][0]['school']['logo'] , null);
+        $this->assertEquals($data['result']['message']['from'][0]['school']['background'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['id'] , 1);
         $this->assertEquals($data['result']['message']['from'][0]['firstname'] , "Paul");
         $this->assertEquals($data['result']['message']['from'][0]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['message']['from'][0]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['interest'] , null);
@@ -46,20 +45,19 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['message']['document']) , 0);
         $this->assertEquals(count($data['result']['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['message']['to'][0]) , 14);
-        $this->assertEquals($data['result']['message']['to'][0]['contacts_count'] , 0);
+        $this->assertEquals(count($data['result']['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['message']['to'][0]['contact_state'] , 0);
+        $this->assertEquals($data['result']['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['message']['to'][0]['school']) , 5);
         $this->assertEquals($data['result']['message']['to'][0]['school']['id'] , 1);
-        $this->assertEquals($data['result']['message']['to'][0]['school']['background'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['school']['name'] , "Morbi Corporation");
         $this->assertEquals($data['result']['message']['to'][0]['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['message']['to'][0]['school']['logo'] , null);
+        $this->assertEquals($data['result']['message']['to'][0]['school']['background'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['id'] , 3);
         $this->assertEquals($data['result']['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['interest'] , null);
@@ -67,20 +65,19 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['message']['to'][0]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['message']['to'][1]) , 14);
-        $this->assertEquals($data['result']['message']['to'][1]['contacts_count'] , 1);
+        $this->assertEquals(count($data['result']['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['message']['to'][1]['contact_state'] , 3);
+        $this->assertEquals($data['result']['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['message']['to'][1]['school']) , 5);
         $this->assertEquals($data['result']['message']['to'][1]['school']['id'] , 1);
-        $this->assertEquals($data['result']['message']['to'][1]['school']['background'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['school']['name'] , "Morbi Corporation");
         $this->assertEquals($data['result']['message']['to'][1]['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['message']['to'][1]['school']['logo'] , null);
+        $this->assertEquals($data['result']['message']['to'][1]['school']['background'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['id'] , 2);
         $this->assertEquals($data['result']['message']['to'][1]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['message']['to'][1]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['message']['to'][1]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['interest'] , null);
@@ -205,7 +202,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['school']) , 5);
@@ -218,7 +215,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
@@ -228,7 +224,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['school']) , 5);
@@ -241,7 +237,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
@@ -270,7 +265,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]) , 8);
         $this->assertEquals(count($data['result']['list'][1]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][1]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['school']) , 5);
@@ -283,7 +278,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['interest'] , null);
@@ -293,7 +287,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['school']) , 5);
@@ -306,7 +300,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['interest'] , null);
@@ -335,7 +328,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][2]) , 8);
         $this->assertEquals(count($data['result']['list'][2]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][2]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][2]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][2]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['list'][2]['message']['from'][0]['school']) , 5);
@@ -348,7 +341,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][2]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][2]['message']['from'][0]['interest'] , null);
@@ -358,7 +350,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][2]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][2]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][2]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][2]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][2]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['list'][2]['message']['to'][0]['school']) , 5);
@@ -371,7 +363,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][2]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][2]['message']['to'][0]['interest'] , null);
@@ -409,31 +400,15 @@ class MessageTest extends AbstractService
         $data = $this->jsonRpc('conversation.get', [        
             'id' => 1,
         ]);
-    
+        
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 3);
-        $this->assertEquals(count($data['result']['users']) , 3);
-        $this->assertEquals(count($data['result']['users'][1]) , 4);
-        $this->assertEquals($data['result']['users'][1]['id'] , 1);
-        $this->assertEquals($data['result']['users'][1]['firstname'] , "Paul");
-        $this->assertEquals($data['result']['users'][1]['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['users'][1]['avatar'] , null);
-        $this->assertEquals(count($data['result']['users'][2]) , 4);
-        $this->assertEquals($data['result']['users'][2]['id'] , 2);
-        $this->assertEquals($data['result']['users'][2]['firstname'] , "Xuan-Anh");
-        $this->assertEquals($data['result']['users'][2]['lastname'] , "Hoang");
-        $this->assertEquals($data['result']['users'][2]['avatar'] , null);
-        $this->assertEquals(count($data['result']['users'][3]) , 4);
-        $this->assertEquals($data['result']['users'][3]['id'] , 3);
-        $this->assertEquals($data['result']['users'][3]['firstname'] , "Christophe");
-        $this->assertEquals($data['result']['users'][3]['lastname'] , "Robert");
-        $this->assertEquals($data['result']['users'][3]['avatar'] , null);
+        $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['messages']) , 2);
         $this->assertEquals(count($data['result']['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contact_state'] , 3);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['school']) , 5);
@@ -446,7 +421,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['firstname'] , "Paul");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['interest'] , null);
@@ -456,7 +430,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['school']) , 5);
@@ -469,7 +443,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['interest'] , null);
@@ -477,7 +450,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]['school']) , 5);
@@ -490,7 +463,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['interest'] , null);
@@ -517,9 +489,32 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['read_date'] , null);
         $this->assertEquals(!empty($data['result']['messages']['list'][0]['created_date']) , true);
         $this->assertEquals($data['result']['messages']['count'] , 1);
+        $this->assertEquals(count($data['result']['users']) , 3);
+        $this->assertEquals(count($data['result']['users'][1]) , 4);
+        $this->assertEquals($data['result']['users'][1]['id'] , 1);
+        $this->assertEquals($data['result']['users'][1]['firstname'] , "Paul");
+        $this->assertEquals($data['result']['users'][1]['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['users'][1]['avatar'] , null);
+        $this->assertEquals(count($data['result']['users'][2]) , 4);
+        $this->assertEquals($data['result']['users'][2]['id'] , 2);
+        $this->assertEquals($data['result']['users'][2]['firstname'] , "Xuan-Anh");
+        $this->assertEquals($data['result']['users'][2]['lastname'] , "Hoang");
+        $this->assertEquals($data['result']['users'][2]['avatar'] , null);
+        $this->assertEquals(count($data['result']['users'][3]) , 4);
+        $this->assertEquals($data['result']['users'][3]['id'] , 3);
+        $this->assertEquals($data['result']['users'][3]['firstname'] , "Christophe");
+        $this->assertEquals($data['result']['users'][3]['lastname'] , "Robert");
+        $this->assertEquals($data['result']['users'][3]['avatar'] , null);
         $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['name'] , "Chat");
+        $this->assertEquals($data['result']['type'] , 2);
+        $this->assertEquals($data['result']['token'] , null);
+        $this->assertEquals($data['result']['conversation_opt_id'] , null);
+        $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);    
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        
     }
     
     public function testCanGetListConversation()
@@ -534,7 +529,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['school']) , 5);
@@ -547,7 +542,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
@@ -557,7 +551,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['school']) , 5);
@@ -570,7 +564,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
@@ -599,7 +592,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]) , 8);
         $this->assertEquals(count($data['result']['list'][1]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][1]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['contact_state'] , 3);
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['school']) , 5);
@@ -612,7 +605,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['firstname'] , "Paul");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['interest'] , null);
@@ -622,7 +614,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['school']) , 5);
@@ -635,7 +627,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['interest'] , null);
@@ -643,7 +634,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]['school']) , 5);
@@ -656,7 +647,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['interest'] , null);
@@ -745,7 +735,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['message']) , 10);
         $this->assertEquals(count($data['result']['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['message']['from'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['message']['from'][0]['school']) , 5);
@@ -758,7 +748,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['from'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['message']['from'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['message']['from'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['interest'] , null);
@@ -780,7 +769,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['document'][1]['message_id'] , 6);
         $this->assertEquals(!empty($data['result']['message']['document'][1]['created_date']) , true);
         $this->assertEquals(count($data['result']['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['message']['to'][0]['school']) , 5);
@@ -793,7 +782,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][0]['firstname'] , "Sébastien");
         $this->assertEquals($data['result']['message']['to'][0]['lastname'] , "Sayegh");
         $this->assertEquals($data['result']['message']['to'][0]['email'] , "ssayegh@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['interest'] , null);
@@ -801,7 +789,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['message']['to'][0]['roles'][0] , "instructor");
         $this->assertEquals(count($data['result']['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['message']['to'][1]['contacts_count'] , 0);
         $this->assertEquals($data['result']['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['message']['to'][1]['school']) , 5);
@@ -814,7 +802,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][1]['firstname'] , "Salim");
         $this->assertEquals($data['result']['message']['to'][1]['lastname'] , "Bendacha");
         $this->assertEquals($data['result']['message']['to'][1]['email'] , "sbendacha@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['interest'] , null);
@@ -859,7 +846,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['message']) , 10);
         $this->assertEquals(count($data['result']['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['message']['from'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['message']['from'][0]['school']) , 5);
@@ -872,7 +859,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['from'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['message']['from'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['message']['from'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['interest'] , null);
@@ -894,7 +880,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['document'][1]['message_id'] , 6);
         $this->assertEquals(!empty($data['result']['message']['document'][1]['created_date']) , true);
         $this->assertEquals(count($data['result']['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['message']['to'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['message']['to'][0]['school']) , 5);
@@ -907,7 +893,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['message']['to'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['message']['to'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['interest'] , null);
@@ -915,7 +900,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals($data['result']['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['message']['to'][1]['school']) , 5);
@@ -928,7 +913,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][1]['firstname'] , "Paul");
         $this->assertEquals($data['result']['message']['to'][1]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['message']['to'][1]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['interest'] , null);
@@ -1034,7 +1018,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['school']) , 5);
@@ -1047,7 +1031,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
@@ -1057,7 +1040,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['school']) , 5);
@@ -1070,7 +1053,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
@@ -1099,7 +1081,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]) , 8);
         $this->assertEquals(count($data['result']['list'][1]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][1]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['contact_state'] , 3);
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['school']) , 5);
@@ -1112,7 +1094,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['firstname'] , "Paul");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['from'][0]['interest'] , null);
@@ -1122,7 +1103,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['school']) , 5);
@@ -1135,7 +1116,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['interest'] , null);
@@ -1143,7 +1123,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['list'][1]['message']['to'][0]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][1]['message']['to'][1]['school']) , 5);
@@ -1156,7 +1136,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][1]['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['message']['to'][1]['interest'] , null);
@@ -1199,7 +1178,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['school']) , 5);
@@ -1212,7 +1191,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
@@ -1234,7 +1212,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['document'][1]['message_id'] , 6);
         $this->assertEquals(!empty($data['result']['list'][0]['message']['document'][1]['created_date']) , true);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['school']) , 5);
@@ -1247,7 +1225,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
@@ -1255,7 +1232,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][1]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][1]['school']) , 5);
@@ -1268,7 +1245,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['firstname'] , "Paul");
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][1]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][1]['interest'] , null);
@@ -1311,7 +1287,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['school']) , 5);
@@ -1324,7 +1300,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
@@ -1334,7 +1309,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['school']) , 5);
@@ -1347,7 +1322,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);
@@ -1390,7 +1364,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 8);
         $this->assertEquals(count($data['result']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['school']) , 5);
@@ -1402,7 +1376,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['from'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['from'][0]['interest'] , null);
@@ -1412,7 +1385,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]) , 13);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals(count($data['result']['list'][0]['message']['to'][0]['school']) , 5);
@@ -1425,7 +1398,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['lastname'] , "Robert");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['email'] , "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['list'][0]['message']['to'][0]['password'] , "4ac91ac4cb1614b368e3dff3ac718f1d");
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['message']['to'][0]['interest'] , null);

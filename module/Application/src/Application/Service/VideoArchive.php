@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -7,11 +6,11 @@ use Application\Model\VideoArchive as CVF;
 
 class VideoArchive extends AbstractService
 {
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $submission_id
+     *
+     * @param integer $submission_id            
      */
     public function getList($submission_id)
     {
@@ -22,89 +21,91 @@ class VideoArchive extends AbstractService
             $ret[$m_videoconf_archive->getSubmissionId()][] = $m_videoconf_archive->toArray();
         }
         
-        return $ret;
+        return (count($ret) === 0) ? new \stdClass() : $ret;
     }
-    
+
     /**
-     * @param integer $id
+     *
+     * @param integer $id            
      */
     public function get($id)
     {
         $res_videoconf_archive = $this->getMapper()->get($id);
-        if($res_videoconf_archive->count() <= 0) {
+        if ($res_videoconf_archive->count() <= 0) {
             throw new \Exception("video_conf");
         }
-    
+        
         return $res_videoconf_archive->current();
     }
-    
+
     /**
      * Start record video conf.
      *
      * @invokable
      *
-     * @param interger $conversation_id
+     * @param interger $conversation_id            
      */
     public function startRecord($conversation_id)
     {
         $m_conversation = $this->getServiceConversation()->getLite($id);
-
+        
         $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_conversation->getToken()), true);
         if ($arr_archive['status'] == 'started') {
             $this->add($m_conversation->getId(), $arr_archive['id']);
         }
-    
+        
         return $arr_archive;
     }
-    
+
     /**
      * Stop record video conf.
      *
      * @invokable
      *
-     * @param interger $conversation_id
+     * @param interger $conversation_id            
      */
     public function stopRecord($conversation_id)
     {
         $m_video_archive = $this->getLastArchiveId($conversation_id);
-    
+        
         return $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
     }
-    
+
     /**
      * Valide le transfer video.
      *
      * @invokable
      *
-     * @param interger $video_archive
-     * @param string   $url
+     * @param interger $video_archive            
+     * @param string $url            
      *
      * @return int
      */
     public function validTransfertVideo($video_archive, $url)
     {
         $event_send = true;
-        // regarder si une video na pas etait déja notifier pour cette conversation 
+        // regarder si une video na pas etait déja notifier pour cette conversation
         $res_video_archive = $this->getMapper()->getListSameConversation($video_archive);
         foreach ($res_video_archive as $m_video_archive) {
             if (CVF::ARV_AVAILABLE === $m_video_archive->getArchiveStatus()) {
                 $event_send = false;
             }
         }
-    
+        
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
         if ($event_send) {
             $this->getServiceEvent()->recordAvailable($m_video_archive->getSubmissionId(), $video_archive);
         }
-
+        
         return $ret;
     }
-    
+
     /**
-     * @param string $token
-     * @param string $status
-     * @param int    $duration
-     * @param string $link
+     *
+     * @param string $token            
+     * @param string $status            
+     * @param int $duration            
+     * @param string $link            
      *
      * @return int
      */
@@ -115,10 +116,10 @@ class VideoArchive extends AbstractService
             ->setArchiveDuration($duration)
             ->setArchiveStatus($status)
             ->setArchiveLink($link);
-    
+        
         return $this->getMapper()->update($m_video_archive);
     }
-    
+
     /**
      * Récupére la liste des videos a uploader.
      *
@@ -128,7 +129,7 @@ class VideoArchive extends AbstractService
      */
     public function getListVideoUpload()
     {
-        $ret=[];
+        $ret = [];
         $res_video_no_upload = $this->getMapper()->getListVideoUpload();
         foreach ($res_video_no_upload as $m_video_archive) {
             try {
@@ -144,13 +145,14 @@ class VideoArchive extends AbstractService
                 exit();
             }
         }
-    
+        
         return $ret;
     }
-    
+
     /**
-     * @param integer   $conversation
-     * @param string    $token
+     *
+     * @param integer $conversation            
+     * @param string $token            
      *
      * @return integer
      */
@@ -161,34 +163,36 @@ class VideoArchive extends AbstractService
             ->setArchiveToken($token)
             ->setArchiveStatus(CVF::ARV_STARTED)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-    
+        
         $this->getMapper()->insert($m_video_archive);
-    
+        
         return $this->getMapper()->getLastInsertValue();
     }
-    
+
     /**
+     *
      * @return \Application\Service\Conversation
      */
     public function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
-    
+
     /**
+     *
      * @return \ZOpenTok\Service\OpenTok
      */
     public function getServiceZOpenTok()
     {
         return $this->getServiceLocator()->get('opentok.service');
     }
-    
+
     /**
+     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
-    
 }

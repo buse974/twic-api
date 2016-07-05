@@ -33,13 +33,11 @@ class Questionnaire extends AbstractService
     public function getByItem($item)
     {
         $m_item = $this->getServiceItem()->get($item);
-
         if ($m_item->getType() !== CI::TYPE_WORKGROUP) {
             throw new  \Exception('No Workgroup');
         }
 
         $res_questionnaire = $this->getMapper()->getByItem($item);
-
         if ($res_questionnaire->count() <= 0) {
             $this->create($item);
             $res_questionnaire = $this->getMapper()->getByItem($item);
@@ -47,6 +45,8 @@ class Questionnaire extends AbstractService
 
         $m_questionnaire = $res_questionnaire->current();
         $m_questionnaire->setQuestions($this->getServiceQuestion()->getList($m_questionnaire->getId()));
+        
+        
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
 
         return $m_questionnaire;

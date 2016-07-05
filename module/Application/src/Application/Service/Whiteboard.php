@@ -31,6 +31,16 @@ class Whiteboard extends AbstractService
         return $this->add($name);
     }
     
+    /**
+     * @param integer $id
+     *
+     * @return integer
+     */
+    public function delete($id)
+    {
+        return $this->getMapper()->delete($this->getModel()->setId($id));
+    }
+    
     public function getListByConversation($conversation_id)
     {
         return $this->getMapper()->getListByConversation($conversation_id);

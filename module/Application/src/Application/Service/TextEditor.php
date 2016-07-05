@@ -75,9 +75,9 @@ class TextEditor extends AbstractService
     /**
      * @invokable
      *
-     * @param int $id
+     * @param integer $id
      *
-     * @return int
+     * @return integer
      */
     public function delete($id)
     {
