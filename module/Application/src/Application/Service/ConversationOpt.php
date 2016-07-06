@@ -30,9 +30,9 @@ class ConversationOpt extends AbstractService
     public function add($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
     {
         $m_opt_videoconf = $this->getModel()
-        ->setItemId($item_id)
-        ->setRecord($record)      ->setNbUserAutorecord($nb_user_autorecord)
-        ->setAllowIntructor($allow_intructor);
+            ->setItemId($item_id)
+            ->setRecord($record)      ->setNbUserAutorecord($nb_user_autorecord)
+            ->setAllowIntructor($allow_intructor);
     
         return $this->getMapper()->insert($m_opt_videoconf);
     }

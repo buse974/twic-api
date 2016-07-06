@@ -142,7 +142,6 @@ class Item extends AbstractService
                     (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
         }
-
         if (null !== $submission) {
             $this->getServiceSubmission()->add($submission, $item_id);
         }

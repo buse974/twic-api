@@ -81,6 +81,7 @@ class SubmissionUser extends AbstractMapper
      */
     public function getListBySubmissionId($submission_id, $user_id)
     {
+        
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
             'submission_id',
@@ -89,7 +90,8 @@ class SubmissionUser extends AbstractMapper
             'submission_user$submit_date' => new Expression('DATE_FORMAT(submission_user.submit_date, "%Y-%m-%dT%TZ")'),
             'submission_user$start_date' => new Expression('DATE_FORMAT(submission_user.start_date, "%Y-%m-%dT%TZ")'),
         ])
-            ->join('user', 'user.id=submission_user.user_id', ['user$id' => new Expression('user.id'),
+            ->join('user', 'user.id=submission_user.user_id', [
+                'user$id' => new Expression('user.id'),
                 'firstname',
                 'gender',
                 'lastname',
@@ -100,30 +102,12 @@ class SubmissionUser extends AbstractMapper
                 'interest',
                 'avatar',
                 'school_id',
-                'user$contact_state' => $this->getSelectContactState($user_id),
+                'user$contact_state' => $this->getMapperUser()->getSelectContactState($user_id),
+                'user$contacts_count' => $this->getMapperUser()->getSelectContactCount(),
             ])
             ->where(array('submission_user.submission_id' => $submission_id));
 
         return $this->selectWith($select);
-    }
-
-    /**
-     * @param int $user
-     *
-     * @return \Zend\Db\Sql\Select
-     */
-    private function getSelectContactState($user)
-    {
-        $select = new Select('user');
-        $select->columns(array('user$contact_state' => new Expression(
-            'IF(contact.accepted_date IS NOT NULL, 3,
-	         IF(contact.request_date IS NOT  NULL AND contact.requested <> 1, 2,
-		     IF(contact.request_date IS NOT  NULL AND contact.requested = 1, 1,0)))')))
-                 ->join('contact', 'contact.contact_id = user.id', array())
-                 ->where(array('user.id=`user$id`'))
-                 ->where(['contact.user_id' => $user]);
-
-        return $select;
     }
 
     /**
@@ -162,5 +146,13 @@ class SubmissionUser extends AbstractMapper
             ->where(array('submission_user.submission_id' => $submission_id));
 
         return ($this->selectWith($select)->count() === 0) ? true : false;
+    }
+    
+    /**
+     * @return \Application\Mapper\User
+     */
+    public function getMapperUser()
+    {
+        return $this->getServiceLocator()->get('app_mapper_user');
     }
 }

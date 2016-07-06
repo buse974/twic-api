@@ -43,17 +43,16 @@ class User extends AbstractService
     public function _getCacheIdentity($init = false)
     {
         $user = [];
-        $id = $this->getServiceAuth()
-            ->getIdentity()
-            ->getId();
-
+        $identity = $this->getServiceAuth()
+            ->getIdentity();
+         $id = $identity->getId();
+            
         if ($init === false && $this->getCache()->hasItem('identity_'.$id)) {
             $user = $this->getCache()->getItem('identity_'.$id);
         } else {
-            $user = $this->getServiceAuth()
-                ->getIdentity()
-                ->toArray();
-
+            $user = $identity->toArray();
+            
+            
             $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][$role->getId()] = $role->getName();

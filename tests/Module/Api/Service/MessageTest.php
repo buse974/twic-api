@@ -490,17 +490,23 @@ class MessageTest extends AbstractService
         $this->assertEquals(!empty($data['result']['messages']['list'][0]['created_date']) , true);
         $this->assertEquals($data['result']['messages']['count'] , 1);
         $this->assertEquals(count($data['result']['users']) , 3);
-        $this->assertEquals(count($data['result']['users'][1]) , 4);
+        $this->assertEquals(count($data['result']['users'][1]) , 5);
+        $this->assertEquals(count($data['result']['users'][1]['roles']) , 1);
+        $this->assertEquals($data['result']['users'][1]['roles'][0] , "super_admin");
         $this->assertEquals($data['result']['users'][1]['id'] , 1);
         $this->assertEquals($data['result']['users'][1]['firstname'] , "Paul");
         $this->assertEquals($data['result']['users'][1]['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['users'][1]['avatar'] , null);
-        $this->assertEquals(count($data['result']['users'][2]) , 4);
+        $this->assertEquals(count($data['result']['users'][2]) , 5);
+        $this->assertEquals(count($data['result']['users'][2]['roles']) , 1);
+        $this->assertEquals($data['result']['users'][2]['roles'][0] , "admin");
         $this->assertEquals($data['result']['users'][2]['id'] , 2);
         $this->assertEquals($data['result']['users'][2]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['users'][2]['lastname'] , "Hoang");
         $this->assertEquals($data['result']['users'][2]['avatar'] , null);
-        $this->assertEquals(count($data['result']['users'][3]) , 4);
+        $this->assertEquals(count($data['result']['users'][3]) , 5);
+        $this->assertEquals(count($data['result']['users'][3]['roles']) , 1);
+        $this->assertEquals($data['result']['users'][3]['roles'][0] , "academic");
         $this->assertEquals($data['result']['users'][3]['id'] , 3);
         $this->assertEquals($data['result']['users'][3]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['users'][3]['lastname'] , "Robert");
@@ -513,6 +519,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
         
         
     }
@@ -1452,43 +1459,4 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
-    public function setIdentity($id)
-    {
-        $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $identityMock->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue($id));
-        
-        $identityMock->expects($this->any())
-            ->method('toArray')
-            ->will($this->returnValue(['id' => $id, 'token' => ''+$id+'token']));
-        
-        $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $authMock->expects($this->any())
-            ->method('getIdentity')
-            ->will($this->returnValue($identityMock));
-        
-        $authMock->expects($this->any())
-            ->method('hasIdentity')
-            ->will($this->returnValue(true));
-        
-        $rbacMock->expects($this->any())
-            ->method('isGranted')
-            ->will($this->returnValue(true));
-        
-        $serviceManager = $this->getApplicationServiceLocator();
-        $serviceManager->setAllowOverride(true);
-        $serviceManager->setService('auth.service', $authMock);
-        $serviceManager->setService('rbac.service', $rbacMock);
-    }
 }

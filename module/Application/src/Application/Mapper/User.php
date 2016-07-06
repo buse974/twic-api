@@ -197,6 +197,7 @@ class User extends AbstractMapper
             'interest',
             'avatar',
             'school_id',
+            'user$contacts_count' => $this->getSelectContactCount(),
             'user$contact_state' => $this->getSelectContactState($me), );
 
         $select = $this->tableGateway->getSql()->select();
@@ -220,11 +221,6 @@ class User extends AbstractMapper
 
     public function getList($filter = null, $event = null, $user_school, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null)
     {
-        $sub_count = $this->tableGateway->getSql()->select();
-        $sub_count->columns(array('user$contacts_count' => new Expression('COUNT(user.id)')))
-            ->join('contact', 'contact.user_id = user.id', array())
-            ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
-
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
             'user$id' => new Expression('user.id'),
@@ -232,7 +228,7 @@ class User extends AbstractMapper
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position', 'interest', 'avatar',
             'user$contact_state' => $this->getSelectContactState($user_school),
-            'user$contacts_count' => $sub_count, ))
+            'user$contacts_count' => $this->getSelectContactCount(), ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
             ->group('user.id')
             ->quantifier('DISTINCT');
@@ -569,7 +565,7 @@ class User extends AbstractMapper
      *
      * @return \Zend\Db\Sql\Select
      */
-    private function getSelectContactState($user)
+    public function getSelectContactState($user)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('user$contact_state' => new Expression(
@@ -582,6 +578,21 @@ class User extends AbstractMapper
 
         return $select;
     }
+    
+    /**
+     * @return \Zend\Db\Sql\Select
+     */
+    public function getSelectContactCount()
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('user$contacts_count' => new Expression('COUNT(user.id)')))
+            ->join('contact', 'contact.user_id = user.id', array())
+            ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
+        
+        return $select;
+    }
+    
+    
 
     /**
      * @param int $submission_id

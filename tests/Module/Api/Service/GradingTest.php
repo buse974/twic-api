@@ -16,53 +16,53 @@ class GradingTest extends AbstractService
     public function testCreateInit()
     {
         // ADD SCHOOL
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','background' => 'background','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
         $school_id = $data['result']['id'];
         $this->reset();
 
         // ADD SCHOOL USER
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('user.update', array('school_id' => $school_id));
         $this->reset();
         
         // ADD PROGRAM
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => $school_id,'level' => 'emba','sis' => 'sis'));
         $program_id = $data['result'];
         $this->reset();
    
         // ADD COURSE
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('course.add', array('title' => 'IMERIR','abstract' => 'un_token','description' => 'description','objectives' => 'objectives','teaching' => 'teaching','attendance' => 'attendance','duration' => 18,'notes' => 'notes','learning_outcomes' => 'learning_outcomes','video_link' => 'http://google.fr','video_token' => 'video_token','material_document' => array(array('type' => 'link','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => '2011-01-01')),'program_id' => $program_id));
         $course_id = $data['result']['id'];
         $this->reset();
 
         // ADD SECOND STUDENT
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('userrole.deleteByUser', array('id' => 7));
         $data = $this->jsonRpc('userrole.add', array('user' => 7, 'role' => 4));
         $this->reset();
 
         // ADD THIRD STUDENT
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('userrole.deleteByUser', array('id' => 6));
         $data = $this->jsonRpc('userrole.add', array('user' => 6, 'role' => 4));
         $this->reset();
         
         // ADD COURSE USER
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('user.addCourse', array('user' => [4, 7, 6],'course' => $course_id));
         $this->reset();
         
         // ADD GRADING POLICY
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('gradingpolicy.add', array('course_id' => $course_id,'name' => 'tata','grade' => 50));
         $grading_policy_id = $data['result'];
         $this->reset();        
         
         // ADD ITEM
-        $this->setIdentity(1);
+        $this->setIdentity(1, 5);
         $data = $this->jsonRpc('item.add', 
             [
                 'type' => 'IA',
@@ -90,18 +90,19 @@ class GradingTest extends AbstractService
                         ]
                     ]                            
         ]);
+        
         $item_id = $data['result'];
         $this->reset();
         
         // ADD SUBMISSION
-        $this->setIdentity(4);
+        $this->setIdentity(4, 4);
         $data = $this->jsonRpc('submission.get', array('item_id' => $item_id));
         $submission_id = $data['result']['id'];
         $this->reset();
         
         
         // ADD SUBMISSION2
-        $this->setIdentity(7);
+        $this->setIdentity(7, 4);
         $data = $this->jsonRpc('submission.get', array('item_id' => $item_id));
         $submission_id2 = $data['result']['id'];
         $this->reset();
@@ -606,43 +607,4 @@ class GradingTest extends AbstractService
         return $data['result'];
     }  */
     
-    public function setIdentity($id)
-    {
-        $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $identityMock->expects($this->any())
-            ->method('getId')
-            ->will($this->returnValue($id));
-        
-        $identityMock->expects($this->any())
-            ->method('toArray')
-            ->will($this->returnValue(['id' => $id, 'token' => ''+$id+'token']));
-        
-        $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
-            ->disableOriginalConstructor()
-            ->getMock();
-        
-        $authMock->expects($this->any())
-            ->method('getIdentity')
-            ->will($this->returnValue($identityMock));
-        
-        $authMock->expects($this->any())
-            ->method('hasIdentity')
-            ->will($this->returnValue(true));
-        
-        $rbacMock->expects($this->any())
-            ->method('isGranted')
-            ->will($this->returnValue(true));
-        
-        $serviceManager = $this->getApplicationServiceLocator();
-        $serviceManager->setAllowOverride(true);
-        $serviceManager->setService('auth.service', $authMock);
-        $serviceManager->setService('rbac.service', $rbacMock);
-    }
 }
