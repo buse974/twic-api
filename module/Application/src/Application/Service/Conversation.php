@@ -156,6 +156,22 @@ class Conversation extends AbstractService
         return $ids;
     }
     
+    /** 
+     * @invokable
+     * 
+     * @param integer $submission_id 
+     * @param integer $item_id
+     */ 
+    public function getId($submission_id = null,$item_id = null)
+    {
+        if(null === $item_id && null === $submission_id) {
+            return null;
+        }
+        
+        $identity = $this->getServiceUser()->getIdentity();
+        return $this->getMapper()->getListId($identity['school']['id'], null, null, $item_id, $submission_id)->current()->getId();
+    }
+    
     /**
      * @invokable
      * 

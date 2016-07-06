@@ -185,7 +185,10 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
             ->method('toArray')
             ->will($this->returnValue([
             'id' => $id,
-            'token' => '' + $id + 'token'
+            'token' => $id.'-token',
+            'firstname' => 'toto',
+            'avatar' => 'avatar',
+            'lastname' => 'tata',
         ]));
         
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')

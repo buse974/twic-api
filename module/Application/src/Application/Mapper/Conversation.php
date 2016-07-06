@@ -38,7 +38,7 @@ class Conversation extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function getListId($school_id, $program_id = null, $course_id = null, $item_id = null)
+    public function getListId($school_id, $program_id = null, $course_id = null, $item_id = null, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id'])
@@ -47,7 +47,8 @@ class Conversation extends AbstractMapper
             ->join('item', 'item.id = submission.item_id', [])
             ->join('course', 'course.id = item.course_id', [])
             ->join('program', 'program.id = course.program_id', [])
-            ->where(['program.school_id' => $school_id]);
+            ->where(['program.school_id' => $school_id])
+            ->quantifier('distinct');
         
         if (null !== $item_id) {
             $select->where(['item.id' => $item_id]);
@@ -55,6 +56,8 @@ class Conversation extends AbstractMapper
             $select->where(['course.id' => $course_id]);
         } elseif (null !== $program_id) {
             $select->where(['program.id' => $program_id]);
+        } elseif (null !== $submission_id) {
+            $select->where(['submission.id' => $submission_id]);
         }
     
         return $this->selectWith($select);

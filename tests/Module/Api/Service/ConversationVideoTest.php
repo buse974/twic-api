@@ -146,6 +146,35 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
+    public function testCanGetListId()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('conversation.getListId', [
+            'id' => 1,
+        ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][0] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+    }
+    
+    public function testCanGetId()
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('conversation.getId', [
+            'item_id' => 1,
+        ]);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
     
     public function testCanGet()
     {

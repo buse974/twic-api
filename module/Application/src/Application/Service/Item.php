@@ -402,7 +402,6 @@ class Item extends AbstractService
         }
 
         $res_item = $this->getMapper()->getList($course, $parent_id, $start, $end, $type);
-
         $ar_item = (null !== $start || null !== $end) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
 
         foreach ($ar_item as $k => &$item) {
