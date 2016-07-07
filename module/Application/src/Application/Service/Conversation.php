@@ -116,6 +116,11 @@ class Conversation extends AbstractService
         $conv['id'] = $id;
         $identity = $this->getServiceUser()->getIdentity();
         
+        $m_submission = $this->getServiceSubmission()->getByUserAndConversation($identity['id'] , $id);
+        if(null !== $m_submission) {
+            $conv['submission_id'] = $m_submission->getId();
+        }
+        
         if (isset($conv['token']) && ! empty($conv['token'])) {
             $conv['user_token'] = $this->getServiceZOpenTok()->createToken($conv['token'], '{"id":' . $identity['id'] . ',"firstname":"' . urlencode($identity['firstname']) . '","lastname":"' . urlencode($identity['lastname']) . '","avatar":"' . $identity['avatar'] . '"}', (! array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ? OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER);
         }

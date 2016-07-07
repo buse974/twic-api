@@ -185,7 +185,7 @@ class ConversationVideoTest extends AbstractService
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 14);
+        $this->assertEquals(count($data['result']) , 15);
         $this->assertEquals(count($data['result']['messages']) , 2);
         $this->assertEquals(count($data['result']['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]) , 8);
@@ -442,6 +442,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['documents'][0]['owner_id'] , 1);
         $this->assertEquals($data['result']['documents'][0]['box_id'] , null);
         $this->assertEquals(count($data['result']['conversation_opt']) , 7);
+        $this->assertEquals($data['result']['submission_id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['item_id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['record'] , 1);

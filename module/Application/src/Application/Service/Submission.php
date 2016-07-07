@@ -65,6 +65,20 @@ class Submission extends AbstractService
 
         return $m_submission;
     }
+    
+    /**
+     * @param int $user_id
+     * @param int $conversation_id
+     *
+     * @return \Application\Model\Submission
+     */
+    public function getByUserAndConversation($user_id, $conversation_id)
+    {
+        $res_submission = $this->getMapper()->getByUserAndConversation($user_id, $conversation_id);
+        return ($res_submission->count() <= 0) ?
+            null :
+            $res_submission->current();
+    }
 
     /**
      * @param int $item_id

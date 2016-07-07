@@ -7,13 +7,14 @@ use Dal\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\Expression;
+use Dal\Db\ResultSet\ResultSet;
 
 class Submission extends AbstractMapper
 {
     /**
-     * @param int $id
+     * @param integer $id
      * 
-     * @return \Application\Model\Submission
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function checkGraded($id)
     {
@@ -30,10 +31,10 @@ class Submission extends AbstractMapper
     }
 
     /**
-     * @param int $user
-     * @param int $questionnaire
+     * @param integer $user
+     * @param integer $questionnaire
      * 
-     * @return \Application\Model\Submission
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByUserAndQuestionnaire($user, $questionnaire)
     {
@@ -44,6 +45,25 @@ class Submission extends AbstractMapper
             ->where(array('submission_user.user_id' => $user))
             ->where(array('questionnaire.id' => $questionnaire));
 
+        return $this->selectWith($select);
+    }
+    
+    /**
+     * 
+     * @param integer $user_id
+     * @param integer $conversation_id
+     * 
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getByUserAndConversation($user_id, $conversation_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('id'))
+            ->join('sub_conversation', 'sub_conversation.submission_id=submission.id', array())
+            ->join('submission_user', 'submission_user.submission_id=submission.id', array())
+            ->where(array('submission_user.user_id' => $user_id))
+            ->where(array('sub_conversation.conversation_id' => $conversation_id));
+        
         return $this->selectWith($select);
     }
 
