@@ -333,9 +333,16 @@ class User extends AbstractService
     {
         $me = $this->getServiceAuth()->getIdentity()->getId();
 
-        return $this->getMapper()->getList(null, null, $me, $type, null, $course, null, null, null, null, false);
+        return $this->getMapper()->getList(null, null, $me, null, null, null, null, null, null, null, false);
     }
 
+    public function getInstructorByItem($item_id)
+    {
+        return $this->getMapper()->getInstructorByItem($item_id);
+    }
+    
+    
+    
     /**
      * @invokable
      * 

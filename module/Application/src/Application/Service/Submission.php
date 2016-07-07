@@ -168,7 +168,22 @@ class Submission extends AbstractService
             $res_submission->current() :
             null;
     }
+    
+    
 
+    public function getWithItem($submission_id)
+    {
+        $res_submission = $this->getMapper()->getWithItem($submission_id);
+        if ($res_submission->count() <= 0) {
+            return;
+        }
+        
+        $m_submission = $res_submission->current();
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        
+        return $m_submission;
+    }
+    
     /**
      * @invokable
      * 
@@ -182,9 +197,9 @@ class Submission extends AbstractService
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
         //// ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
-        if (null !== $item_id) {
+        /*if (null !== $item_id) {
             $m_item = $this->getServiceItem()->get($item_id);
-        }
+        }*/
         if (null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
@@ -529,19 +544,55 @@ class Submission extends AbstractService
         return $ret;
     }
     
+    /**
+     * toutes les oumission passe par ici
+     * 
+     * @param integer $submission_id
+     * @param integer $user_id
+     * 
+     * @return integer
+     */
     public function _submitBySubmission($submission_id, $user_id) 
     {
         $submit = 1;
-        
+        $is_first = true;
+        $is_ok = false;
         $res_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id, $user_id);
         foreach ($res_submission_user as $m_submission_user) {
             if ($m_submission_user->getUserId() === $user_id) {
                 $this->getServiceSubmissionUser()->submit($submission_id, $user_id);
+                // A bien était soumis
+                $is_ok = true;
             } else {
-                $submit &= ($m_submission_user->getSubmitDate() !== null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
+                $is_check = ($m_submission_user->getSubmitDate() !== null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
+                //Si c'est vrai, alors ce n'est pas la premiere soumission
+                if($is_check) {
+                    $is_first = false;
+                }
+                $submit &= $is_check;
             }
         }
+        
+        //Si c la premiere fois que l'on soumet et quil manque des soumissions
+        if($is_ok===true && $is_first===true && $submit!==1) {
+            $m_item = $this->getServiceItem()->getBySubmission($submission_id);
+            if($m_item->getType() === $m_item::TYPE_INDIVIDUAL_ASSIGNMENT) {
+                $user = [];
+                foreach ($res_submission_user as $m_submission_user) {
+                    if($user_id !== $m_submission_user->getUserId() && $m_submission_user->getStartDate()!==null && (!$m_submission_user->getStartDate() instanceof IsNull)
+                        && ( $m_submission_user->getSubmitDate() === null || ($m_submission_user->getSubmitDate() instanceof IsNull))) {
+                            $user[] = $m_submission_user->getUserId();
+                    }
+                }
+                if(count($user) > 0) {
+                    $this->getServiceEvent()->requestSubmit($submission_id, $user);
+                }
+            }
+        }
+        
+        
         if ($submit === 1) {
+            $this->getServiceEvent()->endSubmit($submission_id);
             $this->forceSubmitBySubmission($submission_id);
         }
         
@@ -855,6 +906,14 @@ class Submission extends AbstractService
         return $this->getServiceLocator()->get('app_service_text_editor');
     }
 
+    /**
+     * @return \Application\Service\Event
+     */
+    public function getServiceEvent()
+    {
+        return $this->getServiceLocator()->get('app_service_event');
+    }
+    
     /**
      * @return \Application\Service\Conversation
      */

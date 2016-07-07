@@ -109,31 +109,21 @@ class EQCQTest extends AbstractService
     
     public function testGetSub()
     {
-        
         // USER 1
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getByItem',
             ['item_id' => 1]);
+        $sub = $data['result']['id'];
         $this->reset();
         $this->setIdentity(1);
         $data = $this->jsonRpc('submissionuser.start',
-            ['submission' => $data['result']['id']]);
+            ['submission' => $sub]);
         $this->reset();
-        
         // USER 2
         $this->setIdentity(2);
-        $data = $this->jsonRpc('submission.getByItem',
-            ['item_id' => 1]);
-        $this->reset();
-        $this->setIdentity(2);
         $data = $this->jsonRpc('submissionuser.start',
-            ['submission' => $data['result']['id']]);
+            ['submission' => $sub]);
         $this->reset();
-        
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('questionnaire.getByItem',
-            ['item' => 1]);
-
         $this->setIdentity(1);
         $fd = $data;
         foreach ($fd['result']['questions'] as $d) {
@@ -141,17 +131,14 @@ class EQCQTest extends AbstractService
             $data = $this->jsonRpc('questionnaire.answer',
                 [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1,6)]);
             $this->reset();
-            
             $this->setIdentity(1);
             $data = $this->jsonRpc('questionnaire.answer',
                 [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1,6)]);
             $this->reset();
-            
             $this->setIdentity(2);
             $data = $this->jsonRpc('questionnaire.answer',
                 [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1,6)]);
             $this->reset();
-            
             $this->setIdentity(2);
             $data = $this->jsonRpc('questionnaire.answer',
                 [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1,6)]);

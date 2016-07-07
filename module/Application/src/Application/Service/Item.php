@@ -357,15 +357,7 @@ class Item extends AbstractService
         return $this->getMapper()->update($m_item);
     }
 
-    /**
-     * @param int $submission_id
-     * 
-     * @return null|\Application\Model\Item
-     */
-    public function getBySubmission($submission_id)
-    {
-        return $this->getMapper()->getBySubmission($submission_id)->current();
-    }
+
 
     /**
      * @param int $submission_id
@@ -657,25 +649,15 @@ class Item extends AbstractService
     }
 
     /**
-     * @invokable
+     * @param int $submission_id
      *
-     * @param int $submission
-     *
-     * @throws \Exception
-     *
-     * @return \Application\Model\Item
+     * @return null|\Application\Model\Item
      */
-    public function getByItemProg($submission)
+    public function getBySubmission($submission_id)
     {
-        $res_item = $this->getMapper()->getByItemProg($submission);
-
-        if ($res_item->count() <= 0) {
-            throw new \Exception('error select item by itemprog');
-        }
-
-        return $res_item->current();
+        return $this->getMapper()->getBySubmission($submission_id)->current();
     }
-
+    
     /**
      * @invokable
      *

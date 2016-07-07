@@ -137,7 +137,6 @@ class Submission extends AbstractMapper
             'submission$nbr_comments' => $this->getSelectNbrComments(),
         ])
             ->join('submission_user', 'submission_user.submission_id=submission.id', [])
-            ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type'])
             ->quantifier('DISTINCT');
 
         if (null !== $submission_id) {
@@ -154,6 +153,30 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getWithItem($submission_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([
+            'submission$id' => new Expression('submission.id'),
+            'item_id',
+            'group_name',
+            'group_id',
+            'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
+            'is_graded',
+            'submission$nbr_comments' => $this->getSelectNbrComments(),
+        ])
+        ->join('submission_user', 'submission_user.submission_id=submission.id', [])
+        ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type'])
+        ->quantifier('DISTINCT');
+        
+        if (null !== $submission_id) {
+            $select->where(array('submission.id' => $submission_id));
+        } 
+        
+        return $this->selectWith($select);
+    }
+    
+    
     /**
      * @return \Zend\Db\Sql\Select
      */
