@@ -33,7 +33,7 @@ class Questionnaire extends AbstractService
     public function getByItem($item)
     {
         $m_item = $this->getServiceItem()->get($item);
-        if ($m_item->getType() !== CI::TYPE_WORKGROUP) {
+        if ($m_item->getType() !== CI::TYPE_WORKGROUP && $m_item->getType() !== CI::TYPE_EQCQ) {
             throw new  \Exception('No Workgroup');
         }
 
@@ -75,14 +75,14 @@ class Questionnaire extends AbstractService
             $scale);
 
         $nbrq = $this->getNbrQuestionNoCompleted($item);
-        if (is_numeric($nbrq) && $nbrq == 0) {
+        if ($nbrq === 0) {
             $this->getServiceSubmissionUser()->end($m_submission->getId());
-
             $this->getServiceSubmission()->submit($m_submission->getId());
+            
             $has_all_finish = $this->getServiceSubmissionUser()->checkAllFinish($m_submission->getId());
             if ($has_all_finish) {
                 $this->getServiceSubmission()->forceSubmit($m_submission->getId());
-                //$this->getServiceEvent()->eqcqAvailable($item);
+                $this->getServiceEvent()->eqcqAvailable($m_submission->getId());
             }
         }
 
@@ -96,18 +96,21 @@ class Questionnaire extends AbstractService
      */
     public function getNbrQuestionNoCompleted($item)
     {
-        $nbr = null;
+        $nbr = $tnbr = null;
         $user = $this->getServiceUser()->getIdentity()['id'];
-        $res_questionnaire = $this->getMapper()->getNbrQuestionNoCompleted($item, $user);
-
+        $res_questionnaire = $this->getMapper()->getNbrTotal($item);
+        if ($res_questionnaire->count() > 0) {
+            $tnbr = $res_questionnaire->current()->getNbNoCompleted();
+            $tnbr = ($tnbr instanceof IsNull) ? null : (int)$tnbr;
+        }
+        
+        $res_questionnaire = $this->getMapper()->getNbrQuestionCompleted($item, $user);
         if ($res_questionnaire->count() > 0) {
             $nbr = $res_questionnaire->current()->getNbNoCompleted();
-            if ($nbr instanceof IsNull) {
-                $nbr = null;
-            }
+            $nbr = ($nbr instanceof IsNull) ? null : (int)$nbr;
         }
-
-        return $nbr;
+        
+        return ($tnbr-$nbr);
     }
 
     /**

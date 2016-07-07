@@ -15,6 +15,151 @@ class EQCQTest extends AbstractService
         parent::setUpBeforeClass();
     }
 
+    public function testCreateInit()
+    {
+        // ADD SCHOOL
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','background' => 'background','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
+        $school_id = $data['result']['id'];
+        $this->reset();
+    
+        // ADD SCHOOL USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('school_id' => $school_id));
+        $this->reset();
+    
+        // ADD PROGRAM
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => $school_id,'level' => 'emba','sis' => 'sis'));
+        $program_id = $data['result'];
+        $this->reset();
+         
+        // ADD COURSE
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('course.add', array('title' => 'IMERIR','abstract' => 'un_token','description' => 'description','objectives' => 'objectives','teaching' => 'teaching','attendance' => 'attendance','duration' => 18,'notes' => 'notes','learning_outcomes' => 'learning_outcomes','video_link' => 'http://google.fr','video_token' => 'video_token','material_document' => array(array('type' => 'link','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => '2011-01-01')),'program_id' => $program_id));
+        $course_id = $data['result']['id'];
+        $this->reset();
+    
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 1,'course' => $course_id));
+        $this->reset();
+        
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 2,'course' => $course_id));
+        $this->reset();
+        
+        // ADD COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addCourse', array('user' => 3,'course' => $course_id));
+        $this->reset();
+         
+        return [
+            'school_id' => $school_id,
+            'course_id' => $course_id
+        ];
+    }
+    
+    /**
+     * @depends testCreateInit
+     */
+    public function testAddItem($data)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('item.add',
+            [
+                'course' => (int)$data['course_id'],
+                'title' => 'title',
+                'describe' => 'description',
+                'duration' => 234,
+                'type' => 'EQCQ',
+                'opt' => [
+                    'grading' => [
+                        'mode' => 'average',
+                        'has_pg' => true,
+                        'pg_nb' => 2,
+                        'pg_auto' => true,
+                        'pg_due_date' =>
+                        '2016-10-10',
+                        'pg_can_view' => true,
+                        'user_can_view' => true,
+                        'pg_stars' => true
+                    ],
+                ],
+                'data' => null,
+                'parent' => null,
+                'order' => null,
+                'submission' => [
+                    [ 'submission_user' => [1,2,3]]
+                ],
+                'has_all_student' => false,
+                'is_grouped' => true,
+                'is_complete' => true
+            ]);
+         
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+        return $data['result'];
+    }
+    
+    public function testGetSub()
+    {
+        
+        // USER 1
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('submission.getByItem',
+            ['item_id' => 1]);
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('submissionuser.start',
+            ['submission' => $data['result']['id']]);
+        $this->reset();
+        
+        // USER 2
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('submission.getByItem',
+            ['item_id' => 1]);
+        $this->reset();
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('submissionuser.start',
+            ['submission' => $data['result']['id']]);
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('questionnaire.getByItem',
+            ['item' => 1]);
+
+        $this->setIdentity(1);
+        $fd = $data;
+        foreach ($fd['result']['questions'] as $d) {
+            $this->setIdentity(1);
+            $data = $this->jsonRpc('questionnaire.answer',
+                [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1,6)]);
+            $this->reset();
+            
+            $this->setIdentity(1);
+            $data = $this->jsonRpc('questionnaire.answer',
+                [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1,6)]);
+            $this->reset();
+            
+            $this->setIdentity(2);
+            $data = $this->jsonRpc('questionnaire.answer',
+                [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1,6)]);
+            $this->reset();
+            
+            $this->setIdentity(2);
+            $data = $this->jsonRpc('questionnaire.answer',
+                [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1,6)]);
+            $this->reset();
+        }
+        
+    }
+    
     public function testAddDimension()
     {
         $this->setIdentity(1);
@@ -782,6 +927,12 @@ class EQCQTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+    
+    
+    
+    
+    
+    
     
     /**
      *

@@ -282,7 +282,6 @@ class Event extends AbstractService
     public function recordAvailable($submission_id, $video_archive)
     {
         $m_video_archive = $this->getServiceVideoArchive()->get($video_archive);
-
         $m_submission = $this->getServiceSubmission()->get(null, $submission_id);
 
         return $this->create('record.available',
@@ -294,9 +293,13 @@ class Event extends AbstractService
 
     public function eqcqAvailable($submission)
     {
-        $m_submission = $this->getServiceItemProg()->get($submission);
+        $m_submission = $this->getServiceSubmission()->get(null, $submission);
 
-        return $this->create('eqcq.available', $this->getDataItemProgWihtUser($m_submission), [], $this->getListByItemProgWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', 
+            $this->getDataSubmissionWihtUser($m_submission), 
+            [], 
+            $this->getListByItemProgWithInstrutorAndAcademic($m_submission->getId()), 
+            self::TARGET_TYPE_USER);
     }
 
     public function courseUpdated($course, $dataupdated)
@@ -406,7 +409,7 @@ class Event extends AbstractService
 
     public function getDataProgrammation($submission)
     {
-        $m_submission = $this->getServiceItemProg()->get($submission);
+        $m_submission = $this->getServiceSubmission()->get(null, $submission);
 
         return ['id' => $m_submission->getId(),
             'name' => 'programmation',
@@ -446,7 +449,7 @@ class Event extends AbstractService
         return ['id' => $m_video_archive->getId(), 'name' => 'archive', 'data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
     }
 
-    public function getDataItemProgWihtUser(\Application\Model\Submission $m_submission)
+    public function getDataSubmissionWihtUser(\Application\Model\Submission $m_submission)
     {
         $res_user = $this->getServiceUser()->getListUsersBySubmission($m_submission->getId());
 
@@ -460,7 +463,7 @@ class Event extends AbstractService
             'name' => 'programming',
             'data' => [
                 'item' => [
-                    'id' => $m_submission->getItem()->getId(),
+                    'id' => $m_submission->getItemId(),
                     'title' => $m_submission->getItem()->getTitle(),
                     'type' => $m_submission->getItem()->getType(), ],
                 'users' => $users,
@@ -795,7 +798,7 @@ class Event extends AbstractService
     /**
      * @return \Application\Service\ItemProg
      */
-    public function getServiceItemProg()
+    public function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
@@ -822,14 +825,6 @@ class Event extends AbstractService
     public function getServiceSchool()
     {
         return $this->getServiceLocator()->get('app_service_school');
-    }
-
-    /**
-     * @return \Application\Service\Submission
-     */
-    public function getServiceSubmission()
-    {
-        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
