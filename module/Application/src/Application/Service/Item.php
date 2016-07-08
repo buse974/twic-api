@@ -207,8 +207,9 @@ class Item extends AbstractService
         $record = isset($data['record']) ? $data['record'] : null;
         $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
         $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
+        $has_eqcq = isset($data['has_eqcq']) ? $data['has_eqcq'] : null;
 
-        return $this->getServiceConversationOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor);
+        return $this->getServiceConversationOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor, $has_eqcq);
     }
 
     public function addCmpThread($data, $item_id)
@@ -216,7 +217,6 @@ class Item extends AbstractService
         if (empty($data)) {
             return;
         }
-
         if ($thread_id = isset($data['thread_id']) ? $data['thread_id'] : null) {
             return $this->getServiceThread()->update($thread_id, null, $item_id);
         } else {

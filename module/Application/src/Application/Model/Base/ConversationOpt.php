@@ -11,6 +11,7 @@ class ConversationOpt extends AbstractModel
 	protected $record;
 	protected $nb_user_autorecord;
 	protected $allow_intructor;
+	protected $has_eqcq;
 	protected $start_date;
 	protected $duration;
 
@@ -72,6 +73,18 @@ class ConversationOpt extends AbstractModel
 	public function setAllowIntructor($allow_intructor)
 	{
 		$this->allow_intructor = $allow_intructor;
+
+		return $this;
+	}
+
+	public function getHasEqcq()
+	{
+		return $this->has_eqcq;
+	}
+
+	public function setHasEqcq($has_eqcq)
+	{
+		$this->has_eqcq = $has_eqcq;
 
 		return $this;
 	}

@@ -441,13 +441,14 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['documents'][0]['folder_id'] , null);
         $this->assertEquals($data['result']['documents'][0]['owner_id'] , 1);
         $this->assertEquals($data['result']['documents'][0]['box_id'] , null);
-        $this->assertEquals(count($data['result']['conversation_opt']) , 7);
+        $this->assertEquals(count($data['result']['conversation_opt']) , 8);
         $this->assertEquals($data['result']['submission_id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['item_id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['record'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['nb_user_autorecord'] , 2);
         $this->assertEquals($data['result']['conversation_opt']['allow_intructor'] , 1);
+        $this->assertEquals($data['result']['conversation_opt']['has_eqcq'] , false);
         $this->assertEquals($data['result']['conversation_opt']['start_date'] , null);
         $this->assertEquals($data['result']['conversation_opt']['duration'] , null);
         $this->assertEquals(!empty($data['result']['user_token']) , true);

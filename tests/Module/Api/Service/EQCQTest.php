@@ -124,7 +124,9 @@ class EQCQTest extends AbstractService
         $data = $this->jsonRpc('submissionuser.start',
             ['submission' => $sub]);
         $this->reset();
+        
         $this->setIdentity(1);
+        $data = $this->jsonRpc('questionnaire.getByItem',['item' => 1]);
         $fd = $data;
         foreach ($fd['result']['questions'] as $d) {
             $this->setIdentity(1);

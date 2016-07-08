@@ -506,10 +506,11 @@ class ScenarioTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 25);
-        $this->assertEquals(count($data['result']['videoconf']) , 7);
+        $this->assertEquals(count($data['result']['videoconf']) , 8);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
         $this->assertEquals($data['result']['videoconf']['item_id'] , 2);
         $this->assertEquals($data['result']['videoconf']['record'] , 1);
+        $this->assertEquals($data['result']['videoconf']['has_eqcq'] , false);
         $this->assertEquals($data['result']['videoconf']['nb_user_autorecord'] , 2);
         $this->assertEquals($data['result']['videoconf']['allow_intructor'] , 1);
         $this->assertEquals($data['result']['videoconf']['start_date'] , null);

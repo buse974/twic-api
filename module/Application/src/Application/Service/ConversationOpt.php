@@ -11,12 +11,13 @@ class ConversationOpt extends AbstractService
      * @param bool $record
      * @param int  $nb_user_autorecord
      * @param bool $allow_intructor
+     * @param bool $has_eqcq
      */
-    public function addOrUpdate($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
+    public function addOrUpdate($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null, $has_eqcq = null)
     {
         return (null !== $this->getByItem($item_id)) ?
-        $this->update($item_id, $record, $nb_user_autorecord, $allow_intructor) :
-        $this->add($item_id, $record, $nb_user_autorecord, $allow_intructor);
+        $this->update($item_id, $record, $nb_user_autorecord, $allow_intructor, $has_eqcq) :
+        $this->add($item_id, $record, $nb_user_autorecord, $allow_intructor, $has_eqcq);
     }
     
     /**
@@ -24,15 +25,18 @@ class ConversationOpt extends AbstractService
      * @param bool $record
      * @param int  $nb_user_autorecord
      * @param bool $allow_intructor
+     * @param bool $has_eqcq
      *
      * @return int
      */
-    public function add($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
+    public function add($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null, $has_eqcq = null)
     {
         $m_opt_videoconf = $this->getModel()
             ->setItemId($item_id)
-            ->setRecord($record)      ->setNbUserAutorecord($nb_user_autorecord)
-            ->setAllowIntructor($allow_intructor);
+            ->setRecord($record)      
+            ->setNbUserAutorecord($nb_user_autorecord)
+            ->setAllowIntructor($allow_intructor)
+            ->setHasEqcq($has_eqcq);
     
         return $this->getMapper()->insert($m_opt_videoconf);
     }
@@ -44,19 +48,21 @@ class ConversationOpt extends AbstractService
      * @param bool $record
      * @param int  $nb_user_autorecord
      * @param bool $allow_intructor
+     * @param bool $has_eqcq
      * 
      * @return int
      */
-    public function update($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null)
+    public function update($item_id, $record = null, $nb_user_autorecord = null, $allow_intructor = null, $has_eqcq = null)
     {
-        if (null === $record && null === $nb_user_autorecord && null === $allow_intructor) {
+        if (null === $record && null === $nb_user_autorecord && null === $allow_intructor && null === $has_eqcq) {
             return 0;
         }
     
         $m_opt_videoconf = $this->getModel()
             ->setRecord($record)
             ->setNbUserAutorecord($nb_user_autorecord)
-            ->setAllowIntructor($allow_intructor);
+            ->setAllowIntructor($allow_intructor)
+            ->setHasEqcq($has_eqcq);
     
         return $this->getMapper()->update($m_opt_videoconf, ['item_id' => $item_id]);
     }
