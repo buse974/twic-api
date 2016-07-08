@@ -146,16 +146,17 @@ class Program extends AbstractService
      */
     public function delete($id)
     {
-        $ret = array();
-
+        $ret = [];
         if (!is_array($id)) {
             $id = array($id);
         }
 
         foreach ($id as $p) {
-            $m_program = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($p);
-            $ret[$p] = $this->getMapper()->update($m_program);
-            $this->getServiceCourse()->deleteProgram($p);
+            $ret[$p] = $this->getMapper()->delete($this->getModel()->setId($p));
+            /* Ici on modifie la deleted date */
+            //$m_program = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($p);
+            //$ret[$p] = $this->getMapper()->update($m_program);
+            //$this->getServiceCourse()->deleteProgram($p);
         }
 
         return $ret;
