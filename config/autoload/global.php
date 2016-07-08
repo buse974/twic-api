@@ -55,8 +55,6 @@ return [
             'app_service_thread_message',
             'app_service_message',
             'app_service_module_assignments',
-            'app_service_item_assignment',
-            'app_service_item_assignment_comment',
             'app_service_task',
             'app_service_task_share',
             'app_service_mail',
