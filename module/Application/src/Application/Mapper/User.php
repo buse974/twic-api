@@ -600,8 +600,8 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('user$contacts_count' => new Expression('COUNT(1)')))
             ->join('contact', 'contact.contact_id = user.id', [])
-            ->where(array('contact.user_id = `user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
-        
+            ->where(array('contact.user_id = `user$id` AND user.deleted_date IS NULL AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
+
         return $select;
     }
     

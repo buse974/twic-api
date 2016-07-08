@@ -341,18 +341,19 @@ class User extends AbstractService
         return $this->getMapper()->getInstructorByItem($item_id);
     }
     
-    
-    
     /**
      * @invokable
      * 
-     * @param int    $type
+     * @param integer $type
      * @param string $date
+     * @param integer $user
      */
     public function getListContact($type = 5, $date = null, $user = null)
     {
-        $user = $user === null ? $this->getServiceAuth()->getIdentity()->getId() : $user;
-
+        if(null === $user) {
+            $user = $this->getIdentity()['id'];
+        }
+        
         return $this->getMapper()->getListContact($user, $type, $date);
     }
 
@@ -658,7 +659,6 @@ class User extends AbstractService
 
         $users = $res_user->toArray();
         foreach ($users as &$user) {
-            $user['contacts_count'] = $this->getListContact(5, null, $id)->count();
             $user['roles'] = [];
             $user['program'] = [];
             $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
