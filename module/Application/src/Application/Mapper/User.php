@@ -598,15 +598,13 @@ class User extends AbstractMapper
     public function getSelectContactCount()
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('user$contacts_count' => new Expression('COUNT(user.id)')))
-            ->join('contact', 'contact.contact_id = user.id', array())
-            ->where(array('user.id=`user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
+        $select->columns(array('user$contacts_count' => new Expression('COUNT(1)')))
+            ->join('contact', 'contact.contact_id = user.id', [])
+            ->where(array('contact.user_id = `user$id` AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
         
         return $select;
     }
     
-    
-
     /**
      * @param int $submission_id
      */
