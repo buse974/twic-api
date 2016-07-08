@@ -353,13 +353,7 @@ class Event extends AbstractService
         return $this->create('course.participation', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
-
-    public function courseMaterialAdded($course, $material)
-    {
-        return $this->create('course.material_added', $this->getDataUser(), $this->getDataCourseAddMaterial($course, $material), $this->getDataUserByCourseWithStudentAndInstructorAndAcademic($course), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-    }
-
+    
     public function programmationNew($submission)
     {
         return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListByItemProgWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
