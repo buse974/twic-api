@@ -55,13 +55,17 @@ class Message extends AbstractService
      */
     public function sendMail($title, $text, $to, $conversation = null, $draft = false, $id = null, $document = null)
     {
-        // Fetches sender id
-        $me = $this->getServiceUser()->getIdentity()['id'];
-
+        if(empty($to) && $draft === false && null === $conversation && null === $id) {
+            throw new \Exception('error params, check $to  $draft $conversation and $id');
+        }
+        
         if (!is_array($to)) {
             $to = array($to);
         }
 
+        // Fetches sender id
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        
         // Id is set => update
         if (null !== $id) {
             $m_message = $this->get($id);
