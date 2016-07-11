@@ -177,7 +177,6 @@ class User extends AbstractService
             ->setTimezone($timezone)
             ->setBackground($background)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
         /*
          * @TODO schoolid vérifier que si il n'est pas admin le school id est
          * automatiquement celui de la personne qui add le user.
