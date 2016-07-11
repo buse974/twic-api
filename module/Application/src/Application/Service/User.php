@@ -182,7 +182,7 @@ class User extends AbstractService
          * @TODO schoolid vérifier que si il n'est pas admin le school id est
          * automatiquement celui de la personne qui add le user.
          */
-        if ($school_id !== null && !in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
+        if (!in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
             $user = $this->get();
             $m_user->setSchoolId($user['school_id']);
 
