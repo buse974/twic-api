@@ -313,6 +313,20 @@ class Event extends AbstractService
         return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), $this->getListBySubmissionWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
     }
 
+    public function pgAssigned($submission)
+    {
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission);
+        $res_sub_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission);
+        
+        $user = [];
+        foreach ($res_sub_pg as $m_sub_pg) {
+            $user[] = $m_sub_pg->getUserId();
+        }
+        
+        return $this->create('pg.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user, self::TARGET_TYPE_USER);
+    }
+    
+    
     public function requestSubmit($submission, $user)
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission);
@@ -965,6 +979,15 @@ class Event extends AbstractService
         return $this->getServiceLocator()->get('app_service_message_user');
     }
 
+    /**
+     *
+     * @return \Application\Service\SubmissionPg
+     */
+    public function getServiceSubmissionPg()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_pg');
+    }
+    
     /**
      *
      * @return \Application\Service\Message

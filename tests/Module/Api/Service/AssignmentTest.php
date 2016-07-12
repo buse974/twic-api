@@ -100,7 +100,8 @@ class AssignmentTest extends AbstractService
                 'parent' => null,   
                 'order' => null, 
                 'submission' => [
-                    [ 'submission_user' => [1,3,4]]
+                    [ 'submission_user' => [1,3,4]],
+                    //[ 'submission_user' => [2,5,6]]
                 ],
                 'has_all_student' => false,
                 'is_grouped' => true,
@@ -403,7 +404,7 @@ class AssignmentTest extends AbstractService
         ]);
         $this->reset();
         
-        /*$this->setIdentity(4);
+       /* $this->setIdentity(4);
         $data = $this->jsonRpc('submission.submit', [
             'item_id' => $item_id
         ]);*/
@@ -412,7 +413,6 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result'] , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
     
     /**

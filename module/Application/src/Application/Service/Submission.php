@@ -360,17 +360,6 @@ class Submission extends AbstractService
         return $this->get(null, $id);
     }
 
-    public function getListRecord($item, $user, $is_student)
-    {
-        $res_submission = $this->getMapper()->getListRecord($item, $user, $is_student);
-        foreach ($res_submission as $m_submission) {
-            $m_submission->setVideoconfArchives($this->getServiceVideoconfArchive()->getListRecordBySubmission($m_submission->getId()));
-            $m_submission->setUsers($this->getServiceUser()->getListUsersBySubmission($m_submission->getId()));
-        }
-
-        return $res_submission;
-    }
-
     /**
      * @invokable
      * 
@@ -565,9 +554,9 @@ class Submission extends AbstractService
             }
         }
         
+        $m_item = $this->getServiceItem()->getBySubmission($submission_id);
         //Si c la premiere fois que l'on soumet et quil manque des soumissions
         if($is_ok===true && $is_first===true && $submit!==1) {
-            $m_item = $this->getServiceItem()->getBySubmission($submission_id);
             if($m_item->getType() === $m_item::TYPE_INDIVIDUAL_ASSIGNMENT) {
                 $user = [];
                 foreach ($res_submission_user as $m_submission_user) {
@@ -582,9 +571,11 @@ class Submission extends AbstractService
             }
         }
         
-        
         if ($submit === 1) {
             $this->getServiceEvent()->endSubmit($submission_id);
+            if($this->getServiceOptGrading()->get($m_item->getId())->getHasPg()) {
+                $this->getServiceEvent()->pgAssigned($submission_id);
+            }
             $this->forceSubmitBySubmission($submission_id);
         }
         
@@ -942,6 +933,14 @@ class Submission extends AbstractService
     }
 
     /**
+     * @return \Application\Service\OptGrading
+     */
+    public function getServiceOptGrading()
+    {
+        return $this->getServiceLocator()->get('app_service_opt_grading');
+    }
+    
+    /**
      * @return \Application\Service\Videoconf
      */
     public function getServiceVideoconf()
@@ -1011,13 +1010,5 @@ class Submission extends AbstractService
     public function getServiceSubmissionPg()
     {
         return $this->getServiceLocator()->get('app_service_submission_pg');
-    }
-
-    /**
-     * @return \Application\Service\VideoconfArchive
-     */
-    public function getServiceVideoconfArchive()
-    {
-        return $this->getServiceLocator()->get('app_service_video_archive');
     }
 }

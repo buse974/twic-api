@@ -28,6 +28,11 @@ class SubmissionPg extends AbstractService
         return  $this->getMapper()->getListByItem($item_id);
     }
 
+    public function getListBySubmission($submission_id)
+    {
+        return  $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+    }
+    
     public function deleteByItem($item_id)
     {
         $res_submission = $this->getServiceSubmission()->getList($item_id);
@@ -73,6 +78,7 @@ class SubmissionPg extends AbstractService
         $ar_s = [];
         $ar_u = [];
         $res_submission = $this->getServiceSubmission()->getList($item_id);
+        
         foreach ($res_submission as $m_submission) {
             $ar_s[$m_submission->getId()] = [];
             foreach ($m_submission->getSubmissionUser() as $m_su) {
