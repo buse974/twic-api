@@ -20,6 +20,8 @@ class SubmissionComments extends AbstractService
      * @invokable
      * 
      * @param int $id
+     * 
+     * @return \Application\Model\SubmissionComments
      */
     public function get($id)
     {
@@ -35,6 +37,8 @@ class SubmissionComments extends AbstractService
      * @param string $file_token
      * @param string $audio
      * @param string $text
+     * 
+     * @return \Application\Model\SubmissionComments
      */
     public function add($submission_id, $user_id, $file_name, $file_token, $audio, $text)
     {

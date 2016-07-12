@@ -153,10 +153,6 @@ class Program extends AbstractService
 
         foreach ($id as $p) {
             $ret[$p] = $this->getMapper()->delete($this->getModel()->setId($p));
-            /* Ici on modifie la deleted date */
-            //$m_program = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setId($p);
-            //$ret[$p] = $this->getMapper()->update($m_program);
-            //$this->getServiceCourse()->deleteProgram($p);
         }
 
         return $ret;
@@ -178,11 +174,4 @@ class Program extends AbstractService
         return $this->getServiceLocator()->get('app_service_course');
     }
 
-    /**
-     * @return \Zend\Authentication\AuthenticationService
-     */
-    public function getServiceAuth()
-    {
-        return $this->getServiceLocator()->get('auth.service');
-    }
 }

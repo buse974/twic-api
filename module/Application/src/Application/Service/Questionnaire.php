@@ -199,14 +199,6 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * @return \Application\Service\ItemAssignment
-     */
-    public function getServiceItemAssignment()
-    {
-        return $this->getServiceLocator()->get('app_service_item_assignment');
-    }
-
-    /**
      * @return \Application\Service\Item
      */
     public function getServiceItem()

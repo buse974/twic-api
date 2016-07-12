@@ -131,34 +131,8 @@ class Course extends AbstractService
             $id = array($id);
         }
 
-        $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
         foreach ($id as $idc) {
-            $ret[$idc] = $this->getMapper()->update($m_course, array('id' => $idc));
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Delete course by Program.
-     *
-     * @param array $id
-     *
-     * @return int
-     */
-    public function deleteProgram($id)
-    {
-        $ret = array();
-
-        if (!is_array($id)) {
-            $id = array($id);
-        }
-
-        $m_course = $this->getModel()->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
-        foreach ($id as $idp) {
-            $ret[$idp] = $this->getMapper()->update($m_course, array('program_id' => $idp));
+            $ret[$idc] = $this->getMapper()->delete($this->getModel()->setId($idc));
         }
 
         return $ret;

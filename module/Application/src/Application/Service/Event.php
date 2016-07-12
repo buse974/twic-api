@@ -260,38 +260,23 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
 
-    public function assignmentGraded($item_assignment, $user)
+    public function submissionGraded($submission_id, $user_id)
     {
-        $m_item_assignment = $this->getServiceItemAssignment()->_get($item_assignment);
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        $users = $this->getDataUserByCourseWithInstructorAndAcademic($m_submission->getItem()->getCourseId());
         
-        $users = $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId());
-        
-        $users = array_merge($user, $users);
-        
-        return $this->create('assignment.graded', $this->getDataUser(), $this->getDataAssignmentGrade($m_item_assignment), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), array_merge($user_id, $users), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function assignmentCommented($item_assignment, $item_assignment_comment)
+    public function submissionCommented($submission_id, $submission_comments_id)
     {
-        $m_item_assignment = $this->getServiceItemAssignment()->_get($item_assignment);
-        $m_assignment_comment = $this->getServiceItemAssignmentComment()->get($item_assignment_comment);
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        $uai = $this->getDataUserByCourseWithInstructorAndAcademic($m_submission->getItem()->getCourseId());
+        $users = $this->getDataUserBySubmission($submission_id);
+        $m_comment = $this->getServiceSubmissionComments()->get($submission_comments_id);
         
-        $res_user = $m_item_assignment->getStudents();
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        $uai = $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId());
-        
-        return $this->create('assignment.commented', $this->getDataUser(), $this->getDataAssignmentComment($m_item_assignment, $m_assignment_comment), array_merge($users, $uai), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.commented', $this->getDataUser(), $this->getDataSubmissionComment($m_submission, $m_comment), array_merge($users, $uai), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -325,7 +310,7 @@ class Event extends AbstractService
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission);
         
-        return $this->create('eqcq.available', $this->getDataSubmissionWihtUser($m_submission), [], $this->getListByItemProgWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), $this->getListBySubmissionWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
     }
 
     public function requestSubmit($submission, $user)
@@ -339,7 +324,7 @@ class Event extends AbstractService
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission);
     
-        return $this->create('submit.end', $this->getDataUser(), $this->getDataSubmission($m_submission), $this->getDataInstructorByItem($m_submission->getItemId()), self::TARGET_TYPE_USER);
+        return $this->create('submission.submit', $this->getDataUser(), $this->getDataSubmission($m_submission), $this->getDataInstructorByItem($m_submission->getItemId()), self::TARGET_TYPE_USER);
     }
     
     public function courseUpdated($course, $dataupdated)
@@ -356,13 +341,13 @@ class Event extends AbstractService
     
     public function programmationNew($submission)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListByItemProgWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
     public function programmationUpdated($submission)
     {
-        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListByItemProgWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
@@ -657,18 +642,6 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getListByItemProgWithInstrutorAndAcademic($submission)
-    {
-        $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
     public function getListBySubmissionWithInstrutorAndAcademic($submission)
     {
         $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission);
@@ -681,10 +654,10 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getDataUserByItemProg($submission)
+    public function getDataUserBySubmission($submission_id)
     {
-        $res_user = $this->getServiceUser()->getListByItemProg($submission);
-        
+        $res_user = $this->getServiceUser()->getListBySubmission($submission_id);
+       
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
@@ -762,60 +735,20 @@ class Event extends AbstractService
         ];
     }
 
-    public function getDataAssignmentComment(\Application\Model\ItemAssignment $m_item_assignment, \Application\Model\ItemAssignmentComment $m_comment)
+    public function getDataSubmissionComment(\Application\Model\Submission $m_submisssion, \Application\Model\SubmissionComments $m_comment)
     {
         return [
-            'id' => $m_item_assignment->getId(),
-            'name' => 'assignment',
+            'id' => $m_submisssion->getId(),
+            'name' => 'submission',
             'data' => [
-                'submission' => [
-                    'id' => $m_item_assignment->getItemProg()->getId()
-                ],
                 'item' => [
-                    'title' => $m_item_assignment->getItemProg()
-                        ->getItem()
-                        ->getTitle(),
-                    'type' => $m_item_assignment->getItemProg()
-                        ->getItem()
-                        ->getType()
-                ], /*,'module' => [
-                    'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(), 
-                    'course' => [
-                        'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
-                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle(), 
-                    ], 
-                ]*/
+                    'title' => $m_submisssion->getItem()->getTitle(),
+                    'type' => $m_submisssion->getItem()->getType()
+                ],
                 'comment' => [
                     'id' => $m_comment->getId(),
                     'text' => $m_comment->getText()
                 ]
-            ]
-        ];
-    }
-
-    public function getDataAssignmentGrade(\Application\Model\ItemAssignment $m_item_assignment)
-    {
-        return [
-            'id' => $m_item_assignment->getId(),
-            'name' => 'assignment',
-            'data' => [
-                'submission' => [
-                    'id' => $m_item_assignment->getItemProg()->getId()
-                ],
-                'item' => [
-                    'title' => $m_item_assignment->getItemProg()
-                        ->getItem()
-                        ->getTitle(),
-                    'type' => $m_item_assignment->getItemProg()
-                        ->getItem()
-                        ->getType()
-                ],
-            /*'module' => ['title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
-                'course' => [
-                    'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
-                    'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle(), 
-                ], 
-            ]*/
             ]
         ];
     }
@@ -857,13 +790,6 @@ class Event extends AbstractService
                 'submission' => [
                     'id' => $m_item_assignment->getItemProg()->getId()
                 ],
-                /*'module' => [
-                    'title' => $m_item_assignment->getItemProg()->getItem()->getModule()->getTitle(),
-                    'course' => [
-                        'id' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getId(),
-                        'title' => $m_item_assignment->getItemProg()->getItem()->getCourse()->getTitle()
-                    ]
-                ]*/
             ]
         ];
     }
@@ -967,15 +893,6 @@ class Event extends AbstractService
 
     /**
      *
-     * @return \Application\Service\ItemAssignment
-     */
-    public function getServiceItemAssignment()
-    {
-        return $this->getServiceLocator()->get('app_service_item_assignment');
-    }
-
-    /**
-     *
      * @return \Application\Service\VideoArchive
      */
     public function getServiceVideoArchive()
@@ -985,7 +902,16 @@ class Event extends AbstractService
 
     /**
      *
-     * @return \Application\Service\ItemProg
+     * @return \Application\Service\SubmissionComments
+     */
+    public function getServiceSubmissionComments()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_comments');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\Submission
      */
     public function getServiceSubmission()
     {
@@ -1026,15 +952,6 @@ class Event extends AbstractService
     public function getServiceContact()
     {
         return $this->getServiceLocator()->get('app_service_contact');
-    }
-
-    /**
-     *
-     * @return \Application\Service\ItemAssignmentComment
-     */
-    public function getServiceItemAssignmentComment()
-    {
-        return $this->getServiceLocator()->get('app_service_item_assignment_comment');
     }
 
     /**

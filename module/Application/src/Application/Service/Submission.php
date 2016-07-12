@@ -169,8 +169,11 @@ class Submission extends AbstractService
             null;
     }
     
-    
-
+    /**
+     * @param integer $submission_id
+     * 
+     * @return \Application\Model\Submission
+     */
     public function getWithItem($submission_id)
     {
         $res_submission = $this->getMapper()->getWithItem($submission_id);
@@ -831,7 +834,10 @@ class Submission extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
 
-        return ['submission_id' => $id, 'comment' => $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text)];
+        $m_submission_comments = $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
+        $this->getServiceEvent()->submissionCommented($id, $m_submission_comments->getId());
+
+        return ['submission_id' => $id, 'comment' => $m_submission_comments];
     }
 
     /**

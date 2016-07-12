@@ -313,7 +313,7 @@ class GroupWorkTest extends AbstractService
             [
                 'item_id' => $item_id
             ]);
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 7);
         $this->assertEquals(count($data['result'][0]) , 11);
