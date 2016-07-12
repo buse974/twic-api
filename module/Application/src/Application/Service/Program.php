@@ -57,7 +57,6 @@ class Program extends AbstractService
     public function update($id, $name = null, $school_id = null, $level = null, $sis = null, $year = null)
     {
         $m_program = $this->getModel();
-
         $m_program->setId($id)
                   ->setName($name)
                   ->setSchoolId($school_id)

@@ -464,20 +464,13 @@ class Event extends AbstractService
             'id' => $m_submission->getId(),
             'name' => 'programmation',
             'data' => [
-                'start_date' => $m_submission->getStartDate(),
                 'item' => [
                     'id' => $m_submission->getItem()->getId(),
                     'title' => $m_submission->getItem()->getTitle(),
                     'type' => $m_submission->getItem()->getType(),
                     'duration' => $m_submission->getItem()->getDuration(),
-                    'course' => [
-                        'id' => $m_submission->getItem()
-                            ->getCourse()
-                            ->getId(),
-                        'title' => $m_submission->getItem()
-                            ->getCourse()
-                            ->getTitle()
-                    ]
+                    'start' => $m_submission->getItem()->getStart(),
+                    'cut_off' => $m_submission->getItem()->getCutOff(),
                 ]
             ]
         ];

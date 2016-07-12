@@ -143,10 +143,19 @@ class Item extends AbstractService
                     (isset($opt['grading']['pg_stars'])) ? $opt['grading']['pg_stars'] : null);
             }
         }
+        
         if (null !== $submission) {
             $this->getServiceSubmission()->add($submission, $item_id);
         }
 
+        // si il y a eu une mis a jour and si on a mis a jour le champ complete
+        if($is_complete === true) {
+            $res_submission = $this->getServiceSubmission()->getList($item_id);
+            foreach ($res_submission as $m_submission) {
+                $this->getServiceEvent()->programmationNew($m_submission->getId());
+            }
+        }
+        
         $this->initCmp($type, $data, $item_id);
 
         return $item_id;
@@ -355,9 +364,18 @@ class Item extends AbstractService
             $this->getServiceSubmission()->add($submission, $id);
         }
         
-        $actual_is_complete = ($is_complete === true) ?
-            $this->getMapper()->select($this->getModel()->setId($id))->current()->getIsComplete() : null;
-
+        $actual_is_complete = null;
+        $actual_start = null;
+        if($is_complete === true || $start !== true) {
+            $actual_item = $this->getMapper()->select($this->getModel()->setId($id))->current();
+            if($is_complete === true){
+                $actual_is_complete = $actual_item->getIsComplete();
+            }
+            if($start !== true) {
+                $actual_start = $actual_item->getStart();
+            }
+        }
+        
         $ret = $this->getMapper()->update($m_item);
         
         // si il y a eu une mis a jour and si on a mis a jour le champ complete
@@ -368,10 +386,17 @@ class Item extends AbstractService
             }
         }
         
+        if($ret===true && $start !== null && $actual_start !== $start) {
+            $res_submission = $this->getServiceSubmission()->getList($id);
+            foreach ($res_submission as $m_submission) {
+                $this->getServiceEvent()->programmationUpdated($m_submission->getId());
+            }
+        }
+        
+        
+        
         return $ret;
     }
-
-
 
     /**
      * @param int $submission_id

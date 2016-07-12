@@ -166,7 +166,7 @@ class Submission extends AbstractMapper
             'submission$nbr_comments' => $this->getSelectNbrComments(),
         ])
         ->join('submission_user', 'submission_user.submission_id=submission.id', [])
-        ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type', 'course_id',])
+        ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type', 'course_id','start','end','cut_off'])
         ->quantifier('DISTINCT');
         
         if (null !== $submission_id) {
