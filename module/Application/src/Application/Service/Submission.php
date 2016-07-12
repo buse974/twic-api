@@ -200,28 +200,17 @@ class Submission extends AbstractService
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
         //// ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
-        /*if (null !== $item_id) {
-            $m_item = $this->getServiceItem()->get($item_id);
-        }*/
         if (null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
         if (null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
-        /*if(null !== $item_id && null === $user_id && null === $submission_id && null === $group_id) {
-            $m_item = $this->getServiceItem()->get($item_id);
-            if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS && $m_item->getType() !== ModelItem::TYPE_WORKGROUP) {
-                $user_id = $this->getServiceUser()->getIdentity()['id'];
-            }
-        }*/
         //// FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
-
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
         if ($res_submission->count() <= 0) {
             return;
         }
-
         $m_submission = $res_submission->current();
         $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
 

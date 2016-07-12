@@ -8,6 +8,7 @@ use Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
 use Application\Model\Library as ModelLibrary;
 use Application\Model\Role as ModelRole;
+use function Zend\Mvc\Controller\forward;
 
 class Item extends AbstractService
 {
@@ -354,7 +355,20 @@ class Item extends AbstractService
             $this->getServiceSubmission()->add($submission, $id);
         }
         
-        return $this->getMapper()->update($m_item);
+        $actual_is_complete = ($is_complete === true) ?
+            $this->getMapper()->select($this->getModel()->setId($id))->current()->getIsComplete() : null;
+
+        $ret = $this->getMapper()->update($m_item);
+        
+        // si il y a eu une mis a jour and si on a mis a jour le champ complete
+        if($ret===true && $is_complete === true && $actual_is_complete === false) {
+            $res_submission = $this->getServiceSubmission()->getList($id);
+            foreach ($res_submission as $m_submission) {
+                $this->getServiceEvent()->programmationNew($m_submission->getId());
+            }
+        }
+        
+        return $ret;
     }
 
 
@@ -887,6 +901,14 @@ class Item extends AbstractService
     public function getServiceThread()
     {
         return $this->getServiceLocator()->get('app_service_thread');
+    }
+    
+    /**
+     * @return \Application\Service\Event
+     */
+    public function getServiceEvent()
+    {
+        return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
