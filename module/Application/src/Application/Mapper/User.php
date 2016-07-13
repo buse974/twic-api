@@ -256,7 +256,7 @@ class User extends AbstractMapper
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user_school));
             $select->where(array('school.id' => $sub_select));
         }
-        if (null !== $type) {
+        if (!empty($type)) {
             $select->join('user_role', 'user_role.user_id=user.id', array())
                 ->join('role', 'user_role.role_id=role.id', array())
                 ->where(array('role.name' => $type));

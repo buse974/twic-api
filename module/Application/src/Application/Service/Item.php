@@ -624,58 +624,6 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @param array  $program
-     * @param array  $course
-     * @param string $type
-     * @param bool   $not_graded
-     * @param bool   $new_message
-     * @param array  $filter
-     */
-    public function getListGrade($program = null, $course = null, $type = null, $not_graded = null, $new_message = null, $filter = null, $submission = null, $user = null)
-    {
-        $mapper = $this->getMapper();
-        $me = $this->getServiceUser()->getIdentity();
-
-        $res_item = $mapper->usePaginator($filter)->getListGrade($me, $program, $course, $type, $not_graded, $new_message, $filter, $submission, $user);
-
-        foreach ($res_item as $m_item) {
-            $item_assigment_id = $m_item->getItemProg()
-                ->getItemAssignment()
-                ->getId();
-            if ($item_assigment_id !== null && !$item_assigment_id instanceof IsNull) {
-                $m_item->setUsers($this->getServiceUser()
-                    ->getListByItemAssignment($item_assigment_id));
-            }
-        }
-
-        return array('count' => $mapper->count(), 'list' => $res_item);
-    }
-
-    /**
-     * @invokable
-     *
-     * @param int $course
-     * @param int $user
-     */
-    public function getListGradeDetail($course, $user = null)
-    {
-        $identity = $this->getServiceUser()->getIdentity();
-        if ($user === null || in_array(\Application\Model\Role::ROLE_STUDENT_STR, $identity['roles'])) {
-            $user = $identity['id'];
-        }
-        $res_grading_policy = $this->getServiceGradingPolicy()->getListByCourse($course, $user);
-
-        foreach ($res_grading_policy as $m_grading_policy) {
-            $m_grading_policy->setItems($this->getMapper()
-                ->getListGradeItem($m_grading_policy->getId(), $course, $user));
-        }
-
-        return $res_grading_policy;
-    }
-
-    /**
-     * @invokable
-     *
      * @param int $grading_policy_id
      * @param int $course
      * @param int $user
@@ -699,7 +647,6 @@ class Item extends AbstractService
     /**
      * @invokable
      *
-     * @TODO CHECK RIGHT
      * 
      * @param int $id
      *
@@ -718,8 +665,12 @@ class Item extends AbstractService
             throw new \Exception('error select item');
         }
 
+        
         $m_item = $res_item->current();
+        
+        // si il a le role d'étudiant
         if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+            //si il n'est pas autoriser sauf pour les txt document et module on léve une exception
             if ($m_item->getIsComplete() === 0 ||
                 ($m_item->getType() !== ModelItem::TYPE_TXT &&
                     $m_item->getType() !== ModelItem::TYPE_DOCUMENT &&

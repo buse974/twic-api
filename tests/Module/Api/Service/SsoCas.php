@@ -3,7 +3,7 @@ namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
 
-class SsoCasTest extends AbstractService
+class SsoCas extends AbstractService
 {
     public static function setUpBeforeClass()
     {

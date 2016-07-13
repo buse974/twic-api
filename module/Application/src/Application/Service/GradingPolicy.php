@@ -60,15 +60,14 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      * 
-     * @param int    $id
-     * @param int    $course_id
-     * @param string $name
-     * @param int    $grade
-     * @param int    $criterias
+     * @param integer    $id
+     * @param integer    $name
+     * @param integer    $grade
+     * @param integer    $criterias
      * 
      * @return int
      */
-    public function update($id, $course_id, $name = null,  $grade = null, $criterias = null)
+    public function update($id, $name = null,  $grade = null, $criterias = null)
     {
         $m_grading = $this->getModel()
             ->setName($name)

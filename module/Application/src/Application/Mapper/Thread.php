@@ -30,7 +30,8 @@ class Thread extends AbstractMapper
             $select->where(array('thread.title LIKE ? ' => $name.'%'));
         }
         if (null !== $course) {
-            $select->where(array('thread.course_id' => $course));
+            $select->where(array('thread.course_id' => $course))
+                ->where(['thread.item_id IS NULL']);
         }
         if (null !== $thread) {
             $select->where(array('thread.id' => $thread));

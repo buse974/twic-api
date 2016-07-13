@@ -36,7 +36,7 @@ class Course extends AbstractService
     {
         $m_course = $this->getModel()
             ->setTitle($title)
-            ->setCreatorId($this->getServiceAuth()->getIdentity()->getId())
+            ->setCreatorId($this->getServiceUser()->getIdentity()['id'])
             ->setAbstract($abstract)
             ->setPicture($picture)
             ->setDescription($description)
@@ -208,48 +208,6 @@ class Course extends AbstractService
     }
 
     /**
-     * @invokable
-     */
-    public function getListRecord()
-    {
-        $user = $this->getServiceUser()->getIdentity();
-        $is_student = (array_key_exists(ModelRole::ROLE_STUDENT_ID,  $user['roles'])) ? true : false;
-        $is_academic = (array_key_exists(ModelRole::ROLE_ACADEMIC_ID, $user['roles'])) ? true : false;
-        $res_course = $this->getMapper()->getListRecord($user['id'], $is_student, $is_academic);
-
-        foreach ($res_course as $m_course) {
-            $m_course->setItems($this->getServiceItem()->getListRecord($m_course->getId(), $user['id'], $is_student));
-        }
-
-        return $res_course;
-    }
-
-    /**
-     * @invokable
-     * 
-     * @param int $user
-     */
-    public function getListDetail($user)
-    {
-        $me = $this->getServiceUser()->getIdentity();
-        $res_course = $this->getMapper()->getListDetail($user, $me);
-
-        foreach ($res_course as $m_course) {
-            $m_course->setItemProg($this->getServiceItemProg()->getListByUserAndCourse($m_course->getId(), $user));
-        }
-
-        return $res_course;
-    }
-
-    /**
-     * @return \Zend\Authentication\AuthenticationService
-     */
-    public function getServiceAuth()
-    {
-        return $this->getServiceLocator()->get('auth.service');
-    }
-
-    /**
      * @return \Application\Service\Grading
      */
     public function getServiceGrading()
@@ -263,14 +221,6 @@ class Course extends AbstractService
     public function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
-    }
-
-    /**
-     * @return \Application\Service\ItemProg
-     */
-    public function getServiceItemProg()
-    {
-        return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**

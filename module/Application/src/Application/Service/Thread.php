@@ -1,5 +1,4 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -7,16 +6,17 @@ use Dal\Db\ResultSet\ResultSet;
 
 class Thread extends AbstractService
 {
+
     /**
      * Add thread.
      *
      * @invokable
      *
-     * @param string $title
-     * @param int    $course
-     * @param string $message
-     * @param int    $item_id
-     * 
+     * @param string $title            
+     * @param int $course            
+     * @param string $message            
+     * @param int $item_id            
+     *
      * @throws \Exception
      *
      * @return int
@@ -28,19 +28,20 @@ class Thread extends AbstractService
             ->setTitle($title)
             ->setItemId($item_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setUserId($this->getServiceAuth()->getIdentity()->getId());
-
+            ->setUserId($this->getServiceUser()
+            ->getIdentity()['id']);
+        
         if ($this->getMapper()->insert($m_thread) <= 0) {
             throw new \Exception('error insert thread');
         }
-
+        
         $id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEvent()->threadNew($id);
-
+        
         if (null !== $message) {
             $id = $this->getServiceThreadMessage()->add($message, $id, true);
         }
-
+        
         return $id;
     }
 
@@ -49,12 +50,12 @@ class Thread extends AbstractService
      *
      * @invokable
      *
-     * @TODO Add updated date
+     * @todo Add updated date
+     *      
+     * @param int $id            
+     * @param string $title            
+     * @param int $item_id            
      *
-     * @param int    $id
-     * @param string $title
-     * @param int    $item_id
-     * 
      * @return int
      */
     public function update($id, $title = null, $item_id = null)
@@ -62,12 +63,12 @@ class Thread extends AbstractService
         if ($item_id === null && $title === null) {
             return 0;
         }
-
+        
         $m_thread = $this->getModel()
             ->setId($id)
             ->setTitle($title)
             ->setItemId($item_id);
-
+        
         return $this->getMapper()->update($m_thread);
     }
 
@@ -76,9 +77,9 @@ class Thread extends AbstractService
      *
      * @invokable
      *
-     * @param int     $course
-     * @param unknown $filter
-     * @param string  $name
+     * @param int $course            
+     * @param unknown $filter            
+     * @param string $name            
      *
      * @return ResultSet
      */
@@ -96,47 +97,51 @@ class Thread extends AbstractService
             }
             $m_thread->getUser()->setRoles($roles);
         }
-
-        return array('count' => $mapper->count(), 'list' => $res_thread);
+        
+        return array(
+            'count' => $mapper->count(),
+            'list' => $res_thread
+        );
     }
 
     /**
-     * @param int $submission_id
-     * 
+     *
+     * @param int $submission_id            
+     *
      * @return void|\Application\Model\Thread
      */
     public function getBySubmission($submission_id)
     {
         $res_thread = $this->getMapper()->getList(null, null, null, $submission_id);
-
         if ($res_thread->count() <= 0) {
             return;
         }
-
+        
         $m_thread = $res_thread->current();
-        $m_thread->setMessage($this->getServiceThreadMessage()->getLast($m_thread->getId()));
-
+        $m_thread->setMessage($this->getServiceThreadMessage()
+            ->getLast($m_thread->getId()));
+        
         return $m_thread;
     }
 
     /**
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      *
      * @throws \Exception
-     * 
+     *
      * @return \Application\Model\Thread
      */
     public function get($id)
     {
         $mapper = $this->getMapper();
         $res_thread = $mapper->getList(null, $id);
-
+        
         if ($res_thread->count() <= 0) {
-            throw new \Exception('not thread with id: '.$id);
+            throw new \Exception('not thread with id: ' . $id);
         }
-
+        
         $m_thread = $res_thread->current();
         $m_thread->setMessage($this->getServiceThreadMessage()
             ->getLast($m_thread->getId()));
@@ -146,14 +151,15 @@ class Thread extends AbstractService
             $roles[] = $role->getName();
         }
         $m_thread->getUser()->setRoles($roles);
-
+        
         return $m_thread;
     }
 
     public function getByItem($item_id)
     {
-        $res_thread = $this->getMapper()->select($this->getModel()->setItemId($item_id));
-
+        $res_thread = $this->getMapper()->select($this->getModel()
+            ->setItemId($item_id));
+        
         return ($res_thread->count() > 0) ? $res_thread->current() : null;
     }
 
@@ -162,21 +168,23 @@ class Thread extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
      */
     public function delete($id)
     {
         return $this->getMapper()->update($this->getModel()
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceAuth()
-            ->getIdentity()
-            ->getId(), 'id' => $id, ));
+            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array(
+            'user_id' => $this->getServiceUser()
+                ->getIdentity()['id'],
+            'id' => $id
+        ));
     }
 
     /**
      * @invokable
-     * 
-     * @param int $school
-     * 
+     *
+     * @param int $school            
+     *
      * @return int
      */
     public function getNbrMessage($school)
@@ -185,19 +193,21 @@ class Thread extends AbstractService
             'd' => $this->getMapper()->getNbrMessage($school, 1),
             'w' => $this->getMapper()->getNbrMessage($school, 7),
             'm' => $this->getMapper()->getNbrMessage($school, 30),
-            'a' => $this->getMapper()->getNbrMessage($school),
+            'a' => $this->getMapper()->getNbrMessage($school)
         ];
     }
 
     /**
-     * @return \Auth\Service\AuthService
+     *
+     * @return \Auth\Service\User
      */
-    public function getServiceAuth()
+    public function getServiceUser()
     {
-        return $this->getServiceLocator()->get('auth.service');
+        return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()
@@ -206,6 +216,7 @@ class Thread extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Role
      */
     public function getServiceRole()
@@ -214,6 +225,7 @@ class Thread extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\ThreadMessage
      */
     public function getServiceThreadMessage()
