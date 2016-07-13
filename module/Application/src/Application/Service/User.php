@@ -160,6 +160,12 @@ class User extends AbstractService
         if ($this->getNbrEmailUnique($email) > 0) {
             throw new JrpcException('duplicate email', -38001);
         }
+        
+        if (!empty($sis)) {
+            if ($this->getNbrSisUnique($sis) > 0) {
+                throw new JrpcException('uid email', -38002);
+            }
+        }
 
         $m_user = $this->getModel();
         $m_user->setFirstname($firstname)
@@ -229,6 +235,30 @@ class User extends AbstractService
         return $id;
     }
 
+    /**
+     * @invokable
+     * 
+     * @param array $data
+     * @return array
+     */
+    public function import($data)
+    {
+        $error = [];
+        foreach ($data as $u) {
+            try {
+                $id = $this->add($u['firstname'], $u['lastname'], $u['email'], null,  null,  null,  $u['uid'],  null,  null,  null,  null,  null,  null, [$u['role']]);
+            } catch (JrpcException $e) {
+                $error[] = [
+                    'field' => $u,
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+        }
+        
+        return $error;
+    }
+    
     /**
      * @param int $item_id
      * @param int $user
@@ -580,6 +610,19 @@ class User extends AbstractService
     {
         $res_user = $this->getMapper()->getEmailUnique($email, $user);
 
+        return ($res_user->count() > 0) ? $res_user->current()->getNbUser() : 0;
+    }
+    
+    /**
+     * @param string $sis
+     * @param int    $user
+     *
+     * @return int
+     */
+    public function getNbrSisUnique($sis, $user = null)
+    {
+        $res_user = $this->getMapper()->getNbrSisUnique($sis, $user);
+    
         return ($res_user->count() > 0) ? $res_user->current()->getNbUser() : 0;
     }
 

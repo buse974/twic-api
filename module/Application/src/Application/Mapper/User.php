@@ -539,6 +539,24 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getNbrSisUnique($sis, $user)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(array('user$nb_user' => new Expression('COUNT(true)')))
+        ->where(array('user.sis' => $email))
+        ->where(array('user.deleted_date IS NULL'))
+        ->where(array('user.sis IS NOT NULL'))
+        ->where(array('user.sis <> ""'));
+    
+        if (null !== $user) {
+            $select->where(array('user.id <> ?' => $user));
+        }
+    
+        return $this->selectWith($select);
+    }
+    
+    
+    
     public function nbrBySchool($school)
     {
         $select = $this->tableGateway->getSql()->select();

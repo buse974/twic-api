@@ -8,7 +8,6 @@ use Application\Model\Item as ModelItem;
 use Zend\Db\Sql\Predicate\Operator;
 use Application\Model\Library as ModelLibrary;
 use Application\Model\Role as ModelRole;
-use function Zend\Mvc\Controller\forward;
 
 class Item extends AbstractService
 {
