@@ -519,7 +519,6 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    
     // DELETE
     
     /**
