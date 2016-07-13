@@ -39,15 +39,14 @@ class Conversation extends AbstractService
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setType($type);
         
-        if ($has_video === true) {
-            $m_conversation->setToken($this->getServiceZOpenTok()
-                ->getSessionId());
-        }
         if ($this->getMapper()->insert($m_conversation) <= 0) {
             throw new \Exception('Error create conversation');
         }
         $conversation_id = $this->getMapper()->getLastInsertValue();
         
+        if ($has_video === true) {
+            $this->addVideo($conversation_id);
+        }
         if (null !== $users) {
             $this->getServiceConversationUser()->add($conversation_id, $users);
         }
@@ -80,6 +79,20 @@ class Conversation extends AbstractService
     }
 
     /**
+     * @invokable 
+     * 
+     * @param integer $id
+     * @return number
+     */
+    public function addVideo($id)
+    {
+        return $this->getMapper()->update($this->getModel()
+            ->setToken($this->getServiceZOpenTok()
+            ->getSessionId())
+            ->setId($id));
+    }
+
+    /**
      * @invokable
      *
      * @param int $conversation            
@@ -89,41 +102,40 @@ class Conversation extends AbstractService
         $conv = $this->_get($id)->toArray();
         
         $conversations = $this->getListByConversation($id);
-        if(!empty($conversations)) {
+        if (! empty($conversations)) {
             $conv['conversations'] = $conversations;
         }
         
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
-        if((!is_array($editors) && $editors->count() > 0) || (is_array($editors) && !empty($editors))) {
+        if ((! is_array($editors) && $editors->count() > 0) || (is_array($editors) && ! empty($editors))) {
             $conv['editors'] = $editors;
         }
         
         $whiteboards = $this->getServiceWhiteboard()->getListByConversation($id);
-        if((!is_array($whiteboards) && $whiteboards->count() > 0) || (is_array($whiteboards) && !empty($whiteboards))) {
+        if ((! is_array($whiteboards) && $whiteboards->count() > 0) || (is_array($whiteboards) && ! empty($whiteboards))) {
             $conv['whiteboards'] = $whiteboards;
         }
         
         $documents = $this->getServiceLibrary()->getListByConversation($id);
-        if((!is_array($documents) && $documents->count() > 0) || (is_array($documents) && !empty($documents))) {
+        if ((! is_array($documents) && $documents->count() > 0) || (is_array($documents) && ! empty($documents))) {
             $conv['documents'] = $documents;
         }
         
         $conversation_opt = $this->getServiceConversationOpt()->get($conv['conversation_opt_id']);
-        if(null !== $conversation_opt) {
+        if (null !== $conversation_opt) {
             $conv['conversation_opt'] = $conversation_opt;
-        }   
+        }
         
         $conv['id'] = $id;
         $identity = $this->getServiceUser()->getIdentity();
         
-        $m_submission = $this->getServiceSubmission()->getByUserAndConversation($identity['id'] , $id);
-        if(null !== $m_submission) {
+        $m_submission = $this->getServiceSubmission()->getByUserAndConversation($identity['id'], $id);
+        if (null !== $m_submission) {
             $conv['submission_id'] = $m_submission->getId();
         }
         
         if (isset($conv['token']) && ! empty($conv['token'])) {
-            $conv['user_token'] = $this->getServiceZOpenTok()->createToken($conv['token'], 
-                '{"id":' . $identity['id'] . '}', (! array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ? OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER);
+            $conv['user_token'] = $this->getServiceZOpenTok()->createToken($conv['token'], '{"id":' . $identity['id'] . '}', (! array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) ? OpenTokRole::MODERATOR : OpenTokRole::PUBLISHER);
         }
         
         return $conv;
@@ -144,11 +156,11 @@ class Conversation extends AbstractService
     }
 
     /**
-     * @invokable 
-     * 
-     * @param int $program_id
-     * @param int $course_id 
-     * @param int $item_id   
+     * @invokable
+     *
+     * @param int $program_id            
+     * @param int $course_id            
+     * @param int $item_id            
      */
     public function getListId($program_id = null, $course_id = null, $item_id = null)
     {
@@ -158,30 +170,33 @@ class Conversation extends AbstractService
         foreach ($res_videoconf as $m_videoconf) {
             $ids[] = $m_videoconf->getId();
         }
-    
+        
         return $ids;
     }
-    
-    /** 
+
+    /**
      * @invokable
-     * 
-     * @param integer $submission_id 
-     * @param integer $item_id
-     */ 
-    public function getId($submission_id = null,$item_id = null)
+     *
+     * @param integer $submission_id            
+     * @param integer $item_id            
+     */
+    public function getId($submission_id = null, $item_id = null)
     {
-        if(null === $item_id && null === $submission_id) {
+        if (null === $item_id && null === $submission_id) {
             return null;
         }
         
         $identity = $this->getServiceUser()->getIdentity();
-        return $this->getMapper()->getListId($identity['school']['id'], null, null, $item_id, $submission_id)->current()->getId();
+        return $this->getMapper()
+            ->getListId($identity['school']['id'], null, null, $item_id, $submission_id)
+            ->current()
+            ->getId();
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param integer $text_editor
+     *
+     * @param integer $text_editor            
      */
     public function removeTextEditor($text_editor)
     {
@@ -190,8 +205,8 @@ class Conversation extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $whiteboard
+     *
+     * @param integer $whiteboard            
      */
     public function removeWhiteboard($whiteboard)
     {
@@ -200,8 +215,8 @@ class Conversation extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $document
+     *
+     * @param integer $document            
      */
     public function removeDocument($document)
     {
@@ -210,8 +225,8 @@ class Conversation extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param integer $conversation
+     *
+     * @param integer $conversation            
      */
     public function removeConversation($conversation)
     {
@@ -357,17 +372,23 @@ class Conversation extends AbstractService
     }
 
     /**
-     * @param integer $id
+     *
+     * @param integer $id            
      * @return \Application\Model\Conversation
      */
     public function _get($id)
     {
-        $conv = $this->getMapper()->select($this->getModel()->setId($id))->current();
-        $conv->setMessages($this->getServiceMessage()->getList($id, []));
-        $conv->setUsers($this
-            ->getServiceUser()
+        $conv = $this->getMapper()
+            ->select($this->getModel()
+            ->setId($id))
+            ->current();
+        $conv->setMessages($this->getServiceMessage()
+            ->getList($id, []));
+        $conv->setUsers($this->getServiceUser()
             ->getListByConversation($id)
-            ->toArray(array('id')));
+            ->toArray(array(
+            'id'
+        )));
         
         return $conv;
     }
@@ -568,7 +589,7 @@ class Conversation extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_conversation_conversation');
     }
-    
+
     /**
      *
      * @return \Application\Service\ConversationOpt
