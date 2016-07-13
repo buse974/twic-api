@@ -748,6 +748,7 @@ class Event extends AbstractService
             'name' => 'submission',
             'data' => [
                 'item' => [
+                    'id' => $m_submisssion->getItem()->getId(),
                     'title' => $m_submisssion->getItem()->getTitle(),
                     'type' => $m_submisssion->getItem()->getType()
                 ],
