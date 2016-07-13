@@ -263,9 +263,8 @@ class Event extends AbstractService
     public function submissionGraded($submission_id, $user_id)
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-        $users = $this->getDataUserByCourseWithInstructorAndAcademic($m_submission->getItem()->getCourseId());
         
-        return $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), array_merge($user_id, $users), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user_id, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 

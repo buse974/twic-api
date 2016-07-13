@@ -220,7 +220,7 @@ class User extends AbstractService
             syslog(1, 'Model name does not exist <> password is : '.$password.' <> '.$e->getMessage());
         }
 
-        $id = $this->getMapper()->getLastInsertValue();
+        $id = (int)$this->getMapper()->getLastInsertValue();
         if ($roles === null) {
             $roles = array(ModelRole::ROLE_STUDENT_STR);
         }
