@@ -543,7 +543,7 @@ class User extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('user$nb_user' => new Expression('COUNT(true)')))
-        ->where(array('user.sis' => $email))
+        ->where(array('user.sis' => $sis))
         ->where(array('user.deleted_date IS NULL'))
         ->where(array('user.sis IS NOT NULL'))
         ->where(array('user.sis <> ""'));

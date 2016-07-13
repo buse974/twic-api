@@ -266,4 +266,20 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         $serviceManager->setService('auth.service', $authMock);
         $serviceManager->setService('rbac.service', $rbacMock);
     }
+    
+    public function mockRbac()
+    {
+        $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
+            ->disableOriginalConstructor()
+            ->getMock();
+   
+        $rbacMock->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+    
+        $serviceManager = $this->getApplicationServiceLocator();
+        $serviceManager->setAllowOverride(true);
+    
+        $serviceManager->setService('rbac.service', $rbacMock);
+    }
 }
