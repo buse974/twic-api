@@ -365,9 +365,9 @@ class Item extends AbstractService
         
         $actual_is_complete = null;
         $actual_start = null;
-        if($is_complete === true || $start !== true) {
+        if($is_complete == true || $start !== true) {
             $actual_item = $this->getMapper()->select($this->getModel()->setId($id))->current();
-            if($is_complete === true){
+            if($is_complete == true){
                 $actual_is_complete = $actual_item->getIsComplete();
             }
             if($start !== true) {
