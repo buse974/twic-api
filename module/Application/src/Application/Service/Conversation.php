@@ -103,8 +103,7 @@ class Conversation extends AbstractService
             ->current();
         
         $token = $m_conversation->getToken();
-        
-        return ($token !== null && ! $token instanceof IsNull) ? $this->getMapper()->update($this->getModel()
+        return ($token === null || $token instanceof IsNull) ? $this->getMapper()->update($this->getModel()
             ->setToken($this->getServiceZOpenTok()
             ->getSessionId()), ['id' => $id]) : 0;
     }
@@ -387,6 +386,12 @@ class Conversation extends AbstractService
      * @invokable
      *
      * @param int $conversation            
+     */
+    
+    /**
+     * 
+     * @param unknown $conversation
+     * @return \Application\Service\[]
      */
     public function join($conversation)
     {

@@ -19,7 +19,7 @@ class MessageUser extends AbstractService
 {
 
     /**
-     * Send message.
+     * Send message
      * 
      * @param int $message_id
      * @param int $conversation_id
@@ -67,19 +67,21 @@ class MessageUser extends AbstractService
     }
 
     /**
-     *
-     * @param int $me            
-     * @param string $message            
-     * @param string $conversation            
-     * @param string $filter            
-     * @param string $tag            
-     * @param string $type            
-     * @param string $search            
+     * Get List MessasgeUser 
+     * 
+     * @param int $user_id
+     * @param int $message_id
+     * @param int $conversation_id
+     * @param array $filter
+     * @param string $tag
+     * @param string $type
+     * @param string $search
+     * @return array
      */
-    public function getList($me, $message = null, $conversation = null, $filter = null, $tag = null, $type = null, $search = null)
+    public function getList($user_id, $message_id = null, $conversation_id = null, $filter = null, $tag = null, $type = null, $search = null)
     {
         $mapper = $this->getMapper();
-        $list = $mapper->usePaginator($filter)->getList($me, $message, $conversation, $tag, $type, $filter, $search);
+        $list = $mapper->usePaginator($filter)->getList($user_id, $message_id, $conversation_id, $tag, $type, $filter, $search);
         
         foreach ($list as $m_message_user) {
             $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()
