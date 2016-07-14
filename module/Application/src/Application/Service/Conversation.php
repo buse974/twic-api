@@ -74,9 +74,6 @@ class Conversation extends AbstractService
         if (null !== $documents) {
             $this->addDocument($conversation_id, $documents);
         }
-        if (null !== $conversation) {
-            $this->addConversation($conversation_id, $conversation);
-        }
         if (null !== $text) {
             switch ($type) {
                 case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT:
@@ -398,6 +395,7 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Basique get conversation
      *
      * @param integer $id            
      * @return \Application\Model\Conversation
@@ -418,16 +416,18 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Get List Conversation By Submission
      *
      * @param int $submission_id            
-     * @param bool $all
-     *            Si false on teste pour tous le monde sinon on filtre l'utilisateur courant
-     *            
-     * @return []
+     * @param bool $all Si false on teste pour tous le monde sinon on filtre l'utilisateur courant       
+     * @return array
      */
     public function getListBySubmission($submission_id, $all = false)
     {
-        $user_id = (true === $all) ? null : $this->getServiceUser()->getIdentity()['id'];
+        $user_id = (false === $all) ? 
+            $this->getServiceUser()->getIdentity()['id'] : 
+            null;
+        
         $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
@@ -438,11 +438,11 @@ class Conversation extends AbstractService
     }
 
     /**
-     *
+     * Get List Conversation By Item
+     * 
      * @param int $item_id            
      * @param int $submission_id            
-     *
-     * @return []
+     * @return array
      */
     public function getListByItem($item_id, $submission_id = null)
     {
@@ -456,10 +456,10 @@ class Conversation extends AbstractService
     }
 
     /**
-     *
+     * Get List Conversation Or Create If not exist
+     * 
      * @param int $submission_id            
-     *
-     * @return []
+     * @return array
      */
     public function getListOrCreate($submission_id)
     {
@@ -496,11 +496,12 @@ class Conversation extends AbstractService
     }
 
     /**
-     * Read Message(s).
+     * Mark Read Message(s).
      *
      * @invokable
-     *
-     * @param int|array $conversation            
+     * 
+     * @param int|array $conversation
+     * @return int
      */
     public function read($conversation)
     {
@@ -508,11 +509,12 @@ class Conversation extends AbstractService
     }
 
     /**
-     * UnRead Message(s).
+     * Mark UnRead Message(s).
      *
      * @invokable
      *
-     * @param int|array $conversation            
+     * @param int|array $conversation
+     * @return int       
      */
     public function unRead($conversation)
     {
@@ -532,136 +534,151 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Get Service Service Conversation User
      *
      * @return \Application\Service\ConversationUser
      */
-    public function getServiceConversationUser()
+    private function getServiceConversationUser()
     {
         return $this->getServiceLocator()->get('app_service_conversation_user');
     }
 
     /**
+     * Get Service Service Submission Conversation
      *
      * @return \Application\Service\SubConversation
      */
-    public function getServiceSubConversation()
+    private function getServiceSubConversation()
     {
         return $this->getServiceLocator()->get('app_service_sub_conversation');
     }
 
     /**
+     * Get Service Service User
      *
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service Service Item
      *
      * @return \Application\Service\Item
      */
-    public function getServiceItem()
+    private function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**
+     * Get Service Service Message User
      *
      * @return \Application\Service\MessageUser
      */
-    public function getServiceMessageUser()
+    private function getServiceMessageUser()
     {
         return $this->getServiceLocator()->get('app_service_message_user');
     }
 
     /**
+     * Get Service Service Submission
      *
      * @return \Application\Service\Submission
      */
-    public function getServiceSubmission()
+    private function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
+     * Get Service Service Library
      *
      * @return \Application\Service\Library
      */
-    public function getServiceLibrary()
+    private function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }
 
     /**
+     * Get Service Service Conversation option
      *
      * @return \Application\Service\ConversationOpt
      */
-    public function getServiceConversationOpt()
+    private function getServiceConversationOpt()
     {
         return $this->getServiceLocator()->get('app_service_conversation_opt');
     }
 
     /**
+     * Get Service Service Conversation Document
      *
      * @return \Application\Service\ConversationDoc
      */
-    public function getServiceConversationDoc()
+    private function getServiceConversationDoc()
     {
         return $this->getServiceLocator()->get('app_service_conversation_doc');
     }
 
     /**
+     * Get Service Service Conversation TextEditor
      *
      * @return \Application\Service\ConversationTextEditor
      */
-    public function getServiceConversationTextEditor()
+    private function getServiceConversationTextEditor()
     {
         return $this->getServiceLocator()->get('app_service_conversation_text_editor');
     }
 
     /**
+     * Get Service Service Message
      *
      * @return \Application\Service\Message
      */
-    public function getServiceMessage()
+    private function getServiceMessage()
     {
         return $this->getServiceLocator()->get('app_service_message');
     }
 
     /**
+     * Get Service Service TextEditor
      *
      * @return \Application\Service\TextEditor
      */
-    public function getServiceTextEditor()
+    private function getServiceTextEditor()
     {
         return $this->getServiceLocator()->get('app_service_text_editor');
     }
 
     /**
+     * Get Service Service Conversation Whiteboard
      *
      * @return \Application\Service\ConversationWhiteboard
      */
-    public function getServiceConversationWhiteboard()
+    private function getServiceConversationWhiteboard()
     {
         return $this->getServiceLocator()->get('app_service_conversation_whiteboard');
     }
 
     /**
+     * Get Service Service Whiteboard
      *
      * @return \Application\Service\Whiteboard
      */
-    public function getServiceWhiteboard()
+    private function getServiceWhiteboard()
     {
         return $this->getServiceLocator()->get('app_service_whiteboard');
     }
 
     /**
+     * Get Service Service OpenTok
      *
      * @return \ZOpenTok\Service\OpenTok
      */
-    public function getServiceZOpenTok()
+    private function getServiceZOpenTok()
     {
         return $this->getServiceLocator()->get('opentok.service');
     }
