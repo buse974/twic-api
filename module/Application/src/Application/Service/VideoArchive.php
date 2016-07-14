@@ -1,9 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Archive Video
+ * 
+ */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\VideoArchive as CVF;
 
+/**
+ * Class VideoArchive
+ */
 class VideoArchive extends AbstractService
 {
 

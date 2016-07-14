@@ -384,7 +384,7 @@ class Item extends AbstractService
             }
         }
         
-        if($ret===1 && $start !== null && $actual_start !== $start) {
+        if($ret===1 && $start !== null && $is_complete == true && $actual_is_complete == true && $actual_start !== $start) {
             $res_submission = $this->getServiceSubmission()->getList($id);
             foreach ($res_submission as $m_submission) {
                 $this->getServiceEvent()->programmationUpdated($m_submission->getId());

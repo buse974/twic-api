@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * User
+ *
+ */
 
 namespace Application\Service;
 
@@ -11,6 +18,9 @@ use Firebase\Token\TokenGenerator;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Item as ModelItem;
 
+/**
+ * Class User
+ */
 class User extends AbstractService
 {
     /**

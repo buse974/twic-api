@@ -1,7 +1,17 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Cache User
+ *
+ */
 
 namespace Application\Service;
 
+/**
+ * Class CacheUser
+ */
 class CacheUser implements ServiceLocatorAwareInterface
 {
     protected $serviceLocator;

@@ -1,10 +1,21 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Event
+ *
+ */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Json\Server\Request;
 use Zend\Http\Client;
 
+/**
+ * Class Event
+ */
 class Event extends AbstractService
 {
 
@@ -354,13 +365,13 @@ class Event extends AbstractService
     
     public function programmationNew($submission)
     {
-        return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getDataUserBySubmission($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
     public function programmationUpdated($submission)
     {
-        return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getDataUserBySubmission($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 

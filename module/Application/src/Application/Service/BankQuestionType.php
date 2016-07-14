@@ -5,8 +5,6 @@
  *
  * Bank Question Type
  *
- * @package Application
- *
  */
 
 namespace Application\Service;
