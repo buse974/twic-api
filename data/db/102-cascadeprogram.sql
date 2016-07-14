@@ -1,15 +1,9 @@
-ALTER TABLE `apilms`.`thread` 
-DROP FOREIGN KEY `fk_thread_1`,
-DROP FOREIGN KEY `fk_thread_3`;
-ALTER TABLE `apilms`.`thread` 
-ADD CONSTRAINT `fk_thread_1`
+ALTER TABLE `grading_policy` 
+DROP FOREIGN KEY `fk_grading_policy_1`;
+ALTER TABLE `grading_policy` 
+ADD CONSTRAINT `fk_grading_policy_1`
   FOREIGN KEY (`course_id`)
-  REFERENCES `apilms`.`course` (`id`)
-  ON DELETE CASCADE
-  ON UPDATE NO ACTION,
-ADD CONSTRAINT `fk_thread_3`
-  FOREIGN KEY (`item_id`)
-  REFERENCES `apilms`.`item` (`id`)
+  REFERENCES `course` (`id`)
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
 

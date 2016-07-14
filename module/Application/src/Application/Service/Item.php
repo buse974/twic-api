@@ -148,7 +148,7 @@ class Item extends AbstractService
         }
 
         // si il y a eu une mis a jour and si on a mis a jour le champ complete
-        if($is_complete === true) {
+        if($is_complete == true) {
             $res_submission = $this->getServiceSubmission()->getList($item_id);
             foreach ($res_submission as $m_submission) {
                 $this->getServiceEvent()->programmationNew($m_submission->getId());
@@ -378,7 +378,7 @@ class Item extends AbstractService
         $ret = $this->getMapper()->update($m_item);
         
         // si il y a eu une mis a jour and si on a mis a jour le champ complete
-        if($ret===true && $is_complete === true && $actual_is_complete === false) {
+        if($ret===true && $is_complete == true && $actual_is_complete == false) {
             $res_submission = $this->getServiceSubmission()->getList($id);
             foreach ($res_submission as $m_submission) {
                 $this->getServiceEvent()->programmationNew($m_submission->getId());

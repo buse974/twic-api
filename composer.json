@@ -23,6 +23,7 @@
     "require-dev": {
             "zendframework/zftool": "dev-develop",
             "phing/phing": "*",
+	    "phpdocumentor/phpdocumentor": "2.*",
             "fabpot/php-cs-fixer":"*",
             "phpunit/phpunit" : "*"
     },

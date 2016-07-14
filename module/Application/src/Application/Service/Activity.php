@@ -1,4 +1,13 @@
 <?php
+/**
+ *
+ * TheStudnet (http://thestudnet.com/)
+ *
+ * ${file_name}
+ *
+ * @package ${package_name}
+ *
+ */
 
 namespace Application\Service;
 
@@ -7,11 +16,12 @@ use Zend\Db\Sql\Predicate\Between;
 
 class Activity extends AbstractService
 {
+
     /**
      * @invokable
-     * 
-     * @param array $activities
-     * 
+     *
+     * @param array $activities            
+     *
      * @return array
      */
     public function add($activities)
@@ -19,24 +29,25 @@ class Activity extends AbstractService
         $ret = [];
         $user = $this->getServiceUser()->getIdentity()['id'];
         foreach ($activities as $activity) {
-            $date = (isset($activity['date']))   ? $activity['date']  : null;
-            $event = (isset($activity['event']))  ? $activity['event'] : null;
+            $date = (isset($activity['date'])) ? $activity['date'] : null;
+            $event = (isset($activity['event'])) ? $activity['event'] : null;
             $object = (isset($activity['object'])) ? $activity['object'] : null;
             $target = (isset($activity['target'])) ? $activity['target'] : null;
-
+            
             $ret[] = $this->_add($date, $event, $object, $target, $user);
         }
-
+        
         $this->getServiceConnection()->add();
-
+        
         return $ret;
     }
 
     /**
-     * @param string $date
-     * @param string $event
-     * @param array  $object
-     * @param array  $target
+     *
+     * @param string $date            
+     * @param string $event            
+     * @param array $object            
+     * @param array $target            
      *
      * @throws \Exception
      *
@@ -48,7 +59,7 @@ class Activity extends AbstractService
         $m_activity->setEvent($event);
         $m_activity->setDate($date);
         $m_activity->setUserId($user);
-
+        
         if (null !== $object) {
             if (isset($object['id'])) {
                 $m_activity->setObjectId($object['id']);
@@ -74,33 +85,33 @@ class Activity extends AbstractService
                 $m_activity->setTargetData(json_encode($target['data']));
             }
         }
-
+        
         if ($this->getMapper()->insert($m_activity) <= 0) {
             throw new \Exception('error insert ativity');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
      * @invokable
-     * 
-     * @param string $date
-     * @param string $event
-     * @param array  $object
-     * @param array  $target
-     * @param array  $user
-     * @param string $start_date
-     * @param string $end_date
-     * @param array  $filter
+     *
+     * @param string $date            
+     * @param string $event            
+     * @param array $object            
+     * @param array $target            
+     * @param array $user            
+     * @param string $start_date            
+     * @param string $end_date            
+     * @param array $filter            
      */
     public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null, $filter = null)
     {
         $m_activity = $this->getModel();
         $m_activity->setEvent($event)
-                   ->setDate($date)
-                   ->setUserId($user);
-
+            ->setDate($date)
+            ->setUserId($user);
+        
         if (null !== $start_date && null !== $end_date) {
             $m_activity->setDate(new Between('date', $start_date, $end_date));
         }
@@ -126,13 +137,11 @@ class Activity extends AbstractService
                 $m_activity->setTargetData($target['data']);
             }
         }
-
-        $mapper = ($filter !== null) ?
-            $this->getMapper()->usePaginator($filter) :
-            $this->getMapper();
-
+        
+        $mapper = ($filter !== null) ? $this->getMapper()->usePaginator($filter) : $this->getMapper();
+        
         $res_activity = $mapper->select($m_activity, array('date' => 'ASC'));
-
+        
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
             $o_data = $m_activity->getObjectData();
@@ -144,47 +153,50 @@ class Activity extends AbstractService
                 $m_activity->setTargetData(json_decode($o_target, true));
             }
         }
-
-        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_activity] : $res_activity;
+        
+        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_activity] : $res_activity;
     }
 
     /**
      * @invokable
-     * 
-     * @param array  $filter
-     * @param string $search
+     *
+     * @param array $filter            
+     * @param string $search            
      */
     public function getListWithUser($filter = null, $search = null)
     {
         $mapper = $this->getMapper();
         $res_activity = $mapper->usePaginator($filter)->getListWithUser($search);
-
-        return ['count' => $mapper->count(), 'list' => $res_activity];
+        
+        return ['count' => $mapper->count(),'list' => $res_activity];
     }
 
     /**
      * @invokable
-     * 
-     * @param array|string $event
-     * @param int          $user
-     * @param int          $object_id
-     * @param string       $object_name
+     *
+     * @param array|string $event            
+     * @param int $user            
+     * @param int $object_id            
+     * @param string $object_name            
      */
     public function aggregate($event, $user, $object_id = null, $object_name = null, $target_id = null, $target_name = null)
     {
         $ret = [];
-        if (!is_array($event)) {
+        if (! is_array($event)) {
             $event = array($event);
         }
-
+        
         foreach ($event as $e) {
-            $ret[$e] = $this->getMapper()->aggregate($e, $user, $object_id, $object_name, $target_id, $target_name)->current();
+            $ret[$e] = $this->getMapper()
+                ->aggregate($e, $user, $object_id, $object_name, $target_id, $target_name)
+                ->current();
         }
-
+        
         return $ret;
     }
 
     /**
+     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -193,6 +205,7 @@ class Activity extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Connection
      */
     public function getServiceConnection()
