@@ -46,9 +46,24 @@ class Conversation extends AbstractService
                 ->getByItem($item_id)
                 ->getId();
         }
+        if (null !== $submission_id && null === $item_id) {
+            $item_id = $this->getServiceSubmission()
+            ->getBySubmission($submission_id)->getItemId();
+        }
         
+        $conversation_opt_id = null;
+        if($item_id) {
+            $m_conversation_opt = $this->getServiceConversationOpt()->getByItem($item_id);
+            if(null !== $m_conversation_opt) {
+                $conversation_opt_id = $m_conversation_opt->getId();
+            }
+        }
+        if($conversation_opt_id === null) {
+            $conversation_opt_id = $this->getServiceConversationOpt()->add();
+        }
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+            ->setConversationOptId($conversation_opt_id)
             ->setType($type);
         
         if ($this->getMapper()->insert($m_conversation) <= 0) {
@@ -118,7 +133,6 @@ class Conversation extends AbstractService
      *
      * @param int $id            
      * @param string $has_video            
-     *
      * @return array
      */
     public function get($id, $has_video = false)
@@ -144,9 +158,11 @@ class Conversation extends AbstractService
             $conv['documents'] = $documents;
         }
         
-        $conversation_opt = $this->getServiceConversationOpt()->get($conv['conversation_opt_id']);
-        if (null !== $conversation_opt) {
-            $conv['conversation_opt'] = $conversation_opt;
+        if(is_numeric($conv['conversation_opt_id'])) {
+            $conversation_opt = $this->getServiceConversationOpt()->get($conv['conversation_opt_id']);
+            if (null !== $conversation_opt) {
+                $conv['conversation_opt'] = $conversation_opt;
+            }
         }
         
         $conv['id'] = $id;
@@ -167,8 +183,7 @@ class Conversation extends AbstractService
     /**
      * Get Conversation Lite Version
      *
-     * @param int $id            
-     *
+     * @param int $id   
      * @return \Application\Model\Conversation
      */
     public function getLite($id)
@@ -366,8 +381,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param array $users            
-     *
+     * @param int|array $users            
      * @return int
      */
     public function add($users)
@@ -385,13 +399,8 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation            
-     */
-    
-    /**
-     * 
-     * @param unknown $conversation
-     * @return \Application\Service\[]
+     * @param int $conversation
+     * @return array
      */
     public function join($conversation)
     {

@@ -14,6 +14,7 @@ class ConversationOpt extends AbstractModel
 	protected $has_eqcq;
 	protected $start_date;
 	protected $duration;
+	protected $rules;
 
 	protected $prefix = 'conversation_opt';
 
@@ -109,6 +110,18 @@ class ConversationOpt extends AbstractModel
 	public function setDuration($duration)
 	{
 		$this->duration = $duration;
+
+		return $this;
+	}
+
+	public function getRules()
+	{
+		return $this->rules;
+	}
+
+	public function setRules($rules)
+	{
+		$this->rules = $rules;
 
 		return $this;
 	}

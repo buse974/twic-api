@@ -76,10 +76,11 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * @param intger $conversation_id
-     * @param array  $users
+     * Add User in the Conversation
      * 
-     * @return []
+     * @param int $conversation_id
+     * @param int|array $users
+     * @return array
      */
     public function add($conversation_id, $users)
     {
