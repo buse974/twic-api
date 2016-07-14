@@ -101,11 +101,6 @@ class Conversation extends AbstractService
     {
         $conv = $this->_get($id)->toArray();
         
-        $conversations = $this->getListByConversation($id);
-        if (! empty($conversations)) {
-            $conv['conversations'] = $conversations;
-        }
-        
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
         if ((! is_array($editors) && $editors->count() > 0) || (is_array($editors) && ! empty($editors))) {
             $conv['editors'] = $editors;
@@ -227,16 +222,6 @@ class Conversation extends AbstractService
      * @invokable
      *
      * @param integer $conversation            
-     */
-    public function removeConversation($conversation)
-    {
-        $this->getServiceConversationConversation()->delete($conversation);
-    }
-
-    /**
-     * @invokable
-     *
-     * @param integer $conversation            
      * @param array $text_editors            
      */
     public function addTextEditor($conversation, $text_editors)
@@ -312,19 +297,6 @@ class Conversation extends AbstractService
     /**
      * @invokable
      *
-     * @param integer $id            
-     * @param integer $conversation            
-     *
-     * @return integer
-     */
-    public function addConversation($id, $conversation)
-    {
-        return $this->getServiceConversationConversation()->add($id, $conversation);
-    }
-
-    /**
-     * @invokable
-     *
      * @param array $users            
      * @param string $text            
      * @param int $submission            
@@ -391,17 +363,6 @@ class Conversation extends AbstractService
         )));
         
         return $conv;
-    }
-
-    public function getListByConversation($id)
-    {
-        $res_conversation_conversation = $this->getServiceConversationConversation()->getList($id);
-        $ret = [];
-        foreach ($res_conversation_conversation as $m_conversation_conversation) {
-            $ret[$m_conversation_conversation->getConversationId()] = $this->_get($m_conversation_conversation->getConversationId());
-        }
-        
-        return $ret;
     }
 
     /**
@@ -579,15 +540,6 @@ class Conversation extends AbstractService
     public function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
-    }
-
-    /**
-     *
-     * @return \Application\Service\ConversationConversation
-     */
-    public function getServiceConversationConversation()
-    {
-        return $this->getServiceLocator()->get('app_service_conversation_conversation');
     }
 
     /**

@@ -1,11 +1,9 @@
 <?php
 /**
+ * 
+ * TheStudnet (http://thestudnet.com)
  *
- * TheStudnet (http://thestudnet.com/)
- *
- * ${file_name}
- *
- * @package ${package_name}
+ * Activity
  *
  */
 
@@ -14,6 +12,9 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\Between;
 
+/**
+ * Class Activity 
+ */
 class Activity extends AbstractService
 {
 

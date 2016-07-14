@@ -1,4 +1,13 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Bank Question Type
+ *
+ * @package Application
+ *
+ */
 
 namespace Application\Service;
 

@@ -103,49 +103,6 @@ class ConversationVideoTest extends AbstractService
         
     }
     
-    public function testCanAdd2()
-    {
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('conversation.create', [
-            'users' => [1,2],
-            'text' => 'un text de la mort qui tue',
-        ]);
-        $this->reset();
-        
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('conversation.addConversation', [
-            'id' => 1,
-            'conversation' => 2,
-        ]);
-    
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-    
-    public function testCanAdd3()
-    {
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('conversation.create', [
-            'users' => [3,4],
-            'text' => 'un text de la mort qui tue',
-        ]);
-    
-        $this->reset();
-        
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('conversation.addConversation', [
-            'id' => 1,
-            'conversation' => 3,
-        ]);
-        
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-    
     public function testCanGetListId()
     {
         $this->setIdentity(1);
@@ -185,7 +142,7 @@ class ConversationVideoTest extends AbstractService
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 15);
+        $this->assertEquals(count($data['result']) , 14);
         $this->assertEquals(count($data['result']['messages']) , 2);
         $this->assertEquals(count($data['result']['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]) , 8);
@@ -327,95 +284,6 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals($data['result']['conversation_opt_id'] , null);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
-        $this->assertEquals(count($data['result']['conversations']) , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]) , 8);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']) , 2);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list']) , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]) , 8);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']) , 10);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]) , 13);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['contact_state'] , 0);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['contacts_count'] , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']) , 5);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']['id'] , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']['name'] , "Morbi Corporation");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']['short_name'] , "turpis");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']['logo'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['school']['background'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['id'] , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['firstname'] , "Paul");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['email'] , "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['birth_date'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['position'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['interest'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['avatar'] , null);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['roles'][0] , "student");
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['from'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['document']) , 0);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to']) , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]) , 13);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['contact_state'] , 3);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['contacts_count'] , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']) , 5);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']['id'] , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']['name'] , "Morbi Corporation");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']['short_name'] , "turpis");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']['logo'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['school']['background'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['id'] , 2);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['firstname'] , "Xuan-Anh");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['lastname'] , "Hoang");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['email'] , "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['birth_date'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['position'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['interest'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['avatar'] , null);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['message']['to'][0]['program']) , 0);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['id'] , 2);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['title'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['text'] , "un text de la mort qui tue");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['token'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['is_draft'] , 0);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['message']['type'] , 2);
-        $this->assertEquals(!empty($data['result']['conversations'][2]['messages']['list'][0]['message']['created_date']) , true);
-        $this->assertEquals(count($data['result']['conversations'][2]['messages']['list'][0]['user']) , 4);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['id'] , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['firstname'] , "Paul");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user']['avatar'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['id'] , 5);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['conversation_id'] , 2);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['from_id'] , 1);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['list'][0]['user_id'] , 1);
-        $this->assertEquals(!empty($data['result']['conversations'][2]['messages']['list'][0]['read_date']) , true);
-        $this->assertEquals(!empty($data['result']['conversations'][2]['messages']['list'][0]['created_date']) , true);
-        $this->assertEquals($data['result']['conversations'][2]['messages']['count'] , 1);
-        $this->assertEquals(count($data['result']['conversations'][2]['users']) , 2);
-        $this->assertEquals(count($data['result']['conversations'][2]['users'][1]) , 5);
-        $this->assertEquals(count($data['result']['conversations'][2]['users'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['conversations'][2]['users'][1]['roles'][0] , "student");
-        $this->assertEquals($data['result']['conversations'][2]['users'][1]['id'] , 1);
-        $this->assertEquals($data['result']['conversations'][2]['users'][1]['firstname'] , "Paul");
-        $this->assertEquals($data['result']['conversations'][2]['users'][1]['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['conversations'][2]['users'][1]['avatar'] , null);
-        $this->assertEquals(count($data['result']['conversations'][2]['users'][2]) , 5);
-        $this->assertEquals(count($data['result']['conversations'][2]['users'][2]['roles']) , 1);
-        $this->assertEquals($data['result']['conversations'][2]['users'][2]['roles'][0] , "admin");
-        $this->assertEquals($data['result']['conversations'][2]['users'][2]['id'] , 2);
-        $this->assertEquals($data['result']['conversations'][2]['users'][2]['firstname'] , "Xuan-Anh");
-        $this->assertEquals($data['result']['conversations'][2]['users'][2]['lastname'] , "Hoang");
-        $this->assertEquals($data['result']['conversations'][2]['users'][2]['avatar'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['id'] , 2);
-        $this->assertEquals($data['result']['conversations'][2]['name'] , "Chat");
-        $this->assertEquals($data['result']['conversations'][2]['type'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['token'] , null);
-        $this->assertEquals($data['result']['conversations'][2]['conversation_opt_id'] , null);
-        $this->assertEquals(!empty($data['result']['conversations'][2]['created_date']) , true);
         $this->assertEquals(count($data['result']['editors']) , 1);
         $this->assertEquals(count($data['result']['editors'][0]) , 5);
         $this->assertEquals($data['result']['editors'][0]['id'] , 1);

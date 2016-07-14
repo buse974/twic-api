@@ -354,13 +354,13 @@ class Event extends AbstractService
     
     public function programmationNew($submission)
     {
-        return $this->create('programmation.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
     public function programmationUpdated($submission)
     {
-        return $this->create('programmation.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getListBySubmissionWithInstrutorAndAcademic($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
