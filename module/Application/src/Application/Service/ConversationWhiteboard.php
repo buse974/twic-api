@@ -1,8 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Conversation Whiteboard
+ *
+ */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class ConversationWhiteboard
+ */
 class ConversationWhiteboard extends AbstractService
 {
 

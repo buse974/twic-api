@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Course
+ *
+ */
 
 namespace Application\Service;
 
@@ -7,6 +14,9 @@ use DateTime;
 use DateTimeZone;
 use Application\Model\Role as ModelRole;
 
+/**
+ * Class Course
+ */
 class Course extends AbstractService
 {
     /**

@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Group
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class Group
+ */
 class Group extends AbstractService
 {
     /**

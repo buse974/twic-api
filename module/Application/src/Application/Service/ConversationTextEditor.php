@@ -1,8 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Conversation Text Editor
+ *
+ */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class ConversationTextEditor
+ */
 class ConversationTextEditor extends AbstractService
 {
 

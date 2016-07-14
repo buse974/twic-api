@@ -2778,10 +2778,10 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][5]['source']['data']['user_roles']) , 1);
         $this->assertEquals($data['result']['list'][5]['source']['data']['user_roles'][0] , "academic");
         $this->assertEquals(!empty($data['result']['list'][5]['date']) , true);
-        $this->assertEquals($data['result']['list'][5]['event'] , "programmation.new");
+        $this->assertEquals($data['result']['list'][5]['event'] , "submission.new");
         $this->assertEquals(count($data['result']['list'][5]['object']) , 3);
         $this->assertEquals($data['result']['list'][5]['object']['id'] , 1);
-        $this->assertEquals($data['result']['list'][5]['object']['name'] , "programmation");
+        $this->assertEquals($data['result']['list'][5]['object']['name'] , "submission");
         $this->assertEquals(count($data['result']['list'][5]['object']['data']) , 1);
         $this->assertEquals(count($data['result']['list'][5]['object']['data']['item']) , 6);
         $this->assertEquals($data['result']['list'][5]['object']['data']['item']['id'] , 2);

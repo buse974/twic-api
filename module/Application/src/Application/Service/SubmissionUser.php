@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Submission User
+ *
+ */
 
 namespace Application\Service;
 
@@ -6,6 +13,9 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Role as ModelRole;
 
+/**
+ * Class SubmissionUser
+ */
 class SubmissionUser extends AbstractService
 {
     /**

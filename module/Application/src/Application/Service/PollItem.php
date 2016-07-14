@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Poll Item
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class PollItem
+ */
 class PollItem extends AbstractService
 {
     public function add($poll_id, $data = [])

@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Conversation
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -6,15 +13,18 @@ use Application\Model\Conversation as ModelConversation;
 use Application\Model\Item as ModelItem;
 use OpenTok\Role as OpenTokRole;
 use Application\Model\Role as ModelRole;
+use Zend\Db\Sql\Predicate\IsNull;
 
+/**
+ * Class Conversation
+ */
 class Conversation extends AbstractService
 {
 
     /**
+     * Create New Conversation
      *
      * @invokable
-     *
-     * Create Conversation.
      *
      * @param int $type            
      * @param int $submission_id            
@@ -24,9 +34,11 @@ class Conversation extends AbstractService
      * @param array $text_editors            
      * @param array $whiteboards            
      * @param array $documents            
-     * @param boolean $has_video            
+     * @param bool $has_video            
+     * @throws \Exception
+     * @return int
      */
-    public function create($type = null, $submission_id = null, $users = null, $text = null, $item_id = null, $text_editors = null, $whiteboards = null, $documents = null, $has_video = null, $conversation = null)
+    public function create($type = null, $submission_id = null, $users = null, $text = null, $item_id = null, $text_editors = null, $whiteboards = null, $documents = null, $has_video = null)
     {
         $start_date = null;
         if (null === $submission_id && null !== $item_id) {
@@ -79,26 +91,46 @@ class Conversation extends AbstractService
     }
 
     /**
-     * @invokable 
-     * 
-     * @param integer $id
-     * @return number
+     * Add video Token in conversaton if not exist
+     *
+     * @invokable
+     *
+     * @param int $id            
+     * @return int
      */
     public function addVideo($id)
     {
-        return $this->getMapper()->update($this->getModel()
+        $m_conversation = $this->getMapper()
+            ->select($this->getModel()
+            ->setId($id))
+            ->current();
+        
+        $token = $m_conversation->getToken();
+        
+        return ($token !== null && ! $token instanceof IsNull) ? $this->getMapper()->update($this->getModel()
             ->setToken($this->getServiceZOpenTok()
-            ->getSessionId())
-            ->setId($id));
+            ->getSessionId()), ['id' => $id]) : 0;
     }
 
     /**
+     * Get conversation
+     *
+     * Get conversation whith all composant,
+     * if $has_video true add Video if not exist.
+     *
      * @invokable
      *
-     * @param int $conversation            
+     * @param int $id            
+     * @param string $has_video            
+     *
+     * @return array
      */
-    public function get($id, $filter = [])
+    public function get($id, $has_video = false)
     {
+        if ($has_video === true) {
+            $this->addVideo($id);
+        }
+        
         $conv = $this->_get($id)->toArray();
         
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
@@ -137,8 +169,9 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Get Conversation Lite Version
      *
-     * @param integer $id            
+     * @param int $id            
      *
      * @return \Application\Model\Conversation
      */
@@ -151,11 +184,17 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Get List of conversation id
+     *
+     * Get List of conversation id, By program, course and item id
+     * of current user school
+     *
      * @invokable
      *
      * @param int $program_id            
      * @param int $course_id            
      * @param int $item_id            
+     * @return array
      */
     public function getListId($program_id = null, $course_id = null, $item_id = null)
     {
@@ -170,10 +209,16 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Get conversation id
+     *
+     * Get conversation id, By submission and/or item id
+     * of current user school
+     *
      * @invokable
      *
      * @param integer $submission_id            
      * @param integer $item_id            
+     * @return int
      */
     public function getId($submission_id = null, $item_id = null)
     {
@@ -189,9 +234,12 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Remove Text Editor of conversation
+     *
      * @invokable
      *
-     * @param integer $text_editor            
+     * @param int $text_editor            
+     * @return int
      */
     public function removeTextEditor($text_editor)
     {
@@ -199,9 +247,12 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Remove Whiteboard of conversation
+     *
      * @invokable
      *
-     * @param integer $whiteboard            
+     * @param int $whiteboard            
+     * @return int
      */
     public function removeWhiteboard($whiteboard)
     {
@@ -209,9 +260,12 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Remove Document of conversation
+     *
      * @invokable
      *
-     * @param integer $document            
+     * @param int $document            
+     * @return int
      */
     public function removeDocument($document)
     {
@@ -219,17 +273,17 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Add Text Editor in conversation
+     *
      * @invokable
      *
-     * @param integer $conversation            
+     * @param int $conversation            
      * @param array $text_editors            
      */
     public function addTextEditor($conversation, $text_editors)
     {
         if (! is_array($text_editors) || isset($text_editors['name'])) {
-            $text_editors = [
-                $text_editors
-            ];
+            $text_editors = [$text_editors];
         }
         
         foreach ($text_editors as $text_editor) {
@@ -244,17 +298,17 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Add Whiteboard in conversation
+     *
      * @invokable
      *
-     * @param integer $conversation            
+     * @param int $conversation            
      * @param array $text_editors            
      */
     public function addWhiteboard($conversation, $whiteboards)
     {
         if (! is_array($whiteboards) || isset($whiteboards['name'])) {
-            $whiteboards = [
-                $whiteboards
-            ];
+            $whiteboards = [$whiteboards];
         }
         
         foreach ($whiteboards as $whiteboard) {
@@ -269,17 +323,17 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Add Document in conversation
+     *
      * @invokable
      *
-     * @param integer $conversation            
+     * @param int $conversation            
      * @param array $documents            
      */
     public function addDocument($conversation, $documents)
     {
         if (! is_array($documents) || isset($documents['name'])) {
-            $documents = [
-                $documents
-            ];
+            $documents = [$documents];
         }
         
         foreach ($documents as $document) {
@@ -358,9 +412,7 @@ class Conversation extends AbstractService
             ->getList($id, []));
         $conv->setUsers($this->getServiceUser()
             ->getListByConversation($id)
-            ->toArray(array(
-            'id'
-        )));
+            ->toArray(array('id')));
         
         return $conv;
     }

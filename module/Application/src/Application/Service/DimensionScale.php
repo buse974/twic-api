@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Dimension Scale
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class DimensionScale
+ */
 class DimensionScale extends AbstractService
 {
     /**

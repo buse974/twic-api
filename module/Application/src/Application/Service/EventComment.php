@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Event Comment
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class Event Comment
+ */
 class EventComment extends AbstractService
 {
     /**

@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * SubThread
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class SubThread
+ */
 class SubThread extends AbstractService
 {
     /**

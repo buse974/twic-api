@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Resume
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Predicate\IsNull;
 
+/**
+ * Class Resume
+ */
 class Resume extends AbstractService
 {
     /**

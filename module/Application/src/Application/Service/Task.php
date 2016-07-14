@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Task
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use DateTime;
 use DateTimeZone;
 
+/**
+ * Class Task
+ */
 class Task extends AbstractService
 {
     /**

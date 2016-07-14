@@ -1,10 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Message
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
 
+/**
+ * Class Message
+ */
 class Message extends AbstractService
 {
     /**

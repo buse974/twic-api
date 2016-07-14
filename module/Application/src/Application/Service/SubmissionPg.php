@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Submission Paire grader
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class SubmissionPg
+ */
 class SubmissionPg extends AbstractService
 {
     public function add($submission, $users)

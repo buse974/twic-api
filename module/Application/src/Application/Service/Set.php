@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Set
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class Set
+ */
 class Set extends AbstractService
 {
     /**

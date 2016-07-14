@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Question Relation
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class QuestionRelation
+ */
 class QuestionRelation extends AbstractService
 {
     public function add($group_question_id, $bank_question_id)

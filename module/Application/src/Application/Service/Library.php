@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Library
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Box\Model\Document as ModelDocument;
 
+/**
+ * Class Library
+ */
 class Library extends AbstractService
 {
     /**

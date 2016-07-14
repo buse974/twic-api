@@ -1,10 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Group Question
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 
+/**
+ * Class GroupQuestion
+ */
 class GroupQuestion extends AbstractService
 {
     public function add($group_question, $nb)

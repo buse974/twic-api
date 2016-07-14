@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Submission User Criteria
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class SubmissionUserCriteria
+ */
 class SubmissionUserCriteria extends AbstractService
 {
     /**

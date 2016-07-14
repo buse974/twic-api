@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Questionnaire User
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Calss QuestionnaireUser
+ */
 class QuestionnaireUser extends AbstractService
 {
     /**

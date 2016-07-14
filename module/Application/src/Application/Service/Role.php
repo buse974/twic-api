@@ -1,10 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Role
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 
+/**
+ * Class Role
+ */
 class Role extends AbstractService
 {
     /**

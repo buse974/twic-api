@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Questionnaire
+ *
+ */
 
 namespace Application\Service;
 
@@ -6,6 +13,9 @@ use Dal\Service\AbstractService;
 use Application\Model\Item as CI;
 use Zend\Db\Sql\Predicate\IsNull;
 
+/**
+ * Class Questionnaire
+ */
 class Questionnaire extends AbstractService
 {
     private function create($item)

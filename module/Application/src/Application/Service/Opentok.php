@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Opentok
+ *
+ */
 
 namespace Application\Service;
 
@@ -6,6 +13,9 @@ use OpenTok\MediaMode;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class Opentok
+ */
 class Opentok implements ServiceLocatorAwareInterface
 {
     protected $serviceLocator;

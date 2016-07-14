@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Item
+ *
+ */
 
 namespace Application\Service;
 
@@ -9,6 +16,9 @@ use Zend\Db\Sql\Predicate\Operator;
 use Application\Model\Library as ModelLibrary;
 use Application\Model\Role as ModelRole;
 
+/**
+ * Class Item
+ */
 class Item extends AbstractService
 {
     protected $conf = [

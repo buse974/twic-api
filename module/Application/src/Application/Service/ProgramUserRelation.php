@@ -1,9 +1,18 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Program User Relation
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class ProgramUserRelation
+ */
 class ProgramUserRelation extends AbstractService
 {
     public function add($user, $program)

@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Thread
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Dal\Db\ResultSet\ResultSet;
 
+/**
+ * Class Thread
+ */
 class Thread extends AbstractService
 {
 

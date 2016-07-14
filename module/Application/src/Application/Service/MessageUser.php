@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Message User
+ *
+ */
 
 namespace Application\Service;
 
@@ -6,6 +13,9 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
 
+/**
+ * Class MessageUser
+ */
 class MessageUser extends AbstractService
 {
     /**

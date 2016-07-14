@@ -1,9 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Contact
+ *
+ */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 
+/**
+ * Class Contact
+ */
 class Contact extends AbstractService
 {
 

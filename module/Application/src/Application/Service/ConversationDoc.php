@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Conversation Document
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class ConversationDoc
+ */
 class ConversationDoc extends AbstractService
 {
     public function add($conversation_id, $library_id) 

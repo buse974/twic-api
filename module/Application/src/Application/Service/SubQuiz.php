@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Submission Quiz
+ *
+ */
 
 namespace Application\Service;
 
@@ -6,6 +13,9 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\BankQuestionType as ModelBankQuestionType;
 
+/**
+ * Class SubQuiz
+ */
 class SubQuiz extends AbstractService
 {
     public function getBySubmission($submission_id)

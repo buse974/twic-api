@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Feed
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Http\Client;
 use Application\Model\Feed as ModelFeed;
 
+/**
+ * Class Feed
+ */
 class Feed extends AbstractService
 {
     /**

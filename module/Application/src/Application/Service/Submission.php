@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Submission
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -9,87 +15,53 @@ use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Library as ModelLibrary;
 use Application\Model\Role as ModelRole;
 
+/**
+ * Class Submission
+ */
 class Submission extends AbstractService
 {
-    protected $sub = [
-        ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [
-            ModelItem::CMP_TEXT_EDITOR => true,
-            ModelItem::CMP_CHAT => true,
-        ],
-        ModelItem::TYPE_WORKGROUP => [
-            ModelItem::CMP_VIDEOCONF => true,
-            ModelItem::CMP_CHAT => true,
-            ModelItem::CMP_TEXT_EDITOR => true,
-        ],
-        ModelItem::TYPE_LIVE_CLASS => [
-            ModelItem::CMP_VIDEOCONF => true,
-            ModelItem::CMP_CHAT => true,
-        ],
-        ModelItem::TYPE_CHAT => [
-            ModelItem::CMP_CHAT => true,
-        ],
-        ModelItem::TYPE_CAPSTONE_PROJECT => [
-            ModelItem::CMP_TEXT_EDITOR => true,
-            ModelItem::CMP_CHAT => false,
-        ],
-        ModelItem::TYPE_DISCUSSION => [
-            ModelItem::CMP_DISCUSSION => true,
-        ],
-        ModelItem::TYPE_DOCUMENT => [
-            ModelItem::CMP_DOCUMENT => true,
-        ],
-        ModelItem::TYPE_EQCQ => [
-            ModelItem::CMP_EQCQ => true,
-        ],
-        ModelItem::TYPE_MODULE => [
-        ],
-        ModelItem::TYPE_POLL => [
-            ModelItem::CMP_POLL => true,
-        ],
-        ModelItem::TYPE_TXT => [
-        ],
-    ];
+
+    protected $sub = [ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_WORKGROUP => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true,ModelItem::CMP_TEXT_EDITOR => true],ModelItem::TYPE_LIVE_CLASS => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],ModelItem::TYPE_MODULE => [],ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],ModelItem::TYPE_TXT => []];
 
     /**
-     * @param int $user_id
-     * @param int $questionnaire_id
-     * 
+     *
+     * @param int $user_id            
+     * @param int $questionnaire_id            
+     *
      * @return \Application\Service\Submission
      */
     public function getByUserAndQuestionnaire($user_id, $questionnaire_id, $item_id)
     {
         $res_submission = $this->getMapper()->getByUserAndQuestionnaire($user_id, $questionnaire_id);
-        $m_submission = ($res_submission->count() <= 0) ?
-             $this->get($item_id) :
-             $res_submission->current();
-
+        $m_submission = ($res_submission->count() <= 0) ? $this->get($item_id) : $res_submission->current();
+        
         return $m_submission;
     }
-    
+
     /**
-     * @param int $user_id
-     * @param int $conversation_id
+     *
+     * @param int $user_id            
+     * @param int $conversation_id            
      *
      * @return \Application\Model\Submission
      */
     public function getByUserAndConversation($user_id, $conversation_id)
     {
         $res_submission = $this->getMapper()->getByUserAndConversation($user_id, $conversation_id);
-        return ($res_submission->count() <= 0) ?
-            null :
-            $res_submission->current();
+        return ($res_submission->count() <= 0) ? null : $res_submission->current();
     }
 
     /**
-     * @param int $item_id
-     * @param int $user_id
-     * @param int $group_id
-     * 
+     *
+     * @param int $item_id            
+     * @param int $user_id            
+     * @param int $group_id            
+     *
      * @return int
      */
     public function create($item_id, $user_id = null, $group_id = null)
     {
-        /// INIT VARIABLE
+        // / INIT VARIABLE
         $m_item = $this->getServiceItem()->get($item_id);
         if (null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -97,37 +69,39 @@ class Submission extends AbstractService
         if (is_numeric($m_item->getSetId()) && $group_id === null) {
             $group_id = $this->getServiceGroupUser()->getGroupIdByItemUser($item_id, $user_id);
         }
-        /// FIN INIT VARIABLE
-
+        // / FIN INIT VARIABLE
+        
         $submission_id = null;
         /*
-         * 3 types =>   1 Par group set_id,  Une submission par group 
-         *              2 Individuel, Une submission pas éléve
-         *              3 Tout le monde, Une submission pour tout le monde
-         *              
+         * 3 types => 1 Par group set_id, Une submission par group
+         * 2 Individuel, Une submission pas éléve
+         * 3 Tout le monde, Une submission pour tout le monde
+         *
          * Ici pour le type 3 (Live class concerné)
          */
-        if (($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) && !is_numeric($m_item->getSetId())) {
+        if (($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) && ! is_numeric($m_item->getSetId())) {
             $res_submission = $this->getMapper()->get($item_id);
             if ($res_submission->count() > 0) {
                 $m_submission = $res_submission->current();
                 $submission_id = $m_submission->getId();
             }
         }
-
+        
         if (null === $submission_id) {
-            $m_submission = $this->getModel()->setItemId($item_id)->setGroupId($group_id);
+            $m_submission = $this->getModel()
+                ->setItemId($item_id)
+                ->setGroupId($group_id);
             $this->getMapper()->insert($m_submission);
             $submission_id = $this->getMapper()->getLastInsertValue();
         }
-
+        
         $res_user = null;
         if (null !== $group_id) {
             $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
         } elseif ($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) {
             $res_user = $this->getServiceUser()->getListByItem($item_id);
         }
-
+        
         $users = [];
         if (null === $res_user || $res_user->count() <= 0) {
             $users[] = $user_id;
@@ -136,20 +110,20 @@ class Submission extends AbstractService
                 $users[] = $m_user->getId();
             }
         }
-
+        
         $this->getServiceSubmissionUser()->create($submission_id, $users);
-
+        
         return $submission_id;
     }
 
     /**
      * @invokable
-     * 
-     * @param int $item_id
-     * @param int $user_id
-     * @param int $submission_id
-     * @param int $group_id
-     * 
+     *
+     * @param int $item_id            
+     * @param int $user_id            
+     * @param int $submission_id            
+     * @param int $group_id            
+     *
      * @return null|\Application\Model\Submission
      */
     public function getSubmissionUser($item_id = null, $user_id = null, $submission_id = null, $group_id = null)
@@ -157,21 +131,20 @@ class Submission extends AbstractService
         if (null === $item_id && null === $submission_id) {
             return;
         }
-
+        
         if (null === $submission_id && null === $user_id && null !== $item_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
-
+        
         $res_submission = $this->getMapper()->getSubmissionUser($item_id, $user_id, $submission_id, $group_id);
-
-        return ($res_submission->count() === 1) ?
-            $res_submission->current() :
-            null;
+        
+        return ($res_submission->count() === 1) ? $res_submission->current() : null;
     }
-    
+
     /**
-     * @param integer $submission_id
-     * 
+     *
+     * @param integer $submission_id            
+     *
      * @return \Application\Model\Submission
      */
     public function getWithItem($submission_id)
@@ -182,45 +155,48 @@ class Submission extends AbstractService
         }
         
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
+            ->getListBySubmissionId($m_submission->getId()));
         
         return $m_submission;
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param int $item_id
-     * @param int $submission_id
-     * @param int $group_id
-     * @param int $user_id
-     * 
+     *
+     * @param int $item_id            
+     * @param int $submission_id            
+     * @param int $group_id            
+     * @param int $user_id            
+     *
      * @return \Application\Model\Submission
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
-        //// ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
+        // // ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         if (null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
         if (null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
-        //// FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
+        // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
         if ($res_submission->count() <= 0) {
             return;
         }
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
-
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
+            ->getListBySubmissionId($m_submission->getId()));
+        
         return $m_submission;
     }
 
     public function add($data, $item_id)
     {
         $has_modif = false;
-        $res_submission = $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        $res_submission = $this->getMapper()->select($this->getModel()
+            ->setItemId($item_id));
         foreach ($res_submission as $m_submission) {
             $is_present = false;
             foreach ($data as $su) {
@@ -231,10 +207,11 @@ class Submission extends AbstractService
             }
             if ($is_present === false) {
                 $has_modif = true;
-                $this->getMapper()->delete($this->getModel()->setId($m_submission->getId()));
+                $this->getMapper()->delete($this->getModel()
+                    ->setId($m_submission->getId()));
             }
         }
-
+        
         foreach ($data as $su) {
             if (isset($su['submission_id']) && is_numeric($su['submission_id'])) {
                 $s_id = $su['submission_id'];
@@ -246,113 +223,121 @@ class Submission extends AbstractService
                 $s_id = $this->getMapper()->getLastInsertValue();
             }
             // si il y a eu une modification des submission_user je has_modif a true
-            if($this->getServiceSubmissionUser()->create($s_id, $su['submission_user'])) {
+            if ($this->getServiceSubmissionUser()->create($s_id, $su['submission_user'])) {
                 $has_modif = true;
             }
         }
-
-        if($has_modif === true) {
+        
+        if ($has_modif === true) {
             $this->getServiceSubmissionPg()->autoAssign($item_id);
         }
     }
 
     /**
      * @invokable
-     * 
-     * @param int $item_id
+     *
+     * @param int $item_id            
      */
     public function getListToGrade($item_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-
+        
         $res_submission = $this->getMapper()->getListToGrade($user_id, $item_id);
         foreach ($res_submission as $m_submission) {
-            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
+                ->getListBySubmissionId($m_submission->getId()));
         }
-
+        
         return $res_submission;
     }
 
     public function addSubmissionUser($user_id, $item_id)
     {
         if ($this->getByItem($item_id, $user_id) === null) {
-            $this->getMapper()->insert($this->getModel()->setItemId($item_id));
-            $this->getServiceSubmissionUser()->add($this->getMapper()->getLastInsertValue(), $user_id);
+            $this->getMapper()->insert($this->getModel()
+                ->setItemId($item_id));
+            $this->getServiceSubmissionUser()->add($this->getMapper()
+                ->getLastInsertValue(), $user_id);
         }
-
+        
         return true;
     }
 
     /**
      * @invokable
      *
-     * @param int $item_id
+     * @param int $item_id            
      */
     public function getList($item_id)
     {
         $res_submission = $this->getMapper()->get($item_id);
         $m_item = $this->getServiceItem()->get($item_id);
         foreach ($res_submission as $m_submission) {
-            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
+                ->getListBySubmissionId($m_submission->getId()));
         }
-
+        
         return $res_submission;
     }
 
     /**
      * @invokable
-     * 
-     * @param array  $filter
-     * @param array  $type
-     * @param array  $course
-     * @param bool   $started
-     * @param bool   $submitted
-     * @param bool   $graded
-     * @param bool   $late
-     * @param string $search
-     * @param string $user_id
+     *
+     * @param array $filter            
+     * @param array $type            
+     * @param array $course            
+     * @param bool $started            
+     * @param bool $submitted            
+     * @param bool $graded            
+     * @param bool $late            
+     * @param string $search            
+     * @param string $user_id            
      */
-    public function getListStudent($filter = null,  $type = null, $course = null, $started = null,  $submitted = null,  $graded = null,$late = null, $search = null, $user_id = null, $tograde = null)
+    public function getListStudent($filter = null, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null, $user_id = null, $tograde = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-
+        
         if (null === $user_id || key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
             $user_id = $identity['id'];
         }
-
+        
         $mapper = $this->getMapper();
         
         $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late, $search, $tograde);
         foreach ($res_submission as $m_submission) {
-            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
+                ->getListBySubmissionId($m_submission->getId()));
         }
-
-        return ['list' => $res_submission, 'count' => $mapper->count()];
+        
+        return ['list' => $res_submission,'count' => $mapper->count()];
     }
 
     /**
      * @invokable
-     * 
-     * @param int $grade
-     * @param int $item
-     * @param int $group
-     * @param int $submission
-     * @param int $user
+     *
+     * @param int $grade            
+     * @param int $item            
+     * @param int $group            
+     * @param int $submission            
+     * @param int $user            
      */
     public function updateSubmissionGrade($grade, $item = null, $group = null, $submission = null, $user = null)
     {
         $m_submission = $this->get($item, $submission, $group, $user);
-
+        
         $this->getServiceSubmissionUser()->OverwrittenGrade($m_submission->getId(), $grade);
-
-        $this->getMapper()->update($this->getModel()->setIsGraded(true)->setId($m_submission->getId()));
-
+        
+        $this->getMapper()->update($this->getModel()
+            ->setIsGraded(true)
+            ->setId($m_submission->getId()));
+        
         return $m_submission->getId();
     }
 
     /**
-     * @param int $id
-     * 
+     *
+     * @param int $id            
+     *
      * @return \Application\Model\Submission
      */
     public function getBySubmission($id)
@@ -362,11 +347,11 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $item_id
-     * @param int $user_id
-     * @param int $group_id
-     * 
+     *
+     * @param int $item_id            
+     * @param int $user_id            
+     * @param int $group_id            
+     *
      * @return \Application\Model\Submission
      */
     public function getByItem($item_id, $user_id = null, $group_id = null)
@@ -376,20 +361,20 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $submission_id
+     *
+     * @param int $submission_id            
      */
     public function getContent($submission_id)
     {
         if (null === ($m_submission = $this->getBySubmission($submission_id))) {
             throw new JrpcException('Error no submission', 999);
         }
-
+        
         $ret = [];
         $item_id = $m_submission->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
-
+        
         if (isset($type[ModelItem::CMP_TEXT_EDITOR]) && $type[ModelItem::CMP_TEXT_EDITOR] === true) {
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListOrCreate($submission_id);
         } else {
@@ -397,58 +382,60 @@ class Submission extends AbstractService
         }
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         if (isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {
-            if (!(!$m_item->getIsGrouped() && $m_item->getType() === ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
+            if (! (! $m_item->getIsGrouped() && $m_item->getType() === ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT)) {
                 $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListOrCreate($submission_id);
             }
         } else {
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
         }
-        /*if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-            $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
-        } else {
-            $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
-        }*/
+        /*
+         * if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
+         * $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
+         * } else {
+         * $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
+         * }
+         */
         if (isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
             $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         }
         if (isset($type[ModelItem::CMP_DISCUSSION])) {
             $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
         }
-
+        
         return $ret;
     }
 
     /**
      * @invokable
      *
-     * @param int $submission_id
+     * @param int $submission_id            
      */
     public function getContentSg($submission_id)
     {
         if (null === ($m_submission = $this->getBySubmission($submission_id))) {
             throw new JrpcException('Error no submission', 999);
         }
-
+        
         $ret = [];
         $item_id = $m_submission->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
-
+        
         $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id, true);
         $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
-        //$ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
+        // $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
         $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
-
+        
         return $ret;
     }
 
     /**
      * @invokable
-     * 
-     * @param int $submission_id
-     * @param int $item_id
+     *
+     * @param int $submission_id            
+     * @param int $item_id            
      *
      * @return void|bool
      */
@@ -457,28 +444,27 @@ class Submission extends AbstractService
         if ($submission_id === null && $item_id === null) {
             return;
         }
-
-        return ($submission_id !== null) ?
-            $this->forceSubmitBySubmission($submission_id) :
-            $this->forceSubmitByItem($item_id);
+        
+        return ($submission_id !== null) ? $this->forceSubmitBySubmission($submission_id) : $this->forceSubmitByItem($item_id);
     }
 
     /**
      * @invokable
      *
-     * @param int $item_id
+     * @param int $item_id            
      *
      * @return bool
      */
     public function forceSubmitByItem($item_id)
     {
-        return $this->forceSubmitBySubmission($this->getByItem($item_id)->getId());
+        return $this->forceSubmitBySubmission($this->getByItem($item_id)
+            ->getId());
     }
 
     /**
      * @invokable
      *
-     * @param int $submission_id
+     * @param int $submission_id            
      *
      * @return bool
      */
@@ -487,15 +473,15 @@ class Submission extends AbstractService
         $m_submission = $this->getModel()
             ->setSubmitDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setId($submission_id);
-
+        
         return $this->getMapper()->update($m_submission);
     }
 
     /**
      * @invokable
      *
-     * @param int $submission_id
-     * @param int $item_id
+     * @param int $submission_id            
+     * @param int $item_id            
      *
      * @return void|bool
      */
@@ -511,7 +497,7 @@ class Submission extends AbstractService
         if ($submission_id === null && $item_id === null) {
             return;
         }
-
+        
         if ($submission_id !== null) {
             if ($user_id !== null) {
                 $ret = $this->_submitBySubmission($submission_id, $user_id);
@@ -520,20 +506,20 @@ class Submission extends AbstractService
             }
         } else {
             $ret = $this->submitByItem($item_id);
-        }     
+        }
         
         return $ret;
     }
-    
+
     /**
      * toutes les oumission passe par ici
-     * 
-     * @param integer $submission_id
-     * @param integer $user_id
-     * 
+     *
+     * @param integer $submission_id            
+     * @param integer $user_id            
+     *
      * @return integer
      */
-    public function _submitBySubmission($submission_id, $user_id) 
+    public function _submitBySubmission($submission_id, $user_id)
     {
         $submit = 1;
         $is_first = true;
@@ -545,9 +531,9 @@ class Submission extends AbstractService
                 // A bien était soumis
                 $is_ok = true;
             } else {
-                $is_check = ($m_submission_user->getSubmitDate() !== null && (!$m_submission_user->getSubmitDate() instanceof IsNull));
-                //Si c'est vrai, alors ce n'est pas la premiere soumission
-                if($is_check) {
+                $is_check = ($m_submission_user->getSubmitDate() !== null && (! $m_submission_user->getSubmitDate() instanceof IsNull));
+                // Si c'est vrai, alors ce n'est pas la premiere soumission
+                if ($is_check) {
                     $is_first = false;
                 }
                 $submit &= $is_check;
@@ -555,17 +541,16 @@ class Submission extends AbstractService
         }
         
         $m_item = $this->getServiceItem()->getBySubmission($submission_id);
-        //Si c la premiere fois que l'on soumet et quil manque des soumissions
-        if($is_ok===true && $is_first===true && $submit!==1) {
-            if($m_item->getType() === $m_item::TYPE_INDIVIDUAL_ASSIGNMENT) {
+        // Si c la premiere fois que l'on soumet et quil manque des soumissions
+        if ($is_ok === true && $is_first === true && $submit !== 1) {
+            if ($m_item->getType() === $m_item::TYPE_INDIVIDUAL_ASSIGNMENT) {
                 $user = [];
                 foreach ($res_submission_user as $m_submission_user) {
-                    if($user_id !== $m_submission_user->getUserId() && $m_submission_user->getStartDate()!==null && (!$m_submission_user->getStartDate() instanceof IsNull)
-                        && ( $m_submission_user->getSubmitDate() === null || ($m_submission_user->getSubmitDate() instanceof IsNull))) {
-                            $user[] = $m_submission_user->getUserId();
+                    if ($user_id !== $m_submission_user->getUserId() && $m_submission_user->getStartDate() !== null && (! $m_submission_user->getStartDate() instanceof IsNull) && ($m_submission_user->getSubmitDate() === null || ($m_submission_user->getSubmitDate() instanceof IsNull))) {
+                        $user[] = $m_submission_user->getUserId();
                     }
                 }
-                if(count($user) > 0) {
+                if (count($user) > 0) {
                     $this->getServiceEvent()->requestSubmit($submission_id, $user);
                 }
             }
@@ -573,7 +558,9 @@ class Submission extends AbstractService
         
         if ($submit === 1) {
             $this->getServiceEvent()->endSubmit($submission_id);
-            if($this->getServiceOptGrading()->get($m_item->getId())->getHasPg()) {
+            if ($this->getServiceOptGrading()
+                ->get($m_item->getId())
+                ->getHasPg()) {
                 $this->getServiceEvent()->pgAssigned($submission_id);
             }
             $this->forceSubmitBySubmission($submission_id);
@@ -581,11 +568,11 @@ class Submission extends AbstractService
         
         return $submit;
     }
-    
+
     /**
      * @invokable
-     * 
-     * @param int $submission_id
+     *
+     * @param int $submission_id            
      *
      * @return bool
      */
@@ -598,21 +585,22 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $item_id
+     *
+     * @param int $item_id            
      *
      * @return bool
      */
     public function submitByItem($item_id)
     {
-        return $this->submitBySubmission($this->getByItem($item_id)->getId());
+        return $this->submitBySubmission($this->getByItem($item_id)
+            ->getId());
     }
 
     /**
      * @invokable
      *
-     * @param int $submission_id
-     * @param int $item_id
+     * @param int $submission_id            
+     * @param int $item_id            
      *
      * @return void|bool
      */
@@ -621,71 +609,71 @@ class Submission extends AbstractService
         if ($submission_id === null && $item_id === null) {
             return;
         }
-
-        return ($submission_id !== null) ?
-            $this->cancelsubmitBySubmission($submission_id) :
-            $this->cancelsubmitByItem($item_id);
+        
+        return ($submission_id !== null) ? $this->cancelsubmitBySubmission($submission_id) : $this->cancelsubmitByItem($item_id);
     }
 
     /**
      * @invokable
      *
-     * @param int $submission_id
+     * @param int $submission_id            
      *
      * @return bool
      */
     public function cancelsubmitBySubmission($submission_id)
     {
         $m_submission = $this->get(null, $submission_id);
-        if (!($m_submission->getSubmitDate() === null || $m_submission->getSubmitDate() instanceof IsNull)) {
+        if (! ($m_submission->getSubmitDate() === null || $m_submission->getSubmitDate() instanceof IsNull)) {
             return;
         }
-
-        return $this->getServiceSubmissionUser()->cancelsubmit($submission_id, $this->getServiceUser()->getIdentity()['id']);
+        
+        return $this->getServiceSubmissionUser()->cancelsubmit($submission_id, $this->getServiceUser()
+            ->getIdentity()['id']);
     }
 
     /**
      * @invokable
      *
-     * @param int $item_id
+     * @param int $item_id            
      *
      * @return bool
      */
     public function cancelsubmitByItem($item_id)
     {
-        return $this->cancelsubmitBySubmission($this->getByItem($item_id)->getId());
-    }
-
-    /**
-     * @invokable
-     * 
-     * @param int    $submission_id
-     * @param string $name
-     * @param string $type
-     * @param string $link
-     * @param string $token
-     */
-    public function addDocument($submission_id, $name = null, $type = null, $link = null, $token = null)
-    {
-        return  $this->getServiceDocument()->add($name, $type, $link, $token, null, $submission_id, ModelLibrary::FOLDER_OTHER_INT);
+        return $this->cancelsubmitBySubmission($this->getByItem($item_id)
+            ->getId());
     }
 
     /**
      * @invokable
      *
-     * @param int $submission_id
-     * @param int $library_id
+     * @param int $submission_id            
+     * @param string $name            
+     * @param string $type            
+     * @param string $link            
+     * @param string $token            
      */
-    public function deleteDocument($submission_id, $library_id)
+    public function addDocument($submission_id, $name = null, $type = null, $link = null, $token = null)
     {
-        return  $this->getServiceDocument()->delete(null, $submission_id, $library_id);
+        return $this->getServiceDocument()->add($name, $type, $link, $token, null, $submission_id, ModelLibrary::FOLDER_OTHER_INT);
     }
 
     /**
      * @invokable
-     * 
-     * @param int   $id
-     * @param array $users
+     *
+     * @param int $submission_id            
+     * @param int $library_id            
+     */
+    public function deleteDocument($submission_id, $library_id)
+    {
+        return $this->getServiceDocument()->delete(null, $submission_id, $library_id);
+    }
+
+    /**
+     * @invokable
+     *
+     * @param int $id            
+     * @param array $users            
      */
     public function assignGraders($users, $id)
     {
@@ -694,8 +682,8 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      */
     public function getPairGraders($id)
     {
@@ -704,8 +692,8 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      */
     public function getPGCriterias($id)
     {
@@ -714,8 +702,8 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      */
     public function getUserCriterias($id)
     {
@@ -724,8 +712,8 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      */
     public function getPGGrades($id)
     {
@@ -734,10 +722,10 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int   $id
-     * @param array $grades
-     * @param array $criterias
+     *
+     * @param int $id            
+     * @param array $grades            
+     * @param array $criterias            
      */
     public function pairRates($id, $grades = null, $criterias = null)
     {
@@ -760,16 +748,16 @@ class Submission extends AbstractService
             }
         }
         $this->processSubmissionPairGrade($id, $me);
-
+        
         return 1;
     }
 
     /**
      * @invokable
-     *  
-     * @param int   $id
-     * @param array $grades
-     * @param array $criterias
+     *
+     * @param int $id            
+     * @param array $grades            
+     * @param array $criterias            
      */
     public function instructorRates($id, $user_id = null, $item = null, $grades = null, $criterias = null)
     {
@@ -783,47 +771,47 @@ class Submission extends AbstractService
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
                 foreach ($res_submission_user as $m_submission_user) {
-                    $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), !($m_submission_user->getGrade() instanceof IsNull));
+                    $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), ! ($m_submission_user->getGrade() instanceof IsNull));
                 }
             }
-        }   
+        }
         if (null !== $grades && count($grades) > 0) {
-        foreach ($grades as $user => $grade) {
-            if (is_numeric($user) && $grade !== null && isset($grade['grade'])) {
-                $this->getServiceSubmissionUser()->setGrade($id, $user, $grade['grade'], true);
+            foreach ($grades as $user => $grade) {
+                if (is_numeric($user) && $grade !== null && isset($grade['grade'])) {
+                    $this->getServiceSubmissionUser()->setGrade($id, $user, $grade['grade'], true);
+                }
             }
         }
-        }
         $this->getMapper()->checkGraded($id);
-
+        
         return $id;
     }
 
     /**
      * @invokable
-     * 
-     * @param int    $id
-     * @param int    $group
-     * @param int    $user
-     * @param string $file_name
-     * @param string $file_token
-     * @param string $audio
-     * @param string $text
+     *
+     * @param int $id            
+     * @param int $group            
+     * @param int $user            
+     * @param string $file_name            
+     * @param string $file_token            
+     * @param string $audio            
+     * @param string $text            
      */
-    public function addComment($id, $group = null, $user = null, $item = null,  $file_name = null, $file_token = null, $audio = null, $text = null)
+    public function addComment($id, $group = null, $user = null, $item = null, $file_name = null, $file_token = null, $audio = null, $text = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-
+        
         $m_submission_comments = $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
         $this->getServiceEvent()->submissionCommented($id, $m_submission_comments->getId());
-
-        return ['submission_id' => $id, 'comment' => $m_submission_comments];
+        
+        return ['submission_id' => $id,'comment' => $m_submission_comments];
     }
 
     /**
      * @invokable
-     * 
-     * @param int $id
+     *
+     * @param int $id            
      */
     public function getComments($id = null)
     {
@@ -850,9 +838,9 @@ class Submission extends AbstractService
 
     /**
      * @invokable
-     * 
-     * @param int $id
-     * 
+     *
+     * @param int $id            
+     *
      * @return array
      */
     public function getUserGrades($id)
@@ -861,6 +849,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\GroupUser
      */
     public function getServiceGroupUser()
@@ -869,6 +858,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Library
      */
     public function getServiceLibrary()
@@ -877,6 +867,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Document
      */
     public function getServiceDocument()
@@ -885,6 +876,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\TextEditor
      */
     public function getServiceTextEditor()
@@ -893,14 +885,16 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Event
      */
     public function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
-    
+
     /**
+     *
      * @return \Application\Service\Conversation
      */
     public function getServiceConversation()
@@ -909,6 +903,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Item
      */
     public function getServiceItem()
@@ -917,6 +912,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\Thread
      */
     public function getServiceThread()
@@ -925,6 +921,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\User
      */
     public function getServiceUser()
@@ -933,14 +930,16 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\OptGrading
      */
     public function getServiceOptGrading()
     {
         return $this->getServiceLocator()->get('app_service_opt_grading');
     }
-    
+
     /**
+     *
      * @return \Application\Service\Videoconf
      */
     public function getServiceVideoconf()
@@ -949,6 +948,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\SubmissionUser
      */
     public function getServiceSubmissionUser()
@@ -957,6 +957,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\SubmissionComments
      */
     public function getServiceSubmissionComments()
@@ -965,6 +966,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\SubQuiz
      */
     public function getServiceSubQuiz()
@@ -973,6 +975,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\GradingPolicy
      */
     public function getServiceGradingPolicy()
@@ -981,6 +984,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\PgUserCriteria
      */
     public function getServicePgUserCriteria()
@@ -989,6 +993,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\SubmissionUserCriteria
      */
     public function getServiceSubmissionUserCriteria()
@@ -997,6 +1002,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\PgUserCriteria
      */
     public function getServicePgUserGrade()
@@ -1005,6 +1011,7 @@ class Submission extends AbstractService
     }
 
     /**
+     *
      * @return \Application\Service\SubmissionPg
      */
     public function getServiceSubmissionPg()

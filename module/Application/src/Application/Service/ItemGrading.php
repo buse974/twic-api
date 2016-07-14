@@ -1,4 +1,11 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Item Grading
+ *
+ */
 
 namespace Application\Service;
 
@@ -6,6 +13,9 @@ use Dal\Service\AbstractService;
 use DateTime;
 use DateTimeZone;
 
+/**
+ * Class ItemGrading
+ */
 class ItemGrading extends AbstractService
 {
     public function _getList()

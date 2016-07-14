@@ -1,9 +1,19 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Questionnaire Question
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class QuestionnaireQuestion
+ */
 class QuestionnaireQuestion extends AbstractService
 {
     public function create($questionnaire)

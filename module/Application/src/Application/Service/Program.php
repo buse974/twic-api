@@ -1,11 +1,20 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Program
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\IsNull;
 
+/**
+ * Class Program
+ */
 class Program extends AbstractService
 {
     /**
