@@ -475,7 +475,7 @@ class Event extends AbstractService
         
         return [
             'id' => $m_submission->getId(),
-            'name' => 'programmation',
+            'name' => 'submission',
             'data' => [
                 'item' => [
                     'id' => $m_submission->getItem()->getId(),

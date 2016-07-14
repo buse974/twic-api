@@ -1,10 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Bank Question Media
+ *
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Library as ModelLibrary;
 
+/**
+ * Class BankQuestionMedia
+ */
 class BankQuestionMedia extends AbstractService
 {
     /**

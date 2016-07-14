@@ -1,9 +1,20 @@
 <?php
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * BankQuestionTag
+ * 
+ */
 
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * 
+ * Class BankQuestionTag
+ */
 class BankQuestionTag extends AbstractService
 {
     /**

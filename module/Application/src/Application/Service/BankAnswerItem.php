@@ -6,6 +6,7 @@
  * Bank Answer Item
  *
  */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
