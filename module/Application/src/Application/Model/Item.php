@@ -15,6 +15,7 @@ class Item extends BaseItem
     const TYPE_TXT = 'TXT';
     const TYPE_MODULE = 'MOD';
     const TYPE_CHAT = 'CHAT';
+    const TYPE_HANGOUT = 'HANGOUT';
     const TYPE_DISCUSSION = 'DISC';
     const TYPE_EQCQ = 'EQCQ';
 

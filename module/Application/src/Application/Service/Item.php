@@ -28,6 +28,9 @@ class Item extends AbstractService
             ModelItem::TYPE_CHAT => [
                 ModelItem::CMP_CHAT => true,
             ],
+            ModelItem::TYPE_HANGOUT => [
+                ModelItem::CMP_VIDEOCONF => true,
+            ],
             ModelItem::TYPE_DISCUSSION => [
                 ModelItem::CMP_DISCUSSION => true,
             ],
@@ -227,8 +230,9 @@ class Item extends AbstractService
         $nb_user_autorecord = isset($data['nb_user_autorecord']) ? $data['nb_user_autorecord'] : null;
         $allow_intructor = isset($data['allow_intructor']) ? $data['allow_intructor'] : null;
         $has_eqcq = isset($data['has_eqcq']) ? $data['has_eqcq'] : null;
+        $rules = isset($data['rules']) ? $data['rules'] : null;
 
-        return $this->getServiceConversationOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor, $has_eqcq);
+        return $this->getServiceConversationOpt()->addOrUpdate($item_id, $record, $nb_user_autorecord, $allow_intructor, $has_eqcq, $rules);
     }
 
     public function addCmpThread($data, $item_id)
