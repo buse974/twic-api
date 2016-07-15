@@ -120,48 +120,30 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add Video">
+            <span class="description">Add Video</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Video">
+            <span class="description">Get Video</span><pre>get</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: ">
-            <span class="description"></span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get List Video">
+            <span class="description">Get List Video</span><pre>getList</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListVideoUpload" title="getListVideoUpload :: Récupére la liste des videos a uploader.">
-            <span class="description">Récupére la liste des videos a uploader.</span><pre>getListVideoUpload</pre>
+        <a href="#method_getListVideoUpload" title="getListVideoUpload :: Get List videos a uploader.">
+            <span class="description">Get List videos a uploader.</span><pre>getListVideoUpload</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceConversation" title="getServiceConversation :: ">
-            <span class="description"></span><pre>getServiceConversation</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceEvent" title="getServiceEvent :: ">
-            <span class="description"></span><pre>getServiceEvent</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceZOpenTok" title="getServiceZOpenTok :: ">
-            <span class="description"></span><pre>getServiceZOpenTok</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
+                                                                                                                                                                                                                                                                                <li class="method public">
         <a href="#method_startRecord" title="startRecord :: Start record video conf.">
             <span class="description">Start record video conf.</span><pre>startRecord</pre>
         </a>
@@ -174,14 +156,14 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_updateByArchiveToken" title="updateByArchiveToken :: ">
-            <span class="description"></span><pre>updateByArchiveToken</pre>
+        <a href="#method_updateByArchiveToken" title="updateByArchiveToken :: Update Status Video">
+            <span class="description">Update Status Video</span><pre>updateByArchiveToken</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_validTransfertVideo" title="validTransfertVideo :: Valide le transfer video.">
-            <span class="description">Valide le transfer video.</span><pre>validTransfertVideo</pre>
+        <a href="#method_validTransfertVideo" title="validTransfertVideo :: Valide the video transfer">
+            <span class="description">Valide the video transfer</span><pre>validTransfertVideo</pre>
         </a>
     </li>
 
@@ -193,7 +175,22 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                            <li class="method private">
+                            <a href="#method_getServiceConversation" title="getServiceConversation :: Get Service Conversation">
+                                <span class="description">Get Service Conversation</span><pre>getServiceConversation</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event">
+                                <span class="description">Get Service Event</span><pre>getServiceEvent</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceZOpenTok" title="getServiceZOpenTok :: Get Service OpenTok">
+                                <span class="description">Get Service OpenTok</span><pre>getServiceZOpenTok</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -231,7 +228,7 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
+                            <h2>Add Video</h2>
                             <pre>add( $conversation_id, string $token) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -262,8 +259,8 @@
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
-                            <pre>get(integer $id) </pre>
+                            <h2>Get Video</h2>
+                            <pre>get(integer $id) : \Application\Model\VideoArchive</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -273,13 +270,6 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -288,14 +278,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Application\Model\VideoArchive</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
-                            <pre>getList(integer $submission_id) </pre>
+                            <h2>Get List Video</h2>
+                            <pre>getList(integer $submission_id) : array|\Application\Service\stdClass</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -314,13 +306,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -329,13 +314,15 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array|\Application\Service\stdClass</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListVideoUpload"></a>
                         <div class="element clickable method public  method_getListVideoUpload" data-toggle="collapse" data-target=".method_getListVideoUpload .collapse">
-                            <h2>Récupére la liste des videos a uploader.</h2>
+                            <h2>Get List videos a uploader.</h2>
                             <pre>getListVideoUpload() : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -372,8 +359,8 @@
 
                         </div>
                                             <a id="method_getServiceConversation"></a>
-                        <div class="element clickable method public  method_getServiceConversation" data-toggle="collapse" data-target=".method_getServiceConversation .collapse">
-                            <h2>getServiceConversation</h2>
+                        <div class="element clickable method private  method_getServiceConversation" data-toggle="collapse" data-target=".method_getServiceConversation .collapse">
+                            <h2>Get Service Conversation</h2>
                             <pre>getServiceConversation() : \Application\Service\Conversation</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -401,8 +388,8 @@
 
                         </div>
                                             <a id="method_getServiceEvent"></a>
-                        <div class="element clickable method public  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
-                            <h2>getServiceEvent</h2>
+                        <div class="element clickable method private  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
+                            <h2>Get Service Event</h2>
                             <pre>getServiceEvent() : \Application\Service\Event</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -430,8 +417,8 @@
 
                         </div>
                                             <a id="method_getServiceZOpenTok"></a>
-                        <div class="element clickable method public  method_getServiceZOpenTok" data-toggle="collapse" data-target=".method_getServiceZOpenTok .collapse">
-                            <h2>getServiceZOpenTok</h2>
+                        <div class="element clickable method private  method_getServiceZOpenTok" data-toggle="collapse" data-target=".method_getServiceZOpenTok .collapse">
+                            <h2>Get Service OpenTok</h2>
                             <pre>getServiceZOpenTok() : \ZOpenTok\Service\OpenTok</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -461,7 +448,7 @@
                                             <a id="method_startRecord"></a>
                         <div class="element clickable method public  method_startRecord" data-toggle="collapse" data-target=".method_startRecord .collapse">
                             <h2>Start record video conf.</h2>
-                            <pre>startRecord(\Application\Service\interger $conversation_id) </pre>
+                            <pre>startRecord(\Application\Service\interger $conversation_id) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -480,13 +467,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -495,6 +475,8 @@
                                                 <code>\Application\Service\interger</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
@@ -502,7 +484,7 @@
                                             <a id="method_stopRecord"></a>
                         <div class="element clickable method public  method_stopRecord" data-toggle="collapse" data-target=".method_stopRecord .collapse">
                             <h2>Stop record video conf.</h2>
-                            <pre>stopRecord(\Application\Service\interger $conversation_id) </pre>
+                            <pre>stopRecord(\Application\Service\interger $conversation_id) : mixed</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -521,13 +503,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -536,13 +511,15 @@
                                                 <code>\Application\Service\interger</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>mixed</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_updateByArchiveToken"></a>
                         <div class="element clickable method public  method_updateByArchiveToken" data-toggle="collapse" data-target=".method_updateByArchiveToken .collapse">
-                            <h2>updateByArchiveToken</h2>
+                            <h2>Update Status Video</h2>
                             <pre>updateByArchiveToken( $id, string $status, integer $duration = null, string $link = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -581,7 +558,7 @@
                         </div>
                                             <a id="method_validTransfertVideo"></a>
                         <div class="element clickable method public  method_validTransfertVideo" data-toggle="collapse" data-target=".method_validTransfertVideo .collapse">
-                            <h2>Valide le transfer video.</h2>
+                            <h2>Valide the video transfer</h2>
                             <pre>validTransfertVideo(\Application\Service\interger $video_archive, string $url) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -641,7 +618,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 14 Jul 2016 16:22:17 +0200.<br/>
+            generated on Fri, 15 Jul 2016 10:05:08 +0200.<br/>
     </footer>
     </body>
 </html>

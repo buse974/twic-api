@@ -120,36 +120,30 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method__add" title="_add :: ">
-            <span class="description"></span><pre>_add</pre>
+        <a href="#method__add" title="_add :: Create Whiteboard">
+            <span class="description">Create Whiteboard</span><pre>_add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Create Whiteboard">
+            <span class="description">Create Whiteboard</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_delete" title="delete :: ">
-            <span class="description"></span><pre>delete</pre>
+        <a href="#method_delete" title="delete :: Delete Whiteboard">
+            <span class="description">Delete Whiteboard</span><pre>delete</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListByConversation" title="getListByConversation :: ">
-            <span class="description"></span><pre>getListByConversation</pre>
+        <a href="#method_getListByConversation" title="getListByConversation :: Get List By Conversation">
+            <span class="description">Get List By Conversation</span><pre>getListByConversation</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceUser" title="getServiceUser :: ">
-            <span class="description"></span><pre>getServiceUser</pre>
-        </a>
-    </li>
-
-                                                </ul>
+                                                                                                        </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -157,7 +151,12 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                            <li class="method private">
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServiceUser</pre>
+                            </a>
+                        </li>
+                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -195,8 +194,8 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method__add"></a>
                         <div class="element clickable method public  method__add" data-toggle="collapse" data-target=".method__add .collapse">
-                            <h2>_add</h2>
-                            <pre>_add( $data) </pre>
+                            <h2>Create Whiteboard</h2>
+                            <pre>_add(array $data) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -206,36 +205,24 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$data</h4>
-                                                <code></code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add(string $name = &quot;&quot;) </pre>
+                            <h2>Create Whiteboard</h2>
+                            <pre>add(string $name = &quot;&quot;) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -254,13 +241,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -269,13 +249,15 @@
                                                 <code>string</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
-                            <h2>delete</h2>
+                            <h2>Delete Whiteboard</h2>
                             <pre>delete(integer $id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -302,8 +284,8 @@
                         </div>
                                             <a id="method_getListByConversation"></a>
                         <div class="element clickable method public  method_getListByConversation" data-toggle="collapse" data-target=".method_getListByConversation .collapse">
-                            <h2>getListByConversation</h2>
-                            <pre>getListByConversation( $conversation_id) </pre>
+                            <h2>Get List By Conversation</h2>
+                            <pre>getListByConversation(integer $conversation_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -313,35 +295,23 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$conversation_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getServiceUser"></a>
-                        <div class="element clickable method public  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
-                            <h2>getServiceUser</h2>
+                        <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
+                            <h2>Get Service User</h2>
                             <pre>getServiceUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -390,7 +360,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 14 Jul 2016 16:22:16 +0200.<br/>
+            generated on Fri, 15 Jul 2016 10:05:08 +0200.<br/>
     </footer>
     </body>
 </html>

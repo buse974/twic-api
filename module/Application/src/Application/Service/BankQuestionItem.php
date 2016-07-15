@@ -105,9 +105,11 @@ class BankQuestionItem extends AbstractService
     }
 
     /**
+     * Get Service BankAnswerItem
+     * 
      * @return \Application\Service\BankAnswerItem
      */
-    public function getServiceBankAnswerItem()
+    private function getServiceBankAnswerItem()
     {
         return $this->getServiceLocator()->get('app_service_bank_answer_item');
     }

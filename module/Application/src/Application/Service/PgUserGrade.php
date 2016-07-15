@@ -21,7 +21,6 @@ class PgUserGrade extends AbstractService
      *
      * @param int $user            
      * @param int $submission            
-     *
      * @return bool
      */
     public function deleteByUserAndSubmission($user, $submission)
@@ -35,7 +34,6 @@ class PgUserGrade extends AbstractService
      * Get Peer grader User Grade by submission
      *
      * @param int $submission_id            
-     *
      * @return Dal\Db\ResultSet\ResultSet
      */
     public function getProcessedGrades($submission_id)
@@ -44,9 +42,9 @@ class PgUserGrade extends AbstractService
     }
 
     /**
+     * Get List By Submission
      *
      * @param int $submission_id            
-     *
      * @return Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id)
@@ -62,7 +60,6 @@ class PgUserGrade extends AbstractService
      * @param int $user_id            
      * @param int $submission_id            
      * @param int $grade            
-     *
      * @return int
      */
     public function add($pg_id, $user_id, $submission_id, $grade)

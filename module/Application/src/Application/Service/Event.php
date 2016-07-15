@@ -6,12 +6,12 @@
  * Event
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Json\Server\Request;
 use Zend\Http\Client;
+use Application\Model\VideoArchive;
 
 /**
  * Class Event
@@ -19,6 +19,11 @@ use Zend\Http\Client;
 class Event extends AbstractService
 {
 
+    /**
+     * Identification request
+     *
+     * @var int
+     */
     private static $id = 0;
 
     const TARGET_TYPE_USER = 'user';
@@ -34,17 +39,15 @@ class Event extends AbstractService
      * @param mixed $source            
      * @param mixed $object            
      * @param array $user            
-     *
+     * @param mixed $target            
+     * @param mixed $src            
      * @throws \Exception
-     *
      * @return int
      */
     public function create($event, $source, $object, $user, $target, $src = null)
     {
         if (! is_array($user)) {
-            $user = [
-                $user
-            ];
+            $user = [$user];
         }
         $user = array_values(array_unique($user));
         
@@ -64,27 +67,26 @@ class Event extends AbstractService
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventUser()->add($user, $event_id);
         
-        $this->sendRequest(array_values($user), array(
-            'id' => $event_id,
-            'event' => $event,
-            'source' => $source,
-            'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
-            'object' => $object
-        ), $target);
+        $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
         
         return $event_id;
     }
 
+    /**
+     * Send Request Event
+     *
+     * @param array $users            
+     * @param array $notification            
+     * @param mixed $target            
+     * @throws \Exception
+     * @return \Zend\Json\Server\Response
+     */
     public function sendRequest($users, $notification, $target)
     {
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.publish')
-            ->setParams(array(
-            'notification' => $notification,
-            'users' => $users,
-            'type' => $target
-        ))
+            ->setParams(array('notification' => $notification,'users' => $users,'type' => $target))
             ->setId(++ self::$id)
             ->setVersion('2.0');
         
@@ -102,14 +104,18 @@ class Event extends AbstractService
         return $rep;
     }
 
+    /**
+     * Check if User is connect
+     *
+     * @param int $user            
+     * @return array
+     */
     public function isConnected($user)
     {
         $rep = false;
         $request = new Request();
         $request->setMethod('user.isConnected')
-            ->setParams(array(
-            'user' => (int) $user
-        ))
+            ->setParams(array('user' => (int) $user))
             ->setId(++ self::$id)
             ->setVersion('2.0');
         
@@ -125,10 +131,11 @@ class Event extends AbstractService
     }
 
     /**
+     * Get Client Http
      *
      * @return \Zend\Http\Client
      */
-    public function getClient()
+    private function getClient()
     {
         $client = new Client();
         $client->setOptions($this->serviceLocator->get('config')['http-adapter']);
@@ -137,13 +144,16 @@ class Event extends AbstractService
     }
 
     /**
+     * Get List Event
+     *
      * @invokable
      *
-     * @param string $filter            
+     * @param array $filter            
      * @param string $events            
-     * @param string $user            
+     * @param int $user            
      * @param int $id            
      * @param int $source            
+     * @return array
      */
     public function getList($filter = null, $events = null, $user = null, $id = null, $source = null)
     {
@@ -165,48 +175,46 @@ class Event extends AbstractService
                 ->toArray();
         }
         
-        return [
-            'list' => $ar_event,
-            'count' => $count
-        ];
+        return ['list' => $ar_event,'count' => $count];
     }
 
     /**
+     * Get Event
      *
      * @param int $id            
-     *
      * @return \Application\Model\Event
      */
     public function get($id)
     {
-        $user = $this->getServiceUser()->getIdentity()['id'];
         $m_event = $this->getMapper()
-            ->getList($user, null, $id)
+            ->getList($this->getServiceUser()
+            ->getIdentity()['id'], null, $id)
             ->current();
         
         return $m_event;
     }
     
-    // event
-    public function messageNew($message, $to)
+    // /////////////// EVENT //////////////////////
+    
+    /**
+     * Event message.new
+     *
+     * @param int $message_id            
+     * @param array $to            
+     * @return int
+     */
+    public function messageNew($message_id, $to)
     {
         $from = $this->getDataUser();
         
-        $ret = $this->create('message.new', $from, $this->getDataMessage($message), $to, self::TARGET_TYPE_USER, $this->getServiceUser()
+        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $to, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
             if (/*!$this->isConnected($t)*/ $u['data']['has_email_notifier'] == true) {
                 try {
-                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array(
-                        'to_firstname' => $u['data']['firstname'],
-                        'to_lastname' => $u['data']['lastname'],
-                        'to_avatar' => $u['data']['avatar'],
-                        'from_firstname' => $from['data']['firstname'],
-                        'from_lastname' => $from['data']['lastname'],
-                        'from_avatar' => $from['data']['avatar']
-                    ));
+                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array('to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],'from_avatar' => $from['data']['avatar']));
                 } catch (\Exception $e) {
                     syslog(1, 'Model tpl_newmessage does not exist');
                 }
@@ -216,61 +224,99 @@ class Event extends AbstractService
         return $ret;
     }
 
-    public function userPublication($feed)
+    /**
+     * Event user.publication
+     *
+     * @param int $feed_id            
+     * @return int
+     */
+    public function userPublication($feed_id)
     {
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed_id), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function userAnnouncement($feed)
+    /**
+     * Event user.announcement
+     *
+     * @param int $feed_id            
+     * @return int
+     */
+    public function userAnnouncement($feed_id)
     {
-        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed), $this->getDataUserBySchool($this->getServiceUser()
+        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed_id), $this->getDataUserBySchool($this->getServiceUser()
             ->getIdentity()['school']['id']), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function userLike($event)
+    /**
+     * Event user.like
+     *
+     * @param int $event_id            
+     * @return int
+     */
+    public function userLike($event_id)
     {
-        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event_id), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function taskshared($task, $users)
+    /**
+     * Event task.shared
+     *
+     * @param int $task_id            
+     * @param array $users            
+     * @return int
+     */
+    public function taskshared($task_id, $users)
     {
-        return $this->create('task.shared', $this->getDataUser(), $this->getDataTask($task), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('task.shared', $this->getDataUser(), $this->getDataTask($task_id), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
+    /**
+     * Event user.comment
+     *
+     * @param \Application\Model\EventComment $task_id            
+     * @return int
+     */
     public function userComment($m_comment)
     {
         return $this->create('user.comment', $this->getDataUser(), $this->getDataEvent($m_comment->getEventId()), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function userAddConnection($user, $contact)
+    /**
+     * Event user.addconnection
+     *
+     * @param int $user_id            
+     * @param int $contact_id            
+     * @return int
+     */
+    public function userAddConnection($user_id, $contact_id)
     {
-        return $this->create('user.addconnection', $this->getDataUser($user), $this->getDataUser($contact), array_merge($this->getDataUserContact($contact), $this->getDataUserContact($user)), self::TARGET_TYPE_USER);
+        return $this->create('user.addconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id), array_merge($this->getDataUserContact($contact_id), $this->getDataUserContact($user_id)), self::TARGET_TYPE_USER);
     }
 
-    public function userDeleteConnection($user, $contact)
+    /**
+     * Event user.deleteconnection
+     *
+     * @param int $user_id            
+     * @param int $contact_id            
+     * @return int
+     */
+    public function userDeleteConnection($user_id, $contact_id)
     {
-        return $this->create('user.deleteconnection', $this->getDataUser($user), $this->getDataUser($contact), array_merge($this->getDataUserContact($contact), [
-            $contact,
-            $user
-        ]), self::TARGET_TYPE_USER);
+        return $this->create('user.deleteconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id), array_merge($this->getDataUserContact($contact_id), [$contact_id,$user_id]), self::TARGET_TYPE_USER);
     }
 
-    public function studentSubmitAssignment($item_assignment)
-    {
-        $m_item_assignment = $this->getServiceItemAssignment()->_get($item_assignment);
-        
-        return $this->create('student.submit.assignment', $this->getDataUser(), $this->getDataAssignment($m_item_assignment), $this->getDataUserByCourseWithInstructorAndAcademic($m_item_assignment->getItemProg()
-            ->getItem()
-            ->getCourse()
-            ->getId()), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-    }
-
+    /**
+     * Event submission.graded
+     *
+     * @param int $submission_id            
+     * @param int $user_id            
+     * @return int
+     */
     public function submissionGraded($submission_id, $user_id)
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
@@ -279,10 +325,18 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
 
+    /**
+     * Event submission.commented
+     *
+     * @param int $submission_id            
+     * @param int $submission_comments_id            
+     * @return int
+     */
     public function submissionCommented($submission_id, $submission_comments_id)
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-        $uai = $this->getDataUserByCourseWithInstructorAndAcademic($m_submission->getItem()->getCourseId());
+        $uai = $this->getDataUserByCourseWithInstructorAndAcademic($m_submission->getItem()
+            ->getCourseId());
         $users = $this->getDataUserBySubmission($submission_id);
         $m_comment = $this->getServiceSubmissionComments()->get($submission_comments_id);
         
@@ -290,24 +344,43 @@ class Event extends AbstractService
             ->getIdentity()['id']);
     }
 
-    public function threadNew($thread)
+    /**
+     * Event thread.new
+     *
+     * @param int $thread_id            
+     * @return int
+     */
+    public function threadNew($thread_id)
     {
-        $m_thread = $this->getServiceThread()->get($thread);
+        $m_thread = $this->getServiceThread()->get($thread_id);
         
         return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $this->getDataUserByCourse($m_thread->getCourse()
             ->getId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function threadMessage($thread_message)
+    /**
+     * Event thread.message
+     *
+     * @param int $thread_message_id            
+     * @return int
+     */
+    public function threadMessage($thread_message_id)
     {
-        $m_thread_message = $this->getServiceThreadMessage()->get($thread_message);
+        $m_thread_message = $this->getServiceThreadMessage()->get($thread_message_id);
         
         return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $this->getDataUserByCourse($m_thread_message->getThread()
             ->getCourseId()), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
+    /**
+     * Event record.available
+     *
+     * @param int $submission_id            
+     * @param VideoArchive $video_archive            
+     * @return int
+     */
     public function recordAvailable($submission_id, $video_archive)
     {
         $m_video_archive = $this->getServiceVideoArchive()->get($video_archive);
@@ -316,17 +389,29 @@ class Event extends AbstractService
         return $this->create('record.available', $this->getDataSubmission($m_submission), $this->getDataVideoArchive($m_video_archive), $this->getListBySubmissionWithInstrutorAndAcademic($submission_id), self::TARGET_TYPE_USER);
     }
 
-    public function eqcqAvailable($submission)
+    /**
+     * Event eqcq.available
+     *
+     * @param int $submission_id            
+     * @return int
+     */
+    public function eqcqAvailable($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission);
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
         return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), $this->getListBySubmissionWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
     }
 
-    public function pgAssigned($submission)
+    /**
+     * Event pg.graded
+     *
+     * @param int $submission_id            
+     * @return int
+     */
+    public function pgAssigned($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission);
-        $res_sub_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission);
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        $res_sub_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id);
         
         $user = [];
         foreach ($res_sub_pg as $m_sub_pg) {
@@ -335,273 +420,301 @@ class Event extends AbstractService
         
         return $this->create('pg.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user, self::TARGET_TYPE_USER);
     }
-    
-    
-    public function requestSubmit($submission, $user)
+
+    /**
+     * Event submit.request
+     *
+     * @param int $submission_id            
+     * @param int $user_id            
+     * @return int
+     */
+    public function requestSubmit($submission_id, $user_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission);
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('submit.request', $this->getDataUser(), $this->getDataSubmission($m_submission), $user, self::TARGET_TYPE_USER);
+        return $this->create('submit.request', $this->getDataUser(), $this->getDataSubmission($m_submission), $user_id, self::TARGET_TYPE_USER);
     }
-    
-    public function endSubmit($submission)
+
+    /**
+     * Event submission.submit
+     *
+     * @param int $submission_id            
+     * @return int
+     */
+    public function endSubmit($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission);
-    
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        
         return $this->create('submission.submit', $this->getDataUser(), $this->getDataSubmission($m_submission), $this->getDataInstructorByItem($m_submission->getItemId()), self::TARGET_TYPE_USER);
     }
-    
-    public function courseUpdated($course, $dataupdated)
+
+    /**
+     * Event course.updated
+     *
+     * @param int $course_id            
+     * @param array $dataupdated            
+     * @return int
+     */
+    public function courseUpdated($course_id, $dataupdated)
     {
-        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourseWithStudentAndInstructorAndAcademic($course), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course_id, $dataupdated), $this->getDataUserByCourseWithStudentAndInstructorAndAcademic($course_id), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function courseParticipation($course, $dataupdated)
+    /**
+     * Event submission.new
+     *
+     * @param int $submission_id            
+     * @return int
+     */
+    public function programmationNew($submission_id)
     {
-        return $this->create('course.participation', $this->getDataUser(), $this->getDataCourseUpdate($course, $dataupdated), $this->getDataUserByCourse($course), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-    }
-    
-    public function programmationNew($submission)
-    {
-        return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getDataUserBySubmission($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-    }
-
-    public function programmationUpdated($submission)
-    {
-        return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission), $this->getDataUserBySubmission($submission), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function profileUpdated($user, $dataprofile)
+    /**
+     * Event submission.updated
+     *
+     * @param int $submission_id            
+     * @return int
+     */
+    public function programmationUpdated($submission_id)
     {
-        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user, $dataprofile), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
+    /**
+     * Event profile.updated
+     *
+     * @param int $user_id            
+     * @param array $dataprofile            
+     * @return int
+     */
+    public function profileUpdated($user_id, $dataprofile)
+    {
+        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user_id, $dataprofile), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
+            ->getIdentity()['id']);
+    }
+
+    /**
+     * Event profile.newresume
+     *
+     * @param int $resume            
+     * @return int
+     */
     public function profileNewresume($resume)
     {
         return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function userRequestconnection($user)
+    /**
+     * Event user.requestconnection
+     *
+     * @param int $user_id            
+     * @return int
+     */
+    public function userRequestconnection($user_id)
     {
         $u = $this->getDataUser();
-        $uu = $this->getDataUser($user);
+        $uu = $this->getDataUser($user_id);
         
         try {
-            $this->getServiceMail()->sendTpl('tpl_newrequest', $uu['data']['email'], array(
-                'to_firstname' => $uu['data']['firstname'],
-                'to_lastname' => $uu['data']['lastname'],
-                'firstname' => $u['data']['firstname'],
-                'lastname' => $u['data']['lastname'],
-                'avatar' => $u['data']['avatar'],
-                'school_name' => $u['data']['school']['short_name'],
-                'school_logo' => $u['data']['school']['logo']
-            ));
+            $this->getServiceMail()->sendTpl('tpl_newrequest', $uu['data']['email'], array('to_firstname' => $uu['data']['firstname'],'to_lastname' => $uu['data']['lastname'],'firstname' => $u['data']['firstname'],'lastname' => $u['data']['lastname'],'avatar' => $u['data']['avatar'],'school_name' => $u['data']['school']['short_name'],'school_logo' => $u['data']['school']['logo']));
         } catch (\Exception $e) {
             syslog(1, 'Model tpl_newrequest does not exist');
         }
         
-        return $this->create('user.requestconnection', $u, $uu, [
-            $user
-        ], self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('user.requestconnection', $u, $uu, [$user_id], self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
-    public function schoolNew($school)
+    /**
+     * Event school.new
+     *
+     * @param int $school_id            
+     * @return int
+     */
+    public function schoolNew($school_id)
     {
-        return $this->create('school.new', [], $this->getDataSchool($school), [], self::TARGET_TYPE_GLOBAL);
+        return $this->create('school.new', [], $this->getDataSchool($school_id), [], self::TARGET_TYPE_GLOBAL);
     }
     
     // ------------- DATA OBJECT -------------------
-    public function getDataSchool($school)
+    
+    /**
+     * Get Data School
+     *
+     * @param int $school_id            
+     * @return array
+     */
+    public function getDataSchool($school_id)
     {
-        $m_school = $this->getServiceSchool()->get($school);
+        $m_school = $this->getServiceSchool()->get($school_id);
         
-        return [
-            'id' => $m_school->getId(),
-            'name' => 'school',
-            'data' => [
-                'id' => $m_school->getId(),
-                'name' => $m_school->getName(),
-                'short_name' => $m_school->getShortName(),
-                'logo' => $m_school->getLogo()
-            ]
-        ];
+        return ['id' => $m_school->getId(),'name' => 'school','data' => ['id' => $m_school->getId(),'name' => $m_school->getName(),'short_name' => $m_school->getShortName(),'logo' => $m_school->getLogo()]];
     }
 
-    public function getDataTask($task)
+    /**
+     * Get Data Task
+     *
+     * @param int $task_id            
+     * @return array
+     */
+    public function getDataTask($task_id)
     {
-        $m_task = $this->getServiceTask()->get($task);
+        $m_task = $this->getServiceTask()->get($task_id);
         
-        return [
-            'id' => $m_task->getId(),
-            'name' => 'task',
-            'data' => $m_task->toArray()
-        ];
+        return ['id' => $m_task->getId(),'name' => 'task','data' => $m_task->toArray()];
     }
 
-    public function getDataResume($resume)
+    /**
+     * Get Data resume
+     *
+     * @param int $resume_id            
+     * @return array
+     */
+    public function getDataResume($resume_id)
     {
-        $m_resume = $this->getServiceResume()->getById($resume);
+        $m_resume = $this->getServiceResume()->getById($resume_id);
         
-        return [
-            'id' => $resume,
-            'name' => 'resume',
-            'data' => [
-                'start_date' => $m_resume->getStartDate(),
-                'end_date' => $m_resume->getEndDate(),
-                'address' => $m_resume->getAddress(),
-                'title' => $m_resume->getTitle(),
-                'subtitle' => $m_resume->getSubtitle(),
-                'logo' => $m_resume->getLogo(),
-                'description' => $m_resume->getDescription(),
-                'type' => $m_resume->getType()
-            ]
-        ];
+        return ['id' => $resume_id,'name' => 'resume','data' => ['start_date' => $m_resume->getStartDate(),'end_date' => $m_resume->getEndDate(),'address' => $m_resume->getAddress(),'title' => $m_resume->getTitle(),'subtitle' => $m_resume->getSubtitle(),'logo' => $m_resume->getLogo(),'description' => $m_resume->getDescription(),'type' => $m_resume->getType()]];
     }
 
-    public function getDataUpdateProfile($user, $dataupdated)
+    /**
+     * Get Data User for update profile
+     *
+     * @param int $user_id            
+     * @param array $dataupdated            
+     * @return array
+     */
+    public function getDataUpdateProfile($user_id, $dataupdated)
     {
         if (isset($dataupdated['id'])) {
             unset($dataupdated['id']);
         }
         
-        return [
-            'id' => $user,
-            'name' => 'user',
-            'data' => [
-                'updated' => array_keys($dataupdated)
-            ]
-        ];
+        return ['id' => $user_id,'name' => 'user','data' => ['updated' => array_keys($dataupdated)]];
     }
 
-    public function getDataProgrammation($submission)
+    /**
+     * Get Data submission
+     *
+     * @param int $submission_id            
+     * @return array
+     */
+    public function getDataProgrammation($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission);
+        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return [
-            'id' => $m_submission->getId(),
-            'name' => 'submission',
-            'data' => [
-                'item' => [
-                    'id' => $m_submission->getItem()->getId(),
-                    'title' => $m_submission->getItem()->getTitle(),
-                    'type' => $m_submission->getItem()->getType(),
-                    'duration' => $m_submission->getItem()->getDuration(),
-                    'start' => $m_submission->getItem()->getStart(),
-                    'cut_off' => $m_submission->getItem()->getCutOff(),
-                ]
-            ]
-        ];
+        return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType(),'duration' => $m_submission->getItem()->getDuration(),'start' => $m_submission->getItem()->getStart(),'cut_off' => $m_submission->getItem()->getCutOff()]]];
     }
 
-    public function getDataCourseAddMaterial($course, $material)
+    /**
+     * Get Data Course for update
+     *
+     * @param int $course_id            
+     * @param array $dataupdated            
+     * @return array
+     */
+    public function getDataCourseUpdate($course_id, $dataupdated)
     {
-        $m_course = $this->getServiceCourse()->get($course);
-        
-        return [
-            'id' => $course,
-            'name' => 'course',
-            'data' => [
-                'title' => $m_course->getTitle(),
-                'picture' => $m_course->getPicture()
-            ]
-        ];
-    }
-
-    public function getDataCourseUpdate($course, $dataupdated)
-    {
-        $m_course = $this->getServiceCourse()->get($course);
+        $m_course = $this->getServiceCourse()->get($course_id);
         
         if (isset($dataupdated['id'])) {
             unset($dataupdated['id']);
         }
         
-        return [
-            'id' => $course,
-            'name' => 'course',
-            'data' => [
-                'title' => $m_course->getTitle(),
-                'picture' => $m_course->getPicture(),
-                'program' => $m_course->getProgram()->getId(),
-                'updated' => array_keys($dataupdated)
-            ]
-        ];
+        return ['id' => $course_id,'name' => 'course','data' => ['title' => $m_course->getTitle(),'picture' => $m_course->getPicture(),'program' => $m_course->getProgram()->getId(),'updated' => array_keys($dataupdated)]];
     }
 
+    /**
+     * Get Data Vide Archive
+     *
+     * @param \Application\Model\VideoArchive $m_video_archive            
+     * @return array
+     */
     public function getDataVideoArchive(\Application\Model\VideoArchive $m_video_archive)
     {
-        return [
-            'id' => $m_video_archive->getId(),
-            'name' => 'archive',
-            'data' => [
-                'archive_link' => $m_video_archive->getArchiveLink()
-            ]
-        ];
+        return ['id' => $m_video_archive->getId(),'name' => 'archive','data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
     }
 
+    /**
+     * Get Data Submission With User
+     *
+     * @param \Application\Model\Submission $m_submission            
+     * @return array
+     */
     public function getDataSubmissionWihtUser(\Application\Model\Submission $m_submission)
     {
         $res_user = $this->getServiceUser()->getListUsersBySubmission($m_submission->getId());
         
         $users = [];
         foreach ($res_user as $m_user) {
-            $users[] = [
-                'firstname' => $m_user->getFirstname(),
-                'lastname' => $m_user->getLastname(),
-                'avatar' => $m_user->getAvatar()
-            ];
+            $users[] = ['firstname' => $m_user->getFirstname(),'lastname' => $m_user->getLastname(),'avatar' => $m_user->getAvatar()];
         }
         
-        return [
-            'id' => $m_submission->getId(),
-            'name' => 'submission',
-            'data' => [
-                'item' => [
-                    'id' => $m_submission->getItemId(),
-                    'title' => $m_submission->getItem()->getTitle(),
-                    'type' => $m_submission->getItem()->getType()
-                ],
-                'users' => $users
-            ]
-        ];
+        return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItemId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()],'users' => $users]];
     }
 
+    /**
+     * Get DataSubmission
+     *
+     * @param \Application\Model\Submission $m_submission            
+     * @return array
+     */
     public function getDataSubmission(\Application\Model\Submission $m_submission)
     {
-        return [
-            'id' => $m_submission->getId(),
-            'name' => 'submission',
-            'data' => [
-                'item' => [
-                    'id' => $m_submission->getItem()->getId(),
-                    'title' => $m_submission->getItem()->getTitle(),
-                    'type' => $m_submission->getItem()->getType()
-                ]
-            ]
-        ];
+        return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()]]];
     }
 
-    public function getDataUserContact($user = null)
+    /**
+     * Get User By course
+     *
+     * @param int $course_id            
+     * @return array
+     */
+    public function getDataUserByCourse($course_id)
     {
-        $ret = $this->getServiceContact()->getListId($user);
+        $res_user = $this->getServiceUser()->getListUserBycourse($course_id);
         
-        if (null === $user) {
-            $user = $this->getServiceUser()->getIdentity()['id'];
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
         }
-        $ret[] = $user;
+        
+        return $users;
+    }
+
+    /**
+     * Get Data User Contact
+     *
+     * @param int $user_id            
+     * @return array
+     */
+    public function getDataUserContact($user_id = null)
+    {
+        $ret = $this->getServiceContact()->getListId($user_id);
+        
+        if (null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        $ret[] = $user_id;
         
         return $ret;
     }
 
-    public function getDataUserBySchool($school)
+    /**
+     * Get Data User School
+     *
+     * @param int $school_id            
+     * @return array
+     */
+    public function getDataUserBySchool($school_id)
     {
-        $res_user = $this->getServiceUser()->getListBySchool($school);
+        $res_user = $this->getServiceUser()->getListBySchool($school_id);
         
         $users = [];
         foreach ($res_user as $m_user) {
@@ -611,9 +724,15 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getDataUserByCourse($course)
+    /**
+     * Get User By Course With Student And Instructor And Academic
+     *
+     * @param int $course_id            
+     * @return array
+     */
+    public function getDataUserByCourseWithStudentAndInstructorAndAcademic($course_id)
     {
-        $res_user = $this->getServiceUser()->getListUserBycourse($course);
+        $res_user = $this->getServiceUser()->getListUserBycourseWithStudentAndInstructorAndAcademic($course_id);
         
         $users = [];
         foreach ($res_user as $m_user) {
@@ -623,9 +742,15 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getDataUserByCourseWithStudentAndInstructorAndAcademic($course)
+    /**
+     * Get User By Course With Instructor And Academic
+     *
+     * @param int $course_id            
+     * @return array
+     */
+    public function getDataUserByCourseWithInstructorAndAcademic($course_id)
     {
-        $res_user = $this->getServiceUser()->getListUserBycourseWithStudentAndInstructorAndAcademic($course);
+        $res_user = $this->getServiceUser()->getListUserBycourseWithInstructorAndAcademic($course_id);
         
         $users = [];
         foreach ($res_user as $m_user) {
@@ -635,22 +760,16 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getDataUserByCourseWithInstructorAndAcademic($course)
-    {
-        $res_user = $this->getServiceUser()->getListUserBycourseWithInstructorAndAcademic($course);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-    
+    /**
+     * Get User Instructor By Item
+     *
+     * @param int $item_id            
+     * @return array
+     */
     public function getDataInstructorByItem($item_id)
     {
         $res_user = $this->getServiceUser()->getInstructorByItem($item_id);
-    
+        
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
@@ -659,9 +778,15 @@ class Event extends AbstractService
         return $users;
     }
 
-    public function getListBySubmissionWithInstrutorAndAcademic($submission)
+    /**
+     * Get User By Submission With Instrutor And Academic
+     *
+     * @param int $submission_id            
+     * @return array
+     */
+    public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
-        $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission);
+        $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
         
         $users = [];
         foreach ($res_user as $m_user) {
@@ -671,10 +796,16 @@ class Event extends AbstractService
         return $users;
     }
 
+    /**
+     * Get User By submission
+     *
+     * @param int $submission_id            
+     * @return array
+     */
     public function getDataUserBySubmission($submission_id)
     {
         $res_user = $this->getServiceUser()->getListBySubmission($submission_id);
-       
+        
         $users = [];
         foreach ($res_user as $m_user) {
             $users[] = $m_user->getId();
@@ -683,336 +814,277 @@ class Event extends AbstractService
         return $users;
     }
 
+    /**
+     * Get Data THread Message
+     *
+     * @param \Application\Model\ThreadMessage $m_thread_message            
+     * @return array
+     */
     public function getDataThreadMessage(\Application\Model\ThreadMessage $m_thread_message)
     {
         $m_thread = $this->getServiceThread()->get($m_thread_message->getThread()
             ->getId());
         
-        return [
-            'id' => $m_thread_message->getId(),
-            'name' => 'thread.message',
-            'data' => [
-                'message' => $m_thread_message->getMessage(),
-                'thread' => $this->getDataThread($m_thread)['data']
-            ]
-        ];
+        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)['data']]];
     }
 
+    /**
+     * Get Data Thread
+     *
+     * @param \Application\Model\Thread $m_thread            
+     * @return array
+     */
     public function getDataThread(\Application\Model\Thread $m_thread)
     {
-        return [
-            'id' => $m_thread->getId(),
-            'name' => 'thread',
-            'data' => [
-                'id' => $m_thread->getId(),
-                'title' => $m_thread->getTitle(),
-                'course' => [
-                    'id' => $m_thread->getCourse()->getId(),
-                    'title' => $m_thread->getCourse()->getTitle()
-                ]
-            ]
-        ];
+        return ['id' => $m_thread->getId(),'name' => 'thread','data' => ['id' => $m_thread->getId(),'title' => $m_thread->getTitle(),'course' => ['id' => $m_thread->getCourse()->getId(),'title' => $m_thread->getCourse()->getTitle()]]];
     }
 
-    public function getDataFeed($feed)
+    /**
+     * Get Data feed
+     *
+     * @param int $feed_id            
+     * @return array
+     */
+    public function getDataFeed($feed_id)
     {
-        $m_feed = $this->getServiceFeed()->get($feed);
+        $m_feed = $this->getServiceFeed()->get($feed_id);
         
-        return [
-            'id' => $feed,
-            'name' => 'feed',
-            'data' => [
-                'content' => $m_feed->getContent(),
-                'picture' => $m_feed->getPicture(),
-                'name_picture' => $m_feed->getNamePicture(),
-                'document' => $m_feed->getDocument(),
-                'name_document' => $m_feed->getNameDocument(),
-                'link' => $m_feed->getLink()
-            ]
-        ];
+        return ['id' => $feed_id,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
     }
 
+    /**
+     * Get Data Event
+     *
+     * @param int $event            
+     * @return array
+     */
     public function getDataEvent($event)
     {
         $m_event = $this->get($event);
         
-        return [
-            'id' => $event,
-            'name' => 'event',
-            'data' => $m_event->toArray()
-        ];
-    }
-
-    public function getDataEventComment($m_event_comment)
-    {
-        return [
-            'id' => $m_event_comment->getId(),
-            'name' => 'comment',
-            'data' => $m_event_comment->toArray()
-        ];
-    }
-
-    public function getDataSubmissionComment(\Application\Model\Submission $m_submisssion, \Application\Model\SubmissionComments $m_comment)
-    {
-        return [
-            'id' => $m_submisssion->getId(),
-            'name' => 'submission',
-            'data' => [
-                'item' => [
-                    'id' => $m_submisssion->getItem()->getId(),
-                    'title' => $m_submisssion->getItem()->getTitle(),
-                    'type' => $m_submisssion->getItem()->getType()
-                ],
-                'comment' => [
-                    'id' => $m_comment->getId(),
-                    'text' => $m_comment->getText()
-                ]
-            ]
-        ];
-    }
-
-    public function getDataAssignment(\Application\Model\ItemAssignment $m_item_assignment)
-    {
-        $users = [];
-        foreach ($m_item_assignment->getStudents() as $student) {
-            $users[] = [
-                'id' => $student->getId(),
-                'name' => 'user',
-                'data' => [
-                    'firstname' => $student->getFirstname(),
-                    'lastname' => $student->getLastname(),
-                    'avatar' => $student->getAvatar(),
-                    'school' => [
-                        'id' => $student->getSchool()->getId(),
-                        'short_name' => $student->getSchool()->getShortName(),
-                        'logo' => $student->getSchool()->getLogo()
-                    ],
-                    'user_roles' => $student->getRoles()
-                ]
-            ];
-        }
-        
-        return [
-            'id' => $m_item_assignment->getId(),
-            'name' => 'assignment',
-            'data' => [
-                'users' => $users,
-                'item' => [
-                    'title' => $m_item_assignment->getItemProg()
-                        ->getItem()
-                        ->getTitle(),
-                    'type' => $m_item_assignment->getItemProg()
-                        ->getItem()
-                        ->getType()
-                ],
-                'submission' => [
-                    'id' => $m_item_assignment->getItemProg()->getId()
-                ],
-            ]
-        ];
-    }
-
-    public function getDataUser($id = null)
-    {
-        if (null == $id) {
-            $id = $this->getServiceUser()->getIdentity()['id'];
-        }
-        
-        $m_user = $this->getServiceUser()->get($id);
-        
-        return [
-            'id' => $id,
-            'name' => 'user',
-            'data' => [
-                'firstname' => $m_user['firstname'],
-                'email' => $m_user['email'],
-                'lastname' => $m_user['lastname'],
-                'gender' => $m_user['gender'],
-                'has_email_notifier' => $m_user['has_email_notifier'],
-                'avatar' => $m_user['avatar'],
-                'school' => [
-                    'id' => $m_user['school']['id'],
-                    'short_name' => $m_user['school']['short_name'],
-                    'logo' => $m_user['school']['logo'],
-                    'background' => $m_user['school']['background'],
-                    'name' => $m_user['school']['name']
-                ],
-                'user_roles' => $m_user['roles']
-            ]
-        ];
-    }
-
-    public function getDataMessage($message)
-    {
-        $m_message = $this->getServiceMessageUser()
-            ->getMessage($message)
-            ->getMessage();
-        
-        return [
-            'id' => $m_message->getId(),
-            'name' => 'message',
-            'data' => $m_message
-        ];
+        return ['id' => $event,'name' => 'event','data' => $m_event->toArray()];
     }
 
     /**
+     * Get Data Submission Comment
+     *
+     * @param \Application\Model\Submission $m_submisssion            
+     * @param \Application\Model\SubmissionComments $m_comment            
+     * @return array
+     */
+    public function getDataSubmissionComment(\Application\Model\Submission $m_submisssion, \Application\Model\SubmissionComments $m_comment)
+    {
+        return ['id' => $m_submisssion->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submisssion->getItem()->getId(),'title' => $m_submisssion->getItem()->getTitle(),'type' => $m_submisssion->getItem()->getType()],'comment' => ['id' => $m_comment->getId(),'text' => $m_comment->getText()]]];
+    }
+
+    /**
+     * Get Data User
+     *
+     * @param int $user_id            
+     * @return array
+     */
+    public function getDataUser($user_id = null)
+    {
+        if (null == $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
+        $m_user = $this->getServiceUser()->get($user_id);
+        
+        return ['id' => $user_id,'name' => 'user','data' => ['firstname' => $m_user['firstname'],'email' => $m_user['email'],'lastname' => $m_user['lastname'],'gender' => $m_user['gender'],'has_email_notifier' => $m_user['has_email_notifier'],'avatar' => $m_user['avatar'],'school' => ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' => $m_user['school']['logo'],'background' => $m_user['school']['background'],'name' => $m_user['school']['name']],'user_roles' => $m_user['roles']]];
+    }
+
+    /**
+     * Get Data Message
+     *
+     * @param int $message_id            
+     * @return array
+     */
+    public function getDataMessage($message_id)
+    {
+        $m_message = $this->getServiceMessageUser()
+            ->getMessage($message_id)
+            ->getMessage();
+        
+        return ['id' => $m_message->getId(),'name' => 'message','data' => $m_message];
+    }
+
+    /**
+     * Get Service Thread Message
      *
      * @return \Application\Service\ThreadMessage
      */
-    public function getServiceThreadMessage()
+    private function getServiceThreadMessage()
     {
         return $this->getServiceLocator()->get('app_service_thread_message');
     }
 
     /**
+     * Get Service Thread
      *
      * @return \Application\Service\Thread
      */
-    public function getServiceThread()
+    private function getServiceThread()
     {
         return $this->getServiceLocator()->get('app_service_thread');
     }
 
     /**
+     * Get Service Event User
      *
      * @return \Application\Service\EventUser
      */
-    public function getServiceEventUser()
+    private function getServiceEventUser()
     {
         return $this->getServiceLocator()->get('app_service_event_user');
     }
 
     /**
+     * Get Service Event Comment
      *
      * @return \Application\Service\EventComment
      */
-    public function getServiceEventComment()
+    private function getServiceEventComment()
     {
         return $this->getServiceLocator()->get('app_service_event_comment');
     }
 
     /**
+     * Get Service User
      *
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service Feed
      *
      * @return \Application\Service\Feed
      */
-    public function getServiceFeed()
+    private function getServiceFeed()
     {
         return $this->serviceLocator->get('app_service_feed');
     }
 
     /**
+     * Get Service Video Archive
      *
      * @return \Application\Service\VideoArchive
      */
-    public function getServiceVideoArchive()
+    private function getServiceVideoArchive()
     {
         return $this->getServiceLocator()->get('app_service_video_archive');
     }
 
     /**
+     * Get Service Submission Comments
      *
      * @return \Application\Service\SubmissionComments
      */
-    public function getServiceSubmissionComments()
+    private function getServiceSubmissionComments()
     {
         return $this->getServiceLocator()->get('app_service_submission_comments');
     }
-    
+
     /**
+     * Get Service Submission
      *
      * @return \Application\Service\Submission
      */
-    public function getServiceSubmission()
+    private function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
+     * Get Service Course
      *
      * @return \Application\Service\Course
      */
-    public function getServiceCourse()
+    private function getServiceCourse()
     {
         return $this->getServiceLocator()->get('app_service_course');
     }
 
     /**
+     * Get Service Resume
      *
      * @return \Application\Service\Resume
      */
-    public function getServiceResume()
+    private function getServiceResume()
     {
         return $this->getServiceLocator()->get('app_service_resume');
     }
 
     /**
+     * Get Service School
      *
      * @return \Application\Service\School
      */
-    public function getServiceSchool()
+    private function getServiceSchool()
     {
         return $this->getServiceLocator()->get('app_service_school');
     }
 
     /**
+     * Get Service Contact
      *
      * @return \Application\Service\Contact
      */
-    public function getServiceContact()
+    private function getServiceContact()
     {
         return $this->getServiceLocator()->get('app_service_contact');
     }
 
     /**
+     * Get Service Mail
      *
      * @return \Mail\Service\Mail
      */
-    public function getServiceMail()
+    private function getServiceMail()
     {
         return $this->getServiceLocator()->get('mail.service');
     }
 
     /**
+     * Get Service Message User
      *
      * @return \Application\Service\MessageUser
      */
-    public function getServiceMessageUser()
+    private function getServiceMessageUser()
     {
         return $this->getServiceLocator()->get('app_service_message_user');
     }
 
     /**
+     * Get Service Submission Pg
      *
      * @return \Application\Service\SubmissionPg
      */
-    public function getServiceSubmissionPg()
+    private function getServiceSubmissionPg()
     {
         return $this->getServiceLocator()->get('app_service_submission_pg');
     }
-    
+
     /**
+     * Get Service Message
      *
      * @return \Application\Service\Message
      */
-    public function getServiceMessage()
+    private function getServiceMessage()
     {
         return $this->getServiceLocator()->get('app_service_message');
     }
 
     /**
+     * Get Service Task
      *
      * @return \Application\Service\Task
      */
-    public function getServiceTask()
+    private function getServiceTask()
     {
         return $this->getServiceLocator()->get('app_service_task');
     }

@@ -17,9 +17,12 @@ use Dal\Service\AbstractService;
 class Whiteboard extends AbstractService
 {
     /**
+     * Create Whiteboard
+     * 
      * @invokable
      * 
      * @param string $name
+     * @return int
      */
     public function add($name = "")
     {
@@ -28,12 +31,18 @@ class Whiteboard extends AbstractService
             ->setOwnerId($this->getServiceUser()->getIdentity()['id']);
         
         if ($this->getMapper()->insert($m_whiteboard) <= 0) {
-            //@TODO error
+            throw new \Exception('error create Whiteboard');
         }
     
         return $this->getMapper()->getLastInsertValue();
     }
     
+    /**
+     * Create Whiteboard
+     * 
+     * @param array $data
+     * @return int
+     */
     public function _add($data)
     {
         $name = ((isset($data['name']))? $data['name']:null);
@@ -42,8 +51,9 @@ class Whiteboard extends AbstractService
     }
     
     /**
+     * Delete Whiteboard
+     * 
      * @param integer $id
-     *
      * @return integer
      */
     public function delete($id)
@@ -51,15 +61,23 @@ class Whiteboard extends AbstractService
         return $this->getMapper()->delete($this->getModel()->setId($id));
     }
     
+    /**
+     * Get List By Conversation
+     * 
+     * @param int $conversation_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListByConversation($conversation_id)
     {
         return $this->getMapper()->getListByConversation($conversation_id);
     }
     
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
         

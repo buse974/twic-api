@@ -402,7 +402,7 @@ class MessageTest extends AbstractService
         ]);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 8);
+        $this->assertEquals(count($data['result']) , 9);
         $this->assertEquals(count($data['result']['messages']) , 2);
         $this->assertEquals(count($data['result']['messages']['list']) , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]) , 8);
@@ -515,13 +515,20 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['name'] , "Chat");
         $this->assertEquals($data['result']['type'] , 2);
         $this->assertEquals($data['result']['token'] , null);
-        $this->assertEquals($data['result']['conversation_opt_id'] , null);
+        $this->assertEquals($data['result']['conversation_opt_id'] , 1);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
+        $this->assertEquals(count($data['result']['conversation_opt']) , 9);
+        $this->assertEquals($data['result']['conversation_opt']['id'] , 1);
+        $this->assertEquals($data['result']['conversation_opt']['item_id'] , null);
+        $this->assertEquals($data['result']['conversation_opt']['record'] , 1);
+        $this->assertEquals($data['result']['conversation_opt']['nb_user_autorecord'] , 2);
+        $this->assertEquals($data['result']['conversation_opt']['allow_intructor'] , 1);
+        $this->assertEquals($data['result']['conversation_opt']['has_eqcq'] , 0);
+        $this->assertEquals($data['result']['conversation_opt']['start_date'] , null);
+        $this->assertEquals($data['result']['conversation_opt']['duration'] , null);
+        $this->assertEquals($data['result']['conversation_opt']['rules'] , null);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
-        
-        
     }
     
     public function testCanGetListConversation()

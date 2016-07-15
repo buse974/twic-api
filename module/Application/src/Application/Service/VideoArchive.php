@@ -6,7 +6,6 @@
  * Archive Video
  * 
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -19,9 +18,11 @@ class VideoArchive extends AbstractService
 {
 
     /**
+     * Get List Video
      * @invokable
      *
-     * @param integer $submission_id            
+     * @param integer $submission_id
+     * @return array|stdClass         
      */
     public function getList($submission_id)
     {
@@ -36,8 +37,10 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     *
-     * @param integer $id            
+     * Get Video
+     * 
+     * @param integer $id   
+     * @return \Application\Model\VideoArchive         
      */
     public function get($id)
     {
@@ -55,6 +58,7 @@ class VideoArchive extends AbstractService
      * @invokable
      *
      * @param interger $conversation_id            
+     * @return array
      */
     public function startRecord($conversation_id)
     {
@@ -74,6 +78,7 @@ class VideoArchive extends AbstractService
      * @invokable
      *
      * @param interger $conversation_id            
+     * @return mixed
      */
     public function stopRecord($conversation_id)
     {
@@ -83,13 +88,12 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Valide le transfer video.
+     * Valide the video transfer
      *
      * @invokable
      *
      * @param interger $video_archive            
      * @param string $url            
-     *
      * @return int
      */
     public function validTransfertVideo($video_archive, $url)
@@ -112,12 +116,12 @@ class VideoArchive extends AbstractService
     }
 
     /**
+     * Update Status Video
      *
      * @param string $token            
      * @param string $status            
      * @param int $duration            
      * @param string $link            
-     *
      * @return int
      */
     public function updateByArchiveToken($id, $status, $duration = null, $link = null)
@@ -132,7 +136,7 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Récupére la liste des videos a uploader.
+     * Get List videos a uploader.
      *
      * @invokable
      *
@@ -161,11 +165,12 @@ class VideoArchive extends AbstractService
     }
 
     /**
+     * Add Video
      *
-     * @param integer $conversation            
+     * @param int $conversation            
      * @param string $token            
      *
-     * @return integer
+     * @return int
      */
     public function add($conversation_id, $token)
     {
@@ -181,28 +186,31 @@ class VideoArchive extends AbstractService
     }
 
     /**
+     * Get Service Conversation
      *
      * @return \Application\Service\Conversation
      */
-    public function getServiceConversation()
+    private function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
 
     /**
+     * Get Service OpenTok
      *
      * @return \ZOpenTok\Service\OpenTok
      */
-    public function getServiceZOpenTok()
+    private function getServiceZOpenTok()
     {
         return $this->getServiceLocator()->get('opentok.service');
     }
 
     /**
+     * Get Service Event
      *
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }

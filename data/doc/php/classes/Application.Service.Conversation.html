@@ -216,8 +216,8 @@
     </li>
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <li class="method public">
-        <a href="#method_join" title="join :: ">
-            <span class="description"></span><pre>join</pre>
+        <a href="#method_join" title="join :: Joindre conversation.">
+            <span class="description">Joindre conversation.</span><pre>join</pre>
         </a>
     </li>
 
@@ -400,7 +400,7 @@
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Create conversation.</h2>
-                            <pre>add(array $users) : integer</pre>
+                            <pre>add(integer|array $users) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -424,7 +424,7 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$users</h4>
-                                                <code>array</code><p></p>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -1451,8 +1451,8 @@ of current user school</p></div>
                         </div>
                                             <a id="method_join"></a>
                         <div class="element clickable method public  method_join" data-toggle="collapse" data-target=".method_join .collapse">
-                            <h2>join</h2>
-                            <pre>join(\Application\Service\unknown $conversation) : array&lt;mixed,\Application\Service\&gt;</pre>
+                            <h2>Joindre conversation.</h2>
+                            <pre>join(integer $conversation) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -1462,16 +1462,25 @@ of current user school</p></div>
                                     <div class="long_description"></div>
 
                                     <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$conversation</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>array&lt;mixed,\Application\Service\&gt;</code><p></p>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
@@ -1678,7 +1687,7 @@ of current user school</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 14 Jul 2016 16:22:16 +0200.<br/>
+            generated on Fri, 15 Jul 2016 10:05:07 +0200.<br/>
     </footer>
     </body>
 </html>

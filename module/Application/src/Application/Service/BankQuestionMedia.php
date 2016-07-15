@@ -93,9 +93,11 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
+     * Get Service Library
+     * 
      * @return \Application\Service\Library
      */
-    public function getServiceLibrary()
+    private function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }

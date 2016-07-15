@@ -549,15 +549,16 @@ class GroupWorkTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 22);
-        $this->assertEquals(count($data['result']['videoconf']) , 8);
+        $this->assertEquals(count($data['result']['videoconf']) , 9);
         $this->assertEquals($data['result']['videoconf']['id'] , 1);
         $this->assertEquals($data['result']['videoconf']['item_id'] , 1);
         $this->assertEquals($data['result']['videoconf']['record'] , 1);
         $this->assertEquals($data['result']['videoconf']['nb_user_autorecord'] , 10);
         $this->assertEquals($data['result']['videoconf']['allow_intructor'] , 0);
-        $this->assertEquals($data['result']['videoconf']['has_eqcq'] , false);
+        $this->assertEquals($data['result']['videoconf']['has_eqcq'] , 0);
         $this->assertEquals($data['result']['videoconf']['start_date'] , null);
         $this->assertEquals($data['result']['videoconf']['duration'] , null);
+        $this->assertEquals($data['result']['videoconf']['rules'] , null);
         $this->assertEquals(count($data['result']['program']) , 2);
         $this->assertEquals($data['result']['program']['id'] , 1);
         $this->assertEquals($data['result']['program']['name'] , "program name");
@@ -845,20 +846,22 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals($data['result']['chat'][0]['token'] , null);
-        $this->assertEquals($data['result']['chat'][0]['conversation_opt_id'] , null);
+        $this->assertEquals($data['result']['chat'][0]['conversation_opt_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['chat'][0]['conversation_opt']) , 8);
+        $this->assertEquals(count($data['result']['chat'][0]['conversation_opt']) , 9);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['item_id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['record'] , 1);
-        $this->assertEquals($data['result']['chat'][0]['conversation_opt']['has_eqcq'] , false);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['nb_user_autorecord'] , 10);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['allow_intructor'] , 0);
+        $this->assertEquals($data['result']['chat'][0]['conversation_opt']['has_eqcq'] , 0);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['start_date'] , null);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['duration'] , null);
+        $this->assertEquals($data['result']['chat'][0]['conversation_opt']['rules'] , null);
         $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
 
     /**
@@ -903,21 +906,23 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
         $this->assertEquals($data['result']['chat'][0]['type'] , 5);
         $this->assertEquals($data['result']['chat'][0]['token'] , null);
-        $this->assertEquals($data['result']['chat'][0]['conversation_opt_id'] , null);
+        $this->assertEquals($data['result']['chat'][0]['conversation_opt_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['chat'][0]['conversation_opt']) , 8);
+        $this->assertEquals(count($data['result']['chat'][0]['conversation_opt']) , 9);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['item_id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['record'] , 1);
-        $this->assertEquals($data['result']['chat'][0]['conversation_opt']['has_eqcq'] , false);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['nb_user_autorecord'] , 10);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['allow_intructor'] , 0);
+        $this->assertEquals($data['result']['chat'][0]['conversation_opt']['has_eqcq'] , 0);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['start_date'] , null);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['duration'] , null);
+        $this->assertEquals($data['result']['chat'][0]['conversation_opt']['rules'] , null);
         $this->assertEquals($data['result']['thread'] , null);
         $this->assertEquals(count($data['result']['poll']) , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     

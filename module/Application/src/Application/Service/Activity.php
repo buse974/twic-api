@@ -19,10 +19,11 @@ class Activity extends AbstractService
 {
 
     /**
+     * Create Activity
+     * 
      * @invokable
      *
      * @param array $activities            
-     *
      * @return array
      */
     public function add($activities)
@@ -44,22 +45,21 @@ class Activity extends AbstractService
     }
 
     /**
-     *
+     * Create Activity
+     * 
      * @param string $date            
      * @param string $event            
      * @param array $object            
-     * @param array $target            
-     *
+     * @param array $target     
      * @throws \Exception
-     *
      * @return int
      */
-    public function _add($date = null, $event = null, $object = null, $target = null, $user = null)
+    public function _add($date = null, $event = null, $object = null, $target = null, $user_id = null)
     {
         $m_activity = $this->getModel();
         $m_activity->setEvent($event);
         $m_activity->setDate($date);
-        $m_activity->setUserId($user);
+        $m_activity->setUserId($user_id);
         
         if (null !== $object) {
             if (isset($object['id'])) {
@@ -95,6 +95,8 @@ class Activity extends AbstractService
     }
 
     /**
+     * Get List activity 
+     * 
      * @invokable
      *
      * @param string $date            
@@ -104,7 +106,8 @@ class Activity extends AbstractService
      * @param array $user            
      * @param string $start_date            
      * @param string $end_date            
-     * @param array $filter            
+     * @param array $filter  
+     * @return array          
      */
     public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null, $filter = null)
     {
@@ -142,7 +145,6 @@ class Activity extends AbstractService
         $mapper = ($filter !== null) ? $this->getMapper()->usePaginator($filter) : $this->getMapper();
         
         $res_activity = $mapper->select($m_activity, array('date' => 'ASC'));
-        
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
             $o_data = $m_activity->getObjectData();
@@ -159,10 +161,13 @@ class Activity extends AbstractService
     }
 
     /**
+     * Get List Activity With User Model
+     * 
      * @invokable
      *
      * @param array $filter            
-     * @param string $search            
+     * @param string $search   
+     * @return array         
      */
     public function getListWithUser($filter = null, $search = null)
     {
@@ -173,12 +178,17 @@ class Activity extends AbstractService
     }
 
     /**
+     * Aggregate Activity
+     * 
      * @invokable
      *
      * @param array|string $event            
      * @param int $user            
      * @param int $object_id            
-     * @param string $object_name            
+     * @param string $object_name      
+     * @param int $target_id            
+     * @param string $target_name   
+     * @return array         
      */
     public function aggregate($event, $user, $object_id = null, $object_name = null, $target_id = null, $target_name = null)
     {
@@ -197,19 +207,21 @@ class Activity extends AbstractService
     }
 
     /**
-     *
+     * Get Service User 
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
-     *
+     * Get Service Connection
+     * 
      * @return \Application\Service\Connection
      */
-    public function getServiceConnection()
+    private function getServiceConnection()
     {
         return $this->getServiceLocator()->get('app_service_connection');
     }

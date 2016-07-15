@@ -228,25 +228,31 @@ class BankQuestion extends AbstractService
     }
 
     /**
+     * Get Service BankQuestionMedia
+     * 
      * @return \Application\Service\BankQuestionMedia
      */
-    public function getServiceBankQuestionMedia()
+    private function getServiceBankQuestionMedia()
     {
         return $this->getServiceLocator()->get('app_service_bank_question_media');
     }
 
     /**
+     * Get Service BankQuestionTag
+     * 
      * @return \Application\Service\BankQuestionTag
      */
-    public function getServiceBankQuestionTag()
+    private function getServiceBankQuestionTag()
     {
         return $this->getServiceLocator()->get('app_service_bank_question_tag');
     }
 
     /**
+     * Get Service Bank Question Item
+     * 
      * @return \Application\Service\BankQuestionItem
      */
-    public function getServiceBankQuestionItem()
+    private function getServiceBankQuestionItem()
     {
         return $this->getServiceLocator()->get('app_service_bank_question_item');
     }
