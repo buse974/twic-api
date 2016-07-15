@@ -117,3 +117,20 @@ Role-based access control
 *Description ( Source WIKIPEDIA )*
 
 Role-Based-Access-Control (RBAC) is a policy neutral access control mechanism defined around roles and privileges. The components of RBAC such as role-permissions, user-role and role-role relationships make it simple to perform user assignments. A study by NIST has demonstrated that RBAC addresses many needs of commercial and government organizations. RBAC can be used to facilitate administration of security in large organizations with hundreds of users and thousands of permissions. Although RBAC is different from MAC and DAC access control frameworks, it can enforce these policies without any complication. Its popularity is evident from the fact that many products and businesses are using it directly or indirectly.
+
++---------------------+--------------------+
+|                     | user.login         |
++---------------------+--------------------+
+| External            |        X           |
++---------------------+--------------------+
+
+	
+|
+|
+|
+|
+|
+|
+
+
+
