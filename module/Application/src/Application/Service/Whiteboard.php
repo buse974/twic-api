@@ -22,12 +22,17 @@ class Whiteboard extends AbstractService
      * @invokable
      * 
      * @param string $name
+     * @param int $width
+     * @param int $height
+     * @throws \Exception
      * @return int
      */
-    public function add($name = "")
+    public function add($name = "", $width = null, $height = null)
     {
         $m_whiteboard = $this->getModel()
             ->setName($name)
+            ->setWidth($width)
+            ->setHeight($height)
             ->setOwnerId($this->getServiceUser()->getIdentity()['id']);
         
         if ($this->getMapper()->insert($m_whiteboard) <= 0) {
@@ -46,8 +51,10 @@ class Whiteboard extends AbstractService
     public function _add($data)
     {
         $name = ((isset($data['name']))? $data['name']:null);
+        $width = ((isset($data['width']))? $data['width']:null);
+        $height = ((isset($data['height']))? $data['height']:null);
 
-        return $this->add($name);
+        return $this->add($name, $width, $height);
     }
     
     /**
