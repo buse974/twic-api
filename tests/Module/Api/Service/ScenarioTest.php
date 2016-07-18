@@ -1998,10 +1998,11 @@ class ScenarioTest extends AbstractService
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result']['list']), 1);
-        $this->assertEquals(count($data['result']['list'][0]), 8);
+        $this->assertEquals(count($data['result']['list'][0]), 9);
         $this->assertEquals($data['result']['list'][0]['student'], 0);
         $this->assertEquals($data['result']['list'][0]['instructor'], 0);
         $this->assertEquals($data['result']['list'][0]['course'], 1);
+        $this->assertEquals($data['result']['list'][0]['school_id'], 2);
         $this->assertEquals($data['result']['list'][0]['id'], 1);
         $this->assertEquals($data['result']['list'][0]['name'], "program name upd");
         $this->assertEquals($data['result']['list'][0]['level'], "mba");

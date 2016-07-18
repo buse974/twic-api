@@ -1,0 +1,86 @@
+FORMAT: 1A
+HOST: http://apiwow
+
+# TheStudnet API
+
+## User Management [/api.json-rpc]
+
+### user.login [POST]
+
++ Request (application/json) application/json
+
+        {
+            "jsonrpc": "2.0", 
+            "method": "user.login", 
+            "params": {
+                 "user": "crobert@thestudnet.com", 
+                 "password": "thestudnet"
+            }, 
+            "id": 3
+        }
+        
++ Response 200 (application/json)
+
+         {
+             "result":
+             {
+                 "id": 3,
+                 "token": "36e78c40ec2a293d0fad7d43bbe8e22ec",
+                 "created_date": null,
+                 "firstname": "Christophe",
+                 "lastname": "Robert",
+                 "email": "crobert@thestudnet.com",
+                 "expiration_date": null,
+                 "roles":
+                 [
+                     "super_admin"
+                 ]
+             },
+             "id": "3",
+             "jsonrpc": "2.0"
+         }
+
+        
+### user.add [POST]
+
+Add User
+
++ Request (application/json)
+
+        {
+            "question": "Favourite programming language?",
+            "choices": [
+                "Swift",
+                "Python",
+                "Objective-C",
+                "Ruby"
+            ]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /questions/2
+
+    + Body
+
+            {
+                "question": "Favourite programming language?",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "choices": [
+                    {
+                        "choice": "Swift",
+                        "votes": 0
+                    }, {
+                        "choice": "Python",
+                        "votes": 0
+                    }, {
+                        "choice": "Objective-C",
+                        "votes": 0
+                    }, {
+                        "choice": "Ruby",
+                        "votes": 0
+                    }
+                ]
+            }

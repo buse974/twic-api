@@ -28,7 +28,7 @@ class Program extends AbstractMapper
     public function getList($user, $search = null, $school = null, $is_sadmin = false)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'name', 'level', 'sis', 'year'));
+        $select->columns(array('id', 'name', 'level', 'sis', 'year', 'school_id'));
 
         if (null !== $school) {
             $select->where(['school_id' => $school]);

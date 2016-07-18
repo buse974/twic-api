@@ -19,9 +19,12 @@ class Contact extends AbstractService
 {
 
     /**
+     * Request Contact
+     * 
      * @invokable
      *
-     * @param int $user            
+     * @param int $user   
+     * @return int         
      */
     public function add($user)
     {
@@ -77,9 +80,12 @@ class Contact extends AbstractService
     }
 
     /**
+     * Accept Contact
+     * 
      * @invokable
      *
-     * @param int $user            
+     * @param int $user    
+     * @return bool        
      */
     public function accept($user)
     {
@@ -108,9 +114,12 @@ class Contact extends AbstractService
     }
 
     /**
+     * Remove Contact
+     * 
      * @invokable
      *
-     * @param int $user            
+     * @param int $user    
+     * @return bool        
      */
     public function remove($user)
     {
@@ -139,9 +148,12 @@ class Contact extends AbstractService
     }
 
     /**
+     * Add Contact all school
+     * 
      * @invokable
      *
-     * @param int $school            
+     * @param int $school    
+     * @return int        
      */
     public function addBySchool($school)
     {
@@ -149,9 +161,12 @@ class Contact extends AbstractService
     }
 
     /**
+     * Get List Request Contact
+     * 
      * @invokable
      *
-     * @param string $all            
+     * @param bool $all   
+     * @return \Dal\Db\ResultSet\ResultSet         
      */
     public function getListRequest($all = false)
     {
@@ -166,10 +181,13 @@ class Contact extends AbstractService
     }
 
     /**
+     * Get List Contact
+     * 
      * @invokable
      *
      * @param int $user            
-     * @param array $exclude            
+     * @param array $exclude 
+     * @return  \Dal\Db\ResultSet\ResultSet          
      */
     public function getList($user = null, $exclude = null)
     {
@@ -190,6 +208,12 @@ class Contact extends AbstractService
         return $listRequest;
     }
 
+    /**
+     * Get List Id of contact
+     * 
+     * @param int $user
+     * @return array
+     */
     public function getListId($user = null)
     {
         if (null === $user) {
@@ -208,19 +232,21 @@ class Contact extends AbstractService
     }
 
     /**
-     *
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
+     * Get Service User
      *
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
