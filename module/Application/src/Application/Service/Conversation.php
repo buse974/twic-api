@@ -293,19 +293,24 @@ class Conversation extends AbstractService
      */
     public function addTextEditor($conversation, $text_editors)
     {
+        $is_multi = true;
+        
         if (! is_array($text_editors) || isset($text_editors['name'])) {
             $text_editors = [$text_editors];
+            $is_multi = false;
         }
         
         foreach ($text_editors as $text_editor) {
             if (isset($text_editor['name'])) {
                 $text_editor = $this->getServiceTextEditor()->_add($text_editor);
             }
-            
+            $ret[] = $text_editor;
             if (is_numeric($text_editor)) {
                 $this->getServiceConversationTextEditor()->add($conversation, $text_editor);
             }
         }
+        
+        return ($is_multi) ? $ret:current($ret);
     }
 
     /**
@@ -318,19 +323,24 @@ class Conversation extends AbstractService
      */
     public function addWhiteboard($conversation, $whiteboards)
     {
+        $is_multi = true;
+        
         if (! is_array($whiteboards) || isset($whiteboards['name'])) {
             $whiteboards = [$whiteboards];
+            $is_multi = false;
         }
         
         foreach ($whiteboards as $whiteboard) {
             if (isset($whiteboard['name'])) {
                 $whiteboard = $this->getServiceWhiteboard()->_add($whiteboard);
             }
-            
+            $ret[] = $whiteboard;
             if (is_numeric($whiteboard)) {
                 $this->getServiceConversationWhiteboard()->add($conversation, $whiteboard);
             }
         }
+        
+        return ($is_multi) ? $ret:current($ret);
     }
 
     /**
@@ -339,24 +349,31 @@ class Conversation extends AbstractService
      * @invokable
      *
      * @param int $conversation            
-     * @param array $documents            
+     * @param array $documents      
+     * @return array|int     
      */
     public function addDocument($conversation, $documents)
     {
+        $is_multi = true;
+        
         if (! is_array($documents) || isset($documents['name'])) {
             $documents = [$documents];
+            $is_multi = false;
         }
         
+        $ret = [];
         foreach ($documents as $document) {
             if (isset($document['name'])) {
                 $m_library = $this->getServiceLibrary()->_add($document);
                 $document = $m_library->getId();
             }
-            
+            $ret[] = $document;
             if (is_numeric($document)) {
                 $this->getServiceConversationDoc()->add($conversation, $document);
             }
         }
+        
+        return ($is_multi) ? $ret:current($ret);
     }
 
     /**

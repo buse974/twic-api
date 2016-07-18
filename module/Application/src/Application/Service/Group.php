@@ -6,7 +6,6 @@
  * Group
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -16,126 +15,145 @@ use Dal\Service\AbstractService;
  */
 class Group extends AbstractService
 {
+
     /**
+     * Add Group
+     * 
      * @invokable
-     * 
-     * @param string    $uid
-     * @param string    $name
-     * @param array|int $users
-     * 
+     *
+     * @param string $uid            
+     * @param string $name            
+     * @param array|int $users            
      * @return int
      */
     public function add($set, $name, $uid = null, $users = null)
     {
-        $m_group = $this->getModel()->setUId($uid)->setName($name);
-
+        $m_group = $this->getModel()
+            ->setUId($uid)
+            ->setName($name);
+        
         if ($this->getMapper()->insert($m_group) <= 0) {
             new \Exception('Error insert group');
         }
-
+        
         $group_id = $this->getMapper()->getLastInsertValue();
-
+        
         if (null !== $users) {
             $this->addUser($group_id, $users);
         }
-
+        
         $this->getServiceSetGroup()->add($set, $group_id);
-
+        
         return $group_id;
     }
 
     /**
+     * Delete Group
+     * 
      * @invokable
-     * 
-     * @param int $id
-     * 
+     *
+     * @param int $id            
      * @return int
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()->setId($id));
+        return $this->getMapper()->delete($this->getModel()
+            ->setId($id));
     }
 
     /**
-     * @invokable
+     * Update Group
      * 
-     * @param int    $id
-     * @param string $name
+     * @invokable
      *
+     * @param int $id            
+     * @param string $name            
      * @return int
      */
     public function update($id, $name)
     {
-        return $this->getMapper()->update($this->getModel()->setId($id)->setName($name));
+        return $this->getMapper()->update($this->getModel()
+            ->setId($id)
+            ->setName($name));
     }
 
     /**
-     * @invokable
+     * Add User to group
      * 
-     * @param integr       $id
-     * @param array|integr $users
+     * @invokable
+     *
+     * @param integr $id            
+     * @param array|integr $users 
+     * @return array           
      */
     public function addUser($id, $users)
     {
-        if (!is_array($users)) {
+        if (! is_array($users)) {
             $users = [$users];
         }
-
+        
         $ret = [];
         foreach ($users as $user) {
             $ret[$user] = $this->getServiceGroupUser()->add($id, $user);
         }
-
+        
         return $ret;
     }
 
     /**
-     * @invokable
+     * Delete And Add users to group 
      * 
-     * @param int       $id
-     * @param int|array $users
+     * @invokable
+     *
+     * @param int $id            
+     * @param int|array $users   
+     * @return array         
      */
     public function replaceUser($id, $users)
     {
         $ret = [];
         $this->getServiceGroupUser()->delete($id);
-
-        if (!is_array($users)) {
+        
+        if (! is_array($users)) {
             $users = [$users];
         }
-
+        
         foreach ($users as $user) {
             $ret[$user] = $this->getServiceGroupUser()->add($id, $user);
         }
-
+        
         return $ret;
     }
 
     /**
-     * @invokable
+     * Get List Group 
      * 
-     * @param int    $course
-     * @param int    $set
-     * @param string $name
-     * @param array  $filter
+     * @invokable
+     *
+     * @param int $course            
+     * @param int $set            
+     * @param string $name            
+     * @param array $filter   
+     * @return \Dal\Db\ResultSet\ResultSet|array         
      */
     public function getList($course, $set = null, $name = null, $filter = null)
     {
         $mapper = $this->getMapper();
         $res_group = $mapper->usePaginator($filter)->getList($set, $name, $course);
-
+        
         foreach ($res_group as $m_group) {
-            $m_group->setUsers($this->getServiceGroupUser()->getListUser($m_group->getId()));
+            $m_group->setUsers($this->getServiceGroupUser()
+                ->getListUser($m_group->getId()));
         }
-
-        return ($filter === null) ? $res_group : ['count' => $mapper->count(), 'list' => $res_group];
+        
+        return ($filter === null) ? $res_group : ['count' => $mapper->count(),'list' => $res_group];
     }
 
     /**
-     * @invokable 
-     * 
-     * @param integr       $id
-     * @param array|integr $user
+     * @invokable
+     *
+     * @param integr $id            
+     * @param array|integr $user            
      */
     public function deleteUser($id, $user = null)
     {
@@ -143,17 +161,21 @@ class Group extends AbstractService
     }
 
     /**
+     * Get Service GroupUser
+     *
      * @return \Application\Service\GroupUser
      */
-    public function getServiceGroupUser()
+    private function getServiceGroupUser()
     {
         return $this->getServiceLocator()->get('app_service_group_user');
     }
 
     /**
+     * Get Service SetGroup
+     *
      * @return \Application\Service\SetGroup
      */
-    public function getServiceSetGroup()
+    private function getServiceSetGroup()
     {
         return $this->getServiceLocator()->get('app_service_set_group');
     }
