@@ -23,7 +23,6 @@ class Grading extends AbstractService
      *
      * @param array $datas
      * @param int   $school
-     *
      * @return bool
      */
     public function update($datas, $school)
@@ -43,7 +42,6 @@ class Grading extends AbstractService
      *
      * @param array $datas
      * @param int   $program
-     *
      * @return bool
      */
     public function updateProgram($datas, $program)
@@ -62,6 +60,7 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param int $school
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getBySchool($school = null)
     {
@@ -78,6 +77,7 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param int $program
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByProgram($program)
     {
@@ -85,18 +85,31 @@ class Grading extends AbstractService
     }
 
     /**
-     * Get Grading by school id.
+     * Get Grading by school id
      *
      * @invokable
      *
      * @param int $school
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByCourse($course)
     {
         return $this->getMapper()->getByCourse($course);
     }
 
-    public function _add($letter, $min, $max, $grade, $description, $school = null, $program = null)
+    /**
+     * Add Grading 
+     * 
+     * @param int $letter
+     * @param int $min
+     * @param int $max
+     * @param inr $grade
+     * @param string $description
+     * @param int $school_id
+     * @param int $program_id
+     * @return int
+     */
+    public function _add($letter, $min, $max, $grade, $description, $school_id = null, $program_id = null)
     {
         $m_grading = $this->getModel()
                            ->setLetter($letter)
@@ -104,19 +117,25 @@ class Grading extends AbstractService
                            ->setMax($max)
                            ->setGrade($grade)
                            ->setDescription($description)
-                           ->setSchoolId($school)
-                           ->setProgramId($program);
+                           ->setSchoolId($school_id)
+                           ->setProgramId($program_id);
 
         return $this->getMapper()->insert($m_grading);
     }
 
-    public function initTpl($school)
+    /**
+     * Initialise grading with template
+     * 
+     * @param int $school_id
+     * @return boolean
+     */
+    public function initTpl($school_id)
     {
         $res_grading = $this->getMapper()->select($this->getModel()->setTpl(true));
 
         foreach ($res_grading as $m_grading) {
             $m_grading->setId(null)
-                      ->setSchoolId($school)
+                      ->setSchoolId($school_id)
                       ->setTpl(false);
 
             $this->getMapper()->insert($m_grading);
@@ -126,9 +145,11 @@ class Grading extends AbstractService
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }

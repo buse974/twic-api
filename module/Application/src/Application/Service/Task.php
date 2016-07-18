@@ -17,16 +17,18 @@ use DateTimeZone;
  */
 class Task extends AbstractService
 {
+
     /**
      * Get task.
      *
-     * @param int $id
-     *
+     * @param int $id            
      * @return \Application\Model\Task
      */
     public function get($id)
     {
-        return $this->getMapper()->get($id)->current();
+        return $this->getMapper()
+            ->get($id)
+            ->current();
     }
 
     /**
@@ -34,14 +36,12 @@ class Task extends AbstractService
      *
      * @invokable
      *
-     * @param string $title
-     * @param string $start
-     * @param string $end
-     * @param string $content
-     * @param array  $task_share
-     *
+     * @param string $title            
+     * @param string $start            
+     * @param string $end            
+     * @param string $content            
+     * @param array $task_share            
      * @throws \Exception
-     *
      * @return int
      */
     public function add($title, $start, $end, $content = null, $task_share = null)
@@ -51,19 +51,20 @@ class Task extends AbstractService
             ->setStart($start)
             ->setEnd($end)
             ->setContent($content)
-            ->setCreatorId($this->getServiceUser()->getIdentity()['id'])
+            ->setCreatorId($this->getServiceUser()
+            ->getIdentity()['id'])
             ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+        
         $res = $this->getMapper()->insert($m_calendar);
         $task = $this->getMapper()->getLastInsertValue();
         if ($res <= 0) {
             throw new \Exception('error insert task');
         }
-
+        
         if ($task_share !== null) {
             $this->addSharing($task, $task_share);
         }
-
+        
         return $task;
     }
 
@@ -72,17 +73,15 @@ class Task extends AbstractService
      *
      * @invokable
      *
-     * @param int       $task
-     * @param int|array $users
+     * @param int $task            
+     * @param int|array $users            
      */
     public function addSharing($task, $users)
     {
-        if (!is_array($users)) {
-            $users = array(
-                    $users,
-            );
+        if (! is_array($users)) {
+            $users = array($users);
         }
-
+        
         return $this->getServiceTaskShare()->add($task, $users);
     }
 
@@ -91,18 +90,20 @@ class Task extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $title
-     * @param string $start
-     * @param string $end
-     * @param string $content
-     * @param array  $task_share
-     *
+     * @param int $id            
+     * @param string $title            
+     * @param string $start            
+     * @param string $end            
+     * @param string $content            
+     * @param array $task_share            
      * @return int
      */
     public function update($id, $title, $start, $end, $content = null, $task_share = null)
     {
-        $m_task = $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $m_task = $this->getMapper()
+            ->select($this->getModel()
+            ->setId($id))
+            ->current();
         if ($this->getServiceUser()->getIdentity()['id'] === $m_task->getCreatorId()) {
             $m_calendar = $this->getModel()
                 ->setId($id)
@@ -110,17 +111,21 @@ class Task extends AbstractService
                 ->setStart($start)
                 ->setEnd($end)
                 ->setContent($content);
-
+            
             $res = $this->getMapper()->update($m_calendar);
-
+            
             if ($task_share !== null) {
-                $this->getServiceTaskShare()->getMapper()->delete($this->getServiceTaskShare()->getModel()->setTaskId($id));
+                $this->getServiceTaskShare()
+                    ->getMapper()
+                    ->delete($this->getServiceTaskShare()
+                    ->getModel()
+                    ->setTaskId($id));
                 $this->addSharing($id, $task_share);
             }
-
+            
             return $res;
         }
-
+        
         return 0;
     }
 
@@ -129,19 +134,26 @@ class Task extends AbstractService
      *
      * @invokable
      *
-     * @param string $id
-     *
+     * @param int $id            
      * @return int
      */
     public function delete($id)
     {
-        $m_task = $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $m_task = $this->getMapper()
+            ->select($this->getModel()
+            ->setId($id))
+            ->current();
         if ($this->getServiceUser()->getIdentity()['id'] === $m_task->getCreatorId()) {
-            $this->getServiceTaskShare()->getMapper()->delete($this->getServiceTaskShare()->getModel()->setTaskId($id));
-
-            return $this->getMapper()->delete($this->getModel()->setId($id));
+            $this->getServiceTaskShare()
+                ->getMapper()
+                ->delete($this->getServiceTaskShare()
+                ->getModel()
+                ->setTaskId($id));
+            
+            return $this->getMapper()->delete($this->getModel()
+                ->setId($id));
         }
-
+        
         return 0;
     }
 
@@ -150,34 +162,42 @@ class Task extends AbstractService
      *
      * @invokable
      *
-     * @param string $start
-     * @param string $end
-     *
-     * @return array
+     * @param string $start            
+     * @param string $end            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($start, $end)
     {
-        $res_tasks = $this->getMapper()->getList($start, $end, $this->getServiceUser()->getIdentity()['id']);
-
+        $res_tasks = $this->getMapper()->getList($start, $end, $this->getServiceUser()
+            ->getIdentity()['id']);
+        
         foreach ($res_tasks as $m_task) {
-            $m_task->setTaskShare($this->getServiceTaskShare()->getMapper()->select($this->getServiceTaskShare()->getModel()->setTaskId($m_task->getId())));
+            $m_task->setTaskShare($this->getServiceTaskShare()
+                ->getMapper()
+                ->select($this->getServiceTaskShare()
+                ->getModel()
+                ->setTaskId($m_task->getId())));
         }
-
+        
         return $res_tasks;
     }
 
     /**
+     * Get Service User
+     *
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service TaskShare
+     *
      * @return \Application\Service\TaskShare
      */
-    public function getServiceTaskShare()
+    private function getServiceTaskShare()
     {
         return $this->getServiceLocator()->get('app_service_task_share');
     }

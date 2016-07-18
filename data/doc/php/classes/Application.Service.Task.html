@@ -149,19 +149,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceTaskShare" title="getServiceTaskShare :: ">
-            <span class="description"></span><pre>getServiceTaskShare</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceUser" title="getServiceUser :: ">
-            <span class="description"></span><pre>getServiceUser</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
+                                                                                                                                                                                                                        <li class="method public">
         <a href="#method_update" title="update :: Update task.">
             <span class="description">Update task.</span><pre>update</pre>
         </a>
@@ -175,7 +163,17 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                <li class="method private">
+                            <a href="#method_getServiceTaskShare" title="getServiceTaskShare :: Get Service TaskShare">
+                                <span class="description">Get Service TaskShare</span><pre>getServiceTaskShare</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServiceUser</pre>
+                            </a>
+                        </li>
+                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -320,7 +318,7 @@
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
                             <h2>Delete task.</h2>
-                            <pre>delete(string $id) : integer</pre>
+                            <pre>delete(integer $id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -344,7 +342,7 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code>string</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -383,7 +381,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get tasks of current user.</h2>
-                            <pre>getList(string $start, string $end) : array</pre>
+                            <pre>getList(string $start, string $end) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -415,14 +413,14 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>array</code><p></p>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getServiceTaskShare"></a>
-                        <div class="element clickable method public  method_getServiceTaskShare" data-toggle="collapse" data-target=".method_getServiceTaskShare .collapse">
-                            <h2>getServiceTaskShare</h2>
+                        <div class="element clickable method private  method_getServiceTaskShare" data-toggle="collapse" data-target=".method_getServiceTaskShare .collapse">
+                            <h2>Get Service TaskShare</h2>
                             <pre>getServiceTaskShare() : \Application\Service\TaskShare</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -450,8 +448,8 @@
 
                         </div>
                                             <a id="method_getServiceUser"></a>
-                        <div class="element clickable method public  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
-                            <h2>getServiceUser</h2>
+                        <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
+                            <h2>Get Service User</h2>
                             <pre>getServiceUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -556,7 +554,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 18 Jul 2016 10:43:40 +0200.<br/>
+            generated on Mon, 18 Jul 2016 10:54:05 +0200.<br/>
     </footer>
     </body>
 </html>

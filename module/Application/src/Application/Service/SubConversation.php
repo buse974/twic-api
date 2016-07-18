@@ -15,6 +15,13 @@ use Dal\Service\AbstractService;
  */
 class SubConversation extends AbstractService
 {
+    /**
+     * Add Submission to Conversation 
+     * 
+     * @param int $conversation_id
+     * @param int $submission_id
+     * @return int
+     */
     public function add($conversation_id, $submission_id)
     {
         return $this->getMapper()->insert($this->getModel()->setConversationId($conversation_id)->setSubmissionId($submission_id));
