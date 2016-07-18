@@ -557,12 +557,12 @@ class User extends AbstractMapper
     
     
     
-    public function nbrBySchool($school)
+    public function nbrBySchool($school_id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('school_id', 'user$nb_user' => new Expression('COUNT(true)')))
             ->join('user_role', 'user_role.user_id = user.id', array('user$role_id' => 'role_id'))
-            ->where(array('user.school_id' => $school))
+            ->where(array('user.school_id' => $school_id))
             ->group(array('user.school_id', 'user_role.role_id'));
 
         return $this->selectWith($select);

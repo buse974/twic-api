@@ -19,7 +19,7 @@ class RoleTest extends AbstractService
         
         $datas = $this->jsonRpc('role.add', array('name' => 'ADMIN'));
         $this->assertEquals(count($datas), 3);
-        $this->assertEquals($datas['result'], 7);
+        $this->assertEquals($datas['result'], 8);
         $this->assertEquals($datas['id'], 1);
         $this->assertEquals($datas['jsonrpc'], 2.0);
         
@@ -62,7 +62,7 @@ class RoleTest extends AbstractService
         $datas = $this->jsonRpc('role.add', array('name' => 'BOSS'));
         
         $this->assertEquals(count($datas), 3);
-        $this->assertEquals($datas['result'], 8);
+        $this->assertEquals($datas['result'], 9);
         $this->assertEquals($datas['id'], 1);
         $this->assertEquals($datas['jsonrpc'], 2.0);
         
