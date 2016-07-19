@@ -522,6 +522,8 @@ class Item extends AbstractService
                             $rate = 0;
                             break;
                         }
+                    } else {
+                        $rate = 0;
                     }
                 } else {
                     $rate = 0;
@@ -562,11 +564,12 @@ class Item extends AbstractService
     }
 
     /**
+     * Get Item Criterias
+     * 
      * @invokable
      *
      * @param int $id
-     *
-     * @return array
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getCriterias($id)
     {
@@ -591,7 +594,6 @@ class Item extends AbstractService
      *
      * @param int $course
      * @param int $type
-     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getItemByType($course, $type)
@@ -604,11 +606,12 @@ class Item extends AbstractService
     }
 
     /**
+     * Delete Item 
+     * 
      * @invokable
      *
      * @param int $id
-     *
-     * @return int
+     * @return bool
      */
     public function delete($id)
     {
@@ -635,6 +638,7 @@ class Item extends AbstractService
     }
 
     /**
+     * 
      * @invokable
      *
      * @param int $grading_policy_id
@@ -648,8 +652,9 @@ class Item extends AbstractService
     }
 
     /**
+     * Get item by submission
+     * 
      * @param int $submission_id
-     *
      * @return null|\Application\Model\Item
      */
     public function getBySubmission($submission_id)
@@ -658,13 +663,12 @@ class Item extends AbstractService
     }
     
     /**
+     * Get Item
+     * 
      * @invokable
      *
-     * 
      * @param int $id
-     *
      * @throws \Exception
-     *
      * @return \Application\Model\Item
      */
     public function get($id)
@@ -755,11 +759,17 @@ class Item extends AbstractService
                 ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull() : $order_id));
     }
 
-    public function sort($item)
+    /**
+     * Sort item
+     * 
+     * @param int $item_id
+     * @return int
+     */
+    public function sort($item_id)
     {
         $me_item = $this->getMapper()
         ->select($this->getModel()
-            ->setId($item))
+            ->setId($item_id))
             ->current();
 
         return $this->getMapper()->update($this->getModel()->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), [
@@ -768,149 +778,188 @@ class Item extends AbstractService
             ]);
     }
     
-    
-    public function cancelSort($item)
+    /**
+     * Cancel a sort item
+     * 
+     * @param intem $item
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function cancelSort($item_id)
     {
         $me_item = $this->getMapper()
         ->select($this->getModel()
-            ->setId($item))
+            ->setId($item_id))
             ->current();
 
         return $this->getMapper()->cancelSort($me_item->getId(), $me_item->getOrderId());
     }
 
     /**
+     * Get Service ItemMaterialDocumentRelation
+     * 
      * @return \Application\Service\ItemMaterialDocumentRelation
      */
-    public function getServiceItemMaterialDocumentRelation()
+    private function getServiceItemMaterialDocumentRelation()
     {
         return $this->getServiceLocator()->get('app_service_item_material_document_relation');
     }
 
     /**
+     * Get Service Submission
+     * 
      * @return \Application\Service\Submission
      */
-    public function getServiceSubmission()
+    private function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
+     * Get Service GradingPolicy
+     * 
      * @return \Application\Service\GradingPolicy
      */
-    public function getServiceGradingPolicy()
+    private function getServiceGradingPolicy()
     {
         return $this->getServiceLocator()->get('app_service_grading_policy');
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service Library
+     * 
      * @return \Application\Service\Library
      */
-    public function getServiceLibrary()
+    private function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }
 
     /**
+     * Get Service Document
+     * 
      * @return \Application\Service\Document
      */
-    public function getServiceDocument()
+    private function getServiceDocument()
     {
         return $this->getServiceLocator()->get('app_service_document');
     }
 
     /**
+     * Get Service Poll
+     * 
      * @return \Application\Service\Poll
      */
-    public function getServicePoll()
+    private function getServicePoll()
     {
         return $this->getServiceLocator()->get('app_service_poll');
     }
 
     /**
+     * Get Service CtDate
+     * 
      * @return \Application\Service\CtDate
      */
-    public function getServiceCtDate()
+    private function getServiceCtDate()
     {
         return $this->getServiceLocator()->get('app_service_ct_date');
     }
 
     /**
+     * Get Service CtDone
+     * 
      * @return \Application\Service\CtDone
      */
-    public function getServiceCtDone()
+    private function getServiceCtDone()
     {
         return $this->getServiceLocator()->get('app_service_ct_done');
     }
 
     /**
+     * Get Service CtGroup
+     * 
      * @return \Application\Service\CtGroup
      */
-    public function getServiceCtGroup()
+    private function getServiceCtGroup()
     {
         return $this->getServiceLocator()->get('app_service_ct_group');
     }
 
     /**
+     * Get Service CtRate
+     * 
      * @return \Application\Service\CtRate
      */
-    public function getServiceCtRate()
+    private function getServiceCtRate()
     {
         return $this->getServiceLocator()->get('app_service_ct_rate');
     }
 
     /**
+     * Get Service OptGrading
+     * 
      * @return \Application\Service\OptGrading
      */
-    public function getServiceOptGrading()
+    private function getServiceOptGrading()
     {
         return $this->getServiceLocator()->get('app_service_opt_grading');
     }
 
     /**
+     * Get Service Conversation
+     * 
      * @return \Application\Service\Conversation
      */
-    public function getServiceConversation()
+    private function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
 
     /**
+     * Get Service Thread
+     * 
      * @return \Application\Service\Thread
      */
-    public function getServiceThread()
+    private function getServiceThread()
     {
         return $this->getServiceLocator()->get('app_service_thread');
     }
     
     /**
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
+     * Get Service ConversationOpt
+     * 
      * @return \Application\Service\ConversationOpt
      */
-    public function getServiceConversationOpt()
+    private function getServiceConversationOpt()
     {
         return $this->getServiceLocator()->get('app_service_conversation_opt');
     }
 
     /**
+     * Get Service Criteria
+     * 
      * @return \Application\Service\Criteria
      */
-    public function getServiceCriteria()
+    private function getServiceCriteria()
     {
         return $this->getServiceLocator()->get('app_service_criteria');
     }

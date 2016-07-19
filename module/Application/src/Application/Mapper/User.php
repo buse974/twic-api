@@ -285,7 +285,6 @@ class User extends AbstractMapper
 
         if (null !== $noprogram) {
             $selectUser = $this->tableGateway->getSql()->select();
-
             $selectUser->columns(array('id'))
                 ->join('program_user_relation', 'program_user_relation.user_id = user.id', array())
                 ->where(array('program_user_relation.program_id' => $noprogram))

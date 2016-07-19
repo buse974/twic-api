@@ -6,7 +6,6 @@
  * Course User Relation
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -16,48 +15,72 @@ use Dal\Service\AbstractService;
  */
 class CourseUserRelation extends AbstractService
 {
-    public function add($user, $course)
-    {
-        $ret = array();
 
-        foreach ($user as $u) {
-            foreach ($course as $c) {
+    /**
+     * Add relation user and course
+     *
+     * @param int|array $user_id            
+     * @param int|array $course_id            
+     * @return array
+     */
+    public function add($user_id, $course_id)
+    {
+        $ret = [];
+        
+        if (! is_array($user_id)) {
+            $user_id = array($user_id);
+        }
+        if (! is_array($course_id)) {
+            $course_id = array($course_id);
+        }
+        
+        foreach ($user_id as $u) {
+            foreach ($course_id as $c) {
                 $ret[$u][$c] = $this->getMapper()->insertUserCourse($c, $u);
             }
         }
-
+        
         return $ret;
     }
 
     /**
-     * @param array $user
-     * @param array $course
+     * Delete relation user and course
      *
-     * @return int
+     * @param int|array $user_id            
+     * @param int|array $course_id            
+     * @return array
      */
-    public function deleteCourse($user, $course)
+    public function deleteCourse($user_id, $course_id)
     {
-        $ret = array();
-
-        if (!is_array($user)) {
-            $user = array($user);
+        $ret = [];
+        
+        if (! is_array($user_id)) {
+            $user_id = array($user_id);
         }
-
-        if (!is_array($course)) {
-            $course = array($course);
+        if (! is_array($course_id)) {
+            $course_id = array($course_id);
         }
-
-        foreach ($user as $u) {
-            foreach ($course as $c) {
-                $ret[$u][$c] = $this->getMapper()->delete($this->getModel()->setCourseId($c)->setUserId($u));
+        
+        foreach ($user_id as $u) {
+            foreach ($course_id as $c) {
+                $ret[$u][$c] = $this->getMapper()->delete($this->getModel()
+                    ->setCourseId($c)
+                    ->setUserId($u));
             }
         }
-
+        
         return $ret;
     }
 
-    public function deleteByUser($user)
+    /**
+     * Delete relation by user
+     *
+     * @param int $user_id            
+     * @return int
+     */
+    public function deleteByUser($user_id)
     {
-        return $this->getMapper()->delete($this->getModel()->setUserId($user));
+        return $this->getMapper()->delete($this->getModel()
+            ->setUserId($user_id));
     }
 }

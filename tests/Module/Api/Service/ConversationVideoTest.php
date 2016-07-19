@@ -292,10 +292,12 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['editors'][0]['submission_id'] , null);
         $this->assertEquals($data['result']['editors'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['whiteboards']) , 1);
-        $this->assertEquals(count($data['result']['whiteboards'][0]) , 3);
+        $this->assertEquals(count($data['result']['whiteboards'][0]) , 5);
         $this->assertEquals($data['result']['whiteboards'][0]['id'] , 1);
         $this->assertEquals($data['result']['whiteboards'][0]['name'] , "name");
         $this->assertEquals($data['result']['whiteboards'][0]['owner_id'] , 1);
+        $this->assertEquals($data['result']['whiteboards'][0]['width'] , null);
+        $this->assertEquals($data['result']['whiteboards'][0]['height'] , null);
         $this->assertEquals(count($data['result']['documents']) , 1);
         $this->assertEquals(count($data['result']['documents'][0]) , 11);
         $this->assertEquals($data['result']['documents'][0]['id'] , 3);

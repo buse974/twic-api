@@ -2,7 +2,6 @@
 namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
-use Symfony\CS\Tests\Fixer\Symfony\PrintToEchoFixerTest;
 
 class UserTest extends AbstractService
 {
@@ -225,7 +224,8 @@ class UserTest extends AbstractService
         $this->setIdentity(5);
         
         $data = $this->jsonRpc('user.add', array('firstname' => 'Christophe',
-            'gender' => 'm', 'origin' => 1, 'nationality' => 1 , 'lastname' => 'Robert','email' => 'crobertr@thestudnet.com','password' => 'studnet','birth_date' => '21/03/1984','position' => 'une position',
+            'gender' => 'm', 'origin' => 1, 'nationality' => 1 , 'lastname' => 'Robert','email' => 'crobertr@thestudnet.com','password' => 'studnet'
+            ,'position' => 'une position',
             // 'school_id' => 1,
             'interest' => 'un interet','avatar' => 'un_token'));
 
@@ -307,7 +307,9 @@ class UserTest extends AbstractService
     {
         $this->setIdentity(1);
         
-        $data = $this->jsonRpc('user.update', array('id' => $id,'firstname' => 'Jean','lastname' => 'Paul','email' => 'jpaul@thestudnet.com','password' => 'studnetnew','birth_date' => '21/03/1985','position' => 'une position new',
+        $data = $this->jsonRpc('user.update', array('id' => $id, 
+            'firstname' => 'Jean',
+            'lastname' => 'Paul','email' => 'jpaul@thestudnet.com','password' => 'studnetnew','position' => 'une position new',
             // 'school_id' => 1,
             'interest' => 'un interet new','avatar' => 'un_token_new')
         // 'program_id' => 1

@@ -1,86 +1,206 @@
 FORMAT: 1A
-HOST: http://apiwow
+HOST: http://api.thestudnet.com/V1
 
 # TheStudnet API
 
 ## User Management [/api.json-rpc]
-
-### user.login [POST]
+ 
+### user.auth [POST]
 
 + Request (application/json) application/json
+    + Attributes 
 
+      + user: external@free.fr (string, required)
+      + password: thestudnet (string, required)
+      
+    + Body
+    
         {
             "jsonrpc": "2.0", 
-            "method": "user.login", 
+            "method": "user.auth", 
             "params": {
-                 "user": "crobert@thestudnet.com", 
+                 "user": "external@free.fr", 
                  "password": "thestudnet"
             }, 
-            "id": 3
+            "id": 1
         }
         
 + Response 200 (application/json)
-
+      
+    + body
+    
          {
-             "result":
-             {
-                 "id": 3,
-                 "token": "36e78c40ec2a293d0fad7d43bbe8e22ec",
-                 "created_date": null,
-                 "firstname": "Christophe",
-                 "lastname": "Robert",
-                 "email": "crobert@thestudnet.com",
-                 "expiration_date": null,
-                 "roles":
-                 [
-                     "super_admin"
-                 ]
+           result: {
+             id: 8,
+             token: 886c54419472ea797c12e82b583a262a7,
+             created_date: 2016-07-19 09:28:14,
+             firstname: firstname_external,
+             lastname: lastname_external,
+             email: external@free.fr,
+             expiration_date: null,
+             roles: {
+               7: external
              },
-             "id": "3",
-             "jsonrpc": "2.0"
+             school: {
+               id: 1,
+               name: Morbi Corporation,
+               short_name: turpis,
+               logo: null,
+               background: null
+             }
+           },
+           id: 1,
+           jsonrpc: 2.0
          }
 
         
-### user.add [POST]
-
-Add User
+### user.create [POST]
 
 + Request (application/json)
 
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
-
-+ Response 201 (application/json)
-
+    + Attributes 
+    
+      + email: external@free.fr (string, required)
+      + firstname: f1 (string, optional)
+      + lastname: l1 (string, optional)
+      + uid: azerty (string, optional)
+      
     + Headers
 
-            Location: /questions/2
+            Authorization: 886c54419472ea797c12e82b583a262a7
+
+    + Body
+    
+        {
+          "jsonrpc": "2.0", 
+          "method": "user.create",
+          "params": {
+            "email":"u1@univ.fr",
+            "firstname":"f1",
+            "lastname":"l1",
+            "uid":"azerty"
+          },
+          "id": 2
+        }
+
++ Response 200 (application/json)
 
     + Body
 
+        {
+          result: {
+              origin: {
+                  id: null,
+                  short_name: null
+              },
+              nationality: {
+                  id: null,
+                  short_name: null
+              },
+              gender: null,
+              contact_state: 3,
+              contacts_count: 8,
+              school: {
+                  id: 1,
+                  name: Morbi Corporation,
+                  short_name: turpis,
+                  logo: null,
+                  background: null
+              },
+              id: 9,
+              firstname: f1,
+              lastname: l1,
+              email: u1@univ.fr,
+              birth_date: null,
+              position: null,
+              school_id: 1,
+              interest: null,
+              avatar: null,
+              has_email_notifier: 1,
+              background: null,
+              roles: [
+                  student
+              ],
+              program: []
+          },
+          id: 2,
+          jsonrpc: 2.0
+       }
+       
+### user.listing [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: 886c54419472ea797c12e82b583a262a7
+
+    + Body
+    
+        {
+          "jsonrpc": "2.0", 
+          "method": "user.listing",
+          "params": [],
+          "id": 4
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+        result: {
+          list: [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+              contact_state: 3,
+              contacts_count: 8,
+              school: {
+                id: 1,
+                name: Morbi Corporation,
+                short_name: turpis,
+                logo: null,
+                background: null
+              },
+              id: 9,
+              firstname: f1,
+              lastname: l1,
+              email: u1@univ.fr,
+              birth_date: null,
+              position: null,
+              interest: null,
+              avatar: null,
+              roles: [
+                student
+              ],
+              program: []
+            },
+            {
+              contact_state: 0,
+              contacts_count: 8,
+              school: {
+                id: 1,
+                name: Morbi Corporation,
+                short_name: turpis,
+                logo: null,
+                background: null
+              },
+              id: 8,
+              firstname: firstname_external,
+              lastname: lastname_external,
+              email: external@free.fr,
+              birth_date: null,
+              position: null,
+              interest: null,
+              avatar: null,
+              roles: [
+                external
+              ],
+              program: []
             }
+        ],
+        count: 2
+      },
+      id: 4,
+      jsonrpc: 2.0
+    }
+     

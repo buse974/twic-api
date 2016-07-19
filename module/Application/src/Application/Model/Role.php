@@ -12,6 +12,7 @@ class Role extends BaseRole
     const ROLE_STUDENT_ID = 4;
     const ROLE_INSTRUCTOR_ID = 5;
     const ROLE_RECRUTER_ID = 6;
+    const ROLE_EXTERNAL_ID = 7;
 
     const ROLE_SADMIN_STR = 'super_admin';
     const ROLE_ADMIN_STR = 'admin';
@@ -19,6 +20,7 @@ class Role extends BaseRole
     const ROLE_STUDENT_STR = 'student';
     const ROLE_INSTRUCTOR_STR = 'instructor';
     const ROLE_RECRUTER_STR = 'recruiter';
+    const ROLE_EXTERNAL_STR = 'external';
 
     public static $role = array(
         self::ROLE_SADMIN_ID => self::ROLE_SADMIN_STR,
@@ -27,5 +29,6 @@ class Role extends BaseRole
         self::ROLE_STUDENT_ID => self::ROLE_STUDENT_STR,
         self::ROLE_INSTRUCTOR_ID => self::ROLE_INSTRUCTOR_STR,
         self::ROLE_RECRUTER_ID => self::ROLE_RECRUTER_STR,
+        self::ROLE_EXTERNAL_ID => self::ROLE_EXTERNAL_STR,
     );
 }

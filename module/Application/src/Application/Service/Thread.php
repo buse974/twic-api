@@ -26,9 +26,7 @@ class Thread extends AbstractService
      * @param int $course            
      * @param string $message            
      * @param int $item_id            
-     *
      * @throws \Exception
-     *
      * @return int
      */
     public function add($title, $course, $message = null, $item_id = null)
@@ -65,7 +63,6 @@ class Thread extends AbstractService
      * @param int $id            
      * @param string $title            
      * @param int $item_id            
-     *
      * @return int
      */
     public function update($id, $title = null, $item_id = null)
@@ -88,10 +85,9 @@ class Thread extends AbstractService
      * @invokable
      *
      * @param int $course            
-     * @param unknown $filter            
+     * @param array $filter            
      * @param string $name            
-     *
-     * @return ResultSet
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($course, $filter = null, $name = null)
     {
@@ -108,16 +104,13 @@ class Thread extends AbstractService
             $m_thread->getUser()->setRoles($roles);
         }
         
-        return array(
-            'count' => $mapper->count(),
-            'list' => $res_thread
-        );
+        return array('count' => $mapper->count(),'list' => $res_thread);
     }
 
     /**
+     * Get By submission
      *
      * @param int $submission_id            
-     *
      * @return void|\Application\Model\Thread
      */
     public function getBySubmission($submission_id)
@@ -135,12 +128,12 @@ class Thread extends AbstractService
     }
 
     /**
+     * Get Thread
+     *
      * @invokable
      *
      * @param int $id            
-     *
      * @throws \Exception
-     *
      * @return \Application\Model\Thread
      */
     public function get($id)
@@ -165,6 +158,12 @@ class Thread extends AbstractService
         return $m_thread;
     }
 
+    /**
+     * Get By Item
+     *
+     * @param int $item_id            
+     * @return \Application\Model\Thread|NULL
+     */
     public function getByItem($item_id)
     {
         $res_thread = $this->getMapper()->select($this->getModel()
@@ -179,66 +178,64 @@ class Thread extends AbstractService
      * @invokable
      *
      * @param int $id            
+     * @return int
      */
     public function delete($id)
     {
         return $this->getMapper()->update($this->getModel()
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array(
-            'user_id' => $this->getServiceUser()
-                ->getIdentity()['id'],
-            'id' => $id
-        ));
+            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
+            ->getIdentity()['id'],'id' => $id));
     }
 
     /**
+     * Get Number messages by school and number day
+     *
      * @invokable
      *
      * @param int $school            
-     *
      * @return int
      */
     public function getNbrMessage($school)
     {
-        return [
-            'd' => $this->getMapper()->getNbrMessage($school, 1),
-            'w' => $this->getMapper()->getNbrMessage($school, 7),
-            'm' => $this->getMapper()->getNbrMessage($school, 30),
-            'a' => $this->getMapper()->getNbrMessage($school)
-        ];
+        return ['d' => $this->getMapper()->getNbrMessage($school, 1),'w' => $this->getMapper()->getNbrMessage($school, 7),'m' => $this->getMapper()->getNbrMessage($school, 30),'a' => $this->getMapper()->getNbrMessage($school)];
     }
 
     /**
+     * Get Service User
      *
      * @return \Auth\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service Event
      *
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
+     * Get Service Role
      *
      * @return \Application\Service\Role
      */
-    public function getServiceRole()
+    private function getServiceRole()
     {
         return $this->getServiceLocator()->get('app_service_role');
     }
 
     /**
+     * Get Service ThreadMessage
      *
      * @return \Application\Service\ThreadMessage
      */
-    public function getServiceThreadMessage()
+    private function getServiceThreadMessage()
     {
         return $this->getServiceLocator()->get('app_service_thread_message');
     }

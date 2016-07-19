@@ -120,20 +120,20 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add relation user and course">
+            <span class="description">Add relation user and course</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_deleteByUser" title="deleteByUser :: ">
-            <span class="description"></span><pre>deleteByUser</pre>
+        <a href="#method_deleteByUser" title="deleteByUser :: Delete relation by user">
+            <span class="description">Delete relation by user</span><pre>deleteByUser</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_deleteCourse" title="deleteCourse :: ">
-            <span class="description"></span><pre>deleteCourse</pre>
+        <a href="#method_deleteCourse" title="deleteCourse :: Delete relation user and course">
+            <span class="description">Delete relation user and course</span><pre>deleteCourse</pre>
         </a>
     </li>
 
@@ -183,8 +183,8 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add( $user,  $course) </pre>
+                            <h2>Add relation user and course</h2>
+                            <pre>add(integer|array $user_id, integer|array $course_id) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -194,40 +194,28 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
-                                                <code></code><p></p>
+                                                <h4>$user_id</h4>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$course</h4>
-                                                <code></code><p></p>
+                                                <h4>$course_id</h4>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_deleteByUser"></a>
                         <div class="element clickable method public  method_deleteByUser" data-toggle="collapse" data-target=".method_deleteByUser .collapse">
-                            <h2>deleteByUser</h2>
-                            <pre>deleteByUser( $user) </pre>
+                            <h2>Delete relation by user</h2>
+                            <pre>deleteByUser(integer $user_id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -237,36 +225,24 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
-                                                <code></code><p></p>
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_deleteCourse"></a>
                         <div class="element clickable method public  method_deleteCourse" data-toggle="collapse" data-target=".method_deleteCourse .collapse">
-                            <h2>deleteCourse</h2>
-                            <pre>deleteCourse(array $user, array $course) : integer</pre>
+                            <h2>Delete relation user and course</h2>
+                            <pre>deleteCourse(integer|array $user_id, integer|array $course_id) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -280,16 +256,16 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
-                                                <code>array</code><p></p>
+                                                <h4>$user_id</h4>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$course</h4>
-                                                <code>array</code><p></p>
+                                                <h4>$course_id</h4>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>integer</code><p></p>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
@@ -316,7 +292,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 18 Jul 2016 17:27:51 +0200.<br/>
+            generated on Tue, 19 Jul 2016 19:27:28 +0200.<br/>
     </footer>
     </body>
 </html>
