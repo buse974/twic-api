@@ -6,7 +6,6 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Dal\Db\Sql\Select;
 use Zend\Db\Sql\Predicate\Predicate;
-use function foo\func;
 
 class SubmissionUser extends AbstractMapper
 {
@@ -118,7 +117,7 @@ class SubmissionUser extends AbstractMapper
     public function getListByItemId($item_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'user_id'))
+        $select->columns(array('submission_id', 'user_id'))
             ->join('submission', 'submission_user.submission_id=submission.id', [])
             ->where(array('submission.item_id' => $item_id));
         

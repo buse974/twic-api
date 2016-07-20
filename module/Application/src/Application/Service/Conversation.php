@@ -311,7 +311,7 @@ class Conversation extends AbstractService
                 }
             }
             
-            $this->create(
+            return $this->create(
                 ModelConversation::TYPE_VIDEOCONF, 
                 $submission_id, 
                 $u, 
@@ -324,8 +324,10 @@ class Conversation extends AbstractService
             
 
         }
+        else{
+            return $res_conversation->current()->getId();
+        }
         
-        return $res_conversation->current()->getId();
     }
 
     /**
