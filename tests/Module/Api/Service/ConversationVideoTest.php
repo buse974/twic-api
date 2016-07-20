@@ -105,7 +105,7 @@ class ConversationVideoTest extends AbstractService
     
     public function testCanGetListId()
     {
-        $this->setIdentity(1);
+        $this->setIdentity(1, 4);
     
         $data = $this->jsonRpc('conversation.getListId', [
             'id' => 1,
@@ -121,7 +121,7 @@ class ConversationVideoTest extends AbstractService
     
     public function testCanGetId()
     {
-        $this->setIdentity(1);
+        $this->setIdentity(1, 4);
     
         $data = $this->jsonRpc('conversation.getId', [
             'item_id' => 1,
@@ -135,7 +135,7 @@ class ConversationVideoTest extends AbstractService
     
     public function testCanGet()
     {
-        $this->setIdentity(1);
+        $this->setIdentity(1, 4);
     
         $data = $this->jsonRpc('conversation.get', [
             'id' => 1,

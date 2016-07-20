@@ -156,8 +156,14 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListBySubmissionId" title="getListBySubmissionId :: ">
-            <span class="description"></span><pre>getListBySubmissionId</pre>
+        <a href="#method_getListByItemId" title="getListByItemId :: Get Submission User  By Item">
+            <span class="description">Get Submission User  By Item</span><pre>getListByItemId</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getListBySubmissionId" title="getListBySubmissionId :: Get Submission with user model">
+            <span class="description">Get Submission with user model</span><pre>getListBySubmissionId</pre>
         </a>
     </li>
 
@@ -213,11 +219,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -465,10 +471,10 @@
                             </div>
 
                         </div>
-                                            <a id="method_getListBySubmissionId"></a>
-                        <div class="element clickable method public  method_getListBySubmissionId" data-toggle="collapse" data-target=".method_getListBySubmissionId .collapse">
-                            <h2>getListBySubmissionId</h2>
-                            <pre>getListBySubmissionId( $submission_id,  $user_id = null) </pre>
+                                            <a id="method_getListByItemId"></a>
+                        <div class="element clickable method public  method_getListByItemId" data-toggle="collapse" data-target=".method_getListByItemId .collapse">
+                            <h2>Get Submission User  By Item</h2>
+                            <pre>getListByItemId( $item_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -478,32 +484,47 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$item_id</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getListBySubmissionId"></a>
+                        <div class="element clickable method public  method_getListBySubmissionId" data-toggle="collapse" data-target=".method_getListBySubmissionId .collapse">
+                            <h2>Get Submission with user model</h2>
+                            <pre>getListBySubmissionId(integer $submission_id, integer $user_id = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$submission_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$user_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -839,7 +860,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 20 Jul 2016 13:53:36 +0200.<br/>
+            generated on Wed, 20 Jul 2016 18:00:04 +0200.<br/>
     </footer>
     </body>
 </html>

@@ -41,8 +41,7 @@ class TextEditor extends AbstractService
      */
     public function getListBySubmission($submission_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setSubmissionId($submission_id));
+        return $this->getMapper()->getListBySubmission($submission_id);
     }
 
     /**
@@ -64,14 +63,12 @@ class TextEditor extends AbstractService
      * @param int $submission_id            
      * @param string $name            
      * @param string $text            
-     * @param string $submit_date            
-     * @param int $conversation_id  
+     * @param string $submit_date    
      * @return int          
      */
-    public function add($submission_id, $name = null, $text = null, $submit_date = null, $conversation_id = null)
+    public function add($submission_id, $name = "", $text = null, $submit_date = null)
     {
         $m_text_editor = $this->getModel()
-            ->setSubmissionId($submission_id)
             ->setName($name)
             ->setText($text)
             ->setSubmitDate($submit_date);
@@ -80,7 +77,10 @@ class TextEditor extends AbstractService
             // @TODO error
         }
         
-        return $this->getMapper()->getLastInsertValue();
+        $id = $this->getMapper()->getLastInsertValue();
+        $this->getServiceSubTextEditor()->add($submission_id, $id);
+        
+        return $id;
     }
 
     /**
@@ -95,9 +95,8 @@ class TextEditor extends AbstractService
         $name = ((isset($data['name'])) ? $data['name'] : null);
         $text = ((isset($data['text'])) ? $data['text'] : null);
         $submit_date = ((isset($data['submit_date'])) ? $data['submit_date'] : null);
-        $conversation_id = ((isset($data['conversation_id'])) ? $data['conversation_id'] : null);
         
-        return $this->add($submission_id, $name, $text, $submit_date, $conversation_id);
+        return $this->add($submission_id, $name, $text, $submit_date);
     }
 
     /**
@@ -117,6 +116,7 @@ class TextEditor extends AbstractService
     /**
      * Update TextEditor
      *
+     * @todo créer le replace de $submission_id sub_text_editor
      * @invokable
      *
      * @param int $id            
@@ -130,11 +130,20 @@ class TextEditor extends AbstractService
     {
         $m_text_editor = $this->getModel()
             ->setId($id)
-            ->setSubmissionId($submission_id)
             ->setName($name)
             ->setSubmitDate($submit_date)
             ->setText($text);
         
         return $this->getMapper()->update($m_text_editor);
+    }
+    
+    /**
+     * Get Service Service SubTextEditor
+     *
+     * @return \Application\Service\SubTextEditor
+     */
+    private function getServiceSubTextEditor()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_text_editor');
     }
 }
