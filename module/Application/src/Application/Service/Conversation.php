@@ -252,11 +252,11 @@ class Conversation extends AbstractService
             } else {
                 // on verifie et récupére la submisiion de létudiant
                 // si il en a pas on le vire
-                $res_submission = $this->getServiceSubmission()->getByItem($item_id, $user_id);
-                if ($res_submission->count() <= 0) {
+                $m_submission = $this->getServiceSubmission()->getByItem($item_id, $user_id);
+                if ($m_submission === null) {
                     throw new \Exception('item ' . $item_id . ' for user ' . $user_id . ' not exist');
                 }
-                $submission_id = $res_submission->getId();
+                $submission_id = $m_submission->getId();
             }
         } elseif(null !== $item_id && null === $submission_id) {
             //on verrifie que item et bien une live classe sinon on peux pas récupérer
