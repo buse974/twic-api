@@ -258,13 +258,11 @@ class Conversation extends AbstractService
                 }
                 $submission_id = $res_submission->getId();
             }
-        } else {
-            if (null !== $item_id && null === $submission_id) {
-                // on verrifie que item et bien une live classe sionon on peux pas récupérer
-                $m_item = $this->getServiceItem()->get($item_id);
-                if ($m_item->getIsGrouped() == 0) {
-                    throw new \Exception('error get id conversation for instructor');
-                }
+        } elseif(null !== $item_id && null === $submission_id) {
+            //on verrifie que item et bien une live classe sinon on peux pas récupérer
+            $m_item = $this->getServiceItem()->get($item_id);
+            if ($m_item->getIsGrouped() == 1) {
+                throw new \Exception('error get id conversation for instructor');
             }
         }
         
@@ -278,7 +276,7 @@ class Conversation extends AbstractService
             if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
                 $m_item = $this->getServiceItem()->getBySubmission($submission_id);
                 // si liveclass on recupére tt les user de l'item
-                if ($m_item->getIsGrouped() == 1) {
+                if ($m_item->getIsGrouped() == 0) {
                     $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($m_item->getId());
                 } else {
                     // si group w on récupere tt les user de la submission
