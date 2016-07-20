@@ -88,6 +88,13 @@ class SubmissionUser extends AbstractService
         return $grade;
     }
 
+    /**
+     * Get Submission with user model
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListBySubmissionId($submission_id, $user_id = null)
     {
         if(null === $user_id) {
@@ -97,6 +104,17 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->getListBySubmissionId($submission_id, $user_id);
     }
 
+    /**
+     * Get Submission User  By Item
+     *
+     * @param int item_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByItemId($item_id)
+    {
+        return $this->getMapper()->getListByItemId($item_id);
+    }
+    
     public function getProcessedGrades($submission_id)
     {
         return $this->getMapper()->getProcessedGrades($submission_id);

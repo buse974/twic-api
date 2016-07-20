@@ -67,24 +67,6 @@ class Submission extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListRecord($item, $user, $is_student = false)
-    {
-        $select = $this->tableGateway->getSql()->select();
-
-        $select->columns(array('id'))
-        ->join('videoconf', 'submission.id=videoconf.submission_id', array(), $select::JOIN_INNER)
-        ->join('video_archive', 'videoconf.id=video_archive.videoconf_id', array(), $select::JOIN_INNER)
-        ->where(array('video_archive.archive_link IS NOT NULL'))
-        ->where(array('submission.item_id' => $item));
-
-        if ($is_student !== false) {
-            $select->join('submission_user', 'submission.id=submission_user.submission_id', array(), $select::JOIN_INNER)
-                ->where(array('submission_user.user_id' => $user));
-        }
-
-        return $this->selectWith($select);
-    }
-
     /**
      * @param int $item_id
      * @param int $user_id
@@ -141,13 +123,12 @@ class Submission extends AbstractMapper
 
         if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
-        } else {
-            if (null !== $user_id) {
-                $select->where(array('submission_user.user_id' => $user_id));
-            }
-            if (null !== $item_id) {
-                $select->where(array('submission.item_id' => $item_id));
-            }
+        } 
+        if (null !== $user_id) {
+            $select->where(array('submission_user.user_id' => $user_id));
+        }
+        if (null !== $item_id) {
+            $select->where(array('submission.item_id' => $item_id));
         }
 
         return $this->selectWith($select);
@@ -175,7 +156,6 @@ class Submission extends AbstractMapper
         
         return $this->selectWith($select);
     }
-    
     
     /**
      * @return \Zend\Db\Sql\Select

@@ -142,8 +142,9 @@ class Submission extends AbstractService
     }
 
     /**
-     *
-     * @param integer $submission_id            
+     * Get With Item
+     * 
+     * @param int $submission_id            
      *
      * @return \Application\Model\Submission
      */
@@ -346,17 +347,18 @@ class Submission extends AbstractService
     }
 
     /**
+     * Get By Item
+     *
      * @invokable
      *
      * @param int $item_id            
      * @param int $user_id            
-     * @param int $group_id            
      *
      * @return \Application\Model\Submission
      */
-    public function getByItem($item_id, $user_id = null, $group_id = null)
+    public function getByItem($item_id, $user_id = null)
     {
-        return $this->get($item_id, null, $group_id, $user_id);
+        return $this->get($item_id, null, null, $user_id);
     }
 
     /**
@@ -388,13 +390,6 @@ class Submission extends AbstractService
         } else {
             $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id);
         }
-        /*
-         * if(isset($type[ModelItem::CMP_VIDEOCONF]) && $type[ModelItem::CMP_VIDEOCONF] === true) {
-         * $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->joinUser(null,$submission_id);
-         * } else {
-         * $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
-         * }
-         */
         if (isset($type[ModelItem::CMP_POLL]) && $type[ModelItem::CMP_POLL] === true) {
             $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         }
@@ -425,7 +420,6 @@ class Submission extends AbstractService
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id, true);
         $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
-        // $ret[ModelItem::CMP_VIDEOCONF] = $this->getServiceVideoconf()->getBySubmission($submission_id);
         $ret[ModelItem::CMP_POLL] = $this->getServiceSubQuiz()->getBySubmission($submission_id);
         
         return $ret;
@@ -849,172 +843,182 @@ class Submission extends AbstractService
     }
 
     /**
+     * Get Service GroupUser
      *
      * @return \Application\Service\GroupUser
      */
-    public function getServiceGroupUser()
+    private function getServiceGroupUser()
     {
         return $this->getServiceLocator()->get('app_service_group_user');
     }
 
     /**
+     * Get Service Library
      *
      * @return \Application\Service\Library
      */
-    public function getServiceLibrary()
+    private function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }
 
     /**
+     * Get Service Document
      *
      * @return \Application\Service\Document
      */
-    public function getServiceDocument()
+    private function getServiceDocument()
     {
         return $this->getServiceLocator()->get('app_service_document');
     }
 
     /**
+     * Get Service TextEditor
      *
      * @return \Application\Service\TextEditor
      */
-    public function getServiceTextEditor()
+    private function getServiceTextEditor()
     {
         return $this->getServiceLocator()->get('app_service_text_editor');
     }
 
     /**
+     * Get Service Event
      *
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
+     * Get Service Conversation
      *
      * @return \Application\Service\Conversation
      */
-    public function getServiceConversation()
+    private function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
 
     /**
+     * Get Service Item
      *
      * @return \Application\Service\Item
      */
-    public function getServiceItem()
+    private function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**
+     * Get Service Thread
      *
      * @return \Application\Service\Thread
      */
-    public function getServiceThread()
+    private function getServiceThread()
     {
         return $this->getServiceLocator()->get('app_service_thread');
     }
 
     /**
+     * Get Service User
      *
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service OptGrading
      *
      * @return \Application\Service\OptGrading
      */
-    public function getServiceOptGrading()
+    private function getServiceOptGrading()
     {
         return $this->getServiceLocator()->get('app_service_opt_grading');
     }
 
     /**
-     *
-     * @return \Application\Service\Videoconf
-     */
-    public function getServiceVideoconf()
-    {
-        return $this->getServiceLocator()->get('app_service_videoconf');
-    }
-
-    /**
+     * Get Service SubmissionUser
      *
      * @return \Application\Service\SubmissionUser
      */
-    public function getServiceSubmissionUser()
+    private function getServiceSubmissionUser()
     {
         return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**
+     * Get Service SubmissionComments
      *
      * @return \Application\Service\SubmissionComments
      */
-    public function getServiceSubmissionComments()
+    private function getServiceSubmissionComments()
     {
         return $this->getServiceLocator()->get('app_service_submission_comments');
     }
 
     /**
+     * Get Service SubQuiz
      *
      * @return \Application\Service\SubQuiz
      */
-    public function getServiceSubQuiz()
+    private function getServiceSubQuiz()
     {
         return $this->getServiceLocator()->get('app_service_sub_quiz');
     }
 
     /**
+     * Get Service GradingPolicy
      *
      * @return \Application\Service\GradingPolicy
      */
-    public function getServiceGradingPolicy()
+    private function getServiceGradingPolicy()
     {
         return $this->getServiceLocator()->get('app_service_grading_policy');
     }
 
     /**
+     * Get Service PgUserCriteria
      *
      * @return \Application\Service\PgUserCriteria
      */
-    public function getServicePgUserCriteria()
+    private function getServicePgUserCriteria()
     {
         return $this->getServiceLocator()->get('app_service_pg_user_criteria');
     }
 
     /**
+     * Get Service SubmissionUserCriteria
      *
      * @return \Application\Service\SubmissionUserCriteria
      */
-    public function getServiceSubmissionUserCriteria()
+    private function getServiceSubmissionUserCriteria()
     {
         return $this->getServiceLocator()->get('app_service_submission_user_criteria');
     }
 
     /**
+     * Get Service PgUserCriteria
      *
      * @return \Application\Service\PgUserCriteria
      */
-    public function getServicePgUserGrade()
+    private function getServicePgUserGrade()
     {
         return $this->getServiceLocator()->get('app_service_pg_user_grade');
     }
 
     /**
      *
+     * Get Service SubmissionPg
+     *
      * @return \Application\Service\SubmissionPg
      */
-    public function getServiceSubmissionPg()
+    private function getServiceSubmissionPg()
     {
         return $this->getServiceLocator()->get('app_service_submission_pg');
     }

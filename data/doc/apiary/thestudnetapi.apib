@@ -3,9 +3,11 @@ HOST: https://gnam-api.thestudnet.com
 
 # TheStudnet API
 
+[The Studnet](http://www.thestudnet.com) API. 
+
 ## User Management [/api.json-rpc]
  
-### user.auth [POST /{id}]
+### user.auth [POST]
 
 + Request (application/json) application/json
     + Attributes 
@@ -19,8 +21,8 @@ HOST: https://gnam-api.thestudnet.com
             "jsonrpc": "2.0", 
             "method": "user.auth", 
             "params": {
-                 "user": {user}, 
-                 "password": {password}
+                 "user": "demo", 
+                 "password": "demo"
             }, 
             "id": 1
         }

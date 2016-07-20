@@ -223,7 +223,7 @@ class Conversation extends AbstractService
      * Get conversation id
      *
      * Get conversation id, By submission and/or item id
-     * of current user school
+     * of current user school If not exist create
      *
      * @invokable
      *
@@ -238,10 +238,94 @@ class Conversation extends AbstractService
         }
         
         $identity = $this->getServiceUser()->getIdentity();
-        return $this->getMapper()
-            ->getListId($identity['school']['id'], null, null, $item_id, $submission_id)
-            ->current()
-            ->getId();
+        $user_id = $identity['id'];
+        
+        // la submission suffit pour récuperer la conv
+        if(in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
+            if(null !== $submission_id) {
+                // on verifie que la submission et bien la sienne
+                $re_submission_user = $this->getServiceSubmissionUser()->getListBySubmissionId($submission_id, $user_id);
+                if($re_submission_user->count() <= 0) {
+                    throw new \Exception('submission '.$submission_id.' for user '.$user_id.' not exist');
+                }
+            } else {
+                //on verifie et récupére la submisiion de létudiant
+                //si il en a pas on le vire
+                $res_submission = $this->getServiceSubmission()->getByItem($item_id, $user_id);
+                if($res_submission->count() <= 0) {
+                    throw new \Exception('item '.$item_id.' for user '.$user_id.' not exist');
+                }
+                $submission_id = $res_submission->getId();
+                
+            }
+        } else {
+            if(null !== $item_id) {
+                // on verrifie que item et bien une live classe sionon on peux pas récupérer
+                $m_item = $this->getServiceItem()->get($item_id);
+                if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS) {
+                    throw new \Exception('error get id conversation for instructor');
+                }
+            }
+        }
+        
+        $identity = $this->getServiceUser()->getIdentity();
+        $res_conversation = $this->getMapper()->getListId($identity['school']['id'], null, null, $item_id, $submission_id);
+        //Si pas de résultat on créer la conversation
+        if($res_conversation->count() <= 0) {
+            
+            // arriver ici on a pour un etudiant forcement sa submission
+            if(in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
+                $m_item = $this->getServiceItem()->getBySubmission($submission_id);
+                // si liveclass on recupére tt les user de l'item
+                if($m_item->getType() !== ModelItem::TYPE_LIVE_CLASS) {
+                    $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($m_item->getId());
+                    $u = [];
+                    foreach ($res_submission_user as $m_submission_user) {
+                        $u[] = $m_submission_user->getUserId();
+                    }
+                } else {
+                // si group w on récupere tt les user de la submission
+                    $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+                    $u = [];
+                    foreach ($res_submission_user as $m_submission_user) {
+                        $u[] = $m_submission_user->getUserId();
+                    }
+                }
+            }
+            
+            //pour linstrucvtor on soit un item soit une submission
+            if(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles'])) {
+                // si item donc forcement liveclass on récupere tt les user de litem
+                if(null !== $item_id) {
+                    $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);
+                    $u = [];
+                    foreach ($res_submission_user as $m_submission_user) {
+                        $u[] = $m_submission_user->getUserId();
+                    }
+                } else {
+                    $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+                    $u = [];
+                    foreach ($res_submission_user as $m_submission_user) {
+                        $u[] = $m_submission_user->getUserId();
+                    }
+                }
+            }
+            
+            $this->create(
+                ModelConversation::TYPE_VIDEOCONF, 
+                $submission_id, 
+                $u, 
+                null, 
+                $item_id, 
+                null, 
+                null, 
+                null, 
+                true);
+            
+
+        }
+        
+        return $res_conversation->current()->getId();
     }
 
     /**
@@ -622,6 +706,16 @@ class Conversation extends AbstractService
     private function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
+    }
+    
+    /**
+     * Get Service Service SubmissionUser
+     *
+     * @return \Application\Service\SubmissionUser
+     */
+    private function getServiceSubmissionUser()
+    {
+        return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**
