@@ -1,15 +1,15 @@
 FORMAT: 1A
-HOST: http://api.thestudnet.com/V1
+HOST: https://gnam-api.thestudnet.com
 
 # TheStudnet API
 
 ## User Management [/api.json-rpc]
  
-### user.auth [POST]
+### user.auth [POST /{id}]
 
 + Request (application/json) application/json
     + Attributes 
-
+    
       + user: external@free.fr (string, required)
       + password: thestudnet (string, required)
       
@@ -19,8 +19,8 @@ HOST: http://api.thestudnet.com/V1
             "jsonrpc": "2.0", 
             "method": "user.auth", 
             "params": {
-                 "user": "external@free.fr", 
-                 "password": "thestudnet"
+                 "user": {user}, 
+                 "password": {password}
             }, 
             "id": 1
         }
@@ -64,6 +64,7 @@ HOST: http://api.thestudnet.com/V1
       + firstname: f1 (string, optional)
       + lastname: l1 (string, optional)
       + uid: azerty (string, optional)
+      + role: student|instructor|academic (string, optional, defualt: student)
       
     + Headers
 
