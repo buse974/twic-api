@@ -52,11 +52,14 @@ class Conversation extends AbstractMapper
         
         if (null !== $item_id) {
             $select->where(['item.id' => $item_id]);
-        } elseif (null !== $course_id) {
+        } 
+        if (null !== $course_id) {
             $select->where(['course.id' => $course_id]);
-        } elseif (null !== $program_id) {
+        } 
+        if (null !== $program_id) {
             $select->where(['program.id' => $program_id]);
-        } elseif (null !== $submission_id) {
+        } 
+        if (null !== $submission_id) {
             $select->where(['submission.id' => $submission_id]);
         }
     
