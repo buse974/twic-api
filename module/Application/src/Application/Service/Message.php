@@ -11,6 +11,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use Zend\Db\Sql\Predicate\IsNull;
 
 /**
  * Class Message
@@ -45,8 +46,16 @@ class Message extends AbstractService
      *
      * @return int
      */
-    public function send($text = null, $to = null, $conversation = null, $type = ModelConversation::TYPE_CHAT)
+    public function send($text = null, $to = null, $conversation = null, $type = null)
     {
+        if($conversation !== null && null === $type) {
+            $m_conversation = $this->getServiceConversation()->getLite($conversation);
+            $type = $m_conversation->getType();
+        }
+        if(!is_numeric($type)) {
+            $type = ModelConversation::TYPE_CHAT;
+        }
+        
         return $this->_send($text, $to, $conversation, $type);
     }
 
