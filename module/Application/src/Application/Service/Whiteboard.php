@@ -69,6 +69,17 @@ class Whiteboard extends AbstractService
     }
     
     /**
+     * Get List
+     *
+     * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getList($submission_id)
+    {
+        return $this->getMapper()->getList($submission_id);
+    }
+    
+    /**
      * Get List By Conversation
      * 
      * @param int $conversation_id
