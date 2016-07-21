@@ -294,11 +294,17 @@ class Conversation extends AbstractService
                 }
                 $submission_id = $m_submission->getId();
             }
-        } elseif(null !== $item_id && null === $submission_id) {
-            //on verrifie que item et bien une live classe sinon on peux pas récupérer
-            $m_item = $this->getServiceItem()->get($item_id);
-            if ($m_item->getIsGrouped() == 1) {
-                throw new \Exception('error get id conversation for instructor');
+        } else {
+            if(null !== $item_id) {
+                //on verrifie que item et bien une live classe sinon on peux pas récupérer
+                $m_item = $this->getServiceItem()->get($item_id);
+                if ($m_item->getIsGrouped() == 1) {
+                    throw new \Exception('error get id conversation for instructor');
+                } else {
+                    $submission_id = null;
+                }
+            } else {
+                $item_id = null;
             }
         }
         
