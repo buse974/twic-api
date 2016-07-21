@@ -21,7 +21,7 @@ use Application\Model\Role as ModelRole;
 class Submission extends AbstractService
 {
 
-    protected $sub = [ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_WORKGROUP => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true,ModelItem::CMP_TEXT_EDITOR => true],ModelItem::TYPE_LIVE_CLASS => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],ModelItem::TYPE_MODULE => [],ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],ModelItem::TYPE_TXT => []];
+    protected $sub = [ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_HANGOUT => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],ModelItem::TYPE_MODULE => [],ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],ModelItem::TYPE_TXT => []];
 
     /**
      *
@@ -79,7 +79,7 @@ class Submission extends AbstractService
          *
          * Ici pour le type 3 (Live class concerné)
          */
-        if (($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) && ! is_numeric($m_item->getSetId())) {
+        if (($m_item->getType() === ModelItem::HANGOUT) && ! is_numeric($m_item->getSetId())) {
             $res_submission = $this->getMapper()->get($item_id);
             if ($res_submission->count() > 0) {
                 $m_submission = $res_submission->current();
@@ -98,7 +98,7 @@ class Submission extends AbstractService
         $res_user = null;
         if (null !== $group_id) {
             $res_user = $this->getServiceUser()->getListUsersByGroup($group_id);
-        } elseif ($m_item->getType() === ModelItem::TYPE_LIVE_CLASS || $m_item->getType() === ModelItem::TYPE_WORKGROUP) {
+        } elseif ($m_item->getType() === ModelItem::HANGOUT) {
             $res_user = $this->getServiceUser()->getListByItem($item_id);
         }
         

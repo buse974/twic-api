@@ -345,8 +345,9 @@ class Item extends AbstractMapper
                 $s[] = ':t'.$i;
             }
             $where[] = 'item.type IN ('.implode(',', $s).')';
+            
         } else {
-            $where[] = "item.type IN ('WG', 'CP', 'IA', 'POLL', 'DISC', 'CHAT')";
+            $where[] = "item.type IN ('HANGOUT', 'CP', 'IA', 'POLL', 'DISC', 'CHAT')";
         }
         if (null !== $search) {
             $val[':s'] = '%'.$search.'%';
@@ -365,6 +366,7 @@ class Item extends AbstractMapper
         $where[] = 'course.deleted_date IS NULL';
         $where[] = 'program.deleted_date IS NULL';
         $where[] = 'item.is_complete IS TRUE';
+        $where[] = '( item.type != "HANGOUT" OR item.is_grouped = 1)';
 
         $cw = '';
         $nb = count($where);
@@ -373,6 +375,7 @@ class Item extends AbstractMapper
         }
 
         $sql .= $cw.' GROUP BY `item`.`id`';
+        
 
         return $this->selectPdo($sql, $val);
     }
