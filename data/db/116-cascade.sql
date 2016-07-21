@@ -36,7 +36,7 @@ DROP TABLE `videoconf`;
 ALTER TABLE `thread` 
 DROP FOREIGN KEY `fk_thread_1`,
 DROP FOREIGN KEY `fk_thread_3`;
-ALTER TABLE `inv`.`thread` 
+ALTER TABLE `thread` 
 ADD CONSTRAINT `fk_thread_1`
   FOREIGN KEY (`course_id`)
   REFERENCES `course` (`id`)
