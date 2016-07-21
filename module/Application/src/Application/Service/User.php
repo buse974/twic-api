@@ -934,7 +934,6 @@ class User extends AbstractService
     public function getListByConversation($conversation_id)
     {
         $res_user = $this->getMapper()->getListByConversation($conversation_id);
-        
         foreach ($res_user as $m_user) {
             $roles = [];
             foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {

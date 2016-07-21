@@ -155,7 +155,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                                                                                <li class="method public">
         <a href="#method_update" title="update :: Update TextEditor">
             <span class="description">Update TextEditor</span><pre>update</pre>
         </a>
@@ -165,11 +165,16 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                    <li class="method private">
+                            <a href="#method_getServiceSubTextEditor" title="getServiceSubTextEditor :: Get Service Service SubTextEditor">
+                                <span class="description">Get Service Service SubTextEditor</span><pre>getServiceSubTextEditor</pre>
+                            </a>
+                        </li>
+                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -235,7 +240,7 @@
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Create Text Editor</h2>
-                            <pre>add(integer $submission_id, string $name = null, string $text = null, string $submit_date = null, integer $conversation_id = null) : integer</pre>
+                            <pre>add(integer $submission_id = null, string $name = &quot;Text Editor&quot;, string $text = null, string $submit_date = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -272,10 +277,6 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$submit_date</h4>
                                                 <code>string</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$conversation_id</h4>
-                                                <code>integer</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -401,6 +402,35 @@
                             </div>
 
                         </div>
+                                            <a id="method_getServiceSubTextEditor"></a>
+                        <div class="element clickable method private  method_getServiceSubTextEditor" data-toggle="collapse" data-target=".method_getServiceSubTextEditor .collapse">
+                            <h2>Get Service Service SubTextEditor</h2>
+                            <pre>getServiceSubTextEditor() : \Application\Service\SubTextEditor</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.SubTextEditor.html">\Application\Service\SubTextEditor</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
                             <h2>Update TextEditor</h2>
@@ -414,6 +444,15 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    todo
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        <p>créer le replace de $submission_id sub_text_editor</p>
+                                                                                                    </td>
+                                            </tr>
                                                                                     <tr>
                                                 <th>
                                                     invokable
@@ -475,7 +514,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 20 Jul 2016 18:00:04 +0200.<br/>
+            generated on Thu, 21 Jul 2016 10:45:30 +0200.<br/>
     </footer>
     </body>
 </html>

@@ -67,9 +67,9 @@ class Document extends AbstractService
 
     /**
      * Add Relation
-     * 
-     * @param int $submission_id
-     * @param int $library_id
+     *
+     * @param int $submission_id            
+     * @param int $library_id            
      * @throws \Exception
      * @return int
      */
@@ -77,14 +77,11 @@ class Document extends AbstractService
     {
         $m_document = $this->getModel()
             ->setSubmissionId($submission_id)
-            ->setLibraryId($library_id)
-            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            ->setLibraryId($library_id);
         
-        if ($this->getMapper()->insert($m_document) <= 0) {
-            throw new \Exception("error insert document relation");
-        }
+        $res_document = $this->getMapper()->select($m_document);
         
-        return $this->getMapper()->getLastInsertValue();
+        return ($res_document->count() == 0) ? $this->getMapper()->insert($m_document->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))) : 0;
     }
 
     public function addConversation($data)

@@ -126,8 +126,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add Question to bank">
+            <span class="description">Add Question to bank</span><pre>add</pre>
         </a>
     </li>
 
@@ -146,20 +146,20 @@ si utiliser mais for_delete alors on le passe simplement a older.</span><pre>cop
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Bank Question">
+            <span class="description">Get Bank Question</span><pre>get</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: ">
-            <span class="description"></span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get List">
+            <span class="description">Get List</span><pre>getList</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListLite" title="getListLite :: ">
-            <span class="description"></span><pre>getListLite</pre>
+        <a href="#method_getListLite" title="getListLite :: Get List Lite">
+            <span class="description">Get List Lite</span><pre>getListLite</pre>
         </a>
     </li>
 
@@ -303,8 +303,8 @@ si utiliser mais for_delete alors on le passe simplement a older.</span><pre>cop
                         </div>
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add(integer $course_id, array $data) </pre>
+                            <h2>Add Question to bank</h2>
+                            <pre>add(integer $course_id, array $data) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -323,13 +323,6 @@ si utiliser mais for_delete alors on le passe simplement a older.</span><pre>cop
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -342,6 +335,8 @@ si utiliser mais for_delete alors on le passe simplement a older.</span><pre>cop
                                                 <code>array</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
@@ -426,7 +421,7 @@ si utiliser mais for_delete alors on le passe simplement a older.</h2>
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
+                            <h2>Get Bank Question</h2>
                             <pre>get(integer $id) : \Application\Model\BankQuestion</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -453,8 +448,8 @@ si utiliser mais for_delete alors on le passe simplement a older.</h2>
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
-                            <pre>getList(integer $course_id,  $filter = null,  $search = null,  $older = false) </pre>
+                            <h2>Get List</h2>
+                            <pre>getList(integer $course_id, array $filter = null, string $search = null, boolean $older = false) : \Dal\Db\ResultSet\ResultSet|array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -473,13 +468,6 @@ si utiliser mais for_delete alors on le passe simplement a older.</h2>
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -489,24 +477,26 @@ si utiliser mais for_delete alors on le passe simplement a older.</h2>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$filter</h4>
-                                                <code></code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$search</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$older</h4>
-                                                <code></code><p></p>
+                                                <code>boolean</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet|array</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListLite"></a>
                         <div class="element clickable method public  method_getListLite" data-toggle="collapse" data-target=".method_getListLite .collapse">
-                            <h2>getListLite</h2>
+                            <h2>Get List Lite</h2>
                             <pre>getListLite(integer $ids) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -736,7 +726,7 @@ si utiliser mais for_delete alors on le passe simplement a older.</h2>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 20 Jul 2016 18:00:05 +0200.<br/>
+            generated on Thu, 21 Jul 2016 10:45:30 +0200.<br/>
     </footer>
     </body>
 </html>

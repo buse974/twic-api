@@ -63,10 +63,10 @@ class TextEditor extends AbstractService
      * @param int $submission_id            
      * @param string $name            
      * @param string $text            
-     * @param string $submit_date    
+     * @param string $submit_date  
      * @return int          
      */
-    public function add($submission_id, $name = "", $text = null, $submit_date = null)
+    public function add($submission_id = null, $name = "Text Editor", $text = null, $submit_date = null)
     {
         $m_text_editor = $this->getModel()
             ->setName($name)
@@ -78,7 +78,10 @@ class TextEditor extends AbstractService
         }
         
         $id = $this->getMapper()->getLastInsertValue();
-        $this->getServiceSubTextEditor()->add($submission_id, $id);
+        
+        if(null !== $submission_id) {
+            $this->getServiceSubTextEditor()->add($submission_id, $id);
+        }
         
         return $id;
     }

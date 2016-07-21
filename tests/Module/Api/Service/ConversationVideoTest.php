@@ -101,15 +101,19 @@ class ConversationVideoTest extends AbstractService
             'has_video' => true,
         ]);
         
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+        
+        return $data['result'];
     }
     
     public function testCanGetListId()
     {
         $this->setIdentity(1, 4);
     
-        $data = $this->jsonRpc('conversation.getListId', [
-            'id' => 1,
-        ]);
+        $data = $this->jsonRpc('conversation.getListId', []);
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
@@ -133,12 +137,15 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    public function testCanGet()
+    /**
+     * @depends testCanAdd
+     */
+    public function testCanGet($conv_id)
     {
-        $this->setIdentity(1, 4);
+         $this->setIdentity(1);
     
         $data = $this->jsonRpc('conversation.get', [
-            'id' => 1,
+            'id' => $conv_id,
         ]);
         
         $this->assertEquals(count($data) , 3);
@@ -285,11 +292,10 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['conversation_opt_id'] , 1);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals(count($data['result']['editors']) , 1);
-        $this->assertEquals(count($data['result']['editors'][0]) , 5);
+        $this->assertEquals(count($data['result']['editors'][0]) , 4);
         $this->assertEquals($data['result']['editors'][0]['id'] , 1);
         $this->assertEquals($data['result']['editors'][0]['name'] , "name");
         $this->assertEquals($data['result']['editors'][0]['text'] , "");
-        $this->assertEquals($data['result']['editors'][0]['submission_id'] , null);
         $this->assertEquals($data['result']['editors'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['whiteboards']) , 1);
         $this->assertEquals(count($data['result']['whiteboards'][0]) , 5);
@@ -328,7 +334,6 @@ class ConversationVideoTest extends AbstractService
         
     }
    
-
     public function testCanAddVideo()
     {
         //MOCK OPENTOK

@@ -80,7 +80,23 @@ class Conversation extends AbstractService
         }
         if (null !== $submission_id) {
             $this->getServiceSubConversation()->add($conversation_id, $submission_id);
+            
+            $res_sub_text_editor = $this->getServiceSubTextEditor()->getList($submission_id);
+            foreach ($res_sub_text_editor as $m_sub_text_editor) {
+                $text_editors[] = $m_sub_text_editor->getTextEditorId();
+            }
+            $res_sub_whiteboard = $this->getServiceSubWhiteboard()->getList($submission_id);
+            foreach ($res_sub_whiteboard as $m_sub_whiteboard) {
+                $whiteboards[] = $m_sub_whiteboard->getWhiteboardId();
+            }
+            $res_sub_document = $this->getServiceDocument()->getListBySubmission($submission_id);
+            foreach ($res_sub_document as $m_sub_document) {
+                $documents[] = $m_sub_document->getLibraryId();
+            }
         }
+        
+        
+        
         if (null !== $text_editors) {
             $this->addTextEditor($conversation_id, $text_editors);
         }
@@ -520,7 +536,7 @@ class Conversation extends AbstractService
             ->getList($id, []));
         $conv->setUsers($this->getServiceUser()
             ->getListByConversation($id)
-            ->toArray(array('id')));
+            ->toArray(['id']));
         
         return $conv;
     }

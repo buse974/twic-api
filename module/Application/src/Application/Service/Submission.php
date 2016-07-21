@@ -174,12 +174,14 @@ class Submission extends AbstractService
      */
     public function get($item_id = null, $submission_id = null, $group_id = null, $user_id = null)
     {
+        $identity = $this->getServiceUser()->getIdentity();
+        
         // // ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         if (null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
-        if (null === $user_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
+            $user_id = $identity['id'];
         }
         // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);

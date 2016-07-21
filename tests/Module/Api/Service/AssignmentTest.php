@@ -291,11 +291,10 @@ class AssignmentTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result']['text_editor']) , 1);
-        $this->assertEquals(count($data['result']['text_editor'][0]) , 5);
+        $this->assertEquals(count($data['result']['text_editor'][0]) , 4);
         $this->assertEquals($data['result']['text_editor'][0]['id'] , 1);
         $this->assertEquals($data['result']['text_editor'][0]['name'] , "Text Editor");
         $this->assertEquals($data['result']['text_editor'][0]['text'] , "");
-        $this->assertEquals($data['result']['text_editor'][0]['submission_id'] , 1);
         $this->assertEquals($data['result']['text_editor'][0]['submit_date'] , null);
         $this->assertEquals(count($data['result']['document']) , 1);
         $this->assertEquals(count($data['result']['document'][0]) , 11);
@@ -311,7 +310,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['document'][0]['owner_id'] , 1);
         $this->assertEquals($data['result']['document'][0]['box_id'] , null);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 10);
+        $this->assertEquals(count($data['result']['chat'][0]) , 12);
         $this->assertEquals(count($data['result']['chat'][0]['messages']) , 2);
         $this->assertEquals(count($data['result']['chat'][0]['messages']['list']) , 0);
         $this->assertEquals($data['result']['chat'][0]['messages']['count'] , 0);
@@ -343,6 +342,25 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['token'] , null);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
+        $this->assertEquals(count($data['result']['chat'][0]['editors']) , 1);
+        $this->assertEquals(count($data['result']['chat'][0]['editors'][0]) , 4);
+        $this->assertEquals($data['result']['chat'][0]['editors'][0]['id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['editors'][0]['name'] , "Text Editor");
+        $this->assertEquals($data['result']['chat'][0]['editors'][0]['text'] , "");
+        $this->assertEquals($data['result']['chat'][0]['editors'][0]['submit_date'] , null);
+        $this->assertEquals(count($data['result']['chat'][0]['documents']) , 1);
+        $this->assertEquals(count($data['result']['chat'][0]['documents'][0]) , 11);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['id'] , 3);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['name'] , "monfile");
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['token'] , null);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['type'] , null);
+        $this->assertEquals(!empty($data['result']['chat'][0]['documents'][0]['created_date']) , true);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['deleted_date'] , null);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['updated_date'] , null);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['folder_id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['owner_id'] , 1);
+        $this->assertEquals($data['result']['chat'][0]['documents'][0]['box_id'] , null);
         $this->assertEquals(count($data['result']['chat'][0]['conversation_opt']) , 9);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['item_id'] , null);
@@ -355,7 +373,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['rules'] , null);
         $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);  
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
     /**
