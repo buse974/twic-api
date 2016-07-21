@@ -7,13 +7,12 @@ use Dal\Mapper\AbstractMapper;
 class Research extends AbstractMapper
 {
     /**
-     * Get research list.
+     * Get research list
      * 
      * @param string $string
-     * 
-     * @return \Zend\Db\ResultSet\ResultSet
+     * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($string, $filter = null)
+    public function getList($string)
     {
         $select = $this->tableGateway->getSql()->select();
 

@@ -15,19 +15,21 @@ use Dal\Service\AbstractService;
  */
 class Research extends AbstractService
 {
+
     /**
-     * @invokable
-     *            
-     * @param string $string
+     * Get List Research
      * 
+     * @invokable
+     *
+     * @param string $string            
+     * @param array $filter            
      * @return array
      */
     public function getList($string, $filter = null)
     {
         $mapper = $this->getMapper();
         $res = $mapper->usePaginator($filter)->getList($string);
-
-        return array('list' => $res,
-                    'count' => $mapper->count(), );
+        
+        return ['list' => $res,'count' => $mapper->count()];
     }
 }
