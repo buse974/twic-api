@@ -29,10 +29,7 @@ class ConversationUser extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('conversation_id'))
-               ->join('videoconf', 'videoconf.conversation_id=conversation_user.conversation_id', array(), $select::JOIN_LEFT)
-               ->join('conversation', 'conversation.id=conversation_user.conversation_id', array())
-               ->where(array('user_id' => $users))
-               ->where(array('videoconf.id IS NULL'))
+               ->where(array('conversation_user.user_id' => $users))
                ->where(array('conversation_user.conversation_id IN ? ' => $select_sub))
                ->group(array('conversation_user.conversation_id'))
                ->having($having);
