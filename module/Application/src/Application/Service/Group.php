@@ -21,8 +21,9 @@ class Group extends AbstractService
      * 
      * @invokable
      *
-     * @param string $uid            
-     * @param string $name            
+     * @param string $set            
+     * @param string $name    
+     * @param string $uid        
      * @param array|int $users            
      * @return int
      */
@@ -150,6 +151,7 @@ class Group extends AbstractService
     }
 
     /**
+     * Delete 
      * @invokable
      *
      * @param integr $id            

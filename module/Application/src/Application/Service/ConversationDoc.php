@@ -16,6 +16,13 @@ use Dal\Service\AbstractService;
  */
 class ConversationDoc extends AbstractService
 {
+    /**
+     * Add relation conversation document
+     * 
+     * @param int $conversation_id
+     * @param int $library_id
+     * @return int
+     */
     public function add($conversation_id, $library_id) 
     {
         return $this->getMapper()->insert($this->getModel()
@@ -23,6 +30,11 @@ class ConversationDoc extends AbstractService
             ->setLibraryId($library_id));
     }
     
+    /**
+     * Delete relation conversation document
+     * 
+     * @param int $library_id
+     */
     public function delete($library_id)
     {
         $res_conversation_doc = $this->getMapper()->select($this->getModel()
@@ -37,10 +49,11 @@ class ConversationDoc extends AbstractService
     }
     
     /**
-     *
+     * Get Service Library
+     * 
      * @return \Application\Service\Library
      */
-    public function getServiceLibrary()
+    private function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }
