@@ -20,7 +20,7 @@ class SubmissionUser extends AbstractService
 {
     /**
      * 
-     * @param unknown $submission_id
+     * @param int $submission_id
      * @param array $users
      * @return boolean if submission_user has be modifyer
      */
@@ -163,8 +163,11 @@ class SubmissionUser extends AbstractService
     }
 
     /**
+     * Cancel a submit
+     * 
      * @param int $submission_id
      * @param int $user_id
+     * @return int
      */
     public function cancelsubmit($submission_id, $user_id)
     {
@@ -178,10 +181,11 @@ class SubmissionUser extends AbstractService
     }
 
     /**
+     * Start the submission user
+     * 
      * @invokable
      *
      * @param int $submission
-     *
      * @return int
      */
     public function start($submission)
@@ -194,10 +198,11 @@ class SubmissionUser extends AbstractService
     }
 
     /**
+     * End the submission user
+     * 
      * @invokable
      *
      * @param int $submission
-     *
      * @return int
      */
     public function end($submission)
@@ -210,27 +215,32 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * @param int $submission
-     *
+     * Check if is finish
+     * 
+     * @param int $submission_id
      * @return bool
      */
-    public function checkAllFinish($submission)
+    public function checkAllFinish($submission_id)
     {
-        return $this->getMapper()->checkAllFinish($submission);
+        return $this->getMapper()->checkAllFinish($submission_id);
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
