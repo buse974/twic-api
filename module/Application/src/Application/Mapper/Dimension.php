@@ -25,6 +25,12 @@ class Dimension extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    /**
+     * Request getEqCq
+     * 
+     * @param int $school
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getEqCq($school)
     {
         $sql = "SELECT 

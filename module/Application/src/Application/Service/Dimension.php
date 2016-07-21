@@ -17,11 +17,13 @@ use Dal\Service\AbstractService;
 class Dimension extends AbstractService
 {
     /**
-     * GetList.
+     * Get List Dimension
      * 
      * @invokable
      * 
-     * @return \Zend\Db\ResultSet\ResultSet
+     * @param array $filter
+     * @param string $search
+     * @return array
      */
     public function getList($filter = null, $search = null)
     {
@@ -37,15 +39,13 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Add Dimnsion.
+     * Add Dimnsion
      *
      * @invokable
      *
      * @param string $name
      * @param string $describe
-     *
-     * @throws \Eception
-     *
+     * @throws \Exception
      * @return int
      */
     public function add($name, $describe)
@@ -55,21 +55,20 @@ class Dimension extends AbstractService
             ->setDescribe($describe);
 
         if ($this->getMapper()->insert($m_dimension) <= 0) {
-            throw new \Eception('error insert dimension');
+            throw new \Exception('error insert dimension');
         }
 
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Update Dimension.
+     * Update Dimension
      *
      * @invokable
      *
      * @param int    $id
      * @param string $name
      * @param string $describe
-     *
      * @return int
      */
     public function update($id, $name, $describe)
@@ -83,12 +82,11 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Delete Dimension (update deleted date ).
+     * Delete Dimension (update deleted date )
      *
      * @invokable
      *
      * @param int $id
-     *
      * @return int
      */
     public function delete($id)
@@ -101,9 +99,12 @@ class Dimension extends AbstractService
     }
 
     /**
+     * Get EqCq By School
+     * 
      * @invokable
      * 
      * @param int $school
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getEqCq($school)
     {
@@ -111,9 +112,11 @@ class Dimension extends AbstractService
     }
 
     /**
+     * Get Service Component
+     * 
      * @return \Application\Service\Component
      */
-    public function getServiceComponent()
+    private function getServiceComponent()
     {
         return $this->getServiceLocator()->get('app_service_component');
     }

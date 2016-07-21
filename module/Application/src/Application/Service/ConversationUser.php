@@ -17,10 +17,13 @@ use Dal\Service\AbstractService;
 class ConversationUser extends AbstractService
 {
     /**
+     * Get Conversation OR Create if not exist
+     * 
      * @invokable
      * 
      * @param array $users
      * @param int   $type
+     * @return int
      */
     public function getConversationByUser(array $users, $type = null)
     {
@@ -43,9 +46,12 @@ class ConversationUser extends AbstractService
     }
 
     /**
+     * Get List Conversation 
+     * 
      * @invokable
      *
      * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListConversationBySubmission($submission_id)
     {
@@ -53,19 +59,21 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * @param int $conversation
-     *
+     * Get User By Conversation
+     * 
+     * @param int $conversation_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getUserByConversation($conversation)
+    public function getUserByConversation($conversation_id)
     {
-        return $this->getMapper()->select($this->getModel()->setConversationId($conversation));
+        return $this->getMapper()->select($this->getModel()->setConversationId($conversation_id));
     }
 
     /**
+     * Check If is in conversation
+     * 
      * @param int $conversation_id
      * @param int $user_id
-     *
      * @return bool
      */
     public function isInConversation($conversation_id, $user_id)
@@ -97,10 +105,11 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * @param intger $conversation_id
+     * Replace user in conversation
+     * 
+     * @param int $conversation_id
      * @param array  $users
-     *
-     * @return []
+     * @return array
      */
     public function replace($conversation_id, $users)
     {

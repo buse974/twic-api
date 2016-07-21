@@ -19,6 +19,7 @@ use Application\Model\Role as ModelRole;
 class SubmissionUser extends AbstractService
 {
     /**
+     * Create Submission User, Add and remove do a diff
      * 
      * @param int $submission_id
      * @param array $users
@@ -52,11 +53,25 @@ class SubmissionUser extends AbstractService
         return $has_modif;
     }
 
-    public function add($submission_id, $user)
+    /**
+     * Add Submission User
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return int
+     */
+    public function add($submission_id, $user_id)
     {
-        return $this->getMapper()->insert($this->getModel()->setSubmissionId($submission_id)->setUserId($user));
+        return $this->getMapper()->insert($this->getModel()->setSubmissionId($submission_id)->setUserId($user_id));
     }
 
+    /**
+     * Overwritten Grade
+     * 
+     * @param int $submission_id
+     * @param int $grade
+     * @return int
+     */
     public function OverwrittenGrade($submission_id, $grade)
     {
         if($grade < 0 || !is_numeric($grade)) {
@@ -67,12 +82,15 @@ class SubmissionUser extends AbstractService
     }
 
     /**
+     * Set Grade submission user
+     * 
      * @invokable
      *
      * @param int  $submission_id
      * @param int  $user_id
      * @param int  $grade
      * @param bool $overwritten
+     * @return int
      */
     public function setGrade($submission_id, $user_id, $grade, $overwritten = false)
     {
@@ -115,22 +133,37 @@ class SubmissionUser extends AbstractService
         return $this->getMapper()->getListByItemId($item_id);
     }
     
+    /**
+     * Get Processed Grades
+     * 
+     * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getProcessedGrades($submission_id)
     {
         return $this->getMapper()->getProcessedGrades($submission_id);
     }
 
+    /**
+     * Get List Submission User
+     * 
+     * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getList($submission_id)
     {
         return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
     }
 
     /**
+     * Get List Grade Submission User
+     * 
      * @invokable
      *
      * @param array  $avg
      * @param array  $filter
      * @param string $search
+     * @return array
      */
     public function getListGrade($avg = array(), $filter = array(), $search = null)
     {
@@ -146,9 +179,10 @@ class SubmissionUser extends AbstractService
     }
 
     /**
+     * Submit Submission User 
+     * 
      * @param int $submission_id
      * @param int $user_id
-     * 
      * @return int
      */
     public function submit($submission_id, $user_id = null)
