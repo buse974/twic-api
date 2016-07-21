@@ -79,18 +79,9 @@ class SubmissionUser extends AbstractMapper
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getListBySubmissionId($submission_id, $user_id)
+    public function getListBySubmissionId($submission_id, $user_id = null)
     {
-        
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns([
-            'submission_id',
-            'user_id',
-            'grade',
-            'submission_user$submit_date' => new Expression('DATE_FORMAT(submission_user.submit_date, "%Y-%m-%dT%TZ")'),
-            'submission_user$start_date' => new Expression('DATE_FORMAT(submission_user.start_date, "%Y-%m-%dT%TZ")'),
-        ])
-            ->join('user', 'user.id=submission_user.user_id', [
+        $columns = [
                 'user$id' => new Expression('user.id'),
                 'firstname',
                 'gender',
@@ -102,9 +93,22 @@ class SubmissionUser extends AbstractMapper
                 'interest',
                 'avatar',
                 'school_id',
-                'user$contact_state' => $this->getMapperUser()->getSelectContactState($user_id),
                 'user$contacts_count' => $this->getMapperUser()->getSelectContactCount(),
-            ])
+            ];
+        
+        if(null !== $user_id) {
+            $columns['user$contact_state'] = $this->getMapperUser()->getSelectContactState($user_id);
+        }
+        
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([
+            'submission_id',
+            'user_id',
+            'grade',
+            'submission_user$submit_date' => new Expression('DATE_FORMAT(submission_user.submit_date, "%Y-%m-%dT%TZ")'),
+            'submission_user$start_date' => new Expression('DATE_FORMAT(submission_user.start_date, "%Y-%m-%dT%TZ")'),
+        ])
+            ->join('user', 'user.id=submission_user.user_id', $columns)
             ->where(array('submission_user.submission_id' => $submission_id));
 
         return $this->selectWith($select);

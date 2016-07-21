@@ -16,12 +16,23 @@ use Dal\Service\AbstractService;
  */
 class GuidelinesView extends AbstractService
 {
+    /**
+     * Add State to a Guidelines
+     * 
+     * @param string $state
+     */
     public function add($state)
     {
         return $this->getMapper()->view($state, $this->getServiceUser()
             ->getIdentity()['id']);
     }
 
+    /**
+     * Check is state exist
+     * 
+     * @param string $state
+     * @return bool
+     */
     public function exist($state)
     {
         return ($this->getMapper()
@@ -33,9 +44,11 @@ class GuidelinesView extends AbstractService
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
