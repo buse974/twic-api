@@ -33,7 +33,7 @@ exit 1
 fi
 
 
-RES=`curl -s --data-binary '{"jsonrpc": "2.0", "id":1, "method": "videoconf.getListVideoUpload", "params": [] }' $URL_API`
+RES=`curl -s --data-binary '{"jsonrpc": "2.0", "id":1, "method": "videoarchive.getListVideoUpload", "params": [] }' $URL_API`
 URL=$(echo $RES | jq -c -r '.result|.[]')
 
 for LINE in $URL
@@ -45,7 +45,7 @@ if [ ! $LINE = "[]" ]; then
         OUT=`curl $X -w '%{http_code}' $(echo $LINE | jq -r '.url') -o $PATH_DEST`
         if [[ $OUT -eq 200 ]]
         then
-                RES=`curl -s --data-binary  "{\"jsonrpc\": \"2.0\", \"id\":1, \"method\": \"videoconf.validTransfertVideo\", \"params\": {\"videoconf_archive\": $(echo $LINE | jq -r '.id'),\"url\":\""$NAMEBASE"\"  } }" $URL_API`
+                RES=`curl -s --data-binary  "{\"jsonrpc\": \"2.0\", \"id\":1, \"method\": \"videoarchive.validTransfertVideo\", \"params\": {\"video_archive\": $(echo $LINE | jq -r '.id'),\"url\":\""$NAMEBASE"\"  } }" $URL_API`
                 echo "Download ok : " $(echo $RES | jq -c -r '.result') $NAME
 		DURATION=`ffprobe -i $P$NAME -show_entries format=duration -v quiet -of csv="p=0"`
 		DURATION25=`echo "$DURATION*0.25" | bc`
