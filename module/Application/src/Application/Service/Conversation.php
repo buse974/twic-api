@@ -169,10 +169,9 @@ class Conversation extends AbstractService
             }
             if (! $is_present) {
                 $this->getServiceConversationUser()->add($id, $identity['id']);
-                $has_video = true;
+                $has_joined = true;
             }
         }
-        
         if ($has_video === true) {
             $this->addVideo($id);
         }
