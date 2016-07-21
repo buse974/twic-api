@@ -24,6 +24,7 @@ class Item extends BaseItem
     const CMP_DOCUMENT = 'document';
     const CMP_SUB_DOCUMENT = 'subdocument';
     const CMP_TEXT_EDITOR = 'text_editor';
+    const CMP_WHITEBOARD = 'whiteboard';
     const CMP_CHAT = 'chat';
     const CMP_DISCUSSION = 'thread';
     const CMP_EQCQ = 'eqcq';

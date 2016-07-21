@@ -18,10 +18,17 @@ use Zend\Db\Sql\Predicate\IsNull;
  */
 class Questionnaire extends AbstractService
 {
-    private function create($item)
+    /**
+     * Create Questionnaire
+     * 
+     * @param int $item_id
+     * @throws \Exception
+     * @return int
+     */
+    private function create($item_id)
     {
         $m_questionnaire = $this->getModel()
-            ->setItemId($item)
+            ->setItemId($item_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($this->getMapper()->insert($m_questionnaire) <= 0) {
@@ -36,9 +43,12 @@ class Questionnaire extends AbstractService
     }
 
     /**
+     * Get Bt item
+     * 
      * @invokable
-     *
+     * 
      * @param int $item
+     * @return \Application\Model\Questionnaire
      */
     public function getByItem($item)
     {
@@ -63,12 +73,15 @@ class Questionnaire extends AbstractService
     }
 
     /**
+     * Add a answer
+     * 
      * @invokable
      *
      * @param int $item
      * @param int $user
      * @param int $question
      * @param int $scale
+     * @return int
      */
     public function answer($item, $user, $question, $scale)
     {
@@ -100,21 +113,22 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * @param int $item
-     *
+     * Get number question No completed
+     * 
+     * @param int $item_id
      * @return null|int
      */
-    public function getNbrQuestionNoCompleted($item)
+    public function getNbrQuestionNoCompleted($item_id)
     {
         $nbr = $tnbr = null;
         $user = $this->getServiceUser()->getIdentity()['id'];
-        $res_questionnaire = $this->getMapper()->getNbrTotal($item);
+        $res_questionnaire = $this->getMapper()->getNbrTotal($item_id);
         if ($res_questionnaire->count() > 0) {
             $tnbr = $res_questionnaire->current()->getNbNoCompleted();
             $tnbr = ($tnbr instanceof IsNull) ? null : (int)$tnbr;
         }
         
-        $res_questionnaire = $this->getMapper()->getNbrQuestionCompleted($item, $user);
+        $res_questionnaire = $this->getMapper()->getNbrQuestionCompleted($item, $item_id);
         if ($res_questionnaire->count() > 0) {
             $nbr = $res_questionnaire->current()->getNbNoCompleted();
             $nbr = ($nbr instanceof IsNull) ? null : (int)$nbr;
@@ -124,6 +138,8 @@ class Questionnaire extends AbstractService
     }
 
     /**
+     * Get Answer
+     * 
      * @invokable
      *
      * @param int $item
@@ -145,97 +161,101 @@ class Questionnaire extends AbstractService
     }
 
     /**
+     * Get Service Dimension
+     * 
      * @return \Application\Service\Dimension
      */
-    public function getServiceDimension()
+    private function getServiceDimension()
     {
         return $this->getServiceLocator()->get('app_service_dimension');
     }
 
     /**
+     * Get Service Submission
+     * 
      * @return \Application\Service\Submission
      */
-    public function getServiceSubmission()
+    private function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
+     * Get Service SubmissionUser
+     * 
      * @return \Application\Service\SubmissionUser
      */
-    public function getServiceSubmissionUser()
+    private function getServiceSubmissionUser()
     {
         return $this->getServiceLocator()->get('app_service_submission_user');
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
-     * @return \Application\Service\ItemProg
-     */
-    public function getServiceItemProg()
-    {
-        return $this->getServiceLocator()->get('app_service_submission');
-    }
-
-    /**
+     * Get Service Question
+     * 
      * @return \Application\Service\Question
      */
-    public function getServiceQuestion()
+    private function getServiceQuestion()
     {
         return $this->getServiceLocator()->get('app_service_question');
     }
 
     /**
+     * Get Service QuestionnaireUser
+     * 
      * @return \Application\Service\QuestionnaireUser
      */
-    public function getServiceQuestionnaireUser()
+    private function getServiceQuestionnaireUser()
     {
         return $this->getServiceLocator()->get('app_service_questionnaire_user');
     }
 
     /**
-     * @return \Application\Service\ItemProgUser
-     */
-    public function getServiceItemProgUser()
-    {
-        return $this->getServiceLocator()->get('app_service_submission_user');
-    }
-
-    /**
+     * Get Service Item
+     * 
      * @return \Application\Service\Item
      */
-    public function getServiceItem()
+    private function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**
+     * Get Service Answer
+     * 
      * @return \Application\Service\Answer
      */
-    public function getServiceAnswer()
+    private function getServiceAnswer()
     {
         return $this->getServiceLocator()->get('app_service_answer');
     }
 
     /**
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
+     * Get Service QuestionnaireQuestion
+     * 
      * @return \Application\Service\QuestionnaireQuestion
      */
-    public function getServiceQuestionnaireQuestion()
+    private function getServiceQuestionnaireQuestion()
     {
         return $this->getServiceLocator()->get('app_service_questionnaire_question');
     }

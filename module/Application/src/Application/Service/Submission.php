@@ -419,6 +419,7 @@ class Submission extends AbstractService
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
         
         $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
+        $ret[ModelItem::CMP_WHITEBOARD] = $this->getServiceWhiteboard()->getList($submission_id);
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         $ret[ModelItem::CMP_CHAT] = $this->getServiceConversation()->getListBySubmission($submission_id, true);
         $ret[ModelItem::CMP_DISCUSSION] = $this->getServiceThread()->getBySubmission($submission_id);
@@ -1014,6 +1015,16 @@ class Submission extends AbstractService
         return $this->getServiceLocator()->get('app_service_pg_user_grade');
     }
 
+    /**
+     * Get Service Whiteboard
+     *
+     * @return \Application\Service\Whiteboard
+     */
+    private function getServiceWhiteboard()
+    {
+        return $this->getServiceLocator()->get('app_service_whiteboard');
+    }
+    
     /**
      *
      * Get Service SubmissionPg

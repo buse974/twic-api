@@ -95,8 +95,6 @@ class Conversation extends AbstractService
             }
         }
         
-        
-        
         if (null !== $text_editors) {
             $this->addTextEditor($conversation_id, $text_editors);
         }
@@ -139,7 +137,7 @@ class Conversation extends AbstractService
             ->setToken($this->getServiceZOpenTok()
             ->getSessionId()), ['id' => $id]) : 0;
     }
-
+    
     /**
      * Get conversation
      *
@@ -154,12 +152,34 @@ class Conversation extends AbstractService
      */
     public function get($id, $has_video = false)
     {
+         /*
+         * @TODO Check que letudiant a le droit 
+         * Check que linstructeur et bien dans le cour
+         * 
+         */
+        $identity = $this->getServiceUser()->getIdentity();
+        if(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles'])) {
+            $res_user = $this->getServiceUser()->getListByConversation($id);
+            $is_present = false;
+            foreach ($res_user as $m_user) {
+                if($m_user->getId()===$identity['id']) {
+                    $is_present=true;
+                    break;
+                }
+            }
+            
+            if(!$is_present) {
+                $this->getServiceConversationUser()->add($id, $identity['id']);
+                $conv['has_joined'] = true;
+            }
+        }
+        
         if ($has_video === true) {
             $this->addVideo($id);
         }
         
         $conv = $this->_get($id)->toArray();
-        
+
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
         if ((! is_array($editors) && $editors->count() > 0) || (is_array($editors) && ! empty($editors))) {
             $conv['editors'] = $editors;

@@ -110,17 +110,21 @@ class ConversationUser extends AbstractService
     }
 
     /**
+     * Get Service Conversation
+     * 
      * @return \Application\Service\Conversation
      */
-    public function getServiceConversation()
+    private function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
