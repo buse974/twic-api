@@ -145,7 +145,6 @@ class Submission extends AbstractService
      * Get With Item
      * 
      * @param int $submission_id            
-     *
      * @return \Application\Model\Submission
      */
     public function getWithItem($submission_id)

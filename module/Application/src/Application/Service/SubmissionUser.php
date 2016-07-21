@@ -116,12 +116,15 @@ class SubmissionUser extends AbstractService
     public function getListBySubmissionId($submission_id, $user_id = null)
     {
         if(null === $user_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
+            $identity = $this->getServiceUser()->getIdentity();
+            if($identity !== null) {
+                $user_id = $this->getServiceUser()->getIdentity()['id'];
+            }
         }
 
         return $this->getMapper()->getListBySubmissionId($submission_id, $user_id);
     }
-
+    
     /**
      * Get Submission User  By Item
      *

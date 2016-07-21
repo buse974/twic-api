@@ -69,6 +69,10 @@ class User extends AbstractService
     {
         $user = [];
         $identity = $this->getServiceAuth()->getIdentity();
+        if($identity === null) {
+            return null;
+        }
+        
         $id = $identity->getId();
         
         if ($init === false && $this->getCache()->hasItem('identity_' . $id)) {
@@ -111,6 +115,9 @@ class User extends AbstractService
     {
         $user = [];
         $identity = $this->getServiceAuth()->getIdentity();
+        if($identity === null) {
+            return null;
+        }
         $id = $identity->getId();
         
         if ($init === false && $this->getCache()->hasItem('identity_' . $id)) {
