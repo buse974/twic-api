@@ -1,4 +1,4 @@
-ALTER TABLE /`conversation_user` 
+ALTER TABLE `conversation_user` 
 DROP FOREIGN KEY `fk_conversation_user_1`,
 DROP FOREIGN KEY `fk_conversation_user_2`;
 ALTER TABLE `conversation_user` 
