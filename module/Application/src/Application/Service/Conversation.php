@@ -137,7 +137,7 @@ class Conversation extends AbstractService
             ->setToken($this->getServiceZOpenTok()
             ->getSessionId()), ['id' => $id]) : 0;
     }
-    
+
     /**
      * Get conversation
      *
@@ -152,23 +152,23 @@ class Conversation extends AbstractService
      */
     public function get($id, $has_video = false)
     {
-         /*
-         * @TODO Check que letudiant a le droit 
+        /*
+         * @TODO Check que letudiant a le droit
          * Check que linstructeur et bien dans le cour
-         * 
+         *
          */
         $identity = $this->getServiceUser()->getIdentity();
-        if(in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles'])) {
+        if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles'])) {
             $res_user = $this->getServiceUser()->getListByConversation($id);
             $is_present = false;
             foreach ($res_user as $m_user) {
-                if($m_user->getId()===$identity['id']) {
-                    $is_present=true;
+                if ($m_user->getId() === $identity['id']) {
+                    $is_present = true;
                     break;
                 }
             }
             
-            if(!$is_present) {
+            if (! $is_present) {
                 $this->getServiceConversationUser()->add($id, $identity['id']);
                 $conv['has_joined'] = true;
             }
@@ -179,7 +179,7 @@ class Conversation extends AbstractService
         }
         
         $conv = $this->_get($id)->toArray();
-
+        
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
         if ((! is_array($editors) && $editors->count() > 0) || (is_array($editors) && ! empty($editors))) {
             $conv['editors'] = $editors;
@@ -295,17 +295,20 @@ class Conversation extends AbstractService
                 $submission_id = $m_submission->getId();
             }
         } else {
-            if(null !== $item_id) {
-                //on verrifie que item et bien une live classe sinon on peux pas récupérer
-                $m_item = $this->getServiceItem()->get($item_id);
-                if ($m_item->getIsGrouped() == 1) {
-                    throw new \Exception('error get id conversation for instructor');
-                } else {
-                    $submission_id = null;
-                }
-            } else {
-                $item_id = null;
-            }
+            $m_item = ($item_id !== null) ?
+                 $this->getServiceItem()->get($item_id):
+                 $this->getServiceItem()->getBySubmission($submission_id);
+                 if($m_item->getIsGrouped() == 1) {
+                     if($submission_id == null) {
+                         throw new \Exception('error get id conversation for instructor');
+                     }
+                     $item_id = null;
+                 } else {
+                     if($submission_id !== null && $item_id === null) {
+                         $item_id = $m_item->getId();
+                     }
+                     $submission_id = null;
+                 }
         }
         
         $identity = $this->getServiceUser()->getIdentity();
@@ -813,7 +816,7 @@ class Conversation extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_sub_text_editor');
     }
-    
+
     /**
      * Get Service Service TextEditor
      *
@@ -843,7 +846,7 @@ class Conversation extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_sub_whiteboard');
     }
-    
+
     /**
      * Get Service Service Document
      *
@@ -853,7 +856,7 @@ class Conversation extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_document');
     }
-    
+
     /**
      * Get Service Service Whiteboard
      *
