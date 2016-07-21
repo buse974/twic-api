@@ -155,10 +155,10 @@ class Conversation extends AbstractService
         /*
          * @TODO Check que letudiant a le droit
          * Check que linstructeur et bien dans le cour
-         *
          */
+        $has_joined = false;
         $identity = $this->getServiceUser()->getIdentity();
-        if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles'])) {
+        if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
             $res_user = $this->getServiceUser()->getListByConversation($id);
             $is_present = false;
             foreach ($res_user as $m_user) {
@@ -167,10 +167,8 @@ class Conversation extends AbstractService
                     break;
                 }
             }
-            
             if (! $is_present) {
                 $this->getServiceConversationUser()->add($id, $identity['id']);
-                $conv['has_joined'] = true;
             }
         }
         
@@ -180,6 +178,9 @@ class Conversation extends AbstractService
         
         $conv = $this->_get($id)->toArray();
         
+        if($has_joined) {
+            $conv['has_joined'] = true;
+        }
         $editors = $this->getServiceTextEditor()->getListByConversation($id);
         if ((! is_array($editors) && $editors->count() > 0) || (is_array($editors) && ! empty($editors))) {
             $conv['editors'] = $editors;
