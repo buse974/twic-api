@@ -48,7 +48,7 @@ class Conversation extends AbstractService
         }
         if (null !== $submission_id && null === $item_id) {
             $item_id = $this->getServiceSubmission()
-                ->getBySubmission($submission_id)
+                ->getBySubmission(is_array($submission_id) ? reset($submission_id): $submission_id)
                 ->getItemId();
         }
         
@@ -79,19 +79,23 @@ class Conversation extends AbstractService
             $this->getServiceConversationUser()->add($conversation_id, $users);
         }
         if (null !== $submission_id) {
-            $this->getServiceSubConversation()->add($conversation_id, $submission_id);
-            
-            $res_sub_text_editor = $this->getServiceSubTextEditor()->getList($submission_id);
-            foreach ($res_sub_text_editor as $m_sub_text_editor) {
-                $text_editors[] = $m_sub_text_editor->getTextEditorId();
+            if(!is_array($submission_id)) {
+                $submission_id = [$submission_id];
             }
-            $res_sub_whiteboard = $this->getServiceSubWhiteboard()->getList($submission_id);
-            foreach ($res_sub_whiteboard as $m_sub_whiteboard) {
-                $whiteboards[] = $m_sub_whiteboard->getWhiteboardId();
-            }
-            $res_sub_document = $this->getServiceDocument()->getListBySubmission($submission_id);
-            foreach ($res_sub_document as $m_sub_document) {
-                $documents[] = $m_sub_document->getLibraryId();
+            foreach ($submission_id as $s) {
+                $this->getServiceSubConversation()->add($conversation_id, $s);
+                $res_sub_text_editor = $this->getServiceSubTextEditor()->getList($s);
+                foreach ($res_sub_text_editor as $m_sub_text_editor) {
+                    $text_editors[] = $m_sub_text_editor->getTextEditorId();
+                }
+                $res_sub_whiteboard = $this->getServiceSubWhiteboard()->getList($s);
+                foreach ($res_sub_whiteboard as $m_sub_whiteboard) {
+                    $whiteboards[] = $m_sub_whiteboard->getWhiteboardId();
+                }
+                $res_sub_document = $this->getServiceDocument()->getListBySubmission($s);
+                foreach ($res_sub_document as $m_sub_document) {
+                    $documents[] = $m_sub_document->getLibraryId();
+                }
             }
         }
         
@@ -345,11 +349,13 @@ class Conversation extends AbstractService
             }
             
             $u = [];
+            $s = [];
             foreach ($res_submission_user as $m_submission_user) {
                 $u[] = $m_submission_user->getUserId();
+                $s[] = $m_submission_user->getSubmissionId();
             }
             
-            $id = $this->create(ModelConversation::TYPE_VIDEOCONF, $submission_id, $u, null, $item_id, null, null, null, true);
+            $id = $this->create(ModelConversation::TYPE_VIDEOCONF, array_unique($s), $u, null, $item_id, null, null, null, true);
         } else {
             $id = $res_conversation->current()->getId();
         }
