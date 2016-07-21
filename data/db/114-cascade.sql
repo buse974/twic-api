@@ -13,3 +13,12 @@ ADD CONSTRAINT `fk_conversation_doc_2`
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
 
+ALTER TABLE `bank_question` 
+DROP FOREIGN KEY `fk_bank_question_11`;
+ALTER TABLE `bank_question` 
+ADD CONSTRAINT `fk_bank_question_11`
+  FOREIGN KEY (`course_id`)
+  REFERENCES `course` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;
+
