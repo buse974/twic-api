@@ -321,7 +321,7 @@ class Conversation extends AbstractService
             }
             
             // pour linstrucvtor on soit un item soit une submission
-            if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles'])) {
+            if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
                 // si item donc forcement liveclass on récupere tt les user de litem
                 if (null !== $item_id) {
                     $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);

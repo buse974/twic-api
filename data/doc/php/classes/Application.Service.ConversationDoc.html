@@ -120,24 +120,18 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add relation conversation document">
+            <span class="description">Add relation conversation document</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_delete" title="delete :: ">
-            <span class="description"></span><pre>delete</pre>
+        <a href="#method_delete" title="delete :: Delete relation conversation document">
+            <span class="description">Delete relation conversation document</span><pre>delete</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceLibrary" title="getServiceLibrary :: ">
-            <span class="description"></span><pre>getServiceLibrary</pre>
-        </a>
-    </li>
-
-                                                </ul>
+                                                                                                        </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -145,7 +139,12 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                    <li class="method private">
+                            <a href="#method_getServiceLibrary" title="getServiceLibrary :: Get Service Library">
+                                <span class="description">Get Service Library</span><pre>getServiceLibrary</pre>
+                            </a>
+                        </li>
+                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -183,8 +182,8 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add( $conversation_id,  $library_id) </pre>
+                            <h2>Add relation conversation document</h2>
+                            <pre>add(integer $conversation_id, integer $library_id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -194,40 +193,28 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$conversation_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$library_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
-                            <h2>delete</h2>
-                            <pre>delete( $library_id) </pre>
+                            <h2>Delete relation conversation document</h2>
+                            <pre>delete(integer $library_id) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -244,19 +231,12 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$library_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -264,8 +244,8 @@
 
                         </div>
                                             <a id="method_getServiceLibrary"></a>
-                        <div class="element clickable method public  method_getServiceLibrary" data-toggle="collapse" data-target=".method_getServiceLibrary .collapse">
-                            <h2>getServiceLibrary</h2>
+                        <div class="element clickable method private  method_getServiceLibrary" data-toggle="collapse" data-target=".method_getServiceLibrary .collapse">
+                            <h2>Get Service Library</h2>
                             <pre>getServiceLibrary() : \Application\Service\Library</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -314,7 +294,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 21 Jul 2016 13:41:44 +0200.<br/>
+            generated on Thu, 21 Jul 2016 13:51:56 +0200.<br/>
     </footer>
     </body>
 </html>
