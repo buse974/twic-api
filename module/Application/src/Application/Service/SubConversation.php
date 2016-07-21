@@ -26,4 +26,15 @@ class SubConversation extends AbstractService
     {
         return $this->getMapper()->insert($this->getModel()->setConversationId($conversation_id)->setSubmissionId($submission_id));
     }
+    
+    /**
+     * Get List Conversation
+     * 
+     * @param int $conversation_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getList($conversation_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setConversationId($conversation_id));
+    }
 }

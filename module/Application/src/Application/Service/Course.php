@@ -218,41 +218,51 @@ class Course extends AbstractService
     }
 
     /**
+     * Get Service Grading
+     * 
      * @return \Application\Service\Grading
      */
-    public function getServiceGrading()
+    private function getServiceGrading()
     {
         return $this->getServiceLocator()->get('app_service_grading');
     }
 
     /**
+     * Get Service Item
+     * 
      * @return \Application\Service\Item
      */
-    public function getServiceItem()
+    private function getServiceItem()
     {
         return $this->getServiceLocator()->get('app_service_item');
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
 
     /**
+     * Get Service GradingPolicy
+     * 
      * @return \Application\Service\GradingPolicy
      */
-    public function getServiceGradingPolicy()
+    private function getServiceGradingPolicy()
     {
         return $this->getServiceLocator()->get('app_service_grading_policy');
     }
 
     /**
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }

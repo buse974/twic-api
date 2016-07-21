@@ -80,7 +80,23 @@ class Conversation extends AbstractService
         }
         if (null !== $submission_id) {
             $this->getServiceSubConversation()->add($conversation_id, $submission_id);
+            
+            $res_sub_text_editor = $this->getServiceSubTextEditor()->getList($submission_id);
+            foreach ($res_sub_text_editor as $m_sub_text_editor) {
+                $text_editors[] = $m_sub_text_editor->getTextEditorId();
+            }
+            $res_sub_whiteboard = $this->getServiceSubWhiteboard()->getList($submission_id);
+            foreach ($res_sub_whiteboard as $m_sub_whiteboard) {
+                $whiteboards[] = $m_sub_whiteboard->getWhiteboardId();
+            }
+            $res_sub_document = $this->getServiceDocument()->getListBySubmission($submission_id);
+            foreach ($res_sub_document as $m_sub_document) {
+                $documents[] = $m_sub_document->getLibraryId();
+            }
         }
+        
+        
+        
         if (null !== $text_editors) {
             $this->addTextEditor($conversation_id, $text_editors);
         }
@@ -252,11 +268,11 @@ class Conversation extends AbstractService
             } else {
                 // on verifie et récupére la submisiion de létudiant
                 // si il en a pas on le vire
-                $res_submission = $this->getServiceSubmission()->getByItem($item_id, $user_id);
-                if ($res_submission->count() <= 0) {
+                $m_submission = $this->getServiceSubmission()->getByItem($item_id, $user_id);
+                if ($m_submission === null) {
                     throw new \Exception('item ' . $item_id . ' for user ' . $user_id . ' not exist');
                 }
-                $submission_id = $res_submission->getId();
+                $submission_id = $m_submission->getId();
             }
         } elseif(null !== $item_id && null === $submission_id) {
             //on verrifie que item et bien une live classe sinon on peux pas récupérer
@@ -360,6 +376,7 @@ class Conversation extends AbstractService
      */
     public function addTextEditor($conversation, $text_editors)
     {
+        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
         $is_multi = true;
         
         if (! is_array($text_editors) || isset($text_editors['name'])) {
@@ -374,6 +391,9 @@ class Conversation extends AbstractService
             $ret[] = $text_editor;
             if (is_numeric($text_editor)) {
                 $this->getServiceConversationTextEditor()->add($conversation, $text_editor);
+                foreach ($res_sub_conversation as $m_sub_conversation) {
+                    $this->getServiceSubTextEditor()->add($m_sub_conversation->getSubmissionId(), $text_editor);
+                }
             }
         }
         
@@ -390,6 +410,7 @@ class Conversation extends AbstractService
      */
     public function addWhiteboard($conversation, $whiteboards)
     {
+        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
         $is_multi = true;
         
         if (! is_array($whiteboards) || isset($whiteboards['name'])) {
@@ -404,6 +425,9 @@ class Conversation extends AbstractService
             $ret[] = $whiteboard;
             if (is_numeric($whiteboard)) {
                 $this->getServiceConversationWhiteboard()->add($conversation, $whiteboard);
+                foreach ($res_sub_conversation as $m_sub_conversation) {
+                    $this->getServiceSubWhiteboard()->add($m_sub_conversation->getSubmissionId(), $whiteboard);
+                }
             }
         }
         
@@ -421,6 +445,7 @@ class Conversation extends AbstractService
      */
     public function addDocument($conversation, $documents)
     {
+        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
         $is_multi = true;
         
         if (! is_array($documents) || isset($documents['name'])) {
@@ -437,6 +462,9 @@ class Conversation extends AbstractService
             $ret[] = $document;
             if (is_numeric($document)) {
                 $this->getServiceConversationDoc()->add($conversation, $document);
+                foreach ($res_sub_conversation as $m_sub_conversation) {
+                    $this->getServiceDocument()->addRelation($m_sub_conversation->getSubmissionId(), $document);
+                }
             }
         }
         
@@ -508,7 +536,7 @@ class Conversation extends AbstractService
             ->getList($id, []));
         $conv->setUsers($this->getServiceUser()
             ->getListByConversation($id)
-            ->toArray(array('id')));
+            ->toArray(['id']));
         
         return $conv;
     }
@@ -751,6 +779,16 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Get Service Service SubTextEditor
+     *
+     * @return \Application\Service\SubTextEditor
+     */
+    private function getServiceSubTextEditor()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_text_editor');
+    }
+    
+    /**
      * Get Service Service TextEditor
      *
      * @return \Application\Service\TextEditor
@@ -770,6 +808,26 @@ class Conversation extends AbstractService
         return $this->getServiceLocator()->get('app_service_conversation_whiteboard');
     }
 
+    /**
+     * Get Service Service SubWhiteboard
+     *
+     * @return \Application\Service\SubWhiteboard
+     */
+    private function getServiceSubWhiteboard()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_whiteboard');
+    }
+    
+    /**
+     * Get Service Service Document
+     *
+     * @return \Application\Service\Document
+     */
+    private function getServiceDocument()
+    {
+        return $this->getServiceLocator()->get('app_service_document');
+    }
+    
     /**
      * Get Service Service Whiteboard
      *

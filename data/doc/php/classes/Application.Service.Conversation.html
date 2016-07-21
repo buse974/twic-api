@@ -215,7 +215,7 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
         <a href="#method_join" title="join :: Joindre conversation.">
             <span class="description">Joindre conversation.</span><pre>join</pre>
         </a>
@@ -255,7 +255,7 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
@@ -282,6 +282,11 @@
                                                                                 <li class="method private">
                             <a href="#method_getServiceConversationWhiteboard" title="getServiceConversationWhiteboard :: Get Service Service Conversation Whiteboard">
                                 <span class="description">Get Service Service Conversation Whiteboard</span><pre>getServiceConversationWhiteboard</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceDocument" title="getServiceDocument :: Get Service Service Document">
+                                <span class="description">Get Service Service Document</span><pre>getServiceDocument</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -312,6 +317,21 @@
                                                                                 <li class="method private">
                             <a href="#method_getServiceSubmission" title="getServiceSubmission :: Get Service Service Submission">
                                 <span class="description">Get Service Service Submission</span><pre>getServiceSubmission</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceSubmissionUser" title="getServiceSubmissionUser :: Get Service Service SubmissionUser">
+                                <span class="description">Get Service Service SubmissionUser</span><pre>getServiceSubmissionUser</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceSubTextEditor" title="getServiceSubTextEditor :: Get Service Service SubTextEditor">
+                                <span class="description">Get Service Service SubTextEditor</span><pre>getServiceSubTextEditor</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceSubWhiteboard" title="getServiceSubWhiteboard :: Get Service Service SubWhiteboard">
+                                <span class="description">Get Service Service SubWhiteboard</span><pre>getServiceSubWhiteboard</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -818,7 +838,7 @@ if $has_video true add Video if not exist.</p></div>
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"><p>Get conversation id, By submission and/or item id
-of current user school</p></div>
+of current user school If not exist create</p></div>
 
                                     <table class="table">
                                                                                     <tr>
@@ -1154,6 +1174,35 @@ of current user school</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_getServiceDocument"></a>
+                        <div class="element clickable method private  method_getServiceDocument" data-toggle="collapse" data-target=".method_getServiceDocument .collapse">
+                            <h2>Get Service Service Document</h2>
+                            <pre>getServiceDocument() : \Application\Service\Document</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Document.html">\Application\Service\Document</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getServiceItem"></a>
                         <div class="element clickable method private  method_getServiceItem" data-toggle="collapse" data-target=".method_getServiceItem .collapse">
                             <h2>Get Service Service Item</h2>
@@ -1324,6 +1373,93 @@ of current user school</p></div>
                                     
                                                                             <h3>Response</h3>
                                         <code><a href="../classes/Application.Service.Submission.html">\Application\Service\Submission</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceSubmissionUser"></a>
+                        <div class="element clickable method private  method_getServiceSubmissionUser" data-toggle="collapse" data-target=".method_getServiceSubmissionUser .collapse">
+                            <h2>Get Service Service SubmissionUser</h2>
+                            <pre>getServiceSubmissionUser() : \Application\Service\SubmissionUser</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.SubmissionUser.html">\Application\Service\SubmissionUser</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceSubTextEditor"></a>
+                        <div class="element clickable method private  method_getServiceSubTextEditor" data-toggle="collapse" data-target=".method_getServiceSubTextEditor .collapse">
+                            <h2>Get Service Service SubTextEditor</h2>
+                            <pre>getServiceSubTextEditor() : \Application\Service\SubTextEditor</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.SubTextEditor.html">\Application\Service\SubTextEditor</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceSubWhiteboard"></a>
+                        <div class="element clickable method private  method_getServiceSubWhiteboard" data-toggle="collapse" data-target=".method_getServiceSubWhiteboard .collapse">
+                            <h2>Get Service Service SubWhiteboard</h2>
+                            <pre>getServiceSubWhiteboard() : \Application\Service\SubWhiteboard</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.SubWhiteboard.html">\Application\Service\SubWhiteboard</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -1682,7 +1818,7 @@ of current user school</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 20 Jul 2016 09:39:46 +0200.<br/>
+            generated on Thu, 21 Jul 2016 10:45:30 +0200.<br/>
     </footer>
     </body>
 </html>

@@ -510,16 +510,15 @@ class User extends AbstractMapper
     }
 
     /**
-     * @param int $conversation
-     *
+     * @param int $conversation_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListByConversation($conversation)
+    public function getListByConversation($conversation_id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
-            ->join('conversation_user', 'conversation_user.user_id = user.id', array())
-            ->where(array('conversation_user.conversation_id' => $conversation));
+            ->join('conversation_user', 'conversation_user.user_id = user.id', [])
+            ->where(array('conversation_user.conversation_id' => $conversation_id));
 
         return $this->selectWith($select);
     }

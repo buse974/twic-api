@@ -97,7 +97,7 @@ class MessageUser extends AbstractService
         
         $list->rewind();
         
-        return array('list' => $list,'count' => $mapper->count());
+        return ['list' => $list,'count' => $mapper->count()];
     }
 
     /**
