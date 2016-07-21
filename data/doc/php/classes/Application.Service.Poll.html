@@ -126,62 +126,44 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_addOrUpdate" title="addOrUpdate :: ">
-            <span class="description"></span><pre>addOrUpdate</pre>
+        <a href="#method_addOrUpdate" title="addOrUpdate :: Add/Update Poll">
+            <span class="description">Add/Update Poll</span><pre>addOrUpdate</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_delete" title="delete :: ">
-            <span class="description"></span><pre>delete</pre>
+        <a href="#method_delete" title="delete :: Delete Poll">
+            <span class="description">Delete Poll</span><pre>delete</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Poll">
+            <span class="description">Get Poll</span><pre>get</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getByItem" title="getByItem :: ">
-            <span class="description"></span><pre>getByItem</pre>
+        <a href="#method_getByItem" title="getByItem :: Get By Item">
+            <span class="description">Get By Item</span><pre>getByItem</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getLite" title="getLite :: ">
-            <span class="description"></span><pre>getLite</pre>
+        <a href="#method_getLite" title="getLite :: Get Lite">
+            <span class="description">Get Lite</span><pre>getLite</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getLiteByItem" title="getLiteByItem :: ">
-            <span class="description"></span><pre>getLiteByItem</pre>
+        <a href="#method_getLiteByItem" title="getLiteByItem :: Get Lite By Item">
+            <span class="description">Get Lite By Item</span><pre>getLiteByItem</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServicePollAnswer" title="getServicePollAnswer :: ">
-            <span class="description"></span><pre>getServicePollAnswer</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServicePollItem" title="getServicePollItem :: ">
-            <span class="description"></span><pre>getServicePollItem</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_update" title="update :: update poll.">
-            <span class="description">update poll.</span><pre>update</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_vote" title="vote :: ">
-            <span class="description"></span><pre>vote</pre>
+                                                                                                                                                                <li class="method public">
+        <a href="#method_update" title="update :: update poll">
+            <span class="description">update poll</span><pre>update</pre>
         </a>
     </li>
 
@@ -189,11 +171,16 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                        <li class="method private">
+                            <a href="#method_getServicePollItem" title="getServicePollItem :: Get Servie PollItem">
+                                <span class="description">Get Servie PollItem</span><pre>getServicePollItem</pre>
+                            </a>
+                        </li>
+                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -297,8 +284,8 @@
                         </div>
                                             <a id="method_addOrUpdate"></a>
                         <div class="element clickable method public  method_addOrUpdate" data-toggle="collapse" data-target=".method_addOrUpdate .collapse">
-                            <h2>addOrUpdate</h2>
-                            <pre>addOrUpdate(integer $item_id,  $title = null,  $poll_item = null,  $expiration = null,  $time_limit = null) </pre>
+                            <h2>Add/Update Poll</h2>
+                            <pre>addOrUpdate(integer $item_id, string $title = null, integer $poll_item = null, string $expiration = null, integer $time_limit = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -308,13 +295,6 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -324,29 +304,31 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$title</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$poll_item</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$expiration</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$time_limit</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
-                            <h2>delete</h2>
-                            <pre>delete(integer $id) </pre>
+                            <h2>Delete Poll</h2>
+                            <pre>delete(integer $id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -365,13 +347,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -380,14 +355,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
-                            <pre>get(integer $id) </pre>
+                            <h2>Get Poll</h2>
+                            <pre>get(integer $id) : \Application\Model\Poll</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -415,13 +392,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -430,14 +400,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Application\Model\Poll</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getByItem"></a>
                         <div class="element clickable method public  method_getByItem" data-toggle="collapse" data-target=".method_getByItem .collapse">
-                            <h2>getByItem</h2>
-                            <pre>getByItem( $item_id) </pre>
+                            <h2>Get By Item</h2>
+                            <pre>getByItem(integer $item_id) : \Application\Model\Poll</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -447,35 +419,23 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$item_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Application\Model\Poll</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getLite"></a>
                         <div class="element clickable method public  method_getLite" data-toggle="collapse" data-target=".method_getLite .collapse">
-                            <h2>getLite</h2>
+                            <h2>Get Lite</h2>
                             <pre>getLite(integer $id) : null|\Application\Model\Poll</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -502,8 +462,8 @@
                         </div>
                                             <a id="method_getLiteByItem"></a>
                         <div class="element clickable method public  method_getLiteByItem" data-toggle="collapse" data-target=".method_getLiteByItem .collapse">
-                            <h2>getLiteByItem</h2>
-                            <pre>getLiteByItem(integer $item_id) : null|\Application\Model\Poll</pre>
+                            <h2>Get Lite By Item</h2>
+                            <pre>getLiteByItem(integer $item_id) : \Application\Model\Poll</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -522,43 +482,14 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>null|\Application\Model\Poll</code><p></p>
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_getServicePollAnswer"></a>
-                        <div class="element clickable method public  method_getServicePollAnswer" data-toggle="collapse" data-target=".method_getServicePollAnswer .collapse">
-                            <h2>getServicePollAnswer</h2>
-                            <pre>getServicePollAnswer() : \Application\Service\PollAnswer</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                    
-                                                                            <h3>Response</h3>
-                                        <code>\Application\Service\PollAnswer</code><p></p>
+                                        <code>\Application\Model\Poll</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getServicePollItem"></a>
-                        <div class="element clickable method public  method_getServicePollItem" data-toggle="collapse" data-target=".method_getServicePollItem .collapse">
-                            <h2>getServicePollItem</h2>
+                        <div class="element clickable method private  method_getServicePollItem" data-toggle="collapse" data-target=".method_getServicePollItem .collapse">
+                            <h2>Get Servie PollItem</h2>
                             <pre>getServicePollItem() : \Application\Service\PollItem</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -587,8 +518,8 @@
                         </div>
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
-                            <h2>update poll.</h2>
-                            <pre>update(\Application\Service\intger $id, string $title = null, integer $poll_item = null, integer $expiration = null, integer $time_limit = null, integer $item_id = null) </pre>
+                            <h2>update poll</h2>
+                            <pre>update(integer $id, string $title = null, integer $poll_item = null, integer $expiration = null, integer $time_limit = null, integer $item_id = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -607,19 +538,12 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code>\Application\Service\intger</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$title</h4>
@@ -642,55 +566,8 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_vote"></a>
-                        <div class="element clickable method public  method_vote" data-toggle="collapse" data-target=".method_vote .collapse">
-                            <h2>vote</h2>
-                            <pre>vote(integer $poll, integer $poll_question, array $items) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    invokable
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$poll</h4>
-                                                <code>integer</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$poll_question</h4>
-                                                <code>integer</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$items</h4>
-                                                <code>array</code><p></p>
-                                            </div>
-                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
@@ -717,7 +594,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 21 Jul 2016 16:52:11 +0200.<br/>
+            generated on Thu, 21 Jul 2016 17:48:20 +0200.<br/>
     </footer>
     </body>
 </html>

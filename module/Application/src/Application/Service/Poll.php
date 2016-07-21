@@ -17,21 +17,14 @@ class Poll extends AbstractService
 {
 
     /**
-     *
-     * @param int $item_id            
-     * @param bool $record            
-     * @param int $nb_user_autorecord            
-     * @param bool $allow_intructor            
-     */
-    
-    /**
-     *
+     * Add/Update Poll
+     * 
      * @param int $item_id            
      * @param string $title            
      * @param int $poll_item            
-     * @param int $expiration            
+     * @param string $expiration            
      * @param int $time_limit            
-     * @return number
+     * @return int
      */
     public function addOrUpdate($item_id, $title = null, $poll_item = null, $expiration = null, $time_limit = null)
     {
