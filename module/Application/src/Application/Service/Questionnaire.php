@@ -43,7 +43,7 @@ class Questionnaire extends AbstractService
     public function getByItem($item)
     {
         $m_item = $this->getServiceItem()->get($item);
-        if ($m_item->getType() !== CI::TYPE_WORKGROUP && $m_item->getType() !== CI::TYPE_EQCQ) {
+        if ($m_item->getType() !== CI::TYPE_HANGOUT && $m_item->getType() !== CI::TYPE_EQCQ) {
             throw new  \Exception('No Workgroup');
         }
 
