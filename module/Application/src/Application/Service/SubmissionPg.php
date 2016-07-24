@@ -16,33 +16,62 @@ use Dal\Service\AbstractService;
  */
 class SubmissionPg extends AbstractService
 {
-    public function add($submission, $users)
+    /**
+     * Add Submission Speed Grader
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return number
+     */
+    public function add($submission_id, $user_id)
     {
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
-        return  $this->getMapper()->insert($this->getModel()->setUserId($users)->setSubmissionId($submission)->setDate($date));
-    }
-
-    public function delete($submission, $users)
-    {
-        return  $this->getMapper()->delete($this->getModel()->setUserId($user)->setSubmissionId($submission));
+        return  $this->getMapper()->insert($this->getModel()->setUserId($user_id)->setSubmissionId($submission_id)->setDate($date));
     }
 
     /**
+     * Delete Submission Speed Grader
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return int
+     */
+    public function delete($submission_id, $user_id)
+    {
+        return  $this->getMapper()->delete($this->getModel()->setUserId($user_id)->setSubmissionId($submission_id));
+    }
+
+    /**
+     * Get List Submission Speed Grader
+     * 
      * @invokable
      * 
      * @param int $item_id
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item_id)
     {
         return  $this->getMapper()->getListByItem($item_id);
     }
 
+    /**
+     * Get List
+     * 
+     * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListBySubmission($submission_id)
     {
         return  $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
     }
     
+    /**
+     * Delete By Item
+     * 
+     * @param int $item_id
+     * @return boolean
+     */
     public function deleteByItem($item_id)
     {
         $res_submission = $this->getServiceSubmission()->getList($item_id);
@@ -54,12 +83,26 @@ class SubmissionPg extends AbstractService
         return true;
     }
 
-    public function checkGraded($submission, $user)
+    /**
+     * Check Grader
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return int
+     */
+    public function checkGraded($submission_id, $user_id)
     {
         return  $this->getMapper()->checkGraded($submission, $user);
     }
 
-    public function replace($submission, $users)
+    /**
+     * Replace submission peer grader
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return int
+     */
+    public function replace($submission_id, $user_id)
     {
         $this->getMapper()->deleteNotIn($submission, $users);
         foreach ($users as $u) {
@@ -70,6 +113,8 @@ class SubmissionPg extends AbstractService
     }
 
     /**
+     * Auto Assign peer 
+     * 
      * @invokable
      * 
      * @param int $item_id
@@ -99,12 +144,20 @@ class SubmissionPg extends AbstractService
         }
         $nb = $m_opt_grading->getPgNb();
         while (($final = $this->_autoAssign($ar_u, $ar_s, $nb)) === false);
-
         foreach ($final as $s => $u) {
             $this->replace($s, $u);
         }
     }
 
+    /**
+     * Auto Assign peer (while === false)
+     * 
+     * @param array $ar_u
+     * @param array $ar_s
+     * @param int $nb
+     * 
+     * @return array
+     */
     public function _autoAssign($ar_u, $ar_s, $nb)
     {
         $nbu = count($ar_u);
@@ -168,17 +221,21 @@ class SubmissionPg extends AbstractService
     }
 
     /**
+     * Get Service Submission
+     * 
      * @return \Application\Service\Submission
      */
-    public function getServiceSubmission()
+    private function getServiceSubmission()
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
 
     /**
+     * Get Service OptGrading
+     * 
      * @return \Application\Service\OptGrading
      */
-    public function getServiceOptGrading()
+    private function getServiceOptGrading()
     {
         return $this->getServiceLocator()->get('app_service_opt_grading');
     }

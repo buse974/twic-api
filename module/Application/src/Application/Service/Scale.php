@@ -16,11 +16,12 @@ use Dal\Service\AbstractService;
 class Scale extends AbstractService
 {
     /**
+     * Add Scale
+     * 
      * @invokable
      *
      * @param string $name
      * @param string $value
-     *
      * @return int
      */
     public function add($name, $value)
@@ -35,10 +36,11 @@ class Scale extends AbstractService
     }
 
     /**
+     * Delete Scale
+     * 
      * @invokable
      *
      * @param int $id
-     *
      * @return int
      */
     public function delete($id)
@@ -48,12 +50,13 @@ class Scale extends AbstractService
     }
 
     /**
+     * Update Scale
+     * 
      * @invokable
      *
      * @param int    $id
      * @param string $name
      * @param string $value
-     *
      * @return int
      */
     public function update($id, $name, $value)
@@ -65,9 +68,11 @@ class Scale extends AbstractService
     }
 
     /**
+     * Get List Scale
+     * 
      * @invokable
-     *
      * @param array $filter
+     * @return array|\Dal\Db\ResultSet\ResultSet
      */
     public function getList($filter = null)
     {

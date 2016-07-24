@@ -15,23 +15,36 @@ use Dal\Service\AbstractService;
  */
 class UserRole extends AbstractService
 {
-    public function add($role, $user)
+
+    /**
+     * Add a Role to User
+     *
+     * @param int $role_id            
+     * @param int $user_id            
+     * @throws \Exception
+     * @return boolean
+     */
+    public function add($role_id, $user_id)
     {
         $m_user_role = $this->getModel();
-        $m_user_role->setRoleId($role)
-                    ->setUserId($user);
-
+        $m_user_role->setRoleId($role_id)->setUserId($user_id);
+        
         if ($this->getMapper()->insert($m_user_role) <= 0) {
             throw new \Exception('error insert');
         }
-
+        
         return true;
     }
 
-    public function deleteByUser($id)
+    /**
+     * Delete Role to User
+     *
+     * @param int $user_id            
+     * @return boolean
+     */
+    public function deleteByUser($user_id)
     {
-        $m_user_role = $this->getModel()->setUserId($id);
-
-        return $this->getMapper()->delete($m_user_role);
+        return $this->getMapper()->delete($this->getModel()
+            ->setUserId($user_id));
     }
 }

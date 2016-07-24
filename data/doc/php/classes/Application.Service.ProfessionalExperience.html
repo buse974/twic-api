@@ -131,13 +131,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceAuth" title="getServiceAuth :: ">
-            <span class="description"></span><pre>getServiceAuth</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
+                                                                                                                                                                <li class="method public">
         <a href="#method_update" title="update :: Update education experience.">
             <span class="description">Update education experience.</span><pre>update</pre>
         </a>
@@ -151,7 +145,12 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                            </ul>
+                                                                                                                                                    <li class="method private">
+                            <a href="#method_getServicUser" title="getServicUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServicUser</pre>
+                            </a>
+                        </li>
+                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -190,7 +189,7 @@
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Add education experience.</h2>
-                            <pre>add(\Application\Service\unknown $date, \Application\Service\unknown $address, \Application\Service\unknown $logo, \Application\Service\unknown $title, \Application\Service\unknown $description) : integer</pre>
+                            <pre>add(string $date, string $address, string $logo, string $title, string $description) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -214,23 +213,23 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$date</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$address</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$logo</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$title</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$description</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -275,10 +274,10 @@
                             </div>
 
                         </div>
-                                            <a id="method_getServiceAuth"></a>
-                        <div class="element clickable method public  method_getServiceAuth" data-toggle="collapse" data-target=".method_getServiceAuth .collapse">
-                            <h2>getServiceAuth</h2>
-                            <pre>getServiceAuth() : \Auth\Service\AuthService</pre>
+                                            <a id="method_getServicUser"></a>
+                        <div class="element clickable method private  method_getServicUser" data-toggle="collapse" data-target=".method_getServicUser .collapse">
+                            <h2>Get Service User</h2>
+                            <pre>getServicUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -299,7 +298,7 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code>\Auth\Service\AuthService</code><p></p>
+                                        <code><a href="../classes/Application.Service.User.html">\Application\Service\User</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -307,7 +306,7 @@
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
                             <h2>Update education experience.</h2>
-                            <pre>update(\Application\Service\unknown $id, \Application\Service\unknown $date, \Application\Service\unknown $address, \Application\Service\unknown $logo, \Application\Service\unknown $title, \Application\Service\unknown $description) : integer</pre>
+                            <pre>update(integer $id, string $date, string $address, string $logo, string $title, string $description) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -331,27 +330,27 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$date</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$address</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$logo</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$title</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$description</h4>
-                                                <code>\Application\Service\unknown</code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -382,7 +381,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 21 Jul 2016 18:15:32 +0200.<br/>
+            generated on Sun, 24 Jul 2016 23:44:28 +0200.<br/>
     </footer>
     </body>
 </html>

@@ -17,6 +17,14 @@ use Zend\Db\Sql\Predicate\IsNull;
  */
 class GroupQuestion extends AbstractService
 {
+    /**
+     * Add Group Question
+     * 
+     * @param array $group_question
+     * @param int $nb
+     * @throws \Exception
+     * @return int
+     */
     public function add($group_question, $nb)
     {
         if ($this->getMapper()->insert($this->getModel()->setNb($nb)) <= 0) {
@@ -32,8 +40,9 @@ class GroupQuestion extends AbstractService
     }
 
     /**
+     * Get List Group Question
+     * 
      * @param int $group_question_id
-     *
      * @return \Application\Model\GroupQuestion
      */
     public function getList($group_question_id)
@@ -59,9 +68,11 @@ class GroupQuestion extends AbstractService
     }
 
     /**
+     * Get Service QuestionRelation
+     * 
      * @return \Application\Service\QuestionRelation
      */
-    public function getServiceQuestionRelation()
+    private function getServiceQuestionRelation()
     {
         return $this->getServiceLocator()->get('app_service_question_relation');
     }

@@ -6,7 +6,6 @@
  * Role
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -17,15 +16,14 @@ use Application\Model\Role as ModelRole;
  */
 class Role extends AbstractService
 {
+
     /**
-     * add role.
+     * add role
      *
      * @invokable
      *
-     * @param string $name
-     *
+     * @param string $name            
      * @throws \Exception
-     *
      * @return int
      */
     public function add($name)
@@ -34,36 +32,34 @@ class Role extends AbstractService
             ->setName($name)) <= 0) {
             throw new \Exception('error insert');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Update Role.
+     * Update Role
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $name
-     *
+     * @param int $id            
+     * @param string $name            
      * @return int
      */
     public function update($id, $name)
     {
         $m_role = $this->getModel();
-
+        
         $m_role->setId($id)->setName($name);
-
+        
         return $this->getMapper()->update($m_role);
     }
 
     /**
-     * Delete Role by ID.
+     * Delete Role by ID
      *
      * @invokable
      *
-     * @param int $id
-     *
+     * @param int $id            
      * @return int
      */
     public function delete($id)
@@ -77,10 +73,9 @@ class Role extends AbstractService
      *
      * @invokable
      *
-     * @param int $role
-     * @param int $user
-     *
-     * @return bool
+     * @param int $role            
+     * @param int $user            
+     * @return int
      */
     public function addUser($role, $user)
     {
@@ -88,35 +83,49 @@ class Role extends AbstractService
     }
 
     /**
+     * Get Role By User Id
+     *
+     * @param int $id            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getRoleByUser($id = null)
+    public function getRoleByUser($user_id = null)
     {
-        if ($id === null) {
-            $id = $this->getServiceAuth()
+        if ($user_id === null) {
+            $user_id = $this->getServiceAuth()
                 ->getIdentity()
                 ->getId();
         }
-
-        return $this->getMapper()->getRoleByUser($id);
+        
+        return $this->getMapper()->getRoleByUser($user_id);
     }
 
+    /**
+     * Get Id By Name
+     *
+     * @param string $namerole            
+     * @return stirng
+     */
     public function getIdByName($namerole)
     {
         return array_search($namerole, ModelRole::$role);
     }
 
     /**
+     * Get Service UserRole
+     *
      * @return \Application\Service\UserRole
      */
-    public function getServiceUserRole()
+    private function getServiceUserRole()
     {
         return $this->getServiceLocator()->get('app_service_user_role');
     }
 
     /**
+     * Get Service Auth
+     *
      * @return \Zend\Authentication\AuthenticationService
      */
-    public function getServiceAuth()
+    private function getServiceAuth()
     {
         return $this->getServiceLocator()->get('auth.service');
     }

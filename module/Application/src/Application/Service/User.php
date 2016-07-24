@@ -140,8 +140,9 @@ class User extends AbstractService
      * Get Identity
      *
      * @invokable
-     *
-     * @param bool $init            
+     * 
+     * @param bool $init
+     * @param bool $external
      * @return array
      */
     public function getIdentity($init = false, $external = false)
@@ -849,7 +850,7 @@ class User extends AbstractService
     }
 
     /**
-     * Add language to user.
+     * Add language to user
      *
      * @invokable
      *
@@ -865,9 +866,12 @@ class User extends AbstractService
     }
 
     /**
+     * Get List Pair Graders
+     * 
      * @invokable
      *
-     * @param int $submission_id            
+     * @param int $submission_id    
+     * @return \Dal\Db\ResultSet\ResultSet        
      */
     public function getListPairGraders($submission_id)
     {
@@ -875,8 +879,10 @@ class User extends AbstractService
     }
 
     /**
-     *
-     * @param int $submission_id            
+     * Get List User Submission, Instrutor And Academic
+     * 
+     * @param int $submission_id  
+     * @return \Dal\Db\ResultSet\ResultSet          
      */
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
@@ -884,22 +890,14 @@ class User extends AbstractService
     }
 
     /**
-     *
-     * @param int $submission_id            
+     * Get List 
+     * 
+     * @param int $submission_id   
+     * @return \Dal\Db\ResultSet\ResultSet         
      */
     public function getListBySubmission($submission_id)
     {
         return $this->getMapper()->getListBySubmission($submission_id);
-    }
-
-    /**
-     * @invokable
-     *
-     * @param int $submission            
-     */
-    public function getListByItemProgWithInstrutor($submission)
-    {
-        return $this->getMapper()->getListByItemProgWithInstrutor($submission);
     }
 
     /**

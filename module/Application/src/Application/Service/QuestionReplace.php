@@ -12,7 +12,7 @@ use Dal\Service\AbstractService;
 
 /**
  * 
- * @auClass QuestionReplace
+ * Class QuestionReplace
  */
 class QuestionReplace extends AbstractService
 {

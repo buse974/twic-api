@@ -130,8 +130,8 @@ class Submission extends AbstractMapper
         if (null !== $item_id) {
             $select->where(array('submission.item_id' => $item_id));
         }
-        syslog(1, $this->printSql($select));
-        return $this->selectWith($select);
+        
+	return $this->selectWith($select);
     }
 
     public function getWithItem($submission_id)

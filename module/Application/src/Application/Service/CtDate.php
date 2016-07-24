@@ -6,7 +6,6 @@
  * Contraite Date
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -16,13 +15,15 @@ use Dal\Service\AbstractService;
  */
 class CtDate extends AbstractService
 {
+
     /**
+     * Add Constraint Date
+     *
      * @invokable
      *
-     * @param int    $item_id
-     * @param string $date
-     * @param string $after
-     *
+     * @param int $item_id            
+     * @param string $date            
+     * @param string $after            
      * @return int
      */
     public function add($item_id, $date, $after = true)
@@ -32,17 +33,18 @@ class CtDate extends AbstractService
             ->setDate($date)
             ->setAfter($after);
         $this->getMapper()->insert($m_ct_date);
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
+     * Update Constraint Date
+     *
      * @invokable
      *
-     * @param int    $id
-     * @param string $date
-     * @param string $after
-     *
+     * @param int $id            
+     * @param string $date            
+     * @param string $after            
      * @return int
      */
     public function update($id, $date = null, $after = null)
@@ -51,12 +53,14 @@ class CtDate extends AbstractService
             ->setId($id)
             ->setDate($date)
             ->setAfter($after);
-
+        
         return $this->getMapper()->update($m_ct_date);
     }
 
     /**
-     * @param int $item_id
+     * Get Constraint Date
+     *
+     * @param int $item_id            
      */
     public function get($item_id)
     {
@@ -64,10 +68,11 @@ class CtDate extends AbstractService
     }
 
     /**
+     * Delete Constraint Date
+     *
      * @invokable
      *
-     * @param int $id
-     *
+     * @param int $id            
      * @return int
      */
     public function delete($id)
