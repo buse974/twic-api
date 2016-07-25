@@ -433,7 +433,7 @@ class Item extends AbstractService
      * @param int $start            
      * @param int $end            
      * @param array $type
-     *            @retun array
+     * @retun array
      */
     public function getList($course = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
