@@ -92,7 +92,7 @@ class SubmissionPg extends AbstractService
      */
     public function checkGraded($submission_id, $user_id)
     {
-        return  $this->getMapper()->checkGraded($submission, $user);
+        return  $this->getMapper()->checkGraded($submission_id, $user_id);
     }
 
     /**
@@ -104,9 +104,9 @@ class SubmissionPg extends AbstractService
      */
     public function replace($submission_id, $user_id)
     {
-        $this->getMapper()->deleteNotIn($submission, $users);
-        foreach ($users as $u) {
-            $this->add($submission, $u);
+        $this->getMapper()->deleteNotIn($submission_id, $user_id);
+        foreach ($user_id as $u) {
+            $this->add($submission_id, $u);
         }
 
         return 1;
