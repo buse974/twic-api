@@ -111,7 +111,7 @@ class VideoArchive extends AbstractService
             }
         }*/
         
-        $m_video_archive = $this->getMapper()->select($this->getModel()->setId($video_archive));
+        $m_video_archive = $this->getMapper()->select($this->getModel()->setId($video_archive))->current();
         
         //@todo check video first
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
