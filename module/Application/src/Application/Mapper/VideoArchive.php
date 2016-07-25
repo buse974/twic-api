@@ -4,7 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Application\Model\VideoArchive as CVF;
-use Zend\Crypt\PublicKey\Rsa\PublicKey;
 
 class VideoArchive extends AbstractMapper
 {

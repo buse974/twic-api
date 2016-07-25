@@ -153,6 +153,7 @@ class VideoArchive extends AbstractService
         foreach ($res_video_no_upload as $m_video_archive) {
             try {
                 $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_video_archive->getArchiveToken()), true);
+                syslog(1, "TOTO" . json_encode($archive));
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
                     $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
                     $arr = $m_video_archive->toArray();
