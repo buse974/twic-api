@@ -83,7 +83,7 @@ class VideoArchive extends AbstractService
     public function stopRecord($conversation_id)
     {
         $res_video_archive = $this->getMapper()->getLastArchiveId($conversation_id);
-        if ($res_video_archive <= 0) {
+        if ($res_video_archive->count() <= 0) {
             throw new \Exception("no video with conversation: " . $conversation_id);
         }
         $m_video_archive = $res_video_archive->current();
