@@ -180,8 +180,7 @@ class Submission extends AbstractService
             throw new \Exception('error item and submission are null in submission.get');
         }
         
-        
-        
+        //@todo remettre la sécuriter 
         if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles']) && null === $user_id ) {
             //$res_submission_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id, $identity['id']); 
             //if($res_submission_pg->count() <= 0){
