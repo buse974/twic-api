@@ -111,10 +111,11 @@ class VideoArchive extends AbstractService
             }
         }
         
+        //@todo check video first
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
-        if ($event_send) {
+      //  if ($event_send) {
             $this->getServiceEvent()->recordAvailable($m_video_archive->getSubmissionId(), $video_archive);
-        }
+      //  }
         
         return $ret;
     }
