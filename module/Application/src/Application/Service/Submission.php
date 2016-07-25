@@ -772,11 +772,12 @@ class Submission extends AbstractService
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
                 foreach ($res_submission_user as $m_submission_user) {
-                    $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), ! ($m_submission_user->getGrade() instanceof IsNull));
+                    if(is_numeric($m_submission_user->getGrade())) {
+                        $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), ! ($m_submission_user->getGrade() instanceof IsNull));
+                    }
                 }
             }
         }
-        syslog(1, "TOTOTOTOTOTOTO:".json_encode($grades));
         
         if (null !== $grades && count($grades) > 0) {
             foreach ($grades as $user => $grade) {
