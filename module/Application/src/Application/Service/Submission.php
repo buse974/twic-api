@@ -180,7 +180,10 @@ class Submission extends AbstractService
             throw new \Exception('error item and submission are null in submission.get');
         }
         if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
-            $user_id = $identity['id'];
+            $res_submission_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id, $identity['id']); 
+            if($res_submission_pg->count() <= 0){
+                $user_id = $identity['id'];
+            }
         }
         // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
@@ -188,8 +191,7 @@ class Submission extends AbstractService
             return;
         }
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-            ->getListBySubmissionId($m_submission->getId()));
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
         
         return $m_submission;
     }

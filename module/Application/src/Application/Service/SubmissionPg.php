@@ -59,11 +59,18 @@ class SubmissionPg extends AbstractService
      * Get List
      * 
      * @param int $submission_id
+     * @param int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListBySubmission($submission_id)
+    public function getListBySubmission($submission_id, $user_id = null)
     {
-        return  $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id));
+        $m_submission_pg = $this->getModel()->setSubmissionId($submission_id);
+        
+        if(null !== $user_id) {
+            $m_submission_pg->setUserId($user_id);
+        }
+        
+        return  $this->getMapper()->select($msubmission_pg);
     }
     
     /**
