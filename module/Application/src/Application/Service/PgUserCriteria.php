@@ -6,7 +6,6 @@
  * Paire grader User Criteria
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -16,40 +15,62 @@ use Dal\Service\AbstractService;
  */
 class PgUserCriteria extends AbstractService
 {
+
     /**
-     * @param int $pg
-     * @param int $user
-     * @param int $criteria
-     * @param int $points
+     * Add peer criteria
+     * 
+     * @param int $pg_id          
+     * @param int $user_id    
+     * @param int $submission_id      
+     * @param int $criteria_id          
+     * @param int $points     
+     * @return int       
      */
-    public function add($pg, $user, $submission, $criteria, $points)
+    public function add($pg_id, $user_id, $submission_id, $criteria_id, $points)
     {
-        return  $this->getMapper()->insert($this->getModel()->setPgId($pg)->setUserId($user)->setSubmissionId($submission)->setCriteriaId($criteria)->setPoints($points));
+        return $this->getMapper()->insert($this->getModel()
+            ->setPgId($pg_id)
+            ->setUserId($user_id)
+            ->setSubmissionId($submission_id)
+            ->setCriteriaId($criteria_id)
+            ->setPoints($points));
     }
 
     /**
-     * @param int $submission
+     * Get List peer criteria
+     * 
+     * @param int $submission_id 
+     * @return \Dal\Db\ResultSet\ResultSet        
      */
-    public function getListBySubmission($submission)
+    public function getListBySubmission($submission_id)
     {
-        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission));
+        return $this->getMapper()->select($this->getModel()
+            ->setSubmissionId($submission_id));
     }
 
     /**
-     * @param int $submission
-     * @param int $user
+     * Get Processed Grades
+     * 
+     * @param int $submission_id
+     * @param int $user_id     
+     * @return \Dal\Db\ResultSet\ResultSet      
      */
-    public function getProcessedGrades($submission, $user = null)
+    public function getProcessedGrades($submission_id, $user_id = null)
     {
-        return $this->getMapper()->getProcessedGrades($submission, $user);
+        return $this->getMapper()->getProcessedGrades($submission_id, $user_id);
     }
 
     /**
-     * @param int $user
-     * @param int $submission
+     * Delete peer criteria
+     *
+     * @param int $user_id            
+     * @param int $submission_id    
+     * @return int        
      */
-    public function deleteByUserAndSubmission($user, $submission)
+    public function deleteByUserAndSubmission($user_id, $submission_id)
     {
-        return  $this->getMapper()->delete($this->getModel()->setPgId($user)->setSubmissionId($submission));
+        return $this->getMapper()->delete($this->getModel()
+            ->setPgId($user_id)
+            ->setSubmissionId($submission_id));
     }
 }

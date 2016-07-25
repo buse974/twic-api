@@ -15,9 +15,16 @@ use Dal\Service\AbstractService;
  */
 class ProgramUserRelation extends AbstractService
 {
+    /**
+     * Add Users to Program
+     * 
+     * @param array $user
+     * @param array $program
+     * @return array
+     */
     public function add($user, $program)
     {
-        $ret = array();
+        $ret = [];
 
         foreach ($user as $u) {
             foreach ($program as $p) {
@@ -29,10 +36,12 @@ class ProgramUserRelation extends AbstractService
     }
 
     /**
+     * Delete User To Program
+     * 
      * @param array $user
      * @param array $program
      *
-     * @return int
+     * @return array
      */
     public function deleteProgram($user, $program)
     {
@@ -55,6 +64,12 @@ class ProgramUserRelation extends AbstractService
         return $ret;
     }
 
+    /**
+     * Delete user of all program
+     * 
+     * @param int $user_id
+     * @return int
+     */
     public function deleteByUser($user)
     {
         return $this->getMapper()->delete($this->getModel()->setUserId($user));

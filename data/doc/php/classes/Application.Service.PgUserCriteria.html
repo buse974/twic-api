@@ -120,26 +120,26 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add peer criteria">
+            <span class="description">Add peer criteria</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_deleteByUserAndSubmission" title="deleteByUserAndSubmission :: ">
-            <span class="description"></span><pre>deleteByUserAndSubmission</pre>
+        <a href="#method_deleteByUserAndSubmission" title="deleteByUserAndSubmission :: Delete peer criteria">
+            <span class="description">Delete peer criteria</span><pre>deleteByUserAndSubmission</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListBySubmission" title="getListBySubmission :: ">
-            <span class="description"></span><pre>getListBySubmission</pre>
+        <a href="#method_getListBySubmission" title="getListBySubmission :: Get List peer criteria">
+            <span class="description">Get List peer criteria</span><pre>getListBySubmission</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getProcessedGrades" title="getProcessedGrades :: ">
-            <span class="description"></span><pre>getProcessedGrades</pre>
+        <a href="#method_getProcessedGrades" title="getProcessedGrades :: Get Processed Grades">
+            <span class="description">Get Processed Grades</span><pre>getProcessedGrades</pre>
         </a>
     </li>
 
@@ -189,8 +189,8 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add(integer $pg, integer $user,  $submission, integer $criteria, integer $points) </pre>
+                            <h2>Add peer criteria</h2>
+                            <pre>add(integer $pg_id, integer $user_id, integer $submission_id, integer $criteria_id, integer $points) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -200,30 +200,23 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$pg</h4>
+                                                <h4>$pg_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
+                                                <h4>$user_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$submission</h4>
-                                                <code></code><p></p>
+                                                <h4>$submission_id</h4>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$criteria</h4>
+                                                <h4>$criteria_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
@@ -231,14 +224,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_deleteByUserAndSubmission"></a>
                         <div class="element clickable method public  method_deleteByUserAndSubmission" data-toggle="collapse" data-target=".method_deleteByUserAndSubmission .collapse">
-                            <h2>deleteByUserAndSubmission</h2>
-                            <pre>deleteByUserAndSubmission(integer $user, integer $submission) </pre>
+                            <h2>Delete peer criteria</h2>
+                            <pre>deleteByUserAndSubmission(integer $user_id, integer $submission_id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -248,33 +243,28 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
+                                                <h4>$user_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$submission</h4>
+                                                <h4>$submission_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListBySubmission"></a>
                         <div class="element clickable method public  method_getListBySubmission" data-toggle="collapse" data-target=".method_getListBySubmission .collapse">
-                            <h2>getListBySubmission</h2>
-                            <pre>getListBySubmission(integer $submission) </pre>
+                            <h2>Get List peer criteria</h2>
+                            <pre>getListBySubmission(integer $submission_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -284,29 +274,24 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$submission</h4>
+                                                <h4>$submission_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getProcessedGrades"></a>
                         <div class="element clickable method public  method_getProcessedGrades" data-toggle="collapse" data-target=".method_getProcessedGrades .collapse">
-                            <h2>getProcessedGrades</h2>
-                            <pre>getProcessedGrades(integer $submission, integer $user = null) </pre>
+                            <h2>Get Processed Grades</h2>
+                            <pre>getProcessedGrades(integer $submission_id, integer $user_id = null) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -316,25 +301,20 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$submission</h4>
+                                                <h4>$submission_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
+                                                <h4>$user_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -361,7 +341,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 21 Jul 2016 18:15:32 +0200.<br/>
+            generated on Sun, 24 Jul 2016 23:44:27 +0200.<br/>
     </footer>
     </body>
 </html>

@@ -16,6 +16,8 @@ use Dal\Service\AbstractService;
 class OptGrading extends AbstractService
 {
     /**
+     * Add Option Grading
+     * 
      * @invokable
      *
      * @param int    $item_id
@@ -27,7 +29,6 @@ class OptGrading extends AbstractService
      * @param bool   $pg_can_view
      * @param bool   $user_can_view
      * @param bool   $pg_stars
-     *
      * @return int
      */
     public function add($item_id, $mode = null, $has_pg = null, $pg_nb = null, $pg_auto = null, $pg_due_date = null, $pg_can_view = null, $user_can_view = null, $pg_stars = null)
@@ -49,6 +50,8 @@ class OptGrading extends AbstractService
     }
 
     /**
+     * Update Option Grading
+     * 
      * @invokable
      *
      * @param int    $item_id
@@ -60,7 +63,6 @@ class OptGrading extends AbstractService
      * @param bool   $pg_can_view
      * @param bool   $user_can_view
      * @param bool   $pg_stars
-     *
      * @return int
      */
     public function update($item_id, $mode = null, $has_pg = null, $pg_nb = null, $pg_auto = null, $pg_due_date = null, $pg_can_view = null, $user_can_view = null, $pg_stars = null)
@@ -80,10 +82,11 @@ class OptGrading extends AbstractService
     }
 
     /**
+     * Delete Option Grading
+     * 
      * @invokable
      *
      * @param int $item_id
-     *
      * @return bool
      */
     public function delete($item_id)
@@ -94,8 +97,9 @@ class OptGrading extends AbstractService
     }
 
     /**
+     * Get Option Grading
+     * 
      * @param int $item_id
-     *
      * @return \Application\Model\OptGrading
      */
     public function get($item_id)

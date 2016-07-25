@@ -21,8 +21,8 @@ class VideoArchive extends AbstractService
      * Get List Video
      * @invokable
      *
-     * @param integer $submission_id
-     * @return array|stdClass         
+     * @param integer $submission_id            
+     * @return array|stdClass
      */
     public function getList($submission_id)
     {
@@ -38,9 +38,9 @@ class VideoArchive extends AbstractService
 
     /**
      * Get Video
-     * 
-     * @param integer $id   
-     * @return \Application\Model\VideoArchive         
+     *
+     * @param integer $id            
+     * @return \Application\Model\VideoArchive
      */
     public function get($id)
     {
@@ -82,7 +82,11 @@ class VideoArchive extends AbstractService
      */
     public function stopRecord($conversation_id)
     {
-        $m_video_archive = $this->getLastArchiveId($conversation_id);
+        $res_video_archive = $this->getMapper()->getLastArchiveId($conversation_id);
+        if ($res_video_archive->count() <= 0) {
+            throw new \Exception("no video with conversation: " . $conversation_id);
+        }
+        $m_video_archive = $res_video_archive->current();
         
         return $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
     }

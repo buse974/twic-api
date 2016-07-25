@@ -180,7 +180,10 @@ class Submission extends AbstractService
             throw new \Exception('error item and submission are null in submission.get');
         }
         if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
-            $user_id = $identity['id'];
+            $res_submission_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id, $identity['id']); 
+            if($res_submission_pg->count() <= 0){
+                $user_id = $identity['id'];
+            }
         }
         // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
@@ -188,8 +191,7 @@ class Submission extends AbstractService
             return;
         }
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-            ->getListBySubmissionId($m_submission->getId()));
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
         
         return $m_submission;
     }
@@ -749,11 +751,16 @@ class Submission extends AbstractService
     }
 
     /**
+     * Intructor Rates
+     * 
      * @invokable
      *
-     * @param int $id            
-     * @param array $grades            
-     * @param array $criterias            
+     * @param int $id
+     * @param int $user_id
+     * @param int $item
+     * @param array $grades
+     * @param int $criterias
+     * @return int
      */
     public function instructorRates($id, $user_id = null, $item = null, $grades = null, $criterias = null)
     {
@@ -767,10 +774,13 @@ class Submission extends AbstractService
                 }
                 $res_submission_user = $this->getServiceSubmissionUser()->getProcessedGrades($id);
                 foreach ($res_submission_user as $m_submission_user) {
-                    $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), ! ($m_submission_user->getGrade() instanceof IsNull));
+                    if(is_numeric($m_submission_user->getGrade())) {
+                        $this->getServiceSubmissionUser()->setGrade($id, $m_submission_user->getUserId(), $m_submission_user->getGrade(), ! ($m_submission_user->getGrade() instanceof IsNull));
+                    }
                 }
             }
         }
+        
         if (null !== $grades && count($grades) > 0) {
             foreach ($grades as $user => $grade) {
                 if (is_numeric($user) && $grade !== null && isset($grade['grade'])) {

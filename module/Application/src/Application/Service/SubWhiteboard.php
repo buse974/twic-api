@@ -1,8 +1,18 @@
 <?php
+/**
+ *
+ * TheStudnet (http://thestudnet.com)
+ *
+ * SubThread
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class SubWhiteboard
+ */
 class SubWhiteboard extends AbstractService
 {
 

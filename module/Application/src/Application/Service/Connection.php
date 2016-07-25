@@ -16,6 +16,11 @@ use Dal\Service\AbstractService;
  */
 class Connection extends AbstractService
 {
+    /**
+     * Add Connection
+     * 
+     * @return int
+     */
     public function add()
     {
         $identity = $this->getServiceUser()->getIdentity();
@@ -40,6 +45,8 @@ class Connection extends AbstractService
     }
 
     /**
+     * Select Last Connection
+     * 
      * @return \Application\Model\Connection
      */
     public function selectLast()
@@ -56,9 +63,12 @@ class Connection extends AbstractService
     }
 
     /**
+     * Get Avg connection
+     * 
      * @invokable
      * 
      * @param int $school
+     * @return array
      */
     public function getAvg($school)
     {
@@ -71,9 +81,11 @@ class Connection extends AbstractService
     }
 
     /**
+     * Get Service user
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }
