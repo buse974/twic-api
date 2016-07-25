@@ -70,7 +70,7 @@ class SubmissionPg extends AbstractService
             $m_submission_pg->setUserId($user_id);
         }
         
-        return  $this->getMapper()->select($msubmission_pg);
+        return  $this->getMapper()->select($m_submission_pg);
     }
     
     /**
