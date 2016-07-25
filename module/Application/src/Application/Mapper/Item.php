@@ -366,7 +366,6 @@ class Item extends AbstractMapper
         $where[] = 'course.deleted_date IS NULL';
         $where[] = 'program.deleted_date IS NULL';
         $where[] = 'item.is_complete IS TRUE';
-        $where[] = '( item.type != "HANGOUT" OR item.is_grouped = 1)';
 
         $cw = '';
         $nb = count($where);
