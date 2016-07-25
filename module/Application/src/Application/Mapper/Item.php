@@ -41,6 +41,57 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListTmp($course_id = null, $parent_id = null, $start = null, $end = null, $type = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([
+            'id',
+            'title',
+            'duration',
+            'set_id',
+            'is_graded',
+            'type',
+            'course_id',
+            'grading_policy_id',
+            'parent_id',
+            'order_id',
+            'has_submission',
+            'has_all_student',
+            'is_grouped',
+            'is_complete',
+            'coefficient',
+            'item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),
+            'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),
+            'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),
+            'item$is_started' => new Expression('IF(SUM(IF(submission_user.start_date IS NULL, false, true)) > 0,1,0)'),
+        ])
+        ->join('document', 'document.item_id=item.id', [], $select::JOIN_LEFT)
+        ->join('library', 'document.library_id=library.id', array('library!id' => 'id', 'name', 'type'), $select::JOIN_LEFT)
+        ->join('submission', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
+        ->join('submission_user', 'submission_user.submission_id=submission.id', [], $select::JOIN_LEFT)
+        ->join('course', 'course.id=item.course_id', [])
+        ->join('program', 'program.id=course.program_id', [])
+        ->where(array('course.deleted_date IS NULL'))
+        ->where(array('program.deleted_date IS NULL'));
+    
+        if (null !== $course_id) {
+            $select->where(array('item.course_id' => $course_id));
+        }
+       
+        if(null !== $type) {
+            $select->where(array('item.type' => $type));
+        }
+        if (null !== $start && null !== $end) {
+            $select->where(['( item.start BETWEEN ? AND ? ' => [$start, $end]])
+            ->where(['item.end BETWEEN ? AND ?  ' => [$start, $end]], Predicate::OP_OR)
+            ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start, $end]], Predicate::OP_OR);
+        }
+    
+        $select->group('item.id');
+    
+        return $this->selectWith($select);
+    }
+    
     public function getList($course_id = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
         $select = $this->tableGateway->getSql()->select();

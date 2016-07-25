@@ -470,6 +470,54 @@ class Item extends AbstractService
         
         return array_values($ar_item);
     }
+    
+    /**
+     * Get List
+     *
+     * @invokable
+     *
+     * @param int $course
+     * @param int $parent_id
+     * @param int $start
+     * @param int $end
+     * @param array $type
+     * @retun array
+     */
+    public function getListTmp($course = null, $parent_id = null, $start = null, $end = null, $type = null)
+    {
+        if (null === $course && $start === null && $end === null) {
+            throw new \Exception('error course is not declarer');
+        }
+    
+        $ar_user = $this->getServiceUser()->getIdentity();
+        $roles = $ar_user['roles'];
+        $user_id = $ar_user['id'];
+    
+        $is_student = false;
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+            $is_student = true;
+        }
+    
+        $res_item = $this->getMapper()->getListTmp($course, $parent_id, $start, $end, $type);
+        $ar_item = (null !== $start || null !== $end) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
+    
+        foreach ($ar_item as $k => &$item) {
+            $item['done'] = $this->getServiceCtDone()
+            ->get($item['id'])
+            ->toArray();
+            $item['rate'] = $this->getServiceCtRate()
+            ->get($item['id'])
+            ->toArray();
+            if ($is_student === true) {
+                if ($item['is_complete'] === 0 || ($item['type'] !== ModelItem::TYPE_TXT && $item['type'] !== ModelItem::TYPE_DOCUMENT && $item['type'] !== ModelItem::TYPE_MODULE && $this->checkAllow($item['id'], $user_id) === false)) {
+                    unset($ar_item[$k]);
+                }
+                $item['checked'] = $this->checkVisibility($item, $user_id);
+            }
+        }
+    
+        return array_values($ar_item);
+    }
 
     /**
      * Check if user is allowed
