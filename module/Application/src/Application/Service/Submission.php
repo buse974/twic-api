@@ -749,11 +749,16 @@ class Submission extends AbstractService
     }
 
     /**
+     * Intructor Rates
+     * 
      * @invokable
      *
-     * @param int $id            
-     * @param array $grades            
-     * @param array $criterias            
+     * @param int $id
+     * @param int $user_id
+     * @param int $item
+     * @param array $grades
+     * @param int $criterias
+     * @return int
      */
     public function instructorRates($id, $user_id = null, $item = null, $grades = null, $criterias = null)
     {
@@ -771,7 +776,7 @@ class Submission extends AbstractService
                 }
             }
         }
-        syslog(1, json_encode($grades));
+        syslog(1, "TOTOTOTOTOTOTO:".json_encode($grades));
         
         if (null !== $grades && count($grades) > 0) {
             foreach ($grades as $user => $grade) {
