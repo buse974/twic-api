@@ -102,14 +102,16 @@ class VideoArchive extends AbstractService
      */
     public function validTransfertVideo($video_archive, $url)
     {
-        $event_send = true;
+        //$event_send = true;
         // regarder si une video na pas etait déja notifier pour cette conversation
-        $res_video_archive = $this->getMapper()->getListSameConversation($video_archive);
-        foreach ($res_video_archive as $m_video_archive) {
+        //$res_video_archive = $this->getMapper()->getListSameConversation($video_archive);
+        /*foreach ($res_video_archive as $m_video_archive) {
             if (CVF::ARV_AVAILABLE === $m_video_archive->getArchiveStatus()) {
                 $event_send = false;
             }
-        }
+        }*/
+        
+        $m_video_archive = $this->getMapper()->select($this->getModel()->setId($video_archive));
         
         //@todo check video first
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
