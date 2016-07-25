@@ -771,6 +771,8 @@ class Submission extends AbstractService
                 }
             }
         }
+        syslog(1, json_encode($grades));
+        
         if (null !== $grades && count($grades) > 0) {
             foreach ($grades as $user => $grade) {
                 if (is_numeric($user) && $grade !== null && isset($grade['grade'])) {
