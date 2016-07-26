@@ -32,7 +32,7 @@ class VideoArchive extends AbstractService
             $tmp[$m_videoconf_archive->getConversationId()][] = $m_videoconf_archive;
         }
         
-        foreach ($ret as $k => $v) {
+        foreach ($tmp as $k => $v) {
             $ret[] = [
              'conversation_id' => $k,
              'videos' => $v,
