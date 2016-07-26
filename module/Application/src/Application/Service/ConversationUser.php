@@ -69,7 +69,7 @@ class ConversationUser extends AbstractService
         // @TODO a optimiser
         $res_conversation_user = $this->getMapper()->select($this->getModel()->setConversationId($conversation_id));
         foreach ($res_conversation_user as $rm_conversation_user) {
-            $rm_conversation_user->getUser($this->getServiceUser()->get($rm_conversation_user->getUserId()));
+            $rm_conversation_user->setUser($this->getServiceUser()->get($rm_conversation_user->getUserId()));
         }
         
         return $res_conversation_user;

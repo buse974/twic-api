@@ -21,7 +21,7 @@ class Library extends AbstractService
 
     /**
      * Add File in library
-     * 
+     *
      * @invokable
      *
      * @param string $name            
@@ -66,8 +66,8 @@ class Library extends AbstractService
 
     /**
      * Add library
-     * 
-     * @param array $data
+     *
+     * @param array $data            
      * @return \Application\Model\Library
      */
     public function _add($data)
@@ -213,10 +213,11 @@ class Library extends AbstractService
 
     /**
      * delete Library
-     * 
+     *
      * @invokable
-     * @param int $id  
-     * @return int          
+     * 
+     * @param int $id            
+     * @return int
      */
     public function delete($id)
     {
@@ -249,8 +250,8 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $box_id
+     * @param int $id            
+     * @param string $box_id            
      * @throws \Exception
      * @throws JrpcException
      * @return void|\Box\Model\Session
@@ -270,14 +271,14 @@ class Library extends AbstractService
             }
             $m_library = $res_library->current();
             $box_id = $m_library->getBoxId();
-            if(empty($box_id)) {
+            if (empty($box_id)) {
                 throw new JrpcException('No Box Id', 123456);
             }
         }
         
         $session = null;
         try {
-            $session =  $this->getServiceBox()->createSession($box_id);
+            $session = $this->getServiceBox()->createSession($box_id);
         } catch (\Exception $e) {
             throw new JrpcException($e->getMessage(), $e->getCode());
         }
@@ -287,7 +288,7 @@ class Library extends AbstractService
 
     /**
      * Get Service User
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
