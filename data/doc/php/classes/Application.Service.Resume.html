@@ -143,19 +143,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceEvent" title="getServiceEvent :: ">
-            <span class="description"></span><pre>getServiceEvent</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceUser" title="getServiceUser :: ">
-            <span class="description"></span><pre>getServiceUser</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
+                                                                                                                                                                                                                        <li class="method public">
         <a href="#method_update" title="update :: Update experience.">
             <span class="description">Update experience.</span><pre>update</pre>
         </a>
@@ -169,7 +157,17 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                            <li class="method private">
+                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event">
+                                <span class="description">Get Service Event</span><pre>getServiceEvent</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServiceUser</pre>
+                            </a>
+                        </li>
+                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -208,7 +206,7 @@
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Add experience.</h2>
-                            <pre>add(string $start_date = null, string $end_date = null, string $address = null, string $logo = null, string $title = null, string $subtitle = null, string $description = null, integer $type = null,  $publisher = null,  $url = null,  $cause = null,  $study = null,  $grade = null,  $note = null) </pre>
+                            <pre>add(string $start_date = null, string $end_date = null, string $address = null, string $logo = null, string $title = null, string $subtitle = null, string $description = null, integer $type = null, string $publisher = null, \Application\Service\v $url = null, string $cause = null, string $study = null, integer $grade = null, integer $note = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -234,13 +232,6 @@
                                                 <td>
                                                                                                                                                                         
                                                                                                                                                                         
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
                                                                                                     </td>
                                             </tr>
                                                                             </table>
@@ -280,29 +271,31 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$publisher</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$url</h4>
-                                                <code></code><p></p>
+                                                <code>\Application\Service\v</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$cause</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$study</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$grade</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$note</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
@@ -346,7 +339,7 @@
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
                             <h2>Get Resume.</h2>
-                            <pre>get(integer $user) </pre>
+                            <pre>get(integer $user) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -365,13 +358,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -380,6 +366,8 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -412,8 +400,8 @@
 
                         </div>
                                             <a id="method_getServiceEvent"></a>
-                        <div class="element clickable method public  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
-                            <h2>getServiceEvent</h2>
+                        <div class="element clickable method private  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
+                            <h2>Get Service Event</h2>
                             <pre>getServiceEvent() : \Application\Service\Event</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -441,8 +429,8 @@
 
                         </div>
                                             <a id="method_getServiceUser"></a>
-                        <div class="element clickable method public  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
-                            <h2>getServiceUser</h2>
+                        <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
+                            <h2>Get Service User</h2>
                             <pre>getServiceUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -472,7 +460,7 @@
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
                             <h2>Update experience.</h2>
-                            <pre>update(integer $id, string $start_date = null, string $end_date = null, string $address = null, string $logo = null, string $title = null, string $subtitle = null, string $description = null, string $type = null,  $publisher = null,  $url = null,  $cause = null,  $study = null,  $grade = null,  $note = null) : integer</pre>
+                            <pre>update(integer $id, string $start_date = null, string $end_date = null, string $address = null, string $logo = null, string $title = null, string $subtitle = null, string $description = null, integer $type = null, string $publisher = null, string $url = null, string $cause = null, string $study = null, integer $grade = null, integer $note = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -528,31 +516,31 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$type</h4>
-                                                <code>string</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$publisher</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$url</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$cause</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$study</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$grade</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$note</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -583,7 +571,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
+            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
     </footer>
     </body>
 </html>

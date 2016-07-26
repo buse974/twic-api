@@ -17,8 +17,9 @@ use Dal\Service\AbstractService;
 class SubQuestion extends AbstractService
 {
     /**
+     * Get List Lite Submission Question
+     * 
      * @param int $sub_quiz_id
-     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListLite($sub_quiz_id)
@@ -27,8 +28,9 @@ class SubQuestion extends AbstractService
     }
 
     /**
-     * @param int $id
+     * Get Submission Question
      * 
+     * @param int $id
      * @return \Application\Model\SubQuestion
      */
     public function get($id)
@@ -36,6 +38,12 @@ class SubQuestion extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
+    /**
+     * Update Answered of Submission Question
+     * 
+     * @param int $id
+     * @return int
+     */
     public function updateAnswered($id)
     {
         $m_sub_question = $this->getModel()
@@ -45,6 +53,13 @@ class SubQuestion extends AbstractService
         return $this->getMapper()->update($m_sub_question);
     }
 
+    /**
+     * Update Point Submission Question
+     * 
+     * @param int $id
+     * @param int $point
+     * @return int
+     */
     public function updatePoint($id, $point)
     {
         $m_sub_question = $this->getModel()
@@ -54,6 +69,15 @@ class SubQuestion extends AbstractService
         return $this->getMapper()->update($m_sub_question);
     }
 
+    /**
+     * Add Submission Question
+     * 
+     * @param int $sub_quiz_id
+     * @param int $poll_item_id
+     * @param int $bank_question_id
+     * @param int $group_question_id
+     * @return int
+     */
     public function add($sub_quiz_id, $poll_item_id, $bank_question_id, $group_question_id)
     {
         $m_sub_question = $this->getModel()

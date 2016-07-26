@@ -1,8 +1,18 @@
 <?php
+/**
+ *
+ * TheStudnet (http://thestudnet.com)
+ *
+ * User Language
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class UserLanguage
+ */
 class UserLanguage extends AbstractService
 {
 
@@ -11,6 +21,9 @@ class UserLanguage extends AbstractService
      *
      * @invokable
      * 
+     * @param int $language
+     * @param int $language_level
+     * @throws \Exception
      * @return int
      */
     public function add($language, $language_level)

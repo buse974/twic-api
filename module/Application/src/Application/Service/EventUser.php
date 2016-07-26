@@ -16,14 +16,20 @@ use Dal\Service\AbstractService;
  */
 class EventUser extends AbstractService
 {
-    public function add($user, $notification)
+    /**
+     * Add Event User
+     * 
+     * @param int|array $user
+     * @param int $event_id
+     * @return bool
+     */
+    public function add($user_id, $event_id)
     {
-        if (!is_array($user)) {
-            $user = [$user];
+        if (!is_array($user_id)) {
+            $user_id = [$user_id];
         }
-        $m_event_user = $this->getModel()->setEventId($notification);
-
-        foreach ($user as $u) {
+        $m_event_user = $this->getModel()->setEventId($event_id);
+        foreach ($user_id as $u) {
             $m_event_user->setUserId($u);
             $this->getMapper()->insert($m_event_user);
         }
@@ -32,7 +38,13 @@ class EventUser extends AbstractService
     }
 
     /**
+     * Mark Read Event User current
+     * 
      * @invokable
+     * 
+     * @param array $ids
+     * @param string $event
+     * @return int
      */
     public function read($ids = null, $event = null)
     {
@@ -56,9 +68,12 @@ class EventUser extends AbstractService
     }
 
     /**
+     * Mark View All Event User current
+     * 
      * @invokable
      * 
-     * @param intger $id
+     * @param int $id
+     * @return array
      */
     public function view($id)
     {
@@ -75,9 +90,11 @@ class EventUser extends AbstractService
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }

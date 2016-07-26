@@ -17,6 +17,7 @@ class Document extends AbstractService
 {
 
     /**
+     * Add Document
      *
      * @param string $name            
      * @param string $type            
@@ -26,9 +27,7 @@ class Document extends AbstractService
      * @param int $submission_id            
      * @param int $folder_id            
      * @param integer $conversation_id            
-     *
      * @throws \Exception
-     *
      * @return int
      */
     public function add($name = null, $type = null, $link = null, $token = null, $item_id = null, $submission_id = null, $folder_id = null, $conversation_id = null)
@@ -84,11 +83,23 @@ class Document extends AbstractService
         return ($res_document->count() == 0) ? $this->getMapper()->insert($m_document->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))) : 0;
     }
 
+    /**
+     * Add Document in Conversation
+     *
+     * @param array $data            
+     * @return int
+     */
     public function addConversation($data)
     {
         return $this->add($data['name'], $data['type'], $data['link'], $data['token'], $data['item_id'], $data['submission_id'], $data['folder_id'], $data['conversation_id']);
     }
 
+    /**
+     * Get List By Submission
+     *
+     * @param int $submission_id            
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListBySubmission($submission_id)
     {
         $m_document = $this->getModel()->setSubmissionId($submission_id);
@@ -96,21 +107,27 @@ class Document extends AbstractService
         return $this->getMapper()->select($m_document);
     }
 
+    /**
+     * Get List By Item
+     *
+     * @param int $item_id            
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListByItem($item_id)
     {
-        $m_document = $this->getModel()->setItemId($item_id);
-        
-        return $this->getMapper()->select($m_document);
+        return $this->getMapper()->select($this->getModel()
+            ->setItemId($item_id));
     }
 
     /**
+     * Delete Document
+     *
      * @invokable
      *
      * @param int $id            
      * @param int $submission_id            
      * @param int $library_id            
-     *
-     * @return bool
+     * @return int
      */
     public function delete($id = null, $submission_id = null, $library_id = null)
     {
@@ -125,19 +142,21 @@ class Document extends AbstractService
     }
 
     /**
+     * Get Service Library
      *
      * @return \Application\Service\Library
      */
-    public function getServiceLibrary()
+    private function getServiceLibrary()
     {
         return $this->getServiceLocator()->get('app_service_library');
     }
 
     /**
+     * Get Service ConversationDoc
      *
      * @return \Application\Service\ConversationDoc
      */
-    public function getServiceConversationDoc()
+    private function getServiceConversationDoc()
     {
         return $this->getServiceLocator()->get('app_service_conversation_doc');
     }

@@ -120,38 +120,38 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method__add" title="_add :: ">
-            <span class="description"></span><pre>_add</pre>
+        <a href="#method__add" title="_add :: General Add Bank Question Item">
+            <span class="description">General Add Bank Question Item</span><pre>_add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add Bank Question Item">
+            <span class="description">Add Bank Question Item</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_copy" title="copy :: ">
-            <span class="description"></span><pre>copy</pre>
+        <a href="#method_copy" title="copy :: Copy Get Bank Question Item">
+            <span class="description">Copy Get Bank Question Item</span><pre>copy</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Bank Question Item">
+            <span class="description">Get Bank Question Item</span><pre>get</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: ">
-            <span class="description"></span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get List Bank Question Item">
+            <span class="description">Get List Bank Question Item</span><pre>getList</pre>
         </a>
     </li>
 
                                                                                                                                                                 <li class="method public">
-        <a href="#method_replace" title="replace :: ">
-            <span class="description"></span><pre>replace</pre>
+        <a href="#method_replace" title="replace :: replace Bank Question Item">
+            <span class="description">replace Bank Question Item</span><pre>replace</pre>
         </a>
     </li>
 
@@ -206,7 +206,7 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method__add"></a>
                         <div class="element clickable method public  method__add" data-toggle="collapse" data-target=".method__add .collapse">
-                            <h2>_add</h2>
+                            <h2>General Add Bank Question Item</h2>
                             <pre>_add(integer $bank_question_id, string $libelle, integer $percent = null, string $answer = null, integer $order_id = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -258,8 +258,8 @@
                         </div>
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add(integer $bank_question_id,  $data) : integer</pre>
+                            <h2>Add Bank Question Item</h2>
+                            <pre>add(integer $bank_question_id, array $data) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -287,7 +287,7 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$data</h4>
-                                                <code></code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -298,8 +298,8 @@
                         </div>
                                             <a id="method_copy"></a>
                         <div class="element clickable method public  method_copy" data-toggle="collapse" data-target=".method_copy .collapse">
-                            <h2>copy</h2>
-                            <pre>copy( $bank_question_id_new,  $bank_question_id_old) </pre>
+                            <h2>Copy Get Bank Question Item</h2>
+                            <pre>copy(integer $bank_question_id_new, integer $bank_question_id_old) : boolean</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -309,39 +309,27 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$bank_question_id_new</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$bank_question_id_old</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>boolean</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
+                            <h2>Get Bank Question Item</h2>
                             <pre>get(integer $id) : \Application\Model\BankQuestionItem</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -368,8 +356,8 @@
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
-                            <pre>getList( $bank_question_id) </pre>
+                            <h2>Get List Bank Question Item</h2>
+                            <pre>getList(integer $bank_question_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -379,28 +367,16 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$bank_question_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -436,8 +412,8 @@
                         </div>
                                             <a id="method_replace"></a>
                         <div class="element clickable method public  method_replace" data-toggle="collapse" data-target=".method_replace .collapse">
-                            <h2>replace</h2>
-                            <pre>replace( $bank_question_id,  $data) </pre>
+                            <h2>replace Bank Question Item</h2>
+                            <pre>replace(integer $bank_question_id, array $data) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -447,32 +423,20 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$bank_question_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$data</h4>
-                                                <code></code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
                                                                     </div>
                             </div>
 
@@ -499,7 +463,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
+            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
     </footer>
     </body>
 </html>

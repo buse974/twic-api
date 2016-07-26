@@ -16,6 +16,13 @@ use Dal\Service\AbstractService;
  */
 class PollItem extends AbstractService
 {
+    /**
+     * Add Poll Item
+     * 
+     * @param int $poll_id
+     * @param array $data
+     * @return array
+     */
     public function add($poll_id, $data = [])
     {
         if (empty($data)) {
@@ -37,6 +44,19 @@ class PollItem extends AbstractService
         return $ret;
     }
 
+    /**
+     * Add General Poll Item 
+     * 
+     * @param int $poll_id
+     * @param int $nb_point
+     * @param int $bank_question_id
+     * @param array $group_question
+     * @param int $nb
+     * @param bool $is_mandatory
+     * @param int $order_id
+     * @throws \Exception
+     * @return int
+     */
     public function _add($poll_id, $nb_point = null, $bank_question_id = null, $group_question = null, $nb = null, $is_mandatory = null, $order_id = null)
     {
         $group_question_id = ($group_question !== null) ? $this->getServiceGroupQuestion()->add($group_question, $nb) : null;
@@ -57,10 +77,13 @@ class PollItem extends AbstractService
     }
 
     /**
+     * replace poll item
+     * 
      * @invokable
      * 
      * @param int   $poll_id
      * @param array $data
+     * @return array
      */
     public function replace($poll_id, $data = [])
     {
@@ -69,14 +92,21 @@ class PollItem extends AbstractService
         return $this->add($poll_id, $data);
     }
 
+    /**
+     * Delete Poll Item
+     * 
+     * @param int $poll_id
+     * @return bool
+     */
     public function delete($poll_id)
     {
         return $this->getMapper()->delete($this->getModel()->setPollId($poll_id));
     }
 
     /**
-     * @param int $id
+     * Get Poll Item
      * 
+     * @param int $id
      * @return \Application\Model\PollItem
      */
     public function get($id)
@@ -84,6 +114,12 @@ class PollItem extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
+    /**
+     * Get List Poll Item
+     * 
+     * @param int $poll_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getList($poll_id)
     {
         $res_poll_item = $this->getMapper()->select($this->getModel()
@@ -100,15 +136,23 @@ class PollItem extends AbstractService
         return $res_poll_item;
     }
 
+    /**
+     * Get List Lite Poll Item
+     * 
+     * @param int $poll_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListLite($poll_id)
     {
         return $this->getMapper()->select($this->getModel()->setPollId($poll_id));
     }
 
     /**
+     * Get Service GroupQuestion
+     * 
      * @return \Application\Service\GroupQuestion
      */
-    public function getServiceGroupQuestion()
+    private function getServiceGroupQuestion()
     {
         return $this->getServiceLocator()->get('app_service_group_question');
     }

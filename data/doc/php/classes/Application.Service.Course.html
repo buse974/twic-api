@@ -132,20 +132,20 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_delete" title="delete :: Delete course.">
-            <span class="description">Delete course.</span><pre>delete</pre>
+        <a href="#method_delete" title="delete :: Delete course">
+            <span class="description">Delete course</span><pre>delete</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Course">
+            <span class="description">Get Course</span><pre>get</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: ">
-            <span class="description"></span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get List Courses">
+            <span class="description">Get List Courses</span><pre>getList</pre>
         </a>
     </li>
 
@@ -350,8 +350,8 @@
                         </div>
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
-                            <h2>Delete course.</h2>
-                            <pre>delete(array $id) : integer</pre>
+                            <h2>Delete course</h2>
+                            <pre>delete(array|integer $id) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -375,18 +375,18 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code>array</code><p></p>
+                                                <code>array|integer</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>integer</code><p></p>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
+                            <h2>Get Course</h2>
                             <pre>get(integer $id) : \Application\Model\Course</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -431,7 +431,7 @@
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
+                            <h2>Get List Courses</h2>
                             <pre>getList(integer $program = null, string $search = null, array $filter = null, integer $user = null, integer $school = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -629,7 +629,7 @@
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
                             <h2>Update course.</h2>
-                            <pre>update(integer $id, string $title = null,  $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, string $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null) : integer</pre>
+                            <pre>update(integer $id, string $title = null, string $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, integer $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -661,7 +661,7 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$picture</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$abstract</h4>
@@ -685,7 +685,7 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$duration</h4>
-                                                <code>string</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$notes</h4>
@@ -732,7 +732,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
+            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
     </footer>
     </body>
 </html>

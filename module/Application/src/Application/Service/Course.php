@@ -23,21 +23,21 @@ class Course extends AbstractService
      * Add course.
      *
      * @invokable
-     * 
-     * @param int $program_id
-     * @param string $title
-     * @param string $picture
-     * @param string $abstract
-     * @param string $description
-     * @param string $objectives
-     * @param string $teaching
-     * @param string $attendance
-     * @param int $duration
-     * @param string $notes
-     * @param string $learning_outcomes
-     * @param string $video_link
-     * @param string $video_token
-     * @param array $material_document
+     *
+     * @param int $program_id            
+     * @param string $title            
+     * @param string $picture            
+     * @param string $abstract            
+     * @param string $description            
+     * @param string $objectives            
+     * @param string $teaching            
+     * @param string $attendance            
+     * @param int $duration            
+     * @param string $notes            
+     * @param string $learning_outcomes            
+     * @param string $video_link            
+     * @param string $video_token            
+     * @param array $material_document            
      * @throws \Exception
      * @return \Application\Model\Course
      */
@@ -79,19 +79,19 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $title
-     * @param string $picture
-     * @param string $abstract
-     * @param string $description
-     * @param string $objectives
-     * @param string $teaching
-     * @param string $attendance
-     * @param int $duration
-     * @param string $notes
-     * @param string $learning_outcomes
-     * @param string $video_link
-     * @param string $video_token
+     * @param int $id            
+     * @param string $title            
+     * @param string $picture            
+     * @param string $abstract            
+     * @param string $description            
+     * @param string $objectives            
+     * @param string $teaching            
+     * @param string $attendance            
+     * @param int $duration            
+     * @param string $notes            
+     * @param string $learning_outcomes            
+     * @param string $video_link            
+     * @param string $video_token            
      * @return int
      */
     public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
@@ -124,17 +124,16 @@ class Course extends AbstractService
     }
 
     /**
-     * Delete course.
+     * Delete course
      *
      * @invokable
      *
-     * @param array $id            
-     *
-     * @return int
+     * @param array|int $id            
+     * @return array
      */
     public function delete($id)
     {
-        $ret = array();
+        $ret = [];
         
         if (! is_array($id)) {
             $id = array($id);
@@ -149,12 +148,12 @@ class Course extends AbstractService
     }
 
     /**
+     * Get Course
+     *
      * @invokable
      *
      * @param int $id            
-     *
      * @throws \Exception
-     *
      * @return \Application\Model\Course
      */
     public function get($id)
@@ -177,6 +176,8 @@ class Course extends AbstractService
     }
 
     /**
+     * Get List Courses
+     * 
      * @invokable
      *
      * @param int $program            
@@ -200,14 +201,13 @@ class Course extends AbstractService
                 ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
         }
         
-        return array('count' => $mapper->count(),'list' => $res_course);
+        return ['count' => $mapper->count(),'list' => $res_course];
     }
 
     /**
      * get Nbr Course by program.
      *
      * @param int $program            
-     *
      * @return int
      */
     public function count($program)

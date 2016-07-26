@@ -16,9 +16,10 @@ use Dal\Service\AbstractService;
 class SetGroup extends AbstractService
 {
     /**
+     * Add Set Group 
+     * 
      * @param int $set
      * @param int $group
-     * 
      * @return int
      */
     public function add($set, $group)

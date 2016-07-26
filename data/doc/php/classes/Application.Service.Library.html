@@ -144,50 +144,50 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getByItem" title="getByItem :: ">
-            <span class="description"></span><pre>getByItem</pre>
+        <a href="#method_getByItem" title="getByItem :: Get Library By item id">
+            <span class="description">Get Library By item id</span><pre>getByItem</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: ">
-            <span class="description"></span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get List Library">
+            <span class="description">Get List Library</span><pre>getList</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListByBankQuestion" title="getListByBankQuestion :: ">
-            <span class="description"></span><pre>getListByBankQuestion</pre>
+        <a href="#method_getListByBankQuestion" title="getListByBankQuestion :: Get List Library By bank question id">
+            <span class="description">Get List Library By bank question id</span><pre>getListByBankQuestion</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListByConversation" title="getListByConversation :: ">
-            <span class="description"></span><pre>getListByConversation</pre>
+        <a href="#method_getListByConversation" title="getListByConversation :: Get List Library By conversation id">
+            <span class="description">Get List Library By conversation id</span><pre>getListByConversation</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListByCt" title="getListByCt :: ">
-            <span class="description"></span><pre>getListByCt</pre>
+        <a href="#method_getListByCt" title="getListByCt :: Get List By Constrainte">
+            <span class="description">Get List By Constrainte</span><pre>getListByCt</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListByItem" title="getListByItem :: ">
-            <span class="description"></span><pre>getListByItem</pre>
+        <a href="#method_getListByItem" title="getListByItem :: Get List Library By  item id">
+            <span class="description">Get List Library By  item id</span><pre>getListByItem</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListByParentItem" title="getListByParentItem :: ">
-            <span class="description"></span><pre>getListByParentItem</pre>
+        <a href="#method_getListByParentItem" title="getListByParentItem :: Get List Library By  item parent id">
+            <span class="description">Get List Library By  item parent id</span><pre>getListByParentItem</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListBySubmission" title="getListBySubmission :: ">
-            <span class="description"></span><pre>getListBySubmission</pre>
+        <a href="#method_getListBySubmission" title="getListBySubmission :: Get List Library By Submission id">
+            <span class="description">Get List Library By Submission id</span><pre>getListBySubmission</pre>
         </a>
     </li>
 
@@ -198,8 +198,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_update" title="update :: ">
-            <span class="description"></span><pre>update</pre>
+        <a href="#method_update" title="update :: Update Library">
+            <span class="description">Update Library</span><pre>update</pre>
         </a>
     </li>
 
@@ -384,7 +384,7 @@
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
                             <h2>Get Library</h2>
-                            <pre>get(integer $id) : \Application\Model\Library|\Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>get(integer|array $id) : \Application\Model\Library|\Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -408,7 +408,7 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code>integer</code><p></p>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -419,7 +419,7 @@
                         </div>
                                             <a id="method_getByItem"></a>
                         <div class="element clickable method public  method_getByItem" data-toggle="collapse" data-target=".method_getByItem .collapse">
-                            <h2>getByItem</h2>
+                            <h2>Get Library By item id</h2>
                             <pre>getByItem(integer $item_id) : \Application\Model\Library</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -446,8 +446,8 @@
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
-                            <pre>getList(integer $folder_id = null) </pre>
+                            <h2>Get List Library</h2>
+                            <pre>getList(integer $folder_id = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -464,13 +464,6 @@
                                                 <td>
                                                                                                                                                                         
                                                                                                                                                                         
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
                                                                                                     </td>
                                             </tr>
                                                                             </table>
@@ -481,14 +474,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListByBankQuestion"></a>
                         <div class="element clickable method public  method_getListByBankQuestion" data-toggle="collapse" data-target=".method_getListByBankQuestion .collapse">
-                            <h2>getListByBankQuestion</h2>
-                            <pre>getListByBankQuestion( $bank_question_id) </pre>
+                            <h2>Get List Library By bank question id</h2>
+                            <pre>getListByBankQuestion(integer $bank_question_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -498,36 +493,24 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$bank_question_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListByConversation"></a>
                         <div class="element clickable method public  method_getListByConversation" data-toggle="collapse" data-target=".method_getListByConversation .collapse">
-                            <h2>getListByConversation</h2>
-                            <pre>getListByConversation( $conversation_id) </pre>
+                            <h2>Get List Library By conversation id</h2>
+                            <pre>getListByConversation(integer $conversation_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -537,36 +520,24 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$conversation_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListByCt"></a>
                         <div class="element clickable method public  method_getListByCt" data-toggle="collapse" data-target=".method_getListByCt .collapse">
-                            <h2>getListByCt</h2>
-                            <pre>getListByCt(integer $item) </pre>
+                            <h2>Get List By Constrainte</h2>
+                            <pre>getListByCt(integer $item) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -585,13 +556,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -600,14 +564,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListByItem"></a>
                         <div class="element clickable method public  method_getListByItem" data-toggle="collapse" data-target=".method_getListByItem .collapse">
-                            <h2>getListByItem</h2>
-                            <pre>getListByItem(integer $item) </pre>
+                            <h2>Get List Library By  item id</h2>
+                            <pre>getListByItem(integer $item) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -626,13 +592,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -641,14 +600,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListByParentItem"></a>
                         <div class="element clickable method public  method_getListByParentItem" data-toggle="collapse" data-target=".method_getListByParentItem .collapse">
-                            <h2>getListByParentItem</h2>
-                            <pre>getListByParentItem(integer $item) </pre>
+                            <h2>Get List Library By  item parent id</h2>
+                            <pre>getListByParentItem(integer $item) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -665,13 +626,6 @@
                                                 <td>
                                                                                                                                                                         
                                                                                                                                                                         
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
                                                                                                     </td>
                                             </tr>
                                                                             </table>
@@ -682,14 +636,16 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListBySubmission"></a>
                         <div class="element clickable method public  method_getListBySubmission" data-toggle="collapse" data-target=".method_getListBySubmission .collapse">
-                            <h2>getListBySubmission</h2>
-                            <pre>getListBySubmission(integer $submission_id) </pre>
+                            <h2>Get List Library By Submission id</h2>
+                            <pre>getListBySubmission(integer $submission_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -706,13 +662,6 @@
                                                 <td>
                                                                                                                                                                         
                                                                                                                                                                         
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
                                                                                                     </td>
                                             </tr>
                                                                             </table>
@@ -723,6 +672,8 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -788,7 +739,7 @@
                                             <a id="method_getSession"></a>
                         <div class="element clickable method public  method_getSession" data-toggle="collapse" data-target=".method_getSession .collapse">
                             <h2>Get Box Session</h2>
-                            <pre>getSession(integer $id = null, string $box_id = null) : \Box\Model\Session</pre>
+                            <pre>getSession(integer $id = null, string $box_id = null) : void|\Box\Model\Session</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -814,6 +765,8 @@
                                                 <td>
                                                                                                                                                                         
                                                                                                                                                                         
+                                                                                                                                                                        
+                                                                                                                                                                        
                                                                                                     </td>
                                             </tr>
                                                                             </table>
@@ -829,14 +782,14 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Box\Model\Session</code><p></p>
+                                        <code>void|\Box\Model\Session</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
-                            <h2>update</h2>
+                            <h2>Update Library</h2>
                             <pre>update(integer $id, string $name = null, string $link = null, string $token = null, integer $folder_id = null) : \Application\Model\Library</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -908,7 +861,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
+            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
     </footer>
     </body>
 </html>

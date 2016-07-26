@@ -168,7 +168,11 @@ class SubmissionPg extends AbstractService
      */
     public function _autoAssign($ar_u, $ar_s, $nb)
     {
-        $nbu = count($ar_u);
+        $final = [];
+        foreach ($ar_u as $u) {
+            
+        }
+        /*$nbu = count($ar_u);
         $start = $ar_u;
         $final = [];
         foreach ($ar_s as $s_id => $s_user) {
@@ -223,7 +227,7 @@ class SubmissionPg extends AbstractService
                     }
                 }
             }
-        }
+        }*/
 
         return $final;
     }

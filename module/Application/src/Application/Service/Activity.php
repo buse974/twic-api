@@ -47,10 +47,11 @@ class Activity extends AbstractService
     /**
      * Create Activity
      * 
-     * @param string $date            
-     * @param string $event            
-     * @param array $object            
-     * @param array $target     
+     * @param string $date
+     * @param string $event
+     * @param array $object
+     * @param array $target
+     * @param int $user_id
      * @throws \Exception
      * @return int
      */

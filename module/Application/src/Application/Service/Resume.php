@@ -21,7 +21,7 @@ class Resume extends AbstractService
      * Add experience.
      *
      * @invokable
-     *
+     * 
      * @param string $start_date
      * @param string $end_date
      * @param string $address
@@ -29,9 +29,15 @@ class Resume extends AbstractService
      * @param string $title
      * @param string $subtitle
      * @param string $description
-     * @param int    $type
-     *
+     * @param int $type
+     * @param string $publisher
+     * @param v $url
+     * @param string $cause
+     * @param string $study
+     * @param int $grade
+     * @param int $note
      * @throws \Exception
+     * @return int
      */
     public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
     {
@@ -65,11 +71,11 @@ class Resume extends AbstractService
             throw new \Exception('error insert experience');
         }
 
-        $resume = $this->getMapper()->getLastInsertValue();
+        $id = $this->getMapper()->getLastInsertValue();
 
-        $this->getServiceEvent()->profileNewresume($resume);
+        $this->getServiceEvent()->profileNewresume($id);
 
-        return $resume;
+        return $id;
     }
 
     /**
@@ -77,7 +83,7 @@ class Resume extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
+     * @param int $id
      * @param string $start_date
      * @param string $end_date
      * @param string $address
@@ -85,8 +91,13 @@ class Resume extends AbstractService
      * @param string $title
      * @param string $subtitle
      * @param string $description
-     * @param string $type
-     *
+     * @param int $type
+     * @param string $publisher
+     * @param string $url
+     * @param string $cause
+     * @param string $study
+     * @param int $grade
+     * @param int $note
      * @return int
      */
     public function update($id, $start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
@@ -133,7 +144,6 @@ class Resume extends AbstractService
      * @invokable
      *
      * @param int $id
-     *
      * @return int
      */
     public function delete($id)
@@ -150,7 +160,6 @@ class Resume extends AbstractService
      * Get Resume.
      *
      * @param int $id
-     *
      * @return \Application\Model\Resume
      */
     public function getById($id)
@@ -168,8 +177,9 @@ class Resume extends AbstractService
      * Get Resume.
      *
      * @invokable
-     *
+     * 
      * @param int $user
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($user)
     {
@@ -181,17 +191,21 @@ class Resume extends AbstractService
     }
 
     /**
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->getServiceLocator()->get('app_service_user');
     }

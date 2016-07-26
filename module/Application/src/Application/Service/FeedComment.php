@@ -16,6 +16,13 @@ use Dal\Service\AbstractService;
  */
 class FeedComment extends AbstractService
 {
+    /**
+     * Add Feed Comment
+     * 
+     * @param string $content
+     * @param int $feed_id
+     * @return int
+     */
     public function add($content, $feed_id)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
@@ -33,6 +40,12 @@ class FeedComment extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
 
+    /**
+     * Delete Feed Comment
+     * 
+     * @param int $id
+     * @return int
+     */
     public function delete($id)
     {
         $user = $this->getServiceUser()->getIdentity()['id'];
@@ -42,15 +55,23 @@ class FeedComment extends AbstractService
         return $this->getMapper()->update($m_feed_comment, array('user_id' => $user, 'id' => $id));
     }
 
+    /**
+     * Get List Feed Comment
+     * 
+     * @param int $id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getList($id)
     {
         return $this->getMapper()->getList($id);
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->serviceLocator->get('app_service_user');
     }

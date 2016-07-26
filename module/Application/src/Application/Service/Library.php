@@ -82,14 +82,15 @@ class Library extends AbstractService
     }
 
     /**
+     * Update Library
+     * 
      * @invokable
-     *
-     * @param int $id            
-     * @param string $name            
-     * @param string $link            
-     * @param string $token            
-     * @param int $folder_id            
-     *
+     * 
+     * @param int $id
+     * @param string $name
+     * @param string $link
+     * @param string $token
+     * @param int $folder_id
      * @return \Application\Model\Library
      */
     public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
@@ -112,9 +113,12 @@ class Library extends AbstractService
     }
 
     /**
+     * Get List Library
+     * 
      * @invokable
      *
-     * @param int $folder_id            
+     * @param int $folder_id    
+     * @return array        
      */
     public function getList($folder_id = null)
     {
@@ -149,9 +153,12 @@ class Library extends AbstractService
     }
 
     /**
+     * Get List Library By  item id
+     * 
      * @invokable
-     *
-     * @param int $item            
+     * 
+     * @param int $item    
+     * @return \Dal\Db\ResultSet\ResultSet        
      */
     public function getListByItem($item)
     {
@@ -159,39 +166,57 @@ class Library extends AbstractService
     }
 
     /**
+     * Get List Library By  item parent id
+     * 
      * @invokable
      *
-     * @param int $item            
+     * @param int $item       
+     * @return \Dal\Db\ResultSet\ResultSet      
      */
     public function getListByParentItem($item)
     {
         return $this->getMapper()->getListByParentItem($item);
     }
 
+    /**
+     * Get List Library By bank question id
+     * 
+     * @param int $bank_question_id
+     * @return \Dal\Db\ResultSet\ResultSet 
+     */
     public function getListByBankQuestion($bank_question_id)
     {
         return $this->getMapper()->getListByBankQuestion($bank_question_id);
     }
 
     /**
+     * Get List Library By Submission id
+     * 
      * @invokable
      *
-     * @param int $submission_id            
+     * @param int $submission_id  
+     * @return \Dal\Db\ResultSet\ResultSet           
      */
     public function getListBySubmission($submission_id)
     {
         return $this->getMapper()->getListBySubmission($submission_id);
     }
 
+    /**
+     * Get List Library By conversation id
+     * 
+     * @param int $conversation_id
+     * @return \Dal\Db\ResultSet\ResultSet  
+     */
     public function getListByConversation($conversation_id)
     {
         return $this->getMapper()->getListByConversation($conversation_id);
     }
 
     /**
-     *
+     * Get Library By item id
+     * 
      * @param int $item_id            
-     *
      * @return \Application\Model\Library
      */
     public function getByItem($item_id)
@@ -202,9 +227,12 @@ class Library extends AbstractService
     }
 
     /**
+     * Get List By Constrainte
+     * 
      * @invokable
-     *
-     * @param int $item            
+     * 
+     * @param int $item   
+     * @return \Dal\Db\ResultSet\ResultSet       
      */
     public function getListByCt($item)
     {
@@ -233,8 +261,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     *
+     * @param int|array $id            
      * @return \Application\Model\Library|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)

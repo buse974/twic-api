@@ -18,12 +18,12 @@ use Application\Model\Library as ModelLibrary;
 class BankQuestionMedia extends AbstractService
 {
     /**
-     * @param int $bank_question_id
-     * @param $data
+     * Add Bank Question Media
      * 
-     * @throws \Exception
-     *                     
-     * @return int
+     * @param int $bank_question_id
+     * @param array $data
+     * @throws \Exception              
+     * @return array
      */
     public function add($bank_question_id, $data = [])
     {
@@ -40,6 +40,13 @@ class BankQuestionMedia extends AbstractService
         return $ret;
     }
 
+    /**
+     * Replace All Bank Question Media
+     * 
+     * @param int $bank_question_id
+     * @param array $data
+     * @return array
+     */
     public function replace($bank_question_id, $data)
     {
         $this->getMapper()->delete($this->getModel()->setBankQuestionId($bank_question_id));
@@ -47,6 +54,13 @@ class BankQuestionMedia extends AbstractService
         return $this->add($bank_question_id, $data);
     }
 
+    /**
+     * Copy Bank Question Media
+     * 
+     * @param int $bank_question_id_new
+     * @param int $bank_question_id_old
+     * @return bool
+     */
     public function copy($bank_question_id_new, $bank_question_id_old)
     {
         $res_bank_question_media = $this->getMapper()->select($this->getModel()->setBankQuestionId($bank_question_id_old));
@@ -59,12 +73,14 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * @param int    $bank_question_id
-     * @param string $name
-     * @param string $link
-     * @param string $token
-     * @param string $type
+     * Genral add Bank Question Media
      * 
+     * @param int $bank_question_id
+     * @param string $name
+     * @param stirng $link
+     * @param string $token
+     * @param int $type
+     * @throws \Exception
      * @return int
      */
     public function _add($bank_question_id, $name = null, $link = null, $token = null, $type = null)
@@ -82,11 +98,23 @@ class BankQuestionMedia extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
 
+    /**
+     * Get List Bank Question Media
+     * 
+     * @param int $bank_question_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getList($bank_question_id)
     {
         return $this->getServiceLibrary()->getListByBankQuestion($bank_question_id);
     }
 
+    /**
+     * Get List Bank Question
+     * 
+     * @param int $bank_question_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListBankQuestion($bank_question_id)
     {
         return $this->getMapper()->getListBankQuestion($bank_question_id);

@@ -120,24 +120,12 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Questionnaire User">
+            <span class="description">Get Questionnaire User</span><pre>get</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceSubmission" title="getServiceSubmission :: ">
-            <span class="description"></span><pre>getServiceSubmission</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceUser" title="getServiceUser :: ">
-            <span class="description"></span><pre>getServiceUser</pre>
-        </a>
-    </li>
-
-                                                </ul>
+                                                                                                                                                                </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -145,7 +133,17 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                <li class="method private">
+                            <a href="#method_getServiceSubmission" title="getServiceSubmission :: Get Service Submission">
+                                <span class="description">Get Service Submission</span><pre>getServiceSubmission</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServiceUser</pre>
+                            </a>
+                        </li>
+                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -183,8 +181,8 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
-                            <pre>get(integer $questionnaire,  $item) : \Application\Model\QuestionnaireUser</pre>
+                            <h2>Get Questionnaire User</h2>
+                            <pre>get(\Application\Service\unknown $questionnaire_id, \Application\Service\unknown $item_id) : \Application\Model\QuestionnaireUser</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -207,12 +205,12 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$questionnaire</h4>
-                                                <code>integer</code><p></p>
+                                                <h4>$questionnaire_id</h4>
+                                                <code>\Application\Service\unknown</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$item</h4>
-                                                <code></code><p></p>
+                                                <h4>$item_id</h4>
+                                                <code>\Application\Service\unknown</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -222,8 +220,8 @@
 
                         </div>
                                             <a id="method_getServiceSubmission"></a>
-                        <div class="element clickable method public  method_getServiceSubmission" data-toggle="collapse" data-target=".method_getServiceSubmission .collapse">
-                            <h2>getServiceSubmission</h2>
+                        <div class="element clickable method private  method_getServiceSubmission" data-toggle="collapse" data-target=".method_getServiceSubmission .collapse">
+                            <h2>Get Service Submission</h2>
                             <pre>getServiceSubmission() : \Application\Service\Submission</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -251,8 +249,8 @@
 
                         </div>
                                             <a id="method_getServiceUser"></a>
-                        <div class="element clickable method public  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
-                            <h2>getServiceUser</h2>
+                        <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
+                            <h2>Get Service User</h2>
                             <pre>getServiceUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -301,7 +299,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
+            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
     </footer>
     </body>
 </html>

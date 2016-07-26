@@ -17,7 +17,11 @@ use Dal\Service\AbstractService;
 class LanguageLevel extends AbstractService
 {
     /**
+     * Get List 
+     * 
      * @invokable
+     * 
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList()
     {

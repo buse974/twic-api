@@ -23,7 +23,7 @@ class Item extends AbstractService
 
     /**
      * Configuration of type module component
-     * 
+     *
      * @var array
      */
     protected $conf = [ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_CHAT => false],ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],ModelItem::TYPE_HANGOUT => [ModelItem::CMP_VIDEOCONF => true],ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_CHAT => false],ModelItem::TYPE_LIVE_CLASS => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_MODULE => [],ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],ModelItem::TYPE_TXT => [],ModelItem::TYPE_WORKGROUP => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true,ModelItem::CMP_EQCQ => false]];
@@ -433,7 +433,7 @@ class Item extends AbstractService
      * @param int $start            
      * @param int $end            
      * @param array $type
-     * @retun array
+     *            @retun array
      */
     public function getList($course = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
@@ -470,37 +470,37 @@ class Item extends AbstractService
         
         return array_values($ar_item);
     }
-    
+
     /**
      * Get List
      *
      * @invokable
      *
-     * @param int $course
-     * @param int $parent_id
-     * @param int $start
-     * @param int $end
+     * @param int $course            
+     * @param int $parent_id            
+     * @param int $start            
+     * @param int $end            
      * @param array $type
-     * @retun array
+     *            @retun array
      */
     public function getListTmp($course = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
         if (null === $course && $start === null && $end === null) {
             throw new \Exception('error course is not declarer');
         }
-    
+        
         $ar_user = $this->getServiceUser()->getIdentity();
         $roles = $ar_user['roles'];
         $user_id = $ar_user['id'];
-    
+        
         $is_student = false;
         if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
             $is_student = true;
         }
-    
+        
         $res_item = $this->getMapper()->getListTmp($course, $parent_id, $start, $end, $type);
         $ar_item = $res_item->toArray();
-    
+        
         return array_values($ar_item);
     }
 
@@ -766,10 +766,10 @@ class Item extends AbstractService
 
     /**
      * Update Order Id of item
-     * 
-     * @param int $item
-     * @param int $parent_target
-     * @param int $order_id
+     *
+     * @param int $item            
+     * @param int $parent_target            
+     * @param int $order_id            
      */
     public function updateOrderId($item, $parent_target = null, $order_id = null)
     {

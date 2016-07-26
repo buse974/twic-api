@@ -6,7 +6,6 @@
  * Conversation Whiteboard
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -17,6 +16,13 @@ use Dal\Service\AbstractService;
 class ConversationWhiteboard extends AbstractService
 {
 
+    /**
+     * Add Conversation Whiteboard
+     *
+     * @param int $conversation_id            
+     * @param int $whiteboard_id            
+     * @return int
+     */
     public function add($conversation_id, $whiteboard_id)
     {
         return $this->getMapper()->insert($this->getModel()
@@ -24,6 +30,11 @@ class ConversationWhiteboard extends AbstractService
             ->setWhiteboardId($whiteboard_id));
     }
 
+    /**
+     * Delete ConversationWhiteboard
+     *
+     * @param int $whiteboard_id            
+     */
     public function delete($whiteboard_id)
     {
         $res_conversation_whiteboard = $this->getMapper()->select($this->getModel()
@@ -38,6 +49,7 @@ class ConversationWhiteboard extends AbstractService
     }
 
     /**
+     * Get Service Whiteboard
      *
      * @return \Application\Service\Whiteboard
      */

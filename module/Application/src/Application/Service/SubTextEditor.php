@@ -1,8 +1,18 @@
 <?php
+/**
+ *
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Submission Text Editor
+ *
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class SubTextEditor
+ */
 class SubTextEditor extends AbstractService
 {
 

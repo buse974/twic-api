@@ -120,38 +120,32 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_add" title="add :: ">
-            <span class="description"></span><pre>add</pre>
+        <a href="#method_add" title="add :: Add Group Set">
+            <span class="description">Add Group Set</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_delete" title="delete :: ">
-            <span class="description"></span><pre>delete</pre>
+        <a href="#method_delete" title="delete :: Delete Group Set">
+            <span class="description">Delete Group Set</span><pre>delete</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Group Set">
+            <span class="description">Get Group Set</span><pre>get</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: ">
-            <span class="description"></span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get List Group Set">
+            <span class="description">Get List Group Set</span><pre>getList</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceGroup" title="getServiceGroup :: ">
-            <span class="description"></span><pre>getServiceGroup</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_update" title="update :: ">
-            <span class="description"></span><pre>update</pre>
+                                                                                                                                                                <li class="method public">
+        <a href="#method_update" title="update :: Update Group Set">
+            <span class="description">Update Group Set</span><pre>update</pre>
         </a>
     </li>
 
@@ -163,7 +157,12 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                            <li class="method private">
+                            <a href="#method_getServiceGroup" title="getServiceGroup :: Get Service Group Set">
+                                <span class="description">Get Service Group Set</span><pre>getServiceGroup</pre>
+                            </a>
+                        </li>
+                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -201,8 +200,8 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>add</h2>
-                            <pre>add(integer $course, string $name, string $uid = null, string $groups = null,  $is_used = false) : integer</pre>
+                            <h2>Add Group Set</h2>
+                            <pre>add(integer $course, string $name, string $uid = null, array $groups = null, boolean $is_used = false) : \Application\Model\Set</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -247,22 +246,22 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$groups</h4>
-                                                <code>string</code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$is_used</h4>
-                                                <code></code><p></p>
+                                                <code>boolean</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>integer</code><p></p>
+                                        <code>\Application\Model\Set</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
-                            <h2>delete</h2>
+                            <h2>Delete Group Set</h2>
                             <pre>delete(integer $id) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -298,7 +297,7 @@
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
+                            <h2>Get Group Set</h2>
                             <pre>get(integer $id) : \Application\Model\Set</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -334,8 +333,8 @@
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
-                            <pre>getList(integer $course, string $name = null, array $filter = null) </pre>
+                            <h2>Get List Group Set</h2>
+                            <pre>getList(integer $course, string $name = null, array $filter = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -354,13 +353,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -377,13 +369,15 @@
                                                 <code>array</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getServiceGroup"></a>
-                        <div class="element clickable method public  method_getServiceGroup" data-toggle="collapse" data-target=".method_getServiceGroup .collapse">
-                            <h2>getServiceGroup</h2>
+                        <div class="element clickable method private  method_getServiceGroup" data-toggle="collapse" data-target=".method_getServiceGroup .collapse">
+                            <h2>Get Service Group Set</h2>
                             <pre>getServiceGroup() : \Application\Service\Group</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -412,7 +406,7 @@
                         </div>
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
-                            <h2>update</h2>
+                            <h2>Update Group Set</h2>
                             <pre>update(integer $id, string $uid = null, string $name = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -476,7 +470,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
+            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
     </footer>
     </body>
 </html>

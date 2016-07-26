@@ -6,7 +6,6 @@
  * Constrainte Rate
  *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -16,14 +15,16 @@ use Dal\Service\AbstractService;
  */
 class CtRate extends AbstractService
 {
+
     /**
+     * Add Constraint Rate
+     *
      * @invokable
      *
-     * @param int    $item_id
-     * @param int    $target_id
-     * @param string $inf
-     * @param string $sup
-     *
+     * @param int $item_id            
+     * @param int $target_id            
+     * @param string $inf            
+     * @param string $sup            
      * @return int
      */
     public function add($item_id, $target_id, $inf = null, $sup = null)
@@ -34,18 +35,19 @@ class CtRate extends AbstractService
             ->setInf($inf)
             ->setSup($sup);
         $this->getMapper()->insert($m_ct_rate);
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
+     * Update Constraint Rate
+     *
      * @invokable
      *
-     * @param int    $id
-     * @param int    $target_id
-     * @param string $inf
-     * @param string $sup
-     *
+     * @param int $id            
+     * @param int $target_id            
+     * @param string $inf            
+     * @param string $sup            
      * @return int
      */
     public function update($id, $target_id = null, $inf = null, $sup = null)
@@ -55,15 +57,16 @@ class CtRate extends AbstractService
             ->setTargetId($target_id)
             ->setInf($inf)
             ->setSup($sup);
-
+        
         return $this->getMapper()->update($m_ct_rate);
     }
 
     /**
+     * Delete Constraint Rate
+     *
      * @invokable
      *
-     * @param int $id
-     *
+     * @param int $id            
      * @return int
      */
     public function delete($id)
@@ -73,10 +76,14 @@ class CtRate extends AbstractService
     }
 
     /**
-     * @param int $item_id
+     * Get Constraint Rate
+     *
+     * @param int $item_id            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($item_id)
     {
-        return $this->getMapper()->select($this->getModel()->setItemId($item_id));
+        return $this->getMapper()->select($this->getModel()
+            ->setItemId($item_id));
     }
 }

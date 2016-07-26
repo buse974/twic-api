@@ -15,9 +15,11 @@ use Dal\Service\AbstractService;
  */
 class Question extends AbstractService
 {
+
     /**
-     * @param int $component
+     * Get Rand
      *
+     * @param int $component            
      * @return \Application\Model\Question
      */
     public function getRand($component)
@@ -28,30 +30,36 @@ class Question extends AbstractService
     }
 
     /**
+     * Add Question
+     *
      * @invokable
      *
-     * @param string $text
-     * @param string $component
+     * @param string $text            
+     * @param string $component            
+     * @return int
      */
     public function add($text, $component)
     {
         $m_question = $this->getModel()
             ->setText($text)
             ->setComponentId($component);
-
+        
         if ($this->getMapper()->insert($m_question) <= 0) {
             throw new \Eception('error insert question');
         }
-
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
+     * Update Question
+     *
      * @invokable
      *
-     * @param int    $id
-     * @param string $text
-     * @param string $component
+     * @param int $id            
+     * @param string $text            
+     * @param string $component            
+     * @return int
      */
     public function update($id, $text, $component)
     {
@@ -59,40 +67,44 @@ class Question extends AbstractService
             ->setId($id)
             ->setText($text)
             ->setComponentId($component);
-
+        
         return $this->getMapper()->update($m_question);
     }
 
     /**
+     * Delete Question
+     *
      * @invokable
      *
-     * @param int $id
+     * @param int $id            
+     * @return int
      */
     public function delete($id)
     {
         $m_question = $this->getModel()
             ->setId($id)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
+        
         return $this->getMapper()->update($m_question);
     }
 
     /**
+     * Get List Question
+     *
      * @invokable
-     * 
-     * @param string $filter
-     * @param string $questionnaire
-     * @param string $dimension
+     *
+     * @param int $questionnaire
+     * @param array $filter
+     * @param int $dimension
      * @param string $search
+     * @return array
      */
     public function getList($questionnaire = null, $filter = null, $dimension = null, $search = null)
     {
         $mapper = $this->getMapper();
-
+        
         $res_question = $mapper->usePaginator($filter)->getList($questionnaire, $dimension, $search);
-
-        return (null !== $filter) ?
-            array('count' => $mapper->count(), 'list' => $res_question) :
-            $res_question;
+        
+        return (null !== $filter) ? array('count' => $mapper->count(),'list' => $res_question) : $res_question;
     }
 }

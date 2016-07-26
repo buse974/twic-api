@@ -1,5 +1,11 @@
 <?php
-
+/**
+ *
+ * TheStudnet (http://thestudnet.com)
+ *
+ * School  
+ *
+ */
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
