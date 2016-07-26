@@ -11,6 +11,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Box\Model\Document as ModelDocument;
+use JRpc\Json\Server\Exception\JrpcException;
 
 /**
  * Class Library
@@ -248,10 +249,11 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $box_id            
+     * @param int $id
+     * @param string $box_id
      * @throws \Exception
-     * @return \Box\Model\Session
+     * @throws JrpcException
+     * @return void|\Box\Model\Session
      */
     public function getSession($id = null, $box_id = null)
     {
@@ -268,9 +270,19 @@ class Library extends AbstractService
             }
             $m_library = $res_library->current();
             $box_id = $m_library->getBoxId();
+            if(empty($box_id)) {
+                throw new JrpcException('No Box Id', 123456);
+            }
         }
         
-        return $this->getServiceBox()->createSession($box_id);
+        $session = null;
+        try {
+            $session =  $this->getServiceBox()->createSession($box_id);
+        } catch (\Exception $e) {
+            throw new JrpcException($e->getMessage(), $e->getCode());
+        }
+        
+        return $session;
     }
 
     /**
