@@ -1,0 +1,2 @@
+ALTER TABLE `program` 
+CHANGE COLUMN `year` `year` VARCHAR(255) NULL DEFAULT NULL ;
