@@ -55,18 +55,15 @@ class SubmissionPg extends AbstractService
         return  $this->getMapper()->getListByItem($item_id);
     }
 
-    /**
+     /**
      * Get List
      * 
      * @param int $submission_id
      * @param int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListBySubmission($submission_id = null, $item_id = null, $user_id = null, $peer_id = null)
+    public function getListBySubmission($submission_id, $user_id = null)
     {
-        if($submission_id === null){
-            $submission_id =  $this->getServiceSubmission()->getWithoutRestriction($item_id, $peer_id)->getId();             
-        }
         $m_submission_pg = $this->getModel()->setSubmissionId($submission_id);
         
         if(null !== $user_id) {
@@ -75,6 +72,7 @@ class SubmissionPg extends AbstractService
         
         return  $this->getMapper()->select($m_submission_pg);
     }
+    
     
     /**
      * Delete By Item

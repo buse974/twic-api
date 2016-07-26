@@ -181,10 +181,18 @@ class Submission extends AbstractService
         }
 
         if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
-            if($user_id == null){                
+            if(null === $user_id){                
                 $user_id = $identity['id'];
             }
             else if($user_id !== $identity['id']){
+                if(null === $submission_id){
+                    $res_submission = $this->getMapper()->get($item_id, $user_id);
+                    if ($res_submission->count() <= 0) {
+                        throw new \Exception('error item and submission are null in submission.get');
+                    }                
+                    $submission_id = $res_submission->current()->getId();
+                }
+                
                 $res_submission_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id, $identity['id']); 
                 if($res_submission_pg->count() <= 0){
                    throw new \Exception('error item and submission are null in submission.get');
@@ -195,7 +203,7 @@ class Submission extends AbstractService
         // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
         if ($res_submission->count() <= 0) {
-            return;
+            throw new \Exception('error item and submission are null in submission.get');
         }
         $m_submission = $res_submission->current();
         $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
