@@ -16,7 +16,6 @@ use Application\Model\VideoArchive as CVF;
  */
 class VideoArchive extends AbstractService
 {
-
     /**
      * Get List Video
      * 
@@ -28,13 +27,16 @@ class VideoArchive extends AbstractService
     public function getList($item_id)
     {   
         $res_videoconf_archive = $this->getMapper()->getList($item_id);
-        
-        $ret = [];
+        $tmp = $ret = [];
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
-            $ret[$m_videoconf_archive->getConversationId()][] = $m_videoconf_archive;
+            $tmp[$m_videoconf_archive->getConversationId()][] = $m_videoconf_archive;
         }
-        foreach ($ret as $k => $r) {
-            $ret['conversation_user'] = $this->getServiceConversationUser()->getUserByConversation($k);
+        
+        foreach ($ret as $k => $v) {
+            $ret[] = [
+             'conversation_id' => $k,
+             'videos' => $v,
+             'conversation_user' => $this->getServiceConversationUser()->getUserByConversation($k)];
         }
         
         return $ret;
