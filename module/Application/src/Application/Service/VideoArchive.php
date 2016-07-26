@@ -29,11 +29,15 @@ class VideoArchive extends AbstractService
     {   
         $res_videoconf_archive = $this->getMapper()->getList($item_id);
         
+        $ret = [];
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
-            $m_videoconf_archive->setConversationUser($this->getServiceConversationUser()->getUserByConversation($m_videoconf_archive->getConversationId()));
+            $ret[$m_videoconf_archive->getConversationId()][] = $m_videoconf_archive;
+        }
+        foreach ($ret as $r) {
+            $ret['conversation_user'] = $this->getServiceConversationUser()->getUserByConversation($r->getConversationId())
         }
         
-        return $res_videoconf_archive;
+        return $ret;
     }
 
     /**
