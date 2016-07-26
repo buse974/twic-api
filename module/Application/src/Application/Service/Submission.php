@@ -179,21 +179,50 @@ class Submission extends AbstractService
         if (null === $item_id && null === $submission_id) {
             throw new \Exception('error item and submission are null in submission.get');
         }
-        
-        //@todo remettre la sécuriter 
-        //if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles']) && null === $user_id ) {
-            //$res_submission_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id, $identity['id']); 
-            //if($res_submission_pg->count() <= 0){
-                //$user_id = $identity['id'];
-            //}
-        //}
+
+        if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
+            if(null === $user_id){                
+                $user_id = $identity['id'];
+            }
+            else if($user_id !== $identity['id']){
+                if(null === $submission_id){
+                    $res_submission = $this->getMapper()->get($item_id, $user_id);
+                    if ($res_submission->count() <= 0) {
+                        throw new \Exception('error item and submission are null in submission.get');
+                    }                
+                    $submission_id = $res_submission->current()->getId();
+                }
+                
+                $res_submission_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id, $identity['id']); 
+                if($res_submission_pg->count() <= 0){
+                   throw new \Exception('error item and submission are null in submission.get');
+                }
+                 
+            }
+        }
         // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
         $res_submission = $this->getMapper()->get($item_id, $user_id, $submission_id);
+        if ($res_submission->count() <= 0) {
+            throw new \Exception('error item and submission are null in submission.get');
+        }
+        $m_submission = $res_submission->current();
+        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
+        
+        return $m_submission;
+    }
+    
+    public function getWithoutRestriction($item_id = null, $user_id = null)
+    {
+        $identity = $this->getServiceUser()->getIdentity();
+        if($user_id == null){                
+            $user_id = $identity['id'];
+        }
+         // // FIN ICI INITIALISATION DE LA RECHERCHE DE SUBMISSION
+        $res_submission = $this->getMapper()->get($item_id, $user_id);
         if ($res_submission->count() <= 0) {
             return;
         }
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()->getListBySubmissionId($m_submission->getId()));
         
         return $m_submission;
     }
