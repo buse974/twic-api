@@ -33,8 +33,8 @@ class VideoArchive extends AbstractService
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
             $ret[$m_videoconf_archive->getConversationId()][] = $m_videoconf_archive;
         }
-        foreach ($ret as $r) {
-            $ret['conversation_user'] = $this->getServiceConversationUser()->getUserByConversation($r->getConversationId())
+        foreach ($ret as $k => $r) {
+            $ret['conversation_user'] = $this->getServiceConversationUser()->getUserByConversation($k);
         }
         
         return $ret;
