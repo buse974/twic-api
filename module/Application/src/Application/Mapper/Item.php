@@ -398,7 +398,7 @@ class Item extends AbstractMapper
             $where[] = 'item.type IN ('.implode(',', $s).')';
             
         } else {
-            $where[] = "item.type IN ('HANGOUT', 'CP', 'IA', 'POLL', 'DISC', 'CHAT')";
+            $where[] = "item.type IN ('CP', 'IA', 'POLL', 'DISC', 'CHAT')";
         }
         if (null !== $search) {
             $val[':s'] = '%'.$search.'%';

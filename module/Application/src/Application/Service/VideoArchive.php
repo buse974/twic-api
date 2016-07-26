@@ -120,7 +120,6 @@ class VideoArchive extends AbstractService
         
         //$m_video_archive = $this->getMapper()->select($this->getModel()->setId($video_archive))->current();
         $m_video_archive = $this->getMapper()->getListSameConversation($video_archive)->current();
-        
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
       //  if ($event_send) {
         $this->getServiceEvent()->recordAvailable($m_video_archive->getSubmissionId(), $video_archive);
