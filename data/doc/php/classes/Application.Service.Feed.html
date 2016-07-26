@@ -144,8 +144,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: ">
-            <span class="description"></span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Feed">
+            <span class="description">Get Feed</span><pre>get</pre>
         </a>
     </li>
 
@@ -161,39 +161,9 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceContact" title="getServiceContact :: ">
-            <span class="description"></span><pre>getServiceContact</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceEvent" title="getServiceEvent :: ">
-            <span class="description"></span><pre>getServiceEvent</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceFeedComment" title="getServiceFeedComment :: ">
-            <span class="description"></span><pre>getServiceFeedComment</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceSimplePageCrawler" title="getServiceSimplePageCrawler :: ">
-            <span class="description"></span><pre>getServiceSimplePageCrawler</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getServiceUser" title="getServiceUser :: ">
-            <span class="description"></span><pre>getServiceUser</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_linkPreview" title="linkPreview :: ">
-            <span class="description"></span><pre>linkPreview</pre>
+                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+        <a href="#method_linkPreview" title="linkPreview :: Get preview Crawler">
+            <span class="description">Get preview Crawler</span><pre>linkPreview</pre>
         </a>
     </li>
 
@@ -211,7 +181,32 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                        <li class="method private">
+                            <a href="#method_getServiceContact" title="getServiceContact :: Get Service Contact">
+                                <span class="description">Get Service Contact</span><pre>getServiceContact</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event">
+                                <span class="description">Get Service Event</span><pre>getServiceEvent</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceFeedComment" title="getServiceFeedComment :: Get Service FeedComment">
+                                <span class="description">Get Service FeedComment</span><pre>getServiceFeedComment</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceSimplePageCrawler" title="getServiceSimplePageCrawler :: Get Service PageCrawler">
+                                <span class="description">Get Service PageCrawler</span><pre>getServiceSimplePageCrawler</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServiceUser</pre>
+                            </a>
+                        </li>
+                                                                                                                        </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -433,8 +428,8 @@
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>get</h2>
-                            <pre>get(integer $id) : \Application\Model\Feed</pre>
+                            <h2>Get Feed</h2>
+                            <pre>get(integer $id) : \Application\Model\Feed|null</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -453,7 +448,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Application\Model\Feed</code><p></p>
+                                        <code>\Application\Model\Feed|null</code><p></p>
                                                                     </div>
                             </div>
 
@@ -461,7 +456,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>GetList Feed.</h2>
-                            <pre>getList(string $filter = null, string $ids = null, integer $user = null) </pre>
+                            <pre>getList(string $filter = null, string $ids = null, integer $user = null) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -480,13 +475,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -503,6 +491,8 @@
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -549,8 +539,8 @@
 
                         </div>
                                             <a id="method_getServiceContact"></a>
-                        <div class="element clickable method public  method_getServiceContact" data-toggle="collapse" data-target=".method_getServiceContact .collapse">
-                            <h2>getServiceContact</h2>
+                        <div class="element clickable method private  method_getServiceContact" data-toggle="collapse" data-target=".method_getServiceContact .collapse">
+                            <h2>Get Service Contact</h2>
                             <pre>getServiceContact() : \Application\Service\Contact</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -578,8 +568,8 @@
 
                         </div>
                                             <a id="method_getServiceEvent"></a>
-                        <div class="element clickable method public  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
-                            <h2>getServiceEvent</h2>
+                        <div class="element clickable method private  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
+                            <h2>Get Service Event</h2>
                             <pre>getServiceEvent() : \Application\Service\Event</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -607,8 +597,8 @@
 
                         </div>
                                             <a id="method_getServiceFeedComment"></a>
-                        <div class="element clickable method public  method_getServiceFeedComment" data-toggle="collapse" data-target=".method_getServiceFeedComment .collapse">
-                            <h2>getServiceFeedComment</h2>
+                        <div class="element clickable method private  method_getServiceFeedComment" data-toggle="collapse" data-target=".method_getServiceFeedComment .collapse">
+                            <h2>Get Service FeedComment</h2>
                             <pre>getServiceFeedComment() : \Application\Service\FeedComment</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -636,8 +626,8 @@
 
                         </div>
                                             <a id="method_getServiceSimplePageCrawler"></a>
-                        <div class="element clickable method public  method_getServiceSimplePageCrawler" data-toggle="collapse" data-target=".method_getServiceSimplePageCrawler .collapse">
-                            <h2>getServiceSimplePageCrawler</h2>
+                        <div class="element clickable method private  method_getServiceSimplePageCrawler" data-toggle="collapse" data-target=".method_getServiceSimplePageCrawler .collapse">
+                            <h2>Get Service PageCrawler</h2>
                             <pre>getServiceSimplePageCrawler() : \SimplePageCrawler\PageCrawler</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -665,8 +655,8 @@
 
                         </div>
                                             <a id="method_getServiceUser"></a>
-                        <div class="element clickable method public  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
-                            <h2>getServiceUser</h2>
+                        <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
+                            <h2>Get Service User</h2>
                             <pre>getServiceUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -695,8 +685,8 @@
                         </div>
                                             <a id="method_linkPreview"></a>
                         <div class="element clickable method public  method_linkPreview" data-toggle="collapse" data-target=".method_linkPreview .collapse">
-                            <h2>linkPreview</h2>
-                            <pre>linkPreview(string $url) </pre>
+                            <h2>Get preview Crawler</h2>
+                            <pre>linkPreview(string $url) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -715,13 +705,6 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
@@ -730,6 +713,8 @@
                                                 <code>string</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
@@ -828,7 +813,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Sun, 24 Jul 2016 23:44:28 +0200.<br/>
+            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
     </footer>
     </body>
 </html>

@@ -14,12 +14,32 @@ namespace Application\Service;
 class CacheUser implements ServiceLocatorAwareInterface
 {
 
+    /**
+     * Service Locator
+     * 
+     * @var \Application\Service\ServiceLocatorInterface
+     */
     protected $serviceLocator;
 
+    /**
+     * Prefix 
+     * 
+     * @var string
+     */
     protected $prefix = 'identity_';
 
+    /**
+     * Name key local
+     * 
+     * @var string
+     */
     protected $key_local = 'token';
 
+    /**
+     * Name key Global
+     * 
+     * @var string
+     */
     protected $key_global = 'id';
 
     /**

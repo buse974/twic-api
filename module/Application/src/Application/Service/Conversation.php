@@ -508,6 +508,8 @@ class Conversation extends AbstractService
     }
 
     /**
+     * Create a Submission conversation
+     * 
      * @invokable
      *
      * @param array $users            

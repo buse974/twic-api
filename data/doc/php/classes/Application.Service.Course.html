@@ -227,7 +227,7 @@
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Add course.</h2>
-                            <pre>add(integer $program_id, string $title = null,  $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, string $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null, array $material_document = array()) : integer</pre>
+                            <pre>add(integer $program_id, string $title = null, string $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, integer $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null, array $material_document = array()) : \Application\Model\Course</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -268,7 +268,7 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$picture</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$abstract</h4>
@@ -292,7 +292,7 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$duration</h4>
-                                                <code>string</code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$notes</h4>
@@ -316,7 +316,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>integer</code><p></p>
+                                        <code>\Application\Model\Course</code><p></p>
                                                                     </div>
                             </div>
 
@@ -732,7 +732,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Sun, 24 Jul 2016 23:44:28 +0200.<br/>
+            generated on Mon, 25 Jul 2016 22:01:57 +0200.<br/>
     </footer>
     </body>
 </html>

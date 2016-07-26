@@ -198,6 +198,12 @@ class Submission extends AbstractService
         return $m_submission;
     }
 
+    /**
+     * Add Submission
+     * 
+     * @param array $data
+     * @param int $item_id
+     */
     public function add($data, $item_id)
     {
         $has_modif = false;

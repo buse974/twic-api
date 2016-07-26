@@ -32,7 +32,6 @@ class Feed extends AbstractService
      * @param string $link_desc
      * @param string $link_title
      * @param string $type
-     * 
      * @return int
      */
     public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null,
@@ -84,7 +83,6 @@ class Feed extends AbstractService
      * @param string $name_document
      * @param string $link_desc
      * @param string $link_title
-     * 
      * @return int
      */
     public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null, $link_desc = null, $link_title = null)
@@ -111,7 +109,6 @@ class Feed extends AbstractService
      * @invokable
      *
      * @param int $id
-     *
      * @return int
      */
     public function delete($id)
@@ -130,7 +127,6 @@ class Feed extends AbstractService
      *
      * @param int    $id
      * @param string $content
-     *
      * @return int
      */
     public function addComment($id, $content)
@@ -156,7 +152,6 @@ class Feed extends AbstractService
      * Get List Comment Feed.
      *
      * @invokable
-     *
      * @param int $id
      */
     public function GetListComment($id)
@@ -172,6 +167,7 @@ class Feed extends AbstractService
      * @param string $filter
      * @param string $ids
      * @param int    $user
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($filter = null, $ids = null, $user = null)
     {
@@ -192,9 +188,10 @@ class Feed extends AbstractService
     }
 
     /**
+     * Get Feed
+     * 
      * @param int $id
-     *
-     * @return \Application\Model\Feed
+     * @return \Application\Model\Feed|null
      */
     public function get($id)
     {
@@ -204,9 +201,11 @@ class Feed extends AbstractService
     }
 
     /**
-     * @invokable 
+     * Get preview Crawler
      * 
+     * @invokable 
      * @param string $url
+     * @return array
      */
     public function linkPreview($url)
     {
@@ -235,41 +234,51 @@ class Feed extends AbstractService
     }
 
     /**
+     * Get Service FeedComment
+     * 
      * @return \Application\Service\FeedComment
      */
-    public function getServiceFeedComment()
+    private function getServiceFeedComment()
     {
         return $this->serviceLocator->get('app_service_feed_comment');
     }
 
     /**
+     * Get Service Contact
+     * 
      * @return \Application\Service\Contact
      */
-    public function getServiceContact()
+    private function getServiceContact()
     {
         return $this->serviceLocator->get('app_service_contact');
     }
 
     /**
+     * Get Service User
+     * 
      * @return \Application\Service\User
      */
-    public function getServiceUser()
+    private function getServiceUser()
     {
         return $this->serviceLocator->get('app_service_user');
     }
 
     /**
+     * Get Service PageCrawler
+     * 
      * @return \SimplePageCrawler\PageCrawler
      */
-    public function getServiceSimplePageCrawler()
+    private function getServiceSimplePageCrawler()
     {
         return $this->serviceLocator->get('SimplePageCrawler');
     }
 
     /**
+     * Get Service Event
+     * 
      * @return \Application\Service\Event
      */
-    public function getServiceEvent()
+    private function getServiceEvent()
     {
         return $this->serviceLocator->get('app_service_event');
     }

@@ -7,13 +7,15 @@ use Application\Model\VideoArchive as CVF;
 
 class VideoArchive extends AbstractMapper
 {
-    public function getList($submission_id)
+    public function getList($item_id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'archive_token', 'archive_link', 'archive_status', 'archive_duration', 'conversation_id', 'created_date'))
-            ->join('sub_conversation', 'sub_conversation.conversation_id=video_archive.conversation_id', ['video_archive$submission_id' => 'submission_id'])
-            ->where(['sub_conversation.submission_id' => $submission_id])
-            ->where(['archive_status' => CVF::ARV_AVAILABLE]);
+            ->join('sub_conversation', 'sub_conversation.conversation_id=video_archive.conversation_id', [])
+            ->join('submission', 'submission.id=sub_conversation.submission_id', [])
+            ->where(['submission.item_id' => $item_id])
+            ->where(['archive_status' => CVF::ARV_AVAILABLE])
+            ->quantifier('distinct');
         
         return $this->selectWith($select);
     }

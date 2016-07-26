@@ -18,6 +18,19 @@ class VideoArchive extends BaseVideoArchive
     const ARV_UPLOAD = 'uploaded';
     
     protected $submission_id;
+    protected $conversation_user;
+    
+    public function setConversationUser($conversation_user)
+    {
+        $this->conversation_user = $conversation_user;
+    
+        return $this;
+    }
+    
+    public function getConversationUser()
+    {
+        return $this->conversation_user;
+    }
     
     public function setSubmissionId($submission_id)
     {

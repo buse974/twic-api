@@ -16,6 +16,12 @@ use Dal\Service\AbstractService;
  */
 class QuestionnaireQuestion extends AbstractService
 {
+    /**
+     * Create Questionnaire Question
+     * 
+     * @param int $questionnaire
+     * @return bool
+     */
     public function create($questionnaire)
     {
         $m_questionnaire_question = $this->getModel()->setQuestionnaireId($questionnaire);
@@ -32,9 +38,10 @@ class QuestionnaireQuestion extends AbstractService
     }
 
     /**
+     * Get Questionnaire Question
+     * 
      * @param int $questionnaire
      * @param int $question
-     * 
      * @return \Application\Model\QuestionnaireQuestion
      */
     public function getByQuestion($questionnaire, $question)
@@ -45,17 +52,21 @@ class QuestionnaireQuestion extends AbstractService
     }
 
     /**
+     * Get Service Component
+     * 
      * @return \Application\Service\Component
      */
-    public function getServiceComponent()
+    private function getServiceComponent()
     {
         return $this->getServiceLocator()->get('app_service_component');
     }
 
     /**
+     * Get Service Question
+     * 
      * @return \Application\Service\Question
      */
-    public function getServiceQuestion()
+    private function getServiceQuestion()
     {
         return $this->getServiceLocator()->get('app_service_question');
     }

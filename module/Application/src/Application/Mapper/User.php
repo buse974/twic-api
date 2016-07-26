@@ -414,7 +414,6 @@ class User extends AbstractMapper
             ->join('submission', 'submission.id=submission_user.submission_id', [],  $select::JOIN_LEFT)
             ->join('item', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
             ->join('course', 'item.course_id=course.id OR course_user_relation.course_id=course.id', [])
-            ->join('program', 'course.program_id=program.id', [])
             ->where(array('submission.id' => $submission_id))
             ->where(array(' ( submission.id IS NULL AND user_role.role_id = 5 ) '), Predicate::OP_OR)
             ->quantifier('DISTINCT');

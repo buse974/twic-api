@@ -386,7 +386,10 @@ class Event extends AbstractService
         $m_video_archive = $this->getServiceVideoArchive()->get($video_archive);
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('record.available', $this->getDataSubmission($m_submission), $this->getDataVideoArchive($m_video_archive), $this->getListBySubmissionWithInstrutorAndAcademic($submission_id), self::TARGET_TYPE_USER);
+        $user = [];
+        $user = $this->getDataUserBySubmission($submission_id) + $this->getDataUserBySubmissionWithInstrutorAndAcademic($submission_id);
+        
+        return $this->create('record.available', $this->getDataSubmission($m_submission), $this->getDataVideoArchive($m_video_archive), $user, self::TARGET_TYPE_USER);
     }
 
     /**
@@ -399,7 +402,7 @@ class Event extends AbstractService
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), $this->getListBySubmissionWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), $this->getDataUserBySubmissionWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
     }
 
     /**
@@ -563,7 +566,7 @@ class Event extends AbstractService
      * @param int $task_id            
      * @return array
      */
-    public function getDataTask($task_id)
+    private function getDataTask($task_id)
     {
         $m_task = $this->getServiceTask()->get($task_id);
         
@@ -576,7 +579,7 @@ class Event extends AbstractService
      * @param int $resume_id            
      * @return array
      */
-    public function getDataResume($resume_id)
+    private function getDataResume($resume_id)
     {
         $m_resume = $this->getServiceResume()->getById($resume_id);
         
@@ -590,7 +593,7 @@ class Event extends AbstractService
      * @param array $dataupdated            
      * @return array
      */
-    public function getDataUpdateProfile($user_id, $dataupdated)
+    private function getDataUpdateProfile($user_id, $dataupdated)
     {
         if (isset($dataupdated['id'])) {
             unset($dataupdated['id']);
@@ -605,7 +608,7 @@ class Event extends AbstractService
      * @param int $submission_id            
      * @return array
      */
-    public function getDataProgrammation($submission_id)
+    private function getDataProgrammation($submission_id)
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
@@ -619,7 +622,7 @@ class Event extends AbstractService
      * @param array $dataupdated            
      * @return array
      */
-    public function getDataCourseUpdate($course_id, $dataupdated)
+    private function getDataCourseUpdate($course_id, $dataupdated)
     {
         $m_course = $this->getServiceCourse()->get($course_id);
         
@@ -636,7 +639,7 @@ class Event extends AbstractService
      * @param \Application\Model\VideoArchive $m_video_archive            
      * @return array
      */
-    public function getDataVideoArchive(\Application\Model\VideoArchive $m_video_archive)
+    private function getDataVideoArchive(\Application\Model\VideoArchive $m_video_archive)
     {
         return ['id' => $m_video_archive->getId(),'name' => 'archive','data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
     }
@@ -647,7 +650,7 @@ class Event extends AbstractService
      * @param \Application\Model\Submission $m_submission            
      * @return array
      */
-    public function getDataSubmissionWihtUser(\Application\Model\Submission $m_submission)
+    private function getDataSubmissionWihtUser(\Application\Model\Submission $m_submission)
     {
         $res_user = $this->getServiceUser()->getListUsersBySubmission($m_submission->getId());
         
@@ -665,7 +668,7 @@ class Event extends AbstractService
      * @param \Application\Model\Submission $m_submission            
      * @return array
      */
-    public function getDataSubmission(\Application\Model\Submission $m_submission)
+    private function getDataSubmission(\Application\Model\Submission $m_submission)
     {
         return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()]]];
     }
@@ -676,7 +679,7 @@ class Event extends AbstractService
      * @param int $course_id            
      * @return array
      */
-    public function getDataUserByCourse($course_id)
+    private function getDataUserByCourse($course_id)
     {
         $res_user = $this->getServiceUser()->getListUserBycourse($course_id);
         
@@ -694,7 +697,7 @@ class Event extends AbstractService
      * @param int $user_id            
      * @return array
      */
-    public function getDataUserContact($user_id = null)
+    private function getDataUserContact($user_id = null)
     {
         $ret = $this->getServiceContact()->getListId($user_id);
         
@@ -712,7 +715,7 @@ class Event extends AbstractService
      * @param int $school_id            
      * @return array
      */
-    public function getDataUserBySchool($school_id)
+    private function getDataUserBySchool($school_id)
     {
         $res_user = $this->getServiceUser()->getListBySchool($school_id);
         
@@ -730,7 +733,7 @@ class Event extends AbstractService
      * @param int $course_id            
      * @return array
      */
-    public function getDataUserByCourseWithStudentAndInstructorAndAcademic($course_id)
+    private function getDataUserByCourseWithStudentAndInstructorAndAcademic($course_id)
     {
         $res_user = $this->getServiceUser()->getListUserBycourseWithStudentAndInstructorAndAcademic($course_id);
         
@@ -748,7 +751,7 @@ class Event extends AbstractService
      * @param int $course_id            
      * @return array
      */
-    public function getDataUserByCourseWithInstructorAndAcademic($course_id)
+    private function getDataUserByCourseWithInstructorAndAcademic($course_id)
     {
         $res_user = $this->getServiceUser()->getListUserBycourseWithInstructorAndAcademic($course_id);
         
@@ -766,7 +769,7 @@ class Event extends AbstractService
      * @param int $item_id            
      * @return array
      */
-    public function getDataInstructorByItem($item_id)
+    private function getDataInstructorByItem($item_id)
     {
         $res_user = $this->getServiceUser()->getInstructorByItem($item_id);
         
@@ -784,7 +787,7 @@ class Event extends AbstractService
      * @param int $submission_id            
      * @return array
      */
-    public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
+    private function getDataUserBySubmissionWithInstrutorAndAcademic($submission_id)
     {
         $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
         
@@ -802,7 +805,7 @@ class Event extends AbstractService
      * @param int $submission_id            
      * @return array
      */
-    public function getDataUserBySubmission($submission_id)
+    private function getDataUserBySubmission($submission_id)
     {
         $res_user = $this->getServiceUser()->getListBySubmission($submission_id);
         
@@ -820,7 +823,7 @@ class Event extends AbstractService
      * @param \Application\Model\ThreadMessage $m_thread_message            
      * @return array
      */
-    public function getDataThreadMessage(\Application\Model\ThreadMessage $m_thread_message)
+    private function getDataThreadMessage(\Application\Model\ThreadMessage $m_thread_message)
     {
         $m_thread = $this->getServiceThread()->get($m_thread_message->getThread()
             ->getId());
@@ -834,7 +837,7 @@ class Event extends AbstractService
      * @param \Application\Model\Thread $m_thread            
      * @return array
      */
-    public function getDataThread(\Application\Model\Thread $m_thread)
+    private function getDataThread(\Application\Model\Thread $m_thread)
     {
         return ['id' => $m_thread->getId(),'name' => 'thread','data' => ['id' => $m_thread->getId(),'title' => $m_thread->getTitle(),'course' => ['id' => $m_thread->getCourse()->getId(),'title' => $m_thread->getCourse()->getTitle()]]];
     }
@@ -845,7 +848,7 @@ class Event extends AbstractService
      * @param int $feed_id            
      * @return array
      */
-    public function getDataFeed($feed_id)
+    private function getDataFeed($feed_id)
     {
         $m_feed = $this->getServiceFeed()->get($feed_id);
         
@@ -858,7 +861,7 @@ class Event extends AbstractService
      * @param int $event            
      * @return array
      */
-    public function getDataEvent($event)
+    private function getDataEvent($event)
     {
         $m_event = $this->get($event);
         
@@ -872,7 +875,7 @@ class Event extends AbstractService
      * @param \Application\Model\SubmissionComments $m_comment            
      * @return array
      */
-    public function getDataSubmissionComment(\Application\Model\Submission $m_submisssion, \Application\Model\SubmissionComments $m_comment)
+    private function getDataSubmissionComment(\Application\Model\Submission $m_submisssion, \Application\Model\SubmissionComments $m_comment)
     {
         return ['id' => $m_submisssion->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submisssion->getItem()->getId(),'title' => $m_submisssion->getItem()->getTitle(),'type' => $m_submisssion->getItem()->getType()],'comment' => ['id' => $m_comment->getId(),'text' => $m_comment->getText()]]];
     }
@@ -883,7 +886,7 @@ class Event extends AbstractService
      * @param int $user_id            
      * @return array
      */
-    public function getDataUser($user_id = null)
+    private function getDataUser($user_id = null)
     {
         if (null == $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -900,7 +903,7 @@ class Event extends AbstractService
      * @param int $message_id            
      * @return array
      */
-    public function getDataMessage($message_id)
+    private function getDataMessage($message_id)
     {
         $m_message = $this->getServiceMessageUser()
             ->getMessage($message_id)

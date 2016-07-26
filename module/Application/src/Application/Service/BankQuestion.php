@@ -44,6 +44,8 @@ class BankQuestion extends AbstractService
     }
 
     /**
+     * Update Bank question 
+     * 
      * @invokable
      *
      * @param int $id            
@@ -53,7 +55,8 @@ class BankQuestion extends AbstractService
      * @param array $bank_question_item            
      * @param array $bank_question_tag            
      * @param array $bank_question_media            
-     * @param string $name            
+     * @param string $name      
+     * @return int      
      */
     public function update($id, $question = null, $bank_question_type_id = null, $point = null, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name = null)
     {
@@ -84,9 +87,9 @@ class BankQuestion extends AbstractService
     }
 
     /**
+     * Get With Poll Exist
      *
-     * @param int $id            
-     *
+     * @param int $id  
      * @return null|\Application\Model\BankQuestion
      */
     public function getWithPollItemExist($id)
@@ -97,11 +100,14 @@ class BankQuestion extends AbstractService
     }
 
     /**
+     * Copy Bank Question 
+     * 
      * Si utiliser il copy et on retour le nouvelle id,
      * si utiliser mais for_delete alors on le passe simplement a older.
      *
      * @param int $id            
-     * @param bool $for_delete            
+     * @param bool $for_delete    
+     * @return int       
      */
     public function copy($id, $for_delete = false)
     {
@@ -132,9 +138,12 @@ class BankQuestion extends AbstractService
     }
 
     /**
+     * Delete Bank question
+     * 
      * @invokable
      *
-     * @param int $id            
+     * @param int $id     
+     * @return array       
      */
     public function delete($id)
     {
@@ -155,6 +164,20 @@ class BankQuestion extends AbstractService
         return $ret;
     }
 
+    /**
+     * Add Bank Question (Global)
+     * 
+     * @param int $course_id
+     * @param string $question
+     * @param int $bank_question_type_id
+     * @param int $point
+     * @param array $bank_question_item
+     * @param array $bank_question_tag
+     * @param array $bank_question_media
+     * @param string $name
+     * @throws \Exception
+     * @return int
+     */
     public function _add($course_id, $question, $bank_question_type_id, $point, $bank_question_item = null, $bank_question_tag = null, $bank_question_media = null, $name)
     {
         $m_bank_question = $this->getModel()

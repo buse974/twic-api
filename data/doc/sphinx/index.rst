@@ -14,7 +14,7 @@ Indices and tables
 * :ref:`jrpc-label`.
 * :ref:`auth-label`.
 * :ref:`rbac-label`.
-* `Api Documentation Json Data <https://app.apiary.io/thestudnetapi>`_
+* `Api Documentation Json Data <http://docs.thestudnetapi.apiary.io>` _
 
 |
 |

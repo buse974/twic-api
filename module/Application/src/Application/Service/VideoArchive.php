@@ -19,21 +19,21 @@ class VideoArchive extends AbstractService
 
     /**
      * Get List Video
+     * 
      * @invokable
      *
-     * @param integer $submission_id            
+     * @param integer $item_id            
      * @return array|stdClass
      */
-    public function getList($submission_id)
-    {
-        $res_videoconf_archive = $this->getMapper()->getList($submission_id);
+    public function getList($item_id)
+    {   
+        $res_videoconf_archive = $this->getMapper()->getList($item_id);
         
-        $ret = [];
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
-            $ret[$m_videoconf_archive->getSubmissionId()][] = $m_videoconf_archive->toArray();
+            $m_videoconf_archive->setConversationUser($this->getServiceConversationUser()->getUserByConversation($m_videoconf_archive->getConversationId()));
         }
         
-        return (count($ret) === 0) ? new \stdClass() : $ret;
+        return $res_videoconf_archive;
     }
 
     /**
@@ -200,6 +200,16 @@ class VideoArchive extends AbstractService
     private function getServiceConversation()
     {
         return $this->getServiceLocator()->get('app_service_conversation');
+    }
+    
+    /**
+     * Get Service Conversation user
+     *
+     * @return \Application\Service\ConversationUser
+     */
+    private function getServiceConversationUser()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation_user');
     }
 
     /**
