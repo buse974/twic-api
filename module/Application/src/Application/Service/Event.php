@@ -389,7 +389,7 @@ class Event extends AbstractService
         $user = [];
         $user = $this->getDataUserBySubmission($submission_id) + $this->getDataUserBySubmissionWithInstrutorAndAcademic($submission_id);
         
-        return $this->create('record.available', $this->getDataSubmission($m_submission), $this->getDataVideoArchive($m_video_archive), $user, self::TARGET_TYPE_USER);
+        return $this->create('record.available', $this->getDataVideoArchive($m_video_archive),$this->getDataSubmission($m_submission),  $user, self::TARGET_TYPE_USER);
     }
 
     /**
