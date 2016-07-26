@@ -16,6 +16,7 @@ class VideoArchive extends BaseVideoArchive
     const ARV_STARTED = 'started';
     const ARV_STOPPED = 'stopped';
     const ARV_UPLOAD = 'uploaded';
+    const ARV_SKIPPED = 'skipped';
     
     protected $submission_id;
     protected $conversation_user;

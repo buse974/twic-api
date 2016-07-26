@@ -162,10 +162,14 @@ class VideoArchive extends AbstractService
             try {
                 $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_video_archive->getArchiveToken()), true);
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
-                    $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
-                    $arr = $m_video_archive->toArray();
-                    $arr['url'] = $archive['url'];
-                    $ret[] = $arr;
+                    if($archive['duration'] == 0) {
+                        $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_SKIPPED, 0);
+                    } else {
+                        $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
+                        $arr = $m_video_archive->toArray();
+                        $arr['url'] = $archive['url'];
+                        $ret[] = $arr;
+                    }
                 }
             } catch (\Exception $e) {
                 echo $e->getMessage();
