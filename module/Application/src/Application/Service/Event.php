@@ -387,7 +387,7 @@ class Event extends AbstractService
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
         $user = [];
-        $user = $this->getDataUserBySubmission($submission_id) + $this->getDataUserBySubmissionWithInstrutorAndAcademic($submission_id);
+        $user = $this->getDataUserByConversation($m_video_archive->getConversationId()) + $this->getDataUserBySubmissionWithInstrutorAndAcademic($submission_id);
         
         return $this->create('record.available', $this->getDataVideoArchive($m_video_archive),$this->getDataSubmission($m_submission),  $user, self::TARGET_TYPE_USER);
     }
@@ -814,6 +814,24 @@ class Event extends AbstractService
             $users[] = $m_user->getId();
         }
         
+        return $users;
+    }
+    
+    /**
+     * Get User By Conversation
+     *
+     * @param int $conversation_id
+     * @return array
+     */
+    private function getDataUserByConversation($conversation_id)
+    {
+        $res_user = $this->getServiceUser()->getListByConversation($conversation_id);
+    
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+    
         return $users;
     }
 
