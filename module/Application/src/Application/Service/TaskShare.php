@@ -38,7 +38,9 @@ class TaskShare extends AbstractService
             }
         }
         
-        $this->getServiceEvent()->taskshared($task, $uok);
+        if(!empty($uok)) {
+            $this->getServiceEvent()->taskshared($task, $uok);
+        }
         
         return $ret;
     }
