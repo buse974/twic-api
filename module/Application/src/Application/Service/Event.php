@@ -909,9 +909,9 @@ class Event extends AbstractService
         if (null == $user_id) {
             $identity = $this->getServiceUser()->getIdentity();
             if($identity === null) {
-                return $identity[];
+                return [];
             }
-            $user_id = ['id'];
+            $user_id = $identity['id'];
         }
         
         $m_user = $this->getServiceUser()->get($user_id);
