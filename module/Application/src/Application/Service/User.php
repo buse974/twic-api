@@ -69,7 +69,7 @@ class User extends AbstractService
     {
         $user = [];
         $identity = $this->getServiceAuth()->getIdentity();
-        if($identity === null) {
+        if ($identity === null) {
             return null;
         }
         
@@ -115,7 +115,7 @@ class User extends AbstractService
     {
         $user = [];
         $identity = $this->getServiceAuth()->getIdentity();
-        if($identity === null) {
+        if ($identity === null) {
             return null;
         }
         $id = $identity->getId();
@@ -140,9 +140,9 @@ class User extends AbstractService
      * Get Identity
      *
      * @invokable
-     * 
-     * @param bool $init
-     * @param bool $external
+     *
+     * @param bool $init            
+     * @param bool $external            
      * @return array
      */
     public function getIdentity($init = false, $external = false)
@@ -178,7 +178,7 @@ class User extends AbstractService
         
         return true;
     }
-    
+
     /**
      * Add User
      *
@@ -190,7 +190,8 @@ class User extends AbstractService
      * @param string $gender            
      * @param string $origin            
      * @param string $nationality            
-     * @param string $sis            x²
+     * @param string $sis
+     *            x²
      * @param string $password            
      * @param string $birth_date            
      * @param string $position            
@@ -200,9 +201,10 @@ class User extends AbstractService
      * @param array $roles            
      * @param string $timezone            
      * @param string $background            
+     * @param string $nickname            
      * @return int
      */
-    public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $timezone = null, $background = null)
+    public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $timezone = null, $background = null, $nickname = null)
     {
         if ($this->getNbrEmailUnique($email) > 0) {
             throw new JrpcException('duplicate email', - 38001);
@@ -229,6 +231,7 @@ class User extends AbstractService
             ->setAvatar($avatar)
             ->setTimezone($timezone)
             ->setBackground($background)
+            ->setNickname($nickname)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         /*
          * schoolid vérifier que si il n'est pas admin le school id est
@@ -266,6 +269,7 @@ class User extends AbstractService
         $id = (int) $this->getMapper()->getLastInsertValue();
         
         /**
+         *
          * @todo check double role (instructor academic) autorisation
          */
         if ($roles === null) {
@@ -277,7 +281,7 @@ class User extends AbstractService
         
         if (! in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
             foreach ($roles as $r) {
-                if($r !== ModelRole::ROLE_STUDENT_STR && $r !== ModelRole::ROLE_ACADEMIC_STR && $r !== ModelRole::ROLE_INSTRUCTOR_STR) {
+                if ($r !== ModelRole::ROLE_STUDENT_STR && $r !== ModelRole::ROLE_ACADEMIC_STR && $r !== ModelRole::ROLE_INSTRUCTOR_STR) {
                     unset($r);
                 }
             }
@@ -378,7 +382,7 @@ class User extends AbstractService
     {
         return $this->getMapper()->getListBySchool($school_id);
     }
-    
+
     /**
      * Get List User
      *
@@ -396,8 +400,8 @@ class User extends AbstractService
      * @param string $order            
      * @param array $exclude            
      * @param string $event            
-     * @param string $message   
-     * @return array         
+     * @param string $message            
+     * @return array
      */
     public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $event = null, $message = null)
     {
@@ -605,13 +609,13 @@ class User extends AbstractService
      * @param array $roles            
      * @param array $programs            
      * @param string $resetpassword            
-     * @param boolean $has_email_notifier            
+     * @param bool $has_email_notifier            
      * @param string $timezone            
      * @param string $background            
-     *
-     * @return integer
+     * @param string $nickname            
+     * @return int
      */
-    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null)
+    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null)
     {
         if ($birth_date !== null && \DateTime::createFromFormat('Y-m-d', $birth_date) === false && \DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $birth_date) === false) {
             $birth_date = null;
@@ -642,6 +646,7 @@ class User extends AbstractService
             ->setHasEmailNotifier($has_email_notifier)
             ->setTimezone($timezone)
             ->setBackground($background)
+            ->setNickname($nickname)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($school_id !== null) {
@@ -797,7 +802,7 @@ class User extends AbstractService
 
     /**
      * Get Id Role of User
-     * 
+     *
      * @param int $id            
      * @return array
      */
@@ -813,11 +818,11 @@ class User extends AbstractService
 
     /**
      * Get List Lite
-     * 
+     *
      * @invokable
      *
-     * @param int $id     
-     * @return \Dal\Db\ResultSet\ResultSet       
+     * @param int $id            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListLite($id)
     {
@@ -829,7 +834,7 @@ class User extends AbstractService
      *
      * @invokable
      *
-     * @param int $id     
+     * @param int $id            
      * @return array
      */
     public function delete($id)
@@ -867,11 +872,11 @@ class User extends AbstractService
 
     /**
      * Get List Pair Graders
-     * 
+     *
      * @invokable
      *
-     * @param int $submission_id    
-     * @return \Dal\Db\ResultSet\ResultSet        
+     * @param int $submission_id            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListPairGraders($submission_id)
     {
@@ -880,9 +885,9 @@ class User extends AbstractService
 
     /**
      * Get List User Submission, Instrutor And Academic
-     * 
-     * @param int $submission_id  
-     * @return \Dal\Db\ResultSet\ResultSet          
+     *
+     * @param int $submission_id            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
@@ -890,10 +895,10 @@ class User extends AbstractService
     }
 
     /**
-     * Get List 
-     * 
-     * @param int $submission_id   
-     * @return \Dal\Db\ResultSet\ResultSet         
+     * Get List
+     *
+     * @param int $submission_id            
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id)
     {
@@ -996,16 +1001,16 @@ class User extends AbstractService
     {
         return $this->getMapper()->nbrBySchool($school_id);
     }
-
-    ////////////////// EXTERNAL METHODE ///////////////////
+    
+    // //////////////// EXTERNAL METHODE ///////////////////
     
     /**
      * Log In User
      *
      * @invokable
      *
-     * @param int $user
-     * @param int $password
+     * @param int $user            
+     * @param int $password            
      * @throws JrpcException
      * @return array
      */
@@ -1014,34 +1019,34 @@ class User extends AbstractService
         $auth = $this->getServiceAuth();
         $auth->getAdapter()->setIdentity($user);
         $auth->getAdapter()->setCredential($password);
-    
+        
         $result = $auth->authenticate();
         if (! $result->isValid()) {
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
-    
+        
         return $this->getIdentity(true, true);
     }
-    
+
     /**
      * Add User
      *
      * @invokable
      *
-     * @param string $email
-     * @param string $firstname
-     * @param string $lastname
-     * @param string $uid
-     * @param string $role
+     * @param string $email            
+     * @param string $firstname            
+     * @param string $lastname            
+     * @param string $uid            
+     * @param string $role            
      * @return int
      */
     public function create($email, $firstname, $lastname, $uid, $role = null)
     {
         $id = $this->add($firstname, $lastname, $email, null, null, null, $uid, null, null, null, null, null, null, $role);
-    
+        
         return $this->get($id);
     }
-    
+
     /**
      * Get Service Language
      *
@@ -1063,7 +1068,7 @@ class User extends AbstractService
     {
         return $this->getList();
     }
-    
+
     /**
      * Get Service Program
      *

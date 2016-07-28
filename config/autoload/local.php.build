@@ -62,7 +62,7 @@ return array(
 		 				'formatter' => array(
 		 					'name' => 'simple',
 		 					'options' => array(
-		 						'format' => '%timestamp% (%priority%): %message%',
+		 						'format' => '%timestamp% (%priority%): %message%, %trace%',
 		 					),
 		 				),
 		 			),

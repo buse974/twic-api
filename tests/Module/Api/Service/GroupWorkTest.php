@@ -150,6 +150,8 @@ class GroupWorkTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getListToGrade', ['item_id' => $item_id]);
         
+        print_r($data);
+        
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result'][0]) , 10);

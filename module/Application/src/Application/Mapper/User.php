@@ -26,6 +26,7 @@ class User extends AbstractMapper
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position',
             'interest',
+            'nickname',
             'avatar',
             'school_id',
         ])
@@ -58,6 +59,7 @@ class User extends AbstractMapper
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position',
             'interest',
+            'nickname',
             'avatar',
             'school_id',
             'user$contact_state' => $this->getSelectContactState($user),
@@ -124,6 +126,7 @@ class User extends AbstractMapper
             'firstname',
             'gender',
             'lastname',
+            'nickname',
             'email',
             'has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
@@ -146,6 +149,7 @@ class User extends AbstractMapper
             'firstname',
             'gender',
             'lastname',
+            'nickname',
             'email',
             'has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
@@ -168,6 +172,7 @@ class User extends AbstractMapper
             'firstname',
             'gender',
             'lastname',
+            'nickname',
             'email',
             'has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
@@ -189,6 +194,7 @@ class User extends AbstractMapper
             'firstname',
             'gender',
             'lastname',
+            'nickname',
             'email',
             'background',
             'has_email_notifier',
@@ -224,7 +230,7 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
             'user$id' => new Expression('user.id'),
-            'firstname', 'lastname', 'email',
+            'firstname', 'lastname', 'email', 'nickname',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position', 'interest', 'avatar',
             'user$contact_state' => $this->getSelectContactState($user_school),
@@ -322,7 +328,7 @@ class User extends AbstractMapper
         $select->columns(array('id', 
             'firstname', 
             'lastname', 
-            'school_id', 'email',
+            'school_id', 'email', 'nickname',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 
             'position', 
             'interest', 
@@ -375,6 +381,7 @@ class User extends AbstractMapper
             'firstname',
             'gender',
             'lastname',
+            'nickname',
             'email',
             'has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
@@ -393,7 +400,7 @@ class User extends AbstractMapper
     public function getInstructorByItem($item_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname','nickname', 'avatar'))
             ->join('user_role', 'user_role.user_id=user.id', array('role$id' => 'role_id'))
             ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
             ->join('item', 'item.course_id=course_user_relation.course_id', array())
@@ -406,7 +413,7 @@ class User extends AbstractMapper
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('user_role', 'user_role.user_id=user.id', [])
             ->join('school', 'user.school_id=school.id', [])
             ->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT)
@@ -477,7 +484,7 @@ class User extends AbstractMapper
         $sub_select->columns(array('course_id'))->where(array('course_user_relation.user_id' => $instructor));
 
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('course_user_relation', 'user.id = course_user_relation.user_id', array())
             ->join('user_role', 'user.id = user_role.user_id', array())
             ->where(array('course_user_relation.course_id IN ?' => $sub_select))
@@ -494,7 +501,7 @@ class User extends AbstractMapper
     public function getListByConversation($conversation_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('conversation_user', 'conversation_user.user_id = user.id', [])
             ->where(array('conversation_user.conversation_id' => $conversation_id));
 
@@ -586,6 +593,7 @@ class User extends AbstractMapper
             'id',
             'firstname',
             'lastname',
+            'nickname',
             'avatar',
         ])
         ->join('submission_pg', 'submission_pg.user_id=user.id', [])

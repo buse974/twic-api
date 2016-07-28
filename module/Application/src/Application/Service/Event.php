@@ -907,7 +907,11 @@ class Event extends AbstractService
     private function getDataUser($user_id = null)
     {
         if (null == $user_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
+            $identity = $this->getServiceUser()->getIdentity();
+            if($identity === null) {
+                return [];
+            }
+            $user_id = ['id'];
         }
         
         $m_user = $this->getServiceUser()->get($user_id);

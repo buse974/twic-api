@@ -446,15 +446,17 @@ class GradingTest extends AbstractService
        
         $this->assertEquals(count($data) , 3); 
         $this->assertEquals(count($data['result']) , 2); 
-        $this->assertEquals(count($data['result'][0]) , 4); 
+        $this->assertEquals(count($data['result'][0]) , 5); 
         $this->assertEquals($data['result'][0]['id'] , 6); 
         $this->assertEquals($data['result'][0]['firstname'] , "Guillaume"); 
         $this->assertEquals($data['result'][0]['lastname'] , "Masmejean"); 
+        $this->assertEquals($data['result'][0]['nickname'] , null); 
         $this->assertEquals($data['result'][0]['avatar'] , null); 
-        $this->assertEquals(count($data['result'][1]) , 4); 
+        $this->assertEquals(count($data['result'][1]) , 5); 
         $this->assertEquals($data['result'][1]['id'] , 7); 
         $this->assertEquals($data['result'][1]['firstname'] , "Arthur"); 
         $this->assertEquals($data['result'][1]['lastname'] , "Flachs"); 
+        $this->assertEquals($data['result'][1]['nickname'] , null); 
         $this->assertEquals($data['result'][1]['avatar'] , null); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
@@ -515,7 +517,6 @@ class GradingTest extends AbstractService
         $this->assertEquals($data['result']['comment']['user']['id'] , 1);
         $this->assertEquals($data['result']['comment']['user']['firstname'] , "Paul");
         $this->assertEquals($data['result']['comment']['user']['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['comment']['user']['avatar'] , null);
         $this->assertEquals($data['result']['comment']['id'] , 1);
         $this->assertEquals($data['result']['comment']['text'] , "COMMENT 1memzr!");
         $this->assertEquals($data['result']['comment']['audio'] , null);

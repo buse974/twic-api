@@ -9,6 +9,7 @@ class User extends AbstractModel
  	protected $id;
 	protected $firstname;
 	protected $lastname;
+	protected $nickname;
 	protected $status;
 	protected $email;
 	protected $password;
@@ -62,6 +63,18 @@ class User extends AbstractModel
 	public function setLastname($lastname)
 	{
 		$this->lastname = $lastname;
+
+		return $this;
+	}
+
+	public function getNickname()
+	{
+		return $this->nickname;
+	}
+
+	public function setNickname($nickname)
+	{
+		$this->nickname = $nickname;
 
 		return $this;
 	}
