@@ -644,9 +644,8 @@ class Submission extends AbstractService
         
         if ($submit === 1) {
             $this->getServiceEvent()->endSubmit($submission_id);
-            if ($this->getServiceOptGrading()
-                ->get($m_item->getId())
-                ->getHasPg()) {
+            $m_opt_grading = $this->getServiceOptGrading()->get($m_item->getId());
+            if ($m_opt_grading && $m_opt_grading->getHasPg()) {
                 $this->getServiceEvent()->pgAssigned($submission_id);
             }
             $this->forceSubmitBySubmission($submission_id);

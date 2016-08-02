@@ -321,8 +321,14 @@ class Event extends AbstractService
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user_id, self::TARGET_TYPE_USER, $this->getServiceUser()
+        $src = $this->getDataUser();
+        $ret = false;
+        if(!empty($src)) {
+          $ret = $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user_id, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
+        }
+        
+        return $ret;
     }
 
     /**
