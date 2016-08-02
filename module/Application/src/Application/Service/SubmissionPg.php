@@ -10,6 +10,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use PhpParser\Node\Stmt\Foreach_;
 
 /**
  * Class SubmissionPg
@@ -107,13 +108,13 @@ class SubmissionPg extends AbstractService
      * Replace submission peer grader
      * 
      * @param int $submission_id
-     * @param int $user_id
+     * @param array $user_id
      * @return int
      */
-    public function replace($submission_id, $user_id)
+    public function replace($submission_id, $users)
     {
-        $this->getMapper()->deleteNotIn($submission_id, $user_id);
-        foreach ($user_id as $u) {
+        $this->getMapper()->deleteNotIn($submission_id, $users);
+        foreach ($users as $u) {
             $this->add($submission_id, $u);
         }
 
@@ -151,9 +152,12 @@ class SubmissionPg extends AbstractService
             }
         }
         $nb = $m_opt_grading->getPgNb();
-        while (($final = $this->_autoAssign($ar_u, $ar_s, $nb)) === false);
-        foreach ($final as $s => $u) {
-            $this->replace($s, $u);
+        $final = $this->_autoAssign($ar_u, $ar_s, $nb);
+        foreach ($final as $s => $p) {
+            $pg = $p['pgs'];
+            if(!empty($pg)) {
+                $this->replace($s, $pg);
+            }
         }
     }
 
@@ -166,70 +170,55 @@ class SubmissionPg extends AbstractService
      * 
      * @return array
      */
-    public function _autoAssign($ar_u, $ar_s, $nb)
+    public function _autoAssign($users, $submissions, $nb)
     {
-        $final = [];
-        foreach ($ar_u as $u) {
-            
+        $obj = [];
+        
+        // Creation d'un objet indexant le tableau users & pairgraders d'une soumission par submission_id.
+        foreach ($submissions as $submission_id => $v) {
+            $obj[$submission_id] = [
+                'users' => $submissions[$submission_id],
+                'pgs' => []
+            ];
         }
-        /*$nbu = count($ar_u);
-        $start = $ar_u;
-        $final = [];
-        foreach ($ar_s as $s_id => $s_user) {
-            if (count($ar_u) === 0) {
-                $ar_u = $start;
-            }
-            $tmp = $ar_u;
-            foreach ($s_user as $uu) {
-                $search = array_search($uu, $tmp);
-                if ($search !== false) {
-                    unset($tmp[$search]);
-                }
-            }
-            if (count($tmp) >= $nb) {
-                $keys = array_rand($tmp, $nb);
-                if (!is_array($keys)) {
-                    $keys = [$keys];
-                }
-                foreach ($keys as $k) {
-                    $final[$s_id][] = $ar_u[$k];
-                    unset($ar_u[$k]);
-                }
-            } elseif (count($ar_s) === count($start)) {
-                return false;
-            } else {
-                $nbmin = count($tmp);
-                $ar_u = $start;
-                foreach ($tmp as $k => $t) {
-                    $final[$s_id][] = $ar_u[$k];
-                    unset($ar_u[$k]);
-                }
-                $tmp = $ar_u;
-                foreach ($s_user as $uu) {
-                    $search = array_search($uu, $tmp);
-                    if ($search !== false) {
-                        unset($tmp[$search]);
-                    }
-                }
-                if (count($tmp) >= $nb) {
-                    $keys = array_rand($tmp, $nb - $nbmin);
-                    if (!is_array($keys)) {
-                        $keys = [$keys];
-                    }
-                    foreach ($keys as $k) {
-                        $final[$s_id][] = $ar_u[$k];
-                        unset($ar_u[$k]);
-                    }
-                } else {
-                    foreach ($tmp as $k => $t) {
-                        $final[$s_id][] = $ar_u[$k];
-                        unset($ar_u[$k]);
+        
+        $c_user = count($users);
+        // On boucle pour chaque pair grader qu'on doit rajouter
+        for ($i=0;$i<$nb;$i++) {
+            // POur chaque PG à ajouter, le but est de passer sur chaque soumission et d'ajouter un PG.
+            foreach ($submissions as $submission_id => $v) {
+                // On boucle sur les users pour trouver celui à ajouter comme PG à la soumission
+                for ($n=0;$n<$c_user;$n++) {
+                    // Si le user ne fait pas parti des user de la soumission, il est candidat à l'ajout.
+                    if(!in_array($users[$n], $obj[$submission_id]['users'])) {
+                        $valid = true;
+                        // Si le nombre de soumissions est impair il faut check de pas ajouter A comme PG de B & B comme PG de A car C peut rester comme une bite...
+                        if(count($obj)%2){
+                            foreach ($obj as $sid => $v) {
+                                if(in_array($users[$n], $obj[$sid]['users'])){
+                                    $valid = true;
+                                    foreach ($obj[$sid]['pgs'] as $uid) {
+                                        $valid = !in_array($uid, $obj[$submission_id]['users']);
+                                        if($valid===false) {
+                                            break;
+                                        }
+                                    }  
+                                    break;   
+                                }
+                            }
+                        }
+                        // Le user est ajouté aux PG, puis on replace celui-ci en fin du tableau 'users' pour qu'il ne soit plus ajouté avant le prochain round.
+                        if($valid){
+                               $obj[$submission_id]['pgs'][] = $users[$n];
+                               $users[] = current(array_splice($users, $n, 1));
+                               break;
+                        }
                     }
                 }
             }
-        }*/
-
-        return $final;
+        }
+        
+        return $obj;
     }
 
     /**

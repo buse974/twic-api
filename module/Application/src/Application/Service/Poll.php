@@ -23,12 +23,13 @@ class Poll extends AbstractService
      * @param string $title            
      * @param int $poll_item            
      * @param string $expiration            
-     * @param int $time_limit            
+     * @param int $time_limit  
+     * @param int $attempt_count          
      * @return int
      */
-    public function addOrUpdate($item_id, $title = null, $poll_item = null, $expiration = null, $time_limit = null)
+    public function addOrUpdate($item_id, $title = null, $poll_item = null, $expiration = null, $time_limit = null, $attempt_count = 1)
     {
-        return (null !== ($m_poll = $this->getByItem($item_id))) ? $this->update($m_poll->getId(), $title, $poll_item, $expiration, $time_limit) : $this->add($title, $poll_item, $expiration, $time_limit, $item_id);
+        return (null !== ($m_poll = $this->getByItem($item_id))) ? $this->update($m_poll->getId(), $title, $poll_item, $expiration, $time_limit, $attempt_count) : $this->add($title, $poll_item, $expiration, $time_limit, $item_id, $attempt_count);
     }
 
     /**
@@ -40,17 +41,19 @@ class Poll extends AbstractService
      * @param int $poll_item            
      * @param int $expiration            
      * @param int $time_limit            
-     * @param int $item_id            
-     *
+     * @param int $item_id    
+     * @param int $attempt_count
      * @throws \Exception
+     * @return \Application\Model\Poll
      */
-    public function add($title, $poll_item, $expiration = null, $time_limit = null, $item_id = null)
+    public function add($title, $poll_item, $expiration = null, $time_limit = null, $item_id = null, $attempt_count = null)
     {
         $m_poll = $this->getModel();
         $m_poll->setExpirationDate($expiration)
             ->setTitle($title)
             ->setTimeLimit($time_limit)
-            ->setItemId($item_id);
+            ->setItemId($item_id)
+            ->setAttemptCount($attempt_count);
         
         if ($this->getMapper()->insert($m_poll) < 1) {
             throw new \Exception('Insert poll error');
@@ -73,16 +76,18 @@ class Poll extends AbstractService
      * @param int $expiration            
      * @param int $time_limit            
      * @param int $item_id   
+     * @param int $attempt_count
      * @return int         
      */
-    public function update($id, $title = null, $poll_item = null, $expiration = null, $time_limit = null, $item_id = null)
+    public function update($id, $title = null, $poll_item = null, $expiration = null, $time_limit = null, $item_id = null, $attempt_count = null)
     {
         $m_poll = $this->getModel();
         $m_poll->setId($id)
             ->setExpirationDate($expiration)
             ->setTitle($title)
             ->setTimeLimit($time_limit)
-            ->setItemId($item_id);
+            ->setItemId($item_id)
+            ->setAttemptCount($attempt_count);
         
         if (null !== $poll_item) {
             $this->getServicePollItem()->replace($id, $poll_item);

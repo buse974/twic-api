@@ -87,15 +87,26 @@ class SubQuiz extends AbstractService
         if (null === $submission_id && null === $item_id) {
             return false;
         }
+        
         $m_submission = $this->getServiceSubmission()->get($item_id, $submission_id);
         
-        $m_poll = $this->getServicePoll()->getLiteByItem($m_submission->getItemId());
-        $me = $this->getServiceUser()->getIdentity()['id'];
         
+        $m_poll = $this->getServicePoll()->getLiteByItem($m_submission->getItemId());
+        
+        $attempt = $m_poll->getAttemptCount();
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        // test if number attends if exeeding
         $m_sub_quiz = $this->getModel()
-            ->setUserId($me)
-            ->setPollId($m_poll->getId())
-            ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+            ->setUserId($user_id)
+            ->setPollId($m_poll->getId());
+        $res_sub_quiz = $this->getMapper()->select($m_sub_quiz);
+        if($res_poll->count() >= $attempt) {
+            throw new \Exception("number of tries exeeding");
+        }
+
+        
+        $m_sub_quiz->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setSubmissionId($m_submission->getId());
         $this->getServiceSubmissionUser()->start($m_sub_quiz->getSubmissionId());
         

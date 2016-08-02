@@ -134,7 +134,7 @@ class Item extends AbstractService
         
         return $item_id;
     }
-
+    
     /**
      * Initialisation Component
      *
@@ -204,8 +204,9 @@ class Item extends AbstractService
         $poll_item = isset($data['poll_item']) ? $data['poll_item'] : null;
         $expiration = isset($data['expiration']) ? $data['expiration'] : null;
         $time_limit = isset($data['time_limit']) ? $data['time_limit'] : null;
+        $attempt_count = isset($data['attempt_count']) ? $data['attempt_count'] : null;
         
-        return $this->getServicePoll()->addOrUpdate($item_id, $title, $poll_item, $expiration, $time_limit);
+        return $this->getServicePoll()->addOrUpdate($item_id, $title, $poll_item, $expiration, $time_limit, $attempt_count);
     }
 
     /**
