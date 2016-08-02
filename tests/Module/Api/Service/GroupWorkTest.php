@@ -62,10 +62,6 @@ class GroupWorkTest extends AbstractService
         
         // UPDATE COURSE USER
         $this->setIdentity(1);
-        $data = $this->jsonRpc('user.update', array('id' => 1, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
-        $this->reset();
-        
-        $this->setIdentity(1);
         $data = $this->jsonRpc('user.update', array('id' => 2, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
         $this->reset();
         
@@ -77,6 +73,16 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('user.update', array('id' => 4, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
         $this->reset();
         
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 5, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 6, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 1, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
         $this->reset();
         
         return [
