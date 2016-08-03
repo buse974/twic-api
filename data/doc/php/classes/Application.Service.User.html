@@ -173,7 +173,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                                                                                <li class="method public">
         <a href="#method_deleteCourse" title="deleteCourse :: Delete user to Course">
             <span class="description">Delete user to Course</span><pre>deleteCourse</pre>
         </a>
@@ -405,11 +405,16 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <li class="method private">
+                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method private">
+                            <a href="#method_deleteCachedIdentityOfUser" title="deleteCachedIdentityOfUser :: Delete Cached Identity of user">
+                                <span class="description">Delete Cached Identity of user</span><pre>deleteCachedIdentityOfUser</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                                                                                    <li class="method private">
                             <a href="#method_getCache" title="getCache :: Get Storage if define in config.">
                                 <span class="description">Get Storage if define in config.</span><pre>getCache</pre>
                             </a>
@@ -572,7 +577,7 @@
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Add User</h2>
-                            <pre>add(string $firstname, string $lastname, string $email, string $gender = null, string $origin = null, string $nationality = null, string $sis = null, string $password = null, string $birth_date = null, string $position = null, integer $school_id = null, string $interest = null, string $avatar = null, array $roles = null, string $timezone = null, string $background = null) : integer</pre>
+                            <pre>add(string $firstname, string $lastname, string $email, string $gender = null, string $origin = null, string $nationality = null, string $sis = null, string $password = null, string $birth_date = null, string $position = null, integer $school_id = null, string $interest = null, string $avatar = null, array $roles = null, string $timezone = null, string $background = null, string $nickname = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -656,6 +661,10 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$background</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$nickname</h4>
                                                 <code>string</code><p></p>
                                             </div>
                                                                             
@@ -918,6 +927,33 @@
                                                                             
                                                                             <h3>Response</h3>
                                         <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_deleteCachedIdentityOfUser"></a>
+                        <div class="element clickable method private  method_deleteCachedIdentityOfUser" data-toggle="collapse" data-target=".method_deleteCachedIdentityOfUser .collapse">
+                            <h2>Delete Cached Identity of user</h2>
+                            <pre>deleteCachedIdentityOfUser(integer $id) : boolean</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>boolean</code><p></p>
                                                                     </div>
                             </div>
 
@@ -2579,7 +2615,7 @@
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
                             <h2>Update User.</h2>
-                            <pre>update(integer $id = null, string $gender = null, string $origin = null, string $nationality = null, string $firstname = null, string $lastname = null, string $sis = null, string $email = null, string $birth_date = null, string $position = null, integer $school_id = null, string $interest = null, string $avatar = null, array $roles = null, array $programs = null, string $resetpassword = null, boolean $has_email_notifier = null, string $timezone = null, string $background = null) : integer</pre>
+                            <pre>update(integer $id = null, string $gender = null, string $origin = null, string $nationality = null, string $firstname = null, string $lastname = null, string $sis = null, string $email = null, string $birth_date = null, string $position = null, integer $school_id = null, string $interest = null, string $avatar = null, array $roles = null, array $programs = null, string $resetpassword = null, boolean $has_email_notifier = null, string $timezone = null, string $background = null, string $nickname = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -2677,6 +2713,10 @@
                                                 <h4>$background</h4>
                                                 <code>string</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$nickname</h4>
+                                                <code>string</code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>integer</code><p></p>
@@ -2746,7 +2786,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 26 Jul 2016 22:38:50 +0200.<br/>
+            generated on Wed, 03 Aug 2016 11:25:49 +0200.<br/>
     </footer>
     </body>
 </html>

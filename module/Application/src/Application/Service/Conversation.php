@@ -27,7 +27,7 @@ class Conversation extends AbstractService
      * @invokable
      *
      * @param int $type            
-     * @param int $submission_id            
+     * @param int|array $submission_id            
      * @param array $users            
      * @param string $text            
      * @param int $item_id            
@@ -76,7 +76,7 @@ class Conversation extends AbstractService
             $this->addVideo($conversation_id);
         }
         if (null !== $users) {
-            $this->getServiceConversationUser()->add($conversation_id, $users);
+            $r = $this->getServiceConversationUser()->add($conversation_id, $users);
         }
         if (null !== $submission_id) {
             if(!is_array($submission_id)) {

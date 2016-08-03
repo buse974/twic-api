@@ -26,7 +26,18 @@ class Submission extends AbstractService
      * 
      * @var array
      */
-    protected $sub = [ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_HANGOUT => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],ModelItem::TYPE_MODULE => [],ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],ModelItem::TYPE_TXT => []];
+    protected $sub = 
+    [   
+        ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true, ModelItem::CMP_TEXT_EDITOR => false],
+        ModelItem::TYPE_HANGOUT => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],
+        ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],
+        ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],
+        ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],
+        ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],
+        ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],
+        ModelItem::TYPE_MODULE => [],
+        ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],
+        ModelItem::TYPE_TXT => []];
 
     /**
      * Get By User And Questionnaire And Item 
@@ -363,7 +374,7 @@ class Submission extends AbstractService
      * @param string $search            
      * @param int $user_id            
      * @param bool $tograde            
-     * @return []
+     * @return array
      */
     public function getListStudent($filter = null, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null, $user_id = null, $tograde = null)
     {
@@ -453,11 +464,13 @@ class Submission extends AbstractService
         $item_id = $m_submission->getItemId();
         $m_item = $this->getServiceItem()->get($item_id);
         $type = (isset($this->sub[$m_item->getType()])) ? $this->sub[$m_item->getType()] : [];
-        
         if (isset($type[ModelItem::CMP_TEXT_EDITOR]) && $type[ModelItem::CMP_TEXT_EDITOR] === true) {
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListOrCreate($submission_id);
         } else {
             $ret[ModelItem::CMP_TEXT_EDITOR] = $this->getServiceTextEditor()->getListBySubmission($submission_id);
+        }
+        if (isset($type[ModelItem::CMP_WHITEBOARD])) {
+            $ret[ModelItem::CMP_WHITEBOARD] = $this->getServiceWhiteboard()->getList($submission_id);
         }
         $ret[ModelItem::CMP_DOCUMENT] = $this->getServiceLibrary()->getListBySubmission($submission_id);
         if (isset($type[ModelItem::CMP_CHAT]) && $type[ModelItem::CMP_CHAT] === true) {

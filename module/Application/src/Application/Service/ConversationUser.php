@@ -103,8 +103,8 @@ class ConversationUser extends AbstractService
         }
 
         $ret = [];
-        foreach ($users as $user) {
-            $ret[$user] = $this->getMapper()->add($conversation_id, $user);
+        foreach ($users as $user_id) {
+            $ret[$user_id] = $this->getMapper()->add($conversation_id, $user_id);
         }
 
         return $ret;

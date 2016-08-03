@@ -104,6 +104,17 @@ class User extends AbstractService
         
         return $user;
     }
+    
+    /**
+     * Delete Cached Identity of user
+     * 
+     * @param int $id
+     * @return boolean
+     */
+    private function deleteCachedIdentityOfUser($id) 
+    {
+        return $this->getCache()->removeItem('identity_' . $id);
+    }
 
     /**
      * Get/Create Identity External in cache
@@ -681,6 +692,9 @@ class User extends AbstractService
         if ($resetpassword) {
             $this->lostPassword($this->get($id)['email']);
         }
+        
+        // on supprime son cache identity pour qu'a ca prochaine cannection il el recré.
+        $this->deleteCachedIdentityOfUser($id);
         
         return $ret;
     }
