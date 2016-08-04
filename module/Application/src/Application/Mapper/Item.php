@@ -289,50 +289,6 @@ class Item extends AbstractMapper
 
     public function getListSubmissions($school_id, $type = null, $program = null, $course = null, $due = null, $notgraded = null, $search = null)
     {
-        /* $sql = 'SELECT 
-                    COUNT(1) AS `item$due`,
-                    `item`.`id` AS `item$id`,
-                    `item`.`title` AS `item$title`,
-                    `item`.`type` AS `item$type`,
-                    DATE_FORMAT(item.start, "%Y-%m-%dT%TZ") AS `item$start`,
-                    DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ") AS `item$cut_off`,
-                    DATE_FORMAT(item.end, "%Y-%m-%dT%TZ") AS `item$end`,
-                    IF(submission.is_graded IS NULL,0,submission.is_graded) AS `item$graded`,
-                    IF(submission.submit_date IS NULL, 0, 1) AS `item$submitted`,
-                    `course`.`title` AS `course$title`,
-                    `program`.`name` AS `program$name`
-                FROM
-                    `item`
-                        LEFT JOIN
-                    `ct_group` ON `ct_group`.`item_id` = `item`.`id`
-                        LEFT JOIN
-                    `group_user` ON `group_user`.`group_id` = `ct_group`.`group_id`
-                        LEFT JOIN
-                    `course_user_relation` ON `item`.`course_id` = `course_user_relation`.`course_id` 
-                        AND `item`.`set_id` IS NULL
-                        AND ((`group_user`.`user_id` = `course_user_relation`.`user_id`
-                        AND `ct_group`.`item_id` IS NOT NULL)
-                        OR `ct_group`.`item_id` IS NULL)
-                        LEFT JOIN 
-                    `user_role` ON `user_role`.`user_id`=`course_user_relation`.`user_id`
-                        LEFT JOIN
-                    `set_group` ON `item`.`set_id` = `set_group`.`set_id`
-                        AND ((`ct_group`.`group_id` = `set_group`.`group_id`)
-                        OR `ct_group`.`item_id` IS NULL)
-                        LEFT JOIN
-                    `submission_user` ON 
-            `submission_user`.`user_id` = `course_user_relation`.`user_id` AND 
-            `user_role`.`role_id`='.ModelRole::ROLE_STUDENT_ID.'
-                        LEFT JOIN
-                    `submission` ON (`submission`.`id` = `submission_user`.`submission_id`)
-                        OR (`submission`.`group_id` = `set_group`.`group_id`)
-                        INNER JOIN
-                    `course` ON `item`.`course_id` = `course`.`id`
-                        INNER JOIN
-                    `program` ON `program`.`id` = `course`.`program_id`
-                WHERE ';
-        */
-
        $sql = 'SELECT 
                     COUNT(1) AS `item$due`,
                     `item`.`id` AS `item$id`,
@@ -395,7 +351,13 @@ class Item extends AbstractMapper
                 $val[':t'.$i] = $t;
                 $s[] = ':t'.$i;
             }
-            $where[] = 'item.type IN ('.implode(',', $s).')';
+            if(in_array('A', $type)) {
+                $where[] = "( item.type IN (".implode(',', $s).") OR ( item.is_grouped IS FALSE AND item.type = 'IA'))";
+            }elseif(in_array('A', $type)) {
+                $where[] = "( item.type IN (".implode(',', $s).") OR ( item.is_grouped IS TRUE AND item.type = 'IA'))";
+            }else {
+                $where[] = "item.type IN (".implode(',', $s).")";
+            }
         } else {
             $where[] = "item.type IN ('CP', 'IA', 'POLL', 'DISC', 'CHAT')";
         }

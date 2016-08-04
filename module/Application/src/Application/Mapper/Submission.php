@@ -7,6 +7,7 @@ use Dal\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Where;
 
 class Submission extends AbstractMapper
 {
@@ -206,7 +207,19 @@ class Submission extends AbstractMapper
                    ->where(array('submission_item_program.name LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
         }
         if (!empty($type)) {
-            $select->where(array('item.type' => $type));
+            $where = new Where();
+            if(in_array('A', $type)) {
+                $where->NEST->in('item.type', $type)->OR->NEST->literal("item.is_grouped IS FALSE AND item.type = 'IA'")->UNNEST->UNNEST;
+            }elseif(in_array('GA', $type)) {
+                $where->NEST->in('item.type', $type)->OR->NEST->literal("item.is_grouped IS TRUE AND item.type = 'IA'")->UNNEST->UNNEST;
+            }elseif(in_array('GA', $type) && in_array('A', $type) && !in_array('IA', $type) ) {
+                $type[] = 'IA';
+                $where->in('item.type', $type);
+            }else{
+                $where->in('item.type', $type);
+            }
+            
+            $select->where($where);
         }
         if (!empty($course)) {
             $select->where(array('submission_item_course.id' => $course));
@@ -227,7 +240,7 @@ class Submission extends AbstractMapper
             $select->join('opt_grading', 'opt_grading.item_id = item.id')
                    ->where(array('opt_grading.mode <> "none"'));
         }
-
+        
         return $this->selectWith($select);
     }
 

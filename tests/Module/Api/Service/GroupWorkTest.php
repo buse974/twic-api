@@ -350,13 +350,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals(count($data['result']['list']) , 1);
         $this->assertEquals(count($data['result']['list'][0]) , 9);
         $this->assertEquals($data['result']['list'][0]['thread_id'] , null);
-        $this->assertEquals(count($data['result']['list'][0]['item']) , 11);
+        $this->assertEquals(count($data['result']['list'][0]['item']) , 12);
         $this->assertEquals(count($data['result']['list'][0]['item']['program']) , 1);
         $this->assertEquals($data['result']['list'][0]['item']['program']['name'] , "program name");
         $this->assertEquals(count($data['result']['list'][0]['item']['course']) , 2);
         $this->assertEquals($data['result']['list'][0]['item']['course']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['item']['course']['title'] , "IMERIR");
         $this->assertEquals($data['result']['list'][0]['item']['id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['item']['checked'] , 3);
         $this->assertEquals($data['result']['list'][0]['item']['title'] , "title");
         $this->assertEquals($data['result']['list'][0]['item']['describe'] , "description");
         $this->assertEquals($data['result']['list'][0]['item']['type'] , "WG");

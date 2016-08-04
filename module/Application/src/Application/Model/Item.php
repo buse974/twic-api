@@ -29,6 +29,7 @@ class Item extends BaseItem
     const CMP_DISCUSSION = 'thread';
     const CMP_EQCQ = 'eqcq';
 
+    protected $checked;
     protected $materials;
     protected $module;
     protected $program;
@@ -64,6 +65,18 @@ class Item extends BaseItem
         $this->library = $this->requireModel('app_model_library', $data);
     }
 
+    public function getChecked()
+    {
+        return $this->checked;
+    }
+    
+    public function setChecked($checked)
+    {
+        $this->checked = $checked;
+    
+        return $this;
+    }
+    
     public function getIsStarted()
     {
         return $this->is_started;
