@@ -420,6 +420,73 @@ class UserTest extends AbstractService
     /**
      * @depends testCanAddUser
      */
+    public function testGetListAttendees($id)
+    {
+        $this->setIdentity(1);
+    
+        $data = $this->jsonRpc('user.getListAttendees', [
+           // 'course' => [1],
+           // 'program' => [1],
+           'school' => [1],
+           'exclude_course' => [2,3],
+           'exclude_program' => [99],
+           'exclude_user' => [2]
+        ]);
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals(count($data['result'][0]) , 8);
+        $this->assertEquals(count($data['result'][0]['school']) , 5);
+        $this->assertEquals($data['result'][0]['school']['id'] , 1);
+        $this->assertEquals($data['result'][0]['school']['name'] , "Morbi Corporation");
+        $this->assertEquals($data['result'][0]['school']['short_name'] , "turpis");
+        $this->assertEquals($data['result'][0]['school']['logo'] , null);
+        $this->assertEquals($data['result'][0]['school']['background'] , null);
+        $this->assertEquals(count($data['result'][0]['roles']) , 1);
+        $this->assertEquals($data['result'][0]['roles'][0] , "student");
+        $this->assertEquals($data['result'][0]['id'] , 8);
+        $this->assertEquals($data['result'][0]['firstname'] , "Jean");
+        $this->assertEquals($data['result'][0]['lastname'] , "Paul");
+        $this->assertEquals($data['result'][0]['nickname'] , null);
+        $this->assertEquals($data['result'][0]['avatar'] , "un_token_new");
+        $this->assertEquals($data['result'][0]['sis'] , null);
+        $this->assertEquals(count($data['result'][1]) , 8);
+        $this->assertEquals(count($data['result'][1]['school']) , 5);
+        $this->assertEquals($data['result'][1]['school']['id'] , 1);
+        $this->assertEquals($data['result'][1]['school']['name'] , "Morbi Corporation");
+        $this->assertEquals($data['result'][1]['school']['short_name'] , "turpis");
+        $this->assertEquals($data['result'][1]['school']['logo'] , null);
+        $this->assertEquals($data['result'][1]['school']['background'] , null);
+        $this->assertEquals(count($data['result'][1]['roles']) , 1);
+        $this->assertEquals($data['result'][1]['roles'][0] , "instructor");
+        $this->assertEquals($data['result'][1]['id'] , 5);
+        $this->assertEquals($data['result'][1]['firstname'] , "Sébastien");
+        $this->assertEquals($data['result'][1]['lastname'] , "Sayegh");
+        $this->assertEquals($data['result'][1]['nickname'] , null);
+        $this->assertEquals($data['result'][1]['avatar'] , null);
+        $this->assertEquals($data['result'][1]['sis'] , null);
+        $this->assertEquals(count($data['result'][2]) , 8);
+        $this->assertEquals(count($data['result'][2]['school']) , 5);
+        $this->assertEquals($data['result'][2]['school']['id'] , 1);
+        $this->assertEquals($data['result'][2]['school']['name'] , "Morbi Corporation");
+        $this->assertEquals($data['result'][2]['school']['short_name'] , "turpis");
+        $this->assertEquals($data['result'][2]['school']['logo'] , null);
+        $this->assertEquals($data['result'][2]['school']['background'] , null);
+        $this->assertEquals(count($data['result'][2]['roles']) , 1);
+        $this->assertEquals($data['result'][2]['roles'][0] , "student");
+        $this->assertEquals($data['result'][2]['id'] , 4);
+        $this->assertEquals($data['result'][2]['firstname'] , "Salim");
+        $this->assertEquals($data['result'][2]['lastname'] , "Bendacha");
+        $this->assertEquals($data['result'][2]['nickname'] , null);
+        $this->assertEquals($data['result'][2]['avatar'] , null);
+        $this->assertEquals($data['result'][2]['sis'] , null);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
+    /**
+     * @depends testCanAddUser
+     */
     public function testGet($id)
     {
         $this->setIdentity(1);
