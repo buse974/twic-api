@@ -1,12 +1,9 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Questionnaire
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -14,15 +11,17 @@ use Application\Model\Item as CI;
 use Zend\Db\Sql\Predicate\IsNull;
 
 /**
- * Class Questionnaire
+ * Class Questionnaire.
  */
 class Questionnaire extends AbstractService
 {
     /**
-     * Create Questionnaire
+     * Create Questionnaire.
      * 
      * @param int $item_id
+     *
      * @throws \Exception
+     *
      * @return int
      */
     private function create($item_id)
@@ -43,11 +42,12 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Bt item
+     * Get Bt item.
      * 
      * @invokable
      * 
      * @param int $item
+     *
      * @return \Application\Model\Questionnaire
      */
     public function getByItem($item)
@@ -65,15 +65,14 @@ class Questionnaire extends AbstractService
 
         $m_questionnaire = $res_questionnaire->current();
         $m_questionnaire->setQuestions($this->getServiceQuestion()->getList($m_questionnaire->getId()));
-        
-        
+
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
 
         return $m_questionnaire;
     }
 
     /**
-     * Add a answer
+     * Add a answer.
      * 
      * @invokable
      *
@@ -81,6 +80,7 @@ class Questionnaire extends AbstractService
      * @param int $user
      * @param int $question
      * @param int $scale
+     *
      * @return int
      */
     public function answer($item, $user, $question, $scale)
@@ -101,7 +101,7 @@ class Questionnaire extends AbstractService
         if ($nbrq === 0) {
             $this->getServiceSubmissionUser()->end($m_submission->getId());
             $this->getServiceSubmission()->submit($m_submission->getId());
-            
+
             $has_all_finish = $this->getServiceSubmissionUser()->checkAllFinish($m_submission->getId());
             if ($has_all_finish) {
                 $this->getServiceSubmission()->forceSubmit($m_submission->getId());
@@ -113,9 +113,10 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get number question No completed
+     * Get number question No completed.
      * 
      * @param int $item_id
+     *
      * @return null|int
      */
     public function getNbrQuestionNoCompleted($item_id)
@@ -125,20 +126,20 @@ class Questionnaire extends AbstractService
         $res_questionnaire = $this->getMapper()->getNbrTotal($item_id);
         if ($res_questionnaire->count() > 0) {
             $tnbr = $res_questionnaire->current()->getNbNoCompleted();
-            $tnbr = ($tnbr instanceof IsNull) ? null : (int)$tnbr;
+            $tnbr = ($tnbr instanceof IsNull) ? null : (int) $tnbr;
         }
-        
+
         $res_questionnaire = $this->getMapper()->getNbrQuestionCompleted($item_id, $user_id);
         if ($res_questionnaire->count() > 0) {
             $nbr = $res_questionnaire->current()->getNbNoCompleted();
-            $nbr = ($nbr instanceof IsNull) ? null : (int)$nbr;
+            $nbr = ($nbr instanceof IsNull) ? null : (int) $nbr;
         }
-        
-        return ($tnbr-$nbr);
+
+        return $tnbr - $nbr;
     }
 
     /**
-     * Get Answer
+     * Get Answer.
      * 
      * @invokable
      *
@@ -161,7 +162,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service Dimension
+     * Get Service Dimension.
      * 
      * @return \Application\Service\Dimension
      */
@@ -171,7 +172,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service Submission
+     * Get Service Submission.
      * 
      * @return \Application\Service\Submission
      */
@@ -181,7 +182,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service SubmissionUser
+     * Get Service SubmissionUser.
      * 
      * @return \Application\Service\SubmissionUser
      */
@@ -191,7 +192,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */
@@ -201,7 +202,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service Question
+     * Get Service Question.
      * 
      * @return \Application\Service\Question
      */
@@ -211,7 +212,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service QuestionnaireUser
+     * Get Service QuestionnaireUser.
      * 
      * @return \Application\Service\QuestionnaireUser
      */
@@ -221,7 +222,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service Item
+     * Get Service Item.
      * 
      * @return \Application\Service\Item
      */
@@ -231,7 +232,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service Answer
+     * Get Service Answer.
      * 
      * @return \Application\Service\Answer
      */
@@ -241,7 +242,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      * 
      * @return \Application\Service\Event
      */
@@ -251,7 +252,7 @@ class Questionnaire extends AbstractService
     }
 
     /**
-     * Get Service QuestionnaireQuestion
+     * Get Service QuestionnaireQuestion.
      * 
      * @return \Application\Service\QuestionnaireQuestion
      */

@@ -1,17 +1,15 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Notification
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Notification
+ * Class Notification.
  */
 class Notification extends AbstractService
 {

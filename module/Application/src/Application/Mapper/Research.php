@@ -7,9 +7,10 @@ use Dal\Mapper\AbstractMapper;
 class Research extends AbstractMapper
 {
     /**
-     * Get research list
+     * Get research list.
      * 
      * @param string $string
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($string)

@@ -1,22 +1,20 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Option Grading
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class OptGrading
+ * Class OptGrading.
  */
 class OptGrading extends AbstractService
 {
     /**
-     * Add Option Grading
+     * Add Option Grading.
      * 
      * @invokable
      *
@@ -29,12 +27,13 @@ class OptGrading extends AbstractService
      * @param bool   $pg_can_view
      * @param bool   $user_can_view
      * @param bool   $pg_stars
+     *
      * @return int
      */
     public function add($item_id, $mode = null, $has_pg = null, $pg_nb = null, $pg_auto = null, $pg_due_date = null, $pg_can_view = null, $user_can_view = null, $pg_stars = null)
     {
         $this->delete($item_id);
-        
+
         $m_opt_grading = $this->getModel()
             ->setItemId($item_id)
             ->setMode($mode)
@@ -50,7 +49,7 @@ class OptGrading extends AbstractService
     }
 
     /**
-     * Update Option Grading
+     * Update Option Grading.
      * 
      * @invokable
      *
@@ -63,6 +62,7 @@ class OptGrading extends AbstractService
      * @param bool   $pg_can_view
      * @param bool   $user_can_view
      * @param bool   $pg_stars
+     *
      * @return int
      */
     public function update($item_id, $mode = null, $has_pg = null, $pg_nb = null, $pg_auto = null, $pg_due_date = null, $pg_can_view = null, $user_can_view = null, $pg_stars = null)
@@ -82,11 +82,12 @@ class OptGrading extends AbstractService
     }
 
     /**
-     * Delete Option Grading
+     * Delete Option Grading.
      * 
      * @invokable
      *
      * @param int $item_id
+     *
      * @return bool
      */
     public function delete($item_id)
@@ -97,9 +98,10 @@ class OptGrading extends AbstractService
     }
 
     /**
-     * Get Option Grading
+     * Get Option Grading.
      * 
      * @param int $item_id
+     *
      * @return \Application\Model\OptGrading
      */
     public function get($item_id)

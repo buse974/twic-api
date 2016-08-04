@@ -1,10 +1,8 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Submission Quiz
- *
  */
 namespace Application\Service;
 
@@ -13,34 +11,35 @@ use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\BankQuestionType as ModelBankQuestionType;
 
 /**
- * Class SubQuiz
+ * Class SubQuiz.
  */
 class SubQuiz extends AbstractService
 {
-
     /**
-     * Get SubmissionQuiz By submission
+     * Get SubmissionQuiz By submission.
      *
-     * @param int $submission_id            
+     * @param int $submission_id
+     *
      * @return []
      */
     public function getBySubmission($submission_id)
     {
         $m_submission = $this->getServiceSubmission()->get(null, $submission_id);
         $res_sub_quiz = $this->getMapper()->getList(null, $submission_id);
-        
+
         $ret = [];
         foreach ($res_sub_quiz as $m_sub_quiz) {
             $ret[] = $this->get($m_sub_quiz->getId());
         }
-        
+
         return $ret;
     }
 
     /**
-     * Get SubmissionQuiz
+     * Get SubmissionQuiz.
      * 
      * @param int $id
+     *
      * @return array
      */
     public function get($id)
@@ -48,7 +47,7 @@ class SubQuiz extends AbstractService
         $m_sub_quiz = $this->getMapper()
             ->get($id)
             ->current();
-        
+
         $ar = $m_sub_quiz->toArray();
         $ar['sub_questions'] = $this->getServiceSubQuestion()->getListLite($m_sub_quiz->getId());
         $sub_question_ids = [];
@@ -69,49 +68,48 @@ class SubQuiz extends AbstractService
         $ar['poll_items'] = $this->getServicePollItem()
             ->getListLite($m_sub_quiz->getPollId())
             ->toArray(['id']);
-        
+
         return $ar;
     }
 
     /**
-     * Start SubmissionQuiz
+     * Start SubmissionQuiz.
      * 
      * @invokable
      *
-     * @param int $submission_id            
-     * @param int $item_id    
-     * @return array        
+     * @param int $submission_id
+     * @param int $item_id
+     *
+     * @return array
      */
     public function start($submission_id = null, $item_id = null)
     {
         if (null === $submission_id && null === $item_id) {
             return false;
         }
-        
+
         $m_submission = $this->getServiceSubmission()->get($item_id, $submission_id);
-        
-        
+
         $m_poll = $this->getServicePoll()->getLiteByItem($m_submission->getItemId());
-        
+
         $attempt = $m_poll->getAttemptCount();
         $attempt = (!is_numeric($attempt)) ? 1 : $attempt;
-        
+
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        
+
         // test if number attends if exeeding
         $m_sub_quiz = $this->getModel()
             ->setUserId($user_id)
             ->setPollId($m_poll->getId());
         $res_sub_quiz = $this->getMapper()->select($m_sub_quiz);
-        if($res_sub_quiz->count() >= $attempt) {
-            throw new \Exception("number of tries exeeding");
+        if ($res_sub_quiz->count() >= $attempt) {
+            throw new \Exception('number of tries exeeding');
         }
 
-        
         $m_sub_quiz->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setSubmissionId($m_submission->getId());
         $this->getServiceSubmissionUser()->start($m_sub_quiz->getSubmissionId());
-        
+
         $this->getMapper()->insert($m_sub_quiz);
         $sub_quiz_id = $this->getMapper()->getLastInsertValue();
         $res_poll_item = $this->getServicePollItem()->getList($m_poll->getId());
@@ -120,7 +118,7 @@ class SubQuiz extends AbstractService
             if (null !== $m_group_question) {
                 $tab = $m_group_question->getBankQuestion();
                 $key = array_rand($tab, $m_group_question->getNb());
-                if (! is_array($key)) {
+                if (!is_array($key)) {
                     $key = [$key];
                 }
                 foreach ($key as $k) {
@@ -130,12 +128,12 @@ class SubQuiz extends AbstractService
                 $this->getServiceSubQuestion()->add($sub_quiz_id, $m_poll_item->getId(), $m_poll_item->getBankQuestionId(), $m_poll_item->getGroupQuestionId());
             }
         }
-        
+
         return $this->get($sub_quiz_id);
     }
 
     /**
-     * Get SubmissionQuiz Started
+     * Get SubmissionQuiz Started.
      * 
      * @invokable
      * 
@@ -149,17 +147,17 @@ class SubQuiz extends AbstractService
         foreach ($res_sub_quiz as $m_sub_quiz) {
             $ret[] = $this->get($m_sub_quiz->getId());
         }
-        
+
         return $ret;
     }
 
     /**
-     * Add answer
+     * Add answer.
      * 
      * @invokable
      *
-     * @param int $sub_question_id            
-     * @param array $sub_answer            
+     * @param int   $sub_question_id
+     * @param array $sub_answer
      *
      * @return bool
      */
@@ -172,18 +170,18 @@ class SubQuiz extends AbstractService
             ->select($this->getModel()
             ->setId($m_sub_question->getSubQuizId()))
             ->current();
-        
-        if (null === $m_sub_quiz || $m_sub_quiz->getUserId() !== $user_id || ! (null === $m_sub_question->getAnsweredDate() || $m_sub_question->getAnsweredDate() instanceof IsNull)) {
+
+        if (null === $m_sub_quiz || $m_sub_quiz->getUserId() !== $user_id || !(null === $m_sub_question->getAnsweredDate() || $m_sub_question->getAnsweredDate() instanceof IsNull)) {
             return false;
         }
         $res_sub_answer = $this->getServiceSubAnswer()->getListLite($sub_question_id);
         if ($res_sub_answer->count() !== 0) {
             return false;
         }
-        
+
         $m_poll_item = $this->getServicePollItem()->get($m_sub_question->getPollItemId());
         $m_bank_question = $this->getServiceBankQuestion()->get($m_sub_question->getBankQuestionId());
-        
+
         $final_point = 0;
         $point = $m_poll_item->getNbPoint();
         $type = $m_bank_question->getBankQuestionTypeId();
@@ -203,51 +201,52 @@ class SubQuiz extends AbstractService
             }
             $this->getServiceSubAnswer()->add($sub_question_id, $sa['bank_question_item_id'], (isset($sa['answer']) ? $sa['answer'] : null));
         }
-        
+
         $this->getServiceSubQuestion()->updatePoint($sub_question_id, ($final_point * $point / $point_initial));
         $this->getServiceSubQuestion()->updateAnswered($sub_question_id);
         if ($this->getMapper()->checkFinish($m_sub_quiz->getId())) {
             $this->calc(null, null, $m_sub_quiz->getId());
         }
-        
+
         return true;
     }
 
     /**
-     * Calcule submissionQuiz
+     * Calcule submissionQuiz.
      * 
      * @param int $submission_id
      * @param int $item_id
      * @param int $sub_quiz_id
-     * @return boolean
+     *
+     * @return bool
      */
     public function calc($submission_id = null, $item_id = null, $sub_quiz_id = null)
     {
         if (null === $submission_id && null === $item_id && null === $sub_quiz_id) {
             return false;
         }
-        
+
         if ((null !== $submission_id || null !== $item_id) && null === $sub_quiz_id) {
             $m_submission = $this->getServiceSubmission()->get($item_id, $submission_id);
             $m_sub_quiz = $this->getBySubmission($m_submission->getId());
             $sub_quiz_id = $m_sub_quiz->getId();
         }
-        
+
         $m_sub_quiz = $this->getMapper()
             ->get($sub_quiz_id)
             ->current();
         $user_id = $m_sub_quiz->getUserId();
-        
+
         $total_final_grade = 0;
         $res_sub_question = $this->getServiceSubQuestion()->getListLite($sub_quiz_id);
         foreach ($res_sub_question as $m_sub_question) {
             $p = $m_sub_question->getPoint();
-            if (! is_numeric($p)) {
+            if (!is_numeric($p)) {
                 $p = 0;
             }
             $total_final_grade += $p;
         }
-        
+
         $total_final = 0;
         $res_poll_item = $this->getServicePollItem()->getList($m_sub_quiz->getPollId());
         foreach ($res_poll_item as $m_poll_item) {
@@ -258,30 +257,31 @@ class SubQuiz extends AbstractService
             }
             $total_final += $m_poll_item->getNbPoint() * $nbq;
         }
-        
+
         $grade = 100 * $total_final_grade / $total_final;
         $this->getMapper()->update($this->getModel()
             ->setGrade($grade)
             ->setId($sub_quiz_id));
-        
-        if(null === $grade && $grade < 0) {
+
+        if (null === $grade && $grade < 0) {
             $grade = 0;
         }
-        
+
         $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
         $this->getServiceSubmission()->_submit($m_sub_quiz->getSubmissionId(), null, $user_id);
-        
+
         return true;
     }
 
     /**
-     * Rate submissionQuiz
+     * Rate submissionQuiz.
      * 
      * @invokable
      *
-     * @param int $id            
-     * @param int $grade            
-     * @param array $questions            
+     * @param int   $id
+     * @param int   $grade
+     * @param array $questions
+     *
      * @return bool
      */
     public function rate($id, $grade, $questions)
@@ -295,12 +295,12 @@ class SubQuiz extends AbstractService
         foreach ($questions as $qid => $qgrade) {
             $this->getServiceSubQuestion()->updatePoint($qid, $qgrade);
         }
-        
+
         return true;
     }
 
     /**
-     * Check Grade
+     * Check Grade.
      * 
      * @invokable
      * 
@@ -317,12 +317,12 @@ class SubQuiz extends AbstractService
                 ->setEndDate($date));
             $this->calc(null, null, $m_sub_quiz->getId());
         }
-        
+
         return $res_sub_quiz;
     }
 
     /**
-     * Get Service BankQuestionMedia
+     * Get Service BankQuestionMedia.
      * 
      * @return \Application\Service\BankQuestionMedia
      */
@@ -332,7 +332,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service BankQuestionItem
+     * Get Service BankQuestionItem.
      * 
      * @return \Application\Service\BankQuestionItem
      */
@@ -342,7 +342,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service BankQuestion
+     * Get Service BankQuestion.
      * 
      * @return \Application\Service\BankQuestion
      */
@@ -352,7 +352,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service GroupQuestion
+     * Get Service GroupQuestion.
      * 
      * @return \Application\Service\GroupQuestion
      */
@@ -362,7 +362,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */
@@ -372,7 +372,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service BankAnswerItem
+     * Get Service BankAnswerItem.
      * 
      * @return \Application\Service\BankAnswerItem
      */
@@ -382,7 +382,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service SubAnswer
+     * Get Service SubAnswer.
      * 
      * @return \Application\Service\SubAnswer
      */
@@ -392,7 +392,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service SubQuestion
+     * Get Service SubQuestion.
      * 
      * @return \Application\Service\SubQuestion
      */
@@ -402,7 +402,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service SubmissionUser
+     * Get Service SubmissionUser.
      * 
      * @return \Application\Service\SubmissionUser
      */
@@ -412,7 +412,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service Submission
+     * Get Service Submission.
      * 
      * @return \Application\Service\Submission
      */
@@ -422,7 +422,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service Poll
+     * Get Service Poll.
      * 
      * @return \Application\Service\Poll
      */
@@ -432,7 +432,7 @@ class SubQuiz extends AbstractService
     }
 
     /**
-     * Get Service PollItem
+     * Get Service PollItem.
      * 
      * @return \Application\Service\PollItem
      */

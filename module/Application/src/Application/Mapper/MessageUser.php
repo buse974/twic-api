@@ -10,15 +10,16 @@ use Zend\Db\Sql\Predicate\Predicate;
 class MessageUser extends AbstractMapper
 {
     /**
-     * Request Get list MessageUser
+     * Request Get list MessageUser.
      * 
-     * @param int $user_id
-     * @param int $message_id
-     * @param int $conversation_id
+     * @param int    $user_id
+     * @param int    $message_id
+     * @param int    $conversation_id
      * @param string $tag
      * @param string $type
-     * @param array $filter
+     * @param array  $filter
      * @param string $search
+     *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($user_id, $message_id = null, $conversation_id = null, $tag = 'INBOX', $type = null, $filter = null, $search = null)

@@ -1,95 +1,94 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Cache User
- *
  */
 namespace Application\Service;
 
 /**
- * Class CacheUser
+ * Class CacheUser.
  */
 class CacheUser implements ServiceLocatorAwareInterface
 {
-
     /**
-     * Service Locator
+     * Service Locator.
      * 
      * @var \Application\Service\ServiceLocatorInterface
      */
     protected $serviceLocator;
 
     /**
-     * Prefix 
+     * Prefix.
      * 
      * @var string
      */
     protected $prefix = 'identity_';
 
     /**
-     * Name key local
+     * Name key local.
      * 
      * @var string
      */
     protected $key_local = 'token';
 
     /**
-     * Name key Global
+     * Name key Global.
      * 
      * @var string
      */
     protected $key_global = 'id';
 
     /**
-     * Save data Local user session
+     * Save data Local user session.
      *
-     * @param mixed $data            
+     * @param mixed $data
+     *
      * @return bool
      */
     public function saveLocal($data)
     {
         $identity = $this->getServiceAuth()->getIdentity();
-        
-        $this->getCache()->setItem($this->prefix . $identity[$this->key_local], $data);
+
+        $this->getCache()->setItem($this->prefix.$identity[$this->key_local], $data);
     }
 
     /**
-     * Save data Global user
+     * Save data Global user.
      *
-     * @param mixed $data            
+     * @param mixed $data
+     *
      * @return bool
      */
     public function save($data)
     {
         $identity = $this->getServiceAuth()->getIdentity();
-        
-        $this->getCache()->setItem($this->prefix . $identity[$this->key_global], $data);
+
+        $this->getCache()->setItem($this->prefix.$identity[$this->key_global], $data);
     }
 
     /**
-     * Get data Local user
+     * Get data Local user.
      *
      * @return mixed
      */
     public function getLocal()
     {
         $identity = $this->getServiceAuth()->getIdentity();
-        
-        return ($this->getCache()->hasItem($this->prefix . $identity[$this->key_local])) ? $this->getCache()->getItem($this->prefix . $identity[$this->key_local]) : false;
+
+        return ($this->getCache()->hasItem($this->prefix.$identity[$this->key_local])) ? $this->getCache()->getItem($this->prefix.$identity[$this->key_local]) : false;
     }
 
     /**
-     * Get data Global user
+     * Get data Global user.
      *
      * @return mixed
      */
     public function get()
     {
         $identity = $this->getServiceAuth()->getIdentity();
-        
-        return ($this->getCache()->hasItem($this->prefix . $identity[$this->key_global])) ? $this->getCache()->getItem($this->prefix . $identity[$this->key_global]) : false;
+
+        return ($this->getCache()->hasItem($this->prefix.$identity[$this->key_global])) ? $this->getCache()->getItem($this->prefix.$identity[$this->key_global]) : false;
     }
 
     /**
@@ -100,25 +99,26 @@ class CacheUser implements ServiceLocatorAwareInterface
     public function getCache()
     {
         $config = $this->getServiceLocator()->get('config')['app-conf'];
-        
+
         return $this->getServiceLocator()->get($config['cache']);
     }
 
     /**
-     * Set Service Locator
+     * Set Service Locator.
      *
-     * @param ServiceLocatorInterface $serviceLocator            
+     * @param ServiceLocatorInterface $serviceLocator
+     *
      * @return \Application\Service\CacheUser
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-        
+
         return $this;
     }
 
     /**
-     * Get ServiceLocator
+     * Get ServiceLocator.
      *
      * @return \Application\Service\ServiceLocatorInterface
      */
@@ -128,7 +128,7 @@ class CacheUser implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Get Service AuthenticationService
+     * Get Service AuthenticationService.
      *
      * @return \Zend\Authentication\AuthenticationService
      */

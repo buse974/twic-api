@@ -1,27 +1,25 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Submission Comments
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class SubmissionComments
+ * Class SubmissionComments.
  */
 class SubmissionComments extends AbstractService
 {
-
     /**
-     * Get List Submission Comments
+     * Get List Submission Comments.
      *
      * @invokable
      *
-     * @param int $submission            
+     * @param int $submission
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($submission)
@@ -30,11 +28,12 @@ class SubmissionComments extends AbstractService
     }
 
     /**
-     * Get Submission Comments
+     * Get Submission Comments.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return \Application\Model\SubmissionComments
      */
     public function get($id)
@@ -45,16 +44,17 @@ class SubmissionComments extends AbstractService
     }
 
     /**
-     * Add Submission Comments
+     * Add Submission Comments.
      *
      * @invokable
      *
-     * @param int $submission_id            
-     * @param int $user_id            
-     * @param string $file_name            
-     * @param string $file_token            
-     * @param string $audio            
-     * @param string $text            
+     * @param int    $submission_id
+     * @param int    $user_id
+     * @param string $file_name
+     * @param string $file_token
+     * @param string $audio
+     * @param string $text
+     *
      * @return \Application\Model\SubmissionComments
      */
     public function add($submission_id, $user_id, $file_name, $file_token, $audio, $text)
@@ -66,7 +66,7 @@ class SubmissionComments extends AbstractService
             ->setFileToken($file_token)
             ->setAudio($audio)
             ->setText($text));
-        
+
         return $this->get($this->getMapper()
             ->getLastInsertValue());
     }

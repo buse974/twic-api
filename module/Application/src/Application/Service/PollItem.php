@@ -1,26 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Poll Item
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class PollItem
+ * Class PollItem.
  */
 class PollItem extends AbstractService
 {
     /**
-     * Add Poll Item
+     * Add Poll Item.
      * 
-     * @param int $poll_id
+     * @param int   $poll_id
      * @param array $data
+     *
      * @return array
      */
     public function add($poll_id, $data = [])
@@ -45,16 +43,18 @@ class PollItem extends AbstractService
     }
 
     /**
-     * Add General Poll Item 
+     * Add General Poll Item.
      * 
-     * @param int $poll_id
-     * @param int $nb_point
-     * @param int $bank_question_id
+     * @param int   $poll_id
+     * @param int   $nb_point
+     * @param int   $bank_question_id
      * @param array $group_question
-     * @param int $nb
-     * @param bool $is_mandatory
-     * @param int $order_id
+     * @param int   $nb
+     * @param bool  $is_mandatory
+     * @param int   $order_id
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function _add($poll_id, $nb_point = null, $bank_question_id = null, $group_question = null, $nb = null, $is_mandatory = null, $order_id = null)
@@ -77,12 +77,13 @@ class PollItem extends AbstractService
     }
 
     /**
-     * replace poll item
+     * replace poll item.
      * 
      * @invokable
      * 
      * @param int   $poll_id
      * @param array $data
+     *
      * @return array
      */
     public function replace($poll_id, $data = [])
@@ -93,9 +94,10 @@ class PollItem extends AbstractService
     }
 
     /**
-     * Delete Poll Item
+     * Delete Poll Item.
      * 
      * @param int $poll_id
+     *
      * @return bool
      */
     public function delete($poll_id)
@@ -104,9 +106,10 @@ class PollItem extends AbstractService
     }
 
     /**
-     * Get Poll Item
+     * Get Poll Item.
      * 
      * @param int $id
+     *
      * @return \Application\Model\PollItem
      */
     public function get($id)
@@ -115,9 +118,10 @@ class PollItem extends AbstractService
     }
 
     /**
-     * Get List Poll Item
+     * Get List Poll Item.
      * 
      * @param int $poll_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($poll_id)
@@ -137,9 +141,10 @@ class PollItem extends AbstractService
     }
 
     /**
-     * Get List Lite Poll Item
+     * Get List Lite Poll Item.
      * 
      * @param int $poll_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListLite($poll_id)
@@ -148,7 +153,7 @@ class PollItem extends AbstractService
     }
 
     /**
-     * Get Service GroupQuestion
+     * Get Service GroupQuestion.
      * 
      * @return \Application\Service\GroupQuestion
      */

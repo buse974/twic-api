@@ -1,28 +1,27 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Bank Question Media
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Library as ModelLibrary;
 
 /**
- * Class BankQuestionMedia
+ * Class BankQuestionMedia.
  */
 class BankQuestionMedia extends AbstractService
 {
     /**
-     * Add Bank Question Media
+     * Add Bank Question Media.
      * 
-     * @param int $bank_question_id
+     * @param int   $bank_question_id
      * @param array $data
-     * @throws \Exception              
+     *
+     * @throws \Exception
+     *
      * @return array
      */
     public function add($bank_question_id, $data = [])
@@ -41,10 +40,11 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * Replace All Bank Question Media
+     * Replace All Bank Question Media.
      * 
-     * @param int $bank_question_id
+     * @param int   $bank_question_id
      * @param array $data
+     *
      * @return array
      */
     public function replace($bank_question_id, $data)
@@ -55,10 +55,11 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * Copy Bank Question Media
+     * Copy Bank Question Media.
      * 
      * @param int $bank_question_id_new
      * @param int $bank_question_id_old
+     *
      * @return bool
      */
     public function copy($bank_question_id_new, $bank_question_id_old)
@@ -73,14 +74,16 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * Genral add Bank Question Media
+     * Genral add Bank Question Media.
      * 
-     * @param int $bank_question_id
+     * @param int    $bank_question_id
      * @param string $name
      * @param stirng $link
      * @param string $token
-     * @param int $type
+     * @param int    $type
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function _add($bank_question_id, $name = null, $link = null, $token = null, $type = null)
@@ -99,9 +102,10 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * Get List Bank Question Media
+     * Get List Bank Question Media.
      * 
      * @param int $bank_question_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($bank_question_id)
@@ -110,9 +114,10 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * Get List Bank Question
+     * Get List Bank Question.
      * 
      * @param int $bank_question_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBankQuestion($bank_question_id)
@@ -121,7 +126,7 @@ class BankQuestionMedia extends AbstractService
     }
 
     /**
-     * Get Service Library
+     * Get Service Library.
      * 
      * @return \Application\Service\Library
      */

@@ -1,29 +1,27 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Contrainte Group
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class CtGroup
+ * Class CtGroup.
  */
 class CtGroup extends AbstractService
 {
-
     /**
-     * Add Contraint Group
+     * Add Contraint Group.
      *
      * @invokable
      *
-     * @param int $item_id            
-     * @param int $group            
-     * @param bool $belongs            
+     * @param int  $item_id
+     * @param int  $group
+     * @param bool $belongs
+     *
      * @return int
      */
     public function add($item_id, $group, $belongs = true)
@@ -33,18 +31,19 @@ class CtGroup extends AbstractService
             ->setGroupId($group)
             ->setBelongs($belongs);
         $this->getMapper()->insert($m_ct_group);
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Update Contraint Group
+     * Update Contraint Group.
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $group            
-     * @param bool $belongs            
+     * @param int    $id
+     * @param string $group
+     * @param bool   $belongs
+     *
      * @return int
      */
     public function update($id, $group = null, $belongs = null)
@@ -53,16 +52,17 @@ class CtGroup extends AbstractService
             ->setId($id)
             ->setGroupId($group)
             ->setBelongs($belongs);
-        
+
         return $this->getMapper()->update($m_ct_group);
     }
 
     /**
-     * Delete Contraint Group
+     * Delete Contraint Group.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -72,9 +72,10 @@ class CtGroup extends AbstractService
     }
 
     /**
-     * Get Contraint Group
+     * Get Contraint Group.
      *
-     * @param int $item_id            
+     * @param int $item_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($item_id)

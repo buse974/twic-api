@@ -1,30 +1,28 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Constrainte Rate
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class CtRate
+ * Class CtRate.
  */
 class CtRate extends AbstractService
 {
-
     /**
-     * Add Constraint Rate
+     * Add Constraint Rate.
      *
      * @invokable
      *
-     * @param int $item_id            
-     * @param int $target_id            
-     * @param string $inf            
-     * @param string $sup            
+     * @param int    $item_id
+     * @param int    $target_id
+     * @param string $inf
+     * @param string $sup
+     *
      * @return int
      */
     public function add($item_id, $target_id, $inf = null, $sup = null)
@@ -35,19 +33,20 @@ class CtRate extends AbstractService
             ->setInf($inf)
             ->setSup($sup);
         $this->getMapper()->insert($m_ct_rate);
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Update Constraint Rate
+     * Update Constraint Rate.
      *
      * @invokable
      *
-     * @param int $id            
-     * @param int $target_id            
-     * @param string $inf            
-     * @param string $sup            
+     * @param int    $id
+     * @param int    $target_id
+     * @param string $inf
+     * @param string $sup
+     *
      * @return int
      */
     public function update($id, $target_id = null, $inf = null, $sup = null)
@@ -57,16 +56,17 @@ class CtRate extends AbstractService
             ->setTargetId($target_id)
             ->setInf($inf)
             ->setSup($sup);
-        
+
         return $this->getMapper()->update($m_ct_rate);
     }
 
     /**
-     * Delete Constraint Rate
+     * Delete Constraint Rate.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -76,9 +76,10 @@ class CtRate extends AbstractService
     }
 
     /**
-     * Get Constraint Rate
+     * Get Constraint Rate.
      *
-     * @param int $item_id            
+     * @param int $item_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($item_id)

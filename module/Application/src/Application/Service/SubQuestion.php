@@ -1,25 +1,23 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Submission Question
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class SubQuestion
+ * Class SubQuestion.
  */
 class SubQuestion extends AbstractService
 {
     /**
-     * Get List Lite Submission Question
+     * Get List Lite Submission Question.
      * 
      * @param int $sub_quiz_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListLite($sub_quiz_id)
@@ -28,9 +26,10 @@ class SubQuestion extends AbstractService
     }
 
     /**
-     * Get Submission Question
+     * Get Submission Question.
      * 
      * @param int $id
+     *
      * @return \Application\Model\SubQuestion
      */
     public function get($id)
@@ -39,9 +38,10 @@ class SubQuestion extends AbstractService
     }
 
     /**
-     * Update Answered of Submission Question
+     * Update Answered of Submission Question.
      * 
      * @param int $id
+     *
      * @return int
      */
     public function updateAnswered($id)
@@ -54,10 +54,11 @@ class SubQuestion extends AbstractService
     }
 
     /**
-     * Update Point Submission Question
+     * Update Point Submission Question.
      * 
      * @param int $id
      * @param int $point
+     *
      * @return int
      */
     public function updatePoint($id, $point)
@@ -70,12 +71,13 @@ class SubQuestion extends AbstractService
     }
 
     /**
-     * Add Submission Question
+     * Add Submission Question.
      * 
      * @param int $sub_quiz_id
      * @param int $poll_item_id
      * @param int $bank_question_id
      * @param int $group_question_id
+     *
      * @return int
      */
     public function add($sub_quiz_id, $poll_item_id, $bank_question_id, $group_question_id)

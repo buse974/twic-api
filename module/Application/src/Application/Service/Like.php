@@ -1,81 +1,81 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Like
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Like
+ * Class Like.
  */
 class Like extends AbstractService
 {
-
     /**
-     * Add Liek to Event
+     * Add Liek to Event.
      *
      * @invokable
      *
-     * @param int $event            
+     * @param int $event
+     *
      * @return int
      */
     public function add($event)
     {
         $res = null;
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_like = $this->getModel()
             ->setEventId($event)
             ->setUserId($me);
-        
+
         if ($this->getMapper()
             ->select($m_like)
             ->count() > 0) {
             $m_like->setIsLike(true);
-            $res = $this->getMapper()->update($m_like, ['event_id' => $event,'user_id' => $me]);
+            $res = $this->getMapper()->update($m_like, ['event_id' => $event, 'user_id' => $me]);
         } else {
             $m_like->setIsLike(true)->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-            
+
             if ($this->getMapper()->insert($m_like) <= 0) {
                 throw new \Exception('error add like');
             }
-            
+
             $this->getServiceEvent()->userLike($event);
-            
+
             $res = $this->getMapper()->getLastInsertValue();
         }
-        
+
         return $res;
     }
 
     /**
-     * UnLike Event
+     * UnLike Event.
      * 
      * @invokable
      *
-     * @param int $event  
-     * @return int          
+     * @param int $event
+     *
+     * @return int
      */
     public function delete($event)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         return $this->getMapper()->update($this->getModel()
-            ->setIsLike(false), ['event_id' => $event,'user_id' => $me]);
+            ->setIsLike(false), ['event_id' => $event, 'user_id' => $me]);
     }
 
     /**
-     * Get List Like to event
+     * Get List Like to event.
      * 
      * @invokable
      *
-     * @param int $feed  
-     * @return \Dal\Db\ResultSet\ResultSet          
+     * @param int $feed
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($feed)
     {
@@ -83,7 +83,7 @@ class Like extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */
@@ -93,7 +93,7 @@ class Like extends AbstractService
     }
 
     /**
-     * Get Service Feed
+     * Get Service Feed.
      * 
      * @return \Application\Service\Feed
      */
@@ -103,7 +103,7 @@ class Like extends AbstractService
     }
 
     /**
-     * Get Service Contact
+     * Get Service Contact.
      * 
      * @return \Application\Service\Contact
      */
@@ -113,7 +113,7 @@ class Like extends AbstractService
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      * 
      * @return \Application\Service\Event
      */

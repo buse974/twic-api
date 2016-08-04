@@ -1,45 +1,42 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Contact
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 
 /**
- * Class Contact
+ * Class Contact.
  */
 class Contact extends AbstractService
 {
-
     /**
-     * Request Contact
+     * Request Contact.
      * 
      * @invokable
      *
-     * @param int $user   
-     * @return int         
+     * @param int $user
+     *
+     * @return int
      */
     public function add($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         if ($user == $identity['id']) {
             throw new \Exception('error user equal myself');
         }
-        
+
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_contact = $this->getModel()
             ->setUserId($identity['id'])
             ->setContactId($user);
-        
+
         $m_contact_me = $this->getModel()
             ->setRequestDate($date)
             ->setAcceptedDate(new IsNull())
@@ -47,7 +44,7 @@ class Contact extends AbstractService
             ->setRequested(true)
             ->setAccepted(false)
             ->setDeleted(false);
-        
+
         $m_contact_you = $this->getModel()
             ->setRequestDate($date)
             ->setAcceptedDate(new IsNull())
@@ -55,7 +52,7 @@ class Contact extends AbstractService
             ->setRequested(false)
             ->setAccepted(false)
             ->setDeleted(false);
-        
+
         if ($this->getMapper()
             ->select($m_contact)
             ->count() === 0) {
@@ -66,94 +63,97 @@ class Contact extends AbstractService
         } else {
             $this->getMapper()->update($m_contact_me, array(
                 'user_id' => $identity['id'],
-                'contact_id' => $user
+                'contact_id' => $user,
             ));
             $ret = $this->getMapper()->update($m_contact_you, array(
                 'user_id' => $user,
-                'contact_id' => $identity['id']
+                'contact_id' => $identity['id'],
             ));
         }
-        
+
         $this->getServiceEvent()->userRequestconnection($user);
-        
+
         return $ret;
     }
 
     /**
-     * Accept Contact
+     * Accept Contact.
      * 
      * @invokable
      *
-     * @param int $user    
-     * @return bool        
+     * @param int $user
+     *
+     * @return bool
      */
     public function accept($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_contact = $this->getModel()
             ->setAcceptedDate($date)
             ->setAccepted(false);
         $this->getMapper()->update($m_contact, array(
             'user_id' => $user,
-            'contact_id' => $identity['id']
+            'contact_id' => $identity['id'],
         ));
-        
+
         $m_contact = $this->getModel()
             ->setAcceptedDate($date)
             ->setAccepted(true);
         $this->getMapper()->update($m_contact, array(
             'user_id' => $identity['id'],
-            'contact_id' => $user
+            'contact_id' => $user,
         ));
-        
+
         $this->getServiceEvent()->userAddConnection($identity['id'], $user);
-        
+
         return true;
     }
 
     /**
-     * Remove Contact
+     * Remove Contact.
      * 
      * @invokable
      *
-     * @param int $user    
-     * @return bool        
+     * @param int $user
+     *
+     * @return bool
      */
     public function remove($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        
+
         $m_contact = $this->getModel()
             ->setDeletedDate($date)
             ->setDeleted(false);
         $this->getMapper()->update($m_contact, array(
             'user_id' => $user,
-            'contact_id' => $identity['id']
+            'contact_id' => $identity['id'],
         ));
-        
+
         $m_contact = $this->getModel()
             ->setDeletedDate($date)
             ->setDeleted(true);
         $this->getMapper()->update($m_contact, array(
             'user_id' => $identity['id'],
-            'contact_id' => $user
+            'contact_id' => $user,
         ));
-        
+
         $this->getServiceEvent()->userDeleteConnection($identity['id'], $user);
-        
+
         return true;
     }
 
     /**
-     * Add Contact all school
+     * Add Contact all school.
      * 
      * @invokable
      *
-     * @param int $school    
-     * @return int        
+     * @param int $school
+     *
+     * @return int
      */
     public function addBySchool($school)
     {
@@ -161,12 +161,13 @@ class Contact extends AbstractService
     }
 
     /**
-     * Get List Request Contact
+     * Get List Request Contact.
      * 
      * @invokable
      *
-     * @param bool $all   
-     * @return \Dal\Db\ResultSet\ResultSet         
+     * @param bool $all
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListRequest($all = false)
     {
@@ -176,42 +177,44 @@ class Contact extends AbstractService
             $request->setContact($this->getServiceUser()
                 ->get($request->getContactId()));
         }
-        
+
         return $listRequest;
     }
 
     /**
-     * Get List Contact
+     * Get List Contact.
      * 
      * @invokable
      *
-     * @param int $user            
-     * @param array $exclude 
-     * @return  \Dal\Db\ResultSet\ResultSet          
+     * @param int   $user
+     * @param array $exclude
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($user = null, $exclude = null)
     {
         if (null === $user) {
             $user = $this->getServiceUser()->getIdentity();
         }
-        
-        if (! $user['id']) {
+
+        if (!$user['id']) {
             throw new \Exception('user parameter without id');
         }
-        
+
         $listRequest = $this->getMapper()->getList($user['id'], $exclude);
         foreach ($listRequest as $request) {
             $request->setContact($this->getServiceUser()
                 ->get($request->getContactId()));
         }
-        
+
         return $listRequest;
     }
 
     /**
-     * Get List Id of contact
+     * Get List Id of contact.
      * 
      * @param int $user
+     *
      * @return array
      */
     public function getListId($user = null)
@@ -219,20 +222,20 @@ class Contact extends AbstractService
         if (null === $user) {
             $user = $this->getServiceUser()->getIdentity()['id'];
         }
-        
+
         $listRequest = $this->getMapper()->getList($user);
-        
+
         $ret = [];
-        
+
         foreach ($listRequest as $request) {
             $ret[] = $request->getContactId();
         }
-        
+
         return $ret;
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      * 
      * @return \Application\Service\Event
      */
@@ -242,7 +245,7 @@ class Contact extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\User
      */

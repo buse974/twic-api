@@ -11,11 +11,11 @@ class Questionnaire extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
-            'id', 
-            'item_id', 
-            'max_duration', 
-            'max_time', 
-            'questionnaire$created_date' => new Expression('DATE_FORMAT(questionnaire.created_date, "%Y-%m-%dT%TZ")')))
+            'id',
+            'item_id',
+            'max_duration',
+            'max_time',
+            'questionnaire$created_date' => new Expression('DATE_FORMAT(questionnaire.created_date, "%Y-%m-%dT%TZ")'), ))
         ->where(array('questionnaire.item_id' => $item));
 
         return $this->selectWith($select);
@@ -33,7 +33,7 @@ class Questionnaire extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     public function getNbrQuestionCompleted($item, $user)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -46,7 +46,7 @@ class Questionnaire extends AbstractMapper
             ->join('questionnaire_user', 'questionnaire_user.id = answer.questionnaire_user_id', [], $select::JOIN_LEFT)
             ->where(array('submission_user.start_date IS NOT NULL AND questionnaire.item_id = ? ' => $item))
             ->where(array('questionnaire_user.user_id' => $user));
-        
+
         return $this->selectWith($select);
     }
 }

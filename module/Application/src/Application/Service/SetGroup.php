@@ -1,25 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Set Group
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class SetGroup
+ * Class SetGroup.
  */
 class SetGroup extends AbstractService
 {
     /**
-     * Add Set Group 
+     * Add Set Group.
      * 
      * @param int $set
      * @param int $group
+     *
      * @return int
      */
     public function add($set, $group)

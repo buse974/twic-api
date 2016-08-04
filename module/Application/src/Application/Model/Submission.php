@@ -28,14 +28,14 @@ class Submission extends BaseSubmission
     {
         return $this->nbr_comments;
     }
-    
+
     public function setNbrComments($nbr_comments)
     {
         $this->nbr_comments = $nbr_comments;
-    
+
         return $this;
     }
-    
+
     public function getThreadId()
     {
         return $this->thread_id;

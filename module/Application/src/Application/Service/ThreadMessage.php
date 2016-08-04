@@ -1,30 +1,28 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Thread Message
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class ThreadMessage
+ * Class ThreadMessage.
  */
 class ThreadMessage extends AbstractService
 {
-
     /**
-     * Add message in thread
+     * Add message in thread.
      *
      * @invokable
      *
-     * @param string $message            
-     * @param int $thread            
-     * @param int $is_new            
-     * @param int $parent_id            
+     * @param string $message
+     * @param int    $thread
+     * @param int    $is_new
+     * @param int    $parent_id
+     *
      * @return int
      */
     public function add($message, $thread, $is_new = false, $parent_id = null)
@@ -36,82 +34,86 @@ class ThreadMessage extends AbstractService
             ->setUserId($this->getServiceUser()
             ->getIdentity()['id'])
             ->setParentId(($parent_id === 0) ? null : $parent_id);
-        
+
         if ($this->getMapper()->insert($m_thread_message) <= 0) {
             throw new \Exception('error insert thread');
         }
-        
+
         $thread_message_id = $this->getMapper()->getLastInsertValue();
         $m_thread = $this->getServiceThread()->get($thread);
-        
+
         if (is_numeric($m_thread->getItemId())) {
             $m_submission = $this->getServiceSubmission()->get($m_thread->getItemId());
             if (null !== $m_submission) {
                 $this->getServiceSubThread()->add($thread, $m_submission->getId());
             }
         }
-        if (! $is_new) {
+        if (!$is_new) {
             $this->getServiceEvent()->threadMessage($thread_message_id);
         }
-        
+
         return $thread_message_id;
     }
 
     /**
-     * update message in thread
+     * update message in thread.
      *
      * @invokable
      *
      * @todo set UpdateDate value
      *      
-     * @param string $message            
-     * @param int $id            
-     * @param int $parent_id            
+     * @param string $message
+     * @param int    $id
+     * @param int    $parent_id
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function update($message, $id, $parent_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        
+
         $m_threadmessage = $this->getModel()
             ->setMessage($message)
             ->setParentId(($parent_id === 0) ? new IsNull() : $parent_id);
-        
-        return $this->getMapper()->update($m_threadmessage, ['user_id' => $me,'id' => $id]);
+
+        return $this->getMapper()->update($m_threadmessage, ['user_id' => $me, 'id' => $id]);
     }
 
     /**
-     * delete message
+     * delete message.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
     {
         return $this->getMapper()->update($this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'],'id' => $id));
+            ->getIdentity()['id'], 'id' => $id, ));
     }
 
     /**
-     * Get list thread message
+     * Get list thread message.
      *
      * @invokable
      *
-     * @param int $thread            
-     * @param int $parent_id            
-     * @param array $filter            
+     * @param int   $thread
+     * @param int   $parent_id
+     * @param array $filter
+     *
      * @return array
      */
     public function getList($thread, $parent_id = null, $filter = null)
     {
         $mapper = ($filter !== null) ? $this->getMapper()->usePaginator($filter) : $this->getMapper();
-        
+
         $res_thread_message = $mapper->getList($thread, null, $parent_id);
-        
+
         foreach ($res_thread_message as $m_thread_message) {
             $roles = [];
             foreach ($this->getServiceRole()->getRoleByUser($m_thread_message->getUser()
@@ -120,14 +122,15 @@ class ThreadMessage extends AbstractService
             }
             $m_thread_message->getUser()->setRoles($roles);
         }
-        
-        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_thread_message] : $res_thread_message;
+
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_thread_message] : $res_thread_message;
     }
 
     /**
-     * Get Last Thread Message
+     * Get Last Thread Message.
      *
-     * @param int $thread_id            
+     * @param int $thread_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getLast($thread_id)
@@ -136,11 +139,12 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Thread Message
+     * Get Thread Message.
      *
      * @invokable
      *
-     * @param int $thread_message            
+     * @param int $thread_message
+     *
      * @return \Application\Model\ThreadMessage
      */
     public function get($thread_message)
@@ -151,7 +155,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\Submission
      */
@@ -161,7 +165,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\SubThread
      */
@@ -171,7 +175,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\Event
      */
@@ -181,7 +185,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\Role
      */
@@ -191,7 +195,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\Thread
      */
@@ -201,7 +205,7 @@ class ThreadMessage extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\User
      */

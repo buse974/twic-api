@@ -1,10 +1,8 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Resume
- *
  */
 namespace Application\Service;
 
@@ -13,7 +11,7 @@ use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Predicate\IsNull;
 
 /**
- * Class Resume
+ * Class Resume.
  */
 class Resume extends AbstractService
 {
@@ -29,14 +27,16 @@ class Resume extends AbstractService
      * @param string $title
      * @param string $subtitle
      * @param string $description
-     * @param int $type
+     * @param int    $type
      * @param string $publisher
-     * @param v $url
+     * @param v      $url
      * @param string $cause
      * @param string $study
-     * @param int $grade
-     * @param int $note
+     * @param int    $grade
+     * @param int    $note
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
@@ -83,7 +83,7 @@ class Resume extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int    $id
      * @param string $start_date
      * @param string $end_date
      * @param string $address
@@ -91,13 +91,14 @@ class Resume extends AbstractService
      * @param string $title
      * @param string $subtitle
      * @param string $description
-     * @param int $type
+     * @param int    $type
      * @param string $publisher
      * @param string $url
      * @param string $cause
      * @param string $study
-     * @param int $grade
-     * @param int $note
+     * @param int    $grade
+     * @param int    $note
+     *
      * @return int
      */
     public function update($id, $start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
@@ -144,6 +145,7 @@ class Resume extends AbstractService
      * @invokable
      *
      * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -160,6 +162,7 @@ class Resume extends AbstractService
      * Get Resume.
      *
      * @param int $id
+     *
      * @return \Application\Model\Resume
      */
     public function getById($id)
@@ -179,6 +182,7 @@ class Resume extends AbstractService
      * @invokable
      * 
      * @param int $user
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($user)
@@ -191,7 +195,7 @@ class Resume extends AbstractService
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      * 
      * @return \Application\Service\Event
      */
@@ -201,7 +205,7 @@ class Resume extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */

@@ -7,12 +7,11 @@ use Dal\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\Expression;
-use Dal\Db\ResultSet\ResultSet;
 
 class Submission extends AbstractMapper
 {
     /**
-     * @param integer $id
+     * @param int $id
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -31,8 +30,8 @@ class Submission extends AbstractMapper
     }
 
     /**
-     * @param integer $user
-     * @param integer $questionnaire
+     * @param int $user
+     * @param int $questionnaire
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -47,11 +46,10 @@ class Submission extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     /**
-     * 
-     * @param integer $user_id
-     * @param integer $conversation_id
+     * @param int $user_id
+     * @param int $conversation_id
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -63,7 +61,7 @@ class Submission extends AbstractMapper
             ->join('submission_user', 'submission_user.submission_id=submission.id', array())
             ->where(array('submission_user.user_id' => $user_id))
             ->where(array('sub_conversation.conversation_id' => $conversation_id));
-        
+
         return $this->selectWith($select);
     }
 
@@ -109,9 +107,9 @@ class Submission extends AbstractMapper
     public function get($item_id = null, $user_id = null, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns([ 
+        $select->columns([
             'submission$id' => new Expression('submission.id'),
-            'item_id', 
+            'item_id',
             'group_name',
             'group_id',
             'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
@@ -123,15 +121,15 @@ class Submission extends AbstractMapper
 
         if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
-        } 
+        }
         if (null !== $user_id) {
             $select->where(array('submission_user.user_id' => $user_id));
         }
         if (null !== $item_id) {
             $select->where(array('submission.item_id' => $item_id));
         }
-        
-	return $this->selectWith($select);
+
+        return $this->selectWith($select);
     }
 
     public function getWithItem($submission_id)
@@ -147,16 +145,16 @@ class Submission extends AbstractMapper
             'submission$nbr_comments' => $this->getSelectNbrComments(),
         ])
         ->join('submission_user', 'submission_user.submission_id=submission.id', [])
-        ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type', 'course_id','start','end','cut_off'])
+        ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type', 'course_id', 'start', 'end', 'cut_off'])
         ->quantifier('DISTINCT');
-        
+
         if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
-        } 
-        
+        }
+
         return $this->selectWith($select);
     }
-    
+
     /**
      * @return \Zend\Db\Sql\Select
      */
@@ -164,12 +162,12 @@ class Submission extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('submission$nbr_comments' => new Expression('COUNT(true)')))
-    		     ->join('submission_comments', 'submission.id = submission_comments.submission_id', [])
-    		     ->where(array('submission.id=`submission$id`'));
-    
+                 ->join('submission_comments', 'submission.id = submission_comments.submission_id', [])
+                 ->where(array('submission.id=`submission$id`'));
+
         return $select;
     }
-    
+
     public function getListToGrade($user_id, $item_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -225,10 +223,11 @@ class Submission extends AbstractMapper
         if (true === $late) {
             $select->where(array('item.end < UTC_TIMESTAMP() AND submission.submit_date IS NULL'));
         }
-        if(true === $tograde) {
-            $select->join('opt_grading','opt_grading.item_id = item.id')
+        if (true === $tograde) {
+            $select->join('opt_grading', 'opt_grading.item_id = item.id')
                    ->where(array('opt_grading.mode <> "none"'));
         }
+
         return $this->selectWith($select);
     }
 

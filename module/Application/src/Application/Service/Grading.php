@@ -1,18 +1,15 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Grading
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Grading
+ * Class Grading.
  */
 class Grading extends AbstractService
 {
@@ -23,6 +20,7 @@ class Grading extends AbstractService
      *
      * @param array $datas
      * @param int   $school
+     *
      * @return bool
      */
     public function update($datas, $school)
@@ -42,6 +40,7 @@ class Grading extends AbstractService
      *
      * @param array $datas
      * @param int   $program
+     *
      * @return bool
      */
     public function updateProgram($datas, $program)
@@ -60,6 +59,7 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param int $school
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getBySchool($school = null)
@@ -77,6 +77,7 @@ class Grading extends AbstractService
      * @invokable
      *
      * @param int $program
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByProgram($program)
@@ -85,11 +86,12 @@ class Grading extends AbstractService
     }
 
     /**
-     * Get Grading by school id
+     * Get Grading by school id.
      *
      * @invokable
      *
      * @param int $school
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByCourse($course)
@@ -98,15 +100,16 @@ class Grading extends AbstractService
     }
 
     /**
-     * Add Grading 
+     * Add Grading.
      * 
-     * @param int $letter
-     * @param int $min
-     * @param int $max
-     * @param inr $grade
+     * @param int    $letter
+     * @param int    $min
+     * @param int    $max
+     * @param inr    $grade
      * @param string $description
-     * @param int $school_id
-     * @param int $program_id
+     * @param int    $school_id
+     * @param int    $program_id
+     *
      * @return int
      */
     public function _add($letter, $min, $max, $grade, $description, $school_id = null, $program_id = null)
@@ -124,10 +127,11 @@ class Grading extends AbstractService
     }
 
     /**
-     * Initialise grading with template
+     * Initialise grading with template.
      * 
      * @param int $school_id
-     * @return boolean
+     *
+     * @return bool
      */
     public function initTpl($school_id)
     {
@@ -145,7 +149,7 @@ class Grading extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */

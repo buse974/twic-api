@@ -1,28 +1,26 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Grading Policy
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class GradingPolicy
+ * Class GradingPolicy.
  */
 class GradingPolicy extends AbstractService
 {
-
     /**
-     * replace grading
+     * replace grading.
      *
      * @invokable
      *
-     * @param array $datas            
-     * @param int $course            
+     * @param array $datas
+     * @param int   $course
+     *
      * @return bool
      */
     public function replace($datas, $course)
@@ -32,19 +30,20 @@ class GradingPolicy extends AbstractService
         foreach ($datas as $gp) {
             $this->_add($gp['name'], $gp['grade'], $course);
         }
-        
+
         return true;
     }
 
     /**
-     * add grading
+     * add grading.
      *
      * @invokable
      * 
      * @param string $name
-     * @param int $grade
-     * @param int $course_id
-     * @param array $criterias
+     * @param int    $grade
+     * @param int    $course_id
+     * @param array  $criterias
+     *
      * @return int
      */
     public function add($name, $grade, $course_id, $criterias = null)
@@ -53,25 +52,26 @@ class GradingPolicy extends AbstractService
             ->setName($name)
             ->setGrade($grade)
             ->setCourseId($course_id);
-        
+
         $this->getMapper()->insert($m_grading);
         $id = $this->getMapper()->getLastInsertValue();
         if (null !== $criterias) {
             $this->getServiceCriteria()->update($criterias, $id);
         }
-        
+
         return $id;
     }
 
     /**
-     * update grading
+     * update grading.
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
-     * @param int $grade            
-     * @param array $criterias            
+     * @param int    $id
+     * @param string $name
+     * @param int    $grade
+     * @param array  $criterias
+     *
      * @return int
      */
     public function update($id, $name = null, $grade = null, $criterias = null)
@@ -83,21 +83,22 @@ class GradingPolicy extends AbstractService
         if (null !== $criterias) {
             $this->getServiceCriteria()->update($criterias, $id);
         }
-        
+
         return $this->getMapper()->update($m_grading);
     }
 
     /**
-     * delete grading policy
+     * delete grading policy.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
     {
-        if (! is_array($id)) {
+        if (!is_array($id)) {
             $id = array($id);
         }
         $ret = 0;
@@ -105,29 +106,30 @@ class GradingPolicy extends AbstractService
             $ret += $this->getMapper()->delete($this->getModel()
                 ->setId($i));
         }
-        
+
         return $ret;
     }
 
     /**
-     * Get Grading Policy By course Id
+     * Get Grading Policy By course Id.
      *
      * @todo vérifier coté ui course_id ou course
      * @invokable
      *
-     * @param int $course_id            
+     * @param int $course_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($course)
     {
         $res_grading_policy = $this->getMapper()->select($this->getModel()
             ->setCourseId($course));
-        
+
         foreach ($res_grading_policy as $m_grading_policy) {
             $m_grading_policy->setCriterias($this->getServiceCriteria()
                 ->getList($m_grading_policy->getId()));
         }
-        
+
         return $res_grading_policy;
     }
 
@@ -136,7 +138,8 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int $submission_id            
+     * @param int $submission_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getBySubmission($submission_id)
@@ -146,29 +149,30 @@ class GradingPolicy extends AbstractService
             ->current();
         $m_grading_policy->setCriterias($this->getServiceCriteria()
             ->getList($m_grading_policy->getId()));
-        
+
         return $m_grading_policy;
     }
 
     /**
-     * Init Template
+     * Init Template.
      *
-     * @param int $course_id            
+     * @param int $course_id
+     *
      * @return bool
      */
     public function initTpl($course_id)
     {
         $res_grading_policy = $this->getMapper()->select($this->getModel()
             ->setTpl(true));
-        
+
         foreach ($res_grading_policy as $m_grading_policy) {
             $m_grading_policy->setId(null)
                 ->setCourseId($course_id)
                 ->setTpl(false);
-            
+
             $this->getMapper()->insert($m_grading_policy);
         }
-        
+
         return true;
     }
 
@@ -177,8 +181,9 @@ class GradingPolicy extends AbstractService
      *
      * @invokable
      *
-     * @param int $course            
-     * @param int $user            
+     * @param int $course
+     * @param int $user
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByCourse($course, $user)
@@ -188,12 +193,12 @@ class GradingPolicy extends AbstractService
             $m_grading_policy->setCriterias($this->getServiceCriteria()
                 ->getList($m_grading_policy->getId()));
         }
-        
+
         return $res_grading_policy;
     }
 
     /**
-     * Get Service Criteria
+     * Get Service Criteria.
      *
      * @return \Application\Service\Criteria
      */

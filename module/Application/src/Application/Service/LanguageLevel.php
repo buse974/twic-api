@@ -1,23 +1,20 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Language Level
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class LanguageLevel
+ * Class LanguageLevel.
  */
 class LanguageLevel extends AbstractService
 {
     /**
-     * Get List 
+     * Get List.
      * 
      * @invokable
      * 

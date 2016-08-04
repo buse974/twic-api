@@ -1,25 +1,23 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Questionnaire Question
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class QuestionnaireQuestion
+ * Class QuestionnaireQuestion.
  */
 class QuestionnaireQuestion extends AbstractService
 {
     /**
-     * Create Questionnaire Question
+     * Create Questionnaire Question.
      * 
      * @param int $questionnaire
+     *
      * @return bool
      */
     public function create($questionnaire)
@@ -38,10 +36,11 @@ class QuestionnaireQuestion extends AbstractService
     }
 
     /**
-     * Get Questionnaire Question
+     * Get Questionnaire Question.
      * 
      * @param int $questionnaire
      * @param int $question
+     *
      * @return \Application\Model\QuestionnaireQuestion
      */
     public function getByQuestion($questionnaire, $question)
@@ -52,7 +51,7 @@ class QuestionnaireQuestion extends AbstractService
     }
 
     /**
-     * Get Service Component
+     * Get Service Component.
      * 
      * @return \Application\Service\Component
      */
@@ -62,7 +61,7 @@ class QuestionnaireQuestion extends AbstractService
     }
 
     /**
-     * Get Service Question
+     * Get Service Question.
      * 
      * @return \Application\Service\Question
      */

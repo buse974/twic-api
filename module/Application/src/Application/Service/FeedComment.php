@@ -1,26 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Feed Comment
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class FeedComment
+ * Class FeedComment.
  */
 class FeedComment extends AbstractService
 {
     /**
-     * Add Feed Comment
+     * Add Feed Comment.
      * 
      * @param string $content
-     * @param int $feed_id
+     * @param int    $feed_id
+     *
      * @return int
      */
     public function add($content, $feed_id)
@@ -41,9 +39,10 @@ class FeedComment extends AbstractService
     }
 
     /**
-     * Delete Feed Comment
+     * Delete Feed Comment.
      * 
      * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -56,9 +55,10 @@ class FeedComment extends AbstractService
     }
 
     /**
-     * Get List Feed Comment
+     * Get List Feed Comment.
      * 
      * @param int $id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($id)
@@ -67,7 +67,7 @@ class FeedComment extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */

@@ -1,12 +1,9 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Opentok
- *
  */
-
 namespace Application\Service;
 
 use OpenTok\MediaMode;
@@ -14,23 +11,24 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class Opentok
+ * Class Opentok.
  */
 class Opentok implements ServiceLocatorAwareInterface
 {
     /**
-     * Service Locator
+     * Service Locator.
      * 
      * @var \Zend\ServiceManager\ServiceLocatorInterface
      */
     protected $serviceLocator;
 
     /**
-     * Create Session
+     * Create Session.
      * 
      * @invokable
      *
      * @param string $media_mode
+     *
      * @return string
      */
     public function createSession($media_mode = MediaMode ::ROUTED)
@@ -39,7 +37,7 @@ class Opentok implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Get Service OpenTok
+     * Get Service OpenTok.
      * 
      * @return \ZOpenTok\Service\OpenTok
      */
@@ -49,7 +47,7 @@ class Opentok implements ServiceLocatorAwareInterface
     }
 
     /**
-     * Set service locator
+     * Set service locator.
      *
      * @param ServiceLocatorInterface $serviceLocator
      */

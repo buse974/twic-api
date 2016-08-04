@@ -1,10 +1,8 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Archive Video
- * 
  */
 namespace Application\Service;
 
@@ -12,49 +10,51 @@ use Dal\Service\AbstractService;
 use Application\Model\VideoArchive as CVF;
 
 /**
- * Class VideoArchive
+ * Class VideoArchive.
  */
 class VideoArchive extends AbstractService
 {
     /**
-     * Get List Video
+     * Get List Video.
      * 
      * @invokable
      *
-     * @param integer $item_id            
+     * @param int $item_id
+     *
      * @return array|stdClass
      */
     public function getList($item_id)
-    {   
+    {
         $res_videoconf_archive = $this->getMapper()->getList($item_id);
         $tmp = $ret = [];
         foreach ($res_videoconf_archive as $m_videoconf_archive) {
             $tmp[$m_videoconf_archive->getConversationId()][] = $m_videoconf_archive;
         }
-        
+
         foreach ($tmp as $k => $v) {
             $ret[] = [
              'conversation_id' => $k,
              'videos' => $v,
-             'conversation_user' => $this->getServiceConversationUser()->getUserByConversation($k)];
+             'conversation_user' => $this->getServiceConversationUser()->getUserByConversation($k), ];
         }
-        
+
         return $ret;
     }
 
     /**
-     * Get Video
+     * Get Video.
      *
-     * @param integer $id            
+     * @param int $id
+     *
      * @return \Application\Model\VideoArchive
      */
     public function get($id)
     {
         $res_videoconf_archive = $this->getMapper()->get($id);
         if ($res_videoconf_archive->count() <= 0) {
-            throw new \Exception("video_conf");
+            throw new \Exception('video_conf');
         }
-        
+
         return $res_videoconf_archive->current();
     }
 
@@ -63,18 +63,19 @@ class VideoArchive extends AbstractService
      *
      * @invokable
      *
-     * @param interger $conversation_id            
+     * @param interger $conversation_id
+     *
      * @return array
      */
     public function startRecord($conversation_id)
     {
         $m_conversation = $this->getServiceConversation()->getLite($conversation_id);
-        
+
         $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_conversation->getToken()), true);
         if ($arr_archive['status'] == 'started') {
             $this->add($m_conversation->getId(), $arr_archive['id']);
         }
-        
+
         return $arr_archive;
     }
 
@@ -83,27 +84,29 @@ class VideoArchive extends AbstractService
      *
      * @invokable
      *
-     * @param interger $conversation_id            
+     * @param interger $conversation_id
+     *
      * @return mixed
      */
     public function stopRecord($conversation_id)
     {
         $res_video_archive = $this->getMapper()->getLastArchiveId($conversation_id);
         if ($res_video_archive->count() <= 0) {
-            throw new \Exception("no video with conversation: " . $conversation_id);
+            throw new \Exception('no video with conversation: '.$conversation_id);
         }
         $m_video_archive = $res_video_archive->current();
-        
+
         return $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
     }
 
     /**
-     * Valide the video transfer
+     * Valide the video transfer.
      *
      * @invokable
      *
-     * @param interger $video_archive            
-     * @param string $url            
+     * @param interger $video_archive
+     * @param string   $url
+     *
      * @return int
      */
     public function validTransfertVideo($video_archive, $url)
@@ -117,7 +120,7 @@ class VideoArchive extends AbstractService
                 $event_send = false;
             }
         }*/
-        
+
         //$m_video_archive = $this->getMapper()->select($this->getModel()->setId($video_archive))->current();
         $m_video_archive = $this->getMapper()->getListSameConversation($video_archive)->current();
         $ret = $this->updateByArchiveToken($video_archive, CVF::ARV_AVAILABLE, null, $url);
@@ -128,12 +131,13 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Update Status Video
+     * Update Status Video.
      *
-     * @param string $token            
-     * @param string $status            
-     * @param int $duration            
-     * @param string $link            
+     * @param string $token
+     * @param string $status
+     * @param int    $duration
+     * @param string $link
+     *
      * @return int
      */
     public function updateByArchiveToken($id, $status, $duration = null, $link = null)
@@ -143,7 +147,7 @@ class VideoArchive extends AbstractService
             ->setArchiveDuration($duration)
             ->setArchiveStatus($status)
             ->setArchiveLink($link);
-        
+
         return $this->getMapper()->update($m_video_archive);
     }
 
@@ -162,7 +166,7 @@ class VideoArchive extends AbstractService
             try {
                 $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_video_archive->getArchiveToken()), true);
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
-                    if($archive['duration'] == 0) {
+                    if ($archive['duration'] == 0) {
                         $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_SKIPPED, 0);
                     } else {
                         $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_UPLOAD, $archive['duration']);
@@ -176,15 +180,15 @@ class VideoArchive extends AbstractService
                 exit();
             }
         }
-        
+
         return $ret;
     }
 
     /**
-     * Add Video
+     * Add Video.
      *
-     * @param int $conversation            
-     * @param string $token            
+     * @param int    $conversation
+     * @param string $token
      *
      * @return int
      */
@@ -195,14 +199,14 @@ class VideoArchive extends AbstractService
             ->setArchiveToken($token)
             ->setArchiveStatus(CVF::ARV_STARTED)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         $this->getMapper()->insert($m_video_archive);
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Get Service Conversation
+     * Get Service Conversation.
      *
      * @return \Application\Service\Conversation
      */
@@ -210,9 +214,9 @@ class VideoArchive extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_conversation');
     }
-    
+
     /**
-     * Get Service Conversation user
+     * Get Service Conversation user.
      *
      * @return \Application\Service\ConversationUser
      */
@@ -222,7 +226,7 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Get Service OpenTok
+     * Get Service OpenTok.
      *
      * @return \ZOpenTok\Service\OpenTok
      */
@@ -232,7 +236,7 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      *
      * @return \Application\Service\Event
      */

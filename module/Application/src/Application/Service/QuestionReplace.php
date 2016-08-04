@@ -1,18 +1,15 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Question Replace
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * 
- * Class QuestionReplace
+ * Class QuestionReplace.
  */
 class QuestionReplace extends AbstractService
 {

@@ -1,10 +1,8 @@
 <?php
 /**
- *
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * School  
- *
  */
 namespace Application\Mapper;
 

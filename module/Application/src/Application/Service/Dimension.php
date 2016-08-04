@@ -1,28 +1,26 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Dimension
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Dimension
+ * Class Dimension.
  */
 class Dimension extends AbstractService
 {
     /**
-     * Get List Dimension
+     * Get List Dimension.
      * 
      * @invokable
      * 
-     * @param array $filter
+     * @param array  $filter
      * @param string $search
+     *
      * @return array
      */
     public function getList($filter = null, $search = null)
@@ -39,13 +37,15 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Add Dimnsion
+     * Add Dimnsion.
      *
      * @invokable
      *
      * @param string $name
      * @param string $describe
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function add($name, $describe)
@@ -62,13 +62,14 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Update Dimension
+     * Update Dimension.
      *
      * @invokable
      *
      * @param int    $id
      * @param string $name
      * @param string $describe
+     *
      * @return int
      */
     public function update($id, $name, $describe)
@@ -82,11 +83,12 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Delete Dimension (update deleted date )
+     * Delete Dimension (update deleted date ).
      *
      * @invokable
      *
      * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -99,11 +101,12 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Get EqCq By School
+     * Get EqCq By School.
      * 
      * @invokable
      * 
      * @param int $school
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getEqCq($school)
@@ -112,7 +115,7 @@ class Dimension extends AbstractService
     }
 
     /**
-     * Get Service Component
+     * Get Service Component.
      * 
      * @return \Application\Service\Component
      */

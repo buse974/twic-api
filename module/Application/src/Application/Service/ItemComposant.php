@@ -1,19 +1,16 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Item Composant
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class ItemComposant
+ * Class ItemComposant.
  */
 class ItemComposant extends AbstractService
-{   
+{
 }

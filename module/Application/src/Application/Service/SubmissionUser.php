@@ -1,12 +1,9 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Submission User
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -14,16 +11,17 @@ use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Role as ModelRole;
 
 /**
- * Class SubmissionUser
+ * Class SubmissionUser.
  */
 class SubmissionUser extends AbstractService
 {
     /**
-     * Create Submission User, Add and remove do a diff
+     * Create Submission User, Add and remove do a diff.
      * 
-     * @param int $submission_id
+     * @param int   $submission_id
      * @param array $users
-     * @return boolean if submission_user has be modifyer
+     *
+     * @return bool if submission_user has be modifyer
      */
     public function create($submission_id, array $users)
     {
@@ -54,10 +52,11 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Add Submission User
+     * Add Submission User.
      * 
      * @param int $submission_id
      * @param int $user_id
+     *
      * @return int
      */
     public function add($submission_id, $user_id)
@@ -66,23 +65,24 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Overwritten Grade
+     * Overwritten Grade.
      * 
      * @param int $submission_id
      * @param int $grade
+     *
      * @return int
      */
     public function OverwrittenGrade($submission_id, $grade)
     {
-        if($grade < 0 || !is_numeric($grade)) {
+        if ($grade < 0 || !is_numeric($grade)) {
             $grade = 0;
         }
-        
+
         return $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten(true), ['submission_id' => $submission_id]);
     }
 
     /**
-     * Set Grade submission user
+     * Set Grade submission user.
      * 
      * @invokable
      *
@@ -90,56 +90,60 @@ class SubmissionUser extends AbstractService
      * @param int  $user_id
      * @param int  $grade
      * @param bool $overwritten
+     *
      * @return int
      */
     public function setGrade($submission_id, $user_id, $grade, $overwritten = false)
     {
-        if($grade < 0) {
+        if ($grade < 0) {
             $grade = 0;
         }
-        
-        $grade =  $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
-        if($grade) {
+
+        $grade = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
+        if ($grade) {
             $this->getServiceEvent()->submissionGraded($submission_id, [$user_id]);
         }
-        
+
         return $grade;
     }
 
     /**
-     * Get Submission with user model
+     * Get Submission with user model.
      * 
      * @param int $submission_id
      * @param int $user_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmissionId($submission_id, $user_id = null)
     {
-        if(null === $user_id) {
+        if (null === $user_id) {
             $identity = $this->getServiceUser()->getIdentity();
-            if($identity !== null) {
+            if ($identity !== null) {
                 $user_id = $this->getServiceUser()->getIdentity()['id'];
             }
         }
 
         return $this->getMapper()->getListBySubmissionId($submission_id, $user_id);
     }
-    
+
     /**
-     * Get Submission User  By Item
+     * Get Submission User  By Item.
      *
      * @param int item_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItemId($item_id)
     {
         return $this->getMapper()->getListByItemId($item_id);
     }
-    
+
     /**
-     * Get Processed Grades
+     * Get Processed Grades.
      * 
      * @param int $submission_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getProcessedGrades($submission_id)
@@ -148,9 +152,10 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Get List Submission User
+     * Get List Submission User.
      * 
      * @param int $submission_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($submission_id)
@@ -159,13 +164,14 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Get List Grade Submission User
+     * Get List Grade Submission User.
      * 
      * @invokable
      *
      * @param array  $avg
      * @param array  $filter
      * @param string $search
+     *
      * @return array
      */
     public function getListGrade($avg = array(), $filter = array(), $search = null)
@@ -174,7 +180,7 @@ class SubmissionUser extends AbstractService
         if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
             $filter['user'] = $me['id'];
         }
-        
+
         $mapper = $this->getMapper();
         $res_submission_user = $mapper->usePaginator($filter)->getListGrade($avg, $filter, $search, $me);
 
@@ -182,10 +188,11 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Submit Submission User 
+     * Submit Submission User.
      * 
      * @param int $submission_id
      * @param int $user_id
+     *
      * @return int
      */
     public function submit($submission_id, $user_id = null)
@@ -200,10 +207,11 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Cancel a submit
+     * Cancel a submit.
      * 
      * @param int $submission_id
      * @param int $user_id
+     *
      * @return int
      */
     public function cancelsubmit($submission_id, $user_id)
@@ -218,11 +226,12 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Start the submission user
+     * Start the submission user.
      * 
      * @invokable
      *
      * @param int $submission
+     *
      * @return int
      */
     public function start($submission)
@@ -235,11 +244,12 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * End the submission user
+     * End the submission user.
      * 
      * @invokable
      *
      * @param int $submission
+     *
      * @return int
      */
     public function end($submission)
@@ -252,9 +262,10 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Check if is finish
+     * Check if is finish.
      * 
      * @param int $submission_id
+     *
      * @return bool
      */
     public function checkAllFinish($submission_id)
@@ -263,7 +274,7 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */
@@ -273,7 +284,7 @@ class SubmissionUser extends AbstractService
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      * 
      * @return \Application\Service\Event
      */
@@ -281,5 +292,4 @@ class SubmissionUser extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_event');
     }
-
 }

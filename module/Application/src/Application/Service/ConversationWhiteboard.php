@@ -1,26 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Conversation Whiteboard
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class ConversationWhiteboard
+ * Class ConversationWhiteboard.
  */
 class ConversationWhiteboard extends AbstractService
 {
-
     /**
-     * Add Conversation Whiteboard
+     * Add Conversation Whiteboard.
      *
-     * @param int $conversation_id            
-     * @param int $whiteboard_id            
+     * @param int $conversation_id
+     * @param int $whiteboard_id
+     *
      * @return int
      */
     public function add($conversation_id, $whiteboard_id)
@@ -31,25 +29,25 @@ class ConversationWhiteboard extends AbstractService
     }
 
     /**
-     * Delete ConversationWhiteboard
+     * Delete ConversationWhiteboard.
      *
-     * @param int $whiteboard_id            
+     * @param int $whiteboard_id
      */
     public function delete($whiteboard_id)
     {
         $res_conversation_whiteboard = $this->getMapper()->select($this->getModel()
             ->setWhiteboardId($whiteboard_id));
-        
+
         foreach ($res_conversation_whiteboard as $m_conversation_whiteboard) {
             $this->getMapper()->delete($this->getModel()
                 ->setWhiteboardId($m_conversation_whiteboard->getWhiteboardId()));
-            
+
             $this->getServiceWhiteboard()->delete($m_conversation_whiteboard->getWhiteboardId());
         }
     }
 
     /**
-     * Get Service Whiteboard
+     * Get Service Whiteboard.
      *
      * @return \Application\Service\Whiteboard
      */

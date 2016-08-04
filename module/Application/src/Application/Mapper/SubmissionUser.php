@@ -95,11 +95,11 @@ class SubmissionUser extends AbstractMapper
                 'school_id',
                 'user$contacts_count' => $this->getMapperUser()->getSelectContactCount(),
             ];
-        
-        if(null !== $user_id) {
+
+        if (null !== $user_id) {
             $columns['user$contact_state'] = $this->getMapperUser()->getSelectContactState($user_id);
         }
-        
+
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
             'submission_id',
@@ -115,7 +115,6 @@ class SubmissionUser extends AbstractMapper
     }
 
     /**
-     * 
      * @param unknown $item_id
      */
     public function getListByItemId($item_id)
@@ -124,10 +123,10 @@ class SubmissionUser extends AbstractMapper
         $select->columns(array('submission_id', 'user_id'))
             ->join('submission', 'submission_user.submission_id=submission.id', [])
             ->where(array('submission.item_id' => $item_id));
-        
+
         return $this->selectWith($select);
     }
-    
+
     /**
      * @param int $submission
      *
@@ -165,7 +164,7 @@ class SubmissionUser extends AbstractMapper
 
         return ($this->selectWith($select)->count() === 0) ? true : false;
     }
-    
+
     /**
      * @return \Application\Mapper\User
      */

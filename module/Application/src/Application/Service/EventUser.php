@@ -1,26 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Event User
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class EventUser
+ * Class EventUser.
  */
 class EventUser extends AbstractService
 {
     /**
-     * Add Event User
+     * Add Event User.
      * 
      * @param int|array $user
-     * @param int $event_id
+     * @param int       $event_id
+     *
      * @return bool
      */
     public function add($user_id, $event_id)
@@ -38,12 +36,13 @@ class EventUser extends AbstractService
     }
 
     /**
-     * Mark Read Event User current
+     * Mark Read Event User current.
      * 
      * @invokable
      * 
-     * @param array $ids
+     * @param array  $ids
      * @param string $event
+     *
      * @return int
      */
     public function read($ids = null, $event = null)
@@ -68,11 +67,12 @@ class EventUser extends AbstractService
     }
 
     /**
-     * Mark View All Event User current
+     * Mark View All Event User current.
      * 
      * @invokable
      * 
      * @param int $id
+     *
      * @return array
      */
     public function view($id)
@@ -90,7 +90,7 @@ class EventUser extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */

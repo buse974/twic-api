@@ -73,12 +73,12 @@ class Item extends AbstractMapper
         ->join('program', 'program.id=course.program_id', [])
         ->where(array('course.deleted_date IS NULL'))
         ->where(array('program.deleted_date IS NULL'));
-    
+
         if (null !== $course_id) {
             $select->where(array('item.course_id' => $course_id));
         }
-       
-        if(null !== $type) {
+
+        if (null !== $type) {
             $select->where(array('item.type' => $type));
         }
         if (null !== $start && null !== $end) {
@@ -86,12 +86,12 @@ class Item extends AbstractMapper
             ->where(['item.end BETWEEN ? AND ?  ' => [$start, $end]], Predicate::OP_OR)
             ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start, $end]], Predicate::OP_OR);
         }
-    
+
         $select->group('item.id');
-    
+
         return $this->selectWith($select);
     }
-    
+
     public function getList($course_id = null, $parent_id = null, $start = null, $end = null, $type = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -135,7 +135,7 @@ class Item extends AbstractMapper
                 $select->where(array('item.parent_id' => $parent_id));
             }
         }
-        if(null !== $type) {
+        if (null !== $type) {
             $select->where(array('item.type' => $type));
         }
         if (null !== $start && null !== $end) {
@@ -396,7 +396,6 @@ class Item extends AbstractMapper
                 $s[] = ':t'.$i;
             }
             $where[] = 'item.type IN ('.implode(',', $s).')';
-            
         } else {
             $where[] = "item.type IN ('CP', 'IA', 'POLL', 'DISC', 'CHAT')";
         }
@@ -425,7 +424,6 @@ class Item extends AbstractMapper
         }
 
         $sql .= $cw.' GROUP BY `item`.`id`';
-        
 
         return $this->selectPdo($sql, $val);
     }
@@ -494,19 +492,19 @@ class Item extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-    public function cancelSort($id, $order_id){
+
+    public function cancelSort($id, $order_id)
+    {
         $update = $this->tableGateway->getSql()->update();
-        $update->set(['order_id'=> $id]);
-        if($order_id instanceof IsNull){
+        $update->set(['order_id' => $id]);
+        if ($order_id instanceof IsNull) {
             $update->where(['order_id IS NULL']);
-        }
-        else{
+        } else {
             $update->where(['order_id' => $order_id]);
         }
-        
-        
+
         $update->where(['id <> ?' => $id]);
-        return $this->updateWith($update);    
+
+        return $this->updateWith($update);
     }
 }

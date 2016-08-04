@@ -1,25 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * SubThread
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class SubThread
+ * Class SubThread.
  */
 class SubThread extends AbstractService
 {
     /**
-     * Add Submission thread
+     * Add Submission thread.
      * 
      * @param int $thread_id
      * @param int $submission_id
+     *
      * @return int
      */
     public function add($thread_id, $submission_id)

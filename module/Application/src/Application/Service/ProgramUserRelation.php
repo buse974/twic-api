@@ -1,25 +1,24 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Program User Relation
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class ProgramUserRelation
+ * Class ProgramUserRelation.
  */
 class ProgramUserRelation extends AbstractService
 {
     /**
-     * Add Users to Program
+     * Add Users to Program.
      * 
      * @param array $user
      * @param array $program
+     *
      * @return array
      */
     public function add($user, $program)
@@ -36,7 +35,7 @@ class ProgramUserRelation extends AbstractService
     }
 
     /**
-     * Delete User To Program
+     * Delete User To Program.
      * 
      * @param array $user
      * @param array $program
@@ -65,9 +64,10 @@ class ProgramUserRelation extends AbstractService
     }
 
     /**
-     * Delete user of all program
+     * Delete user of all program.
      * 
      * @param int $user_id
+     *
      * @return int
      */
     public function deleteByUser($user)

@@ -325,14 +325,14 @@ class User extends AbstractMapper
     public function getListContact($me, $type = null, $date = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 
-            'firstname', 
-            'lastname', 
+        $select->columns(array('id',
+            'firstname',
+            'lastname',
             'school_id', 'email', 'nickname',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 
-            'position', 
-            'interest', 
-        'avatar'))
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position',
+            'interest',
+        'avatar', ))
             ->join('contact', 'contact.contact_id=user.id', array('request_date', 'accepted_date', 'deleted_date', 'requested', 'accepted', 'deleted'))
             ->where('user.deleted_date IS NULL')
             ->where(array('contact.user_id' => $me))
@@ -400,16 +400,16 @@ class User extends AbstractMapper
     public function getInstructorByItem($item_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname','nickname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('user_role', 'user_role.user_id=user.id', array('role$id' => 'role_id'))
             ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
             ->join('item', 'item.course_id=course_user_relation.course_id', array())
             ->where(array('item.id' => $item_id))
             ->where(array('user_role.role_id' => \Application\Model\Role::ROLE_INSTRUCTOR_ID));
-    
+
         return $this->selectWith($select);
     }
-    
+
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -496,6 +496,7 @@ class User extends AbstractMapper
 
     /**
      * @param int $conversation_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByConversation($conversation_id)
@@ -530,16 +531,14 @@ class User extends AbstractMapper
         ->where(array('user.deleted_date IS NULL'))
         ->where(array('user.sis IS NOT NULL'))
         ->where(array('user.sis <> ""'));
-    
+
         if (null !== $user) {
             $select->where(array('user.id <> ?' => $user));
         }
-    
+
         return $this->selectWith($select);
     }
-    
-    
-    
+
     public function nbrBySchool($school_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -569,7 +568,7 @@ class User extends AbstractMapper
 
         return $select;
     }
-    
+
     /**
      * @return \Zend\Db\Sql\Select
      */
@@ -582,7 +581,7 @@ class User extends AbstractMapper
 
         return $select;
     }
-    
+
     /**
      * @param int $submission_id
      */

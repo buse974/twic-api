@@ -1,23 +1,20 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Guidelines View
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class GuidelinesView
+ * Class GuidelinesView.
  */
 class GuidelinesView extends AbstractService
 {
     /**
-     * Add State to a Guidelines
+     * Add State to a Guidelines.
      * 
      * @param string $state
      */
@@ -28,9 +25,10 @@ class GuidelinesView extends AbstractService
     }
 
     /**
-     * Check is state exist
+     * Check is state exist.
      * 
      * @param string $state
+     *
      * @return bool
      */
     public function exist($state)
@@ -44,7 +42,7 @@ class GuidelinesView extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */

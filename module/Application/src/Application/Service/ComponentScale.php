@@ -1,31 +1,29 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Component Scale
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class ComponentScale
+ * Class ComponentScale.
  */
 class ComponentScale extends AbstractService
 {
-
     /**
-     * Add Component Scale
+     * Add Component Scale.
      *
      * @invokable
      *
-     * @param int $component            
-     * @param int $min            
-     * @param int $max            
-     * @param string $describe            
-     * @param string $recommandation            
+     * @param int    $component
+     * @param int    $min
+     * @param int    $max
+     * @param string $describe
+     * @param string $recommandation
+     *
      * @return int
      */
     public function add($component, $min, $max, $describe, $recommandation)
@@ -38,16 +36,17 @@ class ComponentScale extends AbstractService
             ->setRecommandation($recommandation)) <= 0) {
             throw new \Exception('error insert component scale');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Delete Component Scale
+     * Delete Component Scale.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -57,16 +56,17 @@ class ComponentScale extends AbstractService
     }
 
     /**
-     * Update Component Scale
+     * Update Component Scale.
      *
      * @invokable
      *
-     * @param int $id            
-     * @param int $component            
-     * @param int $min            
-     * @param int $max            
-     * @param string $describe            
-     * @param string $recommandation            
+     * @param int    $id
+     * @param int    $component
+     * @param int    $min
+     * @param int    $max
+     * @param string $describe
+     * @param string $recommandation
+     *
      * @return int
      */
     public function update($id, $component, $min, $max, $describe, $recommandation)
@@ -81,19 +81,20 @@ class ComponentScale extends AbstractService
     }
 
     /**
-     * Get List Component Scale
+     * Get List Component Scale.
      *
      * @invokable
      *
-     * @param int $component_id            
-     * @param array $filter            
+     * @param int   $component_id
+     * @param array $filter
+     *
      * @return array
      */
     public function getList($component_id = null, $filter = null)
     {
         $mapper = $this->getMapper();
         $res_component_scale = $mapper->usePaginator($filter)->getList($component_id);
-        
-        return ($filter !== null) ? ['count' => $mapper->count(),'list' => $res_component_scale] : $res_component_scale;
+
+        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_component_scale] : $res_component_scale;
     }
 }

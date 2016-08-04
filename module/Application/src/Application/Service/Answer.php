@@ -1,30 +1,29 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Answer
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Answer
+ * Class Answer.
  */
 class Answer extends AbstractService
 {
-
     /**
-     * Add Answer
+     * Add Answer.
      *
-     * @param int $question_id            
-     * @param int $questionnaire_user_id            
-     * @param int $questionnaire_question_id            
-     * @param int $peer_id            
-     * @param int $scale_id            
+     * @param int $question_id
+     * @param int $questionnaire_user_id
+     * @param int $questionnaire_question_id
+     * @param int $peer_id
+     * @param int $scale_id
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function add($question_id, $questionnaire_user_id, $questionnaire_question_id, $peer_id, $scale_id)
@@ -38,34 +37,36 @@ class Answer extends AbstractService
             ->setType((($peer_id == $this->getServiceUser()
             ->getIdentity()['id']) ? 'SELF' : 'PEER'))
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         if ($this->getMapper()->insert($m_answer) <= 0) {
             throw new \Exception('Error insert add answer');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Get List Answer
+     * Get List Answer.
      *
      * @invokable
      *
-     * @param integer $submission_id            
-     * @param integer $peer            
+     * @param int $submission_id
+     * @param int $peer
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($submission_id = null, $peer = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        
+
         return $this->getMapper()->getList($submission_id, $user_id, $peer);
     }
 
     /**
-     * Get Answer By QuestionnaireUser
+     * Get Answer By QuestionnaireUser.
      *
-     * @param int $questionnaire_user_id            
+     * @param int $questionnaire_user_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByQuestionnaireUser($questionnaire_user_id)
@@ -75,7 +76,7 @@ class Answer extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\User
      */

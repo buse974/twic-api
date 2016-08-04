@@ -1,28 +1,27 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Submission User Criteria
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class SubmissionUserCriteria
+ * Class SubmissionUserCriteria.
  */
 class SubmissionUserCriteria extends AbstractService
 {
     /**
-     * Add Submission User Criteria
+     * Add Submission User Criteria.
      * 
-     * @param int $submission_id
-     * @param int $user_id
-     * @param int $criteria_id
-     * @param int $points
+     * @param int  $submission_id
+     * @param int  $user_id
+     * @param int  $criteria_id
+     * @param int  $points
      * @param bool $overwritten
+     *
      * @return int
      */
     public function add($submission_id, $user_id, $criteria_id, $points, $overwritten = false)
@@ -34,9 +33,10 @@ class SubmissionUserCriteria extends AbstractService
     }
 
     /**
-     * Delete Submission User Criteria By Submission
+     * Delete Submission User Criteria By Submission.
      * 
      * @param int $submission_id
+     *
      * @return int
      */
     public function deleteBySubmission($submission_id)
@@ -45,9 +45,10 @@ class SubmissionUserCriteria extends AbstractService
     }
 
     /**
-     * Get Processed Grades
+     * Get Processed Grades.
      * 
      * @param int $submission_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getProcessedGrades($submission_id)
@@ -56,11 +57,12 @@ class SubmissionUserCriteria extends AbstractService
     }
 
     /**
-     * Get List By Submission
+     * Get List By Submission.
      * 
      * @invokable
      *
      * @param int $submission
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission)

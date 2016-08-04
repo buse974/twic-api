@@ -1,17 +1,15 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Submission Document
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class SubmissionDocument
+ * Class SubmissionDocument.
  */
 class SubmissionDocument extends AbstractService
 {

@@ -1,23 +1,20 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Connection
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Connection
+ * Class Connection.
  */
 class Connection extends AbstractService
 {
     /**
-     * Add Connection
+     * Add Connection.
      * 
      * @return int
      */
@@ -45,7 +42,7 @@ class Connection extends AbstractService
     }
 
     /**
-     * Select Last Connection
+     * Select Last Connection.
      * 
      * @return \Application\Model\Connection
      */
@@ -63,11 +60,12 @@ class Connection extends AbstractService
     }
 
     /**
-     * Get Avg connection
+     * Get Avg connection.
      * 
      * @invokable
      * 
      * @param int $school
+     *
      * @return array
      */
     public function getAvg($school)
@@ -81,7 +79,7 @@ class Connection extends AbstractService
     }
 
     /**
-     * Get Service user
+     * Get Service user.
      * 
      * @return \Application\Service\User
      */

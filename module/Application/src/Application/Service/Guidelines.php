@@ -1,28 +1,26 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Guidelines
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Guidelines
+ * Class Guidelines.
  */
 class Guidelines extends AbstractService
 {
-
     /**
-     * Add Guidelines
+     * Add Guidelines.
      * 
      * @invokable
      *
-     * @param string $state            
-     * @param mixed $data            
+     * @param string $state
+     * @param mixed  $data
+     *
      * @return int
      */
     public function add($state, $data)
@@ -32,26 +30,27 @@ class Guidelines extends AbstractService
             ->setData(json_encode($data))) <= 0) {
             throw new \Exception('error insert guidelines');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Update GuiideLines
+     * Update GuiideLines.
      * 
      * @invokable
      *
-     * @param int $id            
-     * @param string $state            
-     * @param string $data    
-     * @return int        
+     * @param int    $id
+     * @param string $state
+     * @param string $data
+     *
+     * @return int
      */
     public function update($id, $state = null, $data = null)
     {
         if (null !== $data) {
             $data = json_encode($data);
         }
-        
+
         return $this->getMapper()->update($this->getModel()
             ->setState($state)
             ->setId($id)
@@ -59,11 +58,12 @@ class Guidelines extends AbstractService
     }
 
     /**
-     * Delete GuiideLines
+     * Delete GuiideLines.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -73,18 +73,19 @@ class Guidelines extends AbstractService
     }
 
     /**
-     * Get List GuiideLines
+     * Get List GuiideLines.
      *
      * @invokable
      *
-     * @param string $state            
+     * @param string $state
+     *
      * @return array
      */
     public function getList($state)
     {
         $res_guidelines = $this->getMapper()->select($this->getModel()
             ->setState($state));
-        
+
         $ret = [];
         foreach ($res_guidelines as $m_guidelines) {
             $data = $m_guidelines->getData();
@@ -92,18 +93,19 @@ class Guidelines extends AbstractService
                 $ret[] = json_decode($data, true);
             }
         }
-        
+
         $this->getServiceGuidelinesView()->add($state);
-        
+
         return $ret;
     }
 
     /**
-     * Get If is Viewed Or not
+     * Get If is Viewed Or not.
      *
      * @invokable
      *
-     * @param string $state            
+     * @param string $state
+     *
      * @return bool
      */
     public function isViewed($state)
@@ -112,7 +114,7 @@ class Guidelines extends AbstractService
     }
 
     /**
-     * Get Service GuidelinesView
+     * Get Service GuidelinesView.
      *
      * @return \Application\Service\GuidelinesView
      */

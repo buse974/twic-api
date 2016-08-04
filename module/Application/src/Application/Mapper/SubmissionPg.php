@@ -44,11 +44,9 @@ class SubmissionPg extends AbstractMapper
 
         return $this->updateWith($update);
     }
-    
-      /**
-     * 
+
+    /**
      * @param int $item_id
-     * 
      * 
      * @return \Application\Model\Submission
      */

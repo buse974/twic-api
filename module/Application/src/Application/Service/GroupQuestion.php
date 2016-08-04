@@ -1,28 +1,27 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Group Question
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 
 /**
- * Class GroupQuestion
+ * Class GroupQuestion.
  */
 class GroupQuestion extends AbstractService
 {
     /**
-     * Add Group Question
+     * Add Group Question.
      * 
      * @param array $group_question
-     * @param int $nb
+     * @param int   $nb
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function add($group_question, $nb)
@@ -40,9 +39,10 @@ class GroupQuestion extends AbstractService
     }
 
     /**
-     * Get List Group Question
+     * Get List Group Question.
      * 
      * @param int $group_question_id
+     *
      * @return \Application\Model\GroupQuestion
      */
     public function getList($group_question_id)
@@ -68,7 +68,7 @@ class GroupQuestion extends AbstractService
     }
 
     /**
-     * Get Service QuestionRelation
+     * Get Service QuestionRelation.
      * 
      * @return \Application\Service\QuestionRelation
      */

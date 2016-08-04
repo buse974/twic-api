@@ -1,38 +1,37 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * School
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class School
+ * Class School.
  */
 class School extends AbstractService
 {
-
     /**
      * add school.
      *
      * @invokable
      *
-     * @param string $name            
-     * @param string $next_name            
-     * @param string $short_name            
-     * @param string $logo            
-     * @param string $describe            
-     * @param string $website            
-     * @param string $background            
-     * @param string $phone            
-     * @param string $contact            
-     * @param int $contact_id            
-     * @param array $address            
+     * @param string $name
+     * @param string $next_name
+     * @param string $short_name
+     * @param string $logo
+     * @param string $describe
+     * @param string $website
+     * @param string $background
+     * @param string $phone
+     * @param string $contact
+     * @param int    $contact_id
+     * @param array  $address
+     *
      * @throws \Exception
+     *
      * @return \Application\Model\School
      */
     public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null)
@@ -48,23 +47,23 @@ class School extends AbstractService
             ->setPhone($phone)
             ->setContact($contact)
             ->setContactId($contact_id);
-        
+
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);
             if ($address && null !== ($address_id = $address->getId())) {
                 $m_school->setAddressId($address_id);
             }
         }
-        
+
         if ($this->getMapper()->insert($m_school) <= 0) {
             throw new \Exception('error insert');
         }
-        
+
         $school_id = $this->getMapper()->getLastInsertValue();
-        
+
         $this->getServiceEvent()->schoolNew($school_id);
         $this->getServiceGrading()->initTpl($school_id);
-        
+
         return $this->get($school_id);
     }
 
@@ -73,21 +72,22 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
-     * @param string $logo            
-     * @param string $describe            
-     * @param string $website            
-     * @param string $short_name            
-     * @param string $phone            
-     * @param array $address            
-     * @param string $background            
+     * @param int    $id
+     * @param string $name
+     * @param string $logo
+     * @param string $describe
+     * @param string $website
+     * @param string $short_name
+     * @param string $phone
+     * @param array  $address
+     * @param string $background
+     *
      * @return int
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null)
     {
         $m_school = $this->getModel();
-        
+
         $m_school->setId($id)
             ->setName($name)
             ->setLogo($logo)
@@ -96,7 +96,7 @@ class School extends AbstractService
             ->setShortName($short_name)
             ->setPhone($phone)
             ->setBackground($background);
-        
+
         if ($address !== null) {
             $address_id = $this->getServiceAddress()
                 ->getAddress($address)
@@ -105,7 +105,7 @@ class School extends AbstractService
                 $m_school->setAddressId($address_id);
             }
         }
-        
+
         return $this->getMapper()->update($m_school);
     }
 
@@ -114,17 +114,18 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return \Application\Model\School
      */
     public function get($id)
     {
         $results = $this->getMapper()->get($id);
-        
+
         if ($m_school = $results->count() <= 0) {
-            throw new \Exception('not school with id:' . $id);
+            throw new \Exception('not school with id:'.$id);
         }
-        
+
         return $results->current();
     }
 
@@ -133,21 +134,22 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter            
-     * @param string $search            
+     * @param array  $filter
+     * @param string $search
+     *
      * @return array
      */
     public function getList($filter = null, $search = null)
     {
         $mapper = $this->getMapper();
         $res_school = $mapper->usePaginator($filter)->getList($filter, $search);
-        
+
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
             $m_school->setProgram(($program->count() > 0) ? $program : []);
         }
-        
-        return ['count' => $mapper->count(),'list' => $res_school];
+
+        return ['count' => $mapper->count(), 'list' => $res_school];
     }
 
     /**
@@ -155,29 +157,30 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return array
      */
     public function delete($id)
     {
         $ret = array();
-        
-        if (! is_array($id)) {
+
+        if (!is_array($id)) {
             $id = array($id);
         }
-        
+
         foreach ($id as $i) {
             $m_school = $this->getModel()
                 ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
                 ->setId($i);
             $ret[$i] = $this->getMapper()->update($m_school);
         }
-        
+
         return $ret;
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      *
      * @return \Application\Service\Event
      */
@@ -187,7 +190,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service Address
+     * Get Service Address.
      *
      * @return \Address\Service\Address
      */
@@ -197,7 +200,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service Program
+     * Get Service Program.
      *
      * @return \Application\Service\Program
      */
@@ -207,7 +210,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service
+     * Get Service.
      *
      * @return \Application\Service\Grading
      */

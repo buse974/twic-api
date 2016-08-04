@@ -1,10 +1,8 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Feed
- *
  */
 namespace Application\Service;
 
@@ -13,7 +11,7 @@ use Zend\Http\Client;
 use Application\Model\Feed as ModelFeed;
 
 /**
- * Class Feed
+ * Class Feed.
  */
 class Feed extends AbstractService
 {
@@ -32,6 +30,7 @@ class Feed extends AbstractService
      * @param string $link_desc
      * @param string $link_title
      * @param string $type
+     *
      * @return int
      */
     public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null,
@@ -83,6 +82,7 @@ class Feed extends AbstractService
      * @param string $name_document
      * @param string $link_desc
      * @param string $link_title
+     *
      * @return int
      */
     public function update($id, $content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null, $name_document = null, $link_desc = null, $link_title = null)
@@ -109,6 +109,7 @@ class Feed extends AbstractService
      * @invokable
      *
      * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -127,6 +128,7 @@ class Feed extends AbstractService
      *
      * @param int    $id
      * @param string $content
+     *
      * @return int
      */
     public function addComment($id, $content)
@@ -152,6 +154,7 @@ class Feed extends AbstractService
      * Get List Comment Feed.
      *
      * @invokable
+     *
      * @param int $id
      */
     public function GetListComment($id)
@@ -167,6 +170,7 @@ class Feed extends AbstractService
      * @param string $filter
      * @param string $ids
      * @param int    $user
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($filter = null, $ids = null, $user = null)
@@ -188,9 +192,10 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get Feed
+     * Get Feed.
      * 
      * @param int $id
+     *
      * @return \Application\Model\Feed|null
      */
     public function get($id)
@@ -201,10 +206,12 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get preview Crawler
+     * Get preview Crawler.
      * 
      * @invokable 
+     *
      * @param string $url
+     *
      * @return array
      */
     public function linkPreview($url)
@@ -234,7 +241,7 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get Service FeedComment
+     * Get Service FeedComment.
      * 
      * @return \Application\Service\FeedComment
      */
@@ -244,7 +251,7 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get Service Contact
+     * Get Service Contact.
      * 
      * @return \Application\Service\Contact
      */
@@ -254,7 +261,7 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */
@@ -264,7 +271,7 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get Service PageCrawler
+     * Get Service PageCrawler.
      * 
      * @return \SimplePageCrawler\PageCrawler
      */
@@ -274,7 +281,7 @@ class Feed extends AbstractService
     }
 
     /**
-     * Get Service Event
+     * Get Service Event.
      * 
      * @return \Application\Service\Event
      */

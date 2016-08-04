@@ -1,11 +1,11 @@
 <?php
+
 namespace Application\Model;
 
 use Application\Model\Base\ConversationUser as BaseConversationUser;
 
 class ConversationUser extends BaseConversationUser
 {
-
     protected $user;
 
     public function getUser()
@@ -16,7 +16,7 @@ class ConversationUser extends BaseConversationUser
     public function setUser($user)
     {
         $this->user = $user;
-        
+
         return $this;
     }
 }

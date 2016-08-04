@@ -1,12 +1,9 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Item Grading
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
@@ -14,12 +11,12 @@ use DateTime;
 use DateTimeZone;
 
 /**
- * Class ItemGrading
+ * Class ItemGrading.
  */
 class ItemGrading extends AbstractService
 {
     /**
-     * Get List Item Grading
+     * Get List Item Grading.
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -29,9 +26,10 @@ class ItemGrading extends AbstractService
     }
 
     /**
-     * Delete Item Grading
+     * Delete Item Grading.
      * 
      * @param int $submission_user_id
+     *
      * @return int
      */
     public function deleteByItemProgUser($submission_user_id)
@@ -40,10 +38,11 @@ class ItemGrading extends AbstractService
     }
 
     /**
-     * Add/Update Item Grading
+     * Add/Update Item Grading.
      * 
      * @param int $submission_user_id
      * @param int $grade
+     *
      * @return int
      */
     public function add($submission_user_id, $grade)
@@ -57,10 +56,11 @@ class ItemGrading extends AbstractService
     }
 
     /**
-     * Add Item Grading
+     * Add Item Grading.
      * 
      * @param int $submission_user_id
      * @param int $grade
+     *
      * @return int
      */
     public function _add($submission_user_id, $grade)
@@ -73,10 +73,11 @@ class ItemGrading extends AbstractService
     }
 
     /**
-     * Update Item Grading
+     * Update Item Grading.
      * 
      * @param int $id
      * @param int $grade
+     *
      * @return int
      */
     public function _update($id, $grade)

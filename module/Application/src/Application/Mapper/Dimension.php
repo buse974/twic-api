@@ -26,9 +26,10 @@ class Dimension extends AbstractMapper
     }
 
     /**
-     * Request getEqCq
+     * Request getEqCq.
      * 
      * @param int $school
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getEqCq($school)

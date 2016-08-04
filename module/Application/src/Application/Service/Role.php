@@ -1,10 +1,8 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Role
- *
  */
 namespace Application\Service;
 
@@ -12,18 +10,19 @@ use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 
 /**
- * Class Role
+ * Class Role.
  */
 class Role extends AbstractService
 {
-
     /**
-     * add role
+     * add role.
      *
      * @invokable
      *
-     * @param string $name            
+     * @param string $name
+     *
      * @throws \Exception
+     *
      * @return int
      */
     public function add($name)
@@ -32,34 +31,36 @@ class Role extends AbstractService
             ->setName($name)) <= 0) {
             throw new \Exception('error insert');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
     /**
-     * Update Role
+     * Update Role.
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
+     * @param int    $id
+     * @param string $name
+     *
      * @return int
      */
     public function update($id, $name)
     {
         $m_role = $this->getModel();
-        
+
         $m_role->setId($id)->setName($name);
-        
+
         return $this->getMapper()->update($m_role);
     }
 
     /**
-     * Delete Role by ID
+     * Delete Role by ID.
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -73,8 +74,9 @@ class Role extends AbstractService
      *
      * @invokable
      *
-     * @param int $role            
-     * @param int $user            
+     * @param int $role
+     * @param int $user
+     *
      * @return int
      */
     public function addUser($role, $user)
@@ -83,9 +85,10 @@ class Role extends AbstractService
     }
 
     /**
-     * Get Role By User Id
+     * Get Role By User Id.
      *
-     * @param int $id            
+     * @param int $id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getRoleByUser($user_id = null)
@@ -95,14 +98,15 @@ class Role extends AbstractService
                 ->getIdentity()
                 ->getId();
         }
-        
+
         return $this->getMapper()->getRoleByUser($user_id);
     }
 
     /**
-     * Get Id By Name
+     * Get Id By Name.
      *
-     * @param string $namerole            
+     * @param string $namerole
+     *
      * @return stirng
      */
     public function getIdByName($namerole)
@@ -111,7 +115,7 @@ class Role extends AbstractService
     }
 
     /**
-     * Get Service UserRole
+     * Get Service UserRole.
      *
      * @return \Application\Service\UserRole
      */
@@ -121,7 +125,7 @@ class Role extends AbstractService
     }
 
     /**
-     * Get Service Auth
+     * Get Service Auth.
      *
      * @return \Zend\Authentication\AuthenticationService
      */

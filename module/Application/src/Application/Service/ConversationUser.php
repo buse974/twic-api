@@ -1,28 +1,26 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Conversation User
- *
  */
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Class Conversation User
+ * Class Conversation User.
  */
 class ConversationUser extends AbstractService
 {
     /**
-     * Get Conversation OR Create if not exist
+     * Get Conversation OR Create if not exist.
      * 
      * @invokable
      * 
      * @param array $users
      * @param int   $type
+     *
      * @return int
      */
     public function getConversationByUser(array $users, $type = null)
@@ -46,11 +44,12 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * Get List Conversation 
+     * Get List Conversation.
      * 
      * @invokable
      *
      * @param int $submission_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListConversationBySubmission($submission_id)
@@ -59,9 +58,10 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * Get User By Conversation
+     * Get User By Conversation.
      * 
      * @param int $conversation_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getUserByConversation($conversation_id)
@@ -71,15 +71,16 @@ class ConversationUser extends AbstractService
         foreach ($res_conversation_user as $rm_conversation_user) {
             $rm_conversation_user->setUser($this->getServiceUser()->get($rm_conversation_user->getUserId()));
         }
-        
+
         return $res_conversation_user;
     }
 
     /**
-     * Check If is in conversation
+     * Check If is in conversation.
      * 
      * @param int $conversation_id
      * @param int $user_id
+     *
      * @return bool
      */
     public function isInConversation($conversation_id, $user_id)
@@ -90,10 +91,11 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * Add User in the Conversation
+     * Add User in the Conversation.
      * 
-     * @param int $conversation_id
+     * @param int       $conversation_id
      * @param int|array $users
+     *
      * @return array
      */
     public function add($conversation_id, $users)
@@ -111,10 +113,11 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * Replace user in conversation
+     * Replace user in conversation.
      * 
-     * @param int $conversation_id
-     * @param array  $users
+     * @param int   $conversation_id
+     * @param array $users
+     *
      * @return array
      */
     public function replace($conversation_id, $users)
@@ -125,7 +128,7 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * Get Service Conversation
+     * Get Service Conversation.
      * 
      * @return \Application\Service\Conversation
      */
@@ -135,7 +138,7 @@ class ConversationUser extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */

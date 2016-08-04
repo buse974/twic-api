@@ -1,10 +1,8 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Library
- *
  */
 namespace Application\Service;
 
@@ -14,36 +12,37 @@ use Box\Model\Document as ModelDocument;
 use JRpc\Json\Server\Exception\JrpcException;
 
 /**
- * Class Library
+ * Class Library.
  */
 class Library extends AbstractService
 {
-
     /**
-     * Add File in library
+     * Add File in library.
      *
      * @invokable
      *
-     * @param string $name            
-     * @param string $link            
-     * @param string $token            
-     * @param string $type            
-     * @param int $folder_id            
+     * @param string $name
+     * @param string $link
+     * @param string $token
+     * @param string $type
+     * @param int    $folder_id
+     *
      * @throws \Exception
+     *
      * @return \Application\Model\Library
      */
     public function add($name, $link = null, $token = null, $type = null, $folder_id = null)
     {
         $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
-        
+
         $box_id = null;
-        $u = (null !== $link) ? $link : $urldms . $token;
+        $u = (null !== $link) ? $link : $urldms.$token;
         $m_box = $this->getServiceBox()->addFile($u, $type);
-        
+
         if ($m_box instanceof ModelDocument) {
             $box_id = $m_box->getId();
         }
-        
+
         $m_library = $this->getModel()
             ->setName($name)
             ->setLink($link)
@@ -54,20 +53,21 @@ class Library extends AbstractService
             ->setOwnerId($this->getServiceUser()
             ->getIdentity()['id'])
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         if ($this->getMapper()->insert($m_library) < 0) {
             throw new \Exception('Error insert file');
         }
-        
+
         $id = $this->getMapper()->getLastInsertValue();
-        
+
         return $this->get($id);
     }
 
     /**
-     * Add library
+     * Add library.
      *
-     * @param array $data            
+     * @param array $data
+     *
      * @return \Application\Model\Library
      */
     public function _add($data)
@@ -77,20 +77,21 @@ class Library extends AbstractService
         $token = ((isset($data['token'])) ? $data['token'] : null);
         $type = ((isset($data['type'])) ? $data['type'] : null);
         $folder_id = ((isset($data['folder_id'])) ? $data['folder_id'] : null);
-        
+
         return $this->add($name, $link, $token, $type, $folder_id);
     }
 
     /**
-     * Update Library
+     * Update Library.
      * 
      * @invokable
      * 
-     * @param int $id
+     * @param int    $id
      * @param string $name
      * @param string $link
      * @param string $token
-     * @param int $folder_id
+     * @param int    $folder_id
+     *
      * @return \Application\Model\Library
      */
     public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
@@ -98,7 +99,7 @@ class Library extends AbstractService
         if ($folder_id === $id) {
             return 0;
         }
-        
+
         $m_library = $this->getModel()
             ->setId($id)
             ->setName($name)
@@ -106,19 +107,20 @@ class Library extends AbstractService
             ->setToken($token)
             ->setFolderId(($folder_id === 0) ? new IsNull() : $folder_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         $this->getMapper()->update($m_library);
-        
+
         return $this->get($id);
     }
 
     /**
-     * Get List Library
+     * Get List Library.
      * 
      * @invokable
      *
-     * @param int $folder_id    
-     * @return array        
+     * @param int $folder_id
+     *
+     * @return array
      */
     public function getList($folder_id = null)
     {
@@ -127,20 +129,20 @@ class Library extends AbstractService
             ->setDeletedDate(new IsNull())
             ->setOwnerId($this->getServiceUser()
             ->getIdentity()['id']);
-        
+
         // If root folder: returns only documents
-        if (! $folder_id) {
+        if (!$folder_id) {
             return ['documents' => $this->getMapper()->select($m_library)];
         }
-        
+
         // Requested document / folder
         $m_folder = $this->getModel()->setId($folder_id);
         $folder = $this->getMapper()
             ->select($m_folder)
             ->current();
-        
+
         // Parent folder
-        if (! $folder->getFolderId() instanceof \Zend\Db\Sql\Predicate\IsNull) {
+        if (!$folder->getFolderId() instanceof \Zend\Db\Sql\Predicate\IsNull) {
             $m_parent = $this->getModel()->setId($folder->getFolderId());
             $parent = $this->getMapper()
                 ->select($m_parent)
@@ -148,17 +150,18 @@ class Library extends AbstractService
         } else {
             $parent = null;
         }
-        
-        return ['documents' => $this->getMapper()->select($m_library),'folder' => $folder,'parent' => $parent];
+
+        return ['documents' => $this->getMapper()->select($m_library), 'folder' => $folder, 'parent' => $parent];
     }
 
     /**
-     * Get List Library By  item id
+     * Get List Library By  item id.
      * 
      * @invokable
      * 
-     * @param int $item    
-     * @return \Dal\Db\ResultSet\ResultSet        
+     * @param int $item
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item)
     {
@@ -166,12 +169,13 @@ class Library extends AbstractService
     }
 
     /**
-     * Get List Library By  item parent id
+     * Get List Library By  item parent id.
      * 
      * @invokable
      *
-     * @param int $item       
-     * @return \Dal\Db\ResultSet\ResultSet      
+     * @param int $item
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByParentItem($item)
     {
@@ -179,10 +183,11 @@ class Library extends AbstractService
     }
 
     /**
-     * Get List Library By bank question id
+     * Get List Library By bank question id.
      * 
      * @param int $bank_question_id
-     * @return \Dal\Db\ResultSet\ResultSet 
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByBankQuestion($bank_question_id)
     {
@@ -190,12 +195,13 @@ class Library extends AbstractService
     }
 
     /**
-     * Get List Library By Submission id
+     * Get List Library By Submission id.
      * 
      * @invokable
      *
-     * @param int $submission_id  
-     * @return \Dal\Db\ResultSet\ResultSet           
+     * @param int $submission_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id)
     {
@@ -203,10 +209,11 @@ class Library extends AbstractService
     }
 
     /**
-     * Get List Library By conversation id
+     * Get List Library By conversation id.
      * 
      * @param int $conversation_id
-     * @return \Dal\Db\ResultSet\ResultSet  
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByConversation($conversation_id)
     {
@@ -214,25 +221,27 @@ class Library extends AbstractService
     }
 
     /**
-     * Get Library By item id
+     * Get Library By item id.
      * 
-     * @param int $item_id            
+     * @param int $item_id
+     *
      * @return \Application\Model\Library
      */
     public function getByItem($item_id)
     {
         $res_library = $this->getMapper()->getListByItem($item);
-        
+
         return ($res_library->count() > 0) ? $res_library->current() : null;
     }
 
     /**
-     * Get List By Constrainte
+     * Get List By Constrainte.
      * 
      * @invokable
      * 
-     * @param int $item   
-     * @return \Dal\Db\ResultSet\ResultSet       
+     * @param int $item
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByCt($item)
     {
@@ -240,11 +249,12 @@ class Library extends AbstractService
     }
 
     /**
-     * delete Library
+     * delete Library.
      *
      * @invokable
      * 
-     * @param int $id            
+     * @param int $id
+     *
      * @return int
      */
     public function delete($id)
@@ -252,35 +262,38 @@ class Library extends AbstractService
         $m_library = $this->getModel()
             ->setId($id)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
+
         return $this->getMapper()->update($m_library);
     }
 
     /**
-     * Get Library
+     * Get Library.
      *
      * @invokable
      *
-     * @param int|array $id            
+     * @param int|array $id
+     *
      * @return \Application\Model\Library|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
     {
         $res_library = $this->getMapper()->select($this->getModel()
             ->setId($id));
-        
+
         return (is_array($id)) ? $res_library : $res_library->current();
     }
 
     /**
-     * Get Box Session
+     * Get Box Session.
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $box_id            
+     * @param int    $id
+     * @param string $box_id
+     *
      * @throws \Exception
      * @throws JrpcException
+     *
      * @return void|\Box\Model\Session
      */
     public function getSession($id = null, $box_id = null)
@@ -288,11 +301,11 @@ class Library extends AbstractService
         if (null === $id && null === $box_id) {
             return;
         }
-        
+
         if (null !== $id) {
             $res_library = $this->getMapper()->select($this->getModel()
                 ->setId($id));
-            
+
             if ($res_library->count() <= 0) {
                 throw new \Exception();
             }
@@ -302,19 +315,19 @@ class Library extends AbstractService
                 throw new JrpcException('No Box Id', 123456);
             }
         }
-        
+
         $session = null;
         try {
             $session = $this->getServiceBox()->createSession($box_id);
         } catch (\Exception $e) {
             throw new JrpcException($e->getMessage(), $e->getCode());
         }
-        
+
         return $session;
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\User
      */
@@ -324,7 +337,7 @@ class Library extends AbstractService
     }
 
     /**
-     * Get Service Box Api
+     * Get Service Box Api.
      *
      * @return \Box\Service\Api
      */

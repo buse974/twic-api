@@ -1,26 +1,26 @@
 <?php
 /**
- * 
- * TheStudnet (http://thestudnet.com)
+ * TheStudnet (http://thestudnet.com).
  *
  * Questionnaire User
- *
  */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 /**
- * Calss QuestionnaireUser
+ * Calss QuestionnaireUser.
  */
 class QuestionnaireUser extends AbstractService
 {
     /**
-     * Get Questionnaire User 
+     * Get Questionnaire User.
      * 
      * @param unknown $questionnaire_id
      * @param unknown $item_id
+     *
      * @throws \Exception
+     *
      * @return \Application\Model\QuestionnaireUser
      */
     public function get($questionnaire_id, $item_id)
@@ -47,7 +47,7 @@ class QuestionnaireUser extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      * 
      * @return \Application\Service\User
      */
@@ -57,7 +57,7 @@ class QuestionnaireUser extends AbstractService
     }
 
     /**
-     * Get Service Submission
+     * Get Service Submission.
      * 
      * @return \Application\Service\Submission
      */
