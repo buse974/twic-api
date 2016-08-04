@@ -10,7 +10,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use PhpParser\Node\Stmt\Foreach_;
 
 /**
  * Class SubmissionPg

@@ -206,7 +206,6 @@ class Event extends AbstractService
     public function messageNew($message_id, $to)
     {
         $from = $this->getDataUser();
-        
         $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $to, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
         
@@ -320,7 +319,7 @@ class Event extends AbstractService
     public function submissionGraded($submission_id, $user_id)
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-        
+       
         $u_id = $this->getServiceUser()->getIdentity()['id'];
         $src = $this->getDataUser();
         $ret = false;
@@ -454,7 +453,14 @@ class Event extends AbstractService
     {
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('submission.submit', $this->getDataUser(), $this->getDataSubmission($m_submission), $this->getDataInstructorByItem($m_submission->getItemId()), self::TARGET_TYPE_USER);
+        $src = $this->getDataUser();
+        
+        $ret = false;
+        if(!empty($src)) {
+            $ret = $this->create('submission.submit', $src, $this->getDataSubmission($m_submission), $this->getDataInstructorByItem($m_submission->getItemId()), self::TARGET_TYPE_USER);
+        }
+        
+        return $ret;
     }
 
     /**

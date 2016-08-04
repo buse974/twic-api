@@ -54,7 +54,7 @@ class Questionnaire extends AbstractService
     {
         $m_item = $this->getServiceItem()->get($item);
         if ($m_item->getType() !== CI::TYPE_HANGOUT && $m_item->getType() !== CI::TYPE_EQCQ) {
-            throw new  \Exception('No Workgroup');
+            throw new  \Exception('No   Workgroup');
         }
 
         $res_questionnaire = $this->getMapper()->getByItem($item);
@@ -121,14 +121,14 @@ class Questionnaire extends AbstractService
     public function getNbrQuestionNoCompleted($item_id)
     {
         $nbr = $tnbr = null;
-        $user = $this->getServiceUser()->getIdentity()['id'];
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $res_questionnaire = $this->getMapper()->getNbrTotal($item_id);
         if ($res_questionnaire->count() > 0) {
             $tnbr = $res_questionnaire->current()->getNbNoCompleted();
             $tnbr = ($tnbr instanceof IsNull) ? null : (int)$tnbr;
         }
         
-        $res_questionnaire = $this->getMapper()->getNbrQuestionCompleted($item, $item_id);
+        $res_questionnaire = $this->getMapper()->getNbrQuestionCompleted($item_id, $user_id);
         if ($res_questionnaire->count() > 0) {
             $nbr = $res_questionnaire->current()->getNbNoCompleted();
             $nbr = ($nbr instanceof IsNull) ? null : (int)$nbr;

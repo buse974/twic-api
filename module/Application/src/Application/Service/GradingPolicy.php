@@ -112,15 +112,16 @@ class GradingPolicy extends AbstractService
     /**
      * Get Grading Policy By course Id
      *
+     * @todo vérifier coté ui course_id ou course
      * @invokable
      *
      * @param int $course_id            
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function get($course_id)
+    public function get($course)
     {
         $res_grading_policy = $this->getMapper()->select($this->getModel()
-            ->setCourseId($course_id));
+            ->setCourseId($course));
         
         foreach ($res_grading_policy as $m_grading_policy) {
             $m_grading_policy->setCriterias($this->getServiceCriteria()

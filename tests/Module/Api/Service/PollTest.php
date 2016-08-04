@@ -252,7 +252,7 @@ class PollTest extends AbstractService
         ]);
 
         $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 6); 
+        $this->assertEquals(count($data['result']) , 7); 
         $this->assertEquals(count($data['result']['poll_item']) , 2); 
         $this->assertEquals(count($data['result']['poll_item'][0]) , 7); 
         $this->assertEquals($data['result']['poll_item'][0]['id'] , 1); 
@@ -282,6 +282,7 @@ class PollTest extends AbstractService
         $this->assertEquals(!empty($data['result']['expiration_date']) , true); 
         $this->assertEquals($data['result']['time_limit'] , 10); 
         $this->assertEquals($data['result']['item_id'] , 1); 
+        $this->assertEquals($data['result']['attempt_count'] , null); 
         $this->assertEquals($data['id'] , 1); 
         $this->assertEquals($data['jsonrpc'] , 2.0); 
         
@@ -658,12 +659,13 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['medias'][1]) , 3); 
         $this->assertEquals($data['result']['medias'][1]['bank_question_id'] , 1); 
         $this->assertEquals($data['result']['medias'][1]['library_id'] , 7); 
-        $this->assertEquals(count($data['result']['poll']) , 5); 
+        $this->assertEquals(count($data['result']['poll']) , 6); 
         $this->assertEquals($data['result']['poll']['id'] , 1); 
         $this->assertEquals($data['result']['poll']['title'] , "un titre upd"); 
         $this->assertEquals(!empty($data['result']['poll']['expiration_date']) , true); 
         $this->assertEquals($data['result']['poll']['time_limit'] , 11); 
         $this->assertEquals($data['result']['poll']['item_id'] , 1); 
+        $this->assertEquals($data['result']['poll']['attempt_count'] , null); 
         $this->assertEquals(count($data['result']['poll_items']) , 2); 
         $this->assertEquals(count($data['result']['poll_items'][5]) , 7); 
         $this->assertEquals($data['result']['poll_items'][5]['id'] , 5); 
@@ -672,7 +674,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll_items'][5]['group_question_id'] , null); 
         $this->assertEquals($data['result']['poll_items'][5]['order_id'] , null); 
         $this->assertEquals($data['result']['poll_items'][5]['is_mandatory'] , 0); 
-        $this->assertEquals($data['result']['poll_items'][5]['nb_point'] , 99); 
+        $this->assertEquals($data['result']['poll_items'][5]['nb_point'] , 99);
         $this->assertEquals(count($data['result']['poll_items'][6]) , 7); 
         $this->assertEquals($data['result']['poll_items'][6]['id'] , 6); 
         $this->assertEquals($data['result']['poll_items'][6]['poll_id'] , 1); 
@@ -880,8 +882,9 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['medias'][1]['library']['box_id'] , null);
         $this->assertEquals($data['result'][0]['medias'][1]['bank_question_id'] , 1);
         $this->assertEquals($data['result'][0]['medias'][1]['library_id'] , 7);
-        $this->assertEquals(count($data['result'][0]['poll']) , 5);
+        $this->assertEquals(count($data['result'][0]['poll']) , 6);
         $this->assertEquals($data['result'][0]['poll']['id'] , 1);
+        $this->assertEquals($data['result'][0]['poll']['attempt_count'] , null);
         $this->assertEquals($data['result'][0]['poll']['title'] , "un titre upd");
         $this->assertEquals(!empty($data['result'][0]['poll']['expiration_date']) , true);
         $this->assertEquals($data['result'][0]['poll']['time_limit'] , 11);
@@ -1090,8 +1093,9 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['box_id'] , null);
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['bank_question_id'] , 1);
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library_id'] , 7);
-        $this->assertEquals(count($data['result']['poll'][0]['poll']) , 5);
+        $this->assertEquals(count($data['result']['poll'][0]['poll']) , 6);
         $this->assertEquals($data['result']['poll'][0]['poll']['id'] , 1);
+        $this->assertEquals($data['result']['poll'][0]['poll']['attempt_count'] , null);
         $this->assertEquals($data['result']['poll'][0]['poll']['title'] , "un titre upd");
         $this->assertEquals(!empty($data['result']['poll'][0]['poll']['expiration_date']) , true);
         $this->assertEquals($data['result']['poll'][0]['poll']['time_limit'] , 11);

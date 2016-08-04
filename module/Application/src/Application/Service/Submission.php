@@ -23,28 +23,17 @@ class Submission extends AbstractService
 
     /**
      * Submission type => module array
-     * 
+     *
      * @var array
      */
-    protected $sub = 
-    [   
-        ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true, ModelItem::CMP_TEXT_EDITOR => false],
-        ModelItem::TYPE_HANGOUT => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],
-        ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],
-        ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],
-        ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],
-        ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],
-        ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],
-        ModelItem::TYPE_MODULE => [],
-        ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],
-        ModelItem::TYPE_TXT => []];
+    protected $sub = [ModelItem::TYPE_INDIVIDUAL_ASSIGNMENT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_HANGOUT => [ModelItem::CMP_VIDEOCONF => true,ModelItem::CMP_CHAT => true],ModelItem::TYPE_CHAT => [ModelItem::CMP_CHAT => true],ModelItem::TYPE_CAPSTONE_PROJECT => [ModelItem::CMP_TEXT_EDITOR => true,ModelItem::CMP_CHAT => false],ModelItem::TYPE_DISCUSSION => [ModelItem::CMP_DISCUSSION => true],ModelItem::TYPE_DOCUMENT => [ModelItem::CMP_DOCUMENT => true],ModelItem::TYPE_EQCQ => [ModelItem::CMP_EQCQ => true],ModelItem::TYPE_MODULE => [],ModelItem::TYPE_POLL => [ModelItem::CMP_POLL => true],ModelItem::TYPE_TXT => []];
 
     /**
-     * Get By User And Questionnaire And Item 
-     * 
-     * @param int $user_id
-     * @param int $questionnaire_id
-     * @param int $item_id
+     * Get By User And Questionnaire And Item
+     *
+     * @param int $user_id            
+     * @param int $questionnaire_id            
+     * @param int $item_id            
      * @return \Application\Model\Submission
      */
     public function getByUserAndQuestionnaire($user_id, $questionnaire_id, $item_id)
@@ -57,7 +46,7 @@ class Submission extends AbstractService
 
     /**
      * Get By User And Conversation
-     * 
+     *
      * @param int $user_id            
      * @param int $conversation_id            
      * @return \Application\Model\Submission
@@ -70,7 +59,7 @@ class Submission extends AbstractService
 
     /**
      * Create Submission
-     * 
+     *
      * @param int $item_id            
      * @param int $user_id            
      * @param int $group_id            
@@ -332,8 +321,10 @@ class Submission extends AbstractService
     {
         $res_submission = $this->getMapper()->get($item_id, $user_id);
         if ($res_submission->count() <= 0) {
-            $this->getMapper()->insert($this->getModel()->setItemId($item_id));
-            $this->getServiceSubmissionUser()->add($this->getMapper()->getLastInsertValue(), $user_id);
+            $this->getMapper()->insert($this->getModel()
+                ->setItemId($item_id));
+            $this->getServiceSubmissionUser()->add($this->getMapper()
+                ->getLastInsertValue(), $user_id);
         }
         
         return true;

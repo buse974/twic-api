@@ -81,6 +81,11 @@ class TextEditor extends AbstractService
         
         if(null !== $submission_id) {
             $this->getServiceSubTextEditor()->add($submission_id, $id);
+            // on teste si une conversation existe si c'est la cas on ratache le texeditor a la conversation
+            $res_sub_conversation = $this->getServiceSubConversation()->getList(null, $submission_id);
+            if ($res_sub_conversation->count() === 1) {
+                $this->getServiceConversation()->addTextEditor($res_sub_conversation->current()->getConversationId(), $id);
+            }
         }
         
         return $id;
@@ -138,6 +143,26 @@ class TextEditor extends AbstractService
             ->setText($text);
         
         return $this->getMapper()->update($m_text_editor);
+    }
+    
+    /**
+     * Get Service Service SubConversation
+     *
+     * @return \Application\Service\SubConversation
+     */
+    private function getServiceSubConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_sub_conversation');
+    }
+    
+    /**
+     * Get Service Service Conversation
+     *
+     * @return \Application\Service\Conversation
+     */
+    private function getServiceConversation()
+    {
+        return $this->getServiceLocator()->get('app_service_conversation');
     }
     
     /**

@@ -2,6 +2,7 @@
 namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
+use Application\Model\Role as ModelRole;
 
 class AssignmentTest extends AbstractService
 {
@@ -57,7 +58,20 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.addCourse', array('user' => 5,'course' => $course_id));
         $this->reset();
-       
+      
+        // UPDATE COURSE USER
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 3, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 4, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.update', array('id' => 1, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
+        $this->reset();
+        
         return [
             'school_id' => $school_id,
             'course_id' => $course_id
@@ -283,6 +297,22 @@ class AssignmentTest extends AbstractService
     /**
      * @depends testCanGetSubmission
      */
+    public function testCanCreateConverdsation($submission_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('conversation.getId', ['submission_id' => $submission_id]);
+    
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    
+        return $data['result'];
+    }
+    
+    /**
+     * @depends testCanGetSubmission
+     */
     public function testCanGetSubmissionContent($submission_id)
     {
         $this->setIdentity(1);
@@ -310,14 +340,14 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['document'][0]['owner_id'] , 1);
         $this->assertEquals($data['result']['document'][0]['box_id'] , null);
         $this->assertEquals(count($data['result']['chat']) , 1);
-        $this->assertEquals(count($data['result']['chat'][0]) , 12);
+        $this->assertEquals(count($data['result']['chat'][0]) , 13);
         $this->assertEquals(count($data['result']['chat'][0]['messages']) , 2);
         $this->assertEquals(count($data['result']['chat'][0]['messages']['list']) , 0);
         $this->assertEquals($data['result']['chat'][0]['messages']['count'] , 0);
         $this->assertEquals(count($data['result']['chat'][0]['users']) , 3);
         $this->assertEquals(count($data['result']['chat'][0]['users'][1]) , 6);
         $this->assertEquals(count($data['result']['chat'][0]['users'][1]['roles']) , 1);
-        $this->assertEquals($data['result']['chat'][0]['users'][1]['roles'][0] , "super_admin");
+        $this->assertEquals($data['result']['chat'][0]['users'][1]['roles'][0] , "student");
         $this->assertEquals($data['result']['chat'][0]['users'][1]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['users'][1]['firstname'] , "Paul");
         $this->assertEquals($data['result']['chat'][0]['users'][1]['lastname'] , "Boussekey");
@@ -325,7 +355,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['users'][1]['avatar'] , null);
         $this->assertEquals(count($data['result']['chat'][0]['users'][3]) , 6);
         $this->assertEquals(count($data['result']['chat'][0]['users'][3]['roles']) , 1);
-        $this->assertEquals($data['result']['chat'][0]['users'][3]['roles'][0] , "academic");
+        $this->assertEquals($data['result']['chat'][0]['users'][3]['roles'][0] , "student");
         $this->assertEquals($data['result']['chat'][0]['users'][3]['id'] , 3);
         $this->assertEquals($data['result']['chat'][0]['users'][3]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['chat'][0]['users'][3]['lastname'] , "Robert");
@@ -341,8 +371,8 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['users'][4]['avatar'] , null);
         $this->assertEquals($data['result']['chat'][0]['id'] , 1);
         $this->assertEquals($data['result']['chat'][0]['name'] , "Chat");
-        $this->assertEquals($data['result']['chat'][0]['type'] , 5);
-        $this->assertEquals($data['result']['chat'][0]['token'] , null);
+        $this->assertEquals($data['result']['chat'][0]['type'] , 3);
+        $this->assertEquals(!empty($data['result']['chat'][0]['token']) , true);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt_id'] , 1);
         $this->assertEquals(!empty($data['result']['chat'][0]['created_date']) , true);
         $this->assertEquals(count($data['result']['chat'][0]['editors']) , 1);
@@ -375,8 +405,10 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['duration'] , null);
         $this->assertEquals($data['result']['chat'][0]['conversation_opt']['rules'] , null);
         $this->assertEquals($data['result']['chat'][0]['submission_id'] , 1);
+        $this->assertEquals(!empty($data['result']['chat'][0]['user_token']) , true);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     /**

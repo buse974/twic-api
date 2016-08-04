@@ -94,6 +94,8 @@ class SubQuiz extends AbstractService
         $m_poll = $this->getServicePoll()->getLiteByItem($m_submission->getItemId());
         
         $attempt = $m_poll->getAttemptCount();
+        $attempt = (!is_numeric($attempt)) ? 1 : $attempt;
+        
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         
         // test if number attends if exeeding
@@ -101,7 +103,7 @@ class SubQuiz extends AbstractService
             ->setUserId($user_id)
             ->setPollId($m_poll->getId());
         $res_sub_quiz = $this->getMapper()->select($m_sub_quiz);
-        if($res_poll->count() >= $attempt) {
+        if($res_sub_quiz->count() >= $attempt) {
             throw new \Exception("number of tries exeeding");
         }
 
@@ -261,6 +263,11 @@ class SubQuiz extends AbstractService
         $this->getMapper()->update($this->getModel()
             ->setGrade($grade)
             ->setId($sub_quiz_id));
+        
+        if(null === $grade && $grade < 0) {
+            $grade = 0;
+        }
+        
         $this->getServiceSubmissionUser()->setGrade($m_sub_quiz->getSubmissionId(), $user_id, $grade);
         $this->getServiceSubmission()->_submit($m_sub_quiz->getSubmissionId(), null, $user_id);
         

@@ -35,7 +35,7 @@ class Document extends AbstractService
         if (null === $link && null === $token && null === $name) {
             return 0;
         }
-        if ($submission_id !== null) {
+        if (null !== $submission_id) {
             $item_id = null;
         }
         

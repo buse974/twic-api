@@ -28,13 +28,18 @@ class SubConversation extends AbstractService
     }
     
     /**
-     * Get List Conversation
+     * Get List Conversation Submission relation
      * 
      * @param int $conversation_id
+     * @param int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($conversation_id)
+    public function getList($conversation_id = null, $submission_id = null)
     {
-        return $this->getMapper()->select($this->getModel()->setConversationId($conversation_id));
+        if(null === $submission_id && null === $conversation_id) {
+            throw new \Exception('Error params');
+        }
+        
+        return $this->getMapper()->select($this->getModel()->setSubmissionId($submission_id)->setConversationId($conversation_id));
     }
 }
