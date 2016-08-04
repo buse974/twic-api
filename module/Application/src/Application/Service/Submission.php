@@ -379,7 +379,6 @@ class Submission extends AbstractService
     public function getListStudent($filter = null, $type = null, $course = null, $started = null, $submitted = null, $graded = null, $late = null, $search = null, $user_id = null, $tograde = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
         $is_student = false;
         if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
             $is_student = true;

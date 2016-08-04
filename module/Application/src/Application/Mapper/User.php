@@ -7,6 +7,8 @@ use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 use Application\Model\Role as ModelRole;
+use Zend\Db\Sql\Predicate\NotIn;
+use Zend\Db\Sql\Where;
 
 class User extends AbstractMapper
 {
@@ -322,6 +324,46 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    public function getListAttendees($course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar', 'sis'])
+            ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
+            ->join('user_role', 'user_role.user_id=user.id', [])
+            ->where(['user_role.role_id' => [ModelRole::ROLE_STUDENT_ID, ModelRole::ROLE_INSTRUCTOR_ID]])
+            ->where('user.deleted_date IS NULL')
+            ->where('school.deleted_date IS NULL')
+            ->order(['user.id' => 'DESC'])
+            ->quantifier('DISTINCT');
+            
+            if (!empty($course) || !empty($exclude_course)) {
+                $select->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
+            }
+            if (!empty($program) || !empty($exclude_program)) {
+                $select->join('program_user_relation', 'program_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
+            }
+            if (!empty($school)) {
+                $select->where(['school.id' => $school]);
+            }
+            if (!empty($course)) {
+                $select->where(['course_user_relation.course_id' => $course]);
+            }
+            if (!empty($program)) {
+                $select->where(['program_user_relation.program_id' => $program]);
+            }
+            if (!empty($exclude_course)) {
+                $select->where->NEST->notIn('course_user_relation.course_id', $exclude_course)->OR->literal('course_user_relation.course_id IS NULL')->UNNEST;
+            }
+            if (!empty($exclude_program)) {
+                $select->where->NEST->notIn('program_user_relation.program_id', $exclude_program)->OR->literal('program_user_relation.program_id IS NULL')->UNNEST;
+            }
+            if (!empty($exclude_user)) {
+                $select->where(new NotIn('user.id', $exclude_user));
+            }
+        
+            return $this->selectWith($select);
+    }
+    
     public function getListContact($me, $type = null, $date = null)
     {
         $select = $this->tableGateway->getSql()->select();
