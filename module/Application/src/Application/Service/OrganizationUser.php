@@ -1,8 +1,16 @@
 <?php
+/**
+ * TheStudnet (http://thestudnet.com).
+ *
+ * Circle Organization User Relation
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
+/**
+ * Class OrganizationUser
+ */
 class OrganizationUser extends AbstractService
 {
 

@@ -1,9 +1,80 @@
 FORMAT: 1A
-HOST: https://gnam-api.thestudnet.com
+HOST: https://api.thestudnet.com
 
 # TheStudnet API
 
 [The Studnet](http://www.thestudnet.com) API. 
+
+Json Rpc Server
+===============
+
+*Description ( Source WIKIPEDIA )*
+
+JSON-RPC is a remote procedure call protocol encoded in JSON. It is a very simple protocol (and very similar to XML-RPC), defining only a handful of data types and commands. JSON-RPC allows for notifications (data sent to the server that does not require a response) and for multiple calls to be sent to the server which may be answered out of order. 
+
+See Spécification <http://www.jsonrpc.org/specification>
+
+L'api et Accesible Via la route 
+
+::	
+
+	https://api.thestudnet.com/V1/api.json-rpc
+
+|
+|
+|
+|
+
+.. _auth-label:
+
+Authentification
+================
+
+la sécurité de l'autentification est basé sur un token.
+Token qui est renvoie lors de la connection a l'api via methode **user.login**
+
+::
+
+	{
+	  "result":
+	    {
+		  "id":3,
+		  "token":"3fb217058934fbcd73da6b0b21af77a1b",
+		  "created_date":"2016-07-11 14:36:13",
+		  "firstname":"Christophe",
+		  "lastname":"Robert",
+		  "email":"crobert@thestudnet.com",
+		  "roles": {
+		    "3":"external"
+		  },
+		  "school":{
+		    "id":1,
+			"name":"Yale",
+			"short_name":null,
+			"logo":"3e09bdf9c98a706505b57f4dfa0a37d8e4783cf5",
+			"background":null
+		  }
+		},
+	  "id":"63",
+	  "jsonrpc":"2.0"
+	}
+
+|
+
+Le token Doit étre renvoyer dans le hearder html Authorization
+
+**Headers**
+
+::
+
+	Content-Type:application/json
+	Authorization:3e09bdf9c98a706505b57f4dfa0a37d8e4783cf5
+	
+|
+|
+|
+|
+
 
 ## User Management [/api.json-rpc]
  
@@ -32,29 +103,28 @@ HOST: https://gnam-api.thestudnet.com
     + body
     
          {
-           result: {
-             id: 8,
-             token: 886c54419472ea797c12e82b583a262a7,
-             created_date: 2016-07-19 09:28:14,
-             firstname: firstname_external,
-             lastname: lastname_external,
-             email: external@free.fr,
-             expiration_date: null,
-             roles: {
-               7: external
+             result: {
+                 id: 8,
+                 token: 886c54419472ea797c12e82b583a262a7,
+                 created_date: 2016-07-19 09:28:14,
+                 firstname: firstname_external,
+                 lastname: lastname_external,
+                 email: external@free.fr,
+                 expiration_date: null,
+                 roles: {
+                     7: external
+                 },
+                 school: {
+                     id: 1,
+                     name: Morbi Corporation,
+                     short_name: turpis,
+                     logo: null,
+                     background: null
+                 }
              },
-             school: {
-               id: 1,
-               name: Morbi Corporation,
-               short_name: turpis,
-               logo: null,
-               background: null
-             }
-           },
-           id: 1,
-           jsonrpc: 2.0
+             id: 1,
+             jsonrpc: 2.0
          }
-
         
 ### user.create [POST]
 

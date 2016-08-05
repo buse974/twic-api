@@ -1328,7 +1328,8 @@ class User extends AbstractService
     }
 
     /**
-     *
+     * Get Service OrganizationUser
+     * 
      * @return \Application\Service\OrganizationUser
      */
     private function getServiceOrganizationUser()
@@ -1337,7 +1338,8 @@ class User extends AbstractService
     }
     
     /**
-     *
+     * Get Service Organization
+     * 
      * @return \Application\Service\School
      */
     private function getServiceOrganization()
