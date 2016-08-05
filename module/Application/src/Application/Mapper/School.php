@@ -20,7 +20,6 @@ class School extends AbstractMapper
     public function get($school)
     {
         $select = $this->tableGateway->getSql()->select();
-
         $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'background', 'phone', 'contact', 'address_id'))
                ->join(array('school_user' => 'user'), 'school_user.id=school.contact_id', array('id', 'firstname', 'lastname', 'status', 'email', 'birth_date', 'position', 'interest', 'avatar'), $select::JOIN_LEFT)
                ->join(array('school_address' => 'address'), 'school.address_id = school_address.id', array('school_address!id' => 'id', 'street_no', 'street_type', 'street_name', 'floor', 'door', 'apartment', 'building', 'longitude', 'latitude', 'timezone'),  $select::JOIN_LEFT)
@@ -37,10 +36,10 @@ class School extends AbstractMapper
      * Get school list.
      *
      * @param string $filter
-     *
+     * @param int $user_id
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($filter = null, $search = null)
+    public function getList($filter = null, $search = null, $user_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'name', 'next_name', 'short_name', 'logo', 'describe', 'website', 'background', 'phone'))
@@ -52,6 +51,11 @@ class School extends AbstractMapper
         if (!empty($search)) {
             $select->where(array('(school.name LIKE ? ' => '%'.$search.'%'))
             ->where(array('school.short_name LIKE ? )' => '%'.$search.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR);
+        }
+        
+        if(null !== $user_id) {
+            $select->join('organization_user', 'organization_user.organization_id = school.id', [],  $select::JOIN_LEFT)
+                ->where(['organization_user.user_id' => $user_id]);
         }
 
         $select->where('school.deleted_date IS NULL');

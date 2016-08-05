@@ -23,15 +23,13 @@ class User extends AbstractService
 {
 
     /**
-     * Log user.
+     * Log user
      *
      * @invokable
      *
      * @param string $user            
      * @param string $password            
-     *
      * @throws JrpcException
-     *
      * @return array
      */
     public function login($user, $password)
@@ -76,7 +74,6 @@ class User extends AbstractService
         }
         
         $id = $identity->getId();
-        
         if ($init === false && $this->getCache()->hasItem('identity_' . $id)) {
             $user = $this->getCache()->getItem('identity_' . $id);
         } else {
@@ -89,6 +86,8 @@ class User extends AbstractService
             
             $res_user = $this->getMapper()->get($id, $id);
             $user['school'] = ($res_user->count() > 0) ? $res_user->current()->toArray()['school'] : null;
+            $user['organizations'] = $this->getServiceOrganization()->_getList($id)->toArray();
+            $user['organization_id'] = $user['school']['id'];
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
             
@@ -196,7 +195,7 @@ class User extends AbstractService
     }
 
     /**
-     * Add User.
+     * Add User
      *
      * @invokable
      *
@@ -206,8 +205,7 @@ class User extends AbstractService
      * @param string $gender            
      * @param string $origin            
      * @param string $nationality            
-     * @param string $sis
-     *            x²
+     * @param string $sis            
      * @param string $password            
      * @param string $birth_date            
      * @param string $position            
@@ -243,7 +241,6 @@ class User extends AbstractService
             ->setNationality($nationality)
             ->setBirthDate($birth_date)
             ->setPosition($position)
-            ->setSchoolId($school_id)
             ->setInterest($interest)
             ->setAvatar($avatar)
             ->setTimezone($timezone)
@@ -256,8 +253,6 @@ class User extends AbstractService
          */
         if (! in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
             $user = $this->get();
-            $m_user->setSchoolId($user['school_id']);
-            
             $school_id = $user['school_id'];
         }
         
@@ -275,7 +270,10 @@ class User extends AbstractService
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
+        $id = (int) $this->getMapper()->getLastInsertValue();
+        
         if ($school_id !== null) {
+            $this->addSchool($school_id, $id, true);
             $this->getServiceContact()->addBySchool($school_id);
         }
         try {
@@ -283,7 +281,6 @@ class User extends AbstractService
         } catch (\Exception $e) {
             syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
         }
-        $id = (int) $this->getMapper()->getLastInsertValue();
         
         /*
          *
@@ -453,15 +450,15 @@ class User extends AbstractService
 
     /**
      * Get List user For Attendees
-     * 
+     *
      * @invokable
      *
      * @param array $course            
      * @param array $program            
-     * @param array $school               
+     * @param array $school            
      * @param array $exclude_course            
-     * @param array $exclude_program      
-     * @param array $exclude_user      
+     * @param array $exclude_program            
+     * @param array $exclude_user            
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListAttendees($course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
@@ -715,7 +712,7 @@ class User extends AbstractService
             if ($school_id === 'null') {
                 $school_id = new IsNull('school_id');
             }
-            $m_user->setSchoolId($school_id);
+            $this->addSchool($school_id, $id, true);
         }
         
         if ($roles !== null) {
@@ -748,6 +745,52 @@ class User extends AbstractService
         $this->deleteCachedIdentityOfUser($id);
         
         return $ret;
+    }
+
+    /**
+     * Add School relation
+     *
+     * @invokable
+     *
+     * @param int $school_id            
+     * @param int $user_id            
+     * @param bool $default            
+     * @return NULL|int
+     */
+    public function addSchool($school_id, $user_id, $default = false)
+    {
+        $ret = null;
+        $this->getServiceOrganizationUser()->add($school_id, $user_id);
+        if ($default === true) {
+            $ret = $this->getMapper()->update($this->getModel()
+                ->setId($user_id)
+                ->setSchoolId($school_id));
+        }
+        
+        return $ret;
+    }
+
+    /**
+     * Delete School relation
+     *
+     * @invokable
+     * 
+     * @param int $school_id            
+     * @param int $user_id            
+     * @return NULL|int
+     */
+    public function removeSchool($school_id, $user_id)
+    {
+        $m_user = $this->getMapper()
+            ->select($this->getModel()
+            ->getId($user_id))
+            ->current();
+        
+        if ($m_user->getSchoolId() === $school_id) {
+            throw new \JrpcException("Error, Cannot delete school by default");
+        }
+        
+        return $this->getServiceOrganizationUser()->remove($school_id, $user_id);
     }
 
     /**
@@ -1282,5 +1325,23 @@ class User extends AbstractService
     private function getServiceMail()
     {
         return $this->getServiceLocator()->get('mail.service');
+    }
+
+    /**
+     *
+     * @return \Application\Service\OrganizationUser
+     */
+    private function getServiceOrganizationUser()
+    {
+        return $this->getServiceLocator()->get('app_service_organization_user');
+    }
+    
+    /**
+     *
+     * @return \Application\Service\School
+     */
+    private function getServiceOrganization()
+    {
+        return $this->getServiceLocator()->get('app_service_school');
     }
 }

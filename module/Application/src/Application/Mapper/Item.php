@@ -346,6 +346,7 @@ class Item extends AbstractMapper
             if (!is_array($type)) {
                 $type = [$type];
             }
+            
             foreach ($type as $t) {
                 ++$i;
                 $val[':t'.$i] = $t;
@@ -353,7 +354,7 @@ class Item extends AbstractMapper
             }
             if(in_array('A', $type)) {
                 $where[] = "( item.type IN (".implode(',', $s).") OR ( item.is_grouped IS FALSE AND item.type = 'IA'))";
-            }elseif(in_array('A', $type)) {
+            }elseif(in_array('GA', $type)) {
                 $where[] = "( item.type IN (".implode(',', $s).") OR ( item.is_grouped IS TRUE AND item.type = 'IA'))";
             }else {
                 $where[] = "item.type IN (".implode(',', $s).")";

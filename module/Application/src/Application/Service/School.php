@@ -13,31 +13,32 @@ use Dal\Service\AbstractService;
  */
 class School extends AbstractService
 {
+
     /**
-     * add school.
+     * add school
      *
      * @invokable
      *
-     * @param string $name
-     * @param string $next_name
-     * @param string $short_name
-     * @param string $logo
-     * @param string $describe
-     * @param string $website
-     * @param string $background
-     * @param string $phone
-     * @param string $contact
-     * @param int    $contact_id
-     * @param array  $address
-     *
+     * @param string $name            
+     * @param string $next_name            
+     * @param string $short_name            
+     * @param string $logo            
+     * @param string $describe            
+     * @param string $website            
+     * @param string $background       get     
+     * @param string $phone            
+     * @param string $contact            
+     * @param int $contact_id            
+     * @param array $address            
+     * @param string $custom            
+     * @param string $libelle            
      * @throws \Exception
-     *
      * @return \Application\Model\School
      */
-    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null)
+    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null)
     {
-        $m_school = $this->getModel();
-        $m_school->setName($name)
+        $m_school = $this->getModel()
+            ->setName($name)
             ->setNextName($next_name)
             ->setShortName($short_name)
             ->setLogo($logo)
@@ -46,57 +47,61 @@ class School extends AbstractService
             ->setBackground($background)
             ->setPhone($phone)
             ->setContact($contact)
+            ->setCustom($custom)
+            ->setLibelle($libelle)
             ->setContactId($contact_id);
-
+        
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);
             if ($address && null !== ($address_id = $address->getId())) {
                 $m_school->setAddressId($address_id);
             }
         }
-
+        
         if ($this->getMapper()->insert($m_school) <= 0) {
             throw new \Exception('error insert');
         }
-
+        
         $school_id = $this->getMapper()->getLastInsertValue();
-
+        
         $this->getServiceEvent()->schoolNew($school_id);
         $this->getServiceGrading()->initTpl($school_id);
-
+        
         return $this->get($school_id);
     }
 
     /**
-     * Update school.
+     * Update school
      *
      * @invokable
      *
-     * @param int    $id
-     * @param string $name
-     * @param string $logo
-     * @param string $describe
-     * @param string $website
-     * @param string $short_name
-     * @param string $phone
-     * @param array  $address
-     * @param string $background
-     *
+     * @param int $id            
+     * @param string $name            
+     * @param string $logo            
+     * @param string $describe            
+     * @param string $website            
+     * @param string $short_name            
+     * @param string $phone            
+     * @param array $address            
+     * @param string $background            
+     * @param string $custom            
+     * @param string $libelle            
      * @return int
      */
-    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null)
+    public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null, $custom = null, $libelle = null)
     {
-        $m_school = $this->getModel();
-
-        $m_school->setId($id)
+        $m_school = $this->getModel()
+            ->setId($id)
             ->setName($name)
             ->setLogo($logo)
             ->setDescribe($describe)
             ->setWebsite($website)
             ->setShortName($short_name)
             ->setPhone($phone)
+            ->setCustom($custom)
+            ->setLibelle($libelle)
             ->setBackground($background);
-
+        
         if ($address !== null) {
             $address_id = $this->getServiceAddress()
                 ->getAddress($address)
@@ -105,51 +110,60 @@ class School extends AbstractService
                 $m_school->setAddressId($address_id);
             }
         }
-
+        
         return $this->getMapper()->update($m_school);
     }
 
     /**
-     * Get school by ID.
+     * Get school
      *
      * @invokable
      *
-     * @param int $id
-     *
+     * @param int $id            
      * @return \Application\Model\School
      */
     public function get($id)
     {
         $results = $this->getMapper()->get($id);
-
+        
         if ($m_school = $results->count() <= 0) {
-            throw new \Exception('not school with id:'.$id);
+            throw new \Exception('not school with id: ' . $id);
         }
-
+        
         return $results->current();
     }
 
     /**
-     * Get school list.
+     * Get school list
      *
      * @invokable
      *
-     * @param array  $filter
-     * @param string $search
-     *
+     * @param array $filter            
+     * @param string $search            
      * @return array
      */
-    public function getList($filter = null, $search = null)
+    public function getList($filter = null, $search = null, $user = null)
     {
         $mapper = $this->getMapper();
         $res_school = $mapper->usePaginator($filter)->getList($filter, $search);
-
+        
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
             $m_school->setProgram(($program->count() > 0) ? $program : []);
         }
-
-        return ['count' => $mapper->count(), 'list' => $res_school];
+        
+        return ['count' => $mapper->count(),'list' => $res_school];
+    }
+    
+    /**
+     * Get List organization by user
+     * 
+     * @param int $user_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function _getList($user_id)
+    {
+        return $this->getMapper()->getList(null, null, $user_id);
     }
 
     /**
@@ -157,25 +171,24 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     *
+     * @param int $id            
      * @return array
      */
     public function delete($id)
     {
         $ret = array();
-
-        if (!is_array($id)) {
+        
+        if (! is_array($id)) {
             $id = array($id);
         }
-
+        
         foreach ($id as $i) {
             $m_school = $this->getModel()
                 ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
                 ->setId($i);
             $ret[$i] = $this->getMapper()->update($m_school);
         }
-
+        
         return $ret;
     }
 
