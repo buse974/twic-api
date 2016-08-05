@@ -2542,9 +2542,8 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][7]['object']['id'], 1);
         $this->assertEquals($data['result']['list'][7]['object']['name'], "user");
         $this->assertEquals(count($data['result']['list'][7]['object']['data']), 1);
-        $this->assertEquals(count($data['result']['list'][7]['object']['data']['updated']), 2);
-        $this->assertEquals($data['result']['list'][7]['object']['data']['updated'][0], "school_id");
-        $this->assertEquals($data['result']['list'][7]['object']['data']['updated'][1], "created_date");
+        $this->assertEquals(count($data['result']['list'][7]['object']['data']['updated']), 1);
+        $this->assertEquals($data['result']['list'][7]['object']['data']['updated'][0], "created_date");
         $this->assertEquals(count($data['result']['list'][7]['comment']), 0);
         $this->assertEquals(count($data['result']['list'][8]), 10);
         $this->assertEquals($data['result']['list'][8]['view_date'], null);
