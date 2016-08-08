@@ -89,16 +89,15 @@ class Program extends AbstractService
      *
      * @param array $filter            
      * @param string $search            
-     * @param int $school            
-     *
+     * @param int $school   
+     * @param bool $self
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($filter = null, $search = null, $school = null)
+    public function getList($filter = null, $search = null, $school = null, $self = true)
     {
         $user = $this->getServiceUser()->getIdentity();
         
-        $res_program = $this->getListByUser($filter, $user['id'], $search, $school);
-        
+        $res_program = $this->getListByUser($filter, $user['id'], $search, $school, $self);
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()
                 ->getList(array('n' => 1,'p' => 1), 'student', null, null, $m_program->getId())['count']);
@@ -133,7 +132,7 @@ class Program extends AbstractService
      *
      * @return array
      */
-    public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null)
+    public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null, $self = true)
     {
         $identity = $this->getServiceUser()->getIdentity();
         
@@ -141,10 +140,14 @@ class Program extends AbstractService
             $user_id = $identity['id'];
         }
         $mapper = $this->getMapper();
-        $is_sadmin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']));
-        $res = $mapper->usePaginator($filter)->getList($user_id, $search, $school_id, $is_sadmin);
+        //@todo Faire du propre dans les roles une fois que les relations seront ok
+        $is_admin   = (in_array(ModelRole::ROLE_SADMIN_STR,   $identity['roles'])) || 
+                      (in_array(ModelRole::ROLE_ADMIN_STR,   $identity['roles']))  || 
+                      (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
         
-        return array('list' => $res,'count' => $mapper->count());
+        $res = $mapper->usePaginator($filter)->getList($user_id, $search, $school_id, $is_admin_academic, $self);
+        
+        return ['list' => $res,'count' => $mapper->count()];
     }
 
     /**

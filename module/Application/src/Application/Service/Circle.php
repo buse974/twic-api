@@ -76,7 +76,8 @@ class Circle extends AbstractService
         $m_organization = $this->getMapper()->select($this->getModel()
             ->setId($id))->current();
         
-        $m_organization->setOrganizations($this->getServiceCircleOrganization()->getList($id));
+        $res_circle_organiszation = $this->getServiceCircleOrganization()->getList($id);
+        $m_organization->setOrganizations(($res_circle_organiszation->count() > 0)?$res_circle_organiszation:[]);
         
         return $m_organization;
     }
