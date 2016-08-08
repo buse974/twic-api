@@ -46,7 +46,7 @@ class School extends AbstractService
      * @param string $logo            
      * @param string $describe            
      * @param string $website            
-     * @param string $background
+     * @param string $background            
      * @param string $phone            
      * @param string $contact            
      * @param int $contact_id            
@@ -122,9 +122,8 @@ class School extends AbstractService
             ->setBackground($background);
         
         $identity = $this->getServiceUser()->getIdentity();
-        if(in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) {
-            $m_school->setCustom($custom)
-                ->setLibelle($libelle);
+        if (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) {
+            $m_school->setCustom($custom)->setLibelle($libelle);
         }
         
         if ($address !== null) {
@@ -144,8 +143,8 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @return \Application\Model\School
+     * @param int|array $id            
+     * @return \Application\Model\School|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
     {
@@ -155,7 +154,9 @@ class School extends AbstractService
             throw new \Exception('not school with id: ' . $id);
         }
         
-        return $results->current();
+        return (is_array($id)) ? 
+            $results : 
+            $results->current();
     }
 
     /**
@@ -256,7 +257,7 @@ class School extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_grading');
     }
-    
+
     /**
      * Get Service Grading
      *
