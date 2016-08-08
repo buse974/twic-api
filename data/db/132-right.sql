@@ -22,6 +22,4 @@ ADD CONSTRAINT `fk_circle_organization_2`
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
 
-INSERT IGNORE INTO organization_user ( user_id, organization_id)
-SELECT id, school_id from user;
-
+INSERT IGNORE INTO organization_user ( user_id, organization_id) ( SELECT id, school_id from user WHERE school_id IS NOT NULL );
