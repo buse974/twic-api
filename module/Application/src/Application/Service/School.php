@@ -7,12 +7,33 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use JRpc\Json\Server\Exception\JrpcException;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class School.
  */
 class School extends AbstractService
 {
+
+    /**
+     * Get custom Field
+     *
+     * @invokable
+     *
+     * @param string $libelle            
+     * @return \Application\Model\School
+     */
+    public function getCustom($libelle)
+    {
+        $res_school = $this->getMapper()->getCustom($libelle);
+        
+        if ($res_school->count() <= 0) {
+            throw new JrpcException('No custom fields for ' . $libelle);
+        }
+        
+        return $res_school->current();
+    }
 
     /**
      * add school
@@ -25,7 +46,7 @@ class School extends AbstractService
      * @param string $logo            
      * @param string $describe            
      * @param string $website            
-     * @param string $background       get     
+     * @param string $background
      * @param string $phone            
      * @param string $contact            
      * @param int $contact_id            
@@ -98,9 +119,13 @@ class School extends AbstractService
             ->setWebsite($website)
             ->setShortName($short_name)
             ->setPhone($phone)
-            ->setCustom($custom)
-            ->setLibelle($libelle)
             ->setBackground($background);
+        
+        $identity = $this->getServiceUser()->getIdentity();
+        if(in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) {
+            $m_school->setCustom($custom)
+                ->setLibelle($libelle);
+        }
         
         if ($address !== null) {
             $address_id = $this->getServiceAddress()
@@ -139,7 +164,7 @@ class School extends AbstractService
      * @invokable
      *
      * @param array $filter            
-     * @param string $search          
+     * @param string $search            
      * @return array
      */
     public function getList($filter = null, $search = null)
@@ -154,11 +179,11 @@ class School extends AbstractService
         
         return ['count' => $mapper->count(),'list' => $res_school];
     }
-    
+
     /**
      * Get List organization by user
-     * 
-     * @param int $user_id
+     *
+     * @param int $user_id            
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function _getList($user_id)
@@ -193,7 +218,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service Event.
+     * Get Service Event
      *
      * @return \Application\Service\Event
      */
@@ -203,7 +228,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service Address.
+     * Get Service Address
      *
      * @return \Address\Service\Address
      */
@@ -213,7 +238,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service Program.
+     * Get Service Program
      *
      * @return \Application\Service\Program
      */
@@ -223,12 +248,22 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service.
+     * Get Service Grading
      *
      * @return \Application\Service\Grading
      */
     private function getServiceGrading()
     {
         return $this->getServiceLocator()->get('app_service_grading');
+    }
+    
+    /**
+     * Get Service Grading
+     *
+     * @return \Application\Service\User
+     */
+    private function getServiceUser()
+    {
+        return $this->getServiceLocator()->get('app_service_user');
     }
 }

@@ -12,6 +12,7 @@ use Zend\Db\Sql\Where;
 
 class User extends AbstractMapper
 {
+    
     /**
      * @param int $item_id
      */

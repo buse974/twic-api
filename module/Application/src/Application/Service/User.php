@@ -43,7 +43,15 @@ class User extends AbstractService
             throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
         }
         
-        return $this->getIdentity(true);
+        $identity = $this->getIdentity(true);
+        
+        // ici on check que le role externe ne ce connect pas avec login
+        if(in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles'])) {
+            $this->logout();
+            throw new \Exception("Error: unauthorized Role");
+        }
+        
+        return $identity;
     }
 
     /**
