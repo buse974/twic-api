@@ -141,7 +141,7 @@ class Program extends AbstractService
         }
         $mapper = $this->getMapper();
         //@todo Faire du propre dans les roles une fois que les relations seront ok
-        $is_admin   = (in_array(ModelRole::ROLE_SADMIN_STR,   $identity['roles'])) || 
+        $is_admin_academic   = (in_array(ModelRole::ROLE_SADMIN_STR,   $identity['roles'])) || 
                       (in_array(ModelRole::ROLE_ADMIN_STR,   $identity['roles']))  || 
                       (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
         
