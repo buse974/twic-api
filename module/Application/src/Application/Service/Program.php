@@ -144,7 +144,7 @@ class Program extends AbstractService
                       (in_array(ModelRole::ROLE_ADMIN_STR,   $identity['roles']))  || 
                       (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
         
-        $res = $mapper->usePaginator($filter)->getList($user_id, $search, $school_id, $is_admin_academic, $self);
+        $res = $mapper->usePaginator($filter)->getList($user_id, $search, $school_id, $is_admin_academic, $self, $exclude);
         
         return ['list' => $res,'count' => $mapper->count()];
     }
