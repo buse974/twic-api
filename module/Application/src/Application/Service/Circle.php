@@ -73,8 +73,12 @@ class Circle extends AbstractService
      */
     public function get($id)
     {
-        return $this->getMapper()->select($this->getModel()
+        $m_organization = $this->getMapper()->select($this->getModel()
             ->setId($id))->current();
+        
+        $m_organization->setOrganizations($this->getServiceCircleOrganization()->getList($id));
+        
+        return $m_organization;
     }
     
     /**
@@ -88,4 +92,41 @@ class Circle extends AbstractService
     {
         return $this->getMapper()->fetchAll();
     }
+    
+    
+    /**
+     * Add relation Circle Organizations
+     * 
+     * @invokable
+     * 
+     * @param int $id
+     * @param int|array $organizations
+     */
+    public function addOrganizations($id, $organizations)
+    {
+        return $this->getServiceCircleOrganization()->add($id, $organizations);
+    }
+    
+    /**
+     * Remove relation Circle Organizations
+     * 
+     * @invokable
+     * 
+     * @param int $id
+     * @param int|array $organizations
+     */
+    public function deleteOrganizations($id, $organizations)
+    {
+        return $this->getServiceCircleOrganization()->delete($id, $organizations);
+    }
+    
+    /**
+     * @return \Application\Service\CircleOrganization
+     */
+    public function getServiceCircleOrganization()
+    {
+        return $this->getServiceLocator()->get('app_service_circle_organization');
+    }
+    
+    
 }
