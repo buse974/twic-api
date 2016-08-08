@@ -2,7 +2,6 @@
 namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
-use Application\Model\Role as ModelRole;
 
 class SchoolTest extends AbstractService
 {
@@ -49,7 +48,6 @@ class SchoolTest extends AbstractService
         $this->assertEquals($data['result']['libelle'] , "gnam");
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
    
 }
