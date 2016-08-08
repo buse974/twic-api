@@ -70,7 +70,7 @@ class School extends AbstractMapper
             $select->where(array('(school.name LIKE ? ' => '%' . $search . '%'))->where(array('school.short_name LIKE ? )' => '%' . $search . '%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR);
         }
         if(null !== $exclude) {
-            $select->where(new NotIn('school.id' => $exclude));
+            $select->where(new NotIn('school.id', $exclude));
         }
         if (null !== $user_id) {
             $select->join('organization_user', 'organization_user.organization_id = school.id', [], $select::JOIN_LEFT)->where(['organization_user.user_id' => $user_id]);
