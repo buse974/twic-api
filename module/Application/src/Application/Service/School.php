@@ -165,13 +165,14 @@ class School extends AbstractService
      * @invokable
      *
      * @param array $filter            
-     * @param string $search            
+     * @param string $search   
+     * @param array $exclude         
      * @return array
      */
-    public function getList($filter = null, $search = null)
+    public function getList($filter = null, $search = null, $exclude = null)
     {
         $mapper = $this->getMapper();
-        $res_school = $mapper->usePaginator($filter)->getList($filter, $search);
+        $res_school = $mapper->usePaginator($filter)->getList($filter, $search, null, $exclude);
         
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());

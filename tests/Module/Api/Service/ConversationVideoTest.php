@@ -418,7 +418,7 @@ class ConversationVideoTest extends AbstractService
      */
     public function testCanGetList($item_id)
     {
-        $this->setIdentity(1);
+        $this->setIdentity(1, 4);
         $data = $this->jsonRpc('videoarchive.getList', ['item_id' => $item_id]);
     
         $this->assertEquals(count($data) , 3);
