@@ -133,8 +133,8 @@ class Program extends AbstractService
      */
     public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null, $self = true, $exclude = null)
     {
+        //@TODO BUG
         $identity = $this->getServiceUser()->getIdentity();
-        
         if ($user_id === null) {
             $user_id = $identity['id'];
         }

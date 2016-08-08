@@ -188,14 +188,19 @@ class Course extends AbstractService
      * @param array  $filter
      * @param int    $user
      * @param int    $school
-     *
+     * @param array  $exclude
      * @return array
      */
-    public function getList($program = null, $search = null, $filter = null, $user = null, $school = null)
+    public function getList($program = null, $search = null, $filter = null, $user = null, $school = null, $exclude = null)
     {
         $mapper = $this->getMapper();
 
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school);
+        //@todo Faire du propre dans les roles une fois que les relations seront ok
+        /*$is_admin_academic   = (in_array(ModelRole::ROLE_SADMIN_STR,   $identity['roles'])) ||
+            (in_array(ModelRole::ROLE_ADMIN_STR,   $identity['roles']))  ||
+            (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
+        */
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school, $exclude);
 
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()

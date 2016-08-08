@@ -1,11 +1,11 @@
 <?php
-
 namespace Application\Model;
 
 use Application\Model\Base\Course as BaseCourse;
 
 class Course extends BaseCourse
 {
+
     protected $creator;
 
     protected $grading;
@@ -24,6 +24,8 @@ class Course extends BaseCourse
 
     protected $school;
 
+    protected $school_id;
+
     protected $program;
 
     protected $avg;
@@ -33,7 +35,7 @@ class Course extends BaseCourse
     public function exchangeArray(array &$data)
     {
         parent::exchangeArray($data);
-
+        
         $this->grading_policy = $this->requireModel('app_model_grading_policy', $data);
         $this->grading = $this->requireModel('app_model_grading', $data);
         $this->creator = $this->requireModel('app_model_user', $data);
@@ -49,7 +51,7 @@ class Course extends BaseCourse
     public function setNbrCourse($nbr_course)
     {
         $this->nbr_course = $nbr_course;
-
+        
         return $this;
     }
 
@@ -61,7 +63,7 @@ class Course extends BaseCourse
     public function setAvg($avg)
     {
         $this->avg = $avg;
-
+        
         return $this;
     }
 
@@ -73,7 +75,7 @@ class Course extends BaseCourse
     public function setProgram($program)
     {
         $this->program = $program;
-
+        
         return $this;
     }
 
@@ -85,10 +87,22 @@ class Course extends BaseCourse
     public function setSchool($school)
     {
         $this->school = $school;
-
+        
         return $this;
     }
 
+    public function getSchoolId()
+    {
+        return $this->school_id;
+    }
+    
+    public function setSchoolId($school_id)
+    {
+        $this->school_id = $school_id;
+    
+        return $this;
+    }
+    
     public function getItems()
     {
         return $this->items;
@@ -97,14 +111,14 @@ class Course extends BaseCourse
     public function setItems($items)
     {
         $this->items = $items;
-
+        
         return $this;
     }
 
     public function setStudent($student)
     {
         $this->student = $student;
-
+        
         return $this;
     }
 
@@ -116,7 +130,7 @@ class Course extends BaseCourse
     public function setInstructor($instructor)
     {
         $this->instructor = $instructor;
-
+        
         return $this;
     }
 
@@ -128,7 +142,7 @@ class Course extends BaseCourse
     public function setUsers($users)
     {
         $this->users = $users;
-
+        
         return $this;
     }
 
@@ -140,7 +154,7 @@ class Course extends BaseCourse
     public function setCreator($creator)
     {
         $this->creator = $creator;
-
+        
         return $this;
     }
 
@@ -152,7 +166,7 @@ class Course extends BaseCourse
     public function setGrading($grading)
     {
         $this->grading = $grading;
-
+        
         return $this;
     }
 
@@ -164,7 +178,7 @@ class Course extends BaseCourse
     public function setGradingPolicy($grading_policy)
     {
         $this->grading_policy = $grading_policy;
-
+        
         return $this;
     }
 

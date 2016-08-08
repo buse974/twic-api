@@ -4,6 +4,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Predicate\NotIn;
 
 class Course extends AbstractMapper
 {
@@ -23,14 +24,14 @@ class Course extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($program = null, $search = null, $filter = null, $user = null, $school = null)
+    public function getList($program = null, $search = null, $filter = null, $user = null, $school = null, $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'title', 'abstract', 'description', 'picture', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes', 'program_id'))
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
-            ->join('program', 'program.id=course.program_id', array())
-            ->join('school', 'school.id=program.school_id', array())
+            ->join('program', 'program.id=course.program_id', [])
+            ->join('school', 'school.id=program.school_id', ['course.school_id' => 'school.id'])
             ->where(array('course.deleted_date IS NULL'))
             ->where(array('program.deleted_date IS NULL'))
             ->where(array('school.deleted_date IS NULL'))
@@ -40,10 +41,13 @@ class Course extends AbstractMapper
             $select->where(array('course.program_id' => $program));
         }
 
+        if(!empty($exclude)) {
+            $select->where(new NotIn('course.id', $exclude));
+        }
+        
         if (null !== $user) {
             $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user]);
         }
-
         if (null !== $school) {
             $select->where(array('program.school_id' => $school));
         }

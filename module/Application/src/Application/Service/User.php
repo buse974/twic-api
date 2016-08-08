@@ -938,7 +938,7 @@ class User extends AbstractService
         foreach ($users as &$user) {
             $user['roles'] = [];
             $user['program'] = [];
-            $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'], null, null, true)['list'];
+            $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
                 $user['roles'][] = $role->getName();
             }
