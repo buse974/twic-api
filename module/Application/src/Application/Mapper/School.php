@@ -36,7 +36,7 @@ class School extends AbstractMapper
     public function get($school)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone','contact','address_id'))
+        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone','contact','address_id', 'custom', 'libelle'))
             ->join(array('school_user' => 'user'), 'school_user.id=school.contact_id', array('id','firstname','lastname','status','email','birth_date','position','interest','avatar'), $select::JOIN_LEFT)
             ->join(array('school_address' => 'address'), 'school.address_id = school_address.id', array('school_address!id' => 'id','street_no','street_type','street_name','floor','door','apartment','building','longitude','latitude','timezone'), $select::JOIN_LEFT)
             ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('school_address_division!id' => 'id','name'), $select::JOIN_LEFT)
@@ -58,7 +58,7 @@ class School extends AbstractMapper
     public function getList($filter = null, $search = null, $user_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone'))
+        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone',  'custom', 'libelle'))
             ->join(array('school_address' => 'address'), 'school.address_id = school_address.id', array('school_address!id' => 'id','street_no','street_type','street_name','floor','door','apartment','building','longitude','latitude','timezone'), $select::JOIN_LEFT)
             ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('school_address_division!id' => 'id','name'), $select::JOIN_LEFT)
             ->join(array('school_address_city' => 'city'), 'school_address_city.id=school_address.city_id', array('school_address_city!id' => 'id','name'), $select::JOIN_LEFT)

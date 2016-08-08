@@ -46,7 +46,7 @@ class User extends AbstractService
         $identity = $this->getIdentity(true);
         
         // ici on check que le role externe ne ce connect pas avec login
-        if(in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles'])) {
+        if(in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles']) === 1) {
             $this->logout();
             throw new \Exception("Error: unauthorized Role");
         }
