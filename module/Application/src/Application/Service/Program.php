@@ -35,7 +35,7 @@ class Program extends AbstractService
     public function add($name, $school_id, $level = null, $sis = null, $year = null)
     {
         if ($this->getServiceUser()->checkOrg($school_id)) {
-            throw new JrpcException('unauthorized orgzanization: ' . $school_id);
+            //throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
         
         $m_program = $this->getModel();
@@ -68,7 +68,7 @@ class Program extends AbstractService
     public function update($id, $name = null, $school_id = null, $level = null, $sis = null, $year = null)
     {
         if ($this->getServiceUser()->checkOrg($school_id)) {
-            throw new JrpcException('unauthorized orgzanization: ' . $school_id);
+            //throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
         
         $m_program = $this->getModel();
@@ -101,7 +101,7 @@ class Program extends AbstractService
         $res_program = $this->getListByUser($filter, $user['id'], $search, $school, $self, $exclude);
         foreach ($res_program['list'] as $m_program) {
             $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1,'p' => 1), 'student', null, null, $m_program->getId(), null, null, null, false)['count']);
-            $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1,'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
+            $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1,'p' => 1), 'instructor', null, null, $m_program->getId(), null, null, null, false)['count']);
             $m_program->setCourse($this->getServiceCourse()->count($m_program->getId()));
         }
         
