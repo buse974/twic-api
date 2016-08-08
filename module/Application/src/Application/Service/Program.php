@@ -91,20 +91,18 @@ class Program extends AbstractService
      * @param string $search            
      * @param int $school   
      * @param bool $self
+     * @param array exclude
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($filter = null, $search = null, $school = null, $self = true)
+    public function getList($filter = null, $search = null, $school = null, $self = true, $exclude = null)
     {
         $user = $this->getServiceUser()->getIdentity();
-        
-        $res_program = $this->getListByUser($filter, $user['id'], $search, $school, $self);
+        //@TODO Faire un vrai count
+        $res_program = $this->getListByUser($filter, $user['id'], $search, $school, $self, $exclude);
         foreach ($res_program['list'] as $m_program) {
-            $m_program->setStudent($this->getServiceUser()
-                ->getList(array('n' => 1,'p' => 1), 'student', null, null, $m_program->getId())['count']);
-            $m_program->setInstructor($this->getServiceUser()
-                ->getList(array('n' => 1,'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
-            $m_program->setCourse($this->getServiceCourse()
-                ->count($m_program->getId()));
+            $m_program->setStudent($this->getServiceUser()->getList(array('n' => 1,'p' => 1), 'student', null, null, $m_program->getId(), null, null, null, false)['count']);
+            $m_program->setInstructor($this->getServiceUser()->getList(array('n' => 1,'p' => 1), 'instructor', null, null, $m_program->getId())['count']);
+            $m_program->setCourse($this->getServiceCourse()->count($m_program->getId()));
         }
         
         return $res_program;
@@ -128,11 +126,12 @@ class Program extends AbstractService
      * @param array $filter            
      * @param int $user_id            
      * @param string $search            
-     * @param int $school_id            
-     *
+     * @param int $school_id     
+     * @param bool $self
+     * @param array $exclude       
      * @return array
      */
-    public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null, $self = true)
+    public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null, $self = true, $exclude = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         
@@ -154,7 +153,6 @@ class Program extends AbstractService
      * Get List By User.
      *
      * @param inr $school_id            
-     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySchool($school_id)

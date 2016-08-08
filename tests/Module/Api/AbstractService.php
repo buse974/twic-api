@@ -189,6 +189,10 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
             'firstname' => 'toto',
             'avatar' => 'avatar',
             'lastname' => 'tata',
+            'organizations' => [
+                ['id' => 1],
+                ['id' => 2],
+            ]
         ]));
         
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
@@ -256,6 +260,11 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
                     'logo' => '',
                     'background' => ''
                 ],
+                'organizations' => [
+                    ['id' => 1],
+                    ['id' => 2],
+                ],
+                'organization_id' => 1,
                 'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5',
                 'fbtoken' => 'eyJ0eXAiOiJKV1QiL'
             ]);

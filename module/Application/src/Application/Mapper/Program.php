@@ -2,6 +2,7 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Zend\Db\Sql\Predicate\NotIn;
 
 class Program extends AbstractMapper
 {
@@ -25,7 +26,7 @@ class Program extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($user_id, $search = null, $school_id = null, $is_admin_academic = false, $self = true)
+    public function getList($user_id, $search = null, $school_id = null, $is_admin_academic = false, $self = true, $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','name','level','sis','year','school_id'));
@@ -41,7 +42,9 @@ class Program extends AbstractMapper
                 $select->join('program_user_relation', 'program_user_relation.program_id=program.id', [])->where(['program_user_relation.user_id' => $user_id]);
             }
         }
-        
+        if(null !== $exclude) {
+            $select->where(new NotIn('program.id', $exclude));
+        }
         if ($search !== null) {
             $select->where(array(' ( program.name LIKE ? ' => $search . '%'))->where(array('program.sis LIKE ? ) ' => $search . '%'), 'OR');
         }
