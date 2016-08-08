@@ -31,7 +31,7 @@ class Course extends AbstractMapper
         $select->columns(array('id', 'title', 'abstract', 'description', 'picture', 'objectives', 'teaching', 'attendance', 'duration', 'video_link', 'video_token', 'learning_outcomes', 'notes', 'program_id'))
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
             ->join('program', 'program.id=course.program_id', [])
-            ->join('school', 'school.id=program.school_id', ['course.school_id' => 'school.id'])
+            ->join('school', 'school.id=program.school_id', ['school.id' => 'course.school_id'])
             ->where(array('course.deleted_date IS NULL'))
             ->where(array('program.deleted_date IS NULL'))
             ->where(array('school.deleted_date IS NULL'))
