@@ -3,7 +3,7 @@ namespace ModuleTest\Api\Service;
 
 use ModuleTest\Api\AbstractService;
 
-class SchoolTest extends AbstractService
+class CircleTest extends AbstractService
 {
 
     public static function setUpBeforeClass()

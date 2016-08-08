@@ -96,6 +96,7 @@ class User extends AbstractService
             $user['school'] = ($res_user->count() > 0) ? $res_user->current()->toArray()['school'] : null;
             $user['organizations'] = $this->getServiceOrganization()->_getList($id)->toArray();
             $user['organization_id'] = $user['school']['id'];
+            
             $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
             
@@ -114,6 +115,26 @@ class User extends AbstractService
         return $user;
     }
 
+    /**
+     * Check Organization
+     * 
+     * @param int $organization
+     * @return bool
+     */
+    public function checkOrg($organization) 
+    {
+        $is_present = false;
+        $organizations = $this->getIdentity()['organizations'];
+        foreach ($organizations as $org) {
+            if($org['id'] === $organization) {
+                $is_present = true;
+                break;
+            }
+        }
+        
+        return $is_present;
+    }
+    
     /**
      * Delete Cached Identity of user.
      *
@@ -259,7 +280,12 @@ class User extends AbstractService
          * schoolid vérifier que si il n'est pas admin le school id est
          * automatiquement celui de la personne qui add le user.
          */
-        if (! in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
+        if (in_array(ModelRole::ROLE_ACADEMIC_STR, $this->getIdentity()['roles']) && $school_id !== null) {
+            if($this->checkOrg($school_id) !== true) {
+                $user = $this->get();
+                $school_id = $user['school_id'];
+            }
+        } else if (!in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
             $user = $this->get();
             $school_id = $user['school_id'];
         }
