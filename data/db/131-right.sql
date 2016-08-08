@@ -3,7 +3,7 @@ INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (1,
 (SELECT `id` FROM `permission` WHERE `libelle`= 'circle.add'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('circle.update');
-INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (1
+INSERT IGNORE INTO `role_permission` (`role_id`, `permission_id`) VALUES (1,
 (SELECT `id` FROM `permission` WHERE `libelle`= 'circle.update'));
 
 INSERT IGNORE INTO `permission` (`libelle`) VALUES ('circle.get');
