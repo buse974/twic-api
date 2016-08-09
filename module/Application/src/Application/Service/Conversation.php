@@ -250,13 +250,21 @@ class Conversation extends AbstractService
      * @param int $program_id
      * @param int $course_id
      * @param int $item_id
-     *
+     * @param int $organization_id
+     * @param array $users
      * @return array
      */
-    public function getListId($program_id = null, $course_id = null, $item_id = null)
+    public function getListId($program_id = null, $course_id = null, $item_id = null, $organization_id = null, $users = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        $res_videoconf = $this->getMapper()->getListId($identity['school']['id'], $program_id, $course_id, $item_id);
+        
+        if(null !== $organization_id) {
+            if ($this->getServiceUser()->checkOrg($organization_id)) {
+                throw new JrpcException('unauthorized orgzanization: ' . $organization_id);
+            }
+        }
+        
+        $res_videoconf = $this->getMapper()->getListId($identity['id'], $organization_id, $program_id, $course_id, $item_id, null, $users);
         $ids = [];
         foreach ($res_videoconf as $m_videoconf) {
             $ids[] = $m_videoconf->getId();
@@ -322,7 +330,7 @@ class Conversation extends AbstractService
         }
 
         $identity = $this->getServiceUser()->getIdentity();
-        $res_conversation = $this->getMapper()->getListId($identity['school']['id'], null, null, $item_id, $submission_id);
+        $res_conversation = $this->getMapper()->getListId($user_id, null, null, null, $item_id, $submission_id);
         // Si pas de résultat on créer la conversation
         $id = null;
         if ($res_conversation->count() <= 0) {

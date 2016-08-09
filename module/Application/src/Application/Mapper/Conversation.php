@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * Conversation
+ *
+ */
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
@@ -38,7 +44,19 @@ class Conversation extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListId($school_id, $program_id = null, $course_id = null, $item_id = null, $submission_id = null)
+    /**
+     * Get List Id
+     * 
+     * @param int $user_id
+     * @param int $organization_id
+     * @param int $program_id
+     * @param unkintnown $course_id
+     * @param int $item_id
+     * @param int $submission_id
+     * @param array $users
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListId($user_id, $organization_id = null, $program_id = null, $course_id = null, $item_id = null, $submission_id = null, $users = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id'])
@@ -47,9 +65,18 @@ class Conversation extends AbstractMapper
             ->join('item', 'item.id = submission.item_id', [])
             ->join('course', 'course.id = item.course_id', [])
             ->join('program', 'program.id = course.program_id', [])
-            ->where(['program.school_id' => $school_id])
             ->quantifier('distinct');
 
+        if(null === $organization_id) {
+            $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])
+                ->where(['organization_user.user_id' => $user_id]);
+        } else {
+            $select->where(['program.school_id' => $organization_id]);
+        }
+        if(!empty($users)) {
+            $select->join('conversation_user', 'conversation_user.conversation_id=conversation.id', [])
+                ->where(['conversation_user.user_id' => $users]);
+        }
         if (null !== $item_id) {
             $select->where(['item.id' => $item_id]);
         }
