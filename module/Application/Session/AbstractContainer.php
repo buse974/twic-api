@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * TheStudnet (http://thestudnet.com).
+ *
+ * AbstractContainer
+ */
 namespace Application\Session;
 
 use ArrayIterator;
@@ -9,6 +13,9 @@ use Zend\Session\ManagerInterface as Manager;
 use Zend\Session\Storage\StorageInterface as Storage;
 use ArrayObject;
 
+/**
+ * Abstract Class AbstractContainer
+ */
 abstract class AbstractContainer extends ArrayObject
 {
     /**

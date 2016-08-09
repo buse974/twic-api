@@ -120,8 +120,8 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_add" title="add :: Add course.">
-            <span class="description">Add course.</span><pre>add</pre>
+        <a href="#method_add" title="add :: Add course">
+            <span class="description">Add course</span><pre>add</pre>
         </a>
     </li>
 
@@ -132,14 +132,14 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_delete" title="delete :: Delete course.">
-            <span class="description">Delete course.</span><pre>delete</pre>
+        <a href="#method_delete" title="delete :: Delete course">
+            <span class="description">Delete course</span><pre>delete</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: Get Course.">
-            <span class="description">Get Course.</span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Course">
+            <span class="description">Get Course</span><pre>get</pre>
         </a>
     </li>
 
@@ -150,8 +150,8 @@
     </li>
 
                                                                                                                                                                                                                                                                                                                                                                                                 <li class="method public">
-        <a href="#method_update" title="update :: Update course.">
-            <span class="description">Update course.</span><pre>update</pre>
+        <a href="#method_update" title="update :: Update course">
+            <span class="description">Update course</span><pre>update</pre>
         </a>
     </li>
 
@@ -226,7 +226,7 @@
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>Add course.</h2>
+                            <h2>Add course</h2>
                             <pre>add(integer $program_id, string $title = null, string $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, integer $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null, array $material_document = array()) : \Application\Model\Course</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -316,7 +316,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Application\Model\Course</code><p></p>
+                                        <code><a href="../classes/Application.Model.Course.html">\Application\Model\Course</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -350,7 +350,7 @@
                         </div>
                                             <a id="method_delete"></a>
                         <div class="element clickable method public  method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
-                            <h2>Delete course.</h2>
+                            <h2>Delete course</h2>
                             <pre>delete(array|integer $id) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -386,7 +386,7 @@
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>Get Course.</h2>
+                            <h2>Get Course</h2>
                             <pre>get(integer $id) : \Application\Model\Course</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -424,7 +424,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Application\Model\Course</code><p></p>
+                                        <code><a href="../classes/Application.Model.Course.html">\Application\Model\Course</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -432,7 +432,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get List Courses.</h2>
-                            <pre>getList(integer $program = null, string $search = null, array $filter = null, integer $user = null, integer $school = null) : array</pre>
+                            <pre>getList(integer $program = null, string $search = null, array $filter = null, integer $user = null, integer $school = null, array $exclude = null, boolean $self = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -473,6 +473,14 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$school</h4>
                                                 <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$exclude</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$self</h4>
+                                                <code>boolean</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -628,7 +636,7 @@
                         </div>
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
-                            <h2>Update course.</h2>
+                            <h2>Update course</h2>
                             <pre>update(integer $id, string $title = null, string $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, integer $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -732,7 +740,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 05 Aug 2016 16:22:45 +0200.<br/>
+            generated on Tue, 09 Aug 2016 09:30:25 +0200.<br/>
     </footer>
     </body>
 </html>

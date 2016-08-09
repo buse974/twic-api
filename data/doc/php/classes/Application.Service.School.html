@@ -144,12 +144,18 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getCustom" title="getCustom :: Get custom Field">
+            <span class="description">Get custom Field</span><pre>getCustom</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_getList" title="getList :: Get school list">
             <span class="description">Get school list</span><pre>getList</pre>
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                        <li class="method public">
+                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
         <a href="#method_update" title="update :: Update school">
             <span class="description">Update school</span><pre>update</pre>
         </a>
@@ -159,28 +165,33 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                <li class="method private">
-                            <a href="#method_getServiceAddress" title="getServiceAddress :: Get Service Address.">
-                                <span class="description">Get Service Address.</span><pre>getServiceAddress</pre>
+                                                                                                                                                                                                                                                                                                    <li class="method private">
+                            <a href="#method_getServiceAddress" title="getServiceAddress :: Get Service Address">
+                                <span class="description">Get Service Address</span><pre>getServiceAddress</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event.">
-                                <span class="description">Get Service Event.</span><pre>getServiceEvent</pre>
+                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event">
+                                <span class="description">Get Service Event</span><pre>getServiceEvent</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_getServiceGrading" title="getServiceGrading :: Get Service.">
-                                <span class="description">Get Service.</span><pre>getServiceGrading</pre>
+                            <a href="#method_getServiceGrading" title="getServiceGrading :: Get Service Grading">
+                                <span class="description">Get Service Grading</span><pre>getServiceGrading</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_getServiceProgram" title="getServiceProgram :: Get Service Program.">
-                                <span class="description">Get Service Program.</span><pre>getServiceProgram</pre>
+                            <a href="#method_getServiceProgram" title="getServiceProgram :: Get Service Program">
+                                <span class="description">Get Service Program</span><pre>getServiceProgram</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service Grading">
+                                <span class="description">Get Service Grading</span><pre>getServiceUser</pre>
                             </a>
                         </li>
                                                                                     </ul>
@@ -306,7 +317,7 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$background</h4>
-                                                <code>string</code><p><p>get</p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$phone</h4>
@@ -334,7 +345,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Application\Model\School</code><p></p>
+                                        <code><a href="../classes/Application.Model.School.html">\Application\Model\School</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -378,7 +389,7 @@
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
                             <h2>Get school</h2>
-                            <pre>get(integer $id) : \Application\Model\School</pre>
+                            <pre>get(integer|array $id) : \Application\Model\School|\Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -402,11 +413,47 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code>integer</code><p></p>
+                                                <code>integer|array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Application\Model\School</code><p></p>
+                                        <code><a href="../classes/Application.Model.School.html">\Application\Model\School</a>|\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getCustom"></a>
+                        <div class="element clickable method public  method_getCustom" data-toggle="collapse" data-target=".method_getCustom .collapse">
+                            <h2>Get custom Field</h2>
+                            <pre>getCustom(string $libelle) : \Application\Model\School</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$libelle</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Model.School.html">\Application\Model\School</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -414,7 +461,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get school list</h2>
-                            <pre>getList(array $filter = null, string $search = null) : array</pre>
+                            <pre>getList(array $filter = null, string $search = null, array $exclude = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -444,6 +491,10 @@
                                                 <h4>$search</h4>
                                                 <code>string</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$exclude</h4>
+                                                <code>array</code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>array</code><p></p>
@@ -453,7 +504,7 @@
                         </div>
                                             <a id="method_getServiceAddress"></a>
                         <div class="element clickable method private  method_getServiceAddress" data-toggle="collapse" data-target=".method_getServiceAddress .collapse">
-                            <h2>Get Service Address.</h2>
+                            <h2>Get Service Address</h2>
                             <pre>getServiceAddress() : \Address\Service\Address</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -482,7 +533,7 @@
                         </div>
                                             <a id="method_getServiceEvent"></a>
                         <div class="element clickable method private  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
-                            <h2>Get Service Event.</h2>
+                            <h2>Get Service Event</h2>
                             <pre>getServiceEvent() : \Application\Service\Event</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -511,7 +562,7 @@
                         </div>
                                             <a id="method_getServiceGrading"></a>
                         <div class="element clickable method private  method_getServiceGrading" data-toggle="collapse" data-target=".method_getServiceGrading .collapse">
-                            <h2>Get Service.</h2>
+                            <h2>Get Service Grading</h2>
                             <pre>getServiceGrading() : \Application\Service\Grading</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -540,7 +591,7 @@
                         </div>
                                             <a id="method_getServiceProgram"></a>
                         <div class="element clickable method private  method_getServiceProgram" data-toggle="collapse" data-target=".method_getServiceProgram .collapse">
-                            <h2>Get Service Program.</h2>
+                            <h2>Get Service Program</h2>
                             <pre>getServiceProgram() : \Application\Service\Program</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -563,6 +614,35 @@
                                     
                                                                             <h3>Response</h3>
                                         <code><a href="../classes/Application.Service.Program.html">\Application\Service\Program</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceUser"></a>
+                        <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
+                            <h2>Get Service Grading</h2>
+                            <pre>getServiceUser() : \Application\Service\User</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.User.html">\Application\Service\User</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -665,7 +745,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 05 Aug 2016 16:22:45 +0200.<br/>
+            generated on Tue, 09 Aug 2016 09:30:26 +0200.<br/>
     </footer>
     </body>
 </html>

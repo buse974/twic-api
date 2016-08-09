@@ -122,9 +122,11 @@ class Circle extends AbstractService
     }
     
     /**
+     * Get Service CircleOrganization
+     * 
      * @return \Application\Service\CircleOrganization
      */
-    public function getServiceCircleOrganization()
+    private function getServiceCircleOrganization()
     {
         return $this->getServiceLocator()->get('app_service_circle_organization');
     }

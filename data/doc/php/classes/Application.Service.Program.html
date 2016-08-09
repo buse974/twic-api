@@ -132,8 +132,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_get" title="get :: Get Program.">
-            <span class="description">Get Program.</span><pre>get</pre>
+        <a href="#method_get" title="get :: Get Program">
+            <span class="description">Get Program</span><pre>get</pre>
         </a>
     </li>
 
@@ -144,8 +144,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListBySchool" title="getListBySchool :: Get List By User.">
-            <span class="description">Get List By User.</span><pre>getListBySchool</pre>
+        <a href="#method_getListBySchool" title="getListBySchool :: Get List By User">
+            <span class="description">Get List By User</span><pre>getListBySchool</pre>
         </a>
     </li>
 
@@ -320,7 +320,7 @@
                         </div>
                                             <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
-                            <h2>Get Program.</h2>
+                            <h2>Get Program</h2>
                             <pre>get(integer $id) : \Application\Model\Program</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -349,7 +349,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Application\Model\Program</code><p></p>
+                                        <code><a href="../classes/Application.Model.Program.html">\Application\Model\Program</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -357,7 +357,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get List Program.</h2>
-                            <pre>getList(array $filter = null, string $search = null, integer $school = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>getList(array $filter = null, string $search = null, integer $school = null, boolean $self = true,  $exclude = null) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -391,6 +391,14 @@
                                                 <h4>$school</h4>
                                                 <code>integer</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$self</h4>
+                                                <code>boolean</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$exclude</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
@@ -400,7 +408,7 @@
                         </div>
                                             <a id="method_getListBySchool"></a>
                         <div class="element clickable method public  method_getListBySchool" data-toggle="collapse" data-target=".method_getListBySchool .collapse">
-                            <h2>Get List By User.</h2>
+                            <h2>Get List By User</h2>
                             <pre>getListBySchool(\Application\Service\inr $school_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -428,7 +436,7 @@
                                             <a id="method_getListByUser"></a>
                         <div class="element clickable method public  method_getListByUser" data-toggle="collapse" data-target=".method_getListByUser .collapse">
                             <h2>Get List By User.</h2>
-                            <pre>getListByUser(array $filter = null, integer $user_id = null, string $search = null, integer $school_id = null) : array</pre>
+                            <pre>getListByUser(array $filter = null, integer $user_id = null, string $search = null, integer $school_id = null, boolean $self = true, array $exclude = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -456,6 +464,14 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$school_id</h4>
                                                 <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$self</h4>
+                                                <code>boolean</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$exclude</h4>
+                                                <code>array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -627,7 +643,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 05 Aug 2016 16:22:45 +0200.<br/>
+            generated on Tue, 09 Aug 2016 09:30:28 +0200.<br/>
     </footer>
     </body>
 </html>
