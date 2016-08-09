@@ -183,7 +183,7 @@ class Course extends AbstractService
      */
     public function getLite($id)
     {
-        $res_course = $this->getMapper()->get($id);
+        $res_course = $this->getMapper()->select($this->getModel()->setId($id));
         
         return (is_array($id)) ? $res_course : $res_course->current();
     }
