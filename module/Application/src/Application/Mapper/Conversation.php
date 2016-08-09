@@ -10,8 +10,21 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 
+/**
+ * 
+ * Class Conversation
+ *
+ */
 class Conversation extends AbstractMapper
 {
+    
+    /**
+     * Request Get List By Submission
+     * 
+     * @param int $submission_id
+     * @param int $user_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListBySubmission($submission_id, $user_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -28,6 +41,13 @@ class Conversation extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    /**
+     * Request Get List By Item 
+     * 
+     * @param int $item_id
+     * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListByItem($item_id, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -45,7 +65,7 @@ class Conversation extends AbstractMapper
     }
 
     /**
-     * Get List Id
+     * Request Get List Id
      * 
      * @param int $user_id
      * @param int $organization_id
