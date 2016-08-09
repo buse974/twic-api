@@ -1191,9 +1191,7 @@ class User extends AbstractService
      *
      * @param int $user            
      * @param int $password            
-     *
      * @throws JrpcException
-     *
      * @return array
      */
     public function auth($user, $password)
@@ -1211,7 +1209,7 @@ class User extends AbstractService
     }
 
     /**
-     * Add User.
+     * Add User
      *
      * @invokable
      *
@@ -1220,7 +1218,6 @@ class User extends AbstractService
      * @param string $lastname            
      * @param string $uid            
      * @param string $role            
-     *
      * @return int
      */
     public function create($email, $firstname, $lastname, $uid, $role = null)
@@ -1231,8 +1228,8 @@ class User extends AbstractService
     }
 
     /**
-     * Get Service Language.
-     *
+     * Get Service Language
+     * 
      * @return \Application\Service\Language
      */
     private function getServiceLanguage()

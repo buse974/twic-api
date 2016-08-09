@@ -59,7 +59,6 @@ class Course extends AbstractMapper
         if (! empty($program_id)) {
             $select->where(array('course.program_id' => $program_id));
         }
-        
         if (! empty($exclude)) {
             $select->where(new NotIn('course.id', $exclude));
         }
@@ -73,7 +72,6 @@ class Course extends AbstractMapper
         if (null !== $school_id) {
             $select->where(array('program.school_id' => $school_id));
         }
-        
         if (null == ! $search) {
             $select->where(array('course.title LIKE ? ' => '%' . $search . '%'));
         }

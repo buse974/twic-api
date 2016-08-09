@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * User
+ *
+ */
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
@@ -10,46 +16,29 @@ use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\NotIn;
 use Zend\Db\Sql\Where;
 
+/**
+ * 
+ * Class  User
+ *
+ */
 class User extends AbstractMapper
 {
     
     /**
+     * Request Get List Users Group By Item And User
+     * 
      * @param int $item_id
+     * @param int $user_id
+     * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListUsersByItemOfCourseUser($item_id)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns([
-            'id',
-            'firstname',
-            'gender',
-            'lastname',
-            'email',
-            'has_email_notifier',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
-            'position',
-            'interest',
-            'nickname',
-            'avatar',
-            'school_id',
-        ])
-        ->join('course_user_relation', 'course_user_relation.user_id=user.id', array())
-        ->join('item', 'item.course_id=course_user_relation.course_id', array())
-        ->join('user_role', 'user_role.user_id=user.id', [])
-        ->where(array('item.id' => $item_id))
-        ->where(array('user_role.role_id' => ModelRole::ROLE_STUDENT_ID));
-
-        return $this->selectWith($select);
-    }
-
-    public function getListUsersGroupByItemAndUser($item_id, $user)
+    public function getListUsersGroupByItemAndUser($item_id, $user_id)
     {
         $sub = $this->tableGateway->getSql()->select();
         $sub->columns([])
             ->join('group_user', 'group_user.user_id=user.id', array('group_id'))
             ->join('set_group', 'set_group.group_id=group_user.group_id', array())
             ->join('item', 'item.set_id=set_group.set_id', array())
-            ->where(array('group_user.user_id' => $user))
+            ->where(array('group_user.user_id' => $user_id))
             ->where(array('item.id' => $item_id));
 
         $select = $this->tableGateway->getSql()->select();
@@ -65,7 +54,7 @@ class User extends AbstractMapper
             'nickname',
             'avatar',
             'school_id',
-            'user$contact_state' => $this->getSelectContactState($user),
+            'user$contact_state' => $this->getSelectContactState($user_id),
         ])
             ->join('group_user', 'group_user.user_id=user.id', array())
             ->where(array('group_user.group_id' => $sub));
@@ -73,17 +62,13 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function doBelongsByGroup($group_id, $user_id)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id'])
-        ->join('group_user', 'group_user.user_id=user.id', [])
-        ->where(array('group_user.group_id' => $group_id))
-        ->where(array('group_user.user_id' => $user_id));
-
-        return $this->selectWith($select)->count() > 0;
-    }
-
+    /**
+     * Check If Do Belongs By Item Have Submission
+     * 
+     * @param int $item_id
+     * @param int $user_id
+     * @return boolean
+     */
     public function doBelongsByItemHaveSubmission($item_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -96,18 +81,13 @@ class User extends AbstractMapper
         return $this->selectWith($select)->count() > 0;
     }
 
-    public function doBelongsBySet($set_id, $user_id)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id'])
-            ->join('group_user', 'group_user.user_id=user.id', [])
-            ->join('set_group', 'group_user.group_id=set_group.group_id', [])
-            ->where(array('set_group.set_id' => $set_id))
-            ->where(array('user.id' => $user_id));
-
-        return $this->selectWith($select)->count() > 0;
-    }
-
+    /**
+     * Check If Do Belongs By Item Of Course User
+     * 
+     * @param int $item_id
+     * @param int $user_id
+     * @return boolean
+     */
     public function doBelongsByItemOfCourseUser($item_id, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -593,8 +573,9 @@ class User extends AbstractMapper
     }
 
     /**
+     * Get Select Objet for Contact State
+     * 
      * @param int $user
-     *
      * @return \Zend\Db\Sql\Select
      */
     public function getSelectContactState($user)
@@ -612,6 +593,8 @@ class User extends AbstractMapper
     }
 
     /**
+     * Get Select Objet for Contact Count
+     * 
      * @return \Zend\Db\Sql\Select
      */
     public function getSelectContactCount()
@@ -625,7 +608,10 @@ class User extends AbstractMapper
     }
 
     /**
+     * Get List User PairGraders
+     * 
      * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListPairGraders($submission_id)
     {
