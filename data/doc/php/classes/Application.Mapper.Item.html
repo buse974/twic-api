@@ -138,8 +138,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getBySubmission" title="getBySubmission :: ">
-            <span class="description"></span><pre>getBySubmission</pre>
+        <a href="#method_getBySubmission" title="getBySubmission :: Request Get Itel By Submission">
+            <span class="description">Request Get Itel By Submission</span><pre>getBySubmission</pre>
         </a>
     </li>
 
@@ -156,14 +156,14 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListGradeItem" title="getListGradeItem :: ">
-            <span class="description"></span><pre>getListGradeItem</pre>
+        <a href="#method_getListGradeItem" title="getListGradeItem :: Request Get List Item Grade">
+            <span class="description">Request Get List Item Grade</span><pre>getListGradeItem</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListSubmissions" title="getListSubmissions :: ">
-            <span class="description"></span><pre>getListSubmissions</pre>
+        <a href="#method_getListSubmissions" title="getListSubmissions :: Request Get List Item Submission">
+            <span class="description">Request Get List Item Submission</span><pre>getListSubmissions</pre>
         </a>
     </li>
 
@@ -180,8 +180,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_selectLastParentId" title="selectLastParentId :: Get Last parent id.">
-            <span class="description">Get Last parent id.</span><pre>selectLastParentId</pre>
+        <a href="#method_selectLastParentId" title="selectLastParentId :: Get Last parent id">
+            <span class="description">Get Last parent id</span><pre>selectLastParentId</pre>
         </a>
     </li>
 
@@ -211,7 +211,7 @@
                 <small style="display: block; text-align: right">
                                             Extends \Dal\Mapper\AbstractMapper
                                                         </small>
-                <p class="short_description"></p>
+                <p class="short_description">Class Item</p>
                 <div class="details">
                     <div class="long_description">
                         
@@ -352,8 +352,8 @@
                         </div>
                                             <a id="method_getBySubmission"></a>
                         <div class="element clickable method public  method_getBySubmission" data-toggle="collapse" data-target=".method_getBySubmission .collapse">
-                            <h2>getBySubmission</h2>
-                            <pre>getBySubmission( $submission_id) </pre>
+                            <h2>Request Get Itel By Submission</h2>
+                            <pre>getBySubmission(integer $submission_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -363,28 +363,16 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$submission_id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -486,8 +474,8 @@
                         </div>
                                             <a id="method_getListGradeItem"></a>
                         <div class="element clickable method public  method_getListGradeItem" data-toggle="collapse" data-target=".method_getListGradeItem .collapse">
-                            <h2>getListGradeItem</h2>
-                            <pre>getListGradeItem( $grading_policy = null, integer $course = null, integer $user = null,  $submission = null) </pre>
+                            <h2>Request Get List Item Grade</h2>
+                            <pre>getListGradeItem(integer $grading_policy_id = null, integer $course_id = null, integer $user_id = null, integer $submission_id = null) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -497,41 +485,36 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$grading_policy</h4>
-                                                <code></code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$course</h4>
+                                                <h4>$grading_policy_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
+                                                <h4>$course_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$submission</h4>
-                                                <code></code><p></p>
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$submission_id</h4>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_getListSubmissions"></a>
                         <div class="element clickable method public  method_getListSubmissions" data-toggle="collapse" data-target=".method_getListSubmissions .collapse">
-                            <h2>getListSubmissions</h2>
-                            <pre>getListSubmissions( $school_id,  $type = null,  $program = null,  $course = null,  $due = null,  $notgraded = null,  $search = null) </pre>
+                            <h2>Request Get List Item Submission</h2>
+                            <pre>getListSubmissions(integer $user_id, string $type = null, integer $program = null, integer $course = null, string $due = null, boolean $notgraded = null, string $search = null, boolean $is_academic = true) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -541,52 +524,44 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$school_id</h4>
-                                                <code></code><p></p>
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$type</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$program</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$course</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$due</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$notgraded</h4>
-                                                <code></code><p></p>
+                                                <code>boolean</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$search</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_academic</h4>
+                                                <code>boolean</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -683,8 +658,8 @@
                         </div>
                                             <a id="method_selectLastParentId"></a>
                         <div class="element clickable method public  method_selectLastParentId" data-toggle="collapse" data-target=".method_selectLastParentId .collapse">
-                            <h2>Get Last parent id.</h2>
-                            <pre>selectLastParentId(integer $course = null,  $id = null) : integer</pre>
+                            <h2>Get Last parent id</h2>
+                            <pre>selectLastParentId(integer $course_id = null, integer $id = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -698,12 +673,12 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$course</h4>
+                                                <h4>$course_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
-                                                <code></code><p></p>
+                                                <code>integer</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -734,7 +709,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 09:30:26 +0200.<br/>
+            generated on Tue, 09 Aug 2016 15:59:35 +0200.<br/>
     </footer>
     </body>
 </html>

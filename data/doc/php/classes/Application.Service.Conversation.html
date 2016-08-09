@@ -933,7 +933,7 @@ of current user school If not exist create</p></div>
                                             <a id="method_getListId"></a>
                         <div class="element clickable method public  method_getListId" data-toggle="collapse" data-target=".method_getListId .collapse">
                             <h2>Get List of conversation id.</h2>
-                            <pre>getListId(integer $program_id = null, integer $course_id = null, integer $item_id = null) : array</pre>
+                            <pre>getListId(integer $program_id = null, integer $course_id = null, integer $item_id = null, integer $organization_id = null, array $users = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -967,6 +967,14 @@ of current user school</p></div>
                                                                                     <div class="subelement argument">
                                                 <h4>$item_id</h4>
                                                 <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$organization_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$users</h4>
+                                                <code>array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -1818,7 +1826,7 @@ of current user school</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 09:30:26 +0200.<br/>
+            generated on Tue, 09 Aug 2016 15:59:35 +0200.<br/>
     </footer>
     </body>
 </html>

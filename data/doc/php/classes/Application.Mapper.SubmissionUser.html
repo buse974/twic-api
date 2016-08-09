@@ -138,8 +138,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getListGrade" title="getListGrade :: ">
-            <span class="description"></span><pre>getListGrade</pre>
+        <a href="#method_getListGrade" title="getListGrade :: Request get List SubmissionUser Grade">
+            <span class="description">Request get List SubmissionUser Grade</span><pre>getListGrade</pre>
         </a>
     </li>
 
@@ -181,7 +181,7 @@
                 <small style="display: block; text-align: right">
                                             Extends \Dal\Mapper\AbstractMapper
                                                         </small>
-                <p class="short_description"></p>
+                <p class="short_description">Class SubmissionUser</p>
                 <div class="details">
                     <div class="long_description">
                         
@@ -291,8 +291,8 @@
                         </div>
                                             <a id="method_getListGrade"></a>
                         <div class="element clickable method public  method_getListGrade" data-toggle="collapse" data-target=".method_getListGrade .collapse">
-                            <h2>getListGrade</h2>
-                            <pre>getListGrade( $avg = array(),  $filter = array(),  $search = null,  $user = null) </pre>
+                            <h2>Request get List SubmissionUser Grade</h2>
+                            <pre>getListGrade(integer $user_id, array $avg = array(), array $filter = array(), string $search = null, boolean $is_academic = false) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -302,40 +302,32 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
                                                 <h4>$avg</h4>
-                                                <code></code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$filter</h4>
-                                                <code></code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$search</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
-                                                <code></code><p></p>
+                                                <h4>$is_academic</h4>
+                                                <code>boolean</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
                                                                     </div>
                             </div>
 
@@ -418,7 +410,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 09:30:27 +0200.<br/>
+            generated on Tue, 09 Aug 2016 15:59:37 +0200.<br/>
     </footer>
     </body>
 </html>
