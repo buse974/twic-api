@@ -7,6 +7,12 @@ use Zend\Db\Sql\Predicate\NotIn;
 class Program extends AbstractMapper
 {
 
+    /**
+     * Request Get Program
+     *
+     * @param int $id            
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -15,6 +21,12 @@ class Program extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    /**
+     * Request Get List Program By User
+     *
+     * @param int $user_id            
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getListUser($user_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -26,6 +38,17 @@ class Program extends AbstractMapper
         return $this->selectWith($select);
     }
 
+    /**
+     * Request Program Get List
+     *
+     * @param int $user_id            
+     * @param string $search            
+     * @param int $school_id            
+     * @param bool $is_admin_academic            
+     * @param bool $self            
+     * @param array $exclude            
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
     public function getList($user_id, $search = null, $school_id = null, $is_admin_academic = false, $self = true, $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -42,7 +65,7 @@ class Program extends AbstractMapper
                 $select->join('program_user_relation', 'program_user_relation.program_id=program.id', [])->where(['program_user_relation.user_id' => $user_id]);
             }
         }
-        if(null !== $exclude) {
+        if (null !== $exclude) {
             $select->where(new NotIn('program.id', $exclude));
         }
         if ($search !== null) {
@@ -52,14 +75,5 @@ class Program extends AbstractMapper
         $select->where(array('program.deleted_date IS NULL'));
         
         return $this->selectWith($select);
-    }
-
-    /**
-     *
-     * @return \Application\Mapper\User
-     */
-    public function getMapperUser()
-    {
-        return $this->getServiceLocator()->get('app_mapper_user');
     }
 }
