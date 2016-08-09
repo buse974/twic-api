@@ -518,7 +518,6 @@ class User extends AbstractMapper
      * Get all students for the instructor.
      *
      * @param int $instructor
-     *
      * @return array
      */
     public function getStudentList($instructor)

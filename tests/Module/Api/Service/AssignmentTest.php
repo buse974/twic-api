@@ -26,7 +26,7 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.update', array('school_id' => $school_id));
         $this->reset();
-        
+
         // ADD PROGRAM
         $this->setIdentity(1);
         $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => $school_id,'level' => 'emba','sis' => 'sis'));
@@ -71,7 +71,7 @@ class AssignmentTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.update', array('id' => 1, 'roles' => [ModelRole::ROLE_STUDENT_STR]));
         $this->reset();
-        
+
         return [
             'school_id' => $school_id,
             'course_id' => $course_id
@@ -746,8 +746,6 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result'][0]['is_graded'] , 0);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
-        
     }
         
 }

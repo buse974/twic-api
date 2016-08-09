@@ -195,7 +195,7 @@ class Course extends AbstractService
             $identity = $this->getServiceUser()->getIdentity();
             $user = $identity['id'];
         } else {
-            $identity = $this->getServiceUser()->get($user);
+            $identity = $this->getServiceUser()->_get($user);
         }
         
         // @todo Faire du propre dans les roles une fois que les relations seront ok

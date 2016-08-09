@@ -141,7 +141,7 @@ class Program extends AbstractService
             $identity = $this->getServiceUser()->getIdentity();
             $user_id = $identity['id'];
         } else {
-            $identity = $this->getServiceUser()->get($user_id);
+            $identity = $this->getServiceUser()->_get($user_id);
         }
         
         $mapper = $this->getMapper();

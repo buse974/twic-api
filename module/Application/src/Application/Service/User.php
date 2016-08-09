@@ -86,7 +86,6 @@ class User extends AbstractService
             $user = $this->getCache()->getItem('identity_' . $id);
         } else {
             $user = $identity->toArray();
-            
             $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][$role->getId()] = $role->getName();
@@ -913,23 +912,22 @@ class User extends AbstractService
     }
 
     /**
-     * Get User.
+     * Get User
      *
      * @invokable
      *
      * @param int $id            
-     *
      * @return array
      */
     public function get($id = null)
     {
         $user_id = $this->getIdentity()['id'];
-        
         if ($id === null) {
             $id = $user_id;
         }
         
         $res_user = $this->getMapper()->get($id, $user_id);
+
         if ($res_user->count() <= 0) {
             throw new \Exception('error get user: ' . $id);
         }
@@ -945,6 +943,30 @@ class User extends AbstractService
         }
         
         return (count($users) > 1) ? $users : reset($users);
+    }
+    
+    /**
+     * Get User
+     *
+     * @param int $id
+     * @return array
+     */
+    public function _get($id)
+    {
+        $res_user = $this->getMapper()->get($id, $id);
+        if ($res_user->count() <= 0) {
+            throw new \Exception('error get user: ' . $id);
+        }
+
+        $users = $res_user->toArray();
+        foreach ($users as &$user) {
+            $user['roles'] = [];
+            foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
+                $user['roles'][] = $role->getName();
+            }
+        }
+    
+        return reset($users);
     }
 
     /**
