@@ -34,7 +34,7 @@ class Program extends AbstractService
      */
     public function add($name, $school_id, $level = null, $sis = null, $year = null)
     {
-        if ($this->getServiceUser()->checkOrg($school_id)) {
+        if (!$this->getServiceUser()->checkOrg($school_id)) {
              throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
         
@@ -67,7 +67,7 @@ class Program extends AbstractService
      */
     public function update($id, $name = null, $school_id = null, $level = null, $sis = null, $year = null)
     {
-        if ($this->getServiceUser()->checkOrg($school_id)) {
+        if (null !== $school_id && !$this->getServiceUser()->checkOrg($school_id)) {
              throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
         

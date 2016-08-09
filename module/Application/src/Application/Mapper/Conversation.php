@@ -11,9 +11,7 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 
 /**
- * 
  * Class Conversation
- *
  */
 class Conversation extends AbstractMapper
 {

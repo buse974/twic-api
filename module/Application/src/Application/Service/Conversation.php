@@ -261,7 +261,7 @@ class Conversation extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
         
         if (null !== $organization_id) {
-            if ($this->getServiceUser()->checkOrg($organization_id)) {
+            if (!$this->getServiceUser()->checkOrg($organization_id)) {
                 throw new JrpcException('unauthorized orgzanization: ' . $organization_id);
             }
         }
