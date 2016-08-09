@@ -67,11 +67,8 @@ class Course extends AbstractMapper
             if ($is_admin_academic === true) {
                 $select->join('organization_user', 'organization_user.organization_id=school.id', [])->where(['organization_user.user_id' => $user_id]);
             } else {
-                $select->join('program_user_relation', 'program_user_relation.program_id=program.id', [])->where(['program_user_relation.user_id' => $user_id]);
+                $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user_id]);
             }
-        }
-        if (null !== $user_id) {
-            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user_id]);
         }
         if (null !== $school_id) {
             $select->where(array('program.school_id' => $school_id));
