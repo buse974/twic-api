@@ -149,8 +149,7 @@ class User extends AbstractService
     /**
      * Get/Create Identity External in cache.
      *
-     * @param bool $init            
-     *
+     * @param bool $init
      * @return array
      */
     public function _getCacheIdentityExternal($init = false)
@@ -372,8 +371,7 @@ class User extends AbstractService
      * Get List User By Item And User.
      *
      * @param int $item_id            
-     * @param int $user_id            
-     *
+     * @param int $user_id        
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListUsersGroupByItemAndUser($item_id, $user_id = null)
@@ -386,10 +384,9 @@ class User extends AbstractService
     }
 
     /**
-     * Get List User By Submission.
+     * Get List User By Submission
      *
-     * @param int $submission_id            
-     *
+     * @param int $submission_id   
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListUsersBySubmission($submission_id)
@@ -402,8 +399,7 @@ class User extends AbstractService
      *
      * @invokable
      *
-     * @param int $item_id            
-     *
+     * @param int $item_id       
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item_id)
@@ -415,8 +411,7 @@ class User extends AbstractService
      * if User Belong item.
      *
      * @param int $item_id            
-     * @param int $user_id            
-     *
+     * @param int $user_id       
      * @return bool
      */
     public function doBelongs($item_id, $user_id)
@@ -427,8 +422,7 @@ class User extends AbstractService
     /**
      * Get List By School.
      *
-     * @param int $school_id            
-     *
+     * @param int $school_id       
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySchool($school_id)
@@ -645,7 +639,7 @@ class User extends AbstractService
                 }
             }
         }
-        
+
         return $this->getServiceCourseUserRelation()->add($user, $course);
     }
 
@@ -1360,7 +1354,7 @@ class User extends AbstractService
     {
         return $this->getServiceLocator()->get('app_service_submission');
     }
-
+    
     /**
      * Get Service Contact.
      *

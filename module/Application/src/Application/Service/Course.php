@@ -172,6 +172,21 @@ class Course extends AbstractService
         
         return $m_course;
     }
+    
+    /**
+     * Get Course Lite 
+     *
+     * @invokable
+     *
+     * @param int $id
+     * @return \Dal\Db\ResultSet\ResultSet|\Application\Model\Course
+     */
+    public function getLite($id)
+    {
+        $res_course = $this->getMapper()->get($id);
+        
+        return (is_array($id)) ? $res_course : $res_course->current();
+    }
 
     /**
      * Get List Courses.
@@ -213,6 +228,18 @@ class Course extends AbstractService
         return ['count' => $mapper->count(),'list' => $res_course];
     }
 
+    /**
+     * Get List Lite Courses
+     *
+     * @invokable
+     *
+     * @param int $program_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListLite($program_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setProgramId($program_id));
+    }
     /**
      * get Nbr Course by program.
      *

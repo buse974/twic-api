@@ -28,11 +28,30 @@ class ProgramUserRelation extends AbstractService
         foreach ($user as $u) {
             foreach ($program as $p) {
                 $ret[$u][$p] = $this->getMapper()->insertUserProgram($p, $u);
+                if($ret[$u][$p] > 0) {
+                    $res_course = $this->getServiceCourse()->getListLite($p);
+                    foreach ($res_course as $m_course) {
+                        $this->getServiceCourseUserRelation()->_add($u, $m_course->getId());
+                    }
+                }
             }
         }
 
         return $ret;
     }
+    
+    /**
+     * Add Users to Program
+     *
+     * @param int $user
+     * @param int $program
+     * @return int
+     */
+    public function _add($user_id, $program_id)
+    {
+        return $this->getMapper()->insertUserProgram($program_id, $user_id);
+    }
+    
 
     /**
      * Delete User To Program.
@@ -57,6 +76,12 @@ class ProgramUserRelation extends AbstractService
         foreach ($user as $u) {
             foreach ($program as $p) {
                 $ret[$u][$p] = $this->getMapper()->delete($this->getModel()->setProgramId($p)->setUserId($u));
+                if($ret[$u][$p] > 0) {
+                    $res_course = $this->getServiceCourse()->getListLite($p);
+                    foreach ($res_course as $m_course) {
+                        $this->getServiceCourseUserRelation()->deleteCourse($u, $m_course->getId());
+                    }
+                }
             }
         }
 
@@ -73,5 +98,25 @@ class ProgramUserRelation extends AbstractService
     public function deleteByUser($user)
     {
         return $this->getMapper()->delete($this->getModel()->setUserId($user));
+    }
+    
+    /**
+     * Get Service ProgramUserRelation.
+     *
+     * @return \Application\Service\CourseUserRelation
+     */
+    private function getServiceCourseUserRelation()
+    {
+        return $this->getServiceLocator()->get('app_service_course_user_relation');
+    }
+    
+    /**
+     * Get Service Course
+     *
+     * @return \Application\Service\Course
+     */
+    private function getServiceCourse()
+    {
+        return $this->getServiceLocator()->get('app_service_course');
     }
 }
