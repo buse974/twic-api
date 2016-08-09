@@ -185,7 +185,9 @@ class Course extends AbstractService
     {
         $res_course = $this->getMapper()->select($this->getModel()->setId($id));
         
-        return (is_array($id)) ? $res_course : $res_course->current();
+        return (is_array($id)) ? 
+            $res_course : 
+            $res_course->current();
     }
 
     /**

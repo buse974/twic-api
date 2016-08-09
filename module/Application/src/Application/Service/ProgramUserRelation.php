@@ -76,12 +76,12 @@ class ProgramUserRelation extends AbstractService
         foreach ($user as $u) {
             foreach ($program as $p) {
                 $ret[$u][$p] = $this->getMapper()->delete($this->getModel()->setProgramId($p)->setUserId($u));
-                if($ret[$u][$p] > 0) {
+                /*if($ret[$u][$p] > 0) {
                     $res_course = $this->getServiceCourse()->getListLite($p);
                     foreach ($res_course as $m_course) {
                         $this->getServiceCourseUserRelation()->deleteCourse($u, $m_course->getId());
                     }
-                }
+                }*/
             }
         }
 
