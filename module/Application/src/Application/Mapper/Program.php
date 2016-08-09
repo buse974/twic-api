@@ -65,7 +65,7 @@ class Program extends AbstractMapper
                 $select->join('program_user_relation', 'program_user_relation.program_id=program.id', [])->where(['program_user_relation.user_id' => $user_id]);
             }
         }
-        if (null !== $exclude) {
+        if (!empty($exclude)) {
             $select->where(new NotIn('program.id', $exclude));
         }
         if ($search !== null) {
