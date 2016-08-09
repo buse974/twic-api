@@ -16,18 +16,18 @@ class GradingTest extends AbstractService
     public function testCreateInit()
     {
         // ADD SCHOOL
-        $this->setIdentity(1, 5);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('school.add', array('name' => 'université de monaco','next_name' => 'buisness school','short_name' => 'IUM','logo' => 'token','describe' => 'une description','website' => 'www.ium.com','programme' => 'super programme','background' => 'background','phone' => '+33480547852','contact' => 'contact@ium.com','contact_id' => 1,'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
         $school_id = $data['result']['id'];
         $this->reset();
 
         // ADD SCHOOL USER
-        $this->setIdentity(1, 5);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('user.update', array('school_id' => $school_id));
         $this->reset();
-        
+
         // ADD PROGRAM
-        $this->setIdentity(1, 5);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => $school_id,'level' => 'emba','sis' => 'sis'));
         $program_id = $data['result'];
         $this->reset();
@@ -51,7 +51,7 @@ class GradingTest extends AbstractService
         $this->reset();
         
         // ADD COURSE USER
-        $this->setIdentity(1, 5);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('user.addCourse', array('user' => [4, 7, 6],'course' => $course_id));
         $this->reset();
         

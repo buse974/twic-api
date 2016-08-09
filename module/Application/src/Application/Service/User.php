@@ -680,7 +680,7 @@ class User extends AbstractService
     }
 
     /**
-     * Update User.
+     * Update User
      *
      * @invokable
      *

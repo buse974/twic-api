@@ -46,7 +46,6 @@ class Course extends AbstractMapper
     public function getList($program_id = null, $search = null, $filter = null, $user_id = null, $school_id = null, $exclude = null, $is_admin_academic = false, $self = true)
     {
         $select = $this->tableGateway->getSql()->select();
-        
         $select->columns(array('id','title','abstract','description','picture','objectives','teaching','attendance','duration','video_link','video_token','learning_outcomes','notes','program_id'))
             ->join('item', 'item.course_id=course.id', array(), $select::JOIN_LEFT)
             ->join('program', 'program.id=course.program_id', [])
