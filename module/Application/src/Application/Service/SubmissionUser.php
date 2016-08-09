@@ -174,15 +174,19 @@ class SubmissionUser extends AbstractService
      *
      * @return array
      */
-    public function getListGrade($avg = array(), $filter = array(), $search = null)
+    public function getListGrade($avg = [], $filter = array(), $search = null)
     {
-        $me = $this->getServiceUser()->getIdentity();
-        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $me['roles'])) {
-            $filter['user'] = $me['id'];
+        $identity = $this->getServiceUser()->getIdentity();
+        $user_id = $identity['id'];
+        // Si c'est un étudient on force le filtre user a lui
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
+            $filter['user'] = $user_id;
         }
 
+        $is_academic = (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
+
         $mapper = $this->getMapper();
-        $res_submission_user = $mapper->usePaginator($filter)->getListGrade($avg, $filter, $search, $me);
+        $res_submission_user = $mapper->usePaginator($filter)->getListGrade($user_id, $avg, $filter, $search, $is_academic);
 
         return ['count' => $mapper->count(), 'list' => $res_submission_user];
     }
