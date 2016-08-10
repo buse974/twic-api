@@ -1692,7 +1692,6 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(1);
         
         $data = $this->jsonRpc('faq.delete', array('id' => $faq));
-        
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
@@ -1707,7 +1706,6 @@ class ScenarioTest extends AbstractService
         $this->setIdentity(1);
         
         $data = $this->jsonRpc('user.addProgram', array('user' => 1,'program' => $program));
-        
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals(count($data['result'][1]), 1);
@@ -1720,7 +1718,7 @@ class ScenarioTest extends AbstractService
     {
         $this->setIdentity(1);
         
-        $data = $this->jsonRpc('program.getList', array());
+        $data = $this->jsonRpc('program.getList', []);
         
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
