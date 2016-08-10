@@ -106,6 +106,7 @@ return [
             'app_service_submission_user',
             'app_service_video_archive',
             'app_service_circle',
+            'app_service_material',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
