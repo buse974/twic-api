@@ -24,7 +24,6 @@ class ProgramUserRelation extends AbstractService
     public function add($user, $program)
     {
         $ret = [];
-
         foreach ($user as $u) {
             foreach ($program as $p) {
                 $ret[$u][$p] = $this->getMapper()->insertUserProgram($p, $u);
