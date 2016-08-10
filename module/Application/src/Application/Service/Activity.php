@@ -8,6 +8,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\Between;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class Activity.
@@ -112,24 +113,29 @@ class Activity extends AbstractService
      */
     public function getListWithFilters($event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, $course_id = null, $item_id = null, $user_id = null)
     {
-       
-        if(null !== $school_id){
-            if(!is_array($school_id)){
-                $school_id = [$school_id];
+        $identity = $this->getServiceUser()->getIdentity();
+        $is_academic = in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']);
+     
+        if($is_academic){
+            if(null !== $school_id){
+                if(!is_array($school_id)){
+                    $school_id = [$school_id];
+                }
+                foreach($school_id as $school){
+                    if (!$this->getServiceUser()->checkOrg($school)) {
+                        throw new JrpcException('unauthorized orgzanization: ' . $school);
+                    }
+                }
             }
-            foreach($school_id as $school){
-                if (!$this->getServiceUser()->checkOrg($school)) {
-                    throw new JrpcException('unauthorized orgzanization: ' . $school);
+            else{
+                $school_id = [];
+                foreach($identity['organizations'] as $school){
+                  $school_id[] = $school['id'];
                 }
             }
         }
-        else{
-            $school_id = [];
-            foreach($this->getServiceUser()->getIdentity()['organizations'] as $school){
-              $school_id[] = $school['id'];
-            }
-        }
-        $res_activity = $this->getMapper()->getListWithFilters($event, $object_id, $object_name, $school_id, $program_id, $course_id, $item_id, $user_id);
+
+        $res_activity = $this->getMapper()->getListWithFilters($identity['id'], $event, $object_id, $object_name, $school_id, $program_id, $course_id, $item_id, $user_id, $is_academic);
         foreach ($res_activity as $m_activity) {
             $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
             $o_data = $m_activity->getObjectData();
