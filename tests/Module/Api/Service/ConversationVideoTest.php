@@ -327,7 +327,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(!empty($data['result']['documents'][0]['created_date']) , true);
         $this->assertEquals($data['result']['documents'][0]['deleted_date'] , null);
         $this->assertEquals($data['result']['documents'][0]['updated_date'] , null);
-        $this->assertEquals($data['result']['documents'][0]['folder_id'] , null);
+        $this->assertEquals($data['result']['documents'][0]['folder_id'] , 1);
         $this->assertEquals($data['result']['documents'][0]['owner_id'] , 1);
         $this->assertEquals($data['result']['documents'][0]['box_id'] , null);
         $this->assertEquals(count($data['result']['conversation_opt']) , 9);
