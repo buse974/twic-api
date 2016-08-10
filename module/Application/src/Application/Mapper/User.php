@@ -337,7 +337,6 @@ class User extends AbstractMapper
                 $select_ex_course->columns(['id'])
                        ->join('course_user_relation', 'course_user_relation.user_id=user.id', [])
                        ->where(['course_user_relation.course_id' => $exclude_course]);
-                
                 $select->where(new NotIn('user.id', $select_ex_course));
             }
             if (!empty($exclude_program)) {
