@@ -35,3 +35,28 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+.navbar-brand {
+    float: left;
+    font-size: 18px;
+    line-height: 50px;
+    padding: 0px;
+}
+
+img {
+    border: 0 none;
+    height: 45px;
+    padding-right: 19px;
+}
+
+.navbar > .container .navbar-brand {
+    margin-right: 20px;
+}
+
+iframe {
+    display: block;       /* iframes are inline by default */
+    background: #000;
+    border: none;         /* Reset default border */
+    height: 100vh;        /* Viewport-relative units */
+    width: 100vw;
+}

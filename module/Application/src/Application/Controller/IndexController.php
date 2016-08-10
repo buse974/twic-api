@@ -17,6 +17,9 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        return new ViewModel();
+        $response = $this->getResponse();
+        $response->getHeaders()->addHeaderLine('Location', 'doc/index.html');
+        $response->setStatusCode(302);
+        return $response;
     }
 }
