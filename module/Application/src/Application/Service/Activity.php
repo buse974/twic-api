@@ -93,6 +93,43 @@ class Activity extends AbstractService
 
         return $this->getMapper()->getLastInsertValue();
     }
+    
+     /**
+     * Get List activity.
+     * 
+     * @invokable
+     *
+     * @param string $event
+     * @param id $object_id
+     * @param string $object_name
+     * @param array $school_id
+     * @param array $program_id
+     * @param array $course_id
+     * @param array $item_id
+     * @param array $user_id
+     *
+     * @return array
+     */
+    public function getListWithFilters($event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, $course_id = null, $item_id = null, $user_id = null)
+    {
+       
+
+        $res_activity = $this->getMapper()->getListWithFilters($event, $object_id, $object_name, $school_id, $program_id, $course_id, $item_id, $user_id);
+        foreach ($res_activity as $m_activity) {
+            $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
+            $o_data = $m_activity->getObjectData();
+            if (is_string($o_data)) {
+                $m_activity->setObjectData(json_decode($o_data, true));
+            }
+            $o_target = $m_activity->getTargetData();
+            if (is_string($o_target)) {
+                $m_activity->setTargetData(json_decode($o_target, true));
+            }
+        }
+
+        return $res_activity;
+    }
+    
 
     /**
      * Get List activity.
