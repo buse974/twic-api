@@ -453,16 +453,19 @@ class Item extends AbstractService
             throw new \Exception('error course is not declarer');
         }
         
-        $ar_user = $this->getServiceUser()->getIdentity();
-        $roles = $ar_user['roles'];
-        $user_id = $ar_user['id'];
+        $identity = $this->getServiceUser()->getIdentity();
+        $user_id = $identity['id'];
         
         $is_student = false;
-        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
             $is_student = true;
         }
         
-        $res_item = $this->getMapper()->getList($course, $parent_id, $start, $end, $type);
+        // @todo Faire du propre dans les roles une fois que les relations seront ok
+        $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
+        
+        
+        $res_item = $this->getMapper()->getList($user_id, $course, $parent_id, $start, $end, $type, $is_admin_academic);
         $ar_item = (null !== $start || null !== $end) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
         
         foreach ($ar_item as $k => &$item) {
@@ -502,15 +505,18 @@ class Item extends AbstractService
         }
         
         $ar_user = $this->getServiceUser()->getIdentity();
-        $roles = $ar_user['roles'];
         $user_id = $ar_user['id'];
         
         $is_student = false;
-        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $roles)) {
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $ar_user['roles'])) {
             $is_student = true;
         }
         
-        $res_item = $this->getMapper()->getListTmp($course, $parent_id, $start, $end, $type);
+        // @todo Faire du propre dans les roles une fois que les relations seront ok
+        $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
+        
+        
+        $res_item = $this->getMapper()->getListTmp($user_id, $course, $parent_id, $start, $end, $type, $is_admin_academic);
         $ar_item = $res_item->toArray();
         
         return array_values($ar_item);

@@ -38,7 +38,7 @@ class Item extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListTmp($course_id = null, $parent_id = null, $start = null, $end = null, $type = null)
+    public function getListTmp($user_id, $course_id = null, $parent_id = null, $start = null, $end = null, $type = null, $is_admin_academic = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','title','duration','set_id','is_graded','type','course_id','grading_policy_id','parent_id','order_id','has_submission','has_all_student','is_grouped','is_complete','coefficient','item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),'item$is_started' => new Expression('IF(SUM(IF(submission_user.start_date IS NULL, false, true)) > 0,1,0)')])
@@ -63,13 +63,18 @@ class Item extends AbstractMapper
                 ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
                 ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
         }
+        if ($is_admin_academic === true) {
+            $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])->where(['organization_user.user_id' => $user_id]);
+        } else {
+            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user_id]);
+        }
         
         $select->group('item.id');
         
         return $this->selectWith($select);
     }
 
-    public function getList($course_id = null, $parent_id = null, $start = null, $end = null, $type = null)
+    public function getList($user_id, $course_id = null, $parent_id = null, $start = null, $end = null, $type = null, $is_admin_academic = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','title','duration','set_id','is_graded','type','course_id','grading_policy_id','parent_id','order_id','has_submission','has_all_student','is_grouped','is_complete','coefficient','item$start' => new Expression('DATE_FORMAT(item.start, "%Y-%m-%dT%TZ")'),'item$end' => new Expression('DATE_FORMAT(item.end, "%Y-%m-%dT%TZ")'),'item$cut_off' => new Expression('DATE_FORMAT(item.cut_off, "%Y-%m-%dT%TZ")'),'item$is_started' => new Expression('IF(SUM(IF(submission_user.start_date IS NULL, false, true)) > 0,1,0)')])
@@ -99,6 +104,11 @@ class Item extends AbstractMapper
             $select->where(['( item.start BETWEEN ? AND ? ' => [$start,$end]])
                 ->where(['item.end BETWEEN ? AND ?  ' => [$start,$end]], Predicate::OP_OR)
                 ->where(['( item.start < ? AND item.end > ? ) ) ' => [$start,$end]], Predicate::OP_OR);
+        }
+        if ($is_admin_academic === true) {
+            $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])->where(['organization_user.user_id' => $user_id]);
+        } else {
+            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user_id]);
         }
         
         $select->group('item.id');
