@@ -12,12 +12,22 @@
 return array(
     'router' => array(
         'routes' => array(
-            'home' => array(
+            /*'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route' => '/',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Index',
+                        'action' => 'index',
+                    ),
+                ),
+            ),*/
+            'version' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/version',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Version',
                         'action' => 'index',
                     ),
                 ),
@@ -79,6 +89,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Version' => 'Application\Controller\VersionController',
         ),
     ),
     'view_manager' => array(

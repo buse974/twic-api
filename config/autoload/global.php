@@ -13,6 +13,7 @@
  */
 
 return [
+    'version' => "v1.5",
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -38,6 +39,7 @@ return [
     'json-rpc-server' => [
         'cache' => 'storage_memcached',
         'log' => 'log-system',
+        'environment' => 'prod', /* dev|prod */
         'persistence' => true,
         'services' => [
             'app_service_user',

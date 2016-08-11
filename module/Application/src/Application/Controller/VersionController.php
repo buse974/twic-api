@@ -13,13 +13,15 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class VersionController extends AbstractActionController
 {
     public function indexAction()
     {
-        $response = $this->getResponse();
-        $response->getHeaders()->addHeaderLine('Location', 'doc/index.html');
-        $response->setStatusCode(302);
-        return $response;
+        $config = $this->getServiceLocator()->get('Config');
+        return (new ViewModel([
+            'version' => $config['version']
+        ]))->setTerminal(true);
     }
+    
+    
 }
