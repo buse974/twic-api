@@ -34,7 +34,6 @@ class Program extends AbstractService
      */
     public function add($name, $school_id, $level = null, $sis = null, $year = null)
     {
-        throw new \Exception("dzzzz");
         if (!$this->getServiceUser()->checkOrg($school_id)) {
              throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
