@@ -13,7 +13,7 @@
  */
 
 return [
-    'version' => "v1.5",
+    'version' => "v1.2",
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',

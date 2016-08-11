@@ -30,7 +30,6 @@ class AssignmentTest extends AbstractService
         // ADD PROGRAM
         $this->setIdentity(1);
         $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => $school_id,'level' => 'emba','sis' => 'sis'));
-        print_r($data);
         $program_id = $data['result'];
         $this->reset();
    
