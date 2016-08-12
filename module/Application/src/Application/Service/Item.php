@@ -687,19 +687,19 @@ class Item extends AbstractService
         }
         
         foreach ($id as $i) {
-            $this->sort($i);
-            try {
-                if ($this->getMapper()->delete($this->getModel()
-                    ->setId($i)) === 0) {
+            $sort = $this->sort($i);
+            if($sort <= 1){
+                try {
+                    $this->getMapper()->delete($this->getModel()->setId($i));
+                } catch (\Exception $e) {
+                    syslog(1, 'Error on item deletion : ' . $e->getMessage());
                     $this->cancelSort($i);
-                    
+
                     return false;
                 }
-                ;
-            } catch (\Exception $e) {
-                syslog(1, 'Error on item deletion : ' . $e->getMessage());
+            }
+            else{
                 $this->cancelSort($i);
-                
                 return false;
             }
         }
@@ -860,6 +860,10 @@ class Item extends AbstractService
             ->setId($item_id))
             ->current();
         
+        if(!$me_item){
+            return 0;
+        }
+        
         return $this->getMapper()->update($this->getModel()
             ->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), ['order_id' => $me_item->getId(),'course_id' => $me_item->getCourseId()]);
     }
@@ -877,6 +881,11 @@ class Item extends AbstractService
             ->select($this->getModel()
             ->setId($item_id))
             ->current();
+        
+         
+        if(!$me_item){
+            return 0;
+        }
         
         return $this->getMapper()->cancelSort($me_item->getId(), $me_item->getOrderId());
     }
