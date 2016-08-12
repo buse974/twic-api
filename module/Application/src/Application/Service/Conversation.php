@@ -329,8 +329,8 @@ class Conversation extends AbstractService
             }
         }
         
-        $identity = $this->getServiceUser()->getIdentity();
-        $res_conversation = $this->getMapper()->getListId($user_id, null, null, null, $item_id, $submission_id);
+        $is_admin = in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']);
+        $res_conversation = $this->getMapper()->getListId($user_id, null, null, null, $item_id, $submission_id, null, $is_admin);
         // Si pas de résultat on créer la conversation
         $id = null;
         if ($res_conversation->count() <= 0) {

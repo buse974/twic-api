@@ -35,7 +35,8 @@ class Activity extends AbstractMapper
             ->join('submission', 'sub_conversation.submission_id = submission.id', [])
             ->join('item', 'submission.item_id = item.id', ['activity$item_id' => 'id'])
             ->join('course', 'item.course_id = course.id', ['activity$course_id' => 'id'])
-            ->join('program', 'course.program_id = program.id', ['activity$program_id' => 'id','activity$school_id' => 'school_id']);
+            ->join('program', 'course.program_id = program.id', ['activity$program_id' => 'id','activity$school_id' => 'school_id'])
+            ->quantifier('DISTINCT');
         if(null !== $event){
             $select->where(['event' => $event]);
         }

@@ -74,7 +74,7 @@ class Conversation extends AbstractMapper
      * @param array $users
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListId($user_id, $organization_id = null, $program_id = null, $course_id = null, $item_id = null, $submission_id = null, $users = null)
+    public function getListId($user_id, $organization_id = null, $program_id = null, $course_id = null, $item_id = null, $submission_id = null, $users = null, $is_admin = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id'])
@@ -84,12 +84,19 @@ class Conversation extends AbstractMapper
             ->join('course', 'course.id = item.course_id', [])
             ->join('program', 'program.id = course.program_id', [])
             ->quantifier('distinct');
-
-        if(null === $organization_id) {
-            $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])
-                ->where(['organization_user.user_id' => $user_id]);
-        } else {
-            $select->where(['program.school_id' => $organization_id]);
+        if(true === $is_admin){
+            if(null === $organization_id) {
+                $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])
+                    ->where(['organization_user.user_id' => $user_id]);
+            } else {
+                $select->where(['program.school_id' => $organization_id]);
+            }
+        }
+        else{
+            if(null === $users){
+                $users = [];
+            }
+            $users[] = $user_id;
         }
         if(!empty($users)) {
             $select->join('conversation_user', 'conversation_user.conversation_id=conversation.id', [])

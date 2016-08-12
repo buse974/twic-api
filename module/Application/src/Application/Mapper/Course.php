@@ -61,7 +61,7 @@ class Course extends AbstractMapper
         if (! empty($exclude)) {
             $select->where(new NotIn('course.id', $exclude));
         }
-        if ($self === true) {
+        if (false !== $self) {
             if ($is_admin_academic === true) {
                 $select->join('organization_user', 'organization_user.organization_id=school.id', [])->where(['organization_user.user_id' => $user_id]);
             } else {
