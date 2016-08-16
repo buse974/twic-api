@@ -7,6 +7,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class Research.
