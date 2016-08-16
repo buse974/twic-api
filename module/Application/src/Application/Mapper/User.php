@@ -312,7 +312,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListAttendees($is_sadmin_admin, $course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
+    public function getListAttendees($user_id, $is_sadmin_admin, $course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar', 'sis'])
