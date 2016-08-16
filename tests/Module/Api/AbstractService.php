@@ -191,7 +191,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
             'lastname' => 'tata',
             'organizations' => [
                 ['id' => 1],
-                ['id' => 2],
+                ['id' => 3],
             ]
         ]));
         
@@ -262,7 +262,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
                 ],
                 'organizations' => [
                     ['id' => 1],
-                    ['id' => 2],
+                    ['id' => 3],
                 ],
                 'organization_id' => 1,
                 'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5',

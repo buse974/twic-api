@@ -208,7 +208,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($filter = null, $event = null, $user_school, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null)
+    public function getList($user_id, $is_sadmin_admin, $filter = null, $event = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
@@ -216,11 +216,18 @@ class User extends AbstractMapper
             'firstname', 'lastname', 'email', 'nickname',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
             'position', 'interest', 'avatar',
-            'user$contact_state' => $this->getSelectContactState($user_school),
+            'user$contact_state' => $this->getSelectContactState($user_id),
             'user$contacts_count' => $this->getSelectContactCount(), ))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
             ->group('user.id')
             ->quantifier('DISTINCT');
+        
+       if($is_sadmin_admin === false) {
+           $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
+           ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+           ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+           ->where(['organization_user.user_id' => $user_id]);
+       }
 
         switch ($order) {
             case 'firstname':
@@ -242,7 +249,7 @@ class User extends AbstractMapper
             $select->where(array('school.id' => $schools));
         } elseif ($schools !== false) {
             $sub_select = $this->tableGateway->getSql()->select();
-            $sub_select->columns(array('school_id'))->where(array('user.id' => $user_school));
+            $sub_select->columns(array('school_id'))->where(array('user.id' => $user_id));
             $select->where(array('school.id' => $sub_select));
         }
         if (!empty($type)) {

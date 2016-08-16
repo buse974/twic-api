@@ -29,7 +29,7 @@ class ExternalTest extends AbstractService
         ]);
        
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 8);
+        $this->assertEquals($data['result'] , 11);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -41,7 +41,7 @@ class ExternalTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 9);
-        $this->assertEquals($data['result']['id'] , 8);
+        $this->assertEquals($data['result']['id'] , 11);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['firstname'] , "firstname_external");
@@ -85,7 +85,7 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['school']['logo'] , null);
         $this->assertEquals($data['result']['school']['background'] , null);
-        $this->assertEquals($data['result']['id'] , 9);
+        $this->assertEquals($data['result']['id'] , 12);
         $this->assertEquals($data['result']['firstname'] , "f1");
         $this->assertEquals($data['result']['lastname'] , "l1");
         $this->assertEquals($data['result']['nickname'] , null);
@@ -121,7 +121,7 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['list'][0]['school']['logo'] , null);
         $this->assertEquals($data['result']['list'][0]['school']['background'] , null);
-        $this->assertEquals($data['result']['list'][0]['id'] , 9);
+        $this->assertEquals($data['result']['list'][0]['id'] , 12);
         $this->assertEquals($data['result']['list'][0]['firstname'] , "f1");
         $this->assertEquals($data['result']['list'][0]['lastname'] , "l1");
         $this->assertEquals($data['result']['list'][0]['nickname'] , null);
@@ -142,7 +142,7 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['list'][1]['school']['logo'] , null);
         $this->assertEquals($data['result']['list'][1]['school']['background'] , null);
-        $this->assertEquals($data['result']['list'][1]['id'] , 8);
+        $this->assertEquals($data['result']['list'][1]['id'] , 11);
         $this->assertEquals($data['result']['list'][1]['firstname'] , "firstname_external");
         $this->assertEquals($data['result']['list'][1]['lastname'] , "lastname_external");
         $this->assertEquals($data['result']['list'][1]['nickname'] , null);

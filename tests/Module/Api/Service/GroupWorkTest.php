@@ -492,7 +492,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['videoconf']['duration'] , null);
         $this->assertEquals($data['result']['videoconf']['rules'] , null);
         $this->assertEquals(count($data['result']['program']) , 2);
-        $this->assertEquals($data['result']['program']['id'] , 1);
+        $this->assertEquals($data['result']['program']['id'] , 2);
         $this->assertEquals($data['result']['program']['name'] , "program name");
         $this->assertEquals(count($data['result']['course']) , 2);
         $this->assertEquals($data['result']['course']['id'] , 1);

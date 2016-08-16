@@ -489,7 +489,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['roles'][0] , "student");
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']['program']) , 1);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']['program'][0]) , 6);
-        $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['program'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['program'][0]['id'] , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['program'][0]['name'] , "program name");
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['program'][0]['school_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['program'][0]['level'] , "emba");
@@ -530,7 +530,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['roles'][0] , "admin");
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']['program']) , 1);
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']['program'][0]) , 6);
-        $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['program'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['program'][0]['id'] , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['program'][0]['name'] , "program name");
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['program'][0]['school_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['program'][0]['level'] , "emba");
@@ -571,7 +571,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['roles'][0] , "academic");
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']['program']) , 1);
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']['program'][0]) , 6);
-        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['program'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['program'][0]['id'] , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['program'][0]['name'] , "program name");
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['program'][0]['school_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['program'][0]['level'] , "emba");

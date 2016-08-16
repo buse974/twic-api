@@ -74,7 +74,8 @@ class AssignmentTest extends AbstractService
 
         return [
             'school_id' => $school_id,
-            'course_id' => $course_id
+            'course_id' => $course_id,
+            'program_id' => $program_id
         ];
     }
    
@@ -141,7 +142,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 21);
         $this->assertEquals(count($data['result']['program']) , 2);
-        $this->assertEquals($data['result']['program']['id'] , 1);
+        $this->assertEquals($data['result']['program']['id'] , 2);
         $this->assertEquals($data['result']['program']['name'] , "program name");
         $this->assertEquals(count($data['result']['course']) , 2);
         $this->assertEquals($data['result']['course']['id'] , 1);
@@ -206,7 +207,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
         $this->assertEquals($data['result']['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['position'] , null);
-        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 2);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 3);
         $this->assertEquals($data['result']['submission_user'][0]['user']['interest'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['has_email_notifier'] , 1);
@@ -502,7 +503,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
         $this->assertEquals($data['result']['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['position'] , null);
-        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 2);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 3);
         $this->assertEquals($data['result']['submission_user'][0]['user']['interest'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['has_email_notifier'] , 1);
@@ -603,7 +604,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result']['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
         $this->assertEquals($data['result']['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['position'] , null);
-        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 2);
+        $this->assertEquals($data['result']['submission_user'][0]['user']['school_id'] , 3);
         $this->assertEquals($data['result']['submission_user'][0]['user']['interest'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['submission_user'][0]['user']['has_email_notifier'] , 1);
@@ -689,7 +690,7 @@ class AssignmentTest extends AbstractService
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['position'] , null);
-        $this->assertEquals($data['result'][0]['submission_user'][0]['user']['school_id'] , 2);
+        $this->assertEquals($data['result'][0]['submission_user'][0]['user']['school_id'] , 3);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['interest'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['has_email_notifier'] , 1);

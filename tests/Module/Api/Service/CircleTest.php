@@ -21,7 +21,7 @@ class CircleTest extends AbstractService
         ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['result'] , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
@@ -56,10 +56,16 @@ class CircleTest extends AbstractService
         ]);
     
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result'][0]) , 2);
         $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['name'] , "gnam");
+        $this->assertEquals($data['result'][0]['name'] , "twic");
+        $this->assertEquals(count($data['result'][1]) , 2);
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['name'] , "gnam");
+        $this->assertEquals(count($data['result'][2]) , 2);
+        $this->assertEquals($data['result'][2]['id'] , 3);
+        $this->assertEquals($data['result'][2]['name'] , "gnam");
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -100,7 +106,7 @@ class CircleTest extends AbstractService
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals($data['result'][2] , 1);
+        $this->assertEquals($data['result'][3] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     } 
@@ -121,9 +127,9 @@ class CircleTest extends AbstractService
         $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result']['organizations']) , 1);
         $this->assertEquals(count($data['result']['organizations'][0]) , 2);
-        $this->assertEquals($data['result']['organizations'][0]['circle_id'] , 1);
-        $this->assertEquals($data['result']['organizations'][0]['organization_id'] , 2);
-        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['organizations'][0]['circle_id'] , 3);
+        $this->assertEquals($data['result']['organizations'][0]['organization_id'] , 3);
+        $this->assertEquals($data['result']['id'] , 3);
         $this->assertEquals($data['result']['name'] , "gnam");
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
@@ -143,7 +149,7 @@ class CircleTest extends AbstractService
     
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals($data['result'][2] , 1);
+        $this->assertEquals($data['result'][3] , 1);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }

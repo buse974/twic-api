@@ -24,18 +24,22 @@ class Mail implements ServiceManagerAwareInterface
     public function init($login = null, $password = null)
     {
         $mail_conf = $this->servicemanager->get('config')['mail-conf'];
-
-        $fct_storage = array_merge_recursive($mail_conf['storage'], array('user' => $login, 'password' => $password));
-        $fct_transport = array_merge_recursive($mail_conf['transport'], array('options' => array('connection_config' => array('username' => $login, 'password' => $password))));
-
-        if ($fct_storage['active'] === true) {
-            $this->storage = new Imap($fct_storage);
+        
+        if(null !== $login) {
+            $mail_conf['transport']['options']['connection_config']['username'] = $login;
+            $mail_conf['storage']['user'] = $login;
         }
-
-        if ($fct_transport['active'] === true) {
-            $this->transport = Factory::create($fct_transport);
+        if(null !== $password) {
+            $mail_conf['transport']['options']['connection_config']['username'] = $password;
+            $mail_conf['storage']['password'] = $password;
         }
-
+        if ($mail_conf['storage']['active'] === true) {
+            $this->storage = new Imap($mail_conf);
+        }
+        if ($mail_conf['transport']['active'] === true) {
+            $this->transport = Factory::create($mail_conf);
+        }
+        
         $this->is_init = true;
     }
 

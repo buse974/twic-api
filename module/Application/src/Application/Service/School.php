@@ -52,11 +52,12 @@ class School extends AbstractService
      * @param int $contact_id            
      * @param array $address            
      * @param string $custom            
-     * @param string $libelle            
+     * @param string $libelle  
+     * @param string $circle_id            
      * @throws \Exception
      * @return \Application\Model\School
      */
-    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null)
+    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null)
     {
         $m_school = $this->getModel()
             ->setName($name)
@@ -85,6 +86,9 @@ class School extends AbstractService
         
         $school_id = $this->getMapper()->getLastInsertValue();
         
+        if(null !== $circle_id) {
+            $this->getServiceCircle()->addOrganizations($circle_id, $school_id);
+        }
         $this->getServiceEvent()->schoolNew($school_id);
         $this->getServiceGrading()->initTpl($school_id);
         
@@ -172,7 +176,9 @@ class School extends AbstractService
     public function getList($filter = null, $search = null, $exclude = null)
     {
         $mapper = $this->getMapper();
-        $res_school = $mapper->usePaginator($filter)->getList($filter, $search, null, $exclude);
+        
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $res_school = $mapper->usePaginator($filter)->getList($me ,$filter, $search, null, $exclude);
         
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
@@ -190,7 +196,7 @@ class School extends AbstractService
      */
     public function _getList($user_id)
     {
-        return $this->getMapper()->getList(null, null, $user_id);
+        return $this->getMapper()->getList(null, null, null, $user_id);
     }
 
     /**
@@ -259,6 +265,16 @@ class School extends AbstractService
         return $this->getServiceLocator()->get('app_service_grading');
     }
 
+    /**
+     * Get Service Grading
+     *
+     * @return \Application\Service\Circle
+     */
+    private function getServiceCircle()
+    {
+        return $this->getServiceLocator()->get('app_service_circle');
+    }
+    
     /**
      * Get Service Grading
      *

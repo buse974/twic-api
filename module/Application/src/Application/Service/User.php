@@ -455,12 +455,14 @@ class User extends AbstractService
     {
         $identity = $this->getIdentity();
         
-        if (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) && $schools === null) {
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        
+        if ($is_sadmin_admin && $schools === null) {
             $schools = false;
         }
         
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($filter, $event, $identity['id'], $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message);
+        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, $event, $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message);
         
         $res = $res->toArray();
         foreach ($res as &$user) {
@@ -513,7 +515,10 @@ class User extends AbstractService
      */
     public function getListOnly($type, $course_id)
     {
-        return $this->getMapper()->getList(null, null, $this->getIdentity()['id'], $type, null, $course_id, null, null, null, null, false);
+        $identity = $this->getIdentity();
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        
+        return $this->getMapper()->getList($identity['id'], $is_sadmin_admin, null, null, $type, null, $course_id, null, null, null, null, false);
     }
 
     /**
@@ -557,7 +562,10 @@ class User extends AbstractService
      */
     public function getListUserBycourse($course_id)
     {
-        return $this->getMapper()->getList(null, null, $this->getIdentity()['id'], null, null, $course_id, null, null, null, null, false);
+        $identity = $this->getIdentity();
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        
+        return $this->getMapper()->getList($identity['id'], $is_sadmin_admin, null, null, null, null, $course_id, null, null, null, null, false);
     }
 
     /**

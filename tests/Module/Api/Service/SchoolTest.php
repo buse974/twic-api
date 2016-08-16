@@ -26,7 +26,7 @@ class SchoolTest extends AbstractService
             'libelle' => 'gnam',
             'custom' => '{chainejson}',
             'programme' => 'super programme',
-            'background' => 'background',
+            'background' => 'background',   
             'phone' => '+33480547852',
             'contact' => 'contact@ium.com',
             'contact_id' => 1,
@@ -43,7 +43,7 @@ class SchoolTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 3);
-        $this->assertEquals($data['result']['id'] , 2);
+        $this->assertEquals($data['result']['id'] , 3);
         $this->assertEquals($data['result']['custom'] , "{chainejson}");
         $this->assertEquals($data['result']['libelle'] , "gnam");
         $this->assertEquals($data['id'] , 1);
