@@ -8,6 +8,11 @@ INSERT INTO `user` (`id`,`firstname`, `lastname`, `school_id`) VALUES (8, 'NONST
 INSERT INTO `user` (`id`,`firstname`, `lastname`, `school_id`) VALUES (9, 'NONACADEMIC',  'NONACADEMIC', '2');
 INSERT INTO `user` (`id`,`firstname`, `lastname`, `school_id`) VALUES (10,'NONINTRUCTOR', 'NONINTRUCTOR', '2');
 
+INSERT INTO `user_role` (`user_id`, `role_id`) VALUES ('10', '5');
+INSERT INTO `user_role` (`user_id`, `role_id`) VALUES ('9', '3');
+INSERT INTO `user_role` (`user_id`, `role_id`) VALUES ('8', '4');
+
+
 INSERT INTO `organization_user` (`organization_id`, `user_id`) VALUES ('2', '8');
 INSERT INTO `organization_user` (`organization_id`, `user_id`) VALUES ('2', '9');
 INSERT INTO `organization_user` (`organization_id`, `user_id`) VALUES ('2', '10');

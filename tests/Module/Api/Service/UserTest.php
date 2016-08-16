@@ -77,9 +77,7 @@ class UserTest extends AbstractService
     public function testAcceptContact()
     {
         $this->setIdentity(3);
-        
         $data = $this->jsonRpc('contact.accept', array('user' => 1));
-        
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
@@ -90,7 +88,6 @@ class UserTest extends AbstractService
     {
         $this->setIdentity(2);
         $data = $this->jsonRpc('contact.getList', array());
-        
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals(count($data['result'][0]), 3);
@@ -134,9 +131,7 @@ class UserTest extends AbstractService
     public function testGetListConcactByUser()
     {
         $this->setIdentity(2);
-        
         $data = $this->jsonRpc('contact.getList', array('user' => array('id' => 1)));
-        
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result'][0]), 3);
@@ -211,6 +206,40 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
+    public function testResearchGetList()
+    {
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('research.getList', array('string' => ''));
+        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['list']) , 3);
+        $this->assertEquals(count($data['result']['list'][0]) , 6);
+        $this->assertEquals($data['result']['list'][0]['role'] , "student");
+        $this->assertEquals($data['result']['list'][0]['category'] , "user");
+        $this->assertEquals($data['result']['list'][0]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['lastname'] , "Bendacha Salim");
+        $this->assertEquals($data['result']['list'][0]['firstname'] , "Salim Bendacha");
+        $this->assertEquals($data['result']['list'][0]['id'] , 4);
+        $this->assertEquals(count($data['result']['list'][1]) , 6);
+        $this->assertEquals($data['result']['list'][1]['role'] , "instructor");
+        $this->assertEquals($data['result']['list'][1]['category'] , "user");
+        $this->assertEquals($data['result']['list'][1]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][1]['lastname'] , "Sayegh Sébastien");
+        $this->assertEquals($data['result']['list'][1]['firstname'] , "Sébastien Sayegh");
+        $this->assertEquals($data['result']['list'][1]['id'] , 5);
+        $this->assertEquals(count($data['result']['list'][2]) , 6);
+        $this->assertEquals($data['result']['list'][2]['role'] , "");
+        $this->assertEquals($data['result']['list'][2]['category'] , "school");
+        $this->assertEquals($data['result']['list'][2]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][2]['lastname'] , "turpis");
+        $this->assertEquals($data['result']['list'][2]['firstname'] , "Morbi Corporation");
+        $this->assertEquals($data['result']['list'][2]['id'] , 1);
+        $this->assertEquals($data['result']['count'] , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    
     public function testAddContactSchool()
     {
         $this->setIdentity(2);
@@ -226,11 +255,9 @@ class UserTest extends AbstractService
     public function testCanAddUser()
     {
         $this->setIdentity(5);
-        
         $data = $this->jsonRpc('user.add', array('firstname' => 'Christophe','gender' => 'm','origin' => 1,'nationality' => 1,'lastname' => 'Robert','email' => 'crobertr@thestudnet.com','password' => 'studnet','position' => 'une position',
             // 'school_id' => 1,
             'interest' => 'un interet','avatar' => 'un_token'));
-        
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 11);
         $this->assertEquals($data['id'], 1);
@@ -246,7 +273,6 @@ class UserTest extends AbstractService
     {
         $this->mockRbac();
         $data = $this->jsonRpc('user.login', array('user' => 'crobertr@thestudnet.com','password' => 'studnet'));
-        
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 13);
         $this->assertEquals($data['result']['id'] , 11);
