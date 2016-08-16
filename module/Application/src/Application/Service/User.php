@@ -492,7 +492,10 @@ class User extends AbstractService
      */
     public function getListAttendees($course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
     {
-        $res_user = $this->getMapper()->getListAttendees($course, $program, $school, $exclude_course, $exclude_program, $exclude_user);
+        $identity = $this->getIdentity();
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        
+        $res_user = $this->getMapper()->getListAttendees($is_sadmin_admin, $course, $program, $school, $exclude_course, $exclude_program, $exclude_user);
         foreach ($res_user as $m_user) {
             $roles = [];
             foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {

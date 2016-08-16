@@ -312,7 +312,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListAttendees($course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
+    public function getListAttendees($is_sadmin_admin, $course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar', 'sis'])
@@ -323,6 +323,13 @@ class User extends AbstractMapper
             ->where('school.deleted_date IS NULL')
             ->order(['user.id' => 'DESC'])
             ->quantifier('DISTINCT');
+            
+            if($is_sadmin_admin === false) {
+                $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
+                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+                ->where(['organization_user.user_id' => $user_id]);
+            }
             
             if (!empty($course) || !empty($exclude_course)) {
                 $select->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
