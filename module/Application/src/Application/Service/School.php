@@ -89,7 +89,7 @@ class School extends AbstractService
         if(null !== $circle_id) {
             $this->getServiceCircle()->addOrganizations($circle_id, $school_id);
         }
-        $this->getServiceEvent()->schoolNew($school_id);
+        //$this->getServiceEvent()->schoolNew($school_id);
         $this->getServiceGrading()->initTpl($school_id);
         
         return $this->get($school_id);

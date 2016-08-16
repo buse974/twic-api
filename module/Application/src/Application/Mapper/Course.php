@@ -11,10 +11,12 @@ class Course extends AbstractMapper
     /**
      * Request Course Get
      *
-     * @param int $id            
+     * @param int $id      
+     * @param int $user_id      
+     * @param bool $is_admin_academic
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function get($id)
+    public function get($id, $user_id, $is_admin_academic)
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -27,6 +29,15 @@ class Course extends AbstractMapper
             ->where(array('course.id' => $id))
             ->group('course.id');
         
+        if ($is_admin_academic === true) {
+                $select->join('school', 'school.id=course_program.school_id', [])
+                    ->join('organization_user', 'organization_user.organization_id=school.id', [])
+                    ->where(['organization_user.user_id' => $user_id]);
+        } else {
+                $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])
+                    ->where(['course_user_relation.user_id' => $user_id]);
+        }
+            
         return $this->selectWith($select);
     }
 

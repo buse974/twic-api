@@ -156,7 +156,11 @@ class Course extends AbstractService
      */
     public function get($id)
     {
-        $res_couse = $this->getMapper()->get($id);
+        $identity = $this->getServiceUser()->getIdentity();
+        
+        $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
+        
+        $res_couse = $this->getMapper()->get($id, $identity['id'], $is_admin_academic);
         
         if ($res_couse->count() == 0) {
             throw new \Exception('no course with id: ' . $id);

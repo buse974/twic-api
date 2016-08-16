@@ -30,7 +30,7 @@ class Event extends AbstractService
     const TARGET_TYPE_SCHOOL = 'school';
 
     /**
-     * create event.
+     * create event
      *
      * @param string $event
      * @param mixed  $source
@@ -38,9 +38,7 @@ class Event extends AbstractService
      * @param array  $user
      * @param mixed  $target
      * @param mixed  $src
-     *
      * @throws \Exception
-     *
      * @return int
      */
     public function create($event, $source, $object, $user, $target, $src = null)
