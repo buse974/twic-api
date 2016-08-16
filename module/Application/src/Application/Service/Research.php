@@ -30,7 +30,7 @@ class Research extends AbstractService
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($string, $is_sadmin_admin);
+        $res = $mapper->usePaginator($filter)->getList($string, $is_sadmin_admin, $identity['id']);
 
         return ['list' => $res, 'count' => $mapper->count()];
     }

@@ -14,7 +14,7 @@ class Research extends AbstractMapper
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($string, $is_sadmin_admin)
+    public function getList($string, $is_sadmin_admin, $user_id)
     {
         $select = $this->tableGateway->getSql()->select();
 
