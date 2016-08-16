@@ -50,8 +50,14 @@ abstract class AbstractStorage implements StorageInterface, ServiceManagerAwareI
 
     public function getToken()
     {
-        if (null === $this->token && $aut = $this->getServiceManager()->get('Request')->getHeader('Authorization', null)) {
-            $this->token = $aut->getFieldValue();
+        if (null===$this->token) {
+            $aut = $this->getServiceManager()->get('Request')->getHeader('Authorization', null);
+            if(null===$aut) {
+                $aut = $this->getServiceManager()->get('Request')->getHeader('x-auth-token', null);
+            }
+            if(null!==$aut) {
+                $this->token = $aut->getFieldValue();
+            }
         }
 
         return $this->token;
