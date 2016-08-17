@@ -504,11 +504,11 @@ class Item extends AbstractService
             throw new \Exception('error course is not declarer');
         }
         
-        $ar_user = $this->getServiceUser()->getIdentity();
-        $user_id = $ar_user['id'];
+        $identity = $this->getServiceUser()->getIdentity();
+        $user_id = $identity['id'];
         
         $is_student = false;
-        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $ar_user['roles'])) {
+        if (array_key_exists(ModelRole::ROLE_STUDENT_ID, $identity['roles'])) {
             $is_student = true;
         }
         
