@@ -18,7 +18,8 @@
         "buse974/jrpc":"v1-beta.1",
         "firebase/token-generator":"2.*",
 	"buse974/ZOpenTok":"v0.1",
-	"buse974/sge":"v1"
+	"buse974/sge":"v1",
+        "aws/aws-sdk-php": "^3.19"
     },
     "require-dev": {
             "zendframework/zftool": "dev-develop",

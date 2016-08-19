@@ -64,16 +64,5 @@
             command="mysql --default-character-set=utf8 -h${db.host} -u${db.user} ${db.passwordParam} ${db.database} &lt; ${project.basedir}/Zdeploy/build/database.sql"
             dir="${project.basedir}"
             checkreturn="true" />
-    	<if>
-    	    <equals arg1="${db.dataset}" arg2="false" />
-    	    <then>
-    	    	<echo msg="delete test.sql" />
-    	    	<delete includeemptydirs="true">
-    	    		<fileset dir="${project.basedir}/data/db/">
-    	    			<include name="12-test.sql" />
-    	    		</fileset>
-    	   		</delete>
-    	    </then>
-    	</if>
     </target>
 </project>

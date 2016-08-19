@@ -261,7 +261,7 @@ class Conversation extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
         
         if (null !== $organization_id) {
-            if (!$this->getServiceUser()->checkOrg($organization_id)) {
+            if (! $this->getServiceUser()->checkOrg($organization_id)) {
                 throw new JrpcException('unauthorized orgzanization: ' . $organization_id);
             }
         }
@@ -331,31 +331,68 @@ class Conversation extends AbstractService
         
         $is_admin = in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']);
         $res_conversation = $this->getMapper()->getListId($user_id, null, null, null, $item_id, $submission_id, null, $is_admin);
-        // Si pas de résultat on créer la conversation
+        
+        // Si pas de résultat
+        // Soit lutilisateur na pas etait ajouter soit la conversation n'existe pas
         $id = null;
         if ($res_conversation->count() <= 0) {
             $res_submission_user = null;
             // arriver ici on a pour un etudiant forcement sa submission
+            // on verifie si c un live class si il na pas etait ajouter
             if (in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles'])) {
                 $m_item = $this->getServiceItem()->getBySubmission($submission_id);
-                // si liveclass on recupére tt les user de l'item
+                // 0 liveclass
                 if ($m_item->getIsGrouped() == 0) {
+                    // il faut verifier ici si une liveclass exist
+                    // on ce fait passer pour admin pour ne pas filter sur user_id car il ny est pas dans la conv
+                    $res_conversation = $this->getMapper()->getListId($user_id, null, null, null, $m_item->getId(), null, null, true);
                     $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($m_item->getId());
+                    $is_present = false;
+                    foreach ($res_submission_user as $m_submission_user) {
+                        if ($m_submission_user->getUserId() === $user_id) {
+                            $is_present = true;
+                            break;
+                        }
+                    }
+                    if ($is_present === false) {
+                        throw new \Exception('error get id no autorization');
+                    }
+                    
+                    if ($res_conversation->count() <= 0) {
+                        // si liveclass qui nexiste pas on recupére tt les user de l'item
+                        $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($m_item->getId());
+                    } else {
+                        // Cas on lutilisateur a etait ajouter a la voler
+                        $id = $res_conversation->current()->getId();
+                        $this->getServiceSubConversation()->add($id, $submission_id);
+                        $this->getServiceConversationUser()->add($id, $user_id);
+                        
+                        return $id;
+                    }
                 } else {
                     // si group w on récupere tt les user de la submission
-                    $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+                    $res_conversation = $this->getMapper()->getListId($user_id, null, null, null, null, $submission_id, null, true);
+                    
+                    if ($res_conversation->count() <= 0) {
+                        $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+                    } else {
+                        // Cas on lutilisateur a etait ajouter a la voler
+                        $id = $res_conversation->current()->getId();
+                        $this->getServiceSubConversation()->add($id, $submission_id);
+                        $this->getServiceConversationUser()->add($id, $user_id);
+                        
+                        return $id;
+                    }
                 }
-            }
-            
-            // pour linstrucvtor on soit un item soit une submission
-            if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
-                // si item donc forcement liveclass on récupere tt les user de litem
-                if (null !== $item_id) {
-                    $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);
-                } else {
-                    $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+            } else 
+                if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
+                    // si item donc forcement liveclass on récupere tt les user de litem
+                    if (null !== $item_id) {
+                        $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);
+                    } else {
+                        $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+                    }
                 }
-            }
             
             if ($res_submission_user === null) {
                 throw new \Exception('error submission is not exist');
@@ -374,154 +411,6 @@ class Conversation extends AbstractService
         }
         
         return $id;
-    }
-
-    /**
-     * Remove Text Editor of conversation.
-     *
-     * @invokable
-     *
-     * @param int $text_editor            
-     *
-     * @return int
-     */
-    public function removeTextEditor($text_editor)
-    {
-        $this->getServiceConversationTextEditor()->delete($text_editor);
-    }
-
-    /**
-     * Remove Whiteboard of conversation.
-     *
-     * @invokable
-     *
-     * @param int $whiteboard            
-     *
-     * @return int
-     */
-    public function removeWhiteboard($whiteboard)
-    {
-        $this->getServiceConversationWhiteboard()->delete($whiteboard);
-    }
-
-    /**
-     * Remove Document of conversation.
-     *
-     * @invokable
-     *
-     * @param int $document            
-     *
-     * @return int
-     */
-    public function removeDocument($document)
-    {
-        $this->getServiceConversationDoc()->delete($document);
-    }
-
-    /**
-     * Add Text Editor in conversation.
-     *
-     * @invokable
-     *
-     * @param int $conversation            
-     * @param array $text_editors            
-     */
-    public function addTextEditor($conversation, $text_editors)
-    {
-        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
-        $is_multi = true;
-        
-        if (! is_array($text_editors) || isset($text_editors['name'])) {
-            $text_editors = [$text_editors];
-            $is_multi = false;
-        }
-        
-        foreach ($text_editors as $text_editor) {
-            if (isset($text_editor['name'])) {
-                $text_editor = $this->getServiceTextEditor()->_add($text_editor);
-            }
-            $ret[] = $text_editor;
-            if (is_numeric($text_editor)) {
-                $this->getServiceConversationTextEditor()->add($conversation, $text_editor);
-                foreach ($res_sub_conversation as $m_sub_conversation) {
-                    $this->getServiceSubTextEditor()->add($m_sub_conversation->getSubmissionId(), $text_editor);
-                }
-            }
-        }
-        
-        return ($is_multi) ? $ret : current($ret);
-    }
-
-    /**
-     * Add Whiteboard in conversation.
-     *
-     * @invokable
-     *
-     * @param int $conversation            
-     * @param array $text_editors            
-     */
-    public function addWhiteboard($conversation, $whiteboards)
-    {
-        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
-        $is_multi = true;
-        
-        if (! is_array($whiteboards) || isset($whiteboards['name'])) {
-            $whiteboards = [$whiteboards];
-            $is_multi = false;
-        }
-        
-        foreach ($whiteboards as $whiteboard) {
-            if (isset($whiteboard['name'])) {
-                $whiteboard = $this->getServiceWhiteboard()->_add($whiteboard);
-            }
-            $ret[] = $whiteboard;
-            if (is_numeric($whiteboard)) {
-                $this->getServiceConversationWhiteboard()->add($conversation, $whiteboard);
-                foreach ($res_sub_conversation as $m_sub_conversation) {
-                    $this->getServiceSubWhiteboard()->add($m_sub_conversation->getSubmissionId(), $whiteboard);
-                }
-            }
-        }
-        
-        return ($is_multi) ? $ret : current($ret);
-    }
-
-    /**
-     * Add Document in conversation.
-     *
-     * @invokable
-     *
-     * @param int $conversation            
-     * @param array $documents            
-     *
-     * @return array|int
-     */
-    public function addDocument($conversation, $documents)
-    {
-        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
-        $is_multi = true;
-        
-        if (! is_array($documents) || isset($documents['name'])) {
-            $documents = [$documents];
-            $is_multi = false;
-        }
-        
-        $ret = [];
-        foreach ($documents as $document) {
-            if (isset($document['name'])) {
-                $m_library = $this->getServiceLibrary()->_add($document);
-                $document = $m_library->getId();
-            }
-            $ret[] = $document;
-            if (is_numeric($document)) {
-                $this->getServiceConversationDoc()->add($conversation, $document);
-                foreach ($res_sub_conversation as $m_sub_conversation) {
-                    $this->getServiceDocument()->addRelation($m_sub_conversation->getSubmissionId(), $document);
-                }
-            }
-        }
-        
-        return ($is_multi) ? $ret : current($ret);
     }
 
     /**
@@ -544,7 +433,7 @@ class Conversation extends AbstractService
     }
 
     /**
-     * Create conversation.
+     * Create conversation with users
      *
      * @invokable
      *
@@ -679,6 +568,154 @@ class Conversation extends AbstractService
         }
         
         return $this->getListBySubmission($submission_id);
+    }
+
+    /**
+     * Add Text Editor in conversation.
+     *
+     * @invokable
+     *
+     * @param int $conversation            
+     * @param array $text_editors            
+     */
+    public function addTextEditor($conversation, $text_editors)
+    {
+        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
+        $is_multi = true;
+        
+        if (! is_array($text_editors) || isset($text_editors['name'])) {
+            $text_editors = [$text_editors];
+            $is_multi = false;
+        }
+        
+        foreach ($text_editors as $text_editor) {
+            if (isset($text_editor['name'])) {
+                $text_editor = $this->getServiceTextEditor()->_add($text_editor);
+            }
+            $ret[] = $text_editor;
+            if (is_numeric($text_editor)) {
+                $this->getServiceConversationTextEditor()->add($conversation, $text_editor);
+                foreach ($res_sub_conversation as $m_sub_conversation) {
+                    $this->getServiceSubTextEditor()->add($m_sub_conversation->getSubmissionId(), $text_editor);
+                }
+            }
+        }
+        
+        return ($is_multi) ? $ret : current($ret);
+    }
+
+    /**
+     * Remove Text Editor of conversation.
+     *
+     * @invokable
+     *
+     * @param int $text_editor            
+     *
+     * @return int
+     */
+    public function removeTextEditor($text_editor)
+    {
+        $this->getServiceConversationTextEditor()->delete($text_editor);
+    }
+
+    /**
+     * Remove Whiteboard of conversation.
+     *
+     * @invokable
+     *
+     * @param int $whiteboard            
+     *
+     * @return int
+     */
+    public function removeWhiteboard($whiteboard)
+    {
+        $this->getServiceConversationWhiteboard()->delete($whiteboard);
+    }
+
+    /**
+     * Remove Document of conversation.
+     *
+     * @invokable
+     *
+     * @param int $document            
+     *
+     * @return int
+     */
+    public function removeDocument($document)
+    {
+        $this->getServiceConversationDoc()->delete($document);
+    }
+
+    /**
+     * Add Whiteboard in conversation.
+     *
+     * @invokable
+     *
+     * @param int $conversation            
+     * @param array $text_editors            
+     */
+    public function addWhiteboard($conversation, $whiteboards)
+    {
+        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
+        $is_multi = true;
+        
+        if (! is_array($whiteboards) || isset($whiteboards['name'])) {
+            $whiteboards = [$whiteboards];
+            $is_multi = false;
+        }
+        
+        foreach ($whiteboards as $whiteboard) {
+            if (isset($whiteboard['name'])) {
+                $whiteboard = $this->getServiceWhiteboard()->_add($whiteboard);
+            }
+            $ret[] = $whiteboard;
+            if (is_numeric($whiteboard)) {
+                $this->getServiceConversationWhiteboard()->add($conversation, $whiteboard);
+                foreach ($res_sub_conversation as $m_sub_conversation) {
+                    $this->getServiceSubWhiteboard()->add($m_sub_conversation->getSubmissionId(), $whiteboard);
+                }
+            }
+        }
+        
+        return ($is_multi) ? $ret : current($ret);
+    }
+
+    /**
+     * Add Document in conversation.
+     *
+     * @invokable
+     *
+     * @param int $conversation            
+     * @param array $documents            
+     *
+     * @return array|int
+     */
+    public function addDocument($conversation, $documents)
+    {
+        $res_sub_conversation = $this->getServiceSubConversation()->getList($conversation);
+        $is_multi = true;
+        
+        if (! is_array($documents) || isset($documents['name'])) {
+            $documents = [$documents];
+            $is_multi = false;
+        }
+        
+        $ret = [];
+        foreach ($documents as $document) {
+            if (isset($document['name'])) {
+                $m_library = $this->getServiceLibrary()->_add($document);
+                $document = $m_library->getId();
+            }
+            $ret[] = $document;
+            if (is_numeric($document)) {
+                $this->getServiceConversationDoc()->add($conversation, $document);
+                foreach ($res_sub_conversation as $m_sub_conversation) {
+                    $this->getServiceDocument()->addRelation($m_sub_conversation->getSubmissionId(), $document);
+                }
+            }
+        }
+        
+        return ($is_multi) ? $ret : current($ret);
     }
 
     /**

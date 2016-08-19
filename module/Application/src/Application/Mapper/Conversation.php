@@ -50,8 +50,8 @@ class Conversation extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'name', 'type', 'created_date'])
-            ->join('sub_conversation', 'sub_conversation.conversation_id=conversation.id', array())
-            ->join('submission', 'submission.id=sub_conversation.submission_id', array())
+            ->join('sub_conversation', 'sub_conversation.conversation_id=conversation.id', [])
+            ->join('submission', 'submission.id=sub_conversation.submission_id', [])
             ->where(array('submission.item_id = ? ' => $item_id))
             ->quantifier('DISTINCT');
 
@@ -91,8 +91,7 @@ class Conversation extends AbstractMapper
             } else {
                 $select->where(['program.school_id' => $organization_id]);
             }
-        }
-        else{
+        } else{
             if(null === $users){
                 $users = [];
             }
