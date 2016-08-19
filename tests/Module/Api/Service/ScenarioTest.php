@@ -59,7 +59,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['libelle'], null);
         $this->assertEquals($data['result']['custom'], null);
         $this->assertEquals($data['result']['describe'], "une description");
-        $this->assertEquals($data['result']['website'], "www.ium.com");
+        $this->assertEquals($data['result']['website'], "http://www.ium.com");
         $this->assertEquals($data['result']['background'], "background");
         $this->assertEquals($data['result']['phone'], + 33480547852);
         $this->assertEquals($data['result']['contact'], "contact@ium.com");
@@ -170,7 +170,7 @@ class ScenarioTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['custom'], null);
         $this->assertEquals($data['result']['list'][1]['logo'], "token");
         $this->assertEquals($data['result']['list'][1]['describe'], "une description");
-        $this->assertEquals($data['result']['list'][1]['website'], "www.ium.com");
+        $this->assertEquals($data['result']['list'][1]['website'], "http://www.ium.com");
         $this->assertEquals($data['result']['list'][1]['background'], "background");
         $this->assertEquals($data['result']['list'][1]['phone'], + 33480547852);
         $this->assertEquals($data['id'], 1);

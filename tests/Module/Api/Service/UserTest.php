@@ -274,11 +274,12 @@ class UserTest extends AbstractService
         $this->mockRbac();
         $data = $this->jsonRpc('user.login', array('user' => 'crobertr@thestudnet.com','password' => 'studnet'));
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 13);
+        $this->assertEquals(count($data['result']) , 14);
         $this->assertEquals($data['result']['id'] , 11);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['firstname'] , "Christophe");
+        $this->assertEquals($data['result']['avatar'] , 'un_token');
         $this->assertEquals($data['result']['lastname'] , "Robert");
         $this->assertEquals($data['result']['email'] , "crobertr@thestudnet.com");
         $this->assertEquals($data['result']['expiration_date'] , null);
@@ -319,11 +320,12 @@ class UserTest extends AbstractService
         $data = $this->jsonRpc('user.login', array('user' => 'crobert@thestudnet.com','password' => 'thestudnet'));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 13);
+        $this->assertEquals(count($data['result']) , 14);
         $this->assertEquals($data['result']['id'] , 3);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals($data['result']['created_date'] , null);
         $this->assertEquals($data['result']['firstname'] , "Christophe");
+        $this->assertEquals($data['result']['avatar'] , null);
         $this->assertEquals($data['result']['lastname'] , "Robert");
         $this->assertEquals($data['result']['email'] , "crobert@thestudnet.com");
         $this->assertEquals($data['result']['expiration_date'] , null);

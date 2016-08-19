@@ -63,13 +63,9 @@ class Conversation extends AbstractService
             }
         }
         if ($conversation_opt_id === null) {
-            if($type === ModelConversation::TYPE_CHAT){
-                
-                $conversation_opt_id = $this->getServiceConversationOpt()->add(null, 0, 0, 0, 0, null);
-            }
-            else{
-                $conversation_opt_id = $this->getServiceConversationOpt()->add();
-            }
+            $conversation_opt_id = ($type === ModelConversation::TYPE_CHAT) ?
+                 $this->getServiceConversationOpt()->add(null, 0, 0, 0, 0, null) :
+                 $this->getServiceConversationOpt()->add();
         }
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))

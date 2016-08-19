@@ -42,7 +42,7 @@ class SsoCas extends AbstractService
     {
         $this->setIdentity(1);
         
-        $data = $this->jsonRpc('item.add');
+        $data = $this->jsonRpc('item.add', []);
             
     }
 
