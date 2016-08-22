@@ -1117,10 +1117,11 @@ class User extends AbstractService
     }
 
     /**
-     * Get List user By conversation.
+     * Get List user By conversation
      *
+     * @invokable
+     * 
      * @param int $conversation_id            
-     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByConversation($conversation_id)

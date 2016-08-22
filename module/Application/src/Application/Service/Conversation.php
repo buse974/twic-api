@@ -13,6 +13,7 @@ use OpenTok\Role as OpenTokRole;
 use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\IsNull;
 use JRpc\Json\Server\Exception\JrpcException;
+use Application\Model\Library as ModelLibrary;
 
 /**
  * Class Conversation.
@@ -703,6 +704,7 @@ class Conversation extends AbstractService
         $ret = [];
         foreach ($documents as $document) {
             if (isset($document['name'])) {
+                $document['folder_id'] = ModelLibrary::FOLDER_OTHER_INT;
                 $m_library = $this->getServiceLibrary()->_add($document);
                 $document = $m_library->getId();
             }

@@ -11,15 +11,16 @@
         "php": ">=5.4",
         "zendframework/zendframework": "~2.0",
         "zendframework/zend-file": "2.4.9",
-	"blanchonvincent/simple-page-crawler": "dev-master",
-        "buse974/dms":"v1.0-beta.1",
+		"blanchonvincent/simple-page-crawler": "dev-master",
+        "buse974/dms":"dev-v1-zf2",
         "buse974/dal":"1.0-beta-4",
         "buse974/address":"v1-beta.3",
         "buse974/jrpc":"v1-beta.1",
         "firebase/token-generator":"2.*",
-	"buse974/ZOpenTok":"v0.1",
-	"buse974/sge":"v1",
-        "aws/aws-sdk-php": "^3.19"
+		"buse974/ZOpenTok":"v0.1",
+		"buse974/sge":"v1",
+        "aws/aws-sdk-php": "^3.19",
+        "zendframework/zendservice-amazon": "^2.0"
     },
     "require-dev": {
             "zendframework/zftool": "dev-develop",

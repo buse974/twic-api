@@ -9,6 +9,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Library as ModelLibrary;
 
 /**
  * Class Material
@@ -35,7 +36,7 @@ class Material extends AbstractService
         }
         
         $library_id = $this->getServiceLibrary()
-            ->add($name, $link, $token, $type)
+            ->add($name, $link, $token, $type, ModelLibrary::FOLDER_OTHER_INT)
             ->getId();
         
         $m_material = $this->getModel()
