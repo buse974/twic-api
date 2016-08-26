@@ -141,9 +141,9 @@ class Conversation extends AbstractService
         
         $token = $m_conversation->getToken();
         
-        return ($token === null || $token instanceof IsNull) ? $this->getMapper()->update($this->getModel()
-            ->setToken($this->getServiceZOpenTok()
-            ->getSessionId()), ['id' => $id]) : 0;
+        return ($token === null || $token instanceof IsNull) ? 
+            $this->getMapper()->update($this->getModel()->setToken($this->getServiceZOpenTok()
+            ->getSessionId()), ['id' => $id, new IsNull('token')]) : 0;
     }
 
     /**
