@@ -208,7 +208,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($user_id, $is_sadmin_admin, $filter = null, $event = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null)
+    public function getList($user_id, $is_sadmin_admin, $filter = null, $event = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null, $contact_state = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array(
@@ -304,11 +304,19 @@ class User extends AbstractMapper
                 ->where(array(' ( message_user.type = ? ' => $message[0]))
                 ->where(array(' message_user.type = ? ) ' => 'RS'), Predicate::OP_OR);
         }
-
+        
+        if(null !== $contact_state){
+            if(!is_array($contact_state)){
+                $contact_state = [$contact_state];
+            }
+            $select->having(['user$contact_state' => $contact_state]);
+            if(in_array(0, $contact_state)){
+                $select->having('user$contact_state IS NULL', Predicate::OP_OR);
+            }
+        }
         $select->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(array('user.id' => 'DESC'));
-
         return $this->selectWith($select);
     }
 
