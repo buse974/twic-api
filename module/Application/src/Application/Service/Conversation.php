@@ -14,6 +14,7 @@ use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\IsNull;
 use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Library as ModelLibrary;
+use OpenTok\MediaMode;
 
 /**
  * Class Conversation.
@@ -140,10 +141,11 @@ class Conversation extends AbstractService
             ->current();
         
         $token = $m_conversation->getToken();
-        
+        $media_mode = $m_conversation->getType() === ModelConversation::TYPE_CHAT ? MediaMode::RELAYED : MediaMode::ROUTED;
+                       
         return ($token === null || $token instanceof IsNull) ? 
             $this->getMapper()->update($this->getModel()->setToken($this->getServiceZOpenTok()
-            ->getSessionId()), ['id' => $id, new IsNull('token')]) : 0;
+            ->getSessionId($media_mode)), ['id' => $id, new IsNull('token')]) : 0;
     }
 
     /**
