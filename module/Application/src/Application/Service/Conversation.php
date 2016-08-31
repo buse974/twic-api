@@ -63,7 +63,13 @@ class Conversation extends AbstractService
             }
         }
         if ($conversation_opt_id === null) {
-            $conversation_opt_id = $this->getServiceConversationOpt()->add();
+            if($type === ModelConversation::TYPE_CHAT){
+                
+                $conversation_opt_id = $this->getServiceConversationOpt()->add(null, 0, 0, 0, 0, null);
+            }
+            else{
+                $conversation_opt_id = $this->getServiceConversationOpt()->add();
+            }
         }
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))

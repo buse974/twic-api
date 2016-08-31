@@ -121,7 +121,7 @@ class Library extends AbstractService
     public function getList($folder_id = null)
     {
         $m_library = $this->getModel()
-            ->setFolderId($folder_id)
+            ->setFolderId(null !== $folder_id ? $folder_id : new IsNull())
             ->setDeletedDate(new IsNull())
             ->setOwnerId($this->getServiceUser()
             ->getIdentity()['id']);
