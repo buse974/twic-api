@@ -9,6 +9,8 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Http\Client;
 use Application\Model\Feed as ModelFeed;
+use Application\Model\Role as ModelRole;
+use Zend\Db\Sql\Predicate\IsNull;
 
 /**
  * Class Feed.
@@ -114,11 +116,26 @@ class Feed extends AbstractService
      */
     public function delete($id)
     {
-        $user = $this->getServiceUser()->getIdentity()['id'];
-
+        $identity = $this->getServiceUser()->getIdentity();
         $m_feed = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
-        return $this->getMapper()->update($m_feed, array('user_id' => $user, 'id' => $id));
+        if(!in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])){
+            return $this->getMapper()->update($m_feed, array('user_id' => $identity['id'], 'id' => $id));
+        }
+        else{
+            return $this->getMapper()->update($m_feed, array('id' => $id));
+        }
+    }
+    
+    
+    /**
+     * Reactivate Feed.
+     *
+     * @param int $id
+     *
+     * @return int
+     */
+    public function reactivate($id){
+        return $this->getMapper()->update($this->getModel()->setId($id)->setDeletedDate(new IsNull()));
     }
 
     /**
@@ -175,7 +192,8 @@ class Feed extends AbstractService
      */
     public function getList($filter = null, $ids = null, $user = null)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
+        $identity = $this->getServiceUser()->getIdentity();
+        $me = $identity['id'];
         $res_contact = $this->getServiceContact()->getList();
 
         $mapper = $this->getMapper();
@@ -187,8 +205,8 @@ class Feed extends AbstractService
         }
 
         //$mapper = $mapper->usePaginator($filter);
-
-        return $mapper->getList($user, $me, $ids); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
+        return $mapper->getList($user, $me, $ids, $is_sadmin); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
     }
 
     /**

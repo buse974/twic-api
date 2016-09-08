@@ -44,7 +44,10 @@ class User extends AbstractService
         }
         
         $identity = $this->getIdentity(true);
-        
+        if(null !== $identity['suspension_date']){
+             $this->logout();
+             throw new JrpcException($identity['suspension_reason'], -38003);
+        }
         // ici on check que le role externe ne ce connect pas avec login
         if(in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles']) === 1) {
             $this->logout();
@@ -220,6 +223,28 @@ class User extends AbstractService
         
         return true;
     }
+    
+       /**
+     * Suspend or reactivate user account.
+     *
+     * @invokable
+     *
+     * @param int $id           
+     * @param bool $suspend       
+     * @param string $reason       
+     *
+     * @return bool
+     */
+    public function suspend($id, $suspend, $reason=null)
+    {
+        $m_user = $this->getModel()
+                ->setId($id)
+                ->setSuspensionDate(1 === $suspend ? (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s') : new IsNull())
+                ->setSuspensionReason(1 === $suspend ? $reason : new IsNull());
+        
+        return $this->getMapper()->update($m_user);
+    }
+    
 
     /**
      * Add User
@@ -712,7 +737,7 @@ class User extends AbstractService
      *
      * @return int
      */
-    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null)
+    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null, $suspension_reason = null)
     {
         if ($birth_date !== null && \DateTime::createFromFormat('Y-m-d', $birth_date) === false && \DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $birth_date) === false) {
             $birth_date = null;
@@ -780,6 +805,9 @@ class User extends AbstractService
             $this->lostPassword($this->get($id)['email']);
         }
         
+        if(null !== $suspend){
+            $this->suspend($id, $suspend, $suspension_reason);
+        }
         // on supprime son cache identity pour qu'a ca prochaine cannection il el recré.
         $this->deleteCachedIdentityOfUser($id);
         
