@@ -15,56 +15,47 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class Opentok implements ServiceLocatorAwareInterface
 {
+
     /**
      * Service Locator.
-     * 
+     *
      * @var \Zend\ServiceManager\ServiceLocatorInterface
      */
     protected $serviceLocator;
 
     /**
      * Create Session.
-     * 
+     *
      * @invokable
      *
-     * @param string $media_mode
+     * @param string $media_mode            
      *
      * @return string
      */
     public function createSession($media_mode = MediaMode ::ROUTED)
     {
-        return  $this->getServiceOpenTok()->createSession($media_mode);
+        return $this->getServiceOpenTok()->createSession($media_mode);
     }
 
     /**
      * Get Service OpenTok.
-     * 
+     *
      * @return \ZOpenTok\Service\OpenTok
      */
     protected function getServiceOpenTok()
     {
-        return $this->getServiceLocator()->get('opentok.service');
+        return $this->container->get('opentok.service');
     }
 
     /**
      * Set service locator.
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param ServiceLocatorInterface $serviceLocator            
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-
+        
         return $this;
-    }
-
-    /**
-     * Get service locator.
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
     }
 }

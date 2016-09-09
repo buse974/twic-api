@@ -8,11 +8,11 @@ class FsStorage extends AbstractStorage
 
     public function write(\Mail\Template\Model\TplModel $model)
     {
-        if (!is_dir($this->getPath())) {
-            mkdir($this->getPath(), 0777, true);
+        if (!is_dir($this->path)) {
+            mkdir($this->path, 0777, true);
         }
 
-        $fp = fopen($this->getPath().$model->getName().'.obj', 'w+');
+        $fp = fopen($this->path.$model->getName().'.obj', 'w+');
         $ret = fwrite($fp, serialize($model));
         fclose($fp);
 
@@ -21,17 +21,17 @@ class FsStorage extends AbstractStorage
 
     public function read($name)
     {
-        return unserialize(file_get_contents($this->getPath().$name.'.obj'));
+        return unserialize(file_get_contents($this->path.$name.'.obj'));
     }
 
     public function getList()
     {
         $ret = array();
 
-        if ($handle = opendir($this->getPath())) {
+        if ($handle = opendir($this->path)) {
             while (false !== ($entry = readdir($handle))) {
                 if (preg_match('/.obj$/', $entry)) {
-                    $ret[] = unserialize(file_get_contents($this->getPath().$entry));
+                    $ret[] = unserialize(file_get_contents($this->path.$entry));
                 }
             }
             closedir($handle);
@@ -42,15 +42,13 @@ class FsStorage extends AbstractStorage
 
     public function exist($name)
     {
-        return file_exists($this->getPath().$name.'.obj');
+        return file_exists($this->path.$name.'.obj');
     }
 
-    protected function getPath()
+    public function setPath($path)
     {
-        if (null === $this->path) {
-            $this->path = $this->servicemanager->get('config')['mail-conf']['template']['path'];
-        }
-
-        return $this->path;
+        $this->path = $path;
+        
+        return $this;
     }
 }

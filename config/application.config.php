@@ -6,13 +6,16 @@ return array(
         'Application',
         'Box',
         'Dal',
+        'Dms',
         'JRpc',
         'Address',
-        'Dms',
         'ZOpenTok',
         'Auth',
         'Mail',
         'Rbac',
+        'Zend\Router',
+        'Zend\I18n',
+        'Zend\Mvc\I18n',
         'SimplePageCrawler',
     ),
 
@@ -24,9 +27,9 @@ return array(
         // Module class.
         'module_paths' => array(
             'Dal' => __DIR__.'/../vendor/buse974/dal',
+            'Dms' => __DIR__.'/../vendor/buse974/dms',
             'JRpc' => __DIR__.'/../vendor/buse974/jrpc',
             'Address' => __DIR__.'/../vendor/buse974/address',
-            'Dms' => __DIR__.'/../vendor/buse974/dms',
             'Application' => __DIR__.'/../module/Application',
             'Auth' => __DIR__.'/../module/Auth',
             'ZOpenTok' => __DIR__.'/../vendor/buse974/zopentok',

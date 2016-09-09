@@ -1040,7 +1040,7 @@ class Submission extends AbstractService
      */
     private function getServiceGroupUser()
     {
-        return $this->getServiceLocator()->get('app_service_group_user');
+        return $this->container->get('app_service_group_user');
     }
 
     /**
@@ -1050,7 +1050,7 @@ class Submission extends AbstractService
      */
     private function getServiceLibrary()
     {
-        return $this->getServiceLocator()->get('app_service_library');
+        return $this->container->get('app_service_library');
     }
 
     /**
@@ -1060,7 +1060,7 @@ class Submission extends AbstractService
      */
     private function getServiceDocument()
     {
-        return $this->getServiceLocator()->get('app_service_document');
+        return $this->container->get('app_service_document');
     }
 
     /**
@@ -1070,7 +1070,7 @@ class Submission extends AbstractService
      */
     private function getServiceTextEditor()
     {
-        return $this->getServiceLocator()->get('app_service_text_editor');
+        return $this->container->get('app_service_text_editor');
     }
 
     /**
@@ -1080,7 +1080,7 @@ class Submission extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -1090,7 +1090,7 @@ class Submission extends AbstractService
      */
     private function getServiceConversation()
     {
-        return $this->getServiceLocator()->get('app_service_conversation');
+        return $this->container->get('app_service_conversation');
     }
 
     /**
@@ -1100,7 +1100,7 @@ class Submission extends AbstractService
      */
     private function getServiceItem()
     {
-        return $this->getServiceLocator()->get('app_service_item');
+        return $this->container->get('app_service_item');
     }
 
     /**
@@ -1110,7 +1110,7 @@ class Submission extends AbstractService
      */
     private function getServiceThread()
     {
-        return $this->getServiceLocator()->get('app_service_thread');
+        return $this->container->get('app_service_thread');
     }
 
     /**
@@ -1120,7 +1120,7 @@ class Submission extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -1130,7 +1130,7 @@ class Submission extends AbstractService
      */
     private function getServiceOptGrading()
     {
-        return $this->getServiceLocator()->get('app_service_opt_grading');
+        return $this->container->get('app_service_opt_grading');
     }
 
     /**
@@ -1140,7 +1140,7 @@ class Submission extends AbstractService
      */
     private function getServiceSubmissionUser()
     {
-        return $this->getServiceLocator()->get('app_service_submission_user');
+        return $this->container->get('app_service_submission_user');
     }
 
     /**
@@ -1150,7 +1150,7 @@ class Submission extends AbstractService
      */
     private function getServiceSubmissionComments()
     {
-        return $this->getServiceLocator()->get('app_service_submission_comments');
+        return $this->container->get('app_service_submission_comments');
     }
 
     /**
@@ -1160,7 +1160,7 @@ class Submission extends AbstractService
      */
     private function getServiceSubQuiz()
     {
-        return $this->getServiceLocator()->get('app_service_sub_quiz');
+        return $this->container->get('app_service_sub_quiz');
     }
 
     /**
@@ -1170,7 +1170,7 @@ class Submission extends AbstractService
      */
     private function getServiceGradingPolicy()
     {
-        return $this->getServiceLocator()->get('app_service_grading_policy');
+        return $this->container->get('app_service_grading_policy');
     }
 
     /**
@@ -1180,7 +1180,7 @@ class Submission extends AbstractService
      */
     private function getServicePgUserCriteria()
     {
-        return $this->getServiceLocator()->get('app_service_pg_user_criteria');
+        return $this->container->get('app_service_pg_user_criteria');
     }
 
     /**
@@ -1190,7 +1190,7 @@ class Submission extends AbstractService
      */
     private function getServiceSubmissionUserCriteria()
     {
-        return $this->getServiceLocator()->get('app_service_submission_user_criteria');
+        return $this->container->get('app_service_submission_user_criteria');
     }
 
     /**
@@ -1200,7 +1200,7 @@ class Submission extends AbstractService
      */
     private function getServicePgUserGrade()
     {
-        return $this->getServiceLocator()->get('app_service_pg_user_grade');
+        return $this->container->get('app_service_pg_user_grade');
     }
 
     /**
@@ -1210,7 +1210,7 @@ class Submission extends AbstractService
      */
     private function getServiceWhiteboard()
     {
-        return $this->getServiceLocator()->get('app_service_whiteboard');
+        return $this->container->get('app_service_whiteboard');
     }
 
     /**
@@ -1220,6 +1220,6 @@ class Submission extends AbstractService
      */
     private function getServiceSubmissionPg()
     {
-        return $this->getServiceLocator()->get('app_service_submission_pg');
+        return $this->container->get('app_service_submission_pg');
     }
 }

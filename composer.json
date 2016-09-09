@@ -9,21 +9,19 @@
     "homepage": "https://github.com/buse974/ZendSkeletonApplication/",
     "require": {
         "php": ">=5.4",
-        "zendframework/zendframework": "*",
-        "zendframework/zend-file": "2.4.9",
-	"blanchonvincent/simple-page-crawler": "dev-master",
-        "buse974/dms":"dev-master",
+        "zendframework/zendframework": "3.*",
+        "zendframework/zend-file": "*",
+	    "blanchonvincent/simple-page-crawler": "dev-master",
         "firebase/token-generator":"2.*",
         "buse974/dal":"dev-master",
+        "buse974/dms":"dev-master",
         "buse974/address":"dev-master",
-        "buse974/jrpc":"v1-beta.1",
-	"buse974/ZOpenTok":"v0.1",
-	"buse974/sge":"v1"
+        "buse974/jrpc":"dev-master",
+	"buse974/ZOpenTok":"dev-master",
+	"buse974/sge":"dev-master"
     },
     "require-dev": {
-            "zendframework/zftool": "dev-develop",
             "phing/phing": "*",
-	    "phpdocumentor/phpdocumentor": "2.*",
             "friendsofphp/php-cs-fixer":"*",
             "phpunit/phpunit" : "*"
     },
@@ -40,8 +38,5 @@
             "Mail\\": "module/Mail/src/", 
             "Rbac\\": "module/Rbac/src/" 
         }
-    },
-    "config": {
-            "bin-dir": "bin/"
-   }
+    }
 }

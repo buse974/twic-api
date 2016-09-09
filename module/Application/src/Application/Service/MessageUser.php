@@ -269,7 +269,7 @@ class MessageUser extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -279,7 +279,7 @@ class MessageUser extends AbstractService
      */
     private function getServiceMessageDoc()
     {
-        return $this->getServiceLocator()->get('app_service_message_doc');
+        return $this->container->get('app_service_message_doc');
     }
 
     /**
@@ -289,6 +289,6 @@ class MessageUser extends AbstractService
      */
     private function getServiceConversationUser()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_user');
+        return $this->container->get('app_service_conversation_user');
     }
 }

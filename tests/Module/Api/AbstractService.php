@@ -5,6 +5,7 @@ use Zend\Json\Json;
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 use Zend\Http\PhpEnvironment\Request;
 use Application\Model\Role as ModelRole;
+use JrpcMock\Json\Server\Server;
 
 abstract class AbstractService extends AbstractHttpControllerTestCase
 {
@@ -23,7 +24,11 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         $this->setApplicationConfig(include __DIR__ . '/../../config/application.config.php');
         $serviceLocator = $this->getApplicationServiceLocator();
         $serviceLocator->setAllowOverride(true);
-        $serviceLocator->setInvokableClass('json_server', 'JrpcMock\Json\Server\Server');
+        $serviceLocator->setFactory('json_server_mock',
+            function ($container, $requestedName, $options) {
+                return new Server($container, $container->get('config')['json-rpc-server']);
+            });
+        $serviceLocator->setAlias('json_server', 'json_server_mock');
     }
 
     public function tearDown()
@@ -43,11 +48,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
 
     public function jsonRpc($method, array $params, $hasToken = null)
     {
-        $postJson = array(
-            'method' => $method,
-            'id' => 1,
-            'params' => $params
-        );
+        $postJson = array('method' => $method,'id' => 1,'params' => $params);
         
         return $this->jsonRpcRequest($postJson, $hasToken);
     }
@@ -183,17 +184,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         
         $identityMock->expects($this->any())
             ->method('toArray')
-            ->will($this->returnValue([
-            'id' => $id,
-            'token' => $id.'-token',
-            'firstname' => 'toto',
-            'avatar' => 'avatar',
-            'lastname' => 'tata',
-            'organizations' => [
-                ['id' => 1],
-                ['id' => 3],
-            ]
-        ]));
+            ->will($this->returnValue(['id' => $id,'token' => $id . '-token','firstname' => 'toto','avatar' => 'avatar','lastname' => 'tata','organizations' => [['id' => 1],['id' => 3]]]));
         
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
             ->disableOriginalConstructor()
@@ -213,31 +204,31 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
-            
-        if(null !== $role) {
-            if(!is_array($role)) {
+        
+        if (null !== $role) {
+            if (! is_array($role)) {
                 $role = [$role];
             }
             
             $tr = [];
             foreach ($role as $rr) {
                 switch ($rr) {
-                    case ModelRole::ROLE_ACADEMIC_ID : 
+                    case ModelRole::ROLE_ACADEMIC_ID:
                         $tr[ModelRole::ROLE_ACADEMIC_ID] = ModelRole::ROLE_ACADEMIC_STR;
                         break;
-                    case ModelRole::ROLE_ADMIN_ID :
+                    case ModelRole::ROLE_ADMIN_ID:
                         $tr[ModelRole::ROLE_ADMIN_ID] = ModelRole::ROLE_ADMIN_STR;
                         break;
-                    case ModelRole::ROLE_INSTRUCTOR_ID :
+                    case ModelRole::ROLE_INSTRUCTOR_ID:
                         $tr[ModelRole::ROLE_INSTRUCTOR_ID] = ModelRole::ROLE_INSTRUCTOR_STR;
                         break;
-                    case ModelRole::ROLE_RECRUTER_ID :
+                    case ModelRole::ROLE_RECRUTER_ID:
                         $tr[ModelRole::ROLE_RECRUTER_ID] = ModelRole::ROLE_RECRUTER_STR;
                         break;
-                    case ModelRole::ROLE_SADMIN_ID :
+                    case ModelRole::ROLE_SADMIN_ID:
                         $tr[ModelRole::ROLE_SADMIN_ID] = ModelRole::ROLE_SADMIN_STR;
                         break;
-                    case ModelRole::ROLE_STUDENT_ID :
+                    case ModelRole::ROLE_STUDENT_ID:
                         $tr[ModelRole::ROLE_STUDENT_ID] = ModelRole::ROLE_STUDENT_STR;
                         break;
                 }
@@ -245,47 +236,26 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
             
             $userMock = $this->getMockBuilder('\Application\Service\User')->getMock();
             $userMock->expects($this->any())
-            ->method('getIdentity')
-            ->willReturn([
-                'id' => $id,
-                'token' => $id.'-token',
-                'firstname' => 'toto',
-                'avatar' => 'avatar',
-                'lastname' => 'tata',
-                'roles' => $tr,
-                'school' => [
-                    'id' => 1,
-                    'name' => 'Morbi Corporation',
-                    'short_name' => 'turpis',
-                    'logo' => '',
-                    'background' => ''
-                ],
-                'organizations' => [
-                    ['id' => 1],
-                    ['id' => 3],
-                ],
-                'organization_id' => 1,
-                'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5',
-                'fbtoken' => 'eyJ0eXAiOiJKV1QiL'
-            ]);
+                ->method('getIdentity')
+                ->willReturn(['id' => $id,'token' => $id . '-token','firstname' => 'toto','avatar' => 'avatar','lastname' => 'tata','roles' => $tr,'school' => ['id' => 1,'name' => 'Morbi Corporation','short_name' => 'turpis','logo' => '','background' => ''],'organizations' => [['id' => 1],['id' => 3]],'organization_id' => 1,'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5','fbtoken' => 'eyJ0eXAiOiJKV1QiL']);
             
             $serviceManager->setService('app_service_user', $userMock);
-        } 
+        }
         
         $serviceManager->setService('auth.service', $authMock);
         $serviceManager->setService('rbac.service', $rbacMock);
     }
-    
+
     public function mockRbac()
     {
         $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
             ->disableOriginalConstructor()
             ->getMock();
-   
+        
         $rbacMock->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true));
-    
+        
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         $serviceManager->setService('rbac.service', $rbacMock);

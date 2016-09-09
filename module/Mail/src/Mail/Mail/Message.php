@@ -4,21 +4,26 @@ namespace Mail\Mail;
 
 use Zend\Mail\Message as BaseMessage;
 use Zend\Mime\Message as MimeMessage;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
+use Mail\Template\Storage\AbstractStorage;
 
-class Message extends BaseMessage implements ServiceManagerAwareInterface
+class Message extends BaseMessage 
 {
     protected $has_template = false;
+    
+    /**
+     * Storage Tpl
+     * 
+     * @var AbstractStorage
+     */
     protected $tpl_storage;
 
     public function setBodyTpl($name, $datas)
     {
-        if (!$this->getTplStorage()->exist($name)) {
+        if (null === $this->tpl_storage || !$this->tpl_storage->exist($name)) {
             throw new \Exception('Model name does not exist');
         }
 
-        $tpl_model = $this->getTplStorage()->read($name);
+        $tpl_model = $this->tpl_storage->read($name);
 
         $key = array();
         $value = array();
@@ -45,23 +50,13 @@ class Message extends BaseMessage implements ServiceManagerAwareInterface
     }
 
     /**
-     * @return \Mail\Template\Storage\AbstractStorage
-     */
-    protected function getTplStorage()
-    {
-        if (null === $this->tpl_storage) {
-            return $this->servicemanager->get($this->servicemanager->get('config')['mail-conf']['template']['storage']);
-        }
-    }
-
-    /**
-     * Set service manager.
+     * Set Storage Mail
      *
-     * @param ServiceManager $serviceManager
+     * @param \Mail\Template\Storage\AbstractStorage $storage
      */
-    public function setServiceManager(ServiceManager $serviceManager)
+    public function setTplStorage(AbstractStorage $storage)
     {
-        $this->servicemanager = $serviceManager;
+        $this->tpl_storage = $storage;
 
         return $this;
     }

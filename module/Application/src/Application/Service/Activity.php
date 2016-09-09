@@ -11,17 +11,16 @@ use Zend\Db\Sql\Predicate\Between;
 use Application\Model\Role as ModelRole;
 
 /**
- * Class Activity.
+ * Class Activity
  */
 class Activity extends AbstractService
 {
     /**
-     * Create Activity.
+     * Create Activity
      * 
      * @invokable
      *
      * @param array $activities
-     *
      * @return array
      */
     public function add($activities)
@@ -276,7 +275,7 @@ class Activity extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -286,6 +285,6 @@ class Activity extends AbstractService
      */
     private function getServiceConnection()
     {
-        return $this->getServiceLocator()->get('app_service_connection');
+        return $this->container->get('app_service_connection');
     }
 }

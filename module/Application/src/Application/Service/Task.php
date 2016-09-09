@@ -192,7 +192,7 @@ class Task extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -202,6 +202,6 @@ class Task extends AbstractService
      */
     private function getServiceTaskShare()
     {
-        return $this->getServiceLocator()->get('app_service_task_share');
+        return $this->container->get('app_service_task_share');
     }
 }

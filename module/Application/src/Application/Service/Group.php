@@ -173,7 +173,7 @@ class Group extends AbstractService
      */
     private function getServiceGroupUser()
     {
-        return $this->getServiceLocator()->get('app_service_group_user');
+        return $this->container->get('app_service_group_user');
     }
 
     /**
@@ -183,6 +183,6 @@ class Group extends AbstractService
      */
     private function getServiceSetGroup()
     {
-        return $this->getServiceLocator()->get('app_service_set_group');
+        return $this->container->get('app_service_set_group');
     }
 }

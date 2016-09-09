@@ -24,7 +24,7 @@ class Module
         $sge->init();
 
         $eventManager = $event->getApplication()->getEventManager();
-        $eventManagerShare = $eventManager->getSharedManager();
+        /*$eventManagerShare = $eventManager->getSharedManager();
         $eventManagerShare->attach('JRpc\Json\Server\Server', 'sendRequest.pre', function ($e) use ($event) {
             $permission = $e->getParams()['methode'];
             $authService = $event->getApplication()->getServiceManager()->get('auth.service');
@@ -43,7 +43,7 @@ class Module
                 }
                 throw new JrpcException('No authorization: '.$permission, -32029);
             }
-        });
+        });*/
 
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);

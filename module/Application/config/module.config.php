@@ -1,5 +1,7 @@
 <?php
 
+use Zend\Router\Http\Literal;
+
 /**
  * Zend Framework (http://framework.zend.com/).
  *
@@ -13,7 +15,7 @@ return array(
     'router' => array(
         'routes' => array(
             /*'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => Literal::class,
                 'options' => array(
                     'route' => '/',
                     'defaults' => array(
@@ -23,7 +25,7 @@ return array(
                 ),
             ),*/
             'version' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => Literal::class,
                 'options' => array(
                     'route' => '/version',
                     'defaults' => array(
@@ -37,7 +39,7 @@ return array(
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
             'application' => array(
-                'type' => 'Literal',
+                'type' => Literal::class,
                 'options' => array(
                     'route' => '/application',
                     'defaults' => array(

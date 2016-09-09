@@ -202,6 +202,6 @@ class Poll extends AbstractService
      */
     private function getServicePollItem()
     {
-        return $this->getServiceLocator()->get('app_service_poll_item');
+        return $this->container->get('app_service_poll_item');
     }
 }

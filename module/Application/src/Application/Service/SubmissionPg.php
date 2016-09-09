@@ -230,7 +230,7 @@ class SubmissionPg extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -240,6 +240,6 @@ class SubmissionPg extends AbstractService
      */
     private function getServiceOptGrading()
     {
-        return $this->getServiceLocator()->get('app_service_opt_grading');
+        return $this->container->get('app_service_opt_grading');
     }
 }

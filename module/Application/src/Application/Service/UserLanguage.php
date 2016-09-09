@@ -115,7 +115,7 @@ class UserLanguage extends AbstractService
      */
     private function getServiceLanguage()
     {
-        return $this->getServiceLocator()->get('app_service_language');
+        return $this->container->get('app_service_language');
     }
 
     /**
@@ -125,7 +125,7 @@ class UserLanguage extends AbstractService
      */
     private function getServiceLanguageLevel()
     {
-        return $this->getServiceLocator()->get('app_service_language_level');
+        return $this->container->get('app_service_language_level');
     }
 
     /**
@@ -135,6 +135,6 @@ class UserLanguage extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 }

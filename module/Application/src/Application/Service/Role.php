@@ -121,7 +121,7 @@ class Role extends AbstractService
      */
     private function getServiceUserRole()
     {
-        return $this->getServiceLocator()->get('app_service_user_role');
+        return $this->container->get('app_service_user_role');
     }
 
     /**
@@ -131,6 +131,6 @@ class Role extends AbstractService
      */
     private function getServiceAuth()
     {
-        return $this->getServiceLocator()->get('auth.service');
+        return $this->container->get('auth.service');
     }
 }

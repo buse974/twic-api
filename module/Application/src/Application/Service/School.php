@@ -234,7 +234,7 @@ class School extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -244,7 +244,7 @@ class School extends AbstractService
      */
     private function getServiceAddress()
     {
-        return $this->getServiceLocator()->get('addr_service_address');
+        return $this->container->get('addr_service_address');
     }
 
     /**
@@ -254,7 +254,7 @@ class School extends AbstractService
      */
     private function getServiceProgram()
     {
-        return $this->getServiceLocator()->get('app_service_program');
+        return $this->container->get('app_service_program');
     }
 
     /**
@@ -264,7 +264,7 @@ class School extends AbstractService
      */
     private function getServiceGrading()
     {
-        return $this->getServiceLocator()->get('app_service_grading');
+        return $this->container->get('app_service_grading');
     }
 
     /**
@@ -274,7 +274,7 @@ class School extends AbstractService
      */
     private function getServiceCircle()
     {
-        return $this->getServiceLocator()->get('app_service_circle');
+        return $this->container->get('app_service_circle');
     }
     
     /**
@@ -284,6 +284,6 @@ class School extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 }

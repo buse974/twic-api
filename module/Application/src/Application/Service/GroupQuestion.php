@@ -74,6 +74,6 @@ class GroupQuestion extends AbstractService
      */
     private function getServiceQuestionRelation()
     {
-        return $this->getServiceLocator()->get('app_service_question_relation');
+        return $this->container->get('app_service_question_relation');
     }
 }

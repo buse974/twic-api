@@ -92,7 +92,8 @@ class SubmissionUser extends AbstractMapper
      */
     public function getListBySubmissionId($submission_id, $user_id = null)
     {
-        $columns = ['user$id' => new Expression('user.id'),'firstname','gender','lastname','email','has_email_notifier','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id','user$contacts_count' => $this->getMapperUser()->getSelectContactCount()];
+        $columns = ['user$id' => new Expression('user.id'),'firstname','gender','lastname','email','has_email_notifier','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id',
+            'user$contacts_count' => $this->getMapperUser()->getSelectContactCount()];
         
         if (null !== $user_id) {
             $columns['user$contact_state'] = $this->getMapperUser()->getSelectContactState($user_id);
@@ -163,6 +164,6 @@ class SubmissionUser extends AbstractMapper
      */
     public function getMapperUser()
     {
-        return $this->getServiceLocator()->get('app_mapper_user');
+        return $this->container->get('app_mapper_user');
     }
 }

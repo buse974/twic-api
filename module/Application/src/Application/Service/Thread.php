@@ -213,7 +213,7 @@ class Thread extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -223,7 +223,7 @@ class Thread extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -233,7 +233,7 @@ class Thread extends AbstractService
      */
     private function getServiceRole()
     {
-        return $this->getServiceLocator()->get('app_service_role');
+        return $this->container->get('app_service_role');
     }
 
     /**
@@ -243,6 +243,6 @@ class Thread extends AbstractService
      */
     private function getServiceThreadMessage()
     {
-        return $this->getServiceLocator()->get('app_service_thread_message');
+        return $this->container->get('app_service_thread_message');
     }
 }

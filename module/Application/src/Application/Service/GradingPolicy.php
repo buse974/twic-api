@@ -204,6 +204,6 @@ class GradingPolicy extends AbstractService
      */
     private function getServiceCriteria()
     {
-        return $this->getServiceLocator()->get('app_service_criteria');
+        return $this->container->get('app_service_criteria');
     }
 }

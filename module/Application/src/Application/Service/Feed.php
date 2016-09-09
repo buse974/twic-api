@@ -216,9 +216,8 @@ class Feed extends AbstractService
      */
     public function linkPreview($url)
     {
-        $sm = $this->getServiceLocator();
         $client = new Client();
-        $client->setOptions($sm->get('Config')['http-adapter']);
+        $client->setOptions($this->container->get('Config')['http-adapter']);
 
         $pc = $this->getServiceSimplePageCrawler();
         $page = $pc->setHttpClient($client)->get($url);
@@ -247,7 +246,7 @@ class Feed extends AbstractService
      */
     private function getServiceFeedComment()
     {
-        return $this->serviceLocator->get('app_service_feed_comment');
+        return $this->container->get('app_service_feed_comment');
     }
 
     /**
@@ -257,7 +256,7 @@ class Feed extends AbstractService
      */
     private function getServiceContact()
     {
-        return $this->serviceLocator->get('app_service_contact');
+        return $this->container->get('app_service_contact');
     }
 
     /**
@@ -267,7 +266,7 @@ class Feed extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->serviceLocator->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -277,7 +276,7 @@ class Feed extends AbstractService
      */
     private function getServiceSimplePageCrawler()
     {
-        return $this->serviceLocator->get('SimplePageCrawler');
+        return $this->container->get('SimplePageCrawler');
     }
 
     /**
@@ -287,6 +286,6 @@ class Feed extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->serviceLocator->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 }

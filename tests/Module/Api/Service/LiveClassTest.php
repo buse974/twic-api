@@ -1,8 +1,8 @@
 <?php
 namespace ModuleTest\Api\Service;
 
-use ModuleTest\Api\AbstractService;
 use Application\Model\Role as ModelRole;
+use ModuleTest\Api\AbstractService;
 
 class LiveClassTest extends AbstractService
 {

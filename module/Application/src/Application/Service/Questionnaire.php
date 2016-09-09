@@ -168,7 +168,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceDimension()
     {
-        return $this->getServiceLocator()->get('app_service_dimension');
+        return $this->container->get('app_service_dimension');
     }
 
     /**
@@ -178,7 +178,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -188,7 +188,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceSubmissionUser()
     {
-        return $this->getServiceLocator()->get('app_service_submission_user');
+        return $this->container->get('app_service_submission_user');
     }
 
     /**
@@ -198,7 +198,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -208,7 +208,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_question');
+        return $this->container->get('app_service_question');
     }
 
     /**
@@ -218,7 +218,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceQuestionnaireUser()
     {
-        return $this->getServiceLocator()->get('app_service_questionnaire_user');
+        return $this->container->get('app_service_questionnaire_user');
     }
 
     /**
@@ -228,7 +228,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceItem()
     {
-        return $this->getServiceLocator()->get('app_service_item');
+        return $this->container->get('app_service_item');
     }
 
     /**
@@ -238,7 +238,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceAnswer()
     {
-        return $this->getServiceLocator()->get('app_service_answer');
+        return $this->container->get('app_service_answer');
     }
 
     /**
@@ -248,7 +248,7 @@ class Questionnaire extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -258,6 +258,6 @@ class Questionnaire extends AbstractService
      */
     private function getServiceQuestionnaireQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_questionnaire_question');
+        return $this->container->get('app_service_questionnaire_question');
     }
 }
