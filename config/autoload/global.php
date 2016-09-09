@@ -39,7 +39,7 @@ return [
     'json-rpc-server' => [
         'cache' => 'storage_memcached',
         'log' => 'log-system',
-        'environment' => 'prod', /* dev|prod */
+        'environment' => 'dev', /* dev|prod */
         'persistence' => true,
         'services' => [
             'app_service_user',

@@ -17,9 +17,8 @@ class VersionController extends AbstractActionController
 {
     public function indexAction()
     {
-        $config = $this->getServiceLocator()->get('Config');
         return (new ViewModel([
-            'version' => $config['version']
+            'version' => $this->conf()->getVersion()
         ]))->setTerminal(true);
     }
     

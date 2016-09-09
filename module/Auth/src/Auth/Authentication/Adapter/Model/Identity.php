@@ -136,6 +136,7 @@ class Identity  implements IdentityInterface
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
+            'avatar' => $this->avatar,
             'expiration_date' => $this->expiration_date,
         );
     }

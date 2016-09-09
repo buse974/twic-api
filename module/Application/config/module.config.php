@@ -1,6 +1,7 @@
 <?php
 
 use Zend\Router\Http\Literal;
+use Application\Controller\Plugin\ConfFactory;
 
 /**
  * Zend Framework (http://framework.zend.com/).
@@ -12,6 +13,11 @@ use Zend\Router\Http\Literal;
  */
 
 return array(
+    'controller_plugins' => [
+        'factories' => [
+            'conf' => ConfFactory::class,
+        ],
+    ],
     'router' => array(
         'routes' => array(
             /*'home' => array(
