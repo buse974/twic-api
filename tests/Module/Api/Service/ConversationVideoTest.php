@@ -351,9 +351,9 @@ class ConversationVideoTest extends AbstractService
     {
         //MOCK OPENTOK
         $serviceManager = $this->getApplicationServiceLocator();
-        $mock = $this->getMockBuilder('opentok')
-            ->setMethods(['getArchive'])
-            ->getMock();
+        $mock = $this->getMockBuilder('\ZOpenTok\Service\OpenTok')
+            ->disableOriginalConstructor()
+            ->setMethods(['getArchive'])->getMock();
         $mock->expects($this->any())
             ->method('getArchive')
             ->willReturn(json_encode(['status' => 'available', 'duration' => 1234, 'url' => 'http://google.fr']));

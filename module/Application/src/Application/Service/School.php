@@ -59,13 +59,14 @@ class School extends AbstractService
      */
     public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null)
     {
+        $formattedWebsite = $this->getFormattedWebsite($website);
         $m_school = $this->getModel()
             ->setName($name)
             ->setNextName($next_name)
             ->setShortName($short_name)
             ->setLogo($logo)
             ->setDescribe($describe)
-            ->setWebsite($website)
+            ->setWebsite($formattedWebsite)
             ->setBackground($background)
             ->setPhone($phone)
             ->setContact($contact)
@@ -96,6 +97,19 @@ class School extends AbstractService
     }
 
     /**
+     * Generate a formatted website url for the school.
+     *
+     * @param string $website
+     *
+     * @return string
+     */
+    private function getFormattedWebsite($website)
+    {
+        $hasProtocol = strpos($website, 'http://') === 0 || strpos($website, 'https://') === 0;
+        return $hasProtocol ? $website : 'http://' . $website;
+    }
+
+    /**
      * Update school
      *
      * @invokable
@@ -115,12 +129,13 @@ class School extends AbstractService
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null, $custom = null, $libelle = null)
     {
+        $formattedWebsite = $this->getFormattedWebsite($website);
         $m_school = $this->getModel()
             ->setId($id)
             ->setName($name)
             ->setLogo($logo)
             ->setDescribe($describe)
-            ->setWebsite($website)
+            ->setWebsite($formattedWebsite)
             ->setShortName($short_name)
             ->setPhone($phone)
             ->setBackground($background);

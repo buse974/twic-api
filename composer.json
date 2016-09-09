@@ -11,7 +11,7 @@
         "php": ">=5.6",
         "zendframework/zendframework": "^3.0",
         "zendframework/zend-file": "*",
-	    "blanchonvincent/simple-page-crawler": "dev-master",
+	"blanchonvincent/simple-page-crawler": "dev-master",
         "firebase/token-generator":"2.*",
         "buse974/dal":"dev-master",
         "buse974/dms":"dev-master",
@@ -36,7 +36,8 @@
             "Application\\": "module/Application/src/", 
             "Auth\\": "module/Auth/src/",
             "Mail\\": "module/Mail/src/", 
-            "Rbac\\": "module/Rbac/src/" 
+            "Rbac\\": "module/Rbac/src/", 
+            "Box\\": "module/Box/src/" 
         }
     }
 }
