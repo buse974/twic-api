@@ -10,7 +10,6 @@ use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Box\Model\Document as ModelDocument;
 use JRpc\Json\Server\Exception\JrpcException;
-use Application\Model\Library as ModelLibrary;
 
 /**
  * Class Library.
@@ -33,10 +32,6 @@ class Library extends AbstractService
      */
     public function add($name, $link = null, $token = null, $type = null, $folder_id = null)
     {
-        if (null === $folder_id) {
-            $folder_id = ModelLibrary::FOLDER_OTHER_INT;
-        }
-        
         $urldms = $this->container->get('config')['app-conf']['urldms'];
         
         $box_id = null;
