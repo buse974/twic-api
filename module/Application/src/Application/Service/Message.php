@@ -334,7 +334,7 @@ class Message extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -344,7 +344,7 @@ class Message extends AbstractService
      */
     private function getServiceMessageUser()
     {
-        return $this->getServiceLocator()->get('app_service_message_user');
+        return $this->container->get('app_service_message_user');
     }
 
     /**
@@ -354,7 +354,7 @@ class Message extends AbstractService
      */
     private function getServiceMessageDoc()
     {
-        return $this->getServiceLocator()->get('app_service_message_doc');
+        return $this->container->get('app_service_message_doc');
     }
 
     /**
@@ -364,7 +364,7 @@ class Message extends AbstractService
      */
     private function getServiceConversationUser()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_user');
+        return $this->container->get('app_service_conversation_user');
     }
 
     /**
@@ -374,7 +374,7 @@ class Message extends AbstractService
      */
     private function getServiceConversation()
     {
-        return $this->getServiceLocator()->get('app_service_conversation');
+        return $this->container->get('app_service_conversation');
     }
 
     /**
@@ -384,6 +384,6 @@ class Message extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 }

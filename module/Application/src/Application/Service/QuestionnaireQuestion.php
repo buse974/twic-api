@@ -57,7 +57,7 @@ class QuestionnaireQuestion extends AbstractService
      */
     private function getServiceComponent()
     {
-        return $this->getServiceLocator()->get('app_service_component');
+        return $this->container->get('app_service_component');
     }
 
     /**
@@ -67,6 +67,6 @@ class QuestionnaireQuestion extends AbstractService
      */
     private function getServiceQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_question');
+        return $this->container->get('app_service_question');
     }
 }

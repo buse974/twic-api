@@ -53,6 +53,6 @@ class ConversationTextEditor extends AbstractService
      */
     private function getServiceTextEditor()
     {
-        return $this->getServiceLocator()->get('app_service_text_editor');
+        return $this->container->get('app_service_text_editor');
     }
 }

@@ -89,7 +89,7 @@ class Like extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->serviceLocator->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -99,7 +99,7 @@ class Like extends AbstractService
      */
     private function getServiceFeed()
     {
-        return $this->serviceLocator->get('app_service_feed');
+        return $this->container->get('app_service_feed');
     }
 
     /**
@@ -109,7 +109,7 @@ class Like extends AbstractService
      */
     private function getServiceContact()
     {
-        return $this->serviceLocator->get('app_service_contact');
+        return $this->container->get('app_service_contact');
     }
 
     /**
@@ -119,6 +119,6 @@ class Like extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->serviceLocator->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 }

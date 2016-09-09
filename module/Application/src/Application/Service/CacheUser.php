@@ -9,15 +9,8 @@ namespace Application\Service;
 /**
  * Class CacheUser.
  */
-class CacheUser implements ServiceLocatorAwareInterface
+class CacheUser 
 {
-    /**
-     * Service Locator.
-     * 
-     * @var \Application\Service\ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
     /**
      * Prefix.
      * 
@@ -98,33 +91,9 @@ class CacheUser implements ServiceLocatorAwareInterface
      */
     public function getCache()
     {
-        $config = $this->getServiceLocator()->get('config')['app-conf'];
+        $config = $this->container->get('config')['app-conf'];
 
-        return $this->getServiceLocator()->get($config['cache']);
-    }
-
-    /**
-     * Set Service Locator.
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return \Application\Service\CacheUser
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-
-        return $this;
-    }
-
-    /**
-     * Get ServiceLocator.
-     *
-     * @return \Application\Service\ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
+        return $this->container->get($config['cache']);
     }
 
     /**
@@ -134,6 +103,6 @@ class CacheUser implements ServiceLocatorAwareInterface
      */
     private function getServiceAuth()
     {
-        return $this->getServiceLocator()->get('auth.service');
+        return $this->container->get('auth.service');
     }
 }

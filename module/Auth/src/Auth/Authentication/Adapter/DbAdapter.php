@@ -95,12 +95,13 @@ class DbAdapter extends AbstractAdapter
             $message[] = 'Authentication successful.';
 
             $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
-
             $arrayIdentity = current($arrayIdentity);
 
             $identity = $this->getResult()->exchangeArray($arrayIdentity);
             $identity->setToken($identity->getId().md5($identity->getId().$identity->getEmail().Rand::getBytes(10).time()));
 
+            
+            
             $update = $sql->update('user');
 
             $update->set(array('password' => md5($this->credential), 'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));

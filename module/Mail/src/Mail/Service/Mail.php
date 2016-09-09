@@ -2,73 +2,40 @@
 
 namespace Mail\Service;
 
+use Mail\Mime\Part;
+use Mail\Template\Model\TplModel;
 use Zend\Mail\Storage\Imap;
 use Zend\Mail\Transport\Factory;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
-use Mail\Mime\Part;
 use Zend\Mime\Mime;
-use Mail\Template\Model\TplModel;
+use Mail\Mail\Message;
+use Mail\Template\Storage\AbstractStorage;
 
-class Mail implements ServiceManagerAwareInterface
+class Mail  
 {
-    /**
-     * @var ServiceManager
-     */
-    protected $servicemanager;
-    protected $tpl_storage;
     protected $storage;
+    protected $tpl_storage;
     protected $transport;
     protected $is_init = false;
+    protected $options;
 
     public function init($login = null, $password = null)
     {
-        $mail_conf = $this->servicemanager->get('config')['mail-conf'];
-        
         if(null !== $login) {
-            $mail_conf['transport']['options']['connection_config']['username'] = $login;
-            $mail_conf['storage']['user'] = $login;
+            $this->options['transport']['options']['connection_config']['username'] = $login;
+            $this->options['storage']['user'] = $login;
         }
         if(null !== $password) {
-            $mail_conf['transport']['options']['connection_config']['username'] = $password;
-            $mail_conf['storage']['password'] = $password;
+            $this->options['transport']['options']['connection_config']['username'] = $password;
+            $this->options['storage']['password'] = $password;
         }
-        if ($mail_conf['storage']['active'] === true) {
-            $this->storage = new Imap($mail_conf);
+        if ($this->options['storage']['active'] === true) {
+            $this->storage = new Imap($this->options);
         }
-        if ($mail_conf['transport']['active'] === true) {
-            $this->transport = Factory::create($mail_conf);
+        if ($this->options['transport']['active'] === true) {
+            $this->transport = Factory::create($this->options);
         }
         
         $this->is_init = true;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return \Zend\Mail\Storage\Imap
-     */
-    public function getStorage()
-    {
-        if (!$this->is_init) {
-            $this->init();
-        }
-
-        return $this->storage;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return \Zend\Mail\Transport\Smtp
-     */
-    public function getTransport()
-    {
-        if (!$this->is_init) {
-            $this->init();
-        }
-
-        return $this->transport;
     }
 
     /**
@@ -109,13 +76,16 @@ class Mail implements ServiceManagerAwareInterface
             $m_tpl->append($attachement);
         }
 
-        return ($this->getTplStorage()->write($m_tpl)) ? true : false;
+        return ($this->tpl_storage->write($m_tpl)) ? true : false;
     }
 
     public function sendTpl($name, $to, $datas = array())
     {
-        $message = $this->getMessage()->setBodyTpl($name, $datas)
-                                       ->setTo($to);
+        $message = $this->getMessage()
+            ->setTplStorage($this->tpl_storage)
+            ->setEncoding('UTF-8')
+            ->setBodyTpl($name, $datas)
+            ->setTo($to);
 
         $this->getTransport()->send($message);
 
@@ -123,13 +93,15 @@ class Mail implements ServiceManagerAwareInterface
     }
 
     /**
-     * @return \Mail\Template\Storage\AbstractStorage
+     * Set Storage Mail
+     *
+     * @param \Mail\Template\Storage\AbstractStorage $storage
      */
-    protected function getTplStorage()
+    public function setTplStorage(AbstractStorage $storage)
     {
-        if (null === $this->tpl_storage) {
-            return $this->servicemanager->get($this->servicemanager->get('config')['mail-conf']['template']['storage']);
-        }
+        $this->tpl_storage = $storage;
+
+        return $this;
     }
 
     /**
@@ -137,7 +109,7 @@ class Mail implements ServiceManagerAwareInterface
      */
     protected function getMessage()
     {
-        return $this->servicemanager->get('Mail\Mail\Message')->setEncoding('UTF-8');
+        return new Message();
     }
 
     /**
@@ -145,7 +117,7 @@ class Mail implements ServiceManagerAwareInterface
      */
     public function getListTpl()
     {
-        $results = $this->getTplStorage()->getList();
+        $results = $this->tpl_storage->getList();
 
         return array('count' => count($results), 'results' => $results);
     }
@@ -155,22 +127,43 @@ class Mail implements ServiceManagerAwareInterface
      */
     public function getTpl($name)
     {
-        if (!$this->getTplStorage()->exist($name)) {
+        if (!$this->tpl_storage->exist($name)) {
             throw new \Exception('Model name does not exist');
         }
 
-        return $this->getTplStorage()->read($name);
+        return $this->tpl_storage->read($name);
     }
-
+    
     /**
-     * Set service manager.
+     * @throws \Exception
      *
-     * @param ServiceManager $serviceManager
+     * @return \Zend\Mail\Storage\Imap
      */
-    public function setServiceManager(ServiceManager $serviceManager)
+    public function getStorage()
     {
-        $this->servicemanager = $serviceManager;
-
-        return $this;
+        if (!$this->is_init) {
+            $this->init();
+        }
+    
+        return $this->storage;
+    }
+    
+    /**
+     * @throws \Exception
+     *
+     * @return \Zend\Mail\Transport\Smtp
+     */
+    public function getTransport()
+    {
+        if (!$this->is_init) {
+            $this->init();
+        }
+    
+        return $this->transport;
+    }
+    
+    public function setOptions($options)
+    {
+        $this->options = $options;
     }
 }

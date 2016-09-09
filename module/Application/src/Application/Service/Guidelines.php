@@ -120,6 +120,6 @@ class Guidelines extends AbstractService
      */
     private function getServiceGuidelinesView()
     {
-        return $this->getServiceLocator()->get('app_service_guidelines_view');
+        return $this->container->get('app_service_guidelines_view');
     }
 }

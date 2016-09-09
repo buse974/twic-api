@@ -32,7 +32,7 @@ class Library extends AbstractService
      */
     public function add($name, $link = null, $token = null, $type = null, $folder_id = null)
     {
-        $urldms = $this->getServiceLocator()->get('config')['app-conf']['urldms'];
+        $urldms = $this->container->get('config')['app-conf']['urldms'];
         
         $box_id = null;
         $u = (null !== $link) ? $link : $urldms . $token;
@@ -329,7 +329,7 @@ class Library extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -339,6 +339,6 @@ class Library extends AbstractService
      */
     private function getServiceBox()
     {
-        return $this->getServiceLocator()->get('box.service');
+        return $this->container->get('box.service');
     }
 }

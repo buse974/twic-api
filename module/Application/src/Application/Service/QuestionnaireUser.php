@@ -53,7 +53,7 @@ class QuestionnaireUser extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -63,6 +63,6 @@ class QuestionnaireUser extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 }

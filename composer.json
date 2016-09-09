@@ -8,24 +8,20 @@
     ],
     "homepage": "https://github.com/buse974/ZendSkeletonApplication/",
     "require": {
-        "php": ">=5.4",
-        "zendframework/zendframework": "~2.0",
-        "zendframework/zend-file": "2.4.9",
+        "php": ">=5.6",
+        "zendframework/zendframework": "^3.0",
+        "zendframework/zend-file": "*",
 	"blanchonvincent/simple-page-crawler": "dev-master",
-        "buse974/dms":"dev-v1-zf2",
-        "buse974/dal":"dev-v1-zf2",
-        "buse974/address":"v1.x-dev",
-        "buse974/jrpc":"v1-beta.1",
         "firebase/token-generator":"2.*",
-	"buse974/ZOpenTok":"v0.1",
-	"buse974/sge":"v1",
-        "aws/aws-sdk-php": "^3.19",
-        "zendframework/zendservice-amazon": "^2.0"
+        "buse974/dal":"dev-master",
+        "buse974/dms":"dev-master",
+        "buse974/address":"dev-master",
+        "buse974/jrpc":"dev-master",
+	"buse974/ZOpenTok":"dev-master",
+	"buse974/sge":"dev-master"
     },
     "require-dev": {
-            "zendframework/zftool": "dev-develop",
             "phing/phing": "*",
-	    "phpdocumentor/phpdocumentor": "2.*",
             "friendsofphp/php-cs-fixer":"*",
             "phpunit/phpunit" : "*"
     },
@@ -40,10 +36,8 @@
             "Application\\": "module/Application/src/", 
             "Auth\\": "module/Auth/src/",
             "Mail\\": "module/Mail/src/", 
-            "Rbac\\": "module/Rbac/src/" 
+            "Rbac\\": "module/Rbac/src/", 
+            "Box\\": "module/Box/src/" 
         }
-    },
-    "config": {
-            "bin-dir": "bin/"
-   }
+    }
 }

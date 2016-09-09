@@ -267,7 +267,7 @@ class Course extends AbstractService
      */
     private function getServiceGrading()
     {
-        return $this->getServiceLocator()->get('app_service_grading');
+        return $this->container->get('app_service_grading');
     }
 
     /**
@@ -277,7 +277,7 @@ class Course extends AbstractService
      */
     private function getServiceItem()
     {
-        return $this->getServiceLocator()->get('app_service_item');
+        return $this->container->get('app_service_item');
     }
 
     /**
@@ -287,7 +287,7 @@ class Course extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -297,7 +297,7 @@ class Course extends AbstractService
      */
     private function getServiceGradingPolicy()
     {
-        return $this->getServiceLocator()->get('app_service_grading_policy');
+        return $this->container->get('app_service_grading_policy');
     }
 
     /**
@@ -307,6 +307,6 @@ class Course extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 }

@@ -156,7 +156,7 @@ class TextEditor extends AbstractService
      */
     private function getServiceSubConversation()
     {
-        return $this->getServiceLocator()->get('app_service_sub_conversation');
+        return $this->container->get('app_service_sub_conversation');
     }
 
     /**
@@ -166,7 +166,7 @@ class TextEditor extends AbstractService
      */
     private function getServiceConversation()
     {
-        return $this->getServiceLocator()->get('app_service_conversation');
+        return $this->container->get('app_service_conversation');
     }
 
     /**
@@ -176,6 +176,6 @@ class TextEditor extends AbstractService
      */
     private function getServiceSubTextEditor()
     {
-        return $this->getServiceLocator()->get('app_service_sub_text_editor');
+        return $this->container->get('app_service_sub_text_editor');
     }
 }

@@ -896,7 +896,7 @@ class Item extends AbstractService
      */
     private function getServiceItemMaterialDocumentRelation()
     {
-        return $this->getServiceLocator()->get('app_service_item_material_document_relation');
+        return $this->container->get('app_service_item_material_document_relation');
     }
 
     /**
@@ -906,7 +906,7 @@ class Item extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -916,7 +916,7 @@ class Item extends AbstractService
      */
     private function getServiceGradingPolicy()
     {
-        return $this->getServiceLocator()->get('app_service_grading_policy');
+        return $this->container->get('app_service_grading_policy');
     }
 
     /**
@@ -926,7 +926,7 @@ class Item extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -936,7 +936,7 @@ class Item extends AbstractService
      */
     private function getServiceLibrary()
     {
-        return $this->getServiceLocator()->get('app_service_library');
+        return $this->container->get('app_service_library');
     }
 
     /**
@@ -946,7 +946,7 @@ class Item extends AbstractService
      */
     private function getServiceDocument()
     {
-        return $this->getServiceLocator()->get('app_service_document');
+        return $this->container->get('app_service_document');
     }
 
     /**
@@ -956,7 +956,7 @@ class Item extends AbstractService
      */
     private function getServicePoll()
     {
-        return $this->getServiceLocator()->get('app_service_poll');
+        return $this->container->get('app_service_poll');
     }
 
     /**
@@ -966,7 +966,7 @@ class Item extends AbstractService
      */
     private function getServiceCtDate()
     {
-        return $this->getServiceLocator()->get('app_service_ct_date');
+        return $this->container->get('app_service_ct_date');
     }
 
     /**
@@ -976,7 +976,7 @@ class Item extends AbstractService
      */
     private function getServiceCtDone()
     {
-        return $this->getServiceLocator()->get('app_service_ct_done');
+        return $this->container->get('app_service_ct_done');
     }
 
     /**
@@ -986,7 +986,7 @@ class Item extends AbstractService
      */
     private function getServiceCtGroup()
     {
-        return $this->getServiceLocator()->get('app_service_ct_group');
+        return $this->container->get('app_service_ct_group');
     }
 
     /**
@@ -996,7 +996,7 @@ class Item extends AbstractService
      */
     private function getServiceCtRate()
     {
-        return $this->getServiceLocator()->get('app_service_ct_rate');
+        return $this->container->get('app_service_ct_rate');
     }
 
     /**
@@ -1006,7 +1006,7 @@ class Item extends AbstractService
      */
     private function getServiceOptGrading()
     {
-        return $this->getServiceLocator()->get('app_service_opt_grading');
+        return $this->container->get('app_service_opt_grading');
     }
 
     /**
@@ -1016,7 +1016,7 @@ class Item extends AbstractService
      */
     private function getServiceConversation()
     {
-        return $this->getServiceLocator()->get('app_service_conversation');
+        return $this->container->get('app_service_conversation');
     }
 
     /**
@@ -1026,7 +1026,7 @@ class Item extends AbstractService
      */
     private function getServiceThread()
     {
-        return $this->getServiceLocator()->get('app_service_thread');
+        return $this->container->get('app_service_thread');
     }
 
     /**
@@ -1036,7 +1036,7 @@ class Item extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -1046,7 +1046,7 @@ class Item extends AbstractService
      */
     private function getServiceConversationOpt()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_opt');
+        return $this->container->get('app_service_conversation_opt');
     }
 
     /**
@@ -1056,6 +1056,6 @@ class Item extends AbstractService
      */
     private function getServiceCriteria()
     {
-        return $this->getServiceLocator()->get('app_service_criteria');
+        return $this->container->get('app_service_criteria');
     }
 }

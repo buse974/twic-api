@@ -164,6 +164,7 @@ class Identity  implements IdentityInterface
             'suspension_date' => $this->suspension_date,
             'suspension_reason' => $this->suspension_reason,
             'email' => $this->email,
+            'avatar' => $this->avatar,
             'expiration_date' => $this->expiration_date,
         );
     }

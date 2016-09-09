@@ -101,11 +101,11 @@ class User extends AbstractService
             $user['organizations'] = $this->getServiceOrganization()->_getList($id)->toArray();
             $user['organization_id'] = $user['school']['id'];
             
-            $secret_key = $this->getServiceLocator()->get('config')['app-conf']['secret_key'];
+            $secret_key = $this->container->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
             
-            $secret_key_fb = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb'];
-            $secret_key_fb_debug = $this->getServiceLocator()->get('config')['app-conf']['secret_key_fb_debug'];
+            $secret_key_fb = $this->container->get('config')['app-conf']['secret_key_fb'];
+            $secret_key_fb_debug = $this->container->get('config')['app-conf']['secret_key_fb_debug'];
             
             $generator = new TokenGenerator($secret_key_fb);
             $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
@@ -129,6 +129,7 @@ class User extends AbstractService
     {
         $is_present = false;
         $organizations = $this->getIdentity()['organizations'];
+        
         foreach ($organizations as $org) {
             if($org['id'] === $organization) {
                 $is_present = true;
@@ -1272,7 +1273,7 @@ class User extends AbstractService
      */
     private function getServiceLanguage()
     {
-        return $this->getServiceLocator()->get('app_service_language');
+        return $this->container->get('app_service_language');
     }
 
     /**
@@ -1294,7 +1295,7 @@ class User extends AbstractService
      */
     private function getServiceProgram()
     {
-        return $this->getServiceLocator()->get('app_service_program');
+        return $this->container->get('app_service_program');
     }
 
     /**
@@ -1304,7 +1305,7 @@ class User extends AbstractService
      */
     private function getServiceProgramUserRelation()
     {
-        return $this->getServiceLocator()->get('app_service_program_user_relation');
+        return $this->container->get('app_service_program_user_relation');
     }
 
     /**
@@ -1314,7 +1315,7 @@ class User extends AbstractService
      */
     private function getServiceCourseUserRelation()
     {
-        return $this->getServiceLocator()->get('app_service_course_user_relation');
+        return $this->container->get('app_service_course_user_relation');
     }
 
     /**
@@ -1324,7 +1325,7 @@ class User extends AbstractService
      */
     private function getServiceUserLanguage()
     {
-        return $this->getServiceLocator()->get('app_service_user_language');
+        return $this->container->get('app_service_user_language');
     }
 
     /**
@@ -1334,7 +1335,7 @@ class User extends AbstractService
      */
     private function getServiceAuth()
     {
-        return $this->getServiceLocator()->get('auth.service');
+        return $this->container->get('auth.service');
     }
 
     /**
@@ -1344,7 +1345,7 @@ class User extends AbstractService
      */
     private function getServiceRole()
     {
-        return $this->getServiceLocator()->get('app_service_role');
+        return $this->container->get('app_service_role');
     }
 
     /**
@@ -1354,7 +1355,7 @@ class User extends AbstractService
      */
     private function getServiceUserRole()
     {
-        return $this->getServiceLocator()->get('app_service_user_role');
+        return $this->container->get('app_service_user_role');
     }
 
     /**
@@ -1364,9 +1365,9 @@ class User extends AbstractService
      */
     private function getCache()
     {
-        $config = $this->getServiceLocator()->get('config')['app-conf'];
+        $config = $this->container->get('config')['app-conf'];
         
-        return $this->getServiceLocator()->get($config['cache']);
+        return $this->container->get($config['cache']);
     }
 
     /**
@@ -1376,7 +1377,7 @@ class User extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -1386,7 +1387,7 @@ class User extends AbstractService
      */
     private function getServiceItem()
     {
-        return $this->getServiceLocator()->get('app_service_item');
+        return $this->container->get('app_service_item');
     }
 
     /**
@@ -1396,7 +1397,7 @@ class User extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
     
     /**
@@ -1406,7 +1407,7 @@ class User extends AbstractService
      */
     private function getServiceContact()
     {
-        return $this->getServiceLocator()->get('app_service_contact');
+        return $this->container->get('app_service_contact');
     }
 
     /**
@@ -1416,7 +1417,7 @@ class User extends AbstractService
      */
     private function getServiceMail()
     {
-        return $this->getServiceLocator()->get('mail.service');
+        return $this->container->get('mail.service');
     }
 
     /**
@@ -1426,7 +1427,7 @@ class User extends AbstractService
      */
     private function getServiceOrganizationUser()
     {
-        return $this->getServiceLocator()->get('app_service_organization_user');
+        return $this->container->get('app_service_organization_user');
     }
     
     /**
@@ -1436,6 +1437,6 @@ class User extends AbstractService
      */
     private function getServiceOrganization()
     {
-        return $this->getServiceLocator()->get('app_service_school');
+        return $this->container->get('app_service_school');
     }
 }

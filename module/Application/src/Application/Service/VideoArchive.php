@@ -213,7 +213,7 @@ class VideoArchive extends AbstractService
      */
     private function getServiceConversation()
     {
-        return $this->getServiceLocator()->get('app_service_conversation');
+        return $this->container->get('app_service_conversation');
     }
 
     /**
@@ -223,7 +223,7 @@ class VideoArchive extends AbstractService
      */
     private function getServiceConversationUser()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_user');
+        return $this->container->get('app_service_conversation_user');
     }
 
     /**
@@ -233,7 +233,7 @@ class VideoArchive extends AbstractService
      */
     private function getServiceZOpenTok()
     {
-        return $this->getServiceLocator()->get('opentok.service');
+        return $this->container->get('opentok.service');
     }
 
     /**
@@ -243,6 +243,6 @@ class VideoArchive extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 }

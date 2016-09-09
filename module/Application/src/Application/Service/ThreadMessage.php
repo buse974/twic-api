@@ -161,7 +161,7 @@ class ThreadMessage extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -171,7 +171,7 @@ class ThreadMessage extends AbstractService
      */
     private function getServiceSubThread()
     {
-        return $this->getServiceLocator()->get('app_service_sub_thread');
+        return $this->container->get('app_service_sub_thread');
     }
 
     /**
@@ -181,7 +181,7 @@ class ThreadMessage extends AbstractService
      */
     private function getServiceEvent()
     {
-        return $this->getServiceLocator()->get('app_service_event');
+        return $this->container->get('app_service_event');
     }
 
     /**
@@ -191,7 +191,7 @@ class ThreadMessage extends AbstractService
      */
     private function getServiceRole()
     {
-        return $this->getServiceLocator()->get('app_service_role');
+        return $this->container->get('app_service_role');
     }
 
     /**
@@ -201,7 +201,7 @@ class ThreadMessage extends AbstractService
      */
     private function getServiceThread()
     {
-        return $this->getServiceLocator()->get('app_service_thread');
+        return $this->container->get('app_service_thread');
     }
 
     /**
@@ -211,6 +211,6 @@ class ThreadMessage extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 }

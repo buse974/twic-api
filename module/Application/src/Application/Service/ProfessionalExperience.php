@@ -99,6 +99,6 @@ class ProfessionalExperience extends AbstractService
      */
     private function getServicUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 }

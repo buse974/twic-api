@@ -2,13 +2,18 @@
 
 namespace Rbac\Service;
 
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Permissions\Rbac\Role;
 use Zend\Permissions\Rbac\Rbac as ZRBac;
+use Zend\Mvc\Controller\PluginManager;
+use Zend\ServiceManager\ServiceManager;
 
-class Rbac implements ServiceLocatorAwareInterface
+class Rbac  
 {
+    /**
+     * @var PluginManager
+     */
+    protected $plugins;
+    
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
@@ -114,27 +119,35 @@ class Rbac implements ServiceLocatorAwareInterface
     {
         return $this->getServiceLocator()->get('rbac_service_role');
     }
-
+    
     /**
-     * Set servicelocator.
+     * Set plugin manager
      *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @param  PluginManager $plugins
+     * @return AbstractController
      */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    public function setPluginManager(PluginManager $plugins)
     {
-        $this->service_locator = $serviceLocator;
-
+        $this->plugins = $plugins;
+        $this->plugins->setController($this);
+    
         return $this;
     }
+    
 
     /**
      * Get service locator.
      *
-     * @return ServiceLocatorInterface
+     * @return PluginManager
      */
     public function getServiceLocator()
     {
-        return $this->service_locator;
+        if (!$this->plugins) {
+            $this->setPluginManager(new PluginManager(new ServiceManager()));
+        }
+        
+        $this->plugins->setController($this);
+        return $this->plugins;
     }
 
     /**

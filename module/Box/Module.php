@@ -8,16 +8,6 @@ use Zend\Http\Client;
 
 class Module implements ConfigProviderInterface
 {
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                         __NAMESPACE__ => __DIR__.'/src/'.__NAMESPACE__,
-                ),
-            ),
-        );
-    }
 
     public function getConfig()
     {
@@ -26,19 +16,19 @@ class Module implements ConfigProviderInterface
 
     public function getServiceConfig()
     {
-        return array(
-            'aliases' => array(
-                'box.service' => '\Box\Service\Api',
-            ),
-            'factories' => array(
-                '\Box\Service\Api' => function ($sm) {
-                    $box = $sm->get('config')['box-conf'];
+        return [
+            'aliases' => [
+                'box.service' => \Box\Service\Api::class,
+            ],
+            'factories' => [
+                \Box\Service\Api::class => function ($container) {
+                    $box = $container->get('config')['box-conf'];
                     $client = new Client();
-                    $client->setOptions($sm->get('config')[$box['adapter']]);
+                    $client->setOptions($container->get('config')[$box['adapter']]);
 
                     return new Api($client, $box['apikey'], $box['url']);
                 },
-            ),
-        );
+            ],
+        ];
     }
 }

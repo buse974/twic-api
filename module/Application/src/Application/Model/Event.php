@@ -54,7 +54,7 @@ class Event extends BaseEvent
     public function getNbLike()
     {
         if (null !== $this->id) {
-            $this->nb_like = $this->getServiceLocator()->get('app_mapper_event')->nbrLike($this->id);
+            $this->nb_like = $this->container->get('app_mapper_event')->nbrLike($this->id);
         }
 
         return $this->nb_like;

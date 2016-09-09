@@ -2,12 +2,11 @@
 
 namespace Box\Service;
 
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Http\Response;
 use JRpc\Json\Server\Exception\JrpcException;
 
-abstract class AbstractApi implements ServiceManagerAwareInterface
+abstract class AbstractApi
 {
     /**
      * @var ServiceManager
@@ -82,17 +81,5 @@ abstract class AbstractApi implements ServiceManagerAwareInterface
         } else {
             throw new \Exception('An unexpected error occurred:'.$resp->getReasonPhrase());
         }
-    }
-
-    /**
-     * Set service manager.
-     *
-     * @param ServiceManager $serviceManager
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->servicemanager = $serviceManager;
-
-        return $this;
     }
 }

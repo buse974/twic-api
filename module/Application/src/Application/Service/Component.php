@@ -182,7 +182,7 @@ class Component extends AbstractService
      */
     private function getServiceComponentScale()
     {
-        return $this->getServiceLocator()->get('app_service_component_scale');
+        return $this->container->get('app_service_component_scale');
     }
 
     /**
@@ -192,6 +192,6 @@ class Component extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 }

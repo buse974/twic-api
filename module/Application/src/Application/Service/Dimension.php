@@ -121,6 +121,6 @@ class Dimension extends AbstractService
      */
     private function getServiceComponent()
     {
-        return $this->getServiceLocator()->get('app_service_component');
+        return $this->container->get('app_service_component');
     }
 }

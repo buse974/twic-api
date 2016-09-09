@@ -224,7 +224,7 @@ class Program extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -234,6 +234,6 @@ class Program extends AbstractService
      */
     private function getServiceCourse()
     {
-        return $this->getServiceLocator()->get('app_service_course');
+        return $this->container->get('app_service_course');
     }
 }

@@ -535,9 +535,9 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['conversation_opt']) , 9);
         $this->assertEquals($data['result']['conversation_opt']['id'] , 1);
         $this->assertEquals($data['result']['conversation_opt']['item_id'] , null);
-        $this->assertEquals($data['result']['conversation_opt']['record'] , 1);
-        $this->assertEquals($data['result']['conversation_opt']['nb_user_autorecord'] , 2);
-        $this->assertEquals($data['result']['conversation_opt']['allow_intructor'] , 1);
+        $this->assertEquals($data['result']['conversation_opt']['record'] , 0);
+        $this->assertEquals($data['result']['conversation_opt']['nb_user_autorecord'] , 0);
+        $this->assertEquals($data['result']['conversation_opt']['allow_intructor'] , 0);
         $this->assertEquals($data['result']['conversation_opt']['has_eqcq'] , 0);
         $this->assertEquals($data['result']['conversation_opt']['start_date'] , null);
         $this->assertEquals($data['result']['conversation_opt']['duration'] , null);

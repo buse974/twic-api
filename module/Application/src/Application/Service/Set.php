@@ -144,6 +144,6 @@ class Set extends AbstractService
      */
     private function getServiceGroup()
     {
-        return $this->getServiceLocator()->get('app_service_group');
+        return $this->container->get('app_service_group');
     }
 }

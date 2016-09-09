@@ -18,7 +18,6 @@ class FeedTest extends AbstractService
     public function testAdd()
     {
         $this->setIdentity(1);
-        
         $data = $this->jsonRpc('feed.add', array('content' => 'UN FEED','link' => 'link','video' => 'token','name_picture' => 'tokenp name','picture' => 'tokenp','name_document' => 'tokend name','document' => 'tokend'));
         
         $this->assertEquals(count($data), 3);
@@ -263,7 +262,7 @@ class FeedTest extends AbstractService
         $this->setIdentity(1);
         
         $data = $this->jsonRpc('eventcomment.add', array('event' => 1,'content' => 'un commentaire'));
-        
+       
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['result'] , 1);
         $this->assertEquals($data['id'] , 1);

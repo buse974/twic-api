@@ -328,7 +328,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceBankQuestionMedia()
     {
-        return $this->getServiceLocator()->get('app_service_bank_question_media');
+        return $this->container->get('app_service_bank_question_media');
     }
 
     /**
@@ -338,7 +338,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceBankQuestionItem()
     {
-        return $this->getServiceLocator()->get('app_service_bank_question_item');
+        return $this->container->get('app_service_bank_question_item');
     }
 
     /**
@@ -348,7 +348,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceBankQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_bank_question');
+        return $this->container->get('app_service_bank_question');
     }
 
     /**
@@ -358,7 +358,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceGroupQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_group_question');
+        return $this->container->get('app_service_group_question');
     }
 
     /**
@@ -368,7 +368,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -378,7 +378,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceBankAnswerItem()
     {
-        return $this->getServiceLocator()->get('app_service_bank_answer_item');
+        return $this->container->get('app_service_bank_answer_item');
     }
 
     /**
@@ -388,7 +388,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceSubAnswer()
     {
-        return $this->getServiceLocator()->get('app_service_sub_answer');
+        return $this->container->get('app_service_sub_answer');
     }
 
     /**
@@ -398,7 +398,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceSubQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_sub_question');
+        return $this->container->get('app_service_sub_question');
     }
 
     /**
@@ -408,7 +408,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceSubmissionUser()
     {
-        return $this->getServiceLocator()->get('app_service_submission_user');
+        return $this->container->get('app_service_submission_user');
     }
 
     /**
@@ -418,7 +418,7 @@ class SubQuiz extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -428,7 +428,7 @@ class SubQuiz extends AbstractService
      */
     private function getServicePoll()
     {
-        return $this->getServiceLocator()->get('app_service_poll');
+        return $this->container->get('app_service_poll');
     }
 
     /**
@@ -438,6 +438,6 @@ class SubQuiz extends AbstractService
      */
     private function getServicePollItem()
     {
-        return $this->getServiceLocator()->get('app_service_poll_item');
+        return $this->container->get('app_service_poll_item');
     }
 }

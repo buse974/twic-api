@@ -3,22 +3,10 @@
 namespace Mail;
 
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Mail\Service\Mail;
 
 class Module implements ConfigProviderInterface
 {
-    public function getAutoloaderConfig()
-    {
-        return array(
-                'Zend\Loader\StandardAutoloader' => array(
-                        'namespaces' => array(
-                                __NAMESPACE__ => __DIR__.'/src/'.__NAMESPACE__,
-                        ),
-                ),
-                  'Zend\Loader\ClassMapAutoloader' => array(
-                 __DIR__.'/autoload_classmap.php',
-                ),
-        );
-    }
 
     public function getConfig()
     {
@@ -28,14 +16,31 @@ class Module implements ConfigProviderInterface
     public function getServiceConfig()
     {
         return array(
-            'aliases' => array(
-                'mail.service' => 'Mail\Service\Mail',
-            ),
-            'invokables' => array(
-                'Mail\Service\Mail' => 'Mail\Service\Mail',
-                'Mail\Template\Storage\FsStorage' => 'Mail\Template\Storage\FsStorage',
-                'Mail\Mail\Message' => 'Mail\Mail\Message',
-            ),
+            'aliases' => [
+                'mail.service' => Mail\Service\Mail::class,
+            ],
+            'factories' => [
+                Mail\Service\Mail::class => function($container) {
+                    $conf_mail = $container->get('config')['mail-conf'];
+                    
+                    $class_storage = $conf_mail['template']['storage'];
+                    $bj_storage = null;
+                    if(class_exists($class_storage)) {
+                        $bj_storage = new $class_storage;
+                        $bj_storage->setPath($conf_mail['template']['path']);
+                    } elseif($container->has($class_storage)) {
+                        $bj_storage = $container->get($class_storage);
+                        $bj_storage->setPath($conf_mail['template']['path']);
+                    }
+                    
+                    $mail =  new Mail();
+                    $mail->setTplStorage($bj_storage)
+                        ->setOptions($conf_mail);
+
+                    return $mail;
+                },
+            ],
+            
         );
     }
 }

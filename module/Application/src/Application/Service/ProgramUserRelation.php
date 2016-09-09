@@ -106,7 +106,7 @@ class ProgramUserRelation extends AbstractService
      */
     private function getServiceCourseUserRelation()
     {
-        return $this->getServiceLocator()->get('app_service_course_user_relation');
+        return $this->container->get('app_service_course_user_relation');
     }
     
     /**
@@ -116,6 +116,6 @@ class ProgramUserRelation extends AbstractService
      */
     private function getServiceCourse()
     {
-        return $this->getServiceLocator()->get('app_service_course');
+        return $this->container->get('app_service_course');
     }
 }

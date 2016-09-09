@@ -7,19 +7,6 @@ use Auth\Authentication\Storage\CacheStorage;
 
 class Module implements ConfigProviderInterface
 {
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__.'/src/'.__NAMESPACE__,
-                ),
-            ),
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__.'/autoload_classmap.php',
-            ),
-        );
-    }
 
     public function getConfig()
     {
@@ -28,21 +15,34 @@ class Module implements ConfigProviderInterface
 
     public function getServiceConfig()
     {
-        return array(
-            'aliases' => array(
+        return [
+            'aliases' => [
                 'auth.service' => 'Zend\Authentication\AuthenticationService',
                 'token.storage' => 'Auth\Authentication\Storage\CacheStorage',
-            ),
-            'factories' => array(
-                'Zend\Authentication\AuthenticationService' => function ($sm) {
-                    $conf = $sm->get('Config')['auth-conf'];
+            ],
+            'factories' => [
+                'Zend\Authentication\AuthenticationService' => function ($container) {
+                    $conf = $container->get('Config')['auth-conf'];
 
-                    return new \Zend\Authentication\AuthenticationService($sm->get($conf['storage']['name']), new Authentication\Adapter\DbAdapter($sm->get($conf['adapter']['name']), $conf['adapter']['options']['table'], $conf['adapter']['options']['identity'], $conf['adapter']['options']['credential'], $conf['adapter']['options']['hash']));
+                    return new \Zend\Authentication\AuthenticationService(
+                        $container->get($conf['storage']['name']), 
+                        new Authentication\Adapter\DbAdapter(
+                            $container->get($conf['adapter']['name']), 
+                            $conf['adapter']['options']['table'], 
+                            $conf['adapter']['options']['identity'], 
+                            $conf['adapter']['options']['credential'], 
+                            $conf['adapter']['options']['hash']
+                        )
+                    );
                 },
-                'Auth\Authentication\Storage\CacheStorage' => function ($sm) {
-                    return new CacheStorage($sm->get($sm->get('Config')['auth-conf']['storage']['options']['adpater']));
+                'Auth\Authentication\Storage\CacheStorage' => function ($container) {
+                    $authconf = $container->get('Config')['auth-conf'];
+                    $storage = new CacheStorage($container->get($authconf['storage']['options']['adpater']));
+                    $storage->setRequest($container->get('Request'));
+                    
+                    return $storage;
                 },
-            ),
-        );
+            ],
+        ];
     }
 }

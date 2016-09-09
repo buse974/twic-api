@@ -63,13 +63,9 @@ class Conversation extends AbstractService
             }
         }
         if ($conversation_opt_id === null) {
-            if($type === ModelConversation::TYPE_CHAT){
-                
-                $conversation_opt_id = $this->getServiceConversationOpt()->add(null, 0, 0, 0, 0, null);
-            }
-            else{
-                $conversation_opt_id = $this->getServiceConversationOpt()->add();
-            }
+            $conversation_opt_id = ($type === ModelConversation::TYPE_CHAT) ?
+                 $this->getServiceConversationOpt()->add(null, 0, 0, 0, 0, null) :
+                 $this->getServiceConversationOpt()->add();
         }
         $m_conversation = $this->getModel()
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
@@ -775,7 +771,7 @@ class Conversation extends AbstractService
      */
     private function getServiceConversationUser()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_user');
+        return $this->container->get('app_service_conversation_user');
     }
 
     /**
@@ -785,7 +781,7 @@ class Conversation extends AbstractService
      */
     private function getServiceSubConversation()
     {
-        return $this->getServiceLocator()->get('app_service_sub_conversation');
+        return $this->container->get('app_service_sub_conversation');
     }
 
     /**
@@ -795,7 +791,7 @@ class Conversation extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -805,7 +801,7 @@ class Conversation extends AbstractService
      */
     private function getServiceItem()
     {
-        return $this->getServiceLocator()->get('app_service_item');
+        return $this->container->get('app_service_item');
     }
 
     /**
@@ -815,7 +811,7 @@ class Conversation extends AbstractService
      */
     private function getServiceMessageUser()
     {
-        return $this->getServiceLocator()->get('app_service_message_user');
+        return $this->container->get('app_service_message_user');
     }
 
     /**
@@ -825,7 +821,7 @@ class Conversation extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -835,7 +831,7 @@ class Conversation extends AbstractService
      */
     private function getServiceSubmissionUser()
     {
-        return $this->getServiceLocator()->get('app_service_submission_user');
+        return $this->container->get('app_service_submission_user');
     }
 
     /**
@@ -845,7 +841,7 @@ class Conversation extends AbstractService
      */
     private function getServiceLibrary()
     {
-        return $this->getServiceLocator()->get('app_service_library');
+        return $this->container->get('app_service_library');
     }
 
     /**
@@ -855,7 +851,7 @@ class Conversation extends AbstractService
      */
     private function getServiceConversationOpt()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_opt');
+        return $this->container->get('app_service_conversation_opt');
     }
 
     /**
@@ -865,7 +861,7 @@ class Conversation extends AbstractService
      */
     private function getServiceConversationDoc()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_doc');
+        return $this->container->get('app_service_conversation_doc');
     }
 
     /**
@@ -875,7 +871,7 @@ class Conversation extends AbstractService
      */
     private function getServiceConversationTextEditor()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_text_editor');
+        return $this->container->get('app_service_conversation_text_editor');
     }
 
     /**
@@ -885,7 +881,7 @@ class Conversation extends AbstractService
      */
     private function getServiceMessage()
     {
-        return $this->getServiceLocator()->get('app_service_message');
+        return $this->container->get('app_service_message');
     }
 
     /**
@@ -895,7 +891,7 @@ class Conversation extends AbstractService
      */
     private function getServiceSubTextEditor()
     {
-        return $this->getServiceLocator()->get('app_service_sub_text_editor');
+        return $this->container->get('app_service_sub_text_editor');
     }
 
     /**
@@ -905,7 +901,7 @@ class Conversation extends AbstractService
      */
     private function getServiceTextEditor()
     {
-        return $this->getServiceLocator()->get('app_service_text_editor');
+        return $this->container->get('app_service_text_editor');
     }
 
     /**
@@ -915,7 +911,7 @@ class Conversation extends AbstractService
      */
     private function getServiceConversationWhiteboard()
     {
-        return $this->getServiceLocator()->get('app_service_conversation_whiteboard');
+        return $this->container->get('app_service_conversation_whiteboard');
     }
 
     /**
@@ -925,7 +921,7 @@ class Conversation extends AbstractService
      */
     private function getServiceSubWhiteboard()
     {
-        return $this->getServiceLocator()->get('app_service_sub_whiteboard');
+        return $this->container->get('app_service_sub_whiteboard');
     }
 
     /**
@@ -935,7 +931,7 @@ class Conversation extends AbstractService
      */
     private function getServiceDocument()
     {
-        return $this->getServiceLocator()->get('app_service_document');
+        return $this->container->get('app_service_document');
     }
 
     /**
@@ -945,7 +941,7 @@ class Conversation extends AbstractService
      */
     private function getServiceWhiteboard()
     {
-        return $this->getServiceLocator()->get('app_service_whiteboard');
+        return $this->container->get('app_service_whiteboard');
     }
 
     /**
@@ -955,6 +951,6 @@ class Conversation extends AbstractService
      */
     private function getServiceZOpenTok()
     {
-        return $this->getServiceLocator()->get('opentok.service');
+        return $this->container->get('opentok.service');
     }
 }

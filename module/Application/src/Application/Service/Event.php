@@ -89,7 +89,7 @@ class Event extends AbstractService
             ->setId(++self::$id)
             ->setVersion('2.0');
 
-        $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $this->getClient());
         try {
             $rep = $client->doRequest($request);
             if ($rep->isError()) {
@@ -119,7 +119,7 @@ class Event extends AbstractService
             ->setId(++self::$id)
             ->setVersion('2.0');
 
-        $client = new \Zend\Json\Server\Client($this->serviceLocator->get('config')['node']['addr'], $this->getClient());
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $this->getClient());
 
         try {
             $rep = $client->doRequest($request)->getResult();
@@ -138,7 +138,7 @@ class Event extends AbstractService
     private function getClient()
     {
         $client = new Client();
-        $client->setOptions($this->serviceLocator->get('config')['http-adapter']);
+        $client->setOptions($this->container->get('config')['http-adapter']);
 
         return $client;
     }
@@ -1004,7 +1004,7 @@ class Event extends AbstractService
      */
     private function getServiceThreadMessage()
     {
-        return $this->getServiceLocator()->get('app_service_thread_message');
+        return $this->container->get('app_service_thread_message');
     }
 
     /**
@@ -1014,7 +1014,7 @@ class Event extends AbstractService
      */
     private function getServiceThread()
     {
-        return $this->getServiceLocator()->get('app_service_thread');
+        return $this->container->get('app_service_thread');
     }
 
     /**
@@ -1024,7 +1024,7 @@ class Event extends AbstractService
      */
     private function getServiceEventUser()
     {
-        return $this->getServiceLocator()->get('app_service_event_user');
+        return $this->container->get('app_service_event_user');
     }
 
     /**
@@ -1034,7 +1034,7 @@ class Event extends AbstractService
      */
     private function getServiceEventComment()
     {
-        return $this->getServiceLocator()->get('app_service_event_comment');
+        return $this->container->get('app_service_event_comment');
     }
 
     /**
@@ -1044,7 +1044,7 @@ class Event extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->getServiceLocator()->get('app_service_user');
+        return $this->container->get('app_service_user');
     }
 
     /**
@@ -1054,7 +1054,7 @@ class Event extends AbstractService
      */
     private function getServiceFeed()
     {
-        return $this->serviceLocator->get('app_service_feed');
+        return $this->container->get('app_service_feed');
     }
 
     /**
@@ -1064,7 +1064,7 @@ class Event extends AbstractService
      */
     private function getServiceVideoArchive()
     {
-        return $this->getServiceLocator()->get('app_service_video_archive');
+        return $this->container->get('app_service_video_archive');
     }
 
     /**
@@ -1074,7 +1074,7 @@ class Event extends AbstractService
      */
     private function getServiceSubmissionComments()
     {
-        return $this->getServiceLocator()->get('app_service_submission_comments');
+        return $this->container->get('app_service_submission_comments');
     }
 
     /**
@@ -1084,7 +1084,7 @@ class Event extends AbstractService
      */
     private function getServiceSubmission()
     {
-        return $this->getServiceLocator()->get('app_service_submission');
+        return $this->container->get('app_service_submission');
     }
 
     /**
@@ -1094,7 +1094,7 @@ class Event extends AbstractService
      */
     private function getServiceCourse()
     {
-        return $this->getServiceLocator()->get('app_service_course');
+        return $this->container->get('app_service_course');
     }
 
     /**
@@ -1104,7 +1104,7 @@ class Event extends AbstractService
      */
     private function getServiceResume()
     {
-        return $this->getServiceLocator()->get('app_service_resume');
+        return $this->container->get('app_service_resume');
     }
 
     /**
@@ -1114,7 +1114,7 @@ class Event extends AbstractService
      */
     private function getServiceSchool()
     {
-        return $this->getServiceLocator()->get('app_service_school');
+        return $this->container->get('app_service_school');
     }
 
     /**
@@ -1124,7 +1124,7 @@ class Event extends AbstractService
      */
     private function getServiceContact()
     {
-        return $this->getServiceLocator()->get('app_service_contact');
+        return $this->container->get('app_service_contact');
     }
 
     /**
@@ -1134,7 +1134,7 @@ class Event extends AbstractService
      */
     private function getServiceMail()
     {
-        return $this->getServiceLocator()->get('mail.service');
+        return $this->container->get('mail.service');
     }
 
     /**
@@ -1144,7 +1144,7 @@ class Event extends AbstractService
      */
     private function getServiceMessageUser()
     {
-        return $this->getServiceLocator()->get('app_service_message_user');
+        return $this->container->get('app_service_message_user');
     }
 
     /**
@@ -1154,7 +1154,7 @@ class Event extends AbstractService
      */
     private function getServiceSubmissionPg()
     {
-        return $this->getServiceLocator()->get('app_service_submission_pg');
+        return $this->container->get('app_service_submission_pg');
     }
 
     /**
@@ -1164,7 +1164,7 @@ class Event extends AbstractService
      */
     private function getServiceMessage()
     {
-        return $this->getServiceLocator()->get('app_service_message');
+        return $this->container->get('app_service_message');
     }
 
     /**
@@ -1174,6 +1174,6 @@ class Event extends AbstractService
      */
     private function getServiceTask()
     {
-        return $this->getServiceLocator()->get('app_service_task');
+        return $this->container->get('app_service_task');
     }
 }

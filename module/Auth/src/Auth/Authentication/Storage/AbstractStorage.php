@@ -2,10 +2,9 @@
 
 namespace Auth\Authentication\Storage;
 
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\Http\Request;
 
-abstract class AbstractStorage implements StorageInterface, ServiceManagerAwareInterface
+abstract class AbstractStorage implements StorageInterface
 {
     /**
      * @var string
@@ -13,47 +12,22 @@ abstract class AbstractStorage implements StorageInterface, ServiceManagerAwareI
     protected $token;
 
     /**
-     * @var ServiceManager
+     * 
+     * @var Request
      */
-    protected $serviceManager;
+    protected $request;
 
     /**
-     * Set service manager instance.
-     *
-     * @param ServiceManager $locator
-     *
-     * @return \Auth\Adapter\Storage\DbStorage
+     * Token Connexion
+     * 
+     * @return string
      */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-
-        return $this;
-    }
-
-    /**
-     * Retrieve service manager instance.
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    public function setToken($token)
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
     public function getToken()
     {
-        if (null===$this->token) {
-            $aut = $this->getServiceManager()->get('Request')->getHeader('Authorization', null);
+        if (null===$this->token && null!==$this->request) {
+            $aut = $this->request->getHeader('Authorization', null);
             if(null===$aut) {
-                $aut = $this->getServiceManager()->get('Request')->getHeader('x-auth-token', null);
+                $aut = $this->request->getHeader('x-auth-token', null);
             }
             if(null!==$aut) {
                 $this->token = $aut->getFieldValue();
@@ -61,5 +35,26 @@ abstract class AbstractStorage implements StorageInterface, ServiceManagerAwareI
         }
 
         return $this->token;
+    }
+    
+    /**
+     * 
+     * {@inheritDoc}
+     * @see \Auth\Authentication\Storage\StorageInterface::setToken()
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param Request $request
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
     }
 }

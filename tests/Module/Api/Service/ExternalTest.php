@@ -40,11 +40,12 @@ class ExternalTest extends AbstractService
         $data = $this->jsonRpc('user.auth', array('user' => 'external@free.fr' , 'password' => 'toto'));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 9);
+        $this->assertEquals(count($data['result']) , 10);
         $this->assertEquals($data['result']['id'] , 11);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['firstname'] , "firstname_external");
+        $this->assertEquals($data['result']['avatar'] , null);
         $this->assertEquals($data['result']['lastname'] , "lastname_external");
         $this->assertEquals($data['result']['email'] , "external@free.fr");
         $this->assertEquals($data['result']['expiration_date'] , null);

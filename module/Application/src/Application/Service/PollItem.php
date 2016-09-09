@@ -159,6 +159,6 @@ class PollItem extends AbstractService
      */
     private function getServiceGroupQuestion()
     {
-        return $this->getServiceLocator()->get('app_service_group_question');
+        return $this->container->get('app_service_group_question');
     }
 }
