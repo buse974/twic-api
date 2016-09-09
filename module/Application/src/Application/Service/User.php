@@ -44,10 +44,7 @@ class User extends AbstractService
         }
         
         $identity = $this->getIdentity(true);
-        if(null !== $identity['suspension_date']){
-             $this->logout();
-             throw new JrpcException($identity['suspension_reason'], -38003);
-        }
+       
         // ici on check que le role externe ne ce connect pas avec login
         if(in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles']) === 1) {
             $this->logout();
@@ -82,6 +79,11 @@ class User extends AbstractService
         $identity = $this->getServiceAuth()->getIdentity();
         if ($identity === null) {
             return;
+        }
+        syslog(1, json_encode($identity));
+        if(null !== $identity->getSuspensionDate()){
+             $this->logout();
+             throw new JrpcException($identity->getSuspensionReason(), -38003);
         }
         
         $id = $identity->getId();
@@ -241,7 +243,9 @@ class User extends AbstractService
                 ->setId($id)
                 ->setSuspensionDate(1 === $suspend ? (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s') : new IsNull())
                 ->setSuspensionReason(1 === $suspend ? $reason : new IsNull());
-        
+        if(1 === $suspend){
+            $this->getServiceAuth()->getStorage()->clearSession($id);
+        }
         return $this->getMapper()->update($m_user);
     }
     

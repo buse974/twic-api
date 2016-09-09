@@ -80,7 +80,25 @@ class CacheStorage extends AbstractStorage
 
         return;
     }
+    
+    /**
+     * Clears contents from storage for a specific user.
+     *
+     * @throws \Zend\Authentication\Exception\InvalidArgumentException If clearing contents from storage is impossible
+     */
+    public function clearSession($uid)
+    {
+        
+        $session_user = $this->cache->getItem($uid);
+        foreach(array_keys($this->cache->getItem($uid)->getArrayCopy()) as $session){
+            $session_user->offsetUnset($session);
+            $this->cache->removeItem($session);
+        }
+        $this->cache->setItem($uid, $session_user);
 
+        return;
+    }
+    
     /**
      * Get token with prefix.
      *
