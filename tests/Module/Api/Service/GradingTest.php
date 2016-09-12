@@ -510,13 +510,16 @@ class GradingTest extends AbstractService
             ]);
 
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals($data['result']['submission_id'] , 1);
         $this->assertEquals(count($data['result']['comment']) , 10);
-        $this->assertEquals(count($data['result']['comment']['user']) , 4);
+        $this->assertEquals(count($data['result']['comment']['user']) , 5);
         $this->assertEquals($data['result']['comment']['user']['id'] , 1);
         $this->assertEquals($data['result']['comment']['user']['firstname'] , "Paul");
         $this->assertEquals($data['result']['comment']['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['comment']['user']['nickname'] , null);
+        $this->assertEquals($data['result']['comment']['user']['avatar'] , null);
         $this->assertEquals($data['result']['comment']['id'] , 1);
         $this->assertEquals($data['result']['comment']['text'] , "COMMENT 1memzr!");
         $this->assertEquals($data['result']['comment']['audio'] , null);
@@ -526,7 +529,6 @@ class GradingTest extends AbstractService
         $this->assertEquals($data['result']['comment']['file_name'] , "FILE NAME");
         $this->assertEquals($data['result']['comment']['created_date'] , null);
         $this->assertEquals($data['result']['comment']['read_date'] , null);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
         return $data['result'];
@@ -553,41 +555,42 @@ class GradingTest extends AbstractService
                 'id' => $params['submission_id']                
             ]);
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 2); 
-        $this->assertEquals(count($data['result'][0]) , 10); 
-        $this->assertEquals(count($data['result'][0]['user']) , 4); 
-        $this->assertEquals($data['result'][0]['user']['id'] , 1); 
-        $this->assertEquals($data['result'][0]['user']['firstname'] , "Paul"); 
-        $this->assertEquals($data['result'][0]['user']['lastname'] , "Boussekey"); 
-        $this->assertEquals($data['result'][0]['user']['avatar'] , null); 
-        $this->assertEquals($data['result'][0]['id'] , 1); 
-        $this->assertEquals($data['result'][0]['text'] , "COMMENT 1memzr!"); 
-        $this->assertEquals($data['result'][0]['audio'] , null); 
-        $this->assertEquals($data['result'][0]['user_id'] , 1); 
-        $this->assertEquals($data['result'][0]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][0]['file_token'] , "azerty"); 
-        $this->assertEquals($data['result'][0]['file_name'] , "FILE NAME"); 
-        $this->assertEquals($data['result'][0]['created_date'] , null); 
-        $this->assertEquals($data['result'][0]['read_date'] , null); 
-        $this->assertEquals(count($data['result'][1]) , 10); 
-        $this->assertEquals(count($data['result'][1]['user']) , 4); 
-        $this->assertEquals($data['result'][1]['user']['id'] , 4); 
-        $this->assertEquals($data['result'][1]['user']['firstname'] , "Salim"); 
-        $this->assertEquals($data['result'][1]['user']['lastname'] , "Bendacha"); 
-        $this->assertEquals($data['result'][1]['user']['avatar'] , null); 
-        $this->assertEquals($data['result'][1]['id'] , 2); 
-        $this->assertEquals($data['result'][1]['text'] , "COMMENT 2!!!"); 
-        $this->assertEquals($data['result'][1]['audio'] , null); 
-        $this->assertEquals($data['result'][1]['user_id'] , 4); 
-        $this->assertEquals($data['result'][1]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][1]['file_token'] , "azerty"); 
-        $this->assertEquals($data['result'][1]['file_name'] , "FILE NAME"); 
-        $this->assertEquals($data['result'][1]['created_date'] , null); 
-        $this->assertEquals($data['result'][1]['read_date'] , null); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
-
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result'][0]) , 10);
+        $this->assertEquals(count($data['result'][0]['user']) , 5);
+        $this->assertEquals($data['result'][0]['user']['id'] , 1);
+        $this->assertEquals($data['result'][0]['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result'][0]['user']['nickname'] , null);
+        $this->assertEquals($data['result'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result'][0]['id'] , 1);
+        $this->assertEquals($data['result'][0]['text'] , "COMMENT 1memzr!");
+        $this->assertEquals($data['result'][0]['audio'] , null);
+        $this->assertEquals($data['result'][0]['user_id'] , 1);
+        $this->assertEquals($data['result'][0]['submission_id'] , 1);
+        $this->assertEquals($data['result'][0]['file_token'] , "azerty");
+        $this->assertEquals($data['result'][0]['file_name'] , "FILE NAME");
+        $this->assertEquals($data['result'][0]['created_date'] , null);
+        $this->assertEquals($data['result'][0]['read_date'] , null);
+        $this->assertEquals(count($data['result'][1]) , 10);
+        $this->assertEquals(count($data['result'][1]['user']) , 5);
+        $this->assertEquals($data['result'][1]['user']['id'] , 4);
+        $this->assertEquals($data['result'][1]['user']['firstname'] , "Salim");
+        $this->assertEquals($data['result'][1]['user']['lastname'] , "Bendacha");
+        $this->assertEquals($data['result'][1]['user']['nickname'] , null);
+        $this->assertEquals($data['result'][1]['user']['avatar'] , null);
+        $this->assertEquals($data['result'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['text'] , "COMMENT 2!!!");
+        $this->assertEquals($data['result'][1]['audio'] , null);
+        $this->assertEquals($data['result'][1]['user_id'] , 4);
+        $this->assertEquals($data['result'][1]['submission_id'] , 1);
+        $this->assertEquals($data['result'][1]['file_token'] , "azerty");
+        $this->assertEquals($data['result'][1]['file_name'] , "FILE NAME");
+        $this->assertEquals($data['result'][1]['created_date'] , null);
+        $this->assertEquals($data['result'][1]['read_date'] , null);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
 
         return $data['result'];
     }

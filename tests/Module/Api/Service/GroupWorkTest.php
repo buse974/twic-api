@@ -157,6 +157,7 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('submission.getListToGrade', ['item_id' => $item_id]);
         
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 10);
         $this->assertEquals($data['result'][0]['thread_id'] , null);
@@ -178,13 +179,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][0]['item']['is_grouped'] , 1);
         $this->assertEquals(count($data['result'][0]['submission_user']) , 2);
         $this->assertEquals(count($data['result'][0]['submission_user'][0]) , 6);
-        $this->assertEquals(count($data['result'][0]['submission_user'][0]['user']) , 13);
+        $this->assertEquals(count($data['result'][0]['submission_user'][0]['user']) , 14);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['contact_state'] , 0);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['id'] , 6);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['firstname'] , "Guillaume");
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['lastname'] , "Masmejean");
+        $this->assertEquals($data['result'][0]['submission_user'][0]['user']['nickname'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['email'] , "gmasmejean@thestudnet.com");
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['position'] , null);
@@ -198,13 +200,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][0]['submission_user'][0]['submit_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['start_date'] , null);
         $this->assertEquals(count($data['result'][0]['submission_user'][1]) , 6);
-        $this->assertEquals(count($data['result'][0]['submission_user'][1]['user']) , 13);
+        $this->assertEquals(count($data['result'][0]['submission_user'][1]['user']) , 14);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['gender'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['contact_state'] , 0);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['id'] , 7);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['firstname'] , "Arthur");
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['lastname'] , "Flachs");
+        $this->assertEquals($data['result'][0]['submission_user'][1]['user']['nickname'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['email'] , "aflachs@thestudnet.com");
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['position'] , null);
@@ -223,7 +226,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][0]['group_name'] , null);
         $this->assertEquals($data['result'][0]['submit_date'] , null);
         $this->assertEquals($data['result'][0]['is_graded'] , 0);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
@@ -346,18 +348,19 @@ class GroupWorkTest extends AbstractService
         $data = $this->jsonRpc('submission.getListStudent',[]);
   
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result']['list']) , 1);
         $this->assertEquals(count($data['result']['list'][0]) , 9);
         $this->assertEquals($data['result']['list'][0]['thread_id'] , null);
         $this->assertEquals(count($data['result']['list'][0]['item']) , 12);
+        $this->assertEquals($data['result']['list'][0]['item']['checked'] , 3);
         $this->assertEquals(count($data['result']['list'][0]['item']['program']) , 1);
         $this->assertEquals($data['result']['list'][0]['item']['program']['name'] , "program name");
         $this->assertEquals(count($data['result']['list'][0]['item']['course']) , 2);
         $this->assertEquals($data['result']['list'][0]['item']['course']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['item']['course']['title'] , "IMERIR");
         $this->assertEquals($data['result']['list'][0]['item']['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['item']['checked'] , 3);
         $this->assertEquals($data['result']['list'][0]['item']['title'] , "title");
         $this->assertEquals($data['result']['list'][0]['item']['describe'] , "description");
         $this->assertEquals($data['result']['list'][0]['item']['type'] , "WG");
@@ -368,12 +371,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['item']['coefficient'] , 1);
         $this->assertEquals(count($data['result']['list'][0]['submission_user']) , 3);
         $this->assertEquals(count($data['result']['list'][0]['submission_user'][0]) , 6);
-        $this->assertEquals(count($data['result']['list'][0]['submission_user'][0]['user']) , 13);
+        $this->assertEquals(count($data['result']['list'][0]['submission_user'][0]['user']) , 14);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['id'] , 3);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['firstname'] , "Christophe");
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['lastname'] , "Robert");
+        $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['nickname'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['email'] , "crobert@thestudnet.com");
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['user']['position'] , null);
@@ -387,12 +392,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['submit_date'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][0]['start_date'] , null);
         $this->assertEquals(count($data['result']['list'][0]['submission_user'][1]) , 6);
-        $this->assertEquals(count($data['result']['list'][0]['submission_user'][1]['user']) , 13);
+        $this->assertEquals(count($data['result']['list'][0]['submission_user'][1]['user']) , 14);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['gender'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['id'] , 4);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['firstname'] , "Salim");
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['lastname'] , "Bendacha");
+        $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['nickname'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['email'] , "sbendacha@thestudnet.com");
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['user']['position'] , null);
@@ -406,12 +413,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['submit_date'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][1]['start_date'] , null);
         $this->assertEquals(count($data['result']['list'][0]['submission_user'][2]) , 6);
-        $this->assertEquals(count($data['result']['list'][0]['submission_user'][2]['user']) , 13);
+        $this->assertEquals(count($data['result']['list'][0]['submission_user'][2]['user']) , 14);
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['gender'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['id'] , 5);
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['firstname'] , "Sébastien");
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['lastname'] , "Sayegh");
+        $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['nickname'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['email'] , "ssayegh@thestudnet.com");
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['birth_date'] , null);
         $this->assertEquals($data['result']['list'][0]['submission_user'][2]['user']['position'] , null);
@@ -431,10 +440,7 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['submit_date'] , null);
         $this->assertEquals($data['result']['list'][0]['is_graded'] , 0);
         $this->assertEquals($data['result']['count'] , 1);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
-        
     }
     
 
@@ -570,17 +576,20 @@ class GroupWorkTest extends AbstractService
         ]);
         
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result'][0]) , 8);
         $this->assertEquals($data['result'][0]['nbr_comments'] , 0);
         $this->assertEquals(count($data['result'][0]['submission_user']) , 2);
         $this->assertEquals(count($data['result'][0]['submission_user'][0]) , 6);
-        $this->assertEquals(count($data['result'][0]['submission_user'][0]['user']) , 13);
+        $this->assertEquals(count($data['result'][0]['submission_user'][0]['user']) , 14);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result'][0]['submission_user'][0]['user']['contacts_count'] , 1);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['id'] , 1);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['firstname'] , "Paul");
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result'][0]['submission_user'][0]['user']['nickname'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['email'] , "pboussekey@thestudnet.com");
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['user']['position'] , null);
@@ -594,12 +603,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][0]['submission_user'][0]['submit_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][0]['start_date'] , null);
         $this->assertEquals(count($data['result'][0]['submission_user'][1]) , 6);
-        $this->assertEquals(count($data['result'][0]['submission_user'][1]['user']) , 13);
+        $this->assertEquals(count($data['result'][0]['submission_user'][1]['user']) , 14);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['gender'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['contact_state'] , 3);
+        $this->assertEquals($data['result'][0]['submission_user'][1]['user']['contacts_count'] , 1);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['id'] , 2);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['lastname'] , "Hoang");
+        $this->assertEquals($data['result'][0]['submission_user'][1]['user']['nickname'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['email'] , "xhoang@thestudnet.com");
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][0]['submission_user'][1]['user']['position'] , null);
@@ -622,12 +633,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][1]['nbr_comments'] , 0);
         $this->assertEquals(count($data['result'][1]['submission_user']) , 3);
         $this->assertEquals(count($data['result'][1]['submission_user'][0]) , 6);
-        $this->assertEquals(count($data['result'][1]['submission_user'][0]['user']) , 13);
+        $this->assertEquals(count($data['result'][1]['submission_user'][0]['user']) , 14);
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result'][1]['submission_user'][0]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['id'] , 3);
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['firstname'] , "Christophe");
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['lastname'] , "Robert");
+        $this->assertEquals($data['result'][1]['submission_user'][0]['user']['nickname'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['email'] , "crobert@thestudnet.com");
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][0]['user']['position'] , null);
@@ -641,12 +654,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][1]['submission_user'][0]['submit_date'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][0]['start_date'] , null);
         $this->assertEquals(count($data['result'][1]['submission_user'][1]) , 6);
-        $this->assertEquals(count($data['result'][1]['submission_user'][1]['user']) , 13);
+        $this->assertEquals(count($data['result'][1]['submission_user'][1]['user']) , 14);
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['gender'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result'][1]['submission_user'][1]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['id'] , 4);
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['firstname'] , "Salim");
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['lastname'] , "Bendacha");
+        $this->assertEquals($data['result'][1]['submission_user'][1]['user']['nickname'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['email'] , "sbendacha@thestudnet.com");
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][1]['user']['position'] , null);
@@ -660,12 +675,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][1]['submission_user'][1]['submit_date'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][1]['start_date'] , null);
         $this->assertEquals(count($data['result'][1]['submission_user'][2]) , 6);
-        $this->assertEquals(count($data['result'][1]['submission_user'][2]['user']) , 13);
+        $this->assertEquals(count($data['result'][1]['submission_user'][2]['user']) , 14);
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['gender'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result'][1]['submission_user'][2]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['id'] , 5);
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['firstname'] , "Sébastien");
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['lastname'] , "Sayegh");
+        $this->assertEquals($data['result'][1]['submission_user'][2]['user']['nickname'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['email'] , "ssayegh@thestudnet.com");
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][1]['submission_user'][2]['user']['position'] , null);
@@ -688,12 +705,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][2]['nbr_comments'] , 0);
         $this->assertEquals(count($data['result'][2]['submission_user']) , 2);
         $this->assertEquals(count($data['result'][2]['submission_user'][0]) , 6);
-        $this->assertEquals(count($data['result'][2]['submission_user'][0]['user']) , 13);
+        $this->assertEquals(count($data['result'][2]['submission_user'][0]['user']) , 14);
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['gender'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result'][2]['submission_user'][0]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['id'] , 6);
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['firstname'] , "Guillaume");
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['lastname'] , "Masmejean");
+        $this->assertEquals($data['result'][2]['submission_user'][0]['user']['nickname'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['email'] , "gmasmejean@thestudnet.com");
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][0]['user']['position'] , null);
@@ -707,12 +726,14 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][2]['submission_user'][0]['submit_date'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][0]['start_date'] , null);
         $this->assertEquals(count($data['result'][2]['submission_user'][1]) , 6);
-        $this->assertEquals(count($data['result'][2]['submission_user'][1]['user']) , 13);
+        $this->assertEquals(count($data['result'][2]['submission_user'][1]['user']) , 14);
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['gender'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['contact_state'] , 0);
+        $this->assertEquals($data['result'][2]['submission_user'][1]['user']['contacts_count'] , 0);
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['id'] , 7);
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['firstname'] , "Arthur");
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['lastname'] , "Flachs");
+        $this->assertEquals($data['result'][2]['submission_user'][1]['user']['nickname'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['email'] , "aflachs@thestudnet.com");
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['birth_date'] , null);
         $this->assertEquals($data['result'][2]['submission_user'][1]['user']['position'] , null);
@@ -731,7 +752,6 @@ class GroupWorkTest extends AbstractService
         $this->assertEquals($data['result'][2]['group_name'] , null);
         $this->assertEquals($data['result'][2]['submit_date'] , null);
         $this->assertEquals($data['result'][2]['is_graded'] , 0);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
