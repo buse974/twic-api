@@ -7,6 +7,7 @@ class Identity  implements IdentityInterface
     protected $id;
     protected $lastname;
     protected $firstname;
+    protected $nickname;
     protected $token;
     protected $created_date;
     protected $expiration_date;
@@ -124,6 +125,18 @@ class Identity  implements IdentityInterface
         return $this;
     }
 
+    public function getNickname()
+    {
+        return $this->nickname;
+    }
+
+    public function setNickname($nickname)
+    {
+        $this->nickname = $nickname;
+
+        return $this;
+    }
+
     public function getSuspensionDate()
     {
         return $this->suspension_date;
@@ -161,6 +174,7 @@ class Identity  implements IdentityInterface
             'created_date' => $this->created_date,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
+            'nickname' => $this->nickname,
             'suspension_date' => $this->suspension_date,
             'suspension_reason' => $this->suspension_reason,
             'email' => $this->email,
