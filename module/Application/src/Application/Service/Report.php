@@ -7,7 +7,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Zend\Db\Sql\Predicate\Between;
 
 /**
  * Class Activity.
@@ -116,7 +115,7 @@ class Report extends AbstractService
      */
     private function getServiceAuth()
     {
-        return $this->getServiceLocator()->get('auth.service');
+        return $this->container->get('auth.service');
     }
     
     /**
@@ -126,7 +125,7 @@ class Report extends AbstractService
      */
     private function getServiceFeed()
     {
-        return $this->serviceLocator->get('app_service_feed');
+        return $this->container->get('app_service_feed');
     } 
     
     /**
@@ -136,7 +135,7 @@ class Report extends AbstractService
      */
     private function getServiceEventComment()
     {
-        return $this->serviceLocator->get('app_service_event_comment');
+        return $this->container->get('app_service_event_comment');
     } 
     
     /**
@@ -146,7 +145,7 @@ class Report extends AbstractService
      */
     private function getServiceUser()
     {
-        return $this->serviceLocator->get('app_service_user');
+        return $this->container->get('app_service_user');
     } 
 
    

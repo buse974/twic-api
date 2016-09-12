@@ -20,10 +20,11 @@ class MessageTest extends AbstractService
         $data = $this->jsonRpc('message.send', array('to' => array(2,3),'text' => 'super message qwerty'));
         
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 8);
         $this->assertEquals(count($data['result']['message']) , 10);
         $this->assertEquals(count($data['result']['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['message']['from'][0]) , 16);
         $this->assertEquals($data['result']['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['message']['from'][0]['school']) , 5);
@@ -35,18 +36,20 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['from'][0]['id'] , 1);
         $this->assertEquals($data['result']['message']['from'][0]['firstname'] , "Paul");
         $this->assertEquals($data['result']['message']['from'][0]['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['message']['from'][0]['nickname'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['email'] , "pboussekey@thestudnet.com");
         $this->assertEquals($data['result']['message']['from'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['position'] , null);
-        $this->assertEquals($data['result']['message']['from'][0]['nickname'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['message']['from'][0]['avatar'] , null);
+        $this->assertEquals($data['result']['message']['from'][0]['suspension_date'] , null);
+        $this->assertEquals($data['result']['message']['from'][0]['suspension_reason'] , null);
         $this->assertEquals(count($data['result']['message']['from'][0]['roles']) , 1);
         $this->assertEquals($data['result']['message']['from'][0]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['message']['from'][0]['program']) , 0);
         $this->assertEquals(count($data['result']['message']['document']) , 0);
         $this->assertEquals(count($data['result']['message']['to']) , 2);
-        $this->assertEquals(count($data['result']['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['message']['to'][0]) , 16);
         $this->assertEquals($data['result']['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['message']['to'][0]['school']) , 5);
@@ -58,16 +61,18 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][0]['id'] , 3);
         $this->assertEquals($data['result']['message']['to'][0]['firstname'] , "Christophe");
         $this->assertEquals($data['result']['message']['to'][0]['lastname'] , "Robert");
+        $this->assertEquals($data['result']['message']['to'][0]['nickname'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['email'] , "crobert@thestudnet.com");
         $this->assertEquals($data['result']['message']['to'][0]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['position'] , null);
-        $this->assertEquals($data['result']['message']['to'][0]['nickname'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['message']['to'][0]['avatar'] , null);
+        $this->assertEquals($data['result']['message']['to'][0]['suspension_date'] , null);
+        $this->assertEquals($data['result']['message']['to'][0]['suspension_reason'] , null);
         $this->assertEquals(count($data['result']['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['message']['to'][0]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['message']['to'][1]) , 16);
         $this->assertEquals($data['result']['message']['to'][1]['contact_state'] , 3);
         $this->assertEquals($data['result']['message']['to'][1]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['message']['to'][1]['school']) , 5);
@@ -79,12 +84,14 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['message']['to'][1]['id'] , 2);
         $this->assertEquals($data['result']['message']['to'][1]['firstname'] , "Xuan-Anh");
         $this->assertEquals($data['result']['message']['to'][1]['lastname'] , "Hoang");
+        $this->assertEquals($data['result']['message']['to'][1]['nickname'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['email'] , "xhoang@thestudnet.com");
         $this->assertEquals($data['result']['message']['to'][1]['birth_date'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['position'] , null);
-        $this->assertEquals($data['result']['message']['to'][1]['nickname'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['message']['to'][1]['avatar'] , null);
+        $this->assertEquals($data['result']['message']['to'][1]['suspension_date'] , null);
+        $this->assertEquals($data['result']['message']['to'][1]['suspension_reason'] , null);
         $this->assertEquals(count($data['result']['message']['to'][1]['roles']) , 1);
         $this->assertEquals($data['result']['message']['to'][1]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['message']['to'][1]['program']) , 0);
@@ -106,8 +113,8 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['user_id'] , 1);
         $this->assertEquals(!empty($data['result']['read_date']) , true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
 
     public function testCanSendMessageTwo()

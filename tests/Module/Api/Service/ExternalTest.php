@@ -40,14 +40,17 @@ class ExternalTest extends AbstractService
         $data = $this->jsonRpc('user.auth', array('user' => 'external@free.fr' , 'password' => 'toto'));
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 10);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 12);
         $this->assertEquals($data['result']['id'] , 11);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['firstname'] , "firstname_external");
-        $this->assertEquals($data['result']['avatar'] , null);
         $this->assertEquals($data['result']['lastname'] , "lastname_external");
+        $this->assertEquals($data['result']['suspension_date'] , null);
+        $this->assertEquals($data['result']['suspension_reason'] , null);
         $this->assertEquals($data['result']['email'] , "external@free.fr");
+        $this->assertEquals($data['result']['avatar'] , null);
         $this->assertEquals($data['result']['expiration_date'] , null);
         $this->assertEquals(count($data['result']['roles']) , 1);
         $this->assertEquals($data['result']['roles'][7] , "external");
@@ -57,7 +60,6 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['school']['short_name'] , "turpis");
         $this->assertEquals($data['result']['school']['logo'] , null);
         $this->assertEquals($data['result']['school']['background'] , null);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
         
         self::$token = $data['result']['token'];

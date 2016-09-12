@@ -80,10 +80,10 @@ class User extends AbstractService
         if ($identity === null) {
             return;
         }
-        syslog(1, json_encode($identity));
-        if(null !== $identity->getSuspensionDate()){
-             $this->logout();
-             throw new JrpcException($identity->getSuspensionReason(), -38003);
+        
+    	if(null !== $identity->getSuspensionDate()) {
+            $this->logout();
+            throw new JrpcException($identity->getSuspensionReason(), -38003);
         }
         
         $id = $identity->getId();
@@ -308,6 +308,9 @@ class User extends AbstractService
          * schoolid vérifier que si il n'est pas admin le school id est
          * automatiquement celui de la personne qui add le user.
          */
+            
+            
+           // print_r($this->getIdentity());
         if (in_array(ModelRole::ROLE_ACADEMIC_STR, $this->getIdentity()['roles']) && $school_id !== null) {
             if($this->checkOrg($school_id) !== true) {
                 $user = $this->get();
