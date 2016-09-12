@@ -57,7 +57,7 @@ class School extends AbstractService
      * @throws \Exception
      * @return \Application\Model\School
      */
-    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null)
+    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null, $type = null)
     {
         $formattedWebsite = $this->getFormattedWebsite($website);
         $m_school = $this->getModel()
@@ -72,7 +72,8 @@ class School extends AbstractService
             ->setContact($contact)
             ->setCustom($custom)
             ->setLibelle($libelle)
-            ->setContactId($contact_id);
+            ->setContactId($contact_id)
+            ->setType($type);
         
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);
