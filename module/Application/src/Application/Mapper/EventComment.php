@@ -12,7 +12,7 @@ class EventComment extends AbstractMapper
      {
          $select = $this->tableGateway->getSql()->select();
          $select->columns(array('id', 'content', 'event_comment$created_date' => new Expression("DATE_FORMAT(event_comment.created_date, '%Y-%m-%dT%TZ') ")))
-            ->join('user', 'event_comment.user_id = user.id', array('id', 'firstname', 'lastname', 'avatar'))
+            ->join('user', 'event_comment.user_id = user.id', array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('school', 'user.school_id = school.id', array('id', 'name', 'logo'), $select::JOIN_LEFT)
             ->where(array('event_comment.event_id' => $event))
             ->where(array('event_comment.deleted_date IS NULL'));
@@ -24,7 +24,7 @@ class EventComment extends AbstractMapper
      {
          $select = $this->tableGateway->getSql()->select();
          $select->columns(array('id', 'content', 'event_comment$created_date' => new Expression("DATE_FORMAT(event_comment.created_date, '%Y-%m-%dT%TZ') ")))
-            ->join('user', 'event_comment.user_id = user.id', array('id', 'firstname', 'lastname', 'avatar'))
+            ->join('user', 'event_comment.user_id = user.id', array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('school', 'user.school_id = school.id', array('id', 'name', 'logo'), $select::JOIN_LEFT)
             ->where(array('event_comment.id' => $id));
 

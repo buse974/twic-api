@@ -27,6 +27,7 @@ class Thread extends AbstractMapper
             'id',
             'firstname',
             'lastname',
+            'nickname',
             'avatar',
             'thread$nb_message' => new Expression('SUM(IF(thread_message.id IS NULL OR thread_message.deleted_date IS NOT NULL, 0,1))'),
         ))

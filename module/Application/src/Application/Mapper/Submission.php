@@ -254,6 +254,7 @@ class Submission extends AbstractMapper
                      `submission_user`.`submit_date` as `submission_user$submit_date`,
                      `user`.`firstname` as `user$firstname`,
                      `user`.`lastname` as `user$lastname`,
+                     `user`.`nickname` as `user$nickname`,
                      `user`.`avatar` as `user$avatar`,
                      `user`.`id` as `user$id`
                 FROM
