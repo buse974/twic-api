@@ -203,7 +203,7 @@ class User extends AbstractMapper
     public function getListLite($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))->where(array('user.id' => $id));
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))->where(array('user.id' => $id));
 
         return $this->selectWith($select);
     }
@@ -281,9 +281,10 @@ class User extends AbstractMapper
                     $select->where(array('program.level' => $level));
                 }
                 if (null !== $search) {
-                    $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'));
-                    $select->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR);
-                    $select->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
+                    $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'))
+                        ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+                        ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+                        ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
                 }
             }
             if (!empty($program)) {
@@ -433,7 +434,7 @@ class User extends AbstractMapper
     public function getListBySubmission($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar'))
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('submission_user', 'submission_user.user_id=user.id', [])
             ->where(array('submission_user.submission_id' => $submission_id));
 

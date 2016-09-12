@@ -13,7 +13,7 @@ class Feed extends AbstractMapper
         $select->columns(array('id', 'content', 'user_id', 'link', 'link_title', 'link_desc', 'video', 'picture', 'document', 'name_picture', 'name_document',
             'feed$created_date' => new Expression('DATE_FORMAT(feed.created_date, "%Y-%m-%dT%TZ")'),
         ))
-            ->join('user', 'user.id=feed.user_id', array('id', 'firstname', 'lastname', 'avatar'))
+            ->join('user', 'user.id=feed.user_id', array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->group('feed.id')
             ->order(array('feed.id DESC'));
