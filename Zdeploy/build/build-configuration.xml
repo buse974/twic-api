@@ -38,11 +38,6 @@
         		<arg value="-q" />
         	</composer>
 
-        <echo msg="generate autoload" />
-		<exec command="./create-autoload.sh"
-        	  dir="${tmp.basedir}/bin/"
-              checkreturn="true" />
-
         <echo msg="copy config" />
     	<copy todir="${tmp.basedir}/config/autoload/" overwrite="true">
 	        <filelist dir="${project.basedir}/config/autoload/" files="local.php.build" />
