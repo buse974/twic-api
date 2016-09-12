@@ -109,6 +109,7 @@ return [
             'app_service_video_archive',
             'app_service_circle',
             'app_service_material',
+            'app_service_report',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
@@ -179,5 +180,6 @@ return [
                     'Access-Control-Allow-Credentials' => 'true',
                     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
             ],
+            'storage' => []
     ],
 ];

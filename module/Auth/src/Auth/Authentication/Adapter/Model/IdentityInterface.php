@@ -15,6 +15,10 @@ interface IdentityInterface extends \JsonSerializable
     public function getCreatedDate();
 
     public function getExpirationDate();
+    
+    public function getSuspensionDate();
+    
+    public function getSuspensionReason();
 
     public function exchangeArray(array $datas);
 }
