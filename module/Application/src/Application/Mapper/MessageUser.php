@@ -27,7 +27,7 @@ class MessageUser extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'user_id', 'from_id', 'read_date', 'conversation_id', 'created_date'))
             ->join(array('message_user_message' => 'message'), 'message_user_message.id=message_user.message_id', array('id', 'is_draft', 'type', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")))
-            ->join(array('message_user_from' => 'user'), 'message_user_from.id=message_user.from_id', array('id', 'firstname', 'lastname', 'avatar'))
+            ->join(array('message_user_from' => 'user'), 'message_user_from.id=message_user.from_id', array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->where(array('message_user.user_id' => $user_id))
             ->where(array('message_user.deleted_date IS NULL'))
             ->where(array(' ( message_user_message.is_draft IS FALSE OR ( message_user_message.is_draft IS TRUE AND message_user_from.id = ? )) ' => $user_id))
@@ -42,6 +42,7 @@ class MessageUser extends AbstractMapper
                     ->where(array('( message_user_message.title LIKE ? ' => '%'.$search.'%'))
                     ->where(array('CONCAT(message_user_from.firstname," ",message_user_from.lastname) LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
                     ->where(array('CONCAT(message_user_from.lastname," ",message_user_from.firstname) LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array('message_user_from.nickname LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
                     ->where(array('message_doc.name LIKE ? ) ' => '%'.$search.'%'), Predicate::OP_OR);
             }
         } else {
@@ -62,6 +63,7 @@ class MessageUser extends AbstractMapper
                     ->where(array('( message.title LIKE ? ' => '%'.$search.'%'))
                     ->where(array('CONCAT(user.firstname," ",user.lastname) LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
                     ->where(array('CONCAT(user.lastname," ",user.firstname) LIKE ? ' => '%'.$search.'%'), Predicate::OP_OR)
+                    ->where(array('message_user_from.nickname LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
                     ->where(array('message_doc.name LIKE ? ) ' => '%'.$search.'%'), Predicate::OP_OR);
             }
 

@@ -18,9 +18,10 @@ class Research extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'firstname', 'lastname', 'avatar', 'category', 'role'))
+        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar', 'category', 'role'))
                 ->where(array('(firstname LIKE ?' => '%'.$string.'%'))
-                ->where(array('lastname LIKE ?)' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
+                ->where(array('lastname LIKE ?' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
+                ->where(array('nickname LIKE ?)' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
                 ->order(array('facette', 'firstname'))
                 ->quantifier('distinct');
 

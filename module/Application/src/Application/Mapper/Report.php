@@ -16,7 +16,7 @@ class Report extends AbstractMapper
         
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'reason', 'description', 'user_id', 'post_id', 'comment_id', 'validate', 'treatment_date', 'treated'])
-               ->join(['reporter' => 'user'], 'report.reporter_id = reporter.id', ['id', 'avatar', 'firstname', 'lastname'])
+               ->join(['reporter' => 'user'], 'report.reporter_id = reporter.id', ['id', 'avatar', 'firstname', 'lastname', 'nickname'])
                ->join(['sub' =>$sub_select],
                       'report.user_id = sub$user_id  OR report.post_id = sub$post_id OR report.comment_id = sub$comment_id',
                       ['report$weight' => 'weight']);

@@ -35,7 +35,7 @@ class SubmissionUser extends AbstractMapper
         $select->columns(array('submission_user$avg' => new Expression('SUM(item.coefficient * submission_user.grade) / SUM(item.coefficient)')))
             ->join('submission', 'submission_user.submission_id=submission.id', [])
             ->join('item', 'submission.item_id=item.id', [])
-            ->join('user', 'submission_user.user_id=user.id', ['id','firstname','lastname','avatar'])
+            ->join('user', 'submission_user.user_id=user.id', ['id','firstname','lastname','nickname', 'avatar'])
             ->join('course', 'item.course_id = course.id', array('id','title'))
             ->join('program', 'course.program_id = program.id', array('id','name'))
             ->where(array('program.deleted_date IS NULL'))
@@ -70,6 +70,7 @@ class SubmissionUser extends AbstractMapper
             } else {
                 $select->where(array('( user$firstname LIKE ?' => '%' . $search . '%'))
                     ->where(array(' user.lastname LIKE ? ' => '%' . $search . '%'), Predicate::OP_OR)
+                    ->where(array(' user.nickname LIKE ? ' => '%' . $search . '%'), Predicate::OP_OR)
                     ->where(array(' program.name LIKE ? ' => '%' . $search . '%'), Predicate::OP_OR)
                     ->where(array(' course.title LIKE ? )' => '%' . $search . '%'), Predicate::OP_OR);
             }
@@ -92,7 +93,7 @@ class SubmissionUser extends AbstractMapper
      */
     public function getListBySubmissionId($submission_id, $user_id = null)
     {
-        $columns = ['user$id' => new Expression('user.id'),'firstname','gender','lastname','email','has_email_notifier','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id',
+        $columns = ['user$id' => new Expression('user.id'),'firstname', 'nickname', 'gender','lastname','email','has_email_notifier','user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),'position','interest','avatar','school_id',
             'user$contacts_count' => $this->getMapperUser()->getSelectContactCount()];
         
         if (null !== $user_id) {

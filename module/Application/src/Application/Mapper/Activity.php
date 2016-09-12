@@ -72,10 +72,12 @@ class Activity extends AbstractMapper
     public function getListWithUser($search)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'event', 'object_name', 'object_data', 'target_name', 'target_data', 'activity$date' => new Expression('DATE_FORMAT(activity.date, "%Y-%m-%dT%TZ")')])->join('user', 'user.id = activity.user_id', ['firstname', 'lastname', 'avatar']);
+        $select->columns(['id', 'event', 'object_name', 'object_data', 'target_name', 'target_data', 'activity$date' => new Expression('DATE_FORMAT(activity.date, "%Y-%m-%dT%TZ")')])->join('user', 'user.id = activity.user_id', ['firstname',  'lastname', 'nickname', 'avatar']);
 
         if (null !== $search) {
-            $select->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR);
+            $select->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                    ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                    ->where(['nickname LIKE ? ' => ''.$search.'%'], Predicate::OP_OR);
         }
         $select->order(['activity.id' => 'DESC']);
 

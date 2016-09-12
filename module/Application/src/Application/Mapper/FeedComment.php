@@ -11,7 +11,7 @@ class FeedComment extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'content', 'feed_comment$created_date' => new Expression('DATE_FORMAT(created_date, "%Y-%m-%dT%TZ")')))
-            ->join('user', 'user.id=feed_comment.user_id', array('id', 'firstname', 'lastname', 'avatar'))
+            ->join('user', 'user.id=feed_comment.user_id', array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->where(array('feed_comment.deleted_date IS NULL'))
             ->where(array('feed_comment.feed_id' => $feed))
