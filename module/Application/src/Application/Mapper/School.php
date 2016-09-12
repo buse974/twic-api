@@ -40,7 +40,7 @@ class School extends AbstractMapper
     public function get($school)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone','contact','address_id', 'custom', 'libelle'))
+        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone','contact','address_id', 'custom', 'libelle', 'type'))
             ->join(array('school_user' => 'user'), 'school_user.id=school.contact_id', array('id','firstname','lastname', 'nickname', 'status','email','birth_date','position','interest','avatar'), $select::JOIN_LEFT)
             ->join(array('school_address' => 'address'), 'school.address_id = school_address.id', array('school_address!id' => 'id','street_no','street_type','street_name','floor','door','apartment','building','longitude','latitude','timezone'), $select::JOIN_LEFT)
             ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('school_address_division!id' => 'id','name'), $select::JOIN_LEFT)
@@ -62,10 +62,10 @@ class School extends AbstractMapper
      * @param array $exclude
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($me = null, $filter = null, $search = null, $user_id = null, $exclude = null)
+    public function getList($me = null, $filter = null, $search = null, $user_id = null, $exclude = null, $type = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone',  'custom', 'libelle'))
+        $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone',  'custom', 'libelle','type'))
             ->join(array('school_address' => 'address'), 'school.address_id = school_address.id', array('school_address!id' => 'id','street_no','street_type','street_name','floor','door','apartment','building','longitude','latitude','timezone'), $select::JOIN_LEFT)
             ->join(array('school_address_division' => 'division'), 'school_address_division.id=school_address.division_id', array('school_address_division!id' => 'id','name'), $select::JOIN_LEFT)
             ->join(array('school_address_city' => 'city'), 'school_address_city.id=school_address.city_id', array('school_address_city!id' => 'id','name'), $select::JOIN_LEFT)
@@ -87,7 +87,9 @@ class School extends AbstractMapper
         if (null !== $user_id) {
             $select->join(['ou' => 'organization_user'], 'ou.organization_id = school.id', [], $select::JOIN_LEFT)->where(['ou.user_id' => $user_id]);
         }
-        
+        if(null !== $type){
+            $select->where(array('type' => $type));
+        }
         $select->where('school.deleted_date IS NULL');
 
         return $this->selectWith($select);
