@@ -12,6 +12,8 @@ class Identity  implements IdentityInterface
     protected $expiration_date;
     protected $avatar;
     protected $email;
+    protected $suspension_date;
+    protected $suspension_reason;
 
     public function exchangeArray(array $datas)
     {
@@ -122,6 +124,30 @@ class Identity  implements IdentityInterface
         return $this;
     }
 
+    public function getSuspensionDate()
+    {
+        return $this->suspension_date;
+    }
+
+    public function setSuspensionDate($suspension_date)
+    {
+        $this->suspension_date = $suspension_date;
+
+        return $this;
+    }
+
+    public function getSuspensionReason()
+    {
+        return $this->suspension_reason;
+    }
+
+    public function setSuspensionReason($suspension_reason)
+    {
+        $this->suspension_reason = $suspension_reason;
+
+        return $this;
+    }
+    
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -135,6 +161,8 @@ class Identity  implements IdentityInterface
             'created_date' => $this->created_date,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
+            'suspension_date' => $this->suspension_date,
+            'suspension_reason' => $this->suspension_reason,
             'email' => $this->email,
             'avatar' => $this->avatar,
             'expiration_date' => $this->expiration_date,

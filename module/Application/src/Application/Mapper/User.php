@@ -211,16 +211,28 @@ class User extends AbstractMapper
     public function getList($user_id, $is_sadmin_admin, $filter = null, $event = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null, $contact_state = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array(
-            'user$id' => new Expression('user.id'),
-            'firstname', 'lastname', 'email', 'nickname',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
-            'position', 'interest', 'avatar',
-            'user$contact_state' => $this->getSelectContactState($user_id),
-            'user$contacts_count' => $this->getSelectContactCount(), ))
-            ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
-            ->group('user.id')
-            ->quantifier('DISTINCT');
+        if($is_sadmin_admin){
+            
+            $select->columns(array(
+                'user$id' => new Expression('user.id'),
+                'firstname', 'lastname', 'email', 'nickname',
+                'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+                'position', 'interest', 'avatar', 'suspension_date', 'suspension_reason',
+                'user$contact_state' => $this->getSelectContactState($user_id),
+                'user$contacts_count' => $this->getSelectContactCount(), ));
+        }
+        else{
+            $select->columns(array(
+                'user$id' => new Expression('user.id'),
+                'firstname', 'lastname', 'email', 'nickname',
+                'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+                'position', 'interest', 'avatar',
+                'user$contact_state' => $this->getSelectContactState($user_id),
+                'user$contacts_count' => $this->getSelectContactCount(), ));
+        }
+        $select->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
+        ->group('user.id')
+        ->quantifier('DISTINCT');
         
        if($is_sadmin_admin === false) {
            $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
