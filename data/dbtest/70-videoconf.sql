@@ -13,7 +13,7 @@ ADD CONSTRAINT `fk_opt_assignment_10`
   ON DELETE CASCADE
   ON UPDATE NO ACTION;
 
-ALTER TABLE `apilms`.`conversation_opt` 
+ALTER TABLE `conversation_opt` 
 ADD COLUMN `id` INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
 ADD PRIMARY KEY (`id`);
 
