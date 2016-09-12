@@ -9,6 +9,8 @@ interface IdentityInterface extends \JsonSerializable
     public function getLastname();
 
     public function getFirstname();
+    
+    public function getNickname();
 
     public function getToken();
 
