@@ -57,7 +57,7 @@ class School extends AbstractService
      * @throws \Exception
      * @return \Application\Model\School
      */
-    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null)
+    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null, $type = null)
     {
         $formattedWebsite = $this->getFormattedWebsite($website);
         $m_school = $this->getModel()
@@ -72,7 +72,8 @@ class School extends AbstractService
             ->setContact($contact)
             ->setCustom($custom)
             ->setLibelle($libelle)
-            ->setContactId($contact_id);
+            ->setContactId($contact_id)
+            ->setType($type);
         
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);
@@ -188,14 +189,14 @@ class School extends AbstractService
      * @param array $exclude         
      * @return array
      */
-    public function getList($filter = null, $search = null, $exclude = null)
+    public function getList($filter = null, $search = null, $exclude = null, $type = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         
         $me = $identity['id'];
         $mapper = $this->getMapper();
-        $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me,$filter, $search, null, $exclude);
+        $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me,$filter, $search, null, $exclude, $type);
         
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());

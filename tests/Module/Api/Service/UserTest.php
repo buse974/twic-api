@@ -297,7 +297,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['school']['logo'] , null);
         $this->assertEquals($data['result']['school']['background'] , null);
         $this->assertEquals(count($data['result']['organizations']) , 1);
-        $this->assertEquals(count($data['result']['organizations'][0]) , 12);
+        $this->assertEquals(count($data['result']['organizations'][0]) , 13);
         $this->assertEquals($data['result']['organizations'][0]['address'] , null);
         $this->assertEquals($data['result']['organizations'][0]['id'] , 1);
         $this->assertEquals($data['result']['organizations'][0]['name'] , "Morbi Corporation");
@@ -310,6 +310,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['organizations'][0]['phone'] , "04 17 21 41 32");
         $this->assertEquals($data['result']['organizations'][0]['custom'] , null);
         $this->assertEquals($data['result']['organizations'][0]['libelle'] , null);
+        $this->assertEquals($data['result']['organizations'][0]['type'] , 'SCHOOL');
         $this->assertEquals($data['result']['organization_id'] , 1);
         $this->assertEquals(!empty($data['result']['wstoken']) , true);
         $this->assertEquals(!empty($data['result']['fbtoken']) , true);
@@ -345,7 +346,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['school']['logo'] , null); 
         $this->assertEquals($data['result']['school']['background'] , null); 
         $this->assertEquals(count($data['result']['organizations']) , 1); 
-        $this->assertEquals(count($data['result']['organizations'][0]) , 12); 
+        $this->assertEquals(count($data['result']['organizations'][0]) , 13); 
         $this->assertEquals($data['result']['organizations'][0]['address'] , null); 
         $this->assertEquals($data['result']['organizations'][0]['id'] , 1); 
         $this->assertEquals($data['result']['organizations'][0]['name'] , "Morbi Corporation"); 
@@ -358,6 +359,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['organizations'][0]['phone'] , "04 17 21 41 32"); 
         $this->assertEquals($data['result']['organizations'][0]['custom'] , null); 
         $this->assertEquals($data['result']['organizations'][0]['libelle'] , null); 
+        $this->assertEquals($data['result']['organizations'][0]['type'] , 'SCHOOL'); 
         $this->assertEquals($data['result']['organization_id'] , 1); 
         $this->assertEquals(!empty($data['result']['wstoken']) , true); 
         $this->assertEquals(!empty($data['result']['fbtoken']) , true); 
