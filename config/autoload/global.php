@@ -175,7 +175,7 @@ return [
                     'tmp' => '/tmp/',
             ],
             'headers' => [
-                    'Access-Control-Allow-Origin' => 'http://lms.com',
+                /*    'Access-Control-Allow-Origin' => 'http://lms.com', */
                     'Access-Control-Allow-Credentials' => 'true',
                     'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
             ],
