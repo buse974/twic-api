@@ -38,15 +38,16 @@ class ExternalTest extends AbstractService
     {
         $this->mockRbac();
         $data = $this->jsonRpc('user.auth', array('user' => 'external@free.fr' , 'password' => 'toto'));
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 12);
+        $this->assertEquals(count($data['result']) , 13);
         $this->assertEquals($data['result']['id'] , 11);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
         $this->assertEquals($data['result']['firstname'] , "firstname_external");
         $this->assertEquals($data['result']['lastname'] , "lastname_external");
+        $this->assertEquals($data['result']['nickname'] , null);
         $this->assertEquals($data['result']['suspension_date'] , null);
         $this->assertEquals($data['result']['suspension_reason'] , null);
         $this->assertEquals($data['result']['email'] , "external@free.fr");
