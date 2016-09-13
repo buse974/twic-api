@@ -22,7 +22,6 @@ class Module
     {
         $sge = new Sge();
         $sge->init();
-
         $eventManager = $event->getApplication()->getEventManager();
         $eventManagerShare = $eventManager->getSharedManager();
         $eventManagerShare->attach('JRpc\Json\Server\Server', 'sendRequest.pre', function ($e) use ($event) {

@@ -48,7 +48,7 @@ class Role extends AbstractService
      */
     public function getServiceRoleRelation()
     {
-        return $this->getServiceLocator()->get('rbac_service_role_relation');
+        return $this->container->get('rbac_service_role_relation');
     }
 
     /**
@@ -56,7 +56,7 @@ class Role extends AbstractService
      */
     public function getServiceRole()
     {
-        return $this->getServiceLocator()->get('rbac_service_role');
+        return $this->container->get('rbac_service_role');
     }
 
     /**
@@ -64,6 +64,6 @@ class Role extends AbstractService
      */
     public function getServicePermission()
     {
-        return $this->getServiceLocator()->get('rbac_service_permission');
+        return $this->container->get('rbac_service_permission');
     }
 }

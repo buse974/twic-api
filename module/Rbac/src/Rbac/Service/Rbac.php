@@ -10,25 +10,32 @@ use Zend\ServiceManager\ServiceManager;
 class Rbac  
 {
     /**
-     * @var PluginManager
-     */
-    protected $plugins;
-    
-    /**
-     * @var \Zend\ServiceManager\ServiceManager
-     */
-    protected $service_locator;
-
-    /**
      * @var \Zend\Permissions\Rbac\Rbac
      */
     protected $rbac;
+    
+    /**
+     * @var \Rbac\Db\Service\Role
+     */
+    protected $service_role;
 
     /**
      * @var \Zend\Cache\Storage\StorageInterface
      */
     protected $cache;
 
+    /**
+     * Constructor
+     * 
+     * @param \Rbac\Db\Service\Role $service_role
+     * @param \Zend\Cache\Storage\StorageInterface $cache
+     */
+    public function __construct($service_role, $cache)
+    {
+        $this->service_role = $service_role;
+        $this->cache = $cache;
+    }
+    
     /**
      * @param array $options
      */
@@ -68,8 +75,8 @@ class Rbac
     public function getRbac()
     {
         if ($this->rbac === null) {
-            $this->rbac = (!$this->getCache()->hasItem('rbac')) ?
-                $this->createRbac() : $this->getCache()->getItem('rbac');
+            $this->rbac = (!$this->cache->hasItem('rbac')) ?
+                $this->createRbac() : $this->cache->getItem('rbac');
         }
 
         return $this->rbac;
@@ -77,7 +84,7 @@ class Rbac
 
     public function createRbac()
     {
-        $roles = $this->getServiceRole()->getAll()->toArray();
+        $roles = $this->service_role->getAll()->toArray();
         $rbac = new ZRBac();
         foreach ($roles as $role) {
             $ar_child = array();
@@ -103,68 +110,13 @@ class Rbac
 
         $this->rbac = $rbac;
 
-        if ($this->getCache()->hasItem('rbac')) {
-            $this->getCache()->replaceItem('rbac', $rbac);
+        if ($this->cache->hasItem('rbac')) {
+            $this->cache->replaceItem('rbac', $rbac);
         } else {
-            $this->getCache()->setItem('rbac', $rbac);
+            $this->cache->setItem('rbac', $rbac);
         }
 
         return $this->rbac;
     }
 
-    /**
-     * @return \Rbac\Db\Service\Role
-     */
-    public function getServiceRole()
-    {
-        return $this->getServiceLocator()->get('rbac_service_role');
-    }
-    
-    /**
-     * Set plugin manager
-     *
-     * @param  PluginManager $plugins
-     * @return AbstractController
-     */
-    public function setPluginManager(PluginManager $plugins)
-    {
-        $this->plugins = $plugins;
-        $this->plugins->setController($this);
-    
-        return $this;
-    }
-    
-
-    /**
-     * Get service locator.
-     *
-     * @return PluginManager
-     */
-    public function getServiceLocator()
-    {
-        if (!$this->plugins) {
-            $this->setPluginManager(new PluginManager(new ServiceManager()));
-        }
-        
-        $this->plugins->setController($this);
-        return $this->plugins;
-    }
-
-    /**
-     * Get Storage if define in config.
-     *
-     * @return \Zend\Cache\Storage\StorageInterface
-     */
-    public function getCache()
-    {
-        if (null === $this->cache) {
-            $config = $this->getServiceLocator()->get('config')['rbac-conf'];
-            $cache = $config['cache'];
-            if (isset($cache['name']) && is_string($cache['name'])) {
-                $this->cache = $this->getServiceLocator()->get($cache['name']);
-            }
-        }
-
-        return $this->cache;
-    }
 }

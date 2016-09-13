@@ -98,6 +98,6 @@ class RolePermission extends AbstractService
      */
     public function getServiceRbac()
     {
-        return $this->getServiceLocator()->get('rbac.service');
+        return $this->container->get('rbac.service');
     }
 }

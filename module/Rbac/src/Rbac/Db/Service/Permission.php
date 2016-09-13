@@ -136,7 +136,7 @@ class Permission extends AbstractService
      */
     public function getServiceRbac()
     {
-        return $this->getServiceLocator()->get('rbac.service');
+        return $this->container->get('rbac.service');
     }
 
     /**
@@ -144,6 +144,6 @@ class Permission extends AbstractService
      */
     public function getserviceRolePermission()
     {
-        return $this->getServiceLocator()->get('rbac_service_role_permission');
+        return $this->container->get('rbac_service_role_permission');
     }
 }

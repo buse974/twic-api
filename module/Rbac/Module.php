@@ -19,9 +19,10 @@ class Module implements ConfigProviderInterface
                 'rbac.service' => 'Rbac\Service\Rbac',
             ),
             'factories' => array(
-                'Rbac\Service\Rbac' => function ($sm) {
-                    // return new \Rbac\Service\Rbac($sm->get('Config')['rbac_base']);
-                    return new \Rbac\Service\Rbac();
+                'Rbac\Service\Rbac' => function ($container) {
+                    $cache = $container->get('config')['rbac-conf']['cache'];
+                    
+                    return new \Rbac\Service\Rbac($container->get('rbac_service_role'), $container->get($cache['name']));
                 },
             ),
         );
