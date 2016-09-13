@@ -978,7 +978,7 @@ class Event extends AbstractService
 
         $m_user = $this->getServiceUser()->get($user_id);
 
-        return ['id' => $user_id, 'name' => 'user', 'data' => ['firstname' => $m_user['firstname'], 'email' => $m_user['email'], 'lastname' => $m_user['lastname'], 'gender' => $m_user['gender'], 'has_email_notifier' => $m_user['has_email_notifier'], 'avatar' => $m_user['avatar'], 'school' => ['id' => $m_user['school']['id'], 'short_name' => $m_user['school']['short_name'], 'logo' => $m_user['school']['logo'], 'background' => $m_user['school']['background'], 'name' => $m_user['school']['name']], 'user_roles' => $m_user['roles']]];
+        return ['id' => $user_id, 'name' => 'user', 'data' => ['firstname' => $m_user['firstname'], 'email' => $m_user['email'], 'lastname' => $m_user['lastname'], 'nickname' => $m_user['nickname'], 'gender' => $m_user['gender'], 'has_email_notifier' => $m_user['has_email_notifier'], 'avatar' => $m_user['avatar'], 'school' => ['id' => $m_user['school']['id'], 'short_name' => $m_user['school']['short_name'], 'logo' => $m_user['school']['logo'], 'background' => $m_user['school']['background'], 'name' => $m_user['school']['name']], 'user_roles' => $m_user['roles']]];
     }
 
     /**

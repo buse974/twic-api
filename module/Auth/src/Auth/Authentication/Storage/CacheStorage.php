@@ -90,11 +90,13 @@ class CacheStorage extends AbstractStorage
     {
         
         $session_user = $this->cache->getItem($uid);
-        foreach(array_keys($this->cache->getItem($uid)->getArrayCopy()) as $session){
-            $session_user->offsetUnset($session);
-            $this->cache->removeItem($session);
+        if(null !== $session_user){
+            foreach($this->cache->getItem($uid) as $key => $session) {
+                $session_user->offsetUnset($key);
+                $this->cache->removeItem($key);
+            }
+            $this->cache->setItem($uid, $session_user);
         }
-        $this->cache->setItem($uid, $session_user);
 
         return;
     }

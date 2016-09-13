@@ -91,22 +91,25 @@ class DbAdapter extends AbstractAdapter
             $code = Result::FAILURE_IDENTITY_AMBIGUOUS;
             $message[] = 'More than one record matches the supplied identity.';
         } else {
-            $code = Result::SUCCESS;
-            $message[] = 'Authentication successful.';
 
             $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
             $arrayIdentity = current($arrayIdentity);
-
-            $identity = $this->getResult()->exchangeArray($arrayIdentity);
-            $identity->setToken($identity->getId().md5($identity->getId().$identity->getEmail().Rand::getBytes(10).time()));
-
+            if(null !== $arrayIdentity['suspension_date']){
+                $code = Result::FAILURE_ACCOUNT_SUSPENDED;
+                $message[] = $arrayIdentity['suspension_reason'];
+            }
+            else{
+                
+                $code = Result::SUCCESS;
+                $message[] = 'Authentication successful.';
+                $identity = $this->getResult()->exchangeArray($arrayIdentity);
+                $identity->setToken($identity->getId().md5($identity->getId().$identity->getEmail().Rand::getBytes(10).time()));
+                $update = $sql->update('user');
+                $update->set(array('password' => md5($this->credential), 'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));
+                $statement = $sql->prepareStatementForSqlObject($update);
+                $statement->execute();
+            }
             
-            
-            $update = $sql->update('user');
-
-            $update->set(array('password' => md5($this->credential), 'new_password' => null))->where(array('id' => $arrayIdentity['id'], new IsNotNull('new_password')));
-            $statement = $sql->prepareStatementForSqlObject($update);
-            $statement->execute();
         }
 
         return new Result($code, $identity, $message);
