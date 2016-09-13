@@ -80,12 +80,6 @@ class User extends AbstractService
         if ($identity === null) {
             return;
         }
-        
-    	if(null !== $identity->getSuspensionDate()) {
-            $this->logout();
-            throw new JrpcException($identity->getSuspensionReason(), -38003);
-        }
-        
         $id = $identity->getId();
         if ($init === false && $this->getCache()->hasItem('identity_' . $id)) {
             $user = $this->getCache()->getItem('identity_' . $id);
