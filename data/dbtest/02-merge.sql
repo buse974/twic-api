@@ -47,7 +47,7 @@ INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('0', '4');
 INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('2', '1');
 INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('3', '2');
 INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('5', '3');
-INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('4', '4');
+INSERT INTO `role_relation` (`role_id`, `parent_id`) VALUES ('4', '5');
 
 INSERT INTO `contact` (`accepted_date`, `contact_id`, `user_id`) VALUES ('2015-08-11 13:17:25', 1,2);
 INSERT INTO `contact` (`accepted_date`, `contact_id`, `user_id`) VALUES ('2015-08-11 13:17:25', 2,1);
