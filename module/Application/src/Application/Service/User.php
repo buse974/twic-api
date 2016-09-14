@@ -977,7 +977,7 @@ class User extends AbstractService
             }
         }
         
-        return (count($users) > 1) ? $users : reset($users);
+        return (is_array($id)) ? $users : reset($users);
     }
     
     /**
