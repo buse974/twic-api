@@ -85,7 +85,7 @@ class DbAdapter extends AbstractAdapter
         $results = $statement->execute();
 
         if ($results->count() < 1) {
-            $code = Result::FAILURE_IDENTITY_NOT_FOUND;
+            $code = Result::FAILURE_CREDENTIAL_INVALID;
             $message[] = 'A record with the supplied identity could not be found.';
         } elseif ($results->count() > 1) {
             $code = Result::FAILURE_IDENTITY_AMBIGUOUS;
@@ -111,7 +111,6 @@ class DbAdapter extends AbstractAdapter
             }
             
         }
-
         return new Result($code, $identity, $message);
     }
 
