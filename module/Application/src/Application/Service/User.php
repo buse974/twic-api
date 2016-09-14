@@ -980,6 +980,39 @@ class User extends AbstractService
         return (is_array($id)) ? $users : reset($users);
     }
     
+       /**
+     * Get User for mobile
+     *
+     * @invokable
+     *
+     * @param int $id            
+     * @return array
+     */
+    public function m_get($id = null)
+    {
+        $user_id = $this->getIdentity()['id'];
+        if ($id === null) {
+            $id = $user_id;
+        }
+        
+        $res_user = $this->getMapper()->get($id, $user_id);
+
+        if ($res_user->count() <= 0) {
+            throw new \Exception('error get user: ' . $id);
+        }
+        
+        $users = [];
+        foreach ($res_user->toArray() as &$user) {
+            $user['roles'] = [];
+            foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
+                $user['roles'][] = $role->getName();
+            }
+            $users[$user['id']] = $user;
+        }
+        
+        return $users;
+    }
+    
     /**
      * Get User
      *
