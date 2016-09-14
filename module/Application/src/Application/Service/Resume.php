@@ -204,6 +204,30 @@ class Resume extends AbstractService
 
         return $resumes;
     }
+    
+        
+         /**
+     * Get Resume for mobile
+     *
+     * @invokable
+     *
+     * @param int|array $id            
+     * @return array
+     */
+    public function m_get($id = null)
+    {
+       if(!is_array($id)){
+            $id = [$id];
+        }
+        
+        $res_resume = $this->getMapper()->select($this->getModel()->setId($id));
+        $resumes = [];
+        foreach ($res_resume->toArray() as &$resume) {
+            $resumes[$resume['id']] = $resume;
+        }
+        
+        return $resumes;
+    }
 
     
     /**
