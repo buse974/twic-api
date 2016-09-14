@@ -177,6 +177,36 @@ class Resume extends AbstractService
     }
 
     /**
+     * Get list resume id by users.
+     *
+     * @invokable
+     * 
+     * @param int|array $id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function m_getListIdByUser($id)
+    {
+        if(!is_array($id)){
+            $users = [$id];
+        }
+        else{
+            $users = $id;
+        }
+        $resumes = [];
+        foreach($users as &$user){
+            $resumes[$user] = [];
+        }
+        $res_resume = $this->getMapper()->m_getListIdByUser($user);
+        foreach($res_resume->toArray() as &$resume){
+            $resumes[$resume['user_id']][] = $resume['id'];
+        }
+
+        return $resumes;
+    }
+
+    
+    /**
      * Get Resume.
      *
      * @invokable
