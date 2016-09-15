@@ -985,14 +985,17 @@ class User extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int|array $id            
      * @return array
      */
     public function m_get($id = null)
     {
         $user_id = $this->getIdentity()['id'];
         if ($id === null) {
-            $id = $user_id;
+            $id = [$user_id];
+        }
+        else if(!is_array($id)){
+            $id = [$id];
         }
         
         $res_user = $this->getMapper()->get($id, $user_id);
