@@ -220,13 +220,7 @@ class Resume extends AbstractService
             $id = [$id];
         }
         
-        $res_resume = $this->getMapper()->select($this->getModel()->setId($id));
-        $resumes = [];
-        foreach ($res_resume->toArray() as &$resume) {
-            $resumes[$resume['id']] = $resume;
-        }
-        
-        return $resumes;
+        return $this->getMapper()->select($this->getModel()->setId($id))->toArray(['id']);
     }
 
     

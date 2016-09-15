@@ -193,15 +193,7 @@ class School extends AbstractService
             $id = [$id];
         }
         
-        $res_school = $this->getMapper()->select($this->getModel()->setId($id));
-
-      
-        $schools = [];
-        foreach ($res_school->toArray() as &$school) {
-            $schools[$school['id']] = $school;
-        }
-        
-        return $schools;
+        return $this->getMapper()->select($this->getModel()->setId($id))->toArray(['id']);
     }
 
     /**
