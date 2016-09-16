@@ -8,6 +8,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
+use Zend\Db\Sql\Predicate\IsNotNull;
 
 /**
  * Class Contact.
@@ -233,6 +234,36 @@ class Contact extends AbstractService
 
         return $ret;
     }
+    
+      /**
+     * Get list contact id by users.
+     *
+     * @invokable
+     * 
+     * @param int|array $id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function m_getListIdByUser($id)
+    {
+        if(!is_array($id)){
+            $users = [$id];
+        }
+        else{
+            $users = $id;
+        }
+        $contacts = [];
+        foreach($users as &$user){
+            $contacts[$user] = [];
+        }
+        $res_contact = $this->getMapper()->select($this->getModel()->setUserId($users)->setAcceptedDate(new IsNotNull())->setDeletedDate(new IsNull()));
+        foreach($res_contact->toArray() as &$contact){
+            $contacts[$contact['user_id']][] = $contact['contact_id'];
+        }
+
+        return $contacts;
+    }
+    
 
     /**
      * Get Service Event.

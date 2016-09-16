@@ -178,6 +178,23 @@ class School extends AbstractService
             $results : 
             $results->current();
     }
+    
+       /**
+     * Get School for mobile
+     *
+     * @invokable
+     *
+     * @param int|array $id            
+     * @return array
+     */
+    public function m_get($id = null)
+    {
+        if(!is_array($id)){
+            $id = [$id];
+        }
+        
+        return $this->getMapper()->select($this->getModel()->setId($id))->toArray(['id']);
+    }
 
     /**
      * Get school list
