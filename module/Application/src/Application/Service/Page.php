@@ -219,7 +219,7 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null)
     {
         if(null === $id && null === $parent_id && null === $user_id && null === $organization_id) {
             throw new \Exception('Error: params is null');
@@ -230,6 +230,7 @@ class Page extends AbstractService
                 ->setId($id)
                 ->setPageId($parent_id)
                 ->setUserId($user_id)
+                ->setType($type)
                 ->setOrganizationId($organization_id));
         
         foreach ($res_page as $m_page) {
