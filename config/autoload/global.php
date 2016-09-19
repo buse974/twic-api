@@ -110,6 +110,7 @@ return [
             'app_service_circle',
             'app_service_material',
             'app_service_report',
+            'app_service_page',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
@@ -169,17 +170,5 @@ return [
     'zopentok-conf' => [
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
-    ],
-    'dms-conf' => [
-            'adapter' => 'http-adapter',
-            'convert' => [
-                    'tmp' => '/tmp/',
-            ],
-            'headers' => [
-                /*    'Access-Control-Allow-Origin' => 'http://lms.com', */
-                    'Access-Control-Allow-Credentials' => 'true',
-                    'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-            ],
-            'storage' => []
     ],
 ];

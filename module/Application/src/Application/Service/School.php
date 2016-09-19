@@ -301,7 +301,7 @@ class School extends AbstractService
     }
 
     /**
-     * Get Service Grading
+     * Get Service Cicle
      *
      * @return \Application\Service\Circle
      */
@@ -311,7 +311,7 @@ class School extends AbstractService
     }
     
     /**
-     * Get Service Grading
+     * Get Service User
      *
      * @return \Application\Service\User
      */

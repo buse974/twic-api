@@ -21,7 +21,6 @@ class School extends AbstractModel
 	protected $custom;
 	protected $libelle;
 	protected $deleted_date;
-	protected $type;
 
 	protected $prefix = 'school';
 
@@ -201,18 +200,6 @@ class School extends AbstractModel
 	public function setDeletedDate($deleted_date)
 	{
 		$this->deleted_date = $deleted_date;
-
-		return $this;
-	}
-
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	public function setType($type)
-	{
-		$this->type = $type;
 
 		return $this;
 	}

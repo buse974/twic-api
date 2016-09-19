@@ -186,6 +186,17 @@ class Library extends AbstractService
     {
         return $this->getMapper()->getListByBankQuestion($bank_question_id);
     }
+    
+    /**
+     * Get List Library By Page id
+     *
+     * @param int $page_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByPage($page_id)
+    {
+        return $this->getMapper()->getListByPage($page_id);
+    }
 
     /**
      * Get List Library Material

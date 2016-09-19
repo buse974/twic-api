@@ -34,6 +34,22 @@ class Library extends AbstractMapper
     }
 
     /**
+     * Get List Library By Page id
+     *
+     * @param int $page_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByPage($page_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
+            ->join('page_doc', 'page_doc.library_id=library.id', [])
+            ->where(array('page_doc.page_id' => $page_id));
+        
+        return $this->selectWith($select);
+    }
+    
+    /**
      * Get List Library By Item
      *
      * @param int $item_id            

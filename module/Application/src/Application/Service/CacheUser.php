@@ -7,7 +7,7 @@
 namespace Application\Service;
 
 /**
- * Class CacheUser.
+ * Class CacheUser
  */
 class CacheUser 
 {

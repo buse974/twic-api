@@ -17,7 +17,6 @@ return array(
         'secret_key_fb_debug' => ****,
         'urldms' => '****',
      ],
-    'path_videoconf_guest' => 'https://meeting.thestudnet.com/videoconference/',
 	'db' => array(
 		'adapters' => array(
 			'db-adapter' => array(
