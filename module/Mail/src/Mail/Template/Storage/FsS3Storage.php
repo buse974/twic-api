@@ -2,9 +2,12 @@
 
 namespace Mail\Template\Storage;
 
-class FsStorage extends AbstractStorage
+use Aws\S3\S3Client;
+
+class FsS3Storage extends AbstractStorage
 {
     protected $path;
+    protected $init_path = false;
 
     public function write(\Mail\Template\Model\TplModel $model)
     {
@@ -45,10 +48,17 @@ class FsStorage extends AbstractStorage
         return file_exists($this->path.$name.'.obj');
     }
 
-    public function init($conf)
+    public function init($config)
     {
-        $this->path = $conf['path'];
+        if ($this->init_path === false) {
+            $s3Client = new S3Client($config['options']);
+            $s3Client->registerStreamWrapper();
+            $init_path = true;
+        }
+        
+        $this->path = sprintf('s3://%s/', $config['bucket']);
         
         return $this;
     }
+
 }
