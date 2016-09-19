@@ -219,13 +219,15 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $filter = null)
     {
         if(null === $id && null === $parent_id && null === $user_id && null === $organization_id) {
             throw new \Exception('Error: params is null');
         }
-        
-        $res_page = $this->getMapper()->getList($id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date);
+
+        $mapper = $this->getMapper()->usePaginator($filter);
+
+        $res_page = $mapper->getList($id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date);
         
         foreach ($res_page as $m_page) {
             $m_page->setTags($this->getServicePageTag()
@@ -236,7 +238,7 @@ class Page extends AbstractService
                 ->getList($m_page->getId()));
         }
         
-        return $res_page;
+        return ['count' => $mapper->count(), 'list' => $res_page];
     }
     
 
