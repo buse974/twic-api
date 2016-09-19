@@ -219,18 +219,13 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $start_date = null, $end_date = null)
     {
         if(null === $id && null === $parent_id && null === $user_id && null === $organization_id) {
             throw new \Exception('Error: params is null');
         }
         
-        $res_page = $this->getMapper()
-        ->select($this->getModel()
-                ->setId($id)
-                ->setPageId($parent_id)
-                ->setUserId($user_id)
-                ->setOrganizationId($organization_id));
+        $res_page = $this->getMapper()->getList($id, $parent_id, $user_id, $organization_id, $start_date, $end_date);
         
         foreach ($res_page as $m_page) {
             $m_page->setTags($this->getServicePageTag()
