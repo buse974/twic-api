@@ -38,8 +38,8 @@ class VideoArchive extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'archive_status', 'conversation_id'))
-        ->join('sub_conversation', 'sub_conversation.conversation_id=video_archive.conversation_id', ['video_archive$submission_id' => 'submission_id'])
-        ->where(['video_archive.conversation_id' => $sub_select]);
+            ->join('sub_conversation', 'sub_conversation.conversation_id=video_archive.conversation_id', ['video_archive$submission_id' => 'submission_id'])
+            ->where(['video_archive.conversation_id' => $sub_select]);
 
         return $this->selectWith($select);
     }
@@ -63,7 +63,6 @@ class VideoArchive extends AbstractMapper
     public function getListVideoUpload()
     {
         $select = $this->tableGateway->getSql()->select();
-
         $select->columns(array('id', 'archive_token', 'archive_link', 'archive_status'))->where(array('archive_status' => CVF::ARV_STARTED));
 
         return $this->selectWith($select);

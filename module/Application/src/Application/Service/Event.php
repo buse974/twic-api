@@ -9,7 +9,6 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Json\Server\Request;
 use Zend\Http\Client;
-use Application\Model\VideoArchive;
 
 /**
  * Class Event.
@@ -394,22 +393,24 @@ class Event extends AbstractService
     }
 
     /**
-     * Event record.available.
+     * Event record.available
      *
-     * @param int          $submission_id
-     * @param VideoArchive $video_archive
+     * @param \Application\Model\VideoArchive $m_video_archive
+     * @param int $item_id
      *
      * @return int
      */
-    public function recordAvailable($submission_id, $video_archive)
+    public function recordAvailable($m_video_archive, $item_id = null)
     {
-        $m_video_archive = $this->getServiceVideoArchive()->get($video_archive);
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        $user = [];
-        $user = $this->getDataUserByConversation($m_video_archive->getConversationId()) + $this->getDataUserBySubmissionWithInstrutorAndAcademic($submission_id);
-
-        return $this->create('record.available', $this->getDataVideoArchive($m_video_archive), $this->getDataSubmission($m_submission),  $user, self::TARGET_TYPE_USER);
+        $user = $this->getDataUserByConversation($m_video_archive->getConversationId());
+        if(null !== $item_id) {
+            $user = $user + $this->getDataUserByItemIdWithInstructorAndAcademic($item_id);
+        }
+        return $this->create('record.available', 
+            $this->getDataVideoArchive($m_video_archive), 
+            (null !== $item_id) ? $this->getDataItem($item_id):null,  
+            $user, 
+            self::TARGET_TYPE_USER);
     }
 
     /**
@@ -758,6 +759,27 @@ class Event extends AbstractService
         return $ret;
     }
 
+   
+    /**
+     * Get Data User Item.
+     *
+     * @param int $item_id
+     *
+     * @return array
+     */
+    private function getDataUserByItemIdWithInstructorAndAcademic($item_id)
+    {
+        $res_user = $this->getServiceUser()->getListByItem($item_id);
+    
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
+        }
+    
+        return $users;
+    }
+    
+    
     /**
      * Get Data User School.
      *
@@ -930,6 +952,18 @@ class Event extends AbstractService
         $m_feed = $this->getServiceFeed()->get($feed_id);
 
         return ['id' => $feed_id, 'name' => 'feed', 'data' => ['content' => $m_feed->getContent(), 'picture' => $m_feed->getPicture(), 'name_picture' => $m_feed->getNamePicture(), 'document' => $m_feed->getDocument(), 'name_document' => $m_feed->getNameDocument(), 'link' => $m_feed->getLink()]];
+    }
+    
+    /**
+     * 
+     * @param int $item_id
+     * @return array
+     */
+    private function getDataItem($item_id)
+    {
+        return ['id' => $item_id,
+            'name' => 'item', 
+            'data' => []];
     }
 
     /**
@@ -1175,5 +1209,15 @@ class Event extends AbstractService
     private function getServiceTask()
     {
         return $this->container->get('app_service_task');
+    }
+    
+    /**
+     * Get Service Item
+     *
+     * @return \Application\Service\Item
+     */
+    private function getServiceItem()
+    {
+        return $this->container->get('app_service_item');
     }
 }

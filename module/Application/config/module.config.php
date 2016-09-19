@@ -2,6 +2,8 @@
 
 use Zend\Router\Http\Literal;
 use Application\Controller\Plugin\ConfFactory;
+use Application\Controller\Plugin\videoArchive;
+use Interop\Container\ContainerInterface;
 
 /**
  * Zend Framework (http://framework.zend.com/).
@@ -12,14 +14,18 @@ use Application\Controller\Plugin\ConfFactory;
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-return array(
+return [
     'controller_plugins' => [
         'factories' => [
             'conf' => ConfFactory::class,
+            'videoArchive' => function (ContainerInterface $container) {
+                
+                return new videoArchive($container->get('app_service_video_archive'));
+            }
         ],
     ],
-    'router' => array(
-        'routes' => array(
+    'router' =>[
+        'routes' => [
             /*'home' => array(
                 'type' => Literal::class,
                 'options' => array(
@@ -30,30 +36,40 @@ return array(
                     ),
                 ),
             ),*/
-            'version' => array(
+            'statuschange' => [
+                 'type' => Literal::class,
+                     'options' => [
+                     'route' => '/statuschange',
+                     'defaults' => [
+                         'controller' => 'Application\Controller\Index',
+                         'action' => 'statusChange',
+                     ],
+                 ],
+             ],
+            'version' => [
                 'type' => Literal::class,
-                'options' => array(
+                'options' => [
                     'route' => '/version',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'Application\Controller\Version',
                         'action' => 'index',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
             // using the path /application/:controller/:action
-            'application' => array(
+            'application' => [
                 'type' => Literal::class,
-                'options' => array(
+                'options' => [
                     'route' => '/application',
-                    'defaults' => array(
+                    'defaults' => [
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller' => 'Index',
                         'action' => 'index',
-                    ),
-                ),
+                    ],
+                ],
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
@@ -69,9 +85,9 @@ return array(
                         ),
                     ),
                 ),
-            ),
-        ),
-    ),
+            ],
+        ],
+    ],
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -112,15 +128,14 @@ return array(
             'error/404' => __DIR__.'/../view/error/404.phtml',
             'error/index' => __DIR__.'/../view/error/index.phtml',
         ),
-        'template_path_stack' => array(
+        'template_path_stack' => [
             __DIR__.'/../view',
-        ),
+        ],
     ),
     // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
-);
+    'console' => [
+        'router' => [
+            'routes' => [],
+        ],
+    ],
+];

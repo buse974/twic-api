@@ -15,17 +15,17 @@ class Conf extends AbstractPlugin
 {
 
     /**
-     * Option dms-conf.
+     * Option dms-conf
      *
      * @var array
      */
     protected $options;
 
     /**
-     * Constructor.
+     * Constructor
      *
      * @param DmsService $service
-     * @param array      $options
+     * @param array $options
      */
     public function __construct($options)
     {
@@ -33,7 +33,7 @@ class Conf extends AbstractPlugin
     }
 
     /**
-     * Get Array Hearders.
+     * Get Array Hearders
      *
      * @return array
      */
