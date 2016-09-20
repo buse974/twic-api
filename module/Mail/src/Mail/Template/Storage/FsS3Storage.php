@@ -15,7 +15,7 @@ class FsS3Storage extends AbstractStorage
             mkdir($this->path, 0777, true);
         }
 
-        $fp = fopen($this->path.$model->getName().'.obj', 'w+');
+        $fp = fopen($this->path.$model->getName().'.obj', 'w');
         $ret = fwrite($fp, serialize($model));
         fclose($fp);
 
