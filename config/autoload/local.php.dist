@@ -96,4 +96,20 @@ return array(
 			),
 		),
 	),
+	'mail-conf' => [
+         'storage' => [
+             'active' => false,
+         ],
+         'transport' => [
+             'active' => true,
+             'type' => 'sendmail',
+             'options' => [],
+         ],
+         'template' => [
+             'storage' => [
+                 'name' => 'fs',
+                 'path' => __DIR__.'/../../../tpl/',
+             ],
+         ],
+     ],
 );
