@@ -1,8 +1,10 @@
 <?php
 
-return [
+return [];
+
+/*return [
     'mail-conf' => [
-        /*'template' => array(
+        'template' => [
             'storage' => [
                 'name' => 'fs',
                 'path' => __DIR__.'/../../../tpl/',
@@ -16,15 +18,16 @@ return [
                     'credentials' => [
                         'key' => 'AKIAI5A2CCVNKTBXLWKA',
                         'secret' => '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',
-                    ]
-            ]
-        ),*/
+                    ],
+                ],
+            ],
+        ],
         'storage' => [
             'active' => true,
-            'host' => 'imap.quicopro.ti1.fr',
+            'host' => 'imap.xxxxxx.fr',
                'ssl' => 'tls', 
         ],
-        /*'transport' => [
+        'transport' => [
             'active' => true,
             'type' => 'smtp',
             'options' => [
@@ -36,6 +39,6 @@ return [
                     'ssl' => 'tls',
                 ],
             ],
-        ],*/
+        ],
     ],
-];
+];*/
