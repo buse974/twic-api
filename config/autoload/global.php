@@ -14,6 +14,7 @@
 
 return [
     'version' => "v1.2",
+    'build-commit' => 3,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -148,5 +149,28 @@ return [
     'zopentok-conf' => [
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
+    ],
+    'caches' => [
+        'storage_memcached' => [
+            'adapter' => [
+                'name' => 'memcached',
+                'options' => [
+                    'servers' => [
+                        ['host' => 'localhost', 'port' => '11211', 'weight' => 66],
+                        ['host' => 'localhost', 'port' => '11211', 'weight' => 33],
+                    ],
+                    'namespace' => 'LMS3',
+                    'liboptions' => [
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS3'],
+                        ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
+                        ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
+                        ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
+                    ],
+                ],
+            ],
+            'plugins' => [
+                'exception_handler' => ['throw_exceptions' => true],
+            ],
+        ],
     ],
 ];

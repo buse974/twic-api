@@ -106,9 +106,9 @@ class VideoArchive extends AbstractService
      */
     public function checkStatus($json)
     {
-        $re = false;
+        $ret = false;
         if($json['status'] == 'uploaded') {
-            $ret = $this->updateByArchiveToken($json['id'], CVF::ARV_AVAILABLE, $json['link']);
+            $ret = $this->updateByArchiveToken($json['id'], CVF::ARV_AVAILABLE, null, $json['link']);
             if($ret) {
                 $m_video_archive = $this->getMapper()->select($this->getModel()->setArchiveToken($json['id']))->current();
                 $m_conversation = $this->getServiceConversation()->getLite($m_video_archive->getConversationId());
