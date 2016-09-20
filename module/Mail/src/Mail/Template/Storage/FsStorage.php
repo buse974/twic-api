@@ -45,7 +45,7 @@ class FsStorage extends AbstractStorage
         return file_exists($this->path.$name.'.obj');
     }
 
-    public function init($conf)
+    public function init($conf = [])
     {
         $this->path = $conf['path'];
         

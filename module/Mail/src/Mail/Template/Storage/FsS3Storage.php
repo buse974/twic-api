@@ -48,7 +48,7 @@ class FsS3Storage extends AbstractStorage
         return file_exists($this->path.$name.'.obj');
     }
 
-    public function init($config)
+    public function init($config = [])
     {
         if ($this->init_path === false) {
             $s3Client = new S3Client($config['options']);
