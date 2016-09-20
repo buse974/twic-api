@@ -22,17 +22,17 @@ class Module implements ConfigProviderInterface
             'factories' => [
                 Mail\Service\Mail::class => function($container) {
                     $conf_mail = $container->get('config')['mail-conf'];
-                    $class_storage = $conf_mail['template']['storage'];
+                    $conf_storage = $conf_mail['template']['storage'];
                     $bj_storage = null;
                     
-                    switch ($class_storage['name']) {
+                    switch ($conf_storage['name']) {
                         case 'fs' :
                             $bj_storage = new \Mail\Template\Storage\FsStorage();
-                            $bj_storage->init($class_storage);
+                            $bj_storage->init($conf_storage);
                             break;
                         case 's3' :
                             $bj_storage = new \Mail\Template\Storage\FsS3Storage();
-                            $bj_storage->init($class_storage);
+                            $bj_storage->init($conf_storage);
                             break;
                     }
                     

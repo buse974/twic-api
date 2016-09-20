@@ -1,7 +1,7 @@
 <?php
 
-return array(
-    'mail-conf' => array(
+return [
+    'mail-conf' => [
         /*'template' => array(
             'storage' => [
                 'name' => 'fs',
@@ -19,22 +19,23 @@ return array(
                     ]
             ]
         ),*/
-        'storage' => array(
+        'storage' => [
             'active' => true,
             'host' => 'imap.quicopro.ti1.fr',
-               'ssl' => 'tls', ),
-        'transport' => array(
+               'ssl' => 'tls', 
+        ],
+        /*'transport' => [
             'active' => true,
             'type' => 'smtp',
-            'options' => array(
+            'options' => [
                 'name' => 'christophe',
                 'host' => '',
                 'port' => 587,
                 'connection_class' => 'plain',
-                'connection_config' => array(
+                'connection_config' => [
                     'ssl' => 'tls',
-                ),
-            ),
-        ),
-    ),
-);
+                ],
+            ],
+        ],*/
+    ],
+];

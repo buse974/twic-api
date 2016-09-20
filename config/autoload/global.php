@@ -145,28 +145,6 @@ return [
             'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',*/
         ],
     ],
-    'mail-conf' => [
-        'template' => [
-            'storage' => 'Mail\Template\Storage\FsStorage',
-            'path' => __DIR__.'/../../../tpl/',
-        ],
-        'storage' => [
-            'active' => false,
-        ],
-        'transport' => [
-            'active' => true,
-            'type' => 'sendmail'/*'smtp'*/,
-            'options' => [
-                /*'name'              => 'christophe',
-    			'host'              => 'smtp.thestudnet.com',
-    			'port'              => 587,
-    			'connection_class'  => 'plain',
-    			'connection_config' => [
-    				'ssl' => 'tls',
-    			],*/
-            ],
-        ],
-    ],
     'zopentok-conf' => [
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
