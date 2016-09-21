@@ -20,6 +20,7 @@ class Page extends AbstractModel
 	protected $user_id;
 	protected $organization_id;
 	protected $page_id;
+	protected $address_id;
 
 	protected $prefix = 'page';
 
@@ -187,6 +188,18 @@ class Page extends AbstractModel
 	public function setPageId($page_id)
 	{
 		$this->page_id = $page_id;
+
+		return $this;
+	}
+
+	public function getAddressId()
+	{
+		return $this->address_id;
+	}
+
+	public function setAddressId($address_id)
+	{
+		$this->address_id = $address_id;
 
 		return $this;
 	}
