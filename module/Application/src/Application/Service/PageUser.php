@@ -27,6 +27,23 @@ class PageUser extends AbstractService
         return $this->getMapper()->insert($m_page_user);
     }
     
+    
+    /**
+     * Delete Page User Relation 
+     * 
+     * @param int $page_id
+     * @param int $user_id
+     * @return int
+     */
+    public function delete($page_id, $user_id)
+    {
+        $m_page_user = $this->getModel()
+            ->setPageId($page_id)
+            ->setUserId($user_id);
+        
+        return $this->getMapper()->delete($m_page_user);
+    }
+    
     /**
      * Get List Page User Relation
      * 

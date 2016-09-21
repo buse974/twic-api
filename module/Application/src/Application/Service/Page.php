@@ -39,7 +39,7 @@ class Page extends AbstractService
      * @param array $docs            
      * @return int
      */
-    public function add($title, $logo, $background, $description, $confidentiality, $type, $admission, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
+    public function add($title, $logo,  $description, $confidentiality, $type, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         
@@ -119,7 +119,7 @@ class Page extends AbstractService
      *
      * @return int
      */
-    public function update($id, $title, $logo, $background, $description, $confidentiality, $type, $admission, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
+    public function update($id, $title=null, $logo=null, $background=null, $description=null, $confidentiality=null, $type=null, $admission=null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = null, $tags = null, $docs = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_page = $this->getModel()
@@ -139,6 +139,7 @@ class Page extends AbstractService
             ->setPageId($page_id);
         
         if (null !== $users) {
+            syslog(1, json_encode($users));
             $is_present = false;
             foreach ($users as $ar_u) {
                 if ($ar_u['user_id'] === $user_id) {
@@ -185,17 +186,19 @@ class Page extends AbstractService
      * @invokable
      *
      * @param int $id      
-     * @param int $parent_id      
+     * @param int $parent_id   
+     * @param string $type      
      */
-    public function get($id = null, $parent_id = null)
+    public function get($id = null, $parent_id = null, $type = null)
     {
         if(null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
         
-        $m_page = $this->getMapper()
-            ->select($this->getModel()->setId($id)->setPageId($parent_id))
-            ->current();
+        $m_page = $this->getMapper()->get($id, $parent_id, $type)->current();
+        if(null === $m_page){
+              throw new \Exception('This page does not exist');
+        }
         
         $m_page->setTags($this->getServicePageTag()
             ->getList($id));

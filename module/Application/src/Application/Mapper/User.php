@@ -333,18 +333,22 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListAttendees($user_id, $is_sadmin_admin, $course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
+    public function getListAttendees($user_id, $is_sadmin_admin, $course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null, $roles = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar', 'sis'])
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
-            ->join('user_role', 'user_role.user_id=user.id', [])
-            ->where(['user_role.role_id' => [ModelRole::ROLE_STUDENT_ID, ModelRole::ROLE_INSTRUCTOR_ID]])
+           
             ->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(['user.id' => 'DESC'])
             ->quantifier('DISTINCT');
             
+        
+            if(null !== $roles){
+                $select->join('user_role', 'user_role.user_id=user.id', [])
+                        ->where(['user_role.role_id' => $roles]);
+            }
             if($is_sadmin_admin === false) {
                 $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
@@ -385,7 +389,7 @@ class User extends AbstractMapper
             if (!empty($exclude_user)) {
                 $select->where(new NotIn('user.id', $exclude_user));
             }
-        
+            syslog(1, $this->printSql($select));
             return $this->selectWith($select);
     }
     
