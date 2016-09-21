@@ -11,9 +11,19 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\JsonModel;
 
+/**
+ * Controller Index 
+ */
 class IndexController extends AbstractActionController
 {
+    /**
+     * Index 
+     * 
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractActionController::indexAction()
+     */
     public function indexAction()
     {
         $response = $this->getResponse();
@@ -21,5 +31,17 @@ class IndexController extends AbstractActionController
         $response->setStatusCode(302);
         
         return $response;
+    }
+    
+    /**
+     * Check Status
+     * 
+     * @return \Zend\View\Model\JsonModel
+     */
+    public function statusChangeAction()
+    {
+         $ret = $this->videoArchive()->checkStatus($this->getRequest()->getContent());
+
+         return new JsonModel(['code'=>$ret]);
     }
 }

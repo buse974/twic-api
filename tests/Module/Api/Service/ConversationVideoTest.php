@@ -376,54 +376,7 @@ class ConversationVideoTest extends AbstractService
         $s_va->add(1,'myToken2');
         $s_va->add(1,'myToken3');
         $s_va->add(1,'myToken4');
-        
-        $data = $this->jsonRpc('videoarchive.getListVideoUpload', []);
-        
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 4);
-        $this->assertEquals(count($data['result'][0]) , 5);
-        $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['archive_token'] , "myToken");
-        $this->assertEquals($data['result'][0]['archive_link'] , null);
-        $this->assertEquals($data['result'][0]['archive_status'] , "started");
-        $this->assertEquals($data['result'][0]['url'] , "http://google.fr");
-        $this->assertEquals(count($data['result'][1]) , 5);
-        $this->assertEquals($data['result'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['archive_token'] , "myToken2");
-        $this->assertEquals($data['result'][1]['archive_link'] , null);
-        $this->assertEquals($data['result'][1]['archive_status'] , "started");
-        $this->assertEquals($data['result'][1]['url'] , "http://google.fr");
-        $this->assertEquals(count($data['result'][2]) , 5);
-        $this->assertEquals($data['result'][2]['id'] , 3);
-        $this->assertEquals($data['result'][2]['archive_token'] , "myToken3");
-        $this->assertEquals($data['result'][2]['archive_link'] , null);
-        $this->assertEquals($data['result'][2]['archive_status'] , "started");
-        $this->assertEquals($data['result'][2]['url'] , "http://google.fr");
-        $this->assertEquals(count($data['result'][3]) , 5);
-        $this->assertEquals($data['result'][3]['id'] , 4);
-        $this->assertEquals($data['result'][3]['archive_token'] , "myToken4");
-        $this->assertEquals($data['result'][3]['archive_link'] , null);
-        $this->assertEquals($data['result'][3]['archive_status'] , "started");
-        $this->assertEquals($data['result'][3]['url'] , "http://google.fr");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-    
-    public function testCanValid()
-    {
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('videoarchive.validTransfertVideo', ['video_archive' => 1, 'url' => 'http://ici.fr']);
-        $this->reset();
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('videoarchive.validTransfertVideo', ['video_archive' => 2, 'url' => 'http://ici.fr']);
-        $this->reset();
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('videoarchive.validTransfertVideo', ['video_archive' => 3, 'url' => 'http://ici.fr']);
-        
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+
     }
     
     /**

@@ -100,6 +100,32 @@ class VideoArchive extends AbstractService
     }
 
     /**
+     * Valide the video transfer
+     * 
+     * @param array $json
+     */
+    public function checkStatus($json)
+    {
+        $ret = false;
+        if($json['status'] == 'uploaded') {
+            $ret = $this->updateByArchiveToken($json['id'], CVF::ARV_AVAILABLE, null, $json['link']);
+            if($ret) {
+                $m_video_archive = $this->getMapper()->select($this->getModel()->setArchiveToken($json['id']))->current();
+                $m_conversation = $this->getServiceConversation()->getLite($m_video_archive->getConversationId());
+                $m_conversation_opt = $this->getServiceConversationOpt()->get($m_conversation->getConversationOptId());
+                
+                $item_id = null;
+                if(null !== $m_conversation_opt) {
+                    $item_id = $m_conversation_opt->getItemId();
+                }
+                $this->getServiceEvent()->recordAvailable($m_video_archive, $item_id);
+            }
+        }
+        
+        return $ret;
+    }
+    
+    /**
      * Valide the video transfer.
      *
      * @invokable
@@ -109,17 +135,17 @@ class VideoArchive extends AbstractService
      *
      * @return int
      */
-    public function validTransfertVideo($video_archive, $url)
+    /*public function validTransfertVideo($video_archive, $url)
     {
         //@todo check video first
         //$event_send = true;
         // regarder si une video na pas etait déja notifier pour cette conversation
         //$res_video_archive = $this->getMapper()->getListSameConversation($video_archive);
-        /*foreach ($res_video_archive as $m_video_archive) {
+        foreach ($res_video_archive as $m_video_archive) {
             if (CVF::ARV_AVAILABLE === $m_video_archive->getArchiveStatus()) {
                 $event_send = false;
             }
-        }*/
+        }
 
         //$m_video_archive = $this->getMapper()->select($this->getModel()->setId($video_archive))->current();
         $m_video_archive = $this->getMapper()->getListSameConversation($video_archive)->current();
@@ -129,7 +155,7 @@ class VideoArchive extends AbstractService
         $this->getServiceEvent()->recordAvailable($m_video_archive->getSubmissionId(), $video_archive);
         }
         return $ret;
-    }
+    }*/
 
     /**
      * Update Status Video.
@@ -141,15 +167,14 @@ class VideoArchive extends AbstractService
      *
      * @return int
      */
-    public function updateByArchiveToken($id, $status, $duration = null, $link = null)
+    public function updateByArchiveToken($archive_token, $status, $duration = null, $link = null)
     {
         $m_video_archive = $this->getModel();
-        $m_video_archive->setId($id)
-            ->setArchiveDuration($duration)
+        $m_video_archive->setArchiveDuration($duration)
             ->setArchiveStatus($status)
             ->setArchiveLink($link);
 
-        return $this->getMapper()->update($m_video_archive);
+        return $this->getMapper()->update($m_video_archive, ['archive_token' => $archive_token]);
     }
 
     /**
@@ -159,13 +184,16 @@ class VideoArchive extends AbstractService
      *
      * @return array
      */
-    public function getListVideoUpload()
+    /*public function getListVideoUpload()
     {
         $ret = [];
         $res_video_no_upload = $this->getMapper()->getListVideoUpload();
         foreach ($res_video_no_upload as $m_video_archive) {
             try {
                 $archive = json_decode($this->getServiceZOpenTok()->getArchive($m_video_archive->getArchiveToken()), true);
+                
+                print_r($archive);
+                
                 if ($archive['status'] == CVF::ARV_AVAILABLE) {
                     if ($archive['duration'] == 0) {
                         $this->updateByArchiveToken($m_video_archive->getId(), CVF::ARV_SKIPPED, 0);
@@ -183,7 +211,7 @@ class VideoArchive extends AbstractService
         }
 
         return $ret;
-    }
+    }*/
 
     /**
      * Add Video.
@@ -216,6 +244,16 @@ class VideoArchive extends AbstractService
         return $this->container->get('app_service_conversation');
     }
 
+    /**
+     * Get Service Conversation Opt
+     *
+     * @return \Application\Service\ConversationOpt
+     */
+    private function getServiceConversationOpt()
+    {
+        return $this->container->get('app_service_conversation_opt');
+    }
+    
     /**
      * Get Service Conversation user.
      *

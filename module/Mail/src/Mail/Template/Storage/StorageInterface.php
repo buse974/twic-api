@@ -23,4 +23,9 @@ interface StorageInterface
      * get List Tpl.
      */
     public function getList();
+    
+    /**
+     * @param array $config
+     */
+    public function init($config = []);
 }

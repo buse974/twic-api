@@ -14,6 +14,7 @@
 
 return [
     'version' => "v1.2",
+    'build-commit' => 5,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -145,30 +146,27 @@ return [
             'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',*/
         ],
     ],
-    'mail-conf' => [
-        'template' => [
-            'storage' => 'Mail\Template\Storage\FsStorage',
-            'path' => __DIR__.'/../../../tpl/',
-        ],
-        'storage' => [
-            'active' => false,
-        ],
-        'transport' => [
-            'active' => true,
-            'type' => 'sendmail'/*'smtp'*/,
-            'options' => [
-                /*'name'              => 'christophe',
-    			'host'              => 'smtp.thestudnet.com',
-    			'port'              => 587,
-    			'connection_class'  => 'plain',
-    			'connection_config' => [
-    				'ssl' => 'tls',
-    			],*/
-            ],
-        ],
-    ],
     'zopentok-conf' => [
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
+    ],
+    'caches' => [
+        'storage_memcached' => [
+            'adapter' => [
+                'name' => 'memcached',
+                'options' => [
+                    'namespace' => 'LMS5',
+                    'liboptions' => [
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS5'],
+                        ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
+                        ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
+                        ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
+                    ],
+                ],
+            ],
+            'plugins' => [
+                'exception_handler' => ['throw_exceptions' => true],
+            ],
+        ],
     ],
 ];

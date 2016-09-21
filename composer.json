@@ -11,13 +11,14 @@
         "php": ">=5.6",
         "zendframework/zendframework": "^3.0",
         "zendframework/zend-file": "*",
-	"blanchonvincent/simple-page-crawler": "dev-master",
+	    "blanchonvincent/simple-page-crawler": "dev-master",
         "firebase/token-generator":"2.*",
         "buse974/dal":"dev-master",
         "buse974/address":"dev-master",
         "buse974/jrpc":"dev-master",
-	"buse974/ZOpenTok":"dev-master",
-	"buse974/sge":"dev-master"
+	    "buse974/ZOpenTok":"dev-master",
+	    "buse974/sge":"dev-master",
+        "aws/aws-sdk-php": "^3.19"
     },
     "require-dev": {
             "phing/phing": "*",
@@ -38,5 +39,17 @@
             "Rbac\\": "module/Rbac/src/", 
             "Box\\": "module/Box/src/" 
         }
+    },
+    "scripts": {
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "development-disable": "zf-development-mode disable",
+        "development-enable": "zf-development-mode enable",
+        "development-status": "zf-development-mode status",
+        "post-create-project-cmd": [
+            "@development-enable"
+        ],
+        "serve": "php -S 0.0.0.0:8080 -t public/ public/index.php",
+        "test": "phpunit"
     }
 }
