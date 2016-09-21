@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.2",
-    'build-commit' => 3,
+    'build-commit' => 4,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -155,13 +155,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'servers' => [
-                        ['host' => 'localhost', 'port' => '11211', 'weight' => 66],
-                        ['host' => 'localhost', 'port' => '11211', 'weight' => 33],
-                    ],
-                    'namespace' => 'LMS3',
+                    'namespace' => 'LMS4',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS3'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS4'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

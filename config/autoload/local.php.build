@@ -112,4 +112,16 @@ return array(
              ],
          ],
      ],
+    'caches' => [
+        'storage_memcached' => [
+            'adapter' => [
+                'options' => [
+                    'servers' => [
+                        ['host' => 'localhost', 'port' => '11211', 'weight' => 66],
+                        ['host' => 'localhost', 'port' => '11211', 'weight' => 33],
+                    ],
+                ],
+            ],
+        ],
+    ],
 );
