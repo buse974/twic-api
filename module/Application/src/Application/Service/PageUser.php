@@ -78,7 +78,7 @@ class PageUser extends AbstractService
     {
         $m_page_user = $this->getModel()->setPageId($page_id);
         
-        return $this->getMapper()->select($m_page_user);
+        return $this->getMapper()->getList($page_id);
     }
     /**
      * Add Array
