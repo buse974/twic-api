@@ -285,7 +285,7 @@ class Contact extends AbstractService
         foreach($users as &$user){
             $contacts[$user] = [];
         }
-        $res_contact = $this->getMapper()->select($this->getModel()->setUserId($users)->setAcceptedDate(new IsNull())->setDeletedDate(new IsNull()));
+        $res_contact = $this->getMapper()->select($this->getModel()->setUserId($users)->setAcceptedDate(new IsNull())->setDeletedDate(new IsNull())->setRequested(1));
         foreach($res_contact->toArray() as &$contact){
             $contacts[$contact['user_id']][] = $contact['contact_id'];
         }
@@ -314,7 +314,7 @@ class Contact extends AbstractService
         foreach($users as &$user){
             $contacts[$user] = [];
         }
-        $res_contact = $this->getMapper()->select($this->getModel()->setContactId($users)->setAcceptedDate(new IsNull())->setDeletedDate(new IsNull()));
+        $res_contact = $this->getMapper()->select($this->getModel()->setContactId($users)->setAcceptedDate(new IsNull())->setDeletedDate(new IsNull())->setRequested(1));
         foreach($res_contact->toArray() as &$contact){
             $contacts[$contact['contact_id']][] = $contact['user_id'];
         }

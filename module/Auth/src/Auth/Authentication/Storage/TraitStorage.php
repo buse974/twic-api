@@ -4,9 +4,8 @@ namespace Auth\Authentication\Storage;
 
 use Zend\Http\Request;
 
-abstract class AbstractStorage implements StorageInterface
-{
-    /**
+trait TraitStorage {
+/**
      * @var string
      */
     protected $token;

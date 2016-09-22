@@ -2,8 +2,9 @@
 
 namespace Auth\Authentication\Storage;
 
-class CacheStorage extends AbstractStorage
+class CacheStorage implements StorageInterface 
 {
+    use TraitStorage;
     /**
      * @var \Zend\Cache\Storage\StorageInterface
      */

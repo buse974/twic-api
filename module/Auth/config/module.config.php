@@ -13,9 +13,10 @@ return array(
             ),
         ),
         'storage' => array(
-            'name' => 'token.storage',
+            'name' => 'token.storage.bddmem',
             'options' => array(
                 'adpater' => 'storage_memcached',
+                'bdd_adpater' => 'db-adapter',
             ),
         ),
     ),
