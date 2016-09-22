@@ -112,6 +112,7 @@ return [
             'app_service_material',
             'app_service_report',
             'app_service_page',
+            'app_service_page_user',
             [
                 'class' => 'addr_service_address',
                 'methods' => [

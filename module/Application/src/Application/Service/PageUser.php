@@ -10,6 +10,8 @@ class PageUser extends AbstractService
     /**
      * Add Page User Relation 
      * 
+     * @invokable
+     * 
      * @param int $page_id
      * @param int $user_id
      * @param string $role
@@ -29,7 +31,30 @@ class PageUser extends AbstractService
     
     
     /**
+     * Update Page User Relation 
+     * 
+     * @invokable
+     * 
+     * @param int $page_id
+     * @param int $user_id
+     * @param string $role
+     * @param strung $state
+     * @return int
+     */
+    public function update($page_id, $user_id, $role, $state)
+    {
+        $m_page_user = $this->getModel()
+            ->setRole($role)
+            ->setState($state);
+        
+        return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
+    }
+    
+    
+    /**
      * Delete Page User Relation 
+     * 
+     * @invokable
      * 
      * @param int $page_id
      * @param int $user_id
