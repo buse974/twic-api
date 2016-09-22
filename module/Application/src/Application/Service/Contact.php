@@ -264,6 +264,64 @@ class Contact extends AbstractService
         return $contacts;
     }
     
+      /**
+     * Get list contact id by users.
+     *
+     * @invokable
+     * 
+     * @param int|array $id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function m_getListRequestByUser($id)
+    {
+        if(!is_array($id)){
+            $users = [$id];
+        }
+        else{
+            $users = $id;
+        }
+        $contacts = [];
+        foreach($users as &$user){
+            $contacts[$user] = [];
+        }
+        $res_contact = $this->getMapper()->select($this->getModel()->setUserId($users)->setAcceptedDate(new IsNull())->setDeletedDate(new IsNull()));
+        foreach($res_contact->toArray() as &$contact){
+            $contacts[$contact['user_id']][] = $contact['contact_id'];
+        }
+
+        return $contacts;
+    }
+    
+      /**
+     * Get list contact id by users.
+     *
+     * @invokable
+     * 
+     * @param int|array $id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function m_getListRequestByContact($id)
+    {
+        if(!is_array($id)){
+            $users = [$id];
+        }
+        else{
+            $users = $id;
+        }
+        $contacts = [];
+        foreach($users as &$user){
+            $contacts[$user] = [];
+        }
+        $res_contact = $this->getMapper()->select($this->getModel()->setContactId($users)->setAcceptedDate(new IsNull())->setDeletedDate(new IsNull()));
+        foreach($res_contact->toArray() as &$contact){
+            $contacts[$contact['contact_id']][] = $contact['user_id'];
+        }
+
+        return $contacts;
+    }
+    
 
     /**
      * Get Service Event.
