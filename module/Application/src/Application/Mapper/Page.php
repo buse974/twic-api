@@ -7,7 +7,7 @@ use Dal\Mapper\AbstractMapper;
 class Page extends AbstractMapper
 {
 
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null)
     {
         $where = $this->getWhereParams([
             'id' => $id,
@@ -19,6 +19,22 @@ class Page extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select()->where($where);
 
+        if (null !== $member_id) {
+            $this->selectByMember($select, $member_id);
+        }
+
+        return $this->selectWithDates($select, $start_date, $end_date);
+    }
+
+    protected function getWhereParams($originalParams = [])
+    {
+        return array_filter($originalParams, function($value) {
+            return null !== $value;
+        });
+    }
+
+    protected function selectWithDates($select, $start_date, $end_date)
+    {
         if (null !== $end_date) {
             $select->where([
                 'page.start_date <= ?' => [$end_date]
@@ -34,11 +50,9 @@ class Page extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    protected function getWhereParams($originalParams = [])
+    protected function selectByMember($select, $member_id)
     {
-        return array_filter($originalParams, function($value) {
-            return null !== $value;
-        });
+        return $select->join('page_user', 'page_user.page_id = page.id')
+                      ->where(['page_user.user_id' => $member_id]);
     }
-
 }
