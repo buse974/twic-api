@@ -37,6 +37,8 @@ return [];
                 'connection_class' => 'plain',
                 'connection_config' => [
                     'ssl' => 'tls',
+                    'username' => 'user',
+                    'password' => 'pass',
                 ],
             ],
         ],
