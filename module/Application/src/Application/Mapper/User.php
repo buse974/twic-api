@@ -333,7 +333,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListAttendees($user_id, $is_sadmin_admin, $course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null, $roles = null)
+    public function getListAttendees($user_id, $is_sadmin_admin, $course = null, $program = null, $school = null, $page = null, $exclude_course = null, $exclude_program = null, $exclude_user = null, $exclude_page = null, $roles = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar', 'sis'])
@@ -362,6 +362,10 @@ class User extends AbstractMapper
             if (!empty($program) || !empty($exclude_program)) {
                 $select->join('program_user_relation', 'program_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
             }
+             if (!empty($page)) {
+                $select->join('page_user', 'page_user.user_id=user.id', [], $select::JOIN_LEFT)
+                        ->where(['page_user.page_id' => $page]);
+            }
             if (!empty($school)) {
                 $select->where(['school.id' => $school]);
             }
@@ -370,6 +374,13 @@ class User extends AbstractMapper
             }
             if (!empty($program)) {
                 $select->where(['program_user_relation.program_id' => $program]);
+            }
+           if (!empty($exclude_page)) {
+                $select_ex_page = $this->tableGateway->getSql()->select();
+                $select_ex_page->columns(['id'])
+                       ->join('page_user', 'page_user.user_id=user.id', [])
+                       ->where(['page_user.page_id' => $exclude_page]);
+                $select->where(new NotIn('user.id', $select_ex_page));
             }
             if (!empty($exclude_course)) {
                 $select_ex_course = $this->tableGateway->getSql()->select();

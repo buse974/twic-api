@@ -18,7 +18,6 @@ class PageUser extends AbstractMapper
             ->order(new Expression('IF(state = "'.ModelPageUser::STATE_PENDING.'", 0, 1)'));
 
        
-        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
     

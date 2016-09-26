@@ -13,20 +13,27 @@ class PageUser extends AbstractService
      * @invokable
      * 
      * @param int $page_id
-     * @param int $user_id
+     * @param int|array $user_id
      * @param string $role
      * @param strung $state
      * @return int
      */
     public function add($page_id, $user_id, $role, $state)
     {
+        if(!is_array($user_id)){
+            $user_id = [$user_id];
+        }
+        
         $m_page_user = $this->getModel()
             ->setPageId($page_id)
-            ->setUserId($user_id)
             ->setRole($role)
             ->setState($state);
+        $ret = 0;
+        foreach($user_id as $uid){
+            $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
+        }
         
-        return $this->getMapper()->insert($m_page_user);
+        return $ret;
     }
     
     
@@ -72,13 +79,16 @@ class PageUser extends AbstractService
     /**
      * Get List Page User Relation
      * 
+     * @invokable
+     * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($page_id)
+    public function getList($page_id, $filter = null)
     {
-        $m_page_user = $this->getModel()->setPageId($page_id);
+        $mapper = $this->getMapper();
+        $res = $mapper->usePaginator($filter)->getList($page_id);
         
-        return $this->getMapper()->getList($page_id);
+        return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
     /**
      * Add Array

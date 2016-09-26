@@ -10,6 +10,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
+use Application\Model\Page as ModelPage;
 
 /**
  * Class Page
@@ -138,8 +139,9 @@ class Page extends AbstractService
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
         
+       
+        
         if (null !== $users) {
-            syslog(1, json_encode($users));
             $is_present = false;
             foreach ($users as $ar_u) {
                 if ($ar_u['user_id'] === $user_id) {
@@ -163,6 +165,7 @@ class Page extends AbstractService
             $this->getServicePageDoc()->replace($id, $docs);
         }
         
+        $this->getMapper()->update( $this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
         return $this->getMapper()->update($m_page);
     }
 
@@ -194,18 +197,16 @@ class Page extends AbstractService
         if(null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
-        
-        $m_page = $this->getMapper()->get($id, $parent_id, $type)->current();
-        if(null === $m_page){
+        $identity = $this->getServiceAuth()->getIdentity();
+        $m_page = $this->getMapper()->get( $identity->getId(), $id, $parent_id, $type)->current();
+        if(false === $m_page){
               throw new \Exception('This page does not exist');
         }
         
-        $m_page->setTags($this->getServicePageTag()
-            ->getList($id));
-        $m_page->setDocs($this->getServicePageDoc()
-            ->getList($id));
-        $m_page->setUsers($this->getServicePageUser()
-            ->getList($id));
+        $m_page->setTags($this->getServicePageTag()->getList($id));
+        $m_page->setDocs($this->getServicePageDoc()->getList($id));
+        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'n' => 4, 'p' => 1 ]));
+        $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, [ 'n' => 4, 'p' => 1 ]));
         
         return $m_page;
     }
@@ -222,15 +223,15 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $filter = null)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null)
     {
-        if(null === $id && null === $parent_id && null === $user_id && null === $organization_id) {
+        if(null === $id && null === $parent_id && null === $user_id && null === $organization_id && null === $member_id) {
             throw new \Exception('Error: params is null');
         }
-
+        $identity = $this->getServiceAuth()->getIdentity();
         $mapper = $this->getMapper()->usePaginator($filter);
+        $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id);
 
-        $res_page = $mapper->getList($id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date);
         
         foreach ($res_page as $m_page) {
             $m_page->setTags($this->getServicePageTag()
@@ -283,5 +284,15 @@ class Page extends AbstractService
     private function getServicePageTag()
     {
         return $this->container->get('app_service_page_tag');
+    }
+    
+     /**
+     * Get Service Auth.
+     *
+     * @return \Zend\Authentication\AuthenticationService
+     */
+    private function getServiceAuth()
+    {
+        return $this->container->get('auth.service');
     }
 }
