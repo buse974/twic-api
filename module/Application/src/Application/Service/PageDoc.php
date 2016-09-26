@@ -8,6 +8,8 @@ class PageDoc extends AbstractService
     /**
      * Add Page Document Relation
      * 
+     * @invokable
+     * 
      * @param int $page_id
      * @param int|array $library
      * @return int
@@ -24,7 +26,8 @@ class PageDoc extends AbstractService
             ->setPageId($page_id)
             ->setLibraryId($library);
         
-        return $this->getMapper()->insert($m_page_doc);
+        $this->getMapper()->insert($m_page_doc);
+        return $library;
     }
 
     /**
