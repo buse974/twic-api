@@ -3,27 +3,87 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
+use Zend\Db\Sql\Select;
 
 class Page extends AbstractMapper
 {
+    
+      /**
+     * Get State and role of the current user on page
+     * 
+     * @param int $user
+     * @return \Zend\Db\Sql\Select
+     */
+    public function getPageStatus($user)
+    {
+        $select = new Select('page_user');
+        $select->columns(['state', 'role','page_id'])
+                 ->where(['user_id' => $user]);
 
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null)
+        return $select;
+    }
+
+
+    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null)
     {
         $where = $this->getWhereParams([
-            'id' => $id,
-            'parent_id' => $parent_id,
-            'user_id' => $user_id,
-            'organization_id' => $organization_id,
-            'type' => $type
+            'page.id' => $id,
+            'page.page_id' => $parent_id,
+            'page.user_id' => $user_id,
+            'page.organization_id' => $organization_id,
+            'page.type' => $type
         ]);
+        
+        
 
-        $select = $this->tableGateway->getSql()->select()->where($where);
-
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(
+            [
+                'id',
+                'title',
+                'logo',
+                'background',
+                'description',
+                'confidentiality',
+                'admission',
+                'location',
+                'type', 
+                'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
+                'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
+            ]
+        );
+        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role']);
+       
+         if(null !== $parent_id){
+            $select
+                ->join(['parent' => 'page'],'page.page_id = parent.id', [])
+                ->join(['parent_user' => 'page'], 'parent_user.page_id = parent.id', [], $select::JOIN_LEFT)
+                ->where(["( parent.confidentiality = 0 "])
+                ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
+        }
+        else{
+            $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
+                ->where(["( page.confidentiality = 0 "])
+                ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
+        }
+        $select->where($where);
         if (null !== $member_id) {
-            $this->selectByMember($select, $member_id);
+            $select->join('page_user', 'page_user.page_id = page.id', [])
+                    ->where(['page_user.user_id' => $member_id]);
         }
 
-        return $this->selectWithDates($select, $start_date, $end_date);
+        if (null !== $start_date) {
+            $select->where(['page.end_date >= ?' => [$start_date]]);
+        }
+        if (null !== $end_date) {
+            $select->where(['page.start_date <= ?' => [$end_date]
+            ]);
+        }
+        
+        $select->order(['page.start_date' => 'DESC']);
+        return $this->selectWith($select);
     }
 
     protected function getWhereParams($originalParams = [])
@@ -32,27 +92,47 @@ class Page extends AbstractMapper
             return null !== $value;
         });
     }
-
-    protected function selectWithDates($select, $start_date, $end_date)
+    
+    public function get($me, $id = null, $parent_id = null, $type = null)
     {
-        if (null !== $end_date) {
-            $select->where([
-                'page.start_date <= ?' => [$end_date]
-            ]);
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(
+            [
+                'id',
+                'title',
+                'logo',
+                'background',
+                'description',
+                'confidentiality',
+                'admission',
+                'location',
+                'type', 
+                'page_id', 
+                'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
+                'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
+            ]
+        );
+        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role']);
+         if(null !== $id){
+            $select->where(array('page.id' => $id));
         }
-
-        if (null !== $start_date) {
-            $select->where([
-                'page.end_date >= ?' => [$start_date]
-            ]);
+         if(null !== $parent_id){
+            $select
+                ->join(['parent' => 'page','page.page_id = parent.id'], [])
+                ->join(['parent_user' => 'page_user'], 'parent_user.page_id = parent.page_id', [], $select::JOIN_LEFT)
+                ->where(["( parent.confidentiality = 0 "])
+                ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
         }
-
+        else{
+            $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
+                ->where(["( page.confidentiality = 0 "])
+                ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);;
+        }
+        if(null !== $type){
+            $select->where(array('page.type' => $type));
+        }
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 
-    protected function selectByMember($select, $member_id)
-    {
-        return $select->join('page_user', 'page_user.page_id = page.id')
-                      ->where(['page_user.user_id' => $member_id]);
-    }
 }
