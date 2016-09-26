@@ -29,10 +29,10 @@ class Mail
             $this->options['storage']['password'] = $password;
         }
         if ($this->options['storage']['active'] === true) {
-            $this->storage = new Imap($this->options);
+            $this->storage = new Imap($this->options['storage']);
         }
         if ($this->options['transport']['active'] === true) {
-            $this->transport = Factory::create($this->options);
+            $this->transport = Factory::create($this->options['transport']);
         }
         
         $this->is_init = true;
