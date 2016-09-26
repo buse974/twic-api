@@ -62,7 +62,7 @@ class School extends AbstractMapper
      * @param array $exclude
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($me = null, $filter = null, $search = null, $user_id = null, $exclude = null, $type = null)
+    public function getList($me = null, $filter = null, $search = null, $user_id = null, $exclude = null, $type = null, $parent_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','name','next_name','short_name','logo','describe','website','background','phone',  'custom', 'libelle','type'))
@@ -90,6 +90,11 @@ class School extends AbstractMapper
         if(null !== $type){
             $select->where(array('type' => $type));
         }
+
+        if(null !== $parent_id) {
+            $select->join(['org' => 'organization_relation'], 'org.organization_id=school.id', [], $select::JOIN_LEFT)->where(['org.parent_id' => $parent_id]);
+        }
+
         $select->where('school.deleted_date IS NULL');
 
         return $this->selectWith($select);
