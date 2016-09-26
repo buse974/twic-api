@@ -28,7 +28,7 @@ class Library extends AbstractMapper
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('document', 'document.library_id=library.id', [])
             ->join('item', 'document.item_id=item.id', [])
-            ->where(array('item.parent_id' => $item_id));
+            ->where(['item.parent_id' => $item_id]);
         
         return $this->selectWith($select);
     }
@@ -44,8 +44,24 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('page_doc', 'page_doc.library_id=library.id', [])
-            ->where(array('page_doc.page_id' => $page_id));
+            ->where(['page_doc.page_id' => $page_id]);
         
+        return $this->selectWith($select);
+    }
+    
+    /**
+     * Get List Library By Post id
+     *
+     * @param int $page_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByPost($post_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
+        ->join('post_doc', 'post_doc.library_id=library.id', [])
+        ->where(['post_doc.post_id' => $post_id]);
+    
         return $this->selectWith($select);
     }
     
@@ -60,7 +76,7 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('document', 'document.library_id=library.id', [])
-            ->where(array('document.item_id' => $item_id));
+            ->where(['document.item_id' => $item_id]);
         
         return $this->selectWith($select);
     }
@@ -76,7 +92,7 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('bank_question_media', 'bank_question_media.library_id=library.id', [])
-            ->where(array('bank_question_media.bank_question_id' => $bank_question_id));
+            ->where(['bank_question_media.bank_question_id' => $bank_question_id]);
         
         return $this->selectWith($select);
     }
@@ -92,7 +108,7 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('conversation_doc', 'conversation_doc.library_id=library.id', [])
-            ->where(array('conversation_doc.conversation_id' => $conversation_id));
+            ->where(['conversation_doc.conversation_id' => $conversation_id]);
         
         return $this->selectWith($select);
     }
@@ -108,7 +124,7 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('material', 'material.library_id=library.id', [])
-            ->where(array('material.course_id' => $course_id));
+            ->where(['material.course_id' => $course_id]);
         
         return $this->selectWith($select);
     }
@@ -124,7 +140,7 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('document', 'document.library_id=library.id', [])
-            ->where(array('document.submission_id' => $submission_id));
+            ->where(['document.submission_id' => $submission_id]);
         
         return $this->selectWith($select);
     }
@@ -141,7 +157,7 @@ class Library extends AbstractMapper
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('document', 'document.library_id=library.id', [])
             ->join('ct_done', 'ct_done.target_id=item.parent_id', [])
-            ->where(array('ct_done.item_id' => $item_id));
+            ->where(['ct_done.item_id' => $item_id]);
         
         return $this->selectWith($select);
     }

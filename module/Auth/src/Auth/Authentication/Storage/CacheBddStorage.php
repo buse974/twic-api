@@ -1,17 +1,26 @@
 <?php
-
+/**
+ * 
+ * TheStudnet (http://thestudnet.com)
+ *
+ * CacheBddStorage
+ *
+ */
 namespace Auth\Authentication\Storage;
 
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql as DbSql;
 
+/**
+ * Class CacheBddStorage    
+ */
 class CacheBddStorage implements StorageInterface
 {
     use TraitStorage;
     
     /**
-     * Bdd Adapter
-     *
+     * Bdd Adapter 
+     * 
      * @var \Zend\Db\Adapter\Adapter
      */
     protected $db_adapter;
@@ -38,7 +47,7 @@ class CacheBddStorage implements StorageInterface
     protected $prefix_session = 'sess_';
 
     /**
-     * Constructor
+     * Constructor 
      * 
      * @param \Zend\Db\Adapter\Adapter $adapter
      * @param \Zend\Cache\Storage\StorageInterface $cache
@@ -53,7 +62,6 @@ class CacheBddStorage implements StorageInterface
      * Returns true if and only if storage is empty
      *
      * @throws \Zend\Authentication\Exception\ExceptionInterface If it is impossible to determine whether storage is empty
-     *
      * @return bool
      */
     public function isEmpty()
@@ -67,7 +75,6 @@ class CacheBddStorage implements StorageInterface
      * Behavior is undefined when storage is empty
      *
      * @throws \Zend\Authentication\Exception\InvalidArgumentException
-     *
      * @return \Auth\Authentication\Storage\Model\Identity
      */
     public function read()
@@ -79,7 +86,6 @@ class CacheBddStorage implements StorageInterface
      * Writes $contents to storage
      *
      * @param mixed $contents
-     *
      * @throws \Zend\Authentication\Exception\InvalidArgumentException If writing $contents to storage is impossible
      */
     public function write($data)
@@ -180,7 +186,7 @@ class CacheBddStorage implements StorageInterface
                    ->set(['uid' => $data->getId()])
                    ->where(['token' => $this->getPrefixToken()]);
             $sql->prepareStatementForSqlObject($update)->execute();;
-                 
+            
             $ret = true;
         } else {
             $insert = $sql->insert('session');

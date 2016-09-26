@@ -34,7 +34,7 @@ return [];
                 'name' => 'christophe',
                 'host' => '',
                 'port' => 587,
-                'connection_class' => 'plain',
+                'connection_class' => 'plain', //login 
                 'connection_config' => [
                     'ssl' => 'tls',
                     'username' => 'user',
