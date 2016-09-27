@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.2",
-    'build-commit' => 10,
+    'build-commit' => 11,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -113,6 +113,7 @@ return [
             'app_service_report',
             'app_service_page',
             'app_service_page_user',
+            'app_service_page_doc',
             'app_service_post',
             [
                 'class' => 'addr_service_address',
@@ -157,9 +158,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS10',
+                    'namespace' => 'LMS11',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS10'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS11'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

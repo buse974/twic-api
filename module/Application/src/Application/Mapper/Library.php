@@ -45,6 +45,7 @@ class Library extends AbstractMapper
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
             ->join('page_doc', 'page_doc.library_id=library.id', [])
             ->where(['page_doc.page_id' => $page_id]);
+            ->order(['created_date' => 'DESC']);
         
         return $this->selectWith($select);
     }
