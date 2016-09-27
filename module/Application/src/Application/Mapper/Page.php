@@ -82,7 +82,8 @@ class Page extends AbstractMapper
             ]);
         }
         
-        $select->order(['page.start_date' => 'DESC']);
+        $select->order(['page.start_date' => 'DESC'])
+               ->group('page.id');
         return $this->selectWith($select);
     }
 
@@ -131,7 +132,7 @@ class Page extends AbstractMapper
         if(null !== $type){
             $select->where(array('page.type' => $type));
         }
-        syslog(1, $this->printSql($select));
+        $select->group('page.id');
         return $this->selectWith($select);
     }
 
