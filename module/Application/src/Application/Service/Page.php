@@ -40,7 +40,7 @@ class Page extends AbstractService
      * @param array $docs            
      * @return int
      */
-    public function add($title, $logo,  $description, $confidentiality, $type, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
+    public function add($title,   $description, $confidentiality, $type, $logo = null,$admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         

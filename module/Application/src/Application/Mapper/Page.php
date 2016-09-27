@@ -73,13 +73,18 @@ class Page extends AbstractMapper
             $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
                     ->where(['member.user_id' => $member_id]);
         }
+        
+        if (null !== $start_date && null !== $end_date) {
+            $select->where(['( page.start_date BETWEEN ? AND ? ' => [$start_date,$end_date]])
+                ->where(['page.end_date BETWEEN ? AND ?  ' => [$start_date,$end_date]], Predicate::OP_OR)
+                ->where(['( page.start_date < ? AND page.end_date > ? ) ) ' => [$start_date,$end_date]], Predicate::OP_OR);
+        }
 
         if (null !== $start_date) {
-            $select->where(['page.end_date >= ?' => [$start_date]]);
+            $select->where(['page.end_date >= ?' => $start_date]);
         }
         if (null !== $end_date) {
-            $select->where(['page.start_date <= ?' => [$end_date]
-            ]);
+            $select->where(['page.start_date <= ?' => $end_date]);
         }
         
         $select->order(['page.start_date' => 'DESC'])
@@ -113,7 +118,7 @@ class Page extends AbstractMapper
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
         );
-        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role']);
+        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT);
          if(null !== $id){
             $select->where(array('page.id' => $id));
         }
