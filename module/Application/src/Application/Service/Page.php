@@ -225,9 +225,6 @@ class Page extends AbstractService
      */
     public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null)
     {
-        if(null === $id && null === $parent_id && null === $user_id && null === $organization_id && null === $member_id) {
-            throw new \Exception('Error: params is null');
-        }
         $identity = $this->getServiceAuth()->getIdentity();
         $mapper = $this->getMapper()->usePaginator($filter);
         $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id);
