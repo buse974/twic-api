@@ -10,33 +10,85 @@ class PageUser extends AbstractService
     /**
      * Add Page User Relation 
      * 
+     * @invokable
+     * 
      * @param int $page_id
-     * @param int $user_id
+     * @param int|array $user_id
      * @param string $role
      * @param strung $state
      * @return int
      */
     public function add($page_id, $user_id, $role, $state)
     {
+        if(!is_array($user_id)){
+            $user_id = [$user_id];
+        }
+        
         $m_page_user = $this->getModel()
             ->setPageId($page_id)
-            ->setUserId($user_id)
+            ->setRole($role)
+            ->setState($state);
+        $ret = 0;
+        foreach($user_id as $uid){
+            $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
+        }
+        
+        return $ret;
+    }
+    
+    
+    /**
+     * Update Page User Relation 
+     * 
+     * @invokable
+     * 
+     * @param int $page_id
+     * @param int $user_id
+     * @param string $role
+     * @param strung $state
+     * @return int
+     */
+    public function update($page_id, $user_id, $role, $state)
+    {
+        $m_page_user = $this->getModel()
             ->setRole($role)
             ->setState($state);
         
-        return $this->getMapper()->insert($m_page_user);
+        return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
+    }
+    
+    
+    /**
+     * Delete Page User Relation 
+     * 
+     * @invokable
+     * 
+     * @param int $page_id
+     * @param int $user_id
+     * @return int
+     */
+    public function delete($page_id, $user_id)
+    {
+        $m_page_user = $this->getModel()
+            ->setPageId($page_id)
+            ->setUserId($user_id);
+        
+        return $this->getMapper()->delete($m_page_user);
     }
     
     /**
      * Get List Page User Relation
      * 
+     * @invokable
+     * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($page_id)
+    public function getList($page_id, $filter = null)
     {
-        $m_page_user = $this->getModel()->setPageId($page_id);
+        $mapper = $this->getMapper();
+        $res = $mapper->usePaginator($filter)->getList($page_id);
         
-        return $this->getMapper()->select($m_page_user);
+        return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
     /**
      * Add Array

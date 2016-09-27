@@ -14,6 +14,7 @@ use Zend\Db\Sql\Predicate\IsNotNull;
 
 class DbAdapter extends AbstractAdapter
 {
+    const FAILURE_ACCOUNT_SUSPENDED = -5;
     /**
      * Bdd Adapter.
      *
@@ -95,7 +96,7 @@ class DbAdapter extends AbstractAdapter
             $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
             $arrayIdentity = current($arrayIdentity);
             if(null !== $arrayIdentity['suspension_date']){
-                $code = Result::FAILURE_ACCOUNT_SUSPENDED;
+                $code = self::FAILURE_ACCOUNT_SUSPENDED;
                 $message[] = $arrayIdentity['suspension_reason'];
             }
             else{

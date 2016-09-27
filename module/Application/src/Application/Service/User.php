@@ -40,7 +40,13 @@ class User extends AbstractService
         
         $result = $auth->authenticate();
         if (! $result->isValid()) {
-            throw new JrpcException($result->getMessages()[0], $result->getCode());
+            switch ($result->getCode()) {
+                case -3 : $code = -32030;break;  
+                case -5 : $code = -32031;break;  
+                default : $code = -32000;break;
+            }
+            
+            throw new JrpcException($result->getMessages()[0], $code);
         }
         
         $identity = $this->getIdentity(true);
@@ -517,12 +523,12 @@ class User extends AbstractService
      * @param array $exclude_user            
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListAttendees($course = null, $program = null, $school = null, $exclude_course = null, $exclude_program = null, $exclude_user = null)
+    public function getListAttendees($course = null, $program = null, $school = null, $page = null, $exclude_course = null, $exclude_program = null, $exclude_page = null, $exclude_user = null, $roles = null)
     {
         $identity = $this->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         
-        $res_user = $this->getMapper()->getListAttendees($identity['id'], $is_sadmin_admin, $course, $program, $school, $exclude_course, $exclude_program, $exclude_user);
+        $res_user = $this->getMapper()->getListAttendees($identity['id'], $is_sadmin_admin, $course, $program, $school, $page, $exclude_course, $exclude_program, $exclude_user, $exclude_page, $roles);
         foreach ($res_user as $m_user) {
             $roles = [];
             foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {

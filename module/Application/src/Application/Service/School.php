@@ -206,14 +206,14 @@ class School extends AbstractService
      * @param array $exclude         
      * @return array
      */
-    public function getList($filter = null, $search = null, $exclude = null, $type = null)
+    public function getList($filter = null, $search = null, $exclude = null, $type = null, $parent_id = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         
         $me = $identity['id'];
         $mapper = $this->getMapper();
-        $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me,$filter, $search, null, $exclude, $type);
+        $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me,$filter, $search, null, $exclude, $type, $parent_id);
         
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
