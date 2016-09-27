@@ -40,7 +40,13 @@ class User extends AbstractService
         
         $result = $auth->authenticate();
         if (! $result->isValid()) {
-            throw new JrpcException($result->getMessages()[0], $result->getCode());
+            switch ($result->getCode()) {
+                case -3 : $code = -32030;break;  
+                case -5 : $code = -32031;break;  
+                default : $code = -32000;break;
+            }
+            
+            throw new JrpcException($result->getMessages()[0], $code);
         }
         
         $identity = $this->getIdentity(true);

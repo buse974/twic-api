@@ -199,6 +199,17 @@ class Library extends AbstractService
     }
 
     /**
+     * Get List Library By Post id
+     *
+     * @param int $post_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListByPost($post_id)
+    {
+        return $this->getMapper()->getListByPost($post_id);
+    }
+    
+    /**
      * Get List Library Material
      *
      * @param int $course_id            

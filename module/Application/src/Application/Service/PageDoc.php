@@ -83,16 +83,6 @@ class PageDoc extends AbstractService
     /**
      * Get Service Page User
      *
-     * @return \Application\Service\PageUser
-     */
-    private function getServicePageUser()
-    {
-        return $this->container->get('app_service_page_user');
-    }
-    
-    /**
-     * Get Service Page User
-     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
