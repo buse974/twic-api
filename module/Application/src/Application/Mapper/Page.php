@@ -118,7 +118,7 @@ class Page extends AbstractMapper
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
         );
-        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role']);
+        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT);
          if(null !== $id){
             $select->where(array('page.id' => $id));
         }
