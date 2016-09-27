@@ -11,6 +11,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class Page
@@ -197,8 +198,9 @@ class Page extends AbstractService
         if(null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
-        $identity = $this->getServiceAuth()->getIdentity();
-        $m_page = $this->getMapper()->get( $identity->getId(), $id, $parent_id, $type)->current();
+        $identity = $this->getServiceUser()->getIdentity();        
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $m_page = $this->getMapper()->get( $identity['id'], $id, $parent_id, $type, $is_sadmin_admin)->current();
         if(false === $m_page){
               throw new \Exception('This page does not exist');
         }
@@ -228,9 +230,10 @@ class Page extends AbstractService
         if(null === $id && null === $parent_id && null === $user_id && null === $organization_id && null === $member_id) {
             throw new \Exception('Error: params is null');
         }
-        $identity = $this->getServiceAuth()->getIdentity();
+        $identity = $this->getServiceUser()->getIdentity();        
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id);
+        $res_page = $mapper->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $is_sadmin_admin);
 
         
         foreach ($res_page as $m_page) {
