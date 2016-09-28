@@ -26,7 +26,7 @@ class Page extends AbstractMapper
     }
 
 
-    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null)
+    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false)
     {
         $where = $this->getWhereParams([
             'page.id' => $id,
@@ -81,10 +81,14 @@ class Page extends AbstractMapper
         }
 
         if (null !== $start_date) {
-            $select->where(['page.end_date >= ?' => $start_date]);
+            $paramValue = $strict_dates ? 'page.start_date >= ?' : 'page.end_date >= ?';
+
+            $select->where([$paramValue => $start_date]);
         }
         if (null !== $end_date) {
-            $select->where(['page.start_date <= ?' => $end_date]);
+            $paramValue = $strict_dates ? 'page.end_date <= ?' : 'page.start_date <= ?';
+
+            $select->where([$paramValue => $end_date]);
         }
         
         $select->order(['page.start_date' => 'DESC'])

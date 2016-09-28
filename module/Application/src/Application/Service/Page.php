@@ -223,11 +223,11 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null, $strict_dates = false)
     {
         $identity = $this->getServiceAuth()->getIdentity();
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id);
+        $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates);
 
         
         foreach ($res_page as $m_page) {
