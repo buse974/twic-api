@@ -11,6 +11,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class Page
@@ -197,15 +198,16 @@ class Page extends AbstractService
         if(null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
-        $identity = $this->getServiceAuth()->getIdentity();
-        $m_page = $this->getMapper()->get( $identity->getId(), $id, $parent_id, $type)->current();
+        $identity = $this->getServiceUser()->getIdentity();        
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $m_page = $this->getMapper()->get( $identity['id'], $id, $parent_id, $type, $is_sadmin_admin)->current();
         if(false === $m_page){
               throw new \Exception('This page does not exist');
         }
         
         $m_page->setTags($this->getServicePageTag()->getList($id));
         $m_page->setDocs($this->getServicePageDoc()->getList($id));
-        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'n' => 4, 'p' => 1 ]));
+        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'p' => 1 ] , $m_page->getState()));
         $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, [ 'n' => 4, 'p' => 1 ]));
         
         return $m_page;
@@ -225,9 +227,12 @@ class Page extends AbstractService
      */
     public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null, $strict_dates = false)
     {
-        $identity = $this->getServiceAuth()->getIdentity();
+       
+        $identity = $this->getServiceUser()->getIdentity();        
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates);
+        $res_page = $mapper->getList($identity->getId(), $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_sadmin_admin);
 
         
         foreach ($res_page as $m_page) {
@@ -236,7 +241,7 @@ class Page extends AbstractService
             $m_page->setDocs($this->getServicePageDoc()
                 ->getList($m_page->getId()));
             $m_page->setUsers($this->getServicePageUser()
-                ->getList($m_page->getId()));
+                ->getList($m_page->getId()), null, $m_page->getState());
         }
         
         return ['count' => $mapper->count(), 'list' => $res_page];

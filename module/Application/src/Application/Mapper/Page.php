@@ -26,7 +26,7 @@ class Page extends AbstractMapper
     }
 
 
-    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false)
+    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false)
     {
         $where = $this->getWhereParams([
             'page.id' => $id,
@@ -79,18 +79,28 @@ class Page extends AbstractMapper
                 ->where(['page.end_date BETWEEN ? AND ?  ' => [$start_date,$end_date]], Predicate::OP_OR)
                 ->where(['( page.start_date < ? AND page.end_date > ? ) ) ' => [$start_date,$end_date]], Predicate::OP_OR);
         }
+        else{
+           
+            if (null !== $start_date) {
+                $paramValue = $strict_dates ? 'page.start_date >= ?' : 'page.end_date >= ?';
 
-        if (null !== $start_date) {
-            $paramValue = $strict_dates ? 'page.start_date >= ?' : 'page.end_date >= ?';
+                $select->where([$paramValue => $start_date]);
+            }
+            if (null !== $end_date) {
+                $paramValue = $strict_dates ? 'page.end_date <= ?' : 'page.start_date <= ?';
 
-            $select->where([$paramValue => $start_date]);
-        }
-        if (null !== $end_date) {
-            $paramValue = $strict_dates ? 'page.end_date <= ?' : 'page.start_date <= ?';
-
-            $select->where([$paramValue => $end_date]);
+                $select->where([$paramValue => $end_date]);
+            }
         }
         
+        
+        if($is_sadmin_admin === false) {
+           $select->join('user', 'page.user_id=user.id', [])
+               ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
+               ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+               ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+               ->where(['organization_user.user_id' => $me]);
+       }
         $select->order(['page.start_date' => 'DESC'])
                ->group('page.id');
         return $this->selectWith($select);
@@ -103,7 +113,7 @@ class Page extends AbstractMapper
         });
     }
     
-    public function get($me, $id = null, $parent_id = null, $type = null)
+    public function get($me, $id = null, $parent_id = null, $type = null, $is_sadmin_admin = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(
@@ -141,6 +151,13 @@ class Page extends AbstractMapper
         if(null !== $type){
             $select->where(array('page.type' => $type));
         }
+        if($is_sadmin_admin === false) {
+           $select->join('user', 'page.user_id=user.id', [])
+               ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
+               ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+               ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+               ->where(['organization_user.user_id' => $me]);
+       }
         $select->group('page.id');
         return $this->selectWith($select);
     }
