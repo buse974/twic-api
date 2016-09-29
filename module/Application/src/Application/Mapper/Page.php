@@ -79,12 +79,13 @@ class Page extends AbstractMapper
                 ->where(['page.end_date BETWEEN ? AND ?  ' => [$start_date,$end_date]], Predicate::OP_OR)
                 ->where(['( page.start_date < ? AND page.end_date > ? ) ) ' => [$start_date,$end_date]], Predicate::OP_OR);
         }
-
-        if (null !== $start_date) {
-            $select->where(['page.end_date >= ?' => $start_date]);
-        }
-        if (null !== $end_date) {
-            $select->where(['page.start_date <= ?' => $end_date]);
+        else{
+            if (null !== $start_date) {
+                $select->where(['page.end_date >= ?' => $start_date]);
+            }
+            if (null !== $end_date) {
+                $select->where(['page.start_date <= ?' => $end_date]);
+            }
         }
         
         

@@ -207,7 +207,7 @@ class Page extends AbstractService
         
         $m_page->setTags($this->getServicePageTag()->getList($id));
         $m_page->setDocs($this->getServicePageDoc()->getList($id));
-        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'n' => 4, 'p' => 1 ]));
+        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'p' => 1 ] , $m_page->getState()));
         $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, [ 'n' => 4, 'p' => 1 ]));
         
         return $m_page;
@@ -241,7 +241,7 @@ class Page extends AbstractService
             $m_page->setDocs($this->getServicePageDoc()
                 ->getList($m_page->getId()));
             $m_page->setUsers($this->getServicePageUser()
-                ->getList($m_page->getId()));
+                ->getList($m_page->getId()), null, $m_page->getState());
         }
         
         return ['count' => $mapper->count(), 'list' => $res_page];

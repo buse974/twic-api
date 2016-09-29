@@ -83,10 +83,10 @@ class PageUser extends AbstractService
      * 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($page_id, $filter = null)
+    public function getList($page_id, $filter = null, $state = null)
     {
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($page_id);
+        $res = $mapper->usePaginator($filter)->getList($page_id, $state);
         
         return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
