@@ -8,8 +8,10 @@ class PostLike extends AbstractModel
 {
  	protected $id;
 	protected $is_like;
-	protected $user_id;
 	protected $post_id;
+	protected $user_id;
+	protected $organization_id;
+	protected $page_id;
 	protected $created_date;
 
 	protected $prefix = 'post_like';
@@ -38,6 +40,18 @@ class PostLike extends AbstractModel
 		return $this;
 	}
 
+	public function getPostId()
+	{
+		return $this->post_id;
+	}
+
+	public function setPostId($post_id)
+	{
+		$this->post_id = $post_id;
+
+		return $this;
+	}
+
 	public function getUserId()
 	{
 		return $this->user_id;
@@ -50,14 +64,26 @@ class PostLike extends AbstractModel
 		return $this;
 	}
 
-	public function getPostId()
+	public function getOrganizationId()
 	{
-		return $this->post_id;
+		return $this->organization_id;
 	}
 
-	public function setPostId($post_id)
+	public function setOrganizationId($organization_id)
 	{
-		$this->post_id = $post_id;
+		$this->organization_id = $organization_id;
+
+		return $this;
+	}
+
+	public function getPageId()
+	{
+		return $this->page_id;
+	}
+
+	public function setPageId($page_id)
+	{
+		$this->page_id = $page_id;
 
 		return $this;
 	}

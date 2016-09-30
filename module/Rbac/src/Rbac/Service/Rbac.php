@@ -4,8 +4,6 @@ namespace Rbac\Service;
 
 use Zend\Permissions\Rbac\Role;
 use Zend\Permissions\Rbac\Rbac as ZRBac;
-use Zend\Mvc\Controller\PluginManager;
-use Zend\ServiceManager\ServiceManager;
 
 class Rbac  
 {
