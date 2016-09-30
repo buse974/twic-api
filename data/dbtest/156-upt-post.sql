@@ -1,5 +1,5 @@
-DROP TABLE `post_like`;
-DROP TABLE `post_doc`; 
+DROP TABLE IF EXISTS `post_like`;
+DROP TABLE IF EXISTS `post_doc`; 
 DROP TABLE `post`;
 CREATE TABLE IF NOT EXISTS `post` (
   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
