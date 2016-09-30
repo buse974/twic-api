@@ -7,11 +7,11 @@ use Dal\Model\AbstractModel;
 class Post extends AbstractModel
 {
  	protected $id;
-	protected $key;
 	protected $content;
 	protected $user_id;
+	protected $organization_id;
+	protected $page_id;
 	protected $link;
-	protected $video;
 	protected $picture;
 	protected $name_picture;
 	protected $link_title;
@@ -20,10 +20,13 @@ class Post extends AbstractModel
 	protected $deleted_date;
 	protected $updated_date;
 	protected $parent_id;
+	protected $origin_id;
 	protected $t_page_id;
 	protected $t_organization_id;
 	protected $t_user_id;
 	protected $t_course_id;
+	protected $lat;
+	protected $lng;
 
 	protected $prefix = 'post';
 
@@ -35,18 +38,6 @@ class Post extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
-
-		return $this;
-	}
-
-	public function getKey()
-	{
-		return $this->key;
-	}
-
-	public function setKey($key)
-	{
-		$this->key = $key;
 
 		return $this;
 	}
@@ -75,6 +66,30 @@ class Post extends AbstractModel
 		return $this;
 	}
 
+	public function getOrganizationId()
+	{
+		return $this->organization_id;
+	}
+
+	public function setOrganizationId($organization_id)
+	{
+		$this->organization_id = $organization_id;
+
+		return $this;
+	}
+
+	public function getPageId()
+	{
+		return $this->page_id;
+	}
+
+	public function setPageId($page_id)
+	{
+		$this->page_id = $page_id;
+
+		return $this;
+	}
+
 	public function getLink()
 	{
 		return $this->link;
@@ -83,18 +98,6 @@ class Post extends AbstractModel
 	public function setLink($link)
 	{
 		$this->link = $link;
-
-		return $this;
-	}
-
-	public function getVideo()
-	{
-		return $this->video;
-	}
-
-	public function setVideo($video)
-	{
-		$this->video = $video;
 
 		return $this;
 	}
@@ -195,6 +198,18 @@ class Post extends AbstractModel
 		return $this;
 	}
 
+	public function getOriginId()
+	{
+		return $this->origin_id;
+	}
+
+	public function setOriginId($origin_id)
+	{
+		$this->origin_id = $origin_id;
+
+		return $this;
+	}
+
 	public function getTPageId()
 	{
 		return $this->t_page_id;
@@ -239,6 +254,30 @@ class Post extends AbstractModel
 	public function setTCourseId($t_course_id)
 	{
 		$this->t_course_id = $t_course_id;
+
+		return $this;
+	}
+
+	public function getLat()
+	{
+		return $this->lat;
+	}
+
+	public function setLat($lat)
+	{
+		$this->lat = $lat;
+
+		return $this;
+	}
+
+	public function getLng()
+	{
+		return $this->lng;
+	}
+
+	public function setLng($lng)
+	{
+		$this->lng = $lng;
 
 		return $this;
 	}

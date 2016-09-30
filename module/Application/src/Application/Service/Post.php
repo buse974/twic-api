@@ -32,27 +32,63 @@ class Post extends AbstractService
      * @param int $t_organization_id
      * @param int $t_user_id
      * @param int $t_course_id
+     * @param int $page_id
+     * @param int $organization_id
+     * @param int $lat
+     * @param int $lng
      * @param array $docs
      */
-    public function add($content, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $docs = null)
+    public function add($content, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, $lng = null ,$docs = null)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        $origin_id = null;
+        if (null !== $parent_id) {
+            $m_post = $this->getMapper()->select($this->getModel()->setId($parent_id))->current();
+            $origin_id = (null !== $m_post->getOriginId()) ?
+                $m_post->getOriginId():
+                $m_post->getId();
+        }
+        
+        if(null === $parent_id && null === $t_course_id && null === $t_organization_id && null === $t_page_id && null === $t_user_id) {
+            $t_user_id = $user_id;
+        }
+        
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $m_post = $this->getModel()
             ->setContent($content)
             ->setPicture($picture)
             ->setNamePicture($name_picture)
-            ->setUserId($this->getServiceUser()->getIdentity()['id'])
+            ->setUserId($user_id)
             ->setLink($link)
             ->setLinkTitle($link_title)
             ->setLinkDesc($link_desc)
-            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+            ->setCreatedDate($date)
+            ->setOrganizationId($organization_id)
+            ->setPageId($page_id)
+            ->setLat($lat)
+            ->setLng($lng)
             ->setParentId($parent_id)
+            ->setOriginId($origin_id)
             ->setTPageId($t_page_id)
             ->setTOrganizationId($t_organization_id)
             ->setTUserId($t_user_id)
             ->setTCourseId($t_course_id);
        
-        $this->getMapper()->insert($m_post);
+        if($this->getMapper()->insert($m_post) <= 0) {
+            throw new \Exception('error add post');
+        }
+        
+        
+        
         $id = $this->getMapper()->getLastInsertValue();
+        $ar = array_filter(explode(' ', str_replace(array("\r\n","\n","\r"), ' ', $content)), function ($v) {
+            return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+        });
+        $this->getServiceHashtag()->add($ar, $id);
+        $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
+        
+        $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
         
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
@@ -73,11 +109,14 @@ class Post extends AbstractService
      * @param string $name_picture
      * @param string $link_title
      * @param string $link_desc
+     * @param int $lat
+     * @param int $lng
      * @param arrray $docs
      * @return int
      */
-    public function update($id, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, $link_desc = null, $docs =null)
+    public function update($id, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, $link_desc = null, $lat = null, $lng = null, $docs =null)
     {
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $m_post = $this->getModel()
             ->setContent($content)
             ->setLink($link)
@@ -85,12 +124,22 @@ class Post extends AbstractService
             ->setNamePicture($name_picture)
             ->setLinkTitle($link_title)
             ->setLinkDesc($link_desc)
-            ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            ->setLat($lat)
+            ->setLng($lng)
+            ->setUpdatedDate($date);
         
         if(null !== $docs) {
             $this->getServicePostDoc()->replace($id, $docs);
         }
-            
+        
+        $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+            return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+        });
+        $this->getServiceHashtag()->add($ar, $id);
+        $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
+        
+        $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
+        
         return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
     }
     
@@ -104,6 +153,8 @@ class Post extends AbstractService
      */
     public function delete($id)
     {
+        $this->deleteSubscription($id);
+        
         $m_post = $this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
     
@@ -138,6 +189,37 @@ class Post extends AbstractService
     }
     
     /**
+     * Get Post Lite
+     * 
+     * @param int $id
+     * @return \Application\Model\Post
+     */
+    public function getLite($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+    
+    /**
+     * Like post 
+     * 
+     * @param int $post_id
+     */
+    public function like($id)
+    {
+        return $this->getServicePostLike()->add($id);
+    }
+    
+    /**
+     * UnLike Post
+     * 
+     * @param int $id
+     */
+    public function unlike($id) 
+    {
+        $this->getServicePostLike()->delete($id);
+    }
+    
+    /**
      * Get Service User
      * 
      * @return \Application\Service\User
@@ -166,5 +248,25 @@ class Post extends AbstractService
     {
         return $this->container->get('app_service_post_like');
     }
-
+    
+    /**
+     * Get Service Post Like
+     *
+     * @return \Application\Service\PostSubscription
+     */
+    private function getServicePostSubscription()
+    {
+        return $this->container->get('app_service_post_subscription');
+    }
+    
+    /**
+     * Get Service Post Like
+     *
+     * @return \Application\Service\Hashtag
+     */
+    private function getServiceHashtag()
+    {
+        return $this->container->get('app_service_hashtag');
+    }
+    
 }

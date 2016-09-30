@@ -1,9 +1,8 @@
 <?php
 
-use Zend\Router\Http\Literal;
-use Application\Controller\Plugin\ConfFactory;
-use Application\Controller\Plugin\videoArchive;
-use Interop\Container\ContainerInterface;
+use \Application\Controller\Plugin\ConfFactory;
+use \Application\Controller\Plugin\videoArchive;
+use \Zend\Router\Http\Literal;
 
 /**
  * Zend Framework (http://framework.zend.com/).
@@ -18,7 +17,7 @@ return [
     'controller_plugins' => [
         'factories' => [
             'conf' => ConfFactory::class,
-            'videoArchive' => function (ContainerInterface $container) {
+            'videoArchive' => function (\Interop\Container\ContainerInterface\ContainerInterface $container) {
                 
                 return new videoArchive($container->get('app_service_video_archive'));
             }
