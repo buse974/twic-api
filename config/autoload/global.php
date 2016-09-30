@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.2",
-    'build-commit' => 13,
+    'build-commit' => 14,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -75,7 +75,6 @@ return [
             'app_service_language',
             'app_service_language_level',
             'app_service_event',
-            'app_service_event_comment',
             'app_service_dimension',
             'app_service_question',
             'app_service_activity',
@@ -157,9 +156,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS13',
+                    'namespace' => 'LMS14',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS13'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS14'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

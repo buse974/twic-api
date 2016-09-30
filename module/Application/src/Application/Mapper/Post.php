@@ -47,9 +47,9 @@ class Post extends AbstractMapper
             $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
             $select->columns($columns)
                 ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
-                ->join('subscription_user', 'subscription_user.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
+                ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['( post.parent_id IS NULL '])
-                ->where(['  (subscription_user.user_id = ? ' => $me_id])
+                ->where(['  (subscription.user_id = ? ' => $me_id])
                 ->where(['  post.user_id = ?))' => $me_id], Predicate::OP_OR)
                 ->order(['post$last_date' => 'DESC', 'post.id' => 'DESC'])
                 ->group('post.id');
