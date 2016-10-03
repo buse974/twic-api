@@ -576,9 +576,11 @@ class Conversation extends AbstractService
     }
     
     /**
-     * Get List Conversation 
+     * Get List Conversation
      * 
      * @invokable
+     * 
+     * @todo faire une requete pour simplifier
      * 
      * @param array $filter
      */
