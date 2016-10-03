@@ -51,7 +51,10 @@ class Page extends AbstractMapper
                 'location',
                 'type', 
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
-                'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
+                'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")'),
+                'user_id',
+                'organization_id',
+                'page_id',
             ]
         );
         $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT);
@@ -128,6 +131,8 @@ class Page extends AbstractMapper
                 'location',
                 'type', 
                 'page_id', 
+                'user_id',
+                'organization_id',
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
