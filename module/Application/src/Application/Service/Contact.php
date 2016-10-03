@@ -107,6 +107,12 @@ class Contact extends AbstractService
             'contact_id' => $user,
         ));
 
+        $this->getServiceSubscription()->add('UU'.$user, $identity['id']);
+        $this->getServiceSubscription()->add('EU'.$user, $identity['id']);
+        
+        $this->getServiceSubscription()->add('UU'.$identity['id'], $user);
+        $this->getServiceSubscription()->add('EU'.$identity['id'], $user);
+        
         $this->getServiceEvent()->userAddConnection($identity['id'], $user);
 
         return true;
@@ -331,6 +337,16 @@ class Contact extends AbstractService
     private function getServiceEvent()
     {
         return $this->container->get('app_service_event');
+    }
+    
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 
     /**

@@ -91,13 +91,28 @@ class MessageUser extends AbstractService
                 ->getId(), ))['list']);
             $m_message_user->getMessage()->setFrom($this->getServiceUser()
                 ->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('S', $m_message_user->getMessage()
-                ->getId(), ))['list']);
-            $m_message_user->getMessage()->setDocument((($d->count() !== 0) ? $d : array()));
+                ->getId(), ))['list']); 
+            $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d : []);
         }
 
         $list->rewind();
 
         return ['list' => $list, 'count' => $mapper->count()];
+    }
+    
+    /**
+     * 
+     * @param unknown $user_id
+     */
+    public function getListLastMessage($filter)
+    {
+        $mapper = $this->getMapper();
+        $res_message_user = $mapper->usePaginator($filter)->getListLastMessage($this->getServiceUser()->getIdentity()['id']);
+        
+        foreach ($res_message_user as $m_message_user) {
+            $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d :[]);
+            
+        }
     }
 
     /**

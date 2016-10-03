@@ -23,7 +23,7 @@ class Conversation extends AbstractService
 {
 
     /**
-     * Create New Conversation.
+     * Create New Conversation
      *
      * @invokable
      *
@@ -573,6 +573,28 @@ class Conversation extends AbstractService
         }
         
         return $this->getListBySubmission($submission_id);
+    }
+    
+    /**
+     * Get List Conversation 
+     * 
+     * @invokable
+     * 
+     * @param array $filter
+     */
+    public function getList($filter)
+    {
+        $conversation = [];
+        $res_message_user = $this->getServiceMessageUser()->getListLastMessage($filter);
+        foreach ($res_message_user as $m_message_user) {
+            $m_conversation = $this->getLite($m_message_user->getConversationId());
+            $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($conversation_id));
+            $m_conversation->setMessageUser($m_message_user);
+            
+            $conversation[] = $m_conversation;
+        }
+        
+        return $conversation;
     }
 
     /**
