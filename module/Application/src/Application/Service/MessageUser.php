@@ -114,6 +114,8 @@ class MessageUser extends AbstractService
             $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d :[]);
             
         }
+        
+        return $res_message_user;
     }
 
     /**
