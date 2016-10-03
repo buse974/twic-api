@@ -588,7 +588,7 @@ class Conversation extends AbstractService
         $res_message_user = $this->getServiceMessageUser()->getListLastMessage($filter);
         foreach ($res_message_user as $m_message_user) {
             $m_conversation = $this->getLite($m_message_user->getConversationId());
-            $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($conversation_id));
+            $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_message_user->getConversationId()));
             $m_conversation->setMessageUser($m_message_user);
             
             $conversation[] = $m_conversation;
