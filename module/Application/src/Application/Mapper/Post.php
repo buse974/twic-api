@@ -43,7 +43,8 @@ class Post extends AbstractMapper
             'post$nbr_likes' => $nbr_likes,
         ];
         
-        if($organization_id === null && $user_id === null && $course_id === null && $parent_id == null)  {
+        
+        if($organization_id === null && $user_id === null && $course_id === null && $parent_id === null && $page_id === null)  {
             $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
             $select->columns($columns)
                 ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
@@ -67,9 +68,14 @@ class Post extends AbstractMapper
             if(null !== $parent_id) {
                 $select->where(['post.parent_id' => $parent_id]);
             }
+            if(null !== $page_id) {
+                $select->where(['post.parent_id IS NULL'])->where(['post.t_page_id' => $page_id]);
+            }
         }
         
-        $select->where(['post.deleted_date IS NULL']);
+        $select->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar'])
+                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])
+                ->where(['post.deleted_date IS NULL']);
         return $this->selectWith($select);
     }
     

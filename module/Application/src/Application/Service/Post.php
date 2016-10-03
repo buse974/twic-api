@@ -153,7 +153,7 @@ class Post extends AbstractService
      */
     public function delete($id)
     {
-        $this->deleteSubscription($id);
+        //$this->deleteSubscription($id);
         
         $m_post = $this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -181,11 +181,17 @@ class Post extends AbstractService
      * 
      * @invokable
      */
-    public function getList()
+    public function getList($user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $res_posts = $this->getMapper()->getList($me, $page_id, $organization_id, $user_id, $course_id, $parent_id);
+        if(null !== $parent_id){
+            foreach ($res_posts as $m_post) {
+                $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
+            }            
+        }
         
-        return $this->getMapper()->getList($user_id);
+        return $res_posts;
     }
     
     /**

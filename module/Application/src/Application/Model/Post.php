@@ -11,6 +11,19 @@ class Post extends BasePost
     protected $nbr_comments;
     protected $is_liked;
     protected $nbr_likes;
+    protected $user;
+    
+       public function exchangeArray(array &$data)
+    {
+        if ($this->isRepeatRelational()) {
+            return;
+        }
+
+        parent::exchangeArray($data);
+
+        $this->user = $this->requireModel('app_model_user', $data);
+    }
+
     
     public function setDocs($docs)
     {
@@ -70,6 +83,18 @@ class Post extends BasePost
     public function getIsLiked()
     {
         return $this->is_liked;
+    }
+    
+    public function setUser($user)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+    
+    public function getUser()
+    {
+        return $this->user;
     }
     
 }
