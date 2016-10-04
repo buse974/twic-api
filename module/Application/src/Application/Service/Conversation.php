@@ -598,6 +598,22 @@ class Conversation extends AbstractService
         
         return $conversation;
     }
+    
+    /**
+     * Get List Conversation
+     *
+     * @invokable
+     *
+     * @param int $filter
+     */
+    public function m_get($conversation_id)
+    {
+        $m_conversation = $this->getLite($conversation_id);
+        $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($conversation_id));
+        $m_conversation->setMessageUser($this->getServiceMessageUser()->getListLastMessage(null, $conversation_id)->current());
+
+        return $m_conversation;
+    }
 
     /**
      * Add Text Editor in conversation.

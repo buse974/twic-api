@@ -103,8 +103,9 @@ class MessageUser extends AbstractMapper
      * Get List last Message
      * 
      * @param int $user_id
+     * @param int $conversation_id
      */
-    public function getListLastMessage($user_id)
+    public function getListLastMessage($user_id, $conversation_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'user_id', 'from_id', 'read_date', 'conversation_id', 'created_date'])
@@ -112,6 +113,7 @@ class MessageUser extends AbstractMapper
                 ['id', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")])
             ->where(['message_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
+            ->where(['message_user.conversation_id' => $conversation_id])
             ->order(['message_user.id' => 'DESC']);
     
         $subselect = $this->tableGateway->getSql()->select();
