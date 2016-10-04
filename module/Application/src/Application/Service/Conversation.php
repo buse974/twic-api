@@ -600,11 +600,11 @@ class Conversation extends AbstractService
     }
     
     /**
-     * Get List Conversation
+     * Get Conversation
      *
      * @invokable
      *
-     * @param int $filter
+     * @param int $id
      */
     public function m_get($id)
     {
