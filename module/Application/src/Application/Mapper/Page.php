@@ -79,6 +79,7 @@ class Page extends AbstractMapper
 
         if (null !== $search) {
             $select->where(array('page.title LIKE ? ' => '%' . $search . '%'));
+        }
 
         if (null !== $tags) {
             $select->join('page_tag', 'page_tag.page_id = page.id')
