@@ -208,6 +208,19 @@ class Message extends AbstractService
 
         return $this->getServiceMessageUser()->getList($user_id, null, $conversation, $filter);
     }
+    
+    /**
+     * Get List By user Conversation
+     *
+     * @invokable
+     *
+     * @param int $conversation
+     * @param array $filter
+     */
+    public function m_getList($conversation, $filter = [])
+    {
+        return $this->getList($conversation, $filter)['list'];
+    }
 
     /**
      * Get List Tag with number message by tag.
