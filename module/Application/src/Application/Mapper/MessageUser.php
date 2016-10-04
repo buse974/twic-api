@@ -113,9 +113,12 @@ class MessageUser extends AbstractMapper
                 ['id', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")])
             ->where(['message_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
-            ->where(['message_user.conversation_id' => $conversation_id])
             ->order(['message_user.id' => 'DESC']);
     
+        if (null !== $conversation_id) {
+            $select->where(['message_user.conversation_id' => $conversation_id]);
+        }
+        
         $subselect = $this->tableGateway->getSql()->select();
         $subselect->columns(['message_user.id' => new Expression('MAX(message_user.id)')])
             ->join('message', 'message.id=message_user.message_id', [])
