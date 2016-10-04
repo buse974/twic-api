@@ -108,8 +108,8 @@ class MessageUser extends AbstractService
     public function getListLastMessage($filter = null, $conversation_id = null)
     {
         $mapper = (null !== $filter) ? 
-            $this->getMapper() : 
-            $this->getMapper()->usePaginator($filter);
+            $this->getMapper()->usePaginator($filter) : 
+            $this->getMapper();
         
         $res_message_user = $mapper->getListLastMessage($this->getServiceUser()->getIdentity()['id'], $conversation_id);
         foreach ($res_message_user as $m_message_user) {
