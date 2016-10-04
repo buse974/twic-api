@@ -606,11 +606,11 @@ class Conversation extends AbstractService
      *
      * @param int $filter
      */
-    public function m_get($conversation_id)
+    public function m_get($id)
     {
-        $m_conversation = $this->getLite($conversation_id);
-        $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($conversation_id));
-        $m_conversation->setMessageUser($this->getServiceMessageUser()->getListLastMessage(null, $conversation_id)->current());
+        $m_conversation = $this->getLite($id);
+        $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($id));
+        $m_conversation->setMessageUser($this->getServiceMessageUser()->getListLastMessage(null, $id)->current());
 
         return $m_conversation;
     }
