@@ -26,7 +26,7 @@ class Page extends AbstractMapper
     }
 
 
-    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false, $search = null)
+    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false, $search = null, $tags = null)
     {
         $where = $this->getWhereParams([
             'page.id' => $id,
@@ -79,6 +79,12 @@ class Page extends AbstractMapper
 
         if (null !== $search) {
             $select->where(array('page.title LIKE ? ' => '%' . $search . '%'));
+
+        if (null !== $tags) {
+            $select->join('page_tag', 'page_tag.page_id = page.id')
+                   ->join('tag', 'tag.id = page_tag.tag_id')
+                   ->where(['tag.name' => $tags])
+                   ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);
         }
         
         if (null !== $start_date && null !== $end_date) {
