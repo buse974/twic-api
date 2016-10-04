@@ -24,9 +24,7 @@ class Event extends AbstractService
     private static $id = 0;
 
     const TARGET_TYPE_USER = 'user';
-
     const TARGET_TYPE_GLOBAL = 'global';
-
     const TARGET_TYPE_SCHOOL = 'school';
 
     /**
@@ -55,11 +53,10 @@ class Event extends AbstractService
         if ($this->getMapper()->insert($m_event) <= 0) {
             throw new \Exception('error insert event');
         }
-        
-        // on récupére la liste des users abonné a ce libellé
-        // $libelle => $user
-        $user = [];
         $event_id = $this->getMapper()->getLastInsertValue();
+        $this->getServiceEventSubscription()->add($libelle, $event_id);
+        $user = $this->getServiceSubscription()->getListUserId($libelle);
+        
         $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
         
         return $event_id;
@@ -188,10 +185,11 @@ class Event extends AbstractService
         return $m_event;
     }
     
+    
     // /////////////// EVENT //////////////////////
     
     /**
-     * Event message.new.
+     * Event message.new
      *
      * @param int $message_id            
      * @param array $to            
@@ -200,13 +198,13 @@ class Event extends AbstractService
      */
     public function messageNew($message_id, $to)
     {
-        $from = $this->getDataUser();
-        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $to, self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        /*$from = $this->getDataUser();
+        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
-            if (/*!$this->isConnected($t)*/ $u['data']['has_email_notifier'] == true) {
+            //if (!$this->isConnected($t)  $u['data']['has_email_notifier'] == true) {
+            if ( $u['data']['has_email_notifier'] == true) {
                 try {
                     $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array('to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],'from_avatar' => $from['data']['avatar']));
                 } catch (\Exception $e) {
@@ -216,10 +214,11 @@ class Event extends AbstractService
         }
         
         return $ret;
+        */
     }
 
     /**
-     * Event user.publication.
+     * Event user.publication
      *
      * @param int $feed_id            
      *
@@ -227,12 +226,14 @@ class Event extends AbstractService
      */
     public function userPublication($feed_id)
     {
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed_id), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
+        */
     }
 
     /**
-     * Event user.announcement.
+     * Event user.announcement
      *
      * @param int $feed_id            
      *
@@ -240,9 +241,10 @@ class Event extends AbstractService
      */
     public function userAnnouncement($feed_id)
     {
-        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed_id), $this->getDataUserBySchool($this->getServiceUser()
-            ->getIdentity()['school']['id']), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
+        */
     }
 
     /**
@@ -254,8 +256,10 @@ class Event extends AbstractService
      */
     public function userLike($event_id)
     {
-        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event_id), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
+        */
     }
 
     /**
@@ -268,8 +272,7 @@ class Event extends AbstractService
      */
     public function taskshared($task_id, $users)
     {
-        return $this->create('task.shared', $this->getDataUser(), $this->getDataTask($task_id), $users, self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        //return $this->create('task.shared', $this->getDataUser(), $this->getDataTask($task_id), 'T'.$task_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -281,8 +284,7 @@ class Event extends AbstractService
      */
     public function userComment($m_comment)
     {
-        return $this->create('user.comment', $this->getDataUser(), $this->getDataEvent($m_comment->getEventId()), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        //return $this->create('user.comment', $this->getDataUser(), $this->getDataEvent($m_comment->getEventId()), 'U'.$user_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -295,7 +297,7 @@ class Event extends AbstractService
      */
     public function userAddConnection($user_id, $contact_id)
     {
-        return $this->create('user.addconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id), array_merge($this->getDataUserContact($contact_id), $this->getDataUserContact($user_id)), self::TARGET_TYPE_USER);
+        //return $this->create('user.addconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id),  ['U'.$contact_id, 'U'.$user_id] , self::TARGET_TYPE_USER);
     }
 
     /**
@@ -308,8 +310,9 @@ class Event extends AbstractService
      */
     public function userDeleteConnection($user_id, $contact_id)
     {
-        return $this->create('user.deleteconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id), array_merge($this->getDataUserContact($contact_id), [$contact_id,$user_id]), self::TARGET_TYPE_USER);
+        //return $this->create('user.deleteconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id),  ['U'.$contact_id, 'U'.$user_id], self::TARGET_TYPE_USER);
     }
+    
 
     /**
      * Event submission.graded.
@@ -321,16 +324,18 @@ class Event extends AbstractService
      */
     public function submissionGraded($submission_id, $user_id)
     {
+        /*
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
         $u_id = $this->getServiceUser()->getIdentity()['id'];
         $src = $this->getDataUser();
         $ret = false;
         if (! empty($src) && $u_id !== $user_id) {
-            $ret = $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user_id, self::TARGET_TYPE_USER, $u_id);
+            $ret = $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), 'UU'.$user_id, self::TARGET_TYPE_USER, $u_id);
         }
         
         return $ret;
+        */
     }
 
     /**
@@ -343,14 +348,14 @@ class Event extends AbstractService
      */
     public function submissionCommented($submission_id, $submission_comments_id)
     {
+        /*
         $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-        $uai = $this->getDataUserByCourseWithInstructorAndAcademic($m_submission->getItem()
-            ->getCourseId());
-        $users = $this->getDataUserBySubmission($submission_id);
         $m_comment = $this->getServiceSubmissionComments()->get($submission_comments_id);
         
-        return $this->create('submission.commented', $this->getDataUser(), $this->getDataSubmissionComment($m_submission, $m_comment), array_merge($users, $uai), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('submission.commented', $this->getDataUser(), $this->getDataSubmissionComment($m_submission, $m_comment), 'C'.$m_submission->getItem()
+            ->getCourseId(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
+        */
     }
 
     /**
@@ -362,11 +367,13 @@ class Event extends AbstractService
      */
     public function threadNew($thread_id)
     {
+        /*
         $m_thread = $this->getServiceThread()->get($thread_id);
         
-        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), $this->getDataUserByCourse($m_thread->getCourse()
-            ->getId()), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), 'C'.$m_thread->getCourse()
+            ->getId(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
+        */
     }
 
     /**
@@ -378,11 +385,13 @@ class Event extends AbstractService
      */
     public function threadMessage($thread_message_id)
     {
+        /*
         $m_thread_message = $this->getServiceThreadMessage()->get($thread_message_id);
         
-        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), $this->getDataUserByCourse($m_thread_message->getThread()
-            ->getCourseId()), self::TARGET_TYPE_USER, $this->getServiceUser()
+        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), 'C'.$m_thread_message->getThread()
+            ->getCourseId(), self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);
+        */
     }
 
     /**
@@ -395,11 +404,10 @@ class Event extends AbstractService
      */
     public function recordAvailable($m_video_archive, $item_id = null)
     {
-        $user = $this->getDataUserByConversation($m_video_archive->getConversationId());
-        if (null !== $item_id) {
-            $user = $user + $this->getDataUserByItemIdWithInstructorAndAcademic($item_id);
-        }
-        return $this->create('record.available', $this->getDataVideoArchive($m_video_archive), (null !== $item_id) ? $this->getDataItem($item_id) : null, $user, self::TARGET_TYPE_USER);
+        /*$user = $this->getDataUserByConversation($m_video_archive->getConversationId());
+       
+        return $this->create('record.available', $this->getDataVideoArchive($m_video_archive), (null !== $item_id) ? $this->getDataItem($item_id) : null, 'I'.$item_id, self::TARGET_TYPE_USER);
+        */
     }
 
     /**
@@ -411,9 +419,10 @@ class Event extends AbstractService
      */
     public function eqcqAvailable($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), $this->getDataUserBySubmissionWithInstrutorAndAcademic($m_submission->getId()), self::TARGET_TYPE_USER);
+        return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), 'S'.$m_submission->getId(), self::TARGET_TYPE_USER);
+        */
     }
 
     /**
@@ -425,15 +434,9 @@ class Event extends AbstractService
      */
     public function pgAssigned($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-        $res_sub_pg = $this->getServiceSubmissionPg()->getListBySubmission($submission_id);
-        
-        $user = [];
-        foreach ($res_sub_pg as $m_sub_pg) {
-            $user[] = $m_sub_pg->getUserId();
-        }
-        
-        return $this->create('pg.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user, self::TARGET_TYPE_USER);
+        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+       
+        return $this->create('pg.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user, self::TARGET_TYPE_USER);*/
     }
 
     /**
@@ -446,9 +449,9 @@ class Event extends AbstractService
      */
     public function requestSubmit($submission_id, $user_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
-        return $this->create('submit.request', $this->getDataUser(), $this->getDataSubmission($m_submission), $user_id, self::TARGET_TYPE_USER);
+        return $this->create('submit.request', $this->getDataUser(), $this->getDataSubmission($m_submission), $user_id, self::TARGET_TYPE_USER);*/
     }
 
     /**
@@ -460,16 +463,16 @@ class Event extends AbstractService
      */
     public function endSubmit($submission_id)
     {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
+        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
         
         $src = $this->getDataUser();
         
         $ret = false;
         if (! empty($src)) {
-            $ret = $this->create('submission.submit', $src, $this->getDataSubmission($m_submission), $this->getDataInstructorByItem($m_submission->getItemId()), self::TARGET_TYPE_USER);
+            $ret = $this->create('submission.submit', $src, $this->getDataSubmission($m_submission), 'I'.$m_submission->getItemId(), self::TARGET_TYPE_USER);
         }
         
-        return $ret;
+        return $ret;*/
     }
 
     /**
@@ -482,8 +485,7 @@ class Event extends AbstractService
      */
     public function courseUpdated($course_id, $dataupdated)
     {
-        return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course_id, $dataupdated), $this->getDataUserByCourseWithStudentAndInstructorAndAcademic($course_id), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        //return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course_id, $dataupdated), 'C'.$course_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -495,8 +497,7 @@ class Event extends AbstractService
      */
     public function programmationNew($submission_id)
     {
-        return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        //return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission_id), 'S'.$submission_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -508,8 +509,7 @@ class Event extends AbstractService
      */
     public function programmationUpdated($submission_id)
     {
-        return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        //return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -522,8 +522,7 @@ class Event extends AbstractService
      */
     public function profileUpdated($user_id, $dataprofile)
     {
-        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user_id, $dataprofile), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+       // return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user_id, $dataprofile), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
     }
 
     /**
@@ -535,8 +534,9 @@ class Event extends AbstractService
      */
     public function profileNewresume($resume)
     {
-        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $this->getDataUserContact(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);*/
     }
 
     /**
@@ -548,7 +548,7 @@ class Event extends AbstractService
      */
     public function userRequestconnection($user_id)
     {
-        $u = $this->getDataUser();
+        /*$u = $this->getDataUser();
         $uu = $this->getDataUser($user_id);
         
         try {
@@ -557,8 +557,8 @@ class Event extends AbstractService
             syslog(1, 'Model tpl_newrequest does not exist');
         }
         
-        return $this->create('user.requestconnection', $u, $uu, [$user_id], self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
+        return $this->create('user.requestconnection', $u, $uu, 'U'.$user_id, self::TARGET_TYPE_USER, $this->getServiceUser()
+            ->getIdentity()['id']);*/
     }
 
     /**
@@ -572,6 +572,23 @@ class Event extends AbstractService
     {
         return $this->create('school.new', [], $this->getDataSchool($school_id), [], self::TARGET_TYPE_GLOBAL);
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     // ------------- DATA OBJECT -------------------
     
@@ -711,196 +728,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Get User By course.
-     *
-     * @param int $course_id            
-     *
-     * @return array
-     */
-    private function getDataUserByCourse($course_id)
-    {
-        $res_user = $this->getServiceUser()->getListUserBycourse($course_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get Data User Contact.
-     *
-     * @param int $user_id            
-     *
-     * @return array
-     */
-    private function getDataUserContact($user_id = null)
-    {
-        $ret = $this->getServiceContact()->getListId($user_id);
-        
-        if (null === $user_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
-        }
-        $ret[] = $user_id;
-        
-        return $ret;
-    }
-
-    /**
-     * Get Data User Item.
-     *
-     * @param int $item_id            
-     *
-     * @return array
-     */
-    private function getDataUserByItemIdWithInstructorAndAcademic($item_id)
-    {
-        $res_user = $this->getServiceUser()->getListByItem($item_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get Data User School.
-     *
-     * @param int $school_id            
-     *
-     * @return array
-     */
-    private function getDataUserBySchool($school_id)
-    {
-        $res_user = $this->getServiceUser()->getListBySchool($school_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get User By Course With Student And Instructor And Academic.
-     *
-     * @param int $course_id            
-     *
-     * @return array
-     */
-    private function getDataUserByCourseWithStudentAndInstructorAndAcademic($course_id)
-    {
-        $res_user = $this->getServiceUser()->getListUserBycourseWithStudentAndInstructorAndAcademic($course_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get User By Course With Instructor And Academic.
-     *
-     * @param int $course_id            
-     *
-     * @return array
-     */
-    private function getDataUserByCourseWithInstructorAndAcademic($course_id)
-    {
-        $res_user = $this->getServiceUser()->getListUserBycourseWithInstructorAndAcademic($course_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get User Instructor By Item.
-     *
-     * @param int $item_id            
-     *
-     * @return array
-     */
-    private function getDataInstructorByItem($item_id)
-    {
-        $res_user = $this->getServiceUser()->getInstructorByItem($item_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get User By Submission With Instrutor And Academic.
-     *
-     * @param int $submission_id            
-     *
-     * @return array
-     */
-    private function getDataUserBySubmissionWithInstrutorAndAcademic($submission_id)
-    {
-        $res_user = $this->getServiceUser()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get User By submission.
-     *
-     * @param int $submission_id            
-     *
-     * @return array
-     */
-    private function getDataUserBySubmission($submission_id)
-    {
-        $res_user = $this->getServiceUser()->getListBySubmission($submission_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
-     * Get User By Conversation.
-     *
-     * @param int $conversation_id            
-     *
-     * @return array
-     */
-    private function getDataUserByConversation($conversation_id)
-    {
-        $res_user = $this->getServiceUser()->getListByConversation($conversation_id);
-        
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = $m_user->getId();
-        }
-        
-        return $users;
-    }
-
-    /**
      * Get Data THread Message.
      *
      * @param \Application\Model\ThreadMessage $m_thread_message            
@@ -1016,6 +843,12 @@ class Event extends AbstractService
         return ['id' => $m_message->getId(),'name' => 'message','data' => $m_message];
     }
 
+    
+    
+    
+    
+    
+    
     /**
      * Get Service Thread Message.
      *
@@ -1039,11 +872,11 @@ class Event extends AbstractService
     /**
      * Get Service Event Comment.
      *
-     * @return \Application\Service\EventComment
+     * @return \Application\Service\EventSubscription
      */
-    private function getServiceEventComment()
+    private function getServiceEventSubscription()
     {
-        return $this->container->get('app_service_event_comment');
+        return $this->container->get('app_service_event_subscription');
     }
 
     /**
@@ -1096,6 +929,17 @@ class Event extends AbstractService
         return $this->container->get('app_service_submission');
     }
 
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
+    }
+    
+    
     /**
      * Get Service Course.
      *

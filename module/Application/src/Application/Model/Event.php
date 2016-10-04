@@ -51,22 +51,6 @@ class Event extends BaseEvent
         return $this;
     }
 
-    public function getNbLike()
-    {
-        if (null !== $this->id) {
-            $this->nb_like = $this->container->get('app_mapper_event')->nbrLike($this->id);
-        }
-
-        return $this->nb_like;
-    }
-
-    public function setNbLike($nb_like)
-    {
-        $this->nb_like = $nb_like;
-
-        return $this;
-    }
-
     public function getReadDate()
     {
         return $this->read_date;

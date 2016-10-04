@@ -36,45 +36,45 @@ class Page extends AbstractMapper
             'page.type' => $type
         ]);
         
-        
-
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(
-            [
-                'id',
-                'title',
-                'logo',
-                'background',
-                'description',
-                'confidentiality',
-                'admission',
-                'location',
-                'type', 
-                'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
-                'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")'),
-                'user_id',
-                'organization_id',
-                'page_id',
-            ]
-        );
-        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT);
-       
-         if(null !== $parent_id){
-            $select
-                ->join(['parent' => 'page'],'page.page_id = parent.id', [])
+        $select->columns([
+            'id',
+            'title',
+            'logo',
+            'background',
+            'description',
+            'confidentiality',
+            'admission',
+            'location',
+            'type', 
+            'user_id',
+            'organization_id',
+            'page_id',
+            'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
+            'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
+        ]);
+        
+        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
+            ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar'], $select::JOIN_LEFT)
+            ->join(['page_school' => 'school'],'page_school.id = page.organization_id', ['id', 'name', 'logo'], $select::JOIN_LEFT)
+            ->join(['page_page' => 'page'],'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT);
+        
+        if(null !== $parent_id){
+            $select->join(['parent' => 'page'],'page.page_id = parent.id', [])
                 ->join(['parent_user' => 'page'], 'parent_user.page_id = parent.id', [], $select::JOIN_LEFT)
                 ->where(["( parent.confidentiality = 0 "])
                 ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
-        }
-        else{
+        } else {
             $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
         }
+        
         $select->where($where);
+        
         if (null !== $member_id) {
             $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
-                    ->where(['member.user_id' => $member_id]);
+                ->where(['member.user_id' => $member_id]);
         }
 
         if (null !== $search) {
@@ -92,21 +92,18 @@ class Page extends AbstractMapper
             $select->where(['( page.start_date BETWEEN ? AND ? ' => [$start_date,$end_date]])
                 ->where(['page.end_date BETWEEN ? AND ?  ' => [$start_date,$end_date]], Predicate::OP_OR)
                 ->where(['( page.start_date < ? AND page.end_date > ? ) ) ' => [$start_date,$end_date]], Predicate::OP_OR);
-        }
-        else{
-           
-            if (null !== $start_date) {
+        } else {
+            if(null !== $start_date) {
                 $paramValue = $strict_dates ? 'page.start_date >= ?' : 'page.end_date >= ?';
 
                 $select->where([$paramValue => $start_date]);
             }
-            if (null !== $end_date) {
+            if(null !== $end_date) {
                 $paramValue = $strict_dates ? 'page.end_date <= ?' : 'page.start_date <= ?';
 
                 $select->where([$paramValue => $end_date]);
             }
         }
-        
         
         if($is_sadmin_admin === false) {
            $select->join('user', 'page.user_id=user.id', [])
@@ -114,9 +111,10 @@ class Page extends AbstractMapper
                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
                ->where(['organization_user.user_id' => $me]);
-       }
+        }
         $select->order(['page.start_date' => 'DESC'])
                ->group('page.id');
+        
         return $this->selectWith($select);
     }
 
@@ -148,18 +146,22 @@ class Page extends AbstractMapper
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
         );
-        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT);
-         if(null !== $id){
+        
+        $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
+             ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar'], $select::JOIN_LEFT)
+             ->join(['page_school' => 'school'],'page_school.id = page.organization_id', ['id', 'name', 'logo'], $select::JOIN_LEFT)
+             ->join(['page_page' => 'page'],'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT);
+        
+        if(null !== $id){
             $select->where(array('page.id' => $id));
         }
-         if(null !== $parent_id){
+        if(null !== $parent_id) {
             $select
                 ->join(['parent' => 'page','page.page_id = parent.id'], [])
                 ->join(['parent_user' => 'page_user'], 'parent_user.page_id = parent.page_id', [], $select::JOIN_LEFT)
                 ->where(["( parent.confidentiality = 0 "])
                 ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
-        }
-        else{
+        } else {
             $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);;
@@ -173,8 +175,9 @@ class Page extends AbstractMapper
                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
                ->where(['organization_user.user_id' => $me]);
-       }
+        }
         $select->group('page.id');
+        
         return $this->selectWith($select);
     }
 

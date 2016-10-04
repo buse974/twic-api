@@ -6,8 +6,6 @@ use Application\Model\Base\Page as BasePage;
 
 class Page extends BasePage
 {
-    
-    
     const TYPE_EVENT='event';
     const TYPE_GROUP='group';
      
@@ -18,6 +16,78 @@ class Page extends BasePage
     protected $state;
     protected $role;
     
+    protected $user;
+    protected $organization;
+    protected $page;
+    protected $owner;
+    
+    public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
+    
+        $this->user = $this->requireModel('app_model_user', $data, 'p_user');
+        $this->organization = $this->requireModel('app_model_school', $data);
+        $this->page = $this->requireModel('app_model_page', $data);
+    }
+    
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+    
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    
+        return $this;
+    }
+    
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+    
+        return $this;
+    }
+    
+    /**
+     * @return \Application\Model\School
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+    
+    public function setPage($page)
+    {
+        $this->page = $page;
+    
+        return $this;
+    }
+    
+    /**
+     * @return \Application\Model\Page
+     */
+    public function getPage()
+    {
+        return $this->page;
+    }
+    
+    
+    public function setUser($user)
+    {
+        $this->user = $user;
+        
+        return $this;
+    }
+    
+    /**
+     * @return \Application\Model\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+        
     public function setUsers($users)
     {
         $this->users = $users;
