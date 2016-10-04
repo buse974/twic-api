@@ -115,9 +115,7 @@ class MessageUser extends AbstractMapper
             ->where(['message_user.deleted_date IS NULL'])
             ->order(['message_user.id' => 'DESC']);
     
-        if (null !== $conversation_id) {
-            $select->where(['message_user.conversation_id' => $conversation_id]);
-        }
+        
         
         $subselect = $this->tableGateway->getSql()->select();
         $subselect->columns(['message_user.id' => new Expression('MAX(message_user.id)')])
@@ -127,6 +125,10 @@ class MessageUser extends AbstractMapper
             ->group(['message_user.conversation_id'])
             ->where(['message.type' => 2]);
         
+        if (null !== $conversation_id) {
+            $subselect->where(['message_user.conversation_id' => $conversation_id]);
+        }
+            
         $select->where([new In('message_user.id', $subselect)]);
         
         return $this->selectWith($select);
