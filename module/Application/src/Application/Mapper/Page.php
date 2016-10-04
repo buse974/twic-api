@@ -26,7 +26,7 @@ class Page extends AbstractMapper
     }
 
 
-    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false)
+    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false, $search = null, $tags = null)
     {
         $where = $this->getWhereParams([
             'page.id' => $id,
@@ -75,6 +75,17 @@ class Page extends AbstractMapper
         if (null !== $member_id) {
             $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
                 ->where(['member.user_id' => $member_id]);
+        }
+
+        if (null !== $search) {
+            $select->where(array('page.title LIKE ? ' => '%' . $search . '%'));
+        }
+
+        if (null !== $tags) {
+            $select->join('page_tag', 'page_tag.page_id = page.id')
+                   ->join('tag', 'tag.id = page_tag.tag_id')
+                   ->where(['tag.name' => $tags])
+                   ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);
         }
         
         if (null !== $start_date && null !== $end_date) {
@@ -131,7 +142,6 @@ class Page extends AbstractMapper
                 'page_id', 
                 'user_id',
                 'organization_id',
-                'page_id',
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
