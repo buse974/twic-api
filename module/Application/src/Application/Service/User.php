@@ -484,7 +484,7 @@ class User extends AbstractService
      *
      * @return array
      */
-    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $event = null, $message = null, $contact_state = null)
+    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $post = null, $message = null, $contact_state = null)
     {
         $identity = $this->getIdentity();
         
@@ -495,7 +495,7 @@ class User extends AbstractService
         }
         
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, $event, $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message, $contact_state);
+        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, $post, $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message, $contact_state);
         
         $res = $res->toArray();
         foreach ($res as &$user) {

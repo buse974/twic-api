@@ -27,6 +27,7 @@ class Post extends AbstractModel
 	protected $t_course_id;
 	protected $lat;
 	protected $lng;
+	protected $comments;
 
 	protected $prefix = 'post';
 
@@ -278,6 +279,18 @@ class Post extends AbstractModel
 	public function setLng($lng)
 	{
 		$this->lng = $lng;
+
+		return $this;
+	}
+
+	public function getComments()
+	{
+		return $this->comments;
+	}
+
+	public function setComments($comments)
+	{
+		$this->comments = $comments;
 
 		return $this;
 	}
