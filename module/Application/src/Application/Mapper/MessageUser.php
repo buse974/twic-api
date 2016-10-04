@@ -115,8 +115,6 @@ class MessageUser extends AbstractMapper
             ->where(['message_user.deleted_date IS NULL'])
             ->order(['message_user.id' => 'DESC']);
     
-        
-        
         $subselect = $this->tableGateway->getSql()->select();
         $subselect->columns(['message_user.id' => new Expression('MAX(message_user.id)')])
             ->join('message', 'message.id=message_user.message_id', [])
