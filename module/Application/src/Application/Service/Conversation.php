@@ -240,10 +240,11 @@ class Conversation extends AbstractService
      */
     public function getLite($id)
     {
-        return $this->getMapper()
+        $res_conversation = $this->getMapper()
             ->select($this->getModel()
-            ->setId($id))
-            ->current();
+            ->setId($id));
+        
+        return (is_array($id)) ? $res_conversation : $res_conversation->current();
     }
 
     /**
@@ -604,15 +605,22 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param array $id
      */
     public function m_get($id)
     {
-        $m_conversation = $this->getLite($id);
-        $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($id));
-        $m_conversation->setMessageUser($this->getServiceMessageUser()->getListLastMessage(null, $id)->current());
-
-        return $m_conversation;
+        if(!is_array($id)) {
+            $id = [$id];
+        }
+        
+        $res_conversation = $this->getLite($id);
+        
+        foreach ($res_conversation as $m_conversation) {
+            $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+            $m_conversation->setMessageUser($this->getServiceMessageUser()->getListLastMessage(null, $m_conversation->getId())->current());
+        }
+        
+        return $res_conversation->toArray(['id']);
     }
 
     /**
