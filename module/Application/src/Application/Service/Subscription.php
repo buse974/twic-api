@@ -25,6 +25,29 @@ class Subscription extends AbstractService
         return $ret;
     }
     
+    /**
+     * Get List User Id
+     * 
+     * @param string $libelle
+     * @return array
+     */
+    public function getListUserId($libelle)
+    {
+        if(!is_array($libelle)) {
+            $libelle = [$libelle];
+        }
+        $u = [];
+        
+        foreach ($libelle as $l) {
+            $res_subscription = $this->getMapper()->select($this->getMapper()->setLibelle($l));
+            foreach ($res_subscription as $m_subscription) {
+                $u[] = $m_subscription->getUserId();
+            }
+        }
+        
+        return array_unique($u);
+    }
+    
     public function delete($libelle, $user_id = null)
     {
         if(null === $user_id) {

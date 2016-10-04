@@ -30,7 +30,7 @@ class MessageUser extends AbstractMapper
             ->join(['message_user_from' => 'user'], 'message_user_from.id=message_user.from_id', ['id', 'firstname', 'lastname', 'nickname', 'avatar'])
             ->where(['message_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
-            ->where([' ( message_user_message.is_draft IS FALSE OR ( message_user_message.is_draft IS TRUE AND message_user_from.id = ? ]) ' => $user_id])
+            ->where([' ( message_user_message.is_draft IS FALSE OR ( message_user_message.is_draft IS TRUE AND message_user_from.id = ? )) ' => $user_id])
             ->order(['message_user.id' => 'DESC']);
 
         if (null !== $message_id) {
