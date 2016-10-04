@@ -94,7 +94,7 @@ class Post extends AbstractService
             $this->getServicePostDoc()->_add($id, $docs);
         }
         
-        return $id;
+        return $this->get($id);
     }
         
     /**
@@ -140,7 +140,9 @@ class Post extends AbstractService
         
         $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
         
-        return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+        
+        return $this->get($id);
     }
     
     /**
@@ -171,6 +173,7 @@ class Post extends AbstractService
     public function get($id) 
     {
         $m_post =  $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
         $m_post->setDocs($this->getServicePostDoc()->getList($id));
         
         return $m_post;
@@ -185,9 +188,10 @@ class Post extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $res_posts = $this->getMapper()->getList($me, $page_id, $organization_id, $user_id, $course_id, $parent_id);
-        if(null !== $parent_id){
+        if(null === $parent_id){
             foreach ($res_posts as $m_post) {
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
+                $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
             }            
         }
         
@@ -208,6 +212,8 @@ class Post extends AbstractService
     /**
      * Like post 
      * 
+     * @invokable
+     * 
      * @param int $post_id
      */
     public function like($id)
@@ -217,6 +223,8 @@ class Post extends AbstractService
     
     /**
      * UnLike Post
+     * 
+     * @invokable
      * 
      * @param int $id
      */

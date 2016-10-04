@@ -67,7 +67,7 @@ class PostSubscription extends AbstractService
         }
     }
     
-    public function addLike($post_id, $post_like_id,$date)
+    public function addLike($post_id, $date)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post = $this->getServicePost()->getLite($post_id);

@@ -207,7 +207,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getList($user_id, $is_sadmin_admin, $filter = null, $event = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null, $contact_state = null)
+    public function getList($user_id, $is_sadmin_admin, $filter = null, $post = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null, $contact_state = null)
     {
         $select = $this->tableGateway->getSql()->select();
         if($is_sadmin_admin){
@@ -251,10 +251,10 @@ class User extends AbstractMapper
         if ($exclude) {
             $select->where->notIn('user.id', $exclude);
         }
-        if (null !== $event) {
-            $select->join('like', 'like.user_id=user.id', array())
-                ->where(array('like.event_id' => $event))
-                ->where(array('like.is_like IS TRUE'));
+        if (null !== $post) {
+            $select->join('post_like', 'post_like.user_id=user.id', array())
+                ->where(array('post_like.post_id' => $post))
+                ->where(array('post_like.is_like IS TRUE'));
         }
         if (null !== $schools && $schools !== false) {
             $select->where(array('school.id' => $schools));

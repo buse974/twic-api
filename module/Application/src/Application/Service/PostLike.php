@@ -14,23 +14,19 @@ class PostLike extends AbstractService
      * @throws \Exception
      * @return int
      */
-    public function add($post_id, $type = 1, $organization_id = null, $page_id = null)
+    public function add($post_id, $type = 1)
     {
         $res = null;
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post_like = $this->getModel()
             ->setPostId($post_id)
-            ->setUserId($user_id)
-            ->setOrganizationId($organization_id)
-            ->setPageId($page_id);
+            ->setUserId($user_id);
     
         if ($this->getMapper()->select($m_post_like)->count() > 0) {
             $m_post_like->setIsLike(true);
             $res = $this->getMapper()->update($m_post_like, [
                 'post_id' => $post_id, 
-                'user_id' => $user_id,
-                'organization_id' => $organization_id,
-                'page_id' => $page_id
+                'user_id' => $user_id
             ]);
         } else {
             $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');

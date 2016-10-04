@@ -9,6 +9,8 @@ class PostDoc extends AbstractService
     /**
      * Add Post Document Relation
      *
+     * @invokable
+     * 
      * @param int $post_id
      * @param int|array $library
      * @return int
@@ -69,6 +71,18 @@ class PostDoc extends AbstractService
     {
         return $this->getServiceLibrary()->getListByPost($post_id);
     }
+    
+      /**
+     *Get  Post Doc
+     *
+     * @param int $id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function get($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id));
+    }
+    
     
     /**
      *
