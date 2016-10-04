@@ -241,7 +241,7 @@ class Page extends AbstractService
             $m_page->setDocs($this->getServicePageDoc()
                 ->getList($m_page->getId()));
             $m_page->setUsers($this->getServicePageUser()
-                ->getList($m_page->getId()), null, $m_page->getState());
+                ->getList($m_page->getId(), [ 'p' => 1, 'n' => 5 ], $m_page->getState()));
         }
         
         return ['count' => $mapper->count(), 'list' => $res_page];
