@@ -105,9 +105,6 @@ class Post extends AbstractService
             $this->getServiceEvent()->userPublication($sub_event, $id);
         }
         
-        
-        $this->getServiceEvent()->userPublication($sub_event, $id);
-
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
