@@ -189,6 +189,21 @@ class Event extends AbstractService
     // /////////////// EVENT //////////////////////
     
     /**
+     * Event user.publication
+     *
+     * @param int $feed_id
+     *
+     * @return int
+     */
+    public function userPublication($post_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    
+    /**
      * Event message.new
      *
      * @param int $message_id            
@@ -214,21 +229,6 @@ class Event extends AbstractService
         }
         
         return $ret;
-        */
-    }
-
-    /**
-     * Event user.publication
-     *
-     * @param int $feed_id            
-     *
-     * @return int
-     */
-    public function userPublication($feed_id)
-    {
-        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
-        
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
         */
     }
 
@@ -593,6 +593,38 @@ class Event extends AbstractService
     // ------------- DATA OBJECT -------------------
     
     /**
+     * Get Data Post
+     *
+     * @param int $post_id
+     * @return array
+     */
+    private function getDataPost($post_id)
+    {
+        $m_post = $this->getServicePost()->get($post_id);
+    
+        return [
+            'id' => $m_post->getId(),
+            'name' => 'post',
+            'data' => [
+                'content' => $m_post->getContent(),
+                'picture' => $m_post->getPicture(),
+                'name_picture' => $m_post->getNamePicture(),
+                'link' => $m_post->getLink(),
+            ],
+        ];
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /**
      * Get Data School.
      *
      * @param int $school_id            
@@ -755,17 +787,25 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Data feed.
+     * Get Data Post
      *
-     * @param int $feed_id            
-     *
+     * @param int $post_id            
      * @return array
      */
-    private function getDataFeed($feed_id)
+    private function getDataPost($post_id)
     {
-        $m_feed = $this->getServiceFeed()->get($feed_id);
-        
-        return ['id' => $feed_id,'name' => 'feed','data' => ['content' => $m_feed->getContent(),'picture' => $m_feed->getPicture(),'name_picture' => $m_feed->getNamePicture(),'document' => $m_feed->getDocument(),'name_document' => $m_feed->getNameDocument(),'link' => $m_feed->getLink()]];
+        $m_post = $this->getServicePost()->get($post_id);
+
+        return [
+            'id' => $m_post->getId(),
+            'name' => 'post',
+            'data' => [
+                'content' => $m_post->getContent(),
+                'picture' => $m_post->getPicture(),
+                'name_picture' => $m_post->getNamePicture(),
+                'link' => $m_post->getLink(),
+            ],
+        ];
     }
 
     /**
@@ -824,7 +864,13 @@ class Event extends AbstractService
         
         $m_user = $this->getServiceUser()->get($user_id);
         
-        return ['id' => $user_id,'name' => 'user','data' => ['firstname' => $m_user['firstname'],'email' => $m_user['email'],'lastname' => $m_user['lastname'],'nickname' => $m_user['nickname'],'gender' => $m_user['gender'],'has_email_notifier' => $m_user['has_email_notifier'],'avatar' => $m_user['avatar'],'school' => ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' => $m_user['school']['logo'],'background' => $m_user['school']['background'],'name' => $m_user['school']['name']],'user_roles' => $m_user['roles']]];
+        return ['id' => $user_id,
+            'name' => 'user','data' => 
+            ['firstname' => $m_user['firstname'],'email' => $m_user['email'],'lastname' => $m_user['lastname'],'nickname' => $m_user['nickname'],'gender' => 
+                $m_user['gender'],'has_email_notifier' => $m_user['has_email_notifier'],'avatar' => $m_user['avatar'],'school' => 
+                ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' => 
+                    $m_user['school']['logo'],'background' => $m_user['school']['background'],'name' => $m_user['school']['name']],
+                'user_roles' => $m_user['roles']]];
     }
 
     /**
@@ -890,13 +936,13 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Service Feed.
+     * Get Service Post
      *
-     * @return \Application\Service\Feed
+     * @return \Application\Service\Post
      */
-    private function getServiceFeed()
+    private function getServicePost()
     {
-        return $this->container->get('app_service_feed');
+        return $this->container->get('app_service_post');
     }
 
     /**

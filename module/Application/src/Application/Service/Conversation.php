@@ -609,6 +609,9 @@ class Conversation extends AbstractService
      */
     public function m_get($id)
     {
+        /**
+         * @todo enlever To From User
+         */
         if(!is_array($id)) {
             $id = [$id];
         }
