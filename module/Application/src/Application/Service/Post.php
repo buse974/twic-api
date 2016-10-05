@@ -79,20 +79,19 @@ class Post extends AbstractService
             throw new \Exception('error add post');
         }
         
-        
-        
         $id = $this->getMapper()->getLastInsertValue();
         $ar = array_filter(explode(' ', str_replace(array("\r\n","\n","\r"), ' ', $content)), function ($v) {
             return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
         });
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
-        
         $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
         
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
+        
+        $this->getServiceEvent()->userPublication($id);
         
         return $this->get($id);
     }
@@ -169,6 +168,7 @@ class Post extends AbstractService
      * @invokable
      * 
      * @param int $id
+     * @return \Application\Model\Post
      */
     public function get($id) 
     {
@@ -281,6 +281,16 @@ class Post extends AbstractService
     private function getServiceHashtag()
     {
         return $this->container->get('app_service_hashtag');
+    }
+    
+    /**
+     * Get Service Event.
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
     
 }

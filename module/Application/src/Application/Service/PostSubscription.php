@@ -97,6 +97,29 @@ class PostSubscription extends AbstractService
         $this->add($this->getTarget($m_post), $post_id, $date);
     }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     private function getUserLike(\Application\Model\PostLike $m_post_like)
     {
         switch (true) {
