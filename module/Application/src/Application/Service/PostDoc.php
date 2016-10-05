@@ -19,7 +19,7 @@ class PostDoc extends AbstractService
     {
         if(is_array($library)) {
             $library = $this->getServiceLibrary()->_add($library)->getId();
-        } elseif(!is_numeric($var)) {
+        } elseif(!is_numeric($library)) {
             throw new \Exception('error add document');
         }
     
