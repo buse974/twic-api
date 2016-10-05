@@ -8,6 +8,7 @@ class Subscription extends AbstractService
 {
     public function add($libelle, $user_id = null)
     {
+        $ret = null;
         if(null === $user_id) {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }

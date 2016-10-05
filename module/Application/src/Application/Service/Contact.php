@@ -119,7 +119,7 @@ class Contact extends AbstractService
     }
 
     /**
-     * Remove Contact.
+     * Remove Contact
      * 
      * @invokable
      *
@@ -148,6 +148,12 @@ class Contact extends AbstractService
             'contact_id' => $user,
         ));
 
+        $this->getServiceSubscription()->delete('UU'.$user, $identity['id']);
+        $this->getServiceSubscription()->delete('EU'.$user, $identity['id']);
+        
+        $this->getServiceSubscription()->delete('UU'.$identity['id'], $user);
+        $this->getServiceSubscription()->delete('EU'.$identity['id'], $user);
+        
         $this->getServiceEvent()->userDeleteConnection($identity['id'], $user);
 
         return true;
