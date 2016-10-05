@@ -126,6 +126,47 @@ class VideoArchive extends AbstractService
     }
     
     /**
+     * Update Status Video.
+     *
+     * @param string $token
+     * @param string $status
+     * @param int    $duration
+     * @param string $link
+     *
+     * @return int
+     */
+    public function updateByArchiveToken($archive_token, $status, $duration = null, $link = null)
+    {
+        $m_video_archive = $this->getModel();
+        $m_video_archive->setArchiveDuration($duration)
+        ->setArchiveStatus($status)
+        ->setArchiveLink($link);
+    
+        return $this->getMapper()->update($m_video_archive, ['archive_token' => $archive_token]);
+    }
+    
+    /**
+     * Add Video.
+     *
+     * @param int    $conversation
+     * @param string $token
+     *
+     * @return int
+     */
+    public function add($conversation_id, $token)
+    {
+        $m_video_archive = $this->getModel();
+        $m_video_archive->setConversationId($conversation_id)
+        ->setArchiveToken($token)
+        ->setArchiveStatus(CVF::ARV_STARTED)
+        ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+    
+        $this->getMapper()->insert($m_video_archive);
+    
+        return $this->getMapper()->getLastInsertValue();
+    }
+    
+    /**
      * Valide the video transfer.
      *
      * @invokable
@@ -156,27 +197,7 @@ class VideoArchive extends AbstractService
         }
         return $ret;
     }*/
-
-    /**
-     * Update Status Video.
-     *
-     * @param string $token
-     * @param string $status
-     * @param int    $duration
-     * @param string $link
-     *
-     * @return int
-     */
-    public function updateByArchiveToken($archive_token, $status, $duration = null, $link = null)
-    {
-        $m_video_archive = $this->getModel();
-        $m_video_archive->setArchiveDuration($duration)
-            ->setArchiveStatus($status)
-            ->setArchiveLink($link);
-
-        return $this->getMapper()->update($m_video_archive, ['archive_token' => $archive_token]);
-    }
-
+    
     /**
      * Get List videos a uploader.
      *
@@ -212,27 +233,6 @@ class VideoArchive extends AbstractService
 
         return $ret;
     }*/
-
-    /**
-     * Add Video.
-     *
-     * @param int    $conversation
-     * @param string $token
-     *
-     * @return int
-     */
-    public function add($conversation_id, $token)
-    {
-        $m_video_archive = $this->getModel();
-        $m_video_archive->setConversationId($conversation_id)
-            ->setArchiveToken($token)
-            ->setArchiveStatus(CVF::ARV_STARTED)
-            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-
-        $this->getMapper()->insert($m_video_archive);
-
-        return $this->getMapper()->getLastInsertValue();
-    }
 
     /**
      * Get Service Conversation.

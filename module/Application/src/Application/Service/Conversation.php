@@ -23,7 +23,7 @@ class Conversation extends AbstractService
 {
 
     /**
-     * Create New Conversation.
+     * Create New Conversation
      *
      * @invokable
      *
@@ -240,10 +240,11 @@ class Conversation extends AbstractService
      */
     public function getLite($id)
     {
-        return $this->getMapper()
+        $res_conversation = $this->getMapper()
             ->select($this->getModel()
-            ->setId($id))
-            ->current();
+            ->setId($id));
+        
+        return (is_array($id)) ? $res_conversation : $res_conversation->current();
     }
 
     /**
@@ -573,6 +574,57 @@ class Conversation extends AbstractService
         }
         
         return $this->getListBySubmission($submission_id);
+    }
+    
+    /**
+     * Get List Conversation
+     * 
+     * @invokable
+     * 
+     * @todo faire une requete pour simplifier
+     * 
+     * @param array $filter
+     */
+    public function getList($filter)
+    {
+        $conversation = [];
+        $res_message_user = $this->getServiceMessageUser()->getListLastMessage($filter);
+        foreach ($res_message_user as $m_message_user) {
+            $m_conversation = $this->getLite($m_message_user->getConversationId());
+            $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_message_user->getConversationId()));
+            $m_conversation->setMessageUser($m_message_user);
+            
+            $conversation[] = $m_conversation;
+        }
+        
+        return $conversation;
+    }
+    
+    /**
+     * Get Conversation
+     *
+     * @invokable
+     *
+     * @param array $id
+     */
+    public function m_get($id)
+    {
+        /**
+         * @todo enlever To From User
+         */
+        if(!is_array($id)) {
+            $id = [$id];
+        }
+        
+        $res_conversation = $this->getLite($id);
+        foreach ($res_conversation as $m_conversation) {
+            $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+            $res_message_user = $this->getServiceMessageUser()->getListLastMessage(null, $m_conversation->getId());
+            $res_message_user->rewind();
+            $m_conversation->setMessageUser($res_message_user->current());
+        }
+        
+        return $res_conversation->toArray(['id']);
     }
 
     /**

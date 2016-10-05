@@ -14,23 +14,19 @@ class PostLike extends AbstractService
      * @throws \Exception
      * @return int
      */
-    public function add($post_id, $type = 1, $organization_id = null, $page_id = null)
+    public function add($post_id, $type = 1)
     {
         $res = null;
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post_like = $this->getModel()
             ->setPostId($post_id)
-            ->setUserId($user_id)
-            ->setOrganizationId($organization_id)
-            ->setPageId($page_id);
+            ->setUserId($user_id);
     
         if ($this->getMapper()->select($m_post_like)->count() > 0) {
             $m_post_like->setIsLike(true);
             $res = $this->getMapper()->update($m_post_like, [
                 'post_id' => $post_id, 
-                'user_id' => $user_id,
-                'organization_id' => $organization_id,
-                'page_id' => $page_id
+                'user_id' => $user_id
             ]);
         } else {
             $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
@@ -41,7 +37,26 @@ class PostLike extends AbstractService
             }
 
             $res = $this->getMapper()->getLastInsertValue();
-            $this->getServicePostSubscription()->addLike($post_id, $date);
+            
+            /*
+             * Subscription
+             */
+            $m_post = $this->getServicePost()->getLite($id);
+            $m_post_like = $this->getLite($post_id);
+
+            $sub_post = [
+                'U'.$this->getServicePost()->getOwner($m_post), 
+                'U'.$this->getServicePost()->getTarget($m_post), 
+                'U'.$this->getUserLike($m_post_like),
+            ];
+            $sub_event = [
+                'E'.$this->getServicePost()->getOwner($m_post), 
+                'E'.$this->getServicePost()->getTarget($m_post),
+                'E'.$this->getUserLike($m_post_like),
+            ];
+            
+            $this->getServicePostSubscription()->add($sub_post, $id, $date);
+            $this->getServiceEvent()->userLike($sub_event, $post_id);
         }
     
         return $res;
@@ -72,6 +87,23 @@ class PostLike extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id));
     }
     
+    public function getUserLike(\Application\Model\PostLike $m_post_like)
+    {
+        switch (true) {
+            case (is_numeric($m_post_like->getOrganizationId())):
+                $u = 'O'.$m_post_like->getOrganizationId();
+                break;
+            case (is_numeric($m_post_like->getPageId())):
+                $u = 'P'.$m_post_like->getPageId();
+                break;
+            default:
+                $u ='U'.$m_post_like->getUserId();
+                break;
+        }
+    
+        return $u;
+    }
+    
     /**
      * Get Service User
      *
@@ -80,6 +112,16 @@ class PostLike extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+    
+    /**
+     * Get Service Event.
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
     
     /**

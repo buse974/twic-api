@@ -118,36 +118,38 @@ class Library extends AbstractService
      * @param int $folder_id            
      * @return array
      */
-    public function getList($folder_id = null)
+    public function getList($filter = null, $folder_id = null)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_library = $this->getModel()
             ->setFolderId(null !== $folder_id ? $folder_id : new IsNull())
             ->setDeletedDate(new IsNull())
-            ->setOwnerId($this->getServiceUser()
-            ->getIdentity()['id']);
+            ->setOwnerId($user_id);
+        
+        if(null !== $filter) {
+            $mapper = $this->getMapper()->usePaginator($filter);
+        }
+        $res_library = $mapper->select($m_library);
+        $ar = [
+            'count' => $mapper->count(), 
+            'documents' => $res_library, 
+            'folder' => null,
+            'parent' => null
+        ];
         
         // If root folder: returns only documents
-        if (! $folder_id) {
-            return ['documents' => $this->getMapper()->select($m_library)];
+        if ($folder_id) {
+            // Requested document / folder
+            $folder = $this->getMapper()->select($this->getModel()->setId($folder_id))->current();
+            // Parent folder
+            $parent = ($folder && is_numeric($folder->getFolderId())) ?
+                $this->getMapper()->select($this->getModel()->setId($folder->getFolderId()))->current() : null;
+          
+            $ar['folder'] = $folder;
+            $ar['parent'] = $parent;
         }
         
-        // Requested document / folder
-        $m_folder = $this->getModel()->setId($folder_id);
-        $folder = $this->getMapper()
-            ->select($m_folder)
-            ->current();
-        
-        // Parent folder
-        if (! $folder->getFolderId() instanceof \Zend\Db\Sql\Predicate\IsNull) {
-            $m_parent = $this->getModel()->setId($folder->getFolderId());
-            $parent = $this->getMapper()
-                ->select($m_parent)
-                ->current();
-        } else {
-            $parent = null;
-        }
-        
-        return ['documents' => $this->getMapper()->select($m_library),'folder' => $folder,'parent' => $parent];
+        return $ar;
     }
 
     /**

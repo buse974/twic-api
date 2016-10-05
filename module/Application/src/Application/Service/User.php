@@ -330,8 +330,8 @@ class User extends AbstractService
                 $password .= substr($cars, rand(0, $long - 1), 1);
             }
         }
-        
         $m_user->setPassword(md5($password));
+        
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
@@ -341,11 +341,11 @@ class User extends AbstractService
             $this->addSchool($school_id, $id, true);
             $this->getServiceContact()->addBySchool($school_id);
         }
-        try {
+        /*try {
             $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));
         } catch (\Exception $e) {
             syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
-        }
+        }*/
         
         /*
          *
@@ -391,7 +391,7 @@ class User extends AbstractService
         $error = [];
         foreach ($data as $u) {
             try {
-                $id = $this->add($u['firstname'], $u['lastname'], $u['email'], null, null, null, $u['uid'], null, null, null, null, null, null, [$u['role']]);
+                $id = $this->add($u['firstname'], $u['lastname'], $u['email'], null, null, null, $u['uid'], null, null,/*school*/ null, null, null, null, [$u['role']]);
             } catch (JrpcException $e) {
                 $error[] = ['field' => $u,'code' => $e->getCode(),'message' => $e->getMessage()];
             }
@@ -484,7 +484,7 @@ class User extends AbstractService
      *
      * @return array
      */
-    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $event = null, $message = null, $contact_state = null)
+    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $post = null, $message = null, $contact_state = null)
     {
         $identity = $this->getIdentity();
         
@@ -495,7 +495,7 @@ class User extends AbstractService
         }
         
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, $event, $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message, $contact_state);
+        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, $post, $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message, $contact_state);
         
         $res = $res->toArray();
         foreach ($res as &$user) {
@@ -933,6 +933,48 @@ class User extends AbstractService
         
         return $ret;
     }
+    
+    /**
+     * Send New Password
+     *
+     * @invokable
+     *
+     * @param array|int $id
+     */
+    public function sendPassword($id)
+    {
+        if(!is_array($id)) {
+            $id = [$id];
+        }
+        
+        $cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
+        $long = strlen($cars);
+        
+        foreach ($id as $uid) {
+            $res_user = $this->getMapper()->select($this->getModel()->setId($uid));
+            if($res_user->count() <= 0) {
+                continue;
+            }
+            
+            srand((double) microtime() * 1000000);
+            $password = '';
+            for ($i = 0; $i < 8; ++ $i) {
+                $password .= substr($cars, rand(0, $long - 1), 1);
+            }
+            $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['id' => $uid]);
+            if ($ret > 0) {
+                $user = $res_user->current();
+                try {
+                    $this->getServiceMail()->sendTpl('tpl_sendpasswd', $email, array('password' => $password,'email' => $email,'lastname' => $user->getLastname(),'firstname' => $user->getFirstname()));
+                } catch (\Exception $e) {
+                    syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
+                }
+            }
+        }
+        return $ret;
+    }
+    
+    
 
     /**
      * Update Password.

@@ -37,7 +37,7 @@
             </delete>
     </target>
 
-    <target name="database-deploy">
+    <target name="database-reset">
         <echo msg="Drop database..." />
 	    <property name="db.passwordParam" value="-p${db.password}" override="yes" />
         <if>

@@ -209,6 +209,7 @@ class Page extends AbstractService
         $m_page->setDocs($this->getServicePageDoc()->getList($id));
         $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'p' => 1 ] , $m_page->getState()));
         $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, [ 'n' => 4, 'p' => 1 ]));
+        $this->getOwner($m_page);
         
         return $m_page;
     }
@@ -225,29 +226,64 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null, $strict_dates = false)
+    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null, $strict_dates = false, $search = null, $tags = null)
     {
-       
+        if (empty($tags)) {
+            $tags = null;
+        }
         $identity = $this->getServiceUser()->getIdentity();        
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_sadmin_admin);
+        $res_page = $mapper->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_sadmin_admin, $search, $tags);
 
-        
         foreach ($res_page as $m_page) {
-            $m_page->setTags($this->getServicePageTag()
-                ->getList($m_page->getId()));
-            $m_page->setDocs($this->getServicePageDoc()
-                ->getList($m_page->getId()));
-            $m_page->setUsers($this->getServicePageUser()
-                ->getList($m_page->getId()), null, $m_page->getState());
+            $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
+            $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
+            $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), [ 'p' => 1, 'n' => 5 ], $m_page->getState()));
+            $this->getOwner($m_page);
         }
         
         return ['count' => $mapper->count(), 'list' => $res_page];
     }
     
 
+    private function getOwner(\Application\Model\Page $m_page)
+    {
+        $owner = [];
+        switch (true) {
+            case is_numeric($m_page->getPageId()) :
+                $ar_page = $m_page->getPage()->toArray();
+                $owner = [
+                    'id' => $ar_page['id'],
+                    'text' => $ar_page['title'],
+                    'img' => $ar_page['logo'],
+                    'type' => 'page',
+                ];
+                break;
+            case is_numeric($m_page->getUserId()) :
+                $ar_user = $m_page->getUser()->toArray();
+                $owner = [
+                    'id' => $ar_user['id'],
+                    'text' => $ar_user['firstname'] . ' ' . $ar_user['lastname'],
+                    'img' => $ar_user['avatar'],
+                    'type' => 'user',
+                ];
+                break;
+            case is_numeric($m_page->getOrganizationId()) :
+                $ar_organization = $m_page->getOrganization()->toArray();
+                $owner = [
+                    'id' => $ar_organization['id'],
+                    'text' => $ar_organization['name'],
+                    'img' => $ar_organization['logo'],
+                    'type' => 'organization',
+                ];
+                break;
+        }
+        
+        $m_page->setOwner($owner);
+    }
+    
     /**
      * Get Service User
      *

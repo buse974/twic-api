@@ -74,6 +74,24 @@ class ConversationUser extends AbstractService
 
         return $res_conversation_user;
     }
+    
+    /**
+     * Get User By Conversation.
+     *
+     * @param int $conversation_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListUserIdByConversation($conversation_id)
+    {
+        $ret = [];
+        $res_conversation_user = $this->getMapper()->select($this->getModel()->setConversationId($conversation_id));
+        foreach ($res_conversation_user as $m_conversation_user) {
+            $ret[] = $m_conversation_user->getUserId();
+        }
+    
+        return $ret;
+    }
 
     /**
      * Check If is in conversation.

@@ -16,6 +16,7 @@ class Conversation extends BaseConversation
 
     protected $messages;
     protected $users;
+    protected $message_user;
 
     public function getMessages()
     {
@@ -26,6 +27,18 @@ class Conversation extends BaseConversation
     {
         $this->messages = $messages;
 
+        return $this;
+    }
+    
+    public function getMessageUser()
+    {
+        return $this->message_user;
+    }
+    
+    public function setMessageUser($message_user)
+    {
+        $this->message_user = $message_user;
+    
         return $this;
     }
 

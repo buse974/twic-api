@@ -355,7 +355,10 @@ class ConversationVideoTest extends AbstractService
         
     }
    
-    public function testCanAddVideo()
+    /**
+     * @depends testCanAdd
+     */
+    public function testCanAddVideo($con_id)
     {
         //MOCK OPENTOK
         $serviceManager = $this->getApplicationServiceLocator();
@@ -372,11 +375,16 @@ class ConversationVideoTest extends AbstractService
         
         $this->setIdentity(1);
         $s_va = $serviceManager->get('app_service_video_archive');
-        $s_va->add(1,'myToken');
-        $s_va->add(1,'myToken2');
-        $s_va->add(1,'myToken3');
-        $s_va->add(1,'myToken4');
-
+        $s_va->add($con_id,'myToken');
+        $s_va->add($con_id,'myToken2');
+        $s_va->add($con_id,'myToken3');
+        $s_va->add($con_id,'myToken4');
+        
+        $s_va->checkStatus([
+            'id' => 'myToken',
+            'status' => 'uploaded',
+            'link' => 'link'
+        ]);
     }
     
     /**
@@ -388,34 +396,19 @@ class ConversationVideoTest extends AbstractService
         $data = $this->jsonRpc('videoarchive.getList', ['item_id' => $item_id]);
     
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 3);
         $this->assertEquals($data['result'][0]['conversation_id'] , 1);
-        $this->assertEquals(count($data['result'][0]['videos']) , 3);
+        $this->assertEquals(count($data['result'][0]['videos']) , 1);
         $this->assertEquals(count($data['result'][0]['videos'][0]) , 7);
         $this->assertEquals($data['result'][0]['videos'][0]['id'] , 1);
         $this->assertEquals($data['result'][0]['videos'][0]['archive_token'] , "myToken");
-        $this->assertEquals($data['result'][0]['videos'][0]['archive_link'] , "http://ici.fr");
+        $this->assertEquals($data['result'][0]['videos'][0]['archive_link'] , "link");
         $this->assertEquals($data['result'][0]['videos'][0]['archive_status'] , "available");
-        $this->assertEquals($data['result'][0]['videos'][0]['archive_duration'] , 1234);
+        $this->assertEquals($data['result'][0]['videos'][0]['archive_duration'] , null);
         $this->assertEquals($data['result'][0]['videos'][0]['conversation_id'] , 1);
         $this->assertEquals(!empty($data['result'][0]['videos'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result'][0]['videos'][1]) , 7);
-        $this->assertEquals($data['result'][0]['videos'][1]['id'] , 2);
-        $this->assertEquals($data['result'][0]['videos'][1]['archive_token'] , "myToken2");
-        $this->assertEquals($data['result'][0]['videos'][1]['archive_link'] , "http://ici.fr");
-        $this->assertEquals($data['result'][0]['videos'][1]['archive_status'] , "available");
-        $this->assertEquals($data['result'][0]['videos'][1]['archive_duration'] , 1234);
-        $this->assertEquals($data['result'][0]['videos'][1]['conversation_id'] , 1);
-        $this->assertEquals(!empty($data['result'][0]['videos'][1]['created_date']) , true);
-        $this->assertEquals(count($data['result'][0]['videos'][2]) , 7);
-        $this->assertEquals($data['result'][0]['videos'][2]['id'] , 3);
-        $this->assertEquals($data['result'][0]['videos'][2]['archive_token'] , "myToken3");
-        $this->assertEquals($data['result'][0]['videos'][2]['archive_link'] , "http://ici.fr");
-        $this->assertEquals($data['result'][0]['videos'][2]['archive_status'] , "available");
-        $this->assertEquals($data['result'][0]['videos'][2]['archive_duration'] , 1234);
-        $this->assertEquals($data['result'][0]['videos'][2]['conversation_id'] , 1);
-        $this->assertEquals(!empty($data['result'][0]['videos'][2]['created_date']) , true);
         $this->assertEquals(count($data['result'][0]['conversation_user']) , 4);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]) , 3);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']) , 20);
@@ -574,8 +567,8 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']['program']) , 0);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['conversation_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user_id'] , 4);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
 }

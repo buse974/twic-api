@@ -82,22 +82,38 @@ class MessageUser extends AbstractService
     {
         $mapper = $this->getMapper();
         $list = $mapper->usePaginator($filter)->getList($user_id, $message_id, $conversation_id, $tag, $type, $filter, $search);
-
         foreach ($list as $m_message_user) {
-            $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()
-                ->getId());
-            $m_message_user->getMessage()->setTo($this->getServiceUser()
-                ->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('R', $m_message_user->getMessage()
-                ->getId(), ))['list']);
-            $m_message_user->getMessage()->setFrom($this->getServiceUser()
-                ->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('S', $m_message_user->getMessage()
-                ->getId(), ))['list']);
-            $m_message_user->getMessage()->setDocument((($d->count() !== 0) ? $d : array()));
+            $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
+            $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('R', $m_message_user->getMessage()->getId(), ))['list']);
+            $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('S', $m_message_user->getMessage()->getId(), ))['list']); 
+            $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d : []);
         }
 
         $list->rewind();
 
         return ['list' => $list, 'count' => $mapper->count()];
+    }
+    
+    /**
+     * 
+     * @param int $user_id
+     * @param int $conversation_id
+     * 
+     * @return \Dal\Db\ResultSet\
+     */
+    public function getListLastMessage($filter = null, $conversation_id = null)
+    {
+        $mapper = (null !== $filter) ? 
+            $this->getMapper()->usePaginator($filter) : 
+            $this->getMapper();
+        
+        $res_message_user = $mapper->getListLastMessage($this->getServiceUser()->getIdentity()['id'], $conversation_id);
+        foreach ($res_message_user as $m_message_user) {
+            $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
+            $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d :[]);
+        }
+        
+        return $res_message_user;
     }
 
     /**

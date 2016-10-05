@@ -79,8 +79,6 @@ class Post extends AbstractService
             throw new \Exception('error add post');
         }
         
-        
-        
         $id = $this->getMapper()->getLastInsertValue();
         $ar = array_filter(explode(' ', str_replace(array("\r\n","\n","\r"), ' ', $content)), function ($v) {
             return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
@@ -88,13 +86,21 @@ class Post extends AbstractService
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
         
-        $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
+        /*
+         * Subscription
+         */
+        $m_post = $this->getLite($id);
+        $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+        $sub_event = ['E'.$this->getOwner($m_post), 'E'.$this->getTarget($m_post)];
         
+        $this->getServicePostSubscription()->add($sub_post, $id, $date);
+        $this->getServiceEvent()->userPublication($sub_event, $id);
+
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
         
-        return $id;
+        return $this->get($id);
     }
         
     /**
@@ -138,9 +144,17 @@ class Post extends AbstractService
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
         
-        $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
         
-        return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+        /*
+         * Subscription
+         */
+        $m_post = $this->getLite($id);
+        $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+        $this->getServicePostSubscription()->add($sub_post, $id, $date);
+        
+        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+        
+        return $this->get($id);
     }
     
     /**
@@ -153,7 +167,7 @@ class Post extends AbstractService
      */
     public function delete($id)
     {
-        $this->deleteSubscription($id);
+        //$this->deleteSubscription($id);
         
         $m_post = $this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -167,10 +181,12 @@ class Post extends AbstractService
      * @invokable
      * 
      * @param int $id
+     * @return \Application\Model\Post
      */
     public function get($id) 
     {
         $m_post =  $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
         $m_post->setDocs($this->getServicePostDoc()->getList($id));
         
         return $m_post;
@@ -181,11 +197,18 @@ class Post extends AbstractService
      * 
      * @invokable
      */
-    public function getList()
+    public function getList($user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $res_posts = $this->getMapper()->getList($me, $page_id, $organization_id, $user_id, $course_id, $parent_id);
+        if(null === $parent_id){
+            foreach ($res_posts as $m_post) {
+                $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
+                $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
+            }            
+        }
         
-        return $this->getMapper()->getList($user_id);
+        return $res_posts;
     }
     
     /**
@@ -202,6 +225,8 @@ class Post extends AbstractService
     /**
      * Like post 
      * 
+     * @invokable
+     * 
      * @param int $post_id
      */
     public function like($id)
@@ -212,11 +237,53 @@ class Post extends AbstractService
     /**
      * UnLike Post
      * 
+     * @invokable
+     * 
      * @param int $id
      */
     public function unlike($id) 
     {
         $this->getServicePostLike()->delete($id);
+    }
+    
+    public function getOwner($m_post)
+    {
+        switch (true) {
+            case (is_numeric($m_post->getOrganizationId())):
+                $u = 'O'.$m_post->getOrganizationId();
+                break;
+            case (is_numeric($m_post->getPageId())):
+                $u = 'P'.$m_post->getPageId();
+                break;
+            default:
+                $u ='U'.$m_post->getUserId();
+                break;
+        }
+    
+        return $u;
+    }
+    
+    public function getTarget($m_post)
+    {
+        switch (true) {
+            case (is_numeric($m_post->getTCourseId())):
+                $t = 'C'.$m_post->getTCourseId();
+                break;
+            case (is_numeric($m_post->getTOrganizationId())):
+                $t = 'O'.$m_post->getTOrganizationId();
+                break;
+            case (is_numeric($m_post->getTPageId())):
+                $t = 'P'.$m_post->getTPageId();
+                break;
+            case (is_numeric($m_post->getTUserId())):
+                $t = 'U'.$m_post->getTUserId();
+                break;
+            default:
+                $t = $this->getTarget($this->getLite($m_post->getOriginId()));
+                break;
+        }
+    
+        return $t;
     }
     
     /**
@@ -267,6 +334,16 @@ class Post extends AbstractService
     private function getServiceHashtag()
     {
         return $this->container->get('app_service_hashtag');
+    }
+    
+    /**
+     * Get Service Event.
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
     
 }
