@@ -90,10 +90,22 @@ class Post extends AbstractService
          * Subscription
          */
         $m_post = $this->getLite($id);
-        $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+        $sub_post  = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
         $sub_event = ['E'.$this->getOwner($m_post), 'E'.$this->getTarget($m_post)];
         
-        $this->getServicePostSubscription()->add($sub_post, $id, $date);
+        if($parent_id && $origin_id) {
+            $m_post = $this->getLite($origin_id);
+            $sub_post  = $sub_post + ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+            $sub_event = $sub_event + ['E'.$this->getOwner($m_post), 'E'.$this->getTarget($m_post)];
+
+            $this->getServicePostSubscription()->add($sub_post, $origin_id, $date);
+            $this->getServiceEvent()->userPublication($sub_event, $origin_id);
+        } else {
+            $this->getServicePostSubscription()->add($sub_post, $id, $date);
+            $this->getServiceEvent()->userPublication($sub_event, $id);
+        }
+        
+        
         $this->getServiceEvent()->userPublication($sub_event, $id);
 
         if(null !== $docs) {
