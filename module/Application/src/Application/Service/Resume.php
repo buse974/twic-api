@@ -111,6 +111,7 @@ class Resume extends AbstractService
             $start_date = new IsNull();
         }
 
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_education->setAddress($address)
             ->setLogo($logo)
             ->setStartDate($start_date)
@@ -125,14 +126,12 @@ class Resume extends AbstractService
             ->setStudy($study)
             ->setGrade($grade)
             ->setNote($note)
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id']);
+            ->setUserId($user_id);
 
-        $ret = $this->getMapper()->update($m_education, array('id' => $id, 'user_id' => $this->getServiceUser()
-            ->getIdentity()['id'], ));
+        $ret = $this->getMapper()->update($m_education, array('id' => $id, 'user_id' => $user_id));
 
         if ($ret > 0) {
-            $this->getServiceEvent()->profileNewresume($id);
+            $this->getServiceEvent()->profileNewresume(['EU'.$user_id], $id);
         }
 
         return $ret;
