@@ -125,10 +125,11 @@ class Library extends AbstractService
             ->setFolderId(null !== $folder_id ? $folder_id : new IsNull())
             ->setDeletedDate(new IsNull())
             ->setOwnerId($user_id);
+       
+        $mapper = (null !== $filter) ?
+            $this->getMapper()->usePaginator($filter) : 
+            $this->getMapper();
         
-        if(null !== $filter) {
-            $mapper = $this->getMapper()->usePaginator($filter);
-        }
         $res_library = $mapper->select($m_library);
         $ar = [
             'count' => $mapper->count(), 
