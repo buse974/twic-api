@@ -113,6 +113,7 @@ return [
             'app_service_page_user',
             'app_service_page_doc',
             'app_service_post',
+            'app_service_post_doc',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
