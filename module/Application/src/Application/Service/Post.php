@@ -45,7 +45,7 @@ class Post extends AbstractService
         $origin_id = null;
         if (null !== $parent_id) {
             $m_post = $this->getMapper()->select($this->getModel()->setId($parent_id))->current();
-            $origin_id = (null !== $m_post->getOriginId()) ?
+            $origin_id = (is_numeric($m_post->getOriginId())) ?
                 $m_post->getOriginId():
                 $m_post->getId();
         }
