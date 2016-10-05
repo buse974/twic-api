@@ -14,7 +14,7 @@ class PageUser extends AbstractMapper
         $select = $this->tableGateway->getSql()->select()
             ->columns(['page_id','user_id','state','role'])   
             ->where(['page_id' => $page_id]);
-        if($state === ModelPageUser::ROLE_ADMIN){
+        if($state !== ModelPageUser::ROLE_ADMIN){
             $select->where('state = "'.ModelPageUser::STATE_MEMBER.'"');
         }
         else{
