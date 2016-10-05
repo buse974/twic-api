@@ -83,7 +83,11 @@ class PostLike extends AbstractService
      */
     public function getLite($id)
     {
-        return $this->getMapper()->select($this->getModel()->setId($id));
+        $res_post_like = $this->getMapper()->select($this->getModel()->setId($id));
+        
+        return (is_array($id)) ? 
+            $res_post_like : 
+            $res_post_like->current();
     }
     
     public function getUserLike(\Application\Model\PostLike $m_post_like)
