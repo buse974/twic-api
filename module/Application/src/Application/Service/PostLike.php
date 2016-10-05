@@ -41,7 +41,7 @@ class PostLike extends AbstractService
              * Subscription
              */
             $m_post = $this->getServicePost()->getLite($post_id);
-            $m_post_like = $this->getLite($post_id);
+            $m_post_like = $this->getLite($res);
 
             $sub_post = [
                 'U'.$this->getServicePost()->getOwner($m_post), 
