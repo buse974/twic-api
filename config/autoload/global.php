@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.2",
-    'build-commit' => 56,
+    'build-commit' => 57,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -157,9 +157,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS56',
+                    'namespace' => 'LMS57',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS56'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS57'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

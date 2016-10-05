@@ -50,6 +50,7 @@ class Resume extends AbstractService
             $start_date = new IsNull();
         }
 
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_education->setAddress($address)
             ->setLogo($logo)
             ->setStartDate($start_date)
@@ -64,16 +65,14 @@ class Resume extends AbstractService
             ->setStudy($study)
             ->setGrade($grade)
             ->setNote($note)
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id']);
+            ->setUserId($user_id);
 
         if ($this->getMapper()->insert($m_education) <= 0) {
             throw new \Exception('error insert experience');
         }
 
         $id = $this->getMapper()->getLastInsertValue();
-
-        $this->getServiceEvent()->profileNewresume($id);
+        $this->getServiceEvent()->profileNewresume(['EU'.$user_id], $id);
 
         return $id;
     }

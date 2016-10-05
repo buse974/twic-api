@@ -217,6 +217,33 @@ class Event extends AbstractService
     }
     
     /**
+     * Event profile.updated
+     *
+     * @param array $sub
+     * @param int $user_id
+     * @param array $dataprofile
+     * @return int
+     */
+    public function profileUpdated($sub, $user_id, $dataprofile)
+    {
+        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user_id, $dataprofile), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event profile.newresume.
+     *
+     * @param int $resume
+     *
+     * @return int
+     */
+    public function profileNewresume($sub, $resume)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
      * Event message.new
      *
      * @param int $message_id            
@@ -508,33 +535,6 @@ class Event extends AbstractService
     public function programmationUpdated($submission_id)
     {
         //return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
-    }
-
-    /**
-     * Event profile.updated.
-     *
-     * @param int $user_id            
-     * @param array $dataprofile            
-     *
-     * @return int
-     */
-    public function profileUpdated($user_id, $dataprofile)
-    {
-       // return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user_id, $dataprofile), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
-     * Event profile.newresume.
-     *
-     * @param int $resume            
-     *
-     * @return int
-     */
-    public function profileNewresume($resume)
-    {
-        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
-        
-        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);*/
     }
 
     /**
