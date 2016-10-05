@@ -126,6 +126,16 @@ class PostLike extends AbstractService
     /**
      * Get Service Post Like
      *
+     * @return \Application\Service\Post
+     */
+    private function getServicePost()
+    {
+        return $this->container->get('app_service_post');
+    }
+    
+    /**
+     * Get Service Post Like
+     *
      * @return \Application\Service\PostSubscription
      */
     private function getServicePostSubscription()

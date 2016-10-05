@@ -33,9 +33,7 @@ class PostSubscription extends AbstractService
             $m_post_subscription = $this->getModel()
                 ->setLibelle($l)
                 ->setPostId($post_id);
-            
             $res_post_subscription = $this->getMapper()->select($m_post_subscription);
-            
             if ($res_post_subscription->count() <= 0) {
                 $ret = $this->getMapper()->insert($m_post_subscription->setLastDate($last_date));
             } else {
