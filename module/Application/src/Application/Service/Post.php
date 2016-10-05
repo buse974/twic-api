@@ -145,6 +145,7 @@ class Post extends AbstractService
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
         
         
+        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
         /*
          * Subscription
          */
@@ -152,7 +153,6 @@ class Post extends AbstractService
         $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
         $this->getServicePostSubscription()->add($sub_post, $id, $date);
         
-        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
         
         return $this->get($id);
     }
