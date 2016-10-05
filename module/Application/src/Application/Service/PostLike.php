@@ -35,7 +35,6 @@ class PostLike extends AbstractService
             if ($this->getMapper()->insert($m_post_like) <= 0) {
                 throw new \Exception('error add like');
             }
-
             $res = $this->getMapper()->getLastInsertValue();
             
             /*
@@ -55,7 +54,7 @@ class PostLike extends AbstractService
                 'E'.$this->getUserLike($m_post_like),
             ];
             
-            $this->getServicePostSubscription()->add($sub_post, $id, $date);
+            $this->getServicePostSubscription()->add($sub_post, $post_id, $date);
             $this->getServiceEvent()->userLike($sub_event, $post_id);
         }
     
