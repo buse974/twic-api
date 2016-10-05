@@ -39,7 +39,7 @@ class Subscription extends AbstractService
         $u = [];
         
         foreach ($libelle as $l) {
-            $res_subscription = $this->getMapper()->select($this->getMapper()->setLibelle($l));
+            $res_subscription = $this->getMapper()->select($this->getModel()->setLibelle($l));
             foreach ($res_subscription as $m_subscription) {
                 $u[] = $m_subscription->getUserId();
             }

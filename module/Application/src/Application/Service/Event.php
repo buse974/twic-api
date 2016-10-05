@@ -190,18 +190,31 @@ class Event extends AbstractService
     
     /**
      * Event user.publication
-     *
-     * @param int $feed_id
-     *
-     * @return int
+     * 
+     * @param int $post_id
+     * @param array $sub
+     * @return number
      */
-    public function userPublication($post_id)
+    public function userPublication($sub, $post_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
     
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
+        return $this->create('user.publication', $this->getDataUser(), $this->getDataPost($post_id), $sub, self::TARGET_TYPE_USER, $user_id);
     }
     
+    /**
+     * Event user.like
+     *
+     * @param array $sub
+     * @param int $post_id
+     */
+    public function userLike($sub, $post_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('user.like', $this->getDataUser(), $this->getDataPost($post_id), $sub, self::TARGET_TYPE_USER, $user_id);
+    
+    }
     
     /**
      * Event message.new
@@ -244,21 +257,6 @@ class Event extends AbstractService
         /*$user_id = $this->getServiceUser()->getIdentity()['id'];
         
         return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
-        */
-    }
-
-    /**
-     * Event user.like.
-     *
-     * @param int $event_id            
-     *
-     * @return int
-     */
-    public function userLike($event_id)
-    {
-        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
-        
-        return $this->create('user.like', $this->getDataUser(), $this->getDataEvent($event_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
         */
     }
 
@@ -784,28 +782,6 @@ class Event extends AbstractService
     private function getDataThread(\Application\Model\Thread $m_thread)
     {
         return ['id' => $m_thread->getId(),'name' => 'thread','data' => ['id' => $m_thread->getId(),'title' => $m_thread->getTitle(),'course' => ['id' => $m_thread->getCourse()->getId(),'title' => $m_thread->getCourse()->getTitle()]]];
-    }
-
-    /**
-     * Get Data Post
-     *
-     * @param int $post_id            
-     * @return array
-     */
-    private function getDataPost($post_id)
-    {
-        $m_post = $this->getServicePost()->get($post_id);
-
-        return [
-            'id' => $m_post->getId(),
-            'name' => 'post',
-            'data' => [
-                'content' => $m_post->getContent(),
-                'picture' => $m_post->getPicture(),
-                'name_picture' => $m_post->getNamePicture(),
-                'link' => $m_post->getLink(),
-            ],
-        ];
     }
 
     /**

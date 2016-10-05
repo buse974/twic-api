@@ -30,6 +30,9 @@ class PageUser extends AbstractService
             ->setState($state);
         $ret = 0;
         foreach($user_id as $uid){
+            $this->getServiceSubscription()->add('UP'.$page_id, $uid);
+            $this->getServiceSubscription()->add('EP'.$page_id, $uid);
+            
             $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
         }
         
@@ -123,6 +126,16 @@ class PageUser extends AbstractService
         $this->getMapper()->delete($this->getModel()->setPageId($page_id));
         
         return $this->_add($page_id, $data);
+    }
+
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 
 }

@@ -14,6 +14,7 @@ class EventSubscription extends AbstractService
      */
     public function add($libelle, $event_id)
     {
+        $libelle = array_unique($libelle);
         if(!is_array($libelle)) {
             $libelle = [$libelle];
         }

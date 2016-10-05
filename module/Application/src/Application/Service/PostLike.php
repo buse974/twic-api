@@ -37,7 +37,26 @@ class PostLike extends AbstractService
             }
 
             $res = $this->getMapper()->getLastInsertValue();
-            $this->getServicePostSubscription()->addLike($post_id, $date);
+            
+            /*
+             * Subscription
+             */
+            $m_post = $this->getServicePost()->getLite($id);
+            $m_post_like = $this->getLite($post_id);
+
+            $sub_post = [
+                'U'.$this->getServicePost()->getOwner($m_post), 
+                'U'.$this->getServicePost()->getTarget($m_post), 
+                'U'.$this->getUserLike($m_post_like),
+            ];
+            $sub_event = [
+                'E'.$this->getServicePost()->getOwner($m_post), 
+                'E'.$this->getServicePost()->getTarget($m_post),
+                'E'.$this->getUserLike($m_post_like),
+            ];
+            
+            $this->getServicePostSubscription()->add($sub_post, $id, $date);
+            $this->getServiceEvent()->userLike($sub_event, $post_id);
         }
     
         return $res;
@@ -68,6 +87,23 @@ class PostLike extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id));
     }
     
+    public function getUserLike(\Application\Model\PostLike $m_post_like)
+    {
+        switch (true) {
+            case (is_numeric($m_post_like->getOrganizationId())):
+                $u = 'O'.$m_post_like->getOrganizationId();
+                break;
+            case (is_numeric($m_post_like->getPageId())):
+                $u = 'P'.$m_post_like->getPageId();
+                break;
+            default:
+                $u ='U'.$m_post_like->getUserId();
+                break;
+        }
+    
+        return $u;
+    }
+    
     /**
      * Get Service User
      *
@@ -76,6 +112,16 @@ class PostLike extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+    
+    /**
+     * Get Service Event.
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
     
     /**

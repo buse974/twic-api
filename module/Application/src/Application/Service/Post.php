@@ -85,13 +85,20 @@ class Post extends AbstractService
         });
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
-        $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
         
+        /*
+         * Subscription
+         */
+        $m_post = $this->getLite($id);
+        $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+        $sub_event = ['E'.$this->getOwner($m_post), 'E'.$this->getTarget($m_post)];
+        
+        $this->getServicePostSubscription()->add($sub_post, $id, $date);
+        $this->getServiceEvent()->userPublication($sub_event, $id);
+
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
-        
-        $this->getServiceEvent()->userPublication($id);
         
         return $this->get($id);
     }
@@ -137,7 +144,13 @@ class Post extends AbstractService
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
         
-        $this->getServicePostSubscription()->addOrUpdatePost($id, $date);
+        
+        /*
+         * Subscription
+         */
+        $m_post = $this->getLite($id);
+        $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+        $this->getServicePostSubscription()->add($sub_post, $id, $date);
         
         $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
         
@@ -231,6 +244,46 @@ class Post extends AbstractService
     public function unlike($id) 
     {
         $this->getServicePostLike()->delete($id);
+    }
+    
+    public function getOwner($m_post)
+    {
+        switch (true) {
+            case (is_numeric($m_post->getOrganizationId())):
+                $u = 'O'.$m_post->getOrganizationId();
+                break;
+            case (is_numeric($m_post->getPageId())):
+                $u = 'P'.$m_post->getPageId();
+                break;
+            default:
+                $u ='U'.$m_post->getUserId();
+                break;
+        }
+    
+        return $u;
+    }
+    
+    public function getTarget($m_post)
+    {
+        switch (true) {
+            case (is_numeric($m_post->getTCourseId())):
+                $t = 'C'.$m_post->getTCourseId();
+                break;
+            case (is_numeric($m_post->getTOrganizationId())):
+                $t = 'O'.$m_post->getTOrganizationId();
+                break;
+            case (is_numeric($m_post->getTPageId())):
+                $t = 'P'.$m_post->getTPageId();
+                break;
+            case (is_numeric($m_post->getTUserId())):
+                $t = 'U'.$m_post->getTUserId();
+                break;
+            default:
+                $t = $this->getTarget($this->getLite($m_post->getOriginId()));
+                break;
+        }
+    
+        return $t;
     }
     
     /**
