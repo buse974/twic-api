@@ -47,6 +47,7 @@ class Library extends AbstractService
             ->setLink($link)
             ->setToken($token)
             ->setBoxId($box_id)
+            ->setGlobal(false)
             ->setFolderId($folder_id)
             ->setType($type)
             ->setOwnerId($this->getServiceUser()
@@ -118,12 +119,17 @@ class Library extends AbstractService
      * @param int $folder_id            
      * @return array
      */
-    public function getList($filter = null, $folder_id = null)
+    public function getList($filter = null, $folder_id = null, $global = null)
     {
+        if(null === $global) {
+            $global = false;
+        }
+        
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_library = $this->getModel()
             ->setFolderId(null !== $folder_id ? $folder_id : new IsNull())
             ->setDeletedDate(new IsNull())
+            ->setGlobal($global)
             ->setOwnerId($user_id);
        
         $mapper = (null !== $filter) ?
@@ -137,7 +143,6 @@ class Library extends AbstractService
             'folder' => null,
             'parent' => null
         ];
-        
         // If root folder: returns only documents
         if ($folder_id) {
             // Requested document / folder

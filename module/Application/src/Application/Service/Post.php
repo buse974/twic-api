@@ -141,9 +141,11 @@ class Post extends AbstractService
         $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
             return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
         });
+        
+        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+            
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
-        
         
         /*
          * Subscription
@@ -151,8 +153,6 @@ class Post extends AbstractService
         $m_post = $this->getLite($id);
         $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
         $this->getServicePostSubscription()->add($sub_post, $id, $date);
-        
-        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
         
         return $this->get($id);
     }
