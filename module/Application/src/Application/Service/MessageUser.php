@@ -104,6 +104,8 @@ class MessageUser extends AbstractService
      * 
      * @param int $user_id
      * @param int $conversation_id
+     * 
+     * @return \Dal\Db\ResultSet\
      */
     public function getListLastMessage($filter = null, $conversation_id = null)
     {
