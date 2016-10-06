@@ -107,10 +107,10 @@ class Contact extends AbstractService
             'contact_id' => $user,
         ));
 
-        $this->getServiceSubscription()->add('UU'.$user, $identity['id']);
+        $this->getServiceSubscription()->add('PU'.$user, $identity['id']);
         $this->getServiceSubscription()->add('EU'.$user, $identity['id']);
         
-        $this->getServiceSubscription()->add('UU'.$identity['id'], $user);
+        $this->getServiceSubscription()->add('PU'.$identity['id'], $user);
         $this->getServiceSubscription()->add('EU'.$identity['id'], $user);
         
         $this->getServiceEvent()->userAddConnection($identity['id'], $user);
@@ -148,10 +148,10 @@ class Contact extends AbstractService
             'contact_id' => $user,
         ));
 
-        $this->getServiceSubscription()->delete('UU'.$user, $identity['id']);
+        $this->getServiceSubscription()->delete('PU'.$user, $identity['id']);
         $this->getServiceSubscription()->delete('EU'.$user, $identity['id']);
         
-        $this->getServiceSubscription()->delete('UU'.$identity['id'], $user);
+        $this->getServiceSubscription()->delete('PU'.$identity['id'], $user);
         $this->getServiceSubscription()->delete('EU'.$identity['id'], $user);
         
         $this->getServiceEvent()->userDeleteConnection($identity['id'], $user);

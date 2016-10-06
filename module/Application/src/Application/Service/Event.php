@@ -232,8 +232,8 @@ class Event extends AbstractService
     /**
      * Event profile.newresume.
      *
-     * @param int $resume
-     *
+     * @param inr $sub
+     * @param inr $resume
      * @return int
      */
     public function profileNewresume($sub, $resume)
@@ -244,6 +244,58 @@ class Event extends AbstractService
     }
     
     /**
+     * Event page.new
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageNew($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('page.new', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event pageuser.invited
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageUserInvited($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('pageuser.invited', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event pageuser.invited
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageUserInvited($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('pageuser.invited', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event pageuser.member
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageUserMember($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('pageuser.member', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+        
+    /**
      * Event message.new
      *
      * @param int $message_id            
@@ -253,8 +305,14 @@ class Event extends AbstractService
      */
     public function messageNew($message_id, $to)
     {
-        /*$from = $this->getDataUser();
-        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+        if(!is_array($to)) {
+            $to = [$to];
+        }
+        foreach ($to as $tt) {
+            $ttto[] = 'SU'.$tt;
+        }
+        $from = $this->getDataUser();
+        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $ttto, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
@@ -269,7 +327,6 @@ class Event extends AbstractService
         }
         
         return $ret;
-        */
     }
 
     /**
@@ -671,6 +728,21 @@ class Event extends AbstractService
     }
 
     /**
+     * Get Data Page
+     *
+     * @param int $page_id
+     *
+     * @return array
+     */
+    private function getDataPage($page_id)
+    {
+        $m_page = $this->getServicePage()->getLite($page_id);
+    
+        return ['id' => $page_id,'name' => 'page','data' => $m_page->toArray()];
+    }
+    
+    
+    /**
      * Get Data User for update profile.
      *
      * @param int $user_id            
@@ -1038,6 +1110,16 @@ class Event extends AbstractService
         return $this->container->get('app_service_submission_pg');
     }
 
+    /**
+     * Get Service Message.
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
+    }
+    
     /**
      * Get Service Message.
      *

@@ -41,7 +41,7 @@ class Page extends AbstractService
      * @param array $docs            
      * @return int
      */
-    public function add($title,   $description, $confidentiality, $type, $logo = null,$admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
+    public function add($title, $description, $confidentiality, $type, $logo = null,$admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         
@@ -60,7 +60,6 @@ class Page extends AbstractService
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
         $this->getMapper()->insert($m_page);
-        
         $id = $this->getMapper()->getLastInsertValue();
         
         if (! is_array($users)) {
@@ -92,6 +91,19 @@ class Page extends AbstractService
         }
         if (null !== $docs) {
             $this->getServicePageDoc()->_add($id, $docs);
+        }
+        
+        if($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC) {
+            $sub=[];
+            if(null !== $page_id) {
+                $sub[] = ['EP'.$page_id];
+            } else if(null !== $organization_id) {
+                $sub[] = ['EO'.$organization_id];
+            } else {
+                $sub[] = ['EU'.$user_id];
+            }
+            
+            $this->getServiceEvent()->pageNew($sub, $id);
         }
         
         return $id;
@@ -215,6 +227,19 @@ class Page extends AbstractService
     }
     
     /**
+     * Get Page Lite
+     *
+     * @invokable
+     * 
+     * @param int $id
+     * @return \Application\Model\Page
+     */
+    public function getLite($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+    }
+    
+    /**
      * Get Page
      *
      * @invokable
@@ -324,13 +349,13 @@ class Page extends AbstractService
         return $this->container->get('app_service_page_tag');
     }
     
-     /**
-     * Get Service Auth.
+    /**
+     * Get Service Event.
      *
-     * @return \Zend\Authentication\AuthenticationService
+     * @return \Application\Service\Event
      */
-    private function getServiceAuth()
+    private function getServiceEvent()
     {
-        return $this->container->get('auth.service');
+        return $this->container->get('app_service_event');
     }
 }

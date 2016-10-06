@@ -374,6 +374,8 @@ class User extends AbstractService
                 ->getIdByName($r), $id);
         }
         
+        $this->getServiceSubscription()->add('SU'.$id, $id);
+        
         return $id;
     }
 
@@ -963,14 +965,16 @@ class User extends AbstractService
             }
             $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['id' => $uid]);
             if ($ret > 0) {
-                $user = $res_user->current();
+                $m_user = $res_user->current();
                 try {
-                    $this->getServiceMail()->sendTpl('tpl_sendpasswd', $email, array('password' => $password,'email' => $email,'lastname' => $user->getLastname(),'firstname' => $user->getFirstname()));
+                    $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), 
+                       ['password' => $password,'email' => $m_user->getEmail(),'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()]);
                 } catch (\Exception $e) {
                     syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
                 }
             }
         }
+        
         return $ret;
     }
     
@@ -1452,7 +1456,7 @@ class User extends AbstractService
     }
 
     /**
-     * Get Service Event.
+     * Get Service Event
      *
      * @return \Application\Service\Event
      */
@@ -1499,6 +1503,16 @@ class User extends AbstractService
     private function getServiceMail()
     {
         return $this->container->get('mail.service');
+    }
+    
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 
     /**

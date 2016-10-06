@@ -42,11 +42,10 @@ class PostLike extends AbstractService
              */
             $m_post = $this->getServicePost()->getLite($post_id);
             $m_post_like = $this->getLite($res);
-
             $sub_post = [
-                'U'.$this->getServicePost()->getOwner($m_post), 
-                'U'.$this->getServicePost()->getTarget($m_post), 
-                'U'.$this->getUserLike($m_post_like),
+                'P'.$this->getServicePost()->getOwner($m_post), 
+                'P'.$this->getServicePost()->getTarget($m_post), 
+                'P'.$this->getUserLike($m_post_like),
             ];
             $sub_event = [
                 'E'.$this->getServicePost()->getOwner($m_post), 

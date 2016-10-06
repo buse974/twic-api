@@ -8,6 +8,7 @@
  */
 namespace Application\Service;
 
+use Application\Model\Page as ModelPage;
 use Dal\Service\AbstractService;
 
 /**
@@ -85,28 +86,46 @@ class Post extends AbstractService
         });
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
-        
-        /*
-         * Subscription
-         */
-        $m_post = $this->getLite($id);
-        $sub_post  = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
-        $sub_event = ['E'.$this->getOwner($m_post), 'E'.$this->getTarget($m_post)];
-        
-        if($parent_id && $origin_id) {
-            $m_post = $this->getLite($origin_id);
-            $sub_post  = $sub_post + ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
-            $sub_event = $sub_event + ['E'.$this->getOwner($m_post), 'E'.$this->getTarget($m_post)];
 
-            $this->getServicePostSubscription()->add($sub_post, $origin_id, $date);
-            $this->getServiceEvent()->userPublication($sub_event, $origin_id);
-        } else {
-            $this->getServicePostSubscription()->add($sub_post, $id, $date);
-            $this->getServiceEvent()->userPublication($sub_event, $id);
-        }
-        
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
+        }
+        // Subscription
+        // IF C'est un commentaire
+        if($parent_id && $origin_id) {
+            $m_post = $this->getLite($id);
+            $m_post_origin = $this->getLite($origin_id);
+            $is_private_page = (is_numeric($m_post_origin->getTPageId()) && ($this->getServicePage()->getLite($m_post_origin->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+            // if ce n'est pas un page privé
+            if(!$is_private_page) {
+                $this->getServicePostSubscription()->add([
+                    'P'.$this->getOwner($m_post), 
+                    'P'.$this->getOwner($m_post_origin),
+                ], $origin_id, $date);
+                $this->getServiceEvent()->userPublication([
+                    'E'.$this->getOwner($m_post),
+                    'E'.$this->getOwner($m_post_origin),
+                ], $origin_id);
+            }
+            $this->getServicePostSubscription()->add([
+                'P'.$this->getTarget($m_post), 
+                'P'.$this->getTarget($m_post_origin),
+            ], $origin_id, $date);
+            $this->getServiceEvent()->userPublication([
+                'E'.$this->getTarget($m_post),
+                'E'.$this->getTarget($m_post_origin)
+            ], $origin_id);
+        // il c un post
+        } else {
+            $m_post = $this->getLite($id);
+            $is_private_page = (is_numeric($m_post->getTPageId()) && ($this->getServicePage()->getLite($m_post->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+            // if ce n'est pas un page privé
+            if(!$is_private_page) {
+                $this->getServicePostSubscription()->add(['P'.$this->getOwner($m_post)], $id, $date);
+                $this->getServiceEvent()->userPublication(['E'.$this->getOwner($m_post)], $id);
+            }
+            $this->getServicePostSubscription()->add(['P'.$this->getTarget($m_post)], $id, $date);
+            $this->getServiceEvent()->userPublication([ 'E'.$this->getTarget($m_post)], $id);
         }
         
         return $this->get($id);
@@ -314,6 +333,16 @@ class Post extends AbstractService
     private function getServicePostDoc()
     {
         return $this->container->get('app_service_post_doc');
+    }
+    
+    /**
+     * Get Service Page 
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
     }
     
     /**

@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\PageUser as ModelPageUser;
 
 class PageUser extends AbstractService
 {
@@ -30,8 +31,15 @@ class PageUser extends AbstractService
             ->setState($state);
         $ret = 0;
         foreach($user_id as $uid){
-            $this->getServiceSubscription()->add('UP'.$page_id, $uid);
-            $this->getServiceSubscription()->add('EP'.$page_id, $uid);
+            // inviter only event
+            if(ModelPageUser::STATE_INVITED) {
+                $this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
+            // member only group
+            } elseif(ModelPageUser::STATE_MEMBER) {
+                $this->getServiceSubscription()->add('PP'.$page_id, $uid);
+                $this->getServiceSubscription()->add('EP'.$page_id, $uid);
+                $this->getServiceEvent()->pageUserMember(['SU'.$uid],$page_id);
+            } 
             
             $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
         }
@@ -53,10 +61,19 @@ class PageUser extends AbstractService
      */
     public function update($page_id, $user_id, $role, $state)
     {
+        // si on doit labonner
+        if (ModelPageUser::STATE_MEMBER === $state) {
+            $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id));
+            if($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
+                $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
+                $this->getServiceSubscription()->add('EP'.$page_id, $user_id);
+            }
+        }
+        
         $m_page_user = $this->getModel()
             ->setRole($role)
             ->setState($state);
-        
+
         return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
     }
     
@@ -136,6 +153,16 @@ class PageUser extends AbstractService
     private function getServiceSubscription()
     {
         return $this->container->get('app_service_subscription');
+    }
+    
+    /**
+     * Get Service Event.
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
 
 }
