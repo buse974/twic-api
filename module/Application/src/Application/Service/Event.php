@@ -270,19 +270,6 @@ class Event extends AbstractService
     }
     
     /**
-     * Event pageuser.invited
-     *
-     * @param array $sub
-     * @param int $page
-     */
-    public function pageUserInvited($sub, $page)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-    
-        return $this->create('pageuser.invited', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-    
-    /**
      * Event pageuser.member
      *
      * @param array $sub
