@@ -965,14 +965,16 @@ class User extends AbstractService
             }
             $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['id' => $uid]);
             if ($ret > 0) {
-                $user = $res_user->current();
+                $m_user = $res_user->current();
                 try {
-                    $this->getServiceMail()->sendTpl('tpl_sendpasswd', $email, array('password' => $password,'email' => $email,'lastname' => $user->getLastname(),'firstname' => $user->getFirstname()));
+                    $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), 
+                       ['password' => $password,'email' => $m_user->getEmail(),'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()]);
                 } catch (\Exception $e) {
                     syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
                 }
             }
         }
+        
         return $ret;
     }
     

@@ -246,9 +246,8 @@ class Event extends AbstractService
     /**
      * Event page.new
      *
-     * @param int $resume
-     *
-     * @return int
+     * @param array $sub
+     * @param int $page
      */
     public function pageNew($sub, $page)
     {
@@ -257,6 +256,45 @@ class Event extends AbstractService
         return $this->create('page.new', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
     }
     
+    /**
+     * Event pageuser.invited
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageUserInvited($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('pageuser.invited', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event pageuser.invited
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageUserInvited($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('pageuser.invited', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event pageuser.member
+     *
+     * @param array $sub
+     * @param int $page
+     */
+    public function pageUserMember($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('pageuser.member', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+        
     /**
      * Event message.new
      *
@@ -267,8 +305,14 @@ class Event extends AbstractService
      */
     public function messageNew($message_id, $to)
     {
-        /*$from = $this->getDataUser();
-        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $to, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
+        if(!is_array($to)) {
+            $to = [$to];
+        }
+        foreach ($to as $tt) {
+            $ttto[] = 'SU'.$tt;
+        }
+        $from = $this->getDataUser();
+        $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $ttto, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
         
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
@@ -283,7 +327,6 @@ class Event extends AbstractService
         }
         
         return $ret;
-        */
     }
 
     /**
