@@ -96,11 +96,11 @@ class Page extends AbstractService
         if($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC) {
             $sub=[];
             if(null !== $page_id) {
-                $sub[] = ['EP'.$page_id];
+                $sub[] = 'EP'.$page_id;
             } else if(null !== $organization_id) {
-                $sub[] = ['EO'.$organization_id];
+                $sub[] = 'EO'.$organization_id;
             } else {
-                $sub[] = ['EU'.$user_id];
+                $sub[] = 'EU'.$user_id;
             }
             
             $this->getServiceEvent()->pageNew($sub, $id);
