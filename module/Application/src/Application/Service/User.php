@@ -374,6 +374,8 @@ class User extends AbstractService
                 ->getIdByName($r), $id);
         }
         
+        $this->getServiceSubscription()->add('SU'.$id, $id);
+        
         return $id;
     }
 
@@ -1499,6 +1501,16 @@ class User extends AbstractService
     private function getServiceMail()
     {
         return $this->container->get('mail.service');
+    }
+    
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 
     /**

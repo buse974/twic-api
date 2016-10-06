@@ -8,6 +8,8 @@ class Page extends BasePage
 {
     const TYPE_EVENT='event';
     const TYPE_GROUP='group';
+    const CONFIDENTIALITY_PUBLIC=0;
+    const CONFIDENTIALITY_PRIVATE=1;
      
     protected $tags;
     protected $users;

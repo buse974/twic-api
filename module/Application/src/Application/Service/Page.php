@@ -60,7 +60,6 @@ class Page extends AbstractService
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
         $this->getMapper()->insert($m_page);
-        
         $id = $this->getMapper()->getLastInsertValue();
         
         if (! is_array($users)) {
@@ -212,6 +211,17 @@ class Page extends AbstractService
         $this->getOwner($m_page);
         
         return $m_page;
+    }
+    
+    /**
+     * Get Page Lite
+     *
+     * @param int $id
+     * @return \Application\Model\Page
+     */
+    public function getLite($id)
+    {
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
     
     /**
