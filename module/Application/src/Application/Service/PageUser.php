@@ -63,7 +63,7 @@ class PageUser extends AbstractService
     {
         // si on doit labonner
         if (ModelPageUser::STATE_MEMBER === $state) {
-            $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id));
+            $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
             if($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
                 $this->getServiceSubscription()->add('EP'.$page_id, $user_id);
