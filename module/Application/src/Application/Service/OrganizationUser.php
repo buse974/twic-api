@@ -29,7 +29,12 @@ class OrganizationUser extends AbstractService
             $ret = $this->getMapper()->insert($this->getModel()
                 ->setUserId($user_id)
                 ->setOrganizationId($organization_id));
+            
+            $this->getServiceSubscription()->add('PO'.$organization_id, $user_id);
+            $this->getServiceSubscription()->add('EO'.$organization_id, $user_id);
         }
+        
+        
         
         return $ret;
     }
@@ -46,6 +51,9 @@ class OrganizationUser extends AbstractService
         $this->getMapper()->delete($this->getModel()
             ->setUserId($user_id)
             ->setOrganizationId($organization_id));
+        
+        $this->getServiceSubscription()->delete('PO'.$organization_id, $user_id);
+        $this->getServiceSubscription()->delete('EO'.$organization_id, $user_id);
     }
 
     /**
@@ -64,5 +72,15 @@ class OrganizationUser extends AbstractService
         return $this->getMapper()->select($this->getModel()
             ->setUserId($user_id)
             ->setOrganizationId($organization_id));
+    }
+    
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 }

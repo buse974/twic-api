@@ -286,7 +286,6 @@ class Page extends AbstractService
                     'type' => 'page',
                 ];
                 break;
-            
             case is_numeric($m_page->getOrganizationId()) :
                 $ar_organization = $m_page->getOrganization()->toArray();
                 $owner = [
