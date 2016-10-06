@@ -194,7 +194,8 @@ class Post extends AbstractService
      */
     public function get($id) 
     {
-        $m_post =  $this->getMapper()->select($this->getModel()->setId($id))->current();
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $m_post =  $this->getMapper()->get($me, $id)->current();
         $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
         $m_post->setDocs($this->getServicePostDoc()->getList($id));
         
