@@ -272,11 +272,14 @@ class User extends AbstractService
      * @param array $roles            
      * @param string $timezone            
      * @param string $background            
-     * @param string $nickname            
+     * @param string $nickname 
+     * @param string $ambassador            
      *
      * @return int
      */
-    public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null, $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $timezone = null, $background = null, $nickname = null)
+    public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null, 
+        $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, 
+        $timezone = null, $background = null, $nickname = null, $ambassador = null)
     {
         if ($this->getNbrEmailUnique($email) > 0) {
             throw new JrpcException('duplicate email', - 38001);
@@ -303,6 +306,7 @@ class User extends AbstractService
             ->setTimezone($timezone)
             ->setBackground($background)
             ->setNickname($nickname)
+            ->setAmbassador($ambassador)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         /*
          * schoolid vérifier que si il n'est pas admin le school id est
@@ -743,11 +747,15 @@ class User extends AbstractService
      * @param bool $has_email_notifier            
      * @param string $timezone            
      * @param string $background            
-     * @param string $nickname            
+     * @param string $nickname    
+     * @param bool $ambassador        
      *
      * @return int
      */
-    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null, $suspension_reason = null)
+    public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null, 
+        $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null, 
+        $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null, 
+        $suspension_reason = null, $ambassador = null)
     {
         if ($birth_date !== null && \DateTime::createFromFormat('Y-m-d', $birth_date) === false && \DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $birth_date) === false) {
             $birth_date = null;
@@ -779,6 +787,7 @@ class User extends AbstractService
             ->setTimezone($timezone)
             ->setBackground($background)
             ->setNickname($nickname)
+            ->setAmbassador($ambassador)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         //@todo secu school_id 

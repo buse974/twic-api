@@ -185,6 +185,7 @@ class User extends AbstractMapper
             'interest',
             'avatar',
             'school_id',
+            'ambassador',
             'user$contacts_count' => $this->getSelectContactCount(),
             'user$contact_state' => $this->getSelectContactState($me), );
 
@@ -214,7 +215,7 @@ class User extends AbstractMapper
             
             $select->columns(array(
                 'user$id' => new Expression('user.id'),
-                'firstname', 'lastname', 'email', 'nickname',
+                'firstname', 'lastname', 'email', 'nickname', 'ambassador',
                 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
                 'position', 'interest', 'avatar', 'suspension_date', 'suspension_reason',
                 'user$contact_state' => $this->getSelectContactState($user_id),
@@ -223,7 +224,7 @@ class User extends AbstractMapper
         else{
             $select->columns(array(
                 'user$id' => new Expression('user.id'),
-                'firstname', 'lastname', 'email', 'nickname',
+                'firstname', 'lastname', 'email', 'nickname','ambassador',
                 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
                 'position', 'interest', 'avatar',
                 'user$contact_state' => $this->getSelectContactState($user_id),

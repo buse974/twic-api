@@ -27,6 +27,7 @@ class User extends AbstractModel
 	protected $timezone;
 	protected $background;
 	protected $sis;
+	protected $ambassador;
 	protected $created_date;
 	protected $suspension_date;
 	protected $suspension_reason;
@@ -281,6 +282,18 @@ class User extends AbstractModel
 	public function setSis($sis)
 	{
 		$this->sis = $sis;
+
+		return $this;
+	}
+
+	public function getAmbassador()
+	{
+		return $this->ambassador;
+	}
+
+	public function setAmbassador($ambassador)
+	{
+		$this->ambassador = $ambassador;
 
 		return $this;
 	}

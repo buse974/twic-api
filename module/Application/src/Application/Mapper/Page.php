@@ -55,7 +55,7 @@ class Page extends AbstractMapper
         ]);
         
         $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
-            ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar'], $select::JOIN_LEFT)
+            ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
             ->join(['page_school' => 'school'],'page_school.id = page.organization_id', ['id', 'name', 'logo'], $select::JOIN_LEFT)
             ->join(['page_page' => 'page'],'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT);
         
@@ -147,7 +147,7 @@ class Page extends AbstractMapper
         );
         
         $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
-             ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar'], $select::JOIN_LEFT)
+             ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
              ->join(['page_school' => 'school'],'page_school.id = page.organization_id', ['id', 'name', 'logo'], $select::JOIN_LEFT)
              ->join(['page_page' => 'page'],'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT);
         
