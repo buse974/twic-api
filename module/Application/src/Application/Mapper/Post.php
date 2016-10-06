@@ -55,7 +55,7 @@ class Post extends AbstractMapper
                 ->order(['post$last_date' => 'DESC', 'post.id' => 'DESC'])
                 ->group('post.id');
         } else {
-            $select->columns($columns)->order([ 'post.id' => 'DESC']);
+            $select->columns($columns)->order([ 'post.id' => $parent_id === null ? 'DESC' : 'ASC']);
             if(null !== $organization_id) {
                 $select->where(['post.parent_id IS NULL'])->where(['post.t_organization_id' => $organization_id]);
             }
