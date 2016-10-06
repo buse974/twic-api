@@ -229,6 +229,8 @@ class Page extends AbstractService
     /**
      * Get Page Lite
      *
+     * @invokable
+     * 
      * @param int $id
      * @return \Application\Model\Page
      */
