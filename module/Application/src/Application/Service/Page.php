@@ -286,15 +286,7 @@ class Page extends AbstractService
                     'type' => 'page',
                 ];
                 break;
-            case is_numeric($m_page->getUserId()) :
-                $ar_user = $m_page->getUser()->toArray();
-                $owner = [
-                    'id' => $ar_user['id'],
-                    'text' => $ar_user['firstname'] . ' ' . $ar_user['lastname'],
-                    'img' => $ar_user['avatar'],
-                    'type' => 'user',
-                ];
-                break;
+            
             case is_numeric($m_page->getOrganizationId()) :
                 $ar_organization = $m_page->getOrganization()->toArray();
                 $owner = [
@@ -302,6 +294,15 @@ class Page extends AbstractService
                     'text' => $ar_organization['name'],
                     'img' => $ar_organization['logo'],
                     'type' => 'organization',
+                ];
+                break;
+            case is_numeric($m_page->getUserId()) :
+                $ar_user = $m_page->getUser()->toArray();
+                $owner = [
+                    'id' => $ar_user['id'],
+                    'text' => $ar_user['firstname'] . ' ' . $ar_user['lastname'],
+                    'img' => $ar_user['avatar'],
+                    'type' => 'user',
                 ];
                 break;
         }
