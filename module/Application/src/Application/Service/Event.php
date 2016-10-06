@@ -232,8 +232,8 @@ class Event extends AbstractService
     /**
      * Event profile.newresume.
      *
-     * @param int $resume
-     *
+     * @param inr $sub
+     * @param inr $resume
      * @return int
      */
     public function profileNewresume($sub, $resume)
@@ -241,6 +241,20 @@ class Event extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
     
         return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $sub, self::TARGET_TYPE_USER, $user_id);
+    }
+    
+    /**
+     * Event page.new
+     *
+     * @param int $resume
+     *
+     * @return int
+     */
+    public function pageNew($sub, $page)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->create('page.new', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
     }
     
     /**
@@ -665,6 +679,21 @@ class Event extends AbstractService
     }
 
     /**
+     * Get Data Page
+     *
+     * @param int $page_id
+     *
+     * @return array
+     */
+    private function getDataPage($page_id)
+    {
+        $m_page = $this->getServicePage()->getLite($page_id);
+    
+        return ['id' => $page_id,'name' => 'page','data' => $m_page->toArray()];
+    }
+    
+    
+    /**
      * Get Data User for update profile.
      *
      * @param int $user_id            
@@ -1032,6 +1061,16 @@ class Event extends AbstractService
         return $this->container->get('app_service_submission_pg');
     }
 
+    /**
+     * Get Service Message.
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
+    }
+    
     /**
      * Get Service Message.
      *

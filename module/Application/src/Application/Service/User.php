@@ -1454,7 +1454,7 @@ class User extends AbstractService
     }
 
     /**
-     * Get Service Event.
+     * Get Service Event
      *
      * @return \Application\Service\Event
      */
