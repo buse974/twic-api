@@ -32,10 +32,10 @@ class PageUser extends AbstractService
         $ret = 0;
         foreach($user_id as $uid){
             // inviter only event
-            if(ModelPageUser::STATE_INVITED) {
+            if($state === ModelPageUser::STATE_INVITED) {
                 $this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
             // member only group
-            } elseif(ModelPageUser::STATE_MEMBER) {
+            } elseif($state === ModelPageUser::STATE_MEMBER) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 $this->getServiceSubscription()->add('EP'.$page_id, $uid);
                 $this->getServiceEvent()->pageUserMember(['SU'.$uid],$page_id);
