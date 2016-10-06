@@ -648,11 +648,17 @@ class Event extends AbstractService
             'id' => $m_post->getId(),
             'name' => 'post',
             'data' => [
+                'id' =>  $m_post->getId(),
                 'content' => $m_post->getContent(),
                 'picture' => $m_post->getPicture(),
                 'name_picture' => $m_post->getNamePicture(),
                 'link' => $m_post->getLink(),
-            ],
+                't_organization_id' => $m_post->getTOrganizationId(),
+                't_page_id' => $m_post->getTPageId(),
+                't_user_id' => $m_post->getTUserId(),
+                't_course_id' => $m_post->getTCourseId(),
+                'parent_id' => $m_post->getParentId()
+            ]
         ];
     }
     

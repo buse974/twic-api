@@ -79,7 +79,7 @@ class Post extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function get($id) 
+    public function get($me_id, $id) 
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -112,8 +112,14 @@ class Post extends AbstractMapper
             'post$nbr_likes' => $nbr_likes,
         ];
         
-        $select->columns($columns)->where(['post.id', $id])
+        $select->columns($columns)
+            ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar'])
+            ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])
+            ->where(['post.deleted_date IS NULL'])
+            ->where(['post.id', $id])
             ->order([ 'post.id' => 'DESC']);
+        
+        return $this->selectWith($select);
     }
 
 }
