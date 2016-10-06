@@ -36,6 +36,7 @@ class Post extends AbstractMapper
             't_organization_id',
             't_page_id',
             't_course_id',
+            'parent_id',
             'post$created_date' => new Expression('DATE_FORMAT(post.created_date, "%Y-%m-%dT%TZ")'),
             'post$updated_date' => new Expression('DATE_FORMAT(post.updated_date, "%Y-%m-%dT%TZ")'),
             'post$nbr_comments' => $nbr_comments,
@@ -105,6 +106,7 @@ class Post extends AbstractMapper
             't_organization_id',
             't_page_id',
             't_course_id',
+            'parent_id',
             'post$created_date' => new Expression('DATE_FORMAT(post.created_date, "%Y-%m-%dT%TZ")'),
             'post$updated_date' => new Expression('DATE_FORMAT(post.updated_date, "%Y-%m-%dT%TZ")'),
             'post$nbr_comments' => $nbr_comments,
@@ -116,9 +118,8 @@ class Post extends AbstractMapper
             ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'])
             ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])
             ->where(['post.deleted_date IS NULL'])
-            ->where(['post.id', $id])
+            ->where(['post.id' => $id])
             ->order([ 'post.id' => 'DESC']);
-        
         return $this->selectWith($select);
     }
 
