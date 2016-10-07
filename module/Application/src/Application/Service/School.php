@@ -106,7 +106,7 @@ class School extends AbstractService
      */
     private function getFormattedWebsite($website)
     {
-        $hasProtocol = strpos($website, 'http://') === 0 || strpos($website, 'https://') === 0;
+        $hasProtocol = strpos($website, 'http://') === 0 || strpos($website, 'https://') === 0 || strlen($website) === 0;
         return $hasProtocol ? $website : 'http://' . $website;
     }
 

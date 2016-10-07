@@ -400,7 +400,6 @@ class User extends AbstractMapper
             if (!empty($exclude_user)) {
                 $select->where(new NotIn('user.id', $exclude_user));
             }
-            syslog(1, $this->printSql($select));
             return $this->selectWith($select);
     }
     
