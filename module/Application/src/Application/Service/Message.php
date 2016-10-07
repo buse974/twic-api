@@ -38,10 +38,11 @@ class Message extends AbstractService
      * @param int|array $to
      * @param int       $conversation
      * @param int       $type
+     * @param array $document
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function send($text = null, $to = null, $conversation = null, $type = null)
+    public function send($text = null, $to = null, $conversation = null, $type = null, $document = null)
     {
         if ($conversation !== null && null === $type) {
             $m_conversation = $this->getServiceConversation()->getLite($conversation);
@@ -51,7 +52,10 @@ class Message extends AbstractService
             $type = ModelConversation::TYPE_CHAT;
         }
 
-        return $this->_send($text, $to, $conversation, $type);
+        $m_messsage_user = $this->_send($text, $to, $conversation, $type);
+        $this->getServiceMessageDoc()->replace($m_messsage_user->getMessageId(), $document);
+        
+        return $m_messsage_user;
     }
 
     /**
@@ -152,7 +156,7 @@ class Message extends AbstractService
      *
      * @throws \Exception
      *
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return \Application\Model\MessageUser
      */
     public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null)
     {

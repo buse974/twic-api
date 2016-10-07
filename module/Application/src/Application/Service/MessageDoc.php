@@ -27,16 +27,16 @@ class MessageDoc extends AbstractService
 
         $ret = [];
         if (null !== $document) {
-            if (!is_array($document)) {
+            if (!is_array($document) || (is_array($document) && isset($document['token']))) {
                 $document = [$document];
-            }
+            } 
             $this->getMapper()->delete($m_message_doc);
-
             $m_message_doc->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
             foreach ($document as $d) {
-                $m_message_doc->setToken($d['token'])->setName($d['name']);
-
-                $ret[$d['token']] = $this->getMapper()->insert($m_message_doc);
+                $token = (isset($d['token'])) ? $d['token']:$d;
+                $name = (isset($d['name'])) ? $d['name']:null;  
+                $m_message_doc->setToken($token)->setName($name);
+                $ret[$token] = $this->getMapper()->insert($m_message_doc);
             }
         }
 
