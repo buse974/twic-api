@@ -56,8 +56,9 @@ class Event extends AbstractService
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventSubscription()->add($libelle, $event_id);
         $user = $this->getServiceSubscription()->getListUserId($libelle);
-        
-        $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
+        if(count($users) > 0){
+            $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
+        }
         
         return $event_id;
     }
