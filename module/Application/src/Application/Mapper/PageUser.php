@@ -9,12 +9,12 @@ use Zend\Db\Sql\Predicate\Expression;
 class PageUser extends AbstractMapper
 {
     
-    public function getList($page_id = null, $state = null)
+    public function getList($page_id = null, $role = null)
     {
         $select = $this->tableGateway->getSql()->select()
             ->columns(['page_id','user_id','state','role'])   
             ->where(['page_id' => $page_id]);
-        if($state !== ModelPageUser::ROLE_ADMIN){
+        if($role !== ModelPageUser::ROLE_ADMIN){
             $select->where('state = "'.ModelPageUser::STATE_MEMBER.'"');
         }
         else{
