@@ -89,7 +89,7 @@ class MessageUser extends AbstractMapper
                         ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
                     break;
                 default:
-                    $subselect->where([' ( message.is_draft IS FALSE OR ( message.is_draft IS TRUE AND message_user.from_id = ? ]) ' => $user_id]);
+                    $subselect->where([' ( message.is_draft IS FALSE OR ( message.is_draft IS TRUE AND message_user.from_id = ? )) ' => $user_id]);
                     break;
             }
 
