@@ -8,6 +8,7 @@ class Post extends BasePost
 {
     protected $docs;
     protected $last_date;
+    protected $comments;
     protected $nbr_comments;
     protected $is_liked;
     protected $nbr_likes;
@@ -59,6 +60,18 @@ class Post extends BasePost
     public function getNbrComments()
     {
         return $this->nbr_comments;
+    }
+    
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+    
+        return $this;
+    }
+    
+    public function getComments()
+    {
+        return $this->comments;
     }
     
     public function setNbrLikes($nbr_likes)
