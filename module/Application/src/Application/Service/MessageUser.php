@@ -111,7 +111,7 @@ class MessageUser extends AbstractService
         $res_message_user = $mapper->getListLastMessage($this->getServiceUser()->getIdentity()['id'], $conversation_id);
         foreach ($res_message_user as $m_message_user) {
             $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
-            $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d :[]);
+            $m_message_user->getMessage()->setDocument((count($d) !== 0) ? $d :[]);
         }
         
         return $res_message_user;
