@@ -33,8 +33,7 @@ class MessageDoc extends AbstractService
             } 
             $this->getMapper()->delete($m_message_doc);
             $m_message_doc->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-            foreach ($document as $d) {
-                
+            foreach ($document as $d) { 
                 $token = (isset($d['token'])) ? $d['token']:$d;
                 $name = (isset($d['name'])) ? $d['name']:null;  
                 $type = (isset($d['type'])) ? $d['type']:null;
@@ -57,8 +56,17 @@ class MessageDoc extends AbstractService
      */
     public function getList($message_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setMessageId($message_id));
+        $res_message_doc = $this->getMapper()->select($this->getModel()->setMessageId($message_id));
+        $ret = [];
+        foreach ($res_message_doc as $m_message_doc) {
+            if(!is_numeric($m_message_doc->getLibraryId())) {
+                $ret[] = $m_message_doc->toArray();
+            } else {
+                $ret[] = $this->getServiceLibrary()->get($m_message_doc->getLibraryId())->toArray();
+            }
+        }
+        
+        return $ret;
     }
     
     /**
