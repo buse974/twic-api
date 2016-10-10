@@ -226,10 +226,14 @@ class Post extends AbstractService
      * 
      * @invokable
      */
-    public function getList($user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
+    public function getList($filter = null, $user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        $res_posts = $this->getMapper()->getList($me, $page_id, $organization_id, $user_id, $course_id, $parent_id);
+        $mapper = (null !== $filter) ? 
+            $this->getMapper()->usePaginator($filter) : 
+            $this->getMapper();
+        
+        $res_posts = $mapper->getList($me, $page_id, $organization_id, $user_id, $course_id, $parent_id);
         if(null === $parent_id){
             foreach ($res_posts as $m_post) {
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
@@ -237,7 +241,9 @@ class Post extends AbstractService
             }            
         }
         
-        return $res_posts;
+        return (null !== $filter) ? 
+            ['count' => $mapper->count(), 'list' => $res_posts]:
+            $res_posts;
     }
     
     /**
