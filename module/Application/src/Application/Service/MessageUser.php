@@ -83,10 +83,11 @@ class MessageUser extends AbstractService
         $mapper = $this->getMapper();
         $list = $mapper->usePaginator($filter)->getList($user_id, $message_id, $conversation_id, $tag, $type, $filter, $search);
         foreach ($list as $m_message_user) {
-            $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
+            
             $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('R', $m_message_user->getMessage()->getId(), ))['list']);
             $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('S', $m_message_user->getMessage()->getId(), ))['list']); 
-            $m_message_user->getMessage()->setDocument(($d->count() !== 0) ? $d : []);
+            $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
+            $m_message_user->getMessage()->setDocument((count($d) !== 0) ? $d : []);
         }
 
         $list->rewind();
