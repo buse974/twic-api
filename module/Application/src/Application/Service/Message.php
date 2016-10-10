@@ -52,10 +52,7 @@ class Message extends AbstractService
             $type = ModelConversation::TYPE_CHAT;
         }
 
-        $m_messsage_user = $this->_send($text, $to, $conversation, $type);
-        $this->getServiceMessageDoc()->replace($m_messsage_user->getMessageId(), $document);
-        
-        return $m_messsage_user;
+        return $this->_send($text, $to, $conversation, $type, null, $document);
     }
 
     /**
@@ -141,7 +138,7 @@ class Message extends AbstractService
         if ($draft === false) {
             $this->getServiceEvent()->messageNew($message_id, $to);
         }
-
+        
         return $this->getServiceMessageUser()->getList($me, $message_id)['list']->current();
     }
 
@@ -153,12 +150,13 @@ class Message extends AbstractService
      * @param int       $conversation
      * @param int       $type
      * @param int       $item
+     * @param int       $document
      *
      * @throws \Exception
      *
      * @return \Application\Model\MessageUser
      */
-    public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null)
+    public function _send($text = null, $to = null, $conversation = null, $type = null, $item = null, $document = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
 
@@ -176,8 +174,8 @@ class Message extends AbstractService
             }
         }
 
-        if (empty($text)) {
-            throw new \Exception('error content is empty');
+        if (empty($text) && empty($document)) {
+            throw new \Exception('error content && document are empty');
         }
 
         $m_message = $this->getModel()
@@ -192,7 +190,8 @@ class Message extends AbstractService
 
         $message_id = $this->getMapper()->getLastInsertValue();
         $message_user_id = $this->getServiceMessageUser()->send($message_id, $conversation);
-
+        $this->getServiceMessageDoc()->replace($message_id, $document);
+        
         return $this->getServiceMessageUser()->getList($me, $message_id)['list']->current();
     }
 
