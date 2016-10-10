@@ -79,31 +79,22 @@ class Report extends AbstractService
      *
      * @return int
      */
-    public function treat($validate, $user_id = null, $post_id = null, $comment_id = null, $feed_id = null, $description = null)
+    public function treat($validate, $user_id = null, $post_id = null,  $description = null)
     {
         $m_report = $this->getModel()->setValidate($validate)->setTreated(1)->setTreatmentDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        if(null !== $feed_id){
+        if(null !== $post_id){
             if(1 === $validate){
-                $this->getServiceFeed()->delete($feed_id);
+                $this->getServicePost()->delete($post_id);
             }
             else{
-                $this->getServiceFeed()->reactivate($feed_id);
-            }
-        }
-        
-        if(null !== $comment_id){
-            if(1 === $validate){
-                $this->getServiceEventComment()->delete($comment_id);
-            }
-            else{
-                $this->getServiceEventComment()->reactivate($comment_id);
+                $this->getServicePost()->reactivate($post_id);
             }
         }
         
         if(null !== $user_id){
             $this->getServiceUser()->suspend($user_id, $validate, $description);
         }
-        return $this->getMapper()->update($m_report, [ 'post_id' => $post_id, 'user_id' => $user_id, 'comment_id' => $comment_id]);
+        return $this->getMapper()->update($m_report, [ 'post_id' => $post_id, 'user_id' => $user_id]);
     }
     
     
@@ -123,9 +114,9 @@ class Report extends AbstractService
      *
      * @return \Application\Service\Feed
      */
-    private function getServiceFeed()
+    private function getServicePost()
     {
-        return $this->container->get('app_service_feed');
+        return $this->container->get('app_service_post');
     } 
     
     /**
