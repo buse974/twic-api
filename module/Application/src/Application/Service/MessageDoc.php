@@ -24,10 +24,9 @@ class MessageDoc extends AbstractService
      */
     public function replace($message_id, $document)
     {
-        $m_message_doc = $this->getModel()->setMessageId($message_id);
-
         $ret = [];
         if (null !== $document) {
+            $m_message_doc = $this->getModel()->setMessageId($message_id);
             if (!is_array($document) || (is_array($document) && isset($document['token']))) {
                 $document = [$document];
             } 
