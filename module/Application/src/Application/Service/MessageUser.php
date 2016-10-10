@@ -81,18 +81,16 @@ class MessageUser extends AbstractService
     public function getList($user_id, $message_id = null, $conversation_id = null, $filter = null, $tag = null, $type = null, $search = null)
     {
         $mapper = $this->getMapper();
-        $list = $mapper->usePaginator($filter)->getList($user_id, $message_id, $conversation_id, $tag, $type, $filter, $search);
-        foreach ($list as $m_message_user) {
-            
-            $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('R', $m_message_user->getMessage()->getId(), ))['list']);
-            $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, array('S', $m_message_user->getMessage()->getId(), ))['list']); 
+        $res_message_user = $mapper->usePaginator($filter)->getList($user_id, $message_id, $conversation_id, $tag, $type, $filter, $search);
+        foreach ($res_message_user as $m_message_user) {
+            $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, ['R', $m_message_user->getMessage()->getId()])['list']);
+            $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, ['S', $m_message_user->getMessage()->getId()])['list']); 
             $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
             $m_message_user->getMessage()->setDocument((count($d) !== 0) ? $d : []);
         }
+        $res_message_user->rewind();
 
-        $list->rewind();
-
-        return ['list' => $list, 'count' => $mapper->count()];
+        return ['list' => $res_message_user, 'count' => $mapper->count()];
     }
     
     /**
