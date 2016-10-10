@@ -57,7 +57,8 @@ class Page extends AbstractMapper
         $select->join(['state' => $this->getPageStatus($me)],'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
             ->join(['p_user' => 'user'],'p_user.id = page.user_id', ['id', 'firstname', 'lastname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
             ->join(['page_school' => 'school'],'page_school.id = page.organization_id', ['id', 'name', 'logo'], $select::JOIN_LEFT)
-            ->join(['page_page' => 'page'],'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT);
+            ->join(['page_page' => 'page'],'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT)
+            ->where(['page.deleted_date IS NULL']);
         
         if(null !== $parent_id){
             $select->join(['parent' => 'page'],'page.page_id = parent.id', [])
@@ -173,8 +174,9 @@ class Page extends AbstractMapper
                ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+                ->where(['page.deleted_date IS NULL'])
                ->where(['organization_user.user_id' => $me]);
-        }
+        }   
         $select->group('page.id');
         
         return $this->selectWith($select);

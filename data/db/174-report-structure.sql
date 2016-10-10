@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `report` (
   `reporter_id` INT UNSIGNED NOT NULL,
   `user_id` INT UNSIGNED NULL,
   `post_id` INT UNSIGNED NULL,
+  `page_id` INT UNSIGNED NULL,
   `created_date` DATETIME NOT NULL,
   `treatment_date` DATETIME NULL,
   `treated` TINYINT(1) NOT NULL DEFAULT 0,
@@ -27,6 +28,15 @@ CREATE TABLE IF NOT EXISTS `report` (
     FOREIGN KEY (`post_id`)
     REFERENCES `post` (`id`)
     ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Report_4`
+    FOREIGN KEY (`page_id`)
+    REFERENCES `page` (`id`)
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+ALTER TABLE page ADD COLUMN
+  `deleted_date` DATETIME NULL;

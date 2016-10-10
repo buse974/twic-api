@@ -26,7 +26,7 @@ class Report extends AbstractService
      *
      * @return int
      */
-    public function add( $reason, $description = null, $user_id = null, $post_id = null, $comment_id = null)
+    public function add( $reason, $description = null, $user_id = null, $post_id = null, $page_id = null)
     {
         
         $identity = $this->getServiceAuth()->getIdentity();
@@ -34,12 +34,12 @@ class Report extends AbstractService
             ->setReporterId($identity->getId())
             ->setUserId($user_id)
             ->setPostId($post_id)
-            ->setCommentId($comment_id);
+            ->setPageId($page_id);
         
         if($this->getMapper()->select($m_report)->count() > 0){
             throw new \Exception('Duplicate report');
         }
-        $m_report->setCommentId($comment_id)
+        $m_report
             ->setReason($reason)
             ->setDescription($description)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -79,7 +79,7 @@ class Report extends AbstractService
      *
      * @return int
      */
-    public function treat($validate, $user_id = null, $post_id = null,  $description = null)
+    public function treat($validate, $user_id = null, $post_id = null,  $description = null, $page_id = null)
     {
         $m_report = $this->getModel()->setValidate($validate)->setTreated(1)->setTreatmentDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         if(null !== $post_id){
@@ -90,11 +90,19 @@ class Report extends AbstractService
                 $this->getServicePost()->reactivate($post_id);
             }
         }
+         if(null !== $page_id){
+            if(1 === $validate){
+                $this->getServicePage()->delete($page_id);
+            }
+            else{
+                $this->getServicePage()->reactivate($page_id);
+            }
+        }
         
         if(null !== $user_id){
             $this->getServiceUser()->suspend($user_id, $validate, $description);
         }
-        return $this->getMapper()->update($m_report, [ 'post_id' => $post_id, 'user_id' => $user_id]);
+        return $this->getMapper()->update($m_report, [ 'post_id' => $post_id, 'user_id' => $user_id, 'page_id' => $page_id]);
     }
     
     
@@ -117,6 +125,17 @@ class Report extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
+    } 
+    
+    
+    /**
+     * Get Service Page.
+     *
+     * @return \Application\Service\Feed
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
     } 
     
     /**

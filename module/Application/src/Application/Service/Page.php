@@ -184,16 +184,34 @@ class Page extends AbstractService
 
     /**
      * Delete Page
-     *
+     * 
      * @invokable
-     *
-     * @param int $id            
+     * 
+     * @param int $id
      * @return int
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($m_page = $this->getModel()
-            ->setId($id));
+        
+        $m_page = $this->getModel()->setId($id)
+            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        return $this->getMapper()->update($m_page);
+    }
+    
+      /**
+     * Reactivate Page
+     * 
+     * @invokable
+     * 
+     * @param int $id
+     * @return int
+     */
+    public function reactivate($id)
+    {
+        
+        $m_page = $this->getModel()->setId($id)->setDeletedDate(new \Zend\Db\Sql\Predicate\IsNull());
+    
+        return $this->getMapper()->update($m_page);
     }
 
     /**
