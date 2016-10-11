@@ -21,6 +21,7 @@ class Page extends AbstractModel
 	protected $organization_id;
 	protected $page_id;
 	protected $address_id;
+	protected $deleted_date;
 
 	protected $prefix = 'page';
 
@@ -200,6 +201,18 @@ class Page extends AbstractModel
 	public function setAddressId($address_id)
 	{
 		$this->address_id = $address_id;
+
+		return $this;
+	}
+
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
+
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
 		return $this;
 	}

@@ -10,13 +10,13 @@ class Report extends AbstractModel
 	protected $reporter_id;
 	protected $user_id;
 	protected $post_id;
-	protected $comment_id;
 	protected $created_date;
 	protected $treatment_date;
 	protected $reason;
 	protected $description;
 	protected $validate;
 	protected $treated;
+	protected $page_id;
 
 	protected $prefix = 'report';
 
@@ -64,18 +64,6 @@ class Report extends AbstractModel
 	public function setPostId($post_id)
 	{
 		$this->post_id = $post_id;
-
-		return $this;
-	}
-
-	public function getCommentId()
-	{
-		return $this->comment_id;
-	}
-
-	public function setCommentId($comment_id)
-	{
-		$this->comment_id = $comment_id;
 
 		return $this;
 	}
@@ -148,6 +136,18 @@ class Report extends AbstractModel
 	public function setTreated($treated)
 	{
 		$this->treated = $treated;
+
+		return $this;
+	}
+
+	public function getPageId()
+	{
+		return $this->page_id;
+	}
+
+	public function setPageId($page_id)
+	{
+		$this->page_id = $page_id;
 
 		return $this;
 	}

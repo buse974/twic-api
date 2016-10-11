@@ -10,6 +10,7 @@ namespace Application\Service;
 
 use Application\Model\Page as ModelPage;
 use Dal\Service\AbstractService;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class Post
@@ -197,10 +198,33 @@ class Post extends AbstractService
     {
         //$this->deleteSubscription($id);
         
+        $identity = $this->getServiceUser()->getIdentity();
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
         $m_post = $this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+        if(!$is_sadmin){
+            return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $identity['id']]);
+        }
+        else{
+             return $this->getMapper()->update($m_post, ['id' => $id]);
+        }
+    }
     
-        return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+      /**
+     * Reactivate Post
+     * 
+     * @invokable
+     * 
+     * @param int $id
+     * @return int
+     */
+    public function reactivate($id)
+    {
+        //$this->deleteSubscription($id);
+        
+        $m_post = $this->getModel()->setDeletedDate(new \Zend\Db\Sql\Predicate\IsNull());
+    
+        return $this->getMapper()->update($m_post, ['id' => $id]);
     }
     
     /**
@@ -213,8 +237,10 @@ class Post extends AbstractService
      */
     public function get($id) 
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $m_post =  $this->getMapper()->get($me, $id)->current();
+        $identity = $this->getServiceUser()->getIdentity();
+        $me = $identity['id'];
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
+        $m_post =  $this->getMapper()->get($me, $id, $is_sadmin)->current();
         $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
         $m_post->setDocs($this->getServicePostDoc()->getList($id));
         
