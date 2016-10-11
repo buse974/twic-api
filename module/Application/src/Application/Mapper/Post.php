@@ -80,7 +80,7 @@ class Post extends AbstractMapper
         return $this->selectWith($select);
     }
     
-    public function get($me_id, $id) 
+    public function get($me_id, $id, $is_sadmin = false) 
     {
         $select = $this->tableGateway->getSql()->select();
         
@@ -116,10 +116,12 @@ class Post extends AbstractMapper
         
         $select->columns($columns)
             ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'])
-            ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])
-            ->where(['post.deleted_date IS NULL'])
-            ->where(['post.id' => $id])
+            ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])->where(['post.id' => $id])
             ->order([ 'post.id' => 'DESC']);
+        if(!$is_sadmin){
+            $select->where(['post.deleted_date IS NULL']);
+        }
+            
         return $this->selectWith($select);
     }
 

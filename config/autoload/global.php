@@ -14,7 +14,11 @@
 
 return [
     'version' => "v1.2",
+<<<<<<< HEAD
     'build-commit' => 80,
+=======
+    'build-commit' => 86,
+>>>>>>> 0d35aa222bf71b73be7796714eb10a3d1a736f84
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -157,9 +161,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS80',
+                    'namespace' => 'LMS81',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS80'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS81'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

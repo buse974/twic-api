@@ -25,7 +25,7 @@ class MessageUser extends AbstractMapper
     public function getList($user_id, $message_id = null, $conversation_id = null, $tag = 'INBOX', $type = null, $filter = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'user_id', 'from_id', 'read_date', 'conversation_id', 'created_date'])
+        $select->columns(['id', 'user_id', 'from_id', 'read_date', 'message_id', 'conversation_id', 'created_date'])
             ->join(['message_user_message' => 'message'], 'message_user_message.id=message_user.message_id', ['id', 'is_draft', 'type', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")])
             ->join(['message_user_from' => 'user'], 'message_user_from.id=message_user.from_id', ['id', 'firstname', 'lastname', 'nickname', 'avatar'])
             ->where(['message_user.user_id' => $user_id])
@@ -108,7 +108,7 @@ class MessageUser extends AbstractMapper
     public function getListLastMessage($user_id, $conversation_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'user_id', 'from_id', 'read_date', 'conversation_id', 'created_date'])
+        $select->columns(['id', 'user_id', 'from_id', 'read_date', 'message_id', 'conversation_id', 'created_date'])
             ->join(['message_user_message' => 'message'], 'message_user_message.id=message_user.message_id', 
                 ['id', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")])
             ->where(['message_user.user_id' => $user_id])
