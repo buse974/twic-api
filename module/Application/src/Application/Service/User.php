@@ -1028,6 +1028,18 @@ class User extends AbstractService
     }
 
     /**
+     * 
+     * @param unknown $id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getLite($id)
+    {
+        $res_user = $this->getMapper()->select($this->getModel()->setId($id));
+        
+        return (is_array($id)) ? $res_user : $res_user->current();
+    }
+    
+    /**
      * Get User
      *
      * @invokable

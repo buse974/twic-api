@@ -47,6 +47,31 @@ class MessageUser extends AbstractService
         }
 
         $m_message = $this->getServiceMessage()->get($message_id);
+        $res_user = $this->getServiceUser()->getLite($to);
+        $ar_name = [];
+        $owner = "";
+        foreach ($res_user as $m_user) {
+            $name = $owner = "";
+            if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+                $name = $m_user->getNickname();
+                $owner = $name;
+            } else {
+                if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                    $name = $m_user->getFirstname();
+                    $owner = $name;
+                }
+                if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                    $name .= ' '.$m_user->getLastname();
+                }
+            }
+            
+            if($m_user->getId() === $me) {
+                $owner = $name;
+            } else {
+                $ar_name[] = $name;
+            }
+        }
+        
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
                 ->setMessageId($message_id)
@@ -67,17 +92,22 @@ class MessageUser extends AbstractService
             $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
             if ($gcmu !== false) {
                 $gcm_notification = new GcmNotification();
-                $gcm_notification->setTitle('New Message')
-                    ->setBody("BODY")
+                $gcm_notification->setTitle(implode(", ", $ar_name))
                     ->setSound("default")
                     ->setColor("#00A38B")
                     ->setTag("CONV".$conversation_id)
-                    ->setBody($m_message->getText());
+                    ->setBody($owner. ": " .$m_message->getText());
                 
                 $gcm_message = new GcmMessage();
                 $gcm_message->setTo($gcmu)
-                ->setNotification($gcm_notification)
-                ->setData(['data' => $m_conversation_user->toArray()]);
+                    ->setNotification($gcm_notification)
+                    ->setData([
+                        'type' => 'message',
+                        'users' => $to,
+                        'from' => $me,
+                        'conversation' => $conversation_id,
+                        'text' => $m_message->getText()
+                    ]);
                 
                 try {
                     $message = $this->getServiceGcmClient()->send($gcm_message);
