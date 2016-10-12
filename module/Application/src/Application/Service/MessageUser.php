@@ -333,6 +333,23 @@ class MessageUser extends AbstractService
     }
 
     /**
+     *
+     * @return \ZendService\Google\Gcm\Client
+     */
+    private function getServiceGcmClient()
+    {
+        return $this->container->get('gcm-client');
+    }
+    
+    /**
+     * @return \Application\Service\GcmGroup
+     */
+    private function getServiceGcmGroup()
+    {
+        return $this->container->get('app_service_gcm_group');
+    }
+    
+    /**
      * Get Service Service Conversation User.
      *
      * @return \Application\Service\ConversationUser
