@@ -76,28 +76,20 @@ class MessageUser extends AbstractService
             //////////////////// USER //////////////////////////////////
             $res_user = $this->getServiceUser()->getLite($to);
             $ar_name = [];
-            $owner = "";
             foreach ($res_user as $m_user) {
-                $name = $owner = "";
+                $name = "";
                 if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
                     $name = $m_user->getNickname();
-                    $owner = $name;
                 } else {
                     if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
                         $name = $m_user->getFirstname();
-                        $owner = $name;
                     }
                     if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
                         $name .= ' '.$m_user->getLastname();
                     }
                 }
-                if($m_user->getId() === $me) {
-                    $owner = $name;
-                } else {
-                    $ar_name[] = $name;
-                }
+                $ar_name[$m_user->getId()] = $name;
             }
-            
             ////////////////////// DOCUMENT /////////////////////////////
             $docs = [];
             $res_library = $this->getServiceMessageDoc()->getList($message_id);
@@ -124,31 +116,35 @@ class MessageUser extends AbstractService
             $this->sendMessage($message);
             ///////////////////////// FCM /////////////////////////////////
             foreach ($to as $user) {
-                $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
-                if ($gcmu !== false) {
-                    $gcm_notification = new GcmNotification();
-                    $gcm_notification->setTitle(implode(", ", $ar_name))
-                        ->setSound("default")
-                        ->setColor("#00A38B")
-                        ->setTag("CONV".$conversation_id)
-                        ->setBody($owner. ": " .$m_message->getText());
-            
-                    $gcm_message = new GcmMessage();
-                    $gcm_message->setTo($gcmu)
-                    ->setNotification($gcm_notification)
-                    ->setData(['data' => [
-                        'type' => 'message',
-                        'users' => $to,
-                        'from' => $me,
-                        'conversation' => $conversation_id,
-                        'text' => $m_message->getText(),
-                        'doc' => count($docs),
-                    ]]);
-            
-                    try {
-                        $message = $this->getServiceGcmClient()->send($gcm_message);
-                    } catch (\Exception $e) {
-                        syslog(1, "error fcm: ".$e->getMessage());
+                if($me != $user) {
+                    $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
+                    if ($gcmu !== false) {
+                        $gcm_notification = new GcmNotification();
+                        $tmp_ar_name = $ar_name;
+                        unset($tmp_ar_name[$user]);
+                        $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
+                            ->setSound("default")
+                            ->setColor("#00A38B")
+                            ->setTag("CONV".$conversation_id)
+                            ->setBody(((count($to) > 2)?$ar_name[$me]. ": ":"").$m_message->getText());
+                
+                        $gcm_message = new GcmMessage();
+                        $gcm_message->setTo($gcmu)
+                        ->setNotification($gcm_notification)
+                        ->setData(['data' => [
+                            'type' => 'message',
+                            'users' => $to,
+                            'from' => $me,
+                            'conversation' => $conversation_id,
+                            'text' => $m_message->getText(),
+                            'doc' => count($docs),
+                        ]]);
+                
+                        try {
+                            $message = $this->getServiceGcmClient()->send($gcm_message);
+                        } catch (\Exception $e) {
+                            syslog(1, "error fcm: ".$e->getMessage());
+                        }
                     }
                 }
             }
