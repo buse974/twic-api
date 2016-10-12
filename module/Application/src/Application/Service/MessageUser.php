@@ -12,6 +12,7 @@ use Zend\Db\Sql\Predicate\IsNotNull;
 use ZendService\Google\Gcm\Message as GcmMessage;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 use Zend\Json\Server\Request;
+use Zend\Http\Client;
 
 /**
  * Class MessageUser.
@@ -177,6 +178,19 @@ class MessageUser extends AbstractService
         }
     
         return $rep;
+    }
+    
+    /**
+     * Get Client Http.
+     *
+     * @return \Zend\Http\Client
+     */
+    private function getClient()
+    {
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+    
+        return $client;
     }
     
     /**
