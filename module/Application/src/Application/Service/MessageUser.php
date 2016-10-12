@@ -49,15 +49,15 @@ class MessageUser extends AbstractService
             $to = array_unique($to);
         }
             
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         foreach ($to as $user) {
-            $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
             $m_message_user = $this->getModel()
                 ->setMessageId($message_id)
                 ->setConversationId($conversation_id)
                 ->setFromId($me)
                 ->setUserId($user)
                 ->setType((($user == $me) ? (($for_me) ? 'RS' : 'S') : 'R'))
-                ->setCreatedDate();
+                ->setCreatedDate($date);
 
             if ($me == $user && !$for_me) {
                 $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -66,14 +66,7 @@ class MessageUser extends AbstractService
             if ($this->getMapper()->insert($m_message_user) <= 0) {
                 throw new \Exception('error insert message to');
             }
-            
         }
-        
-            
-            
-            
-            
-
         
         // if type equal 2 CHAT
         $m_message = $this->getServiceMessage()->get($message_id);
@@ -118,10 +111,10 @@ class MessageUser extends AbstractService
             //////////////////////// NODEJS //////////////////////////////:
             $message = [
                 'content' => $m_message->getText(),
-                'cid' => $conversation_id,
+                'cid' => (int)$conversation_id,
                 'document' => $docs,
-                'mid' => $message_id,
-                'from' => $me,
+                'mid' => (int)$message_id,
+                'from' => (int)$me,
                 'users' => $to,
                 'created_date' => $date,
                 'type' => 2,
@@ -159,8 +152,6 @@ class MessageUser extends AbstractService
                 }
             }
         }
-        
-        
         
         return $this->getMapper()->getLastInsertValue();
     }
