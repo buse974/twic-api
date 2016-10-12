@@ -11,7 +11,7 @@ use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
 use ZendService\Google\Gcm\Message as GcmMessage;
 use ZendService\Google\Gcm\Notification as GcmNotification;
-use Zend\Http\Request;
+use Zend\Json\Server\Request;
 
 /**
  * Class MessageUser.
