@@ -134,11 +134,17 @@ class Library extends AbstractService
      * @param int $folder_id
      * @param bool $global
      * @param string $folder_name
+     * @param unknown $user_id
      * @return array
      */ 
-    function getList($filter = null, $folder_id = null, $global = null, $folder_name = null)
+    function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if(null !== $user_id) {
+            $global = true;
+        } else {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+        
         if(null !== $folder_name && null === $folder_id) {
             $m_library = $this->getModel()
                 ->setDeletedDate(new IsNull())
