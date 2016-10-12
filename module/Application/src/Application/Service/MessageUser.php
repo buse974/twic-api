@@ -46,8 +46,7 @@ class MessageUser extends AbstractService
             $to = array_unique($to);
         }
 
-        $m_message = $this->getServiceMessage()->get($id);
-        
+        $m_message = $this->getServiceMessage()->get($message_id);
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
                 ->setMessageId($message_id)
