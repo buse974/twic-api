@@ -9,6 +9,8 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Application\Model\Conversation as ModelConversation;
+use Zend\Db\Sql\Expression;
 
 /**
  * Class Conversation
@@ -115,5 +117,20 @@ class Conversation extends AbstractMapper
         }
 
         return $this->selectWith($select);
+    }
+    
+    public function m_getListUnread($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'conversation$nb_unread' => new Expression('SUM(IF(message_user.read_date IS NULL, 1, 0))')])
+            ->join('message', 'message.conversation_id = conversation.id', [])
+            ->join('message_user', 'message_user.message_id = message.id', [])
+            ->where(['message_user.user_id' => $id])
+            ->where(['conversation.type' => ModelConversation::TYPE_CHAT])
+            ->group('conversation.id')
+            ->having('conversation$nb_unread > 0');
+        
+        return $this->selectWith($select);
+        
     }
 }
