@@ -11,12 +11,15 @@ use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
 use ZendService\Google\Gcm\Message as GcmMessage;
 use ZendService\Google\Gcm\Notification as GcmNotification;
+use Zend\Http\Request;
 
 /**
  * Class MessageUser.
  */
 class MessageUser extends AbstractService
 {
+    private static $id = 0;
+    
     /**
      * Send message.
      * 
@@ -45,41 +48,16 @@ class MessageUser extends AbstractService
             }
             $to = array_unique($to);
         }
-
-        $m_message = $this->getServiceMessage()->get($message_id);
-        $res_user = $this->getServiceUser()->getLite($to);
-        $ar_name = [];
-        $owner = "";
-        foreach ($res_user as $m_user) {
-            $name = $owner = "";
-            if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
-                $name = $m_user->getNickname();
-                $owner = $name;
-            } else {
-                if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
-                    $name = $m_user->getFirstname();
-                    $owner = $name;
-                }
-                if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
-                    $name .= ' '.$m_user->getLastname();
-                }
-            }
             
-            if($m_user->getId() === $me) {
-                $owner = $name;
-            } else {
-                $ar_name[] = $name;
-            }
-        }
-        
         foreach ($to as $user) {
+            $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
             $m_message_user = $this->getModel()
                 ->setMessageId($message_id)
                 ->setConversationId($conversation_id)
                 ->setFromId($me)
                 ->setUserId($user)
                 ->setType((($user == $me) ? (($for_me) ? 'RS' : 'S') : 'R'))
-                ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+                ->setCreatedDate();
 
             if ($me == $user && !$for_me) {
                 $m_message_user->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -89,37 +67,127 @@ class MessageUser extends AbstractService
                 throw new \Exception('error insert message to');
             }
             
-            $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
-            if ($gcmu !== false) {
-                $gcm_notification = new GcmNotification();
-                $gcm_notification->setTitle(implode(", ", $ar_name))
+        }
+        
+            
+            
+            
+            
+
+        
+        // if type equal 2 CHAT
+        $m_message = $this->getServiceMessage()->get($message_id);
+        if($m_message->getType() == 2) {
+
+            //////////////////// USER //////////////////////////////////
+            $res_user = $this->getServiceUser()->getLite($to);
+            $ar_name = [];
+            $owner = "";
+            foreach ($res_user as $m_user) {
+                $name = $owner = "";
+                if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+                    $name = $m_user->getNickname();
+                    $owner = $name;
+                } else {
+                    if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                        $name = $m_user->getFirstname();
+                        $owner = $name;
+                    }
+                    if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                        $name .= ' '.$m_user->getLastname();
+                    }
+                }
+                if($m_user->getId() === $me) {
+                    $owner = $name;
+                } else {
+                    $ar_name[] = $name;
+                }
+            }
+            
+            ////////////////////// DOCUMENT /////////////////////////////
+            $docs = [];
+            $res_library = $this->getServiceMessageDoc()->getList($message_id);
+            foreach ($res_library as $m_library) {
+                $docs[] = [
+                    'name' => $m_library->getName(),
+                    'token' => $m_library->getToken(),
+                    'type' => $m_library->setType(),
+                ];
+            }
+            
+            //////////////////////// NODEJS //////////////////////////////:
+            $message = [
+                'content' => $m_message->getText(),
+                'cid' => $conversation_id,
+                'document' => $docs,
+                'mid' => $message_id,
+                'from' => $me,
+                'users' => $to,
+                'created_date' => $date,
+                'type' => 2,
+            ];
+            
+            $this->sendMessage($message);
+            ///////////////////////// FCM /////////////////////////////////
+            foreach ($to as $user) {
+                $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
+                if ($gcmu !== false) {
+                    $gcm_notification = new GcmNotification();
+                    $gcm_notification->setTitle(implode(", ", $ar_name))
                     ->setSound("default")
                     ->setColor("#00A38B")
                     ->setTag("CONV".$conversation_id)
                     ->setBody($owner. ": " .$m_message->getText());
-                
-                $gcm_message = new GcmMessage();
-                $gcm_message->setTo($gcmu)
+            
+                    $gcm_message = new GcmMessage();
+                    $gcm_message->setTo($gcmu)
                     ->setNotification($gcm_notification)
                     ->setData([
                         'type' => 'message',
                         'users' => $to,
                         'from' => $me,
                         'conversation' => $conversation_id,
-                        'text' => $m_message->getText()
+                        'text' => $m_message->getText(),
+                        'doc' => count($docs),
                     ]);
-                
-                try {
-                    $message = $this->getServiceGcmClient()->send($gcm_message);
-                } catch (\Exception $e) {
-                    syslog(1, "error fcm: ".$e->getMessage());
+            
+                    try {
+                        $message = $this->getServiceGcmClient()->send($gcm_message);
+                    } catch (\Exception $e) {
+                        syslog(1, "error fcm: ".$e->getMessage());
+                    }
                 }
             }
         }
-
+        
+        
+        
         return $this->getMapper()->getLastInsertValue();
     }
 
+    
+    public function sendMessage($data)
+    {
+        $request = new Request();
+        $request->setMethod('message.publish')
+            ->setParams($data)
+            ->setId(++ self::$id)
+            ->setVersion('2.0');
+        
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $this->getClient());
+        try {
+            $rep = $client->doRequest($request);
+            if ($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
+            syslog(1, $e->getMessage());
+        }
+    
+        return $rep;
+    }
+    
     /**
      * Get List MessasgeUser.
      * 
