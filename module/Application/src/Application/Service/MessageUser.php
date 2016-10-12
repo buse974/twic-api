@@ -100,9 +100,8 @@ class MessageUser extends AbstractService
                     'type' => $m_library->setType(),
                 ];
             }
-            
             //////////////////////// NODEJS //////////////////////////////:
-            $message = [
+            $this->sendMessage([
                 'content' => $m_message->getText(),
                 'cid' => (int)$conversation_id,
                 'document' => $docs,
@@ -111,9 +110,7 @@ class MessageUser extends AbstractService
                 'users' => $to,
                 'created_date' => $date,
                 'type' => 2,
-            ];
-            
-            $this->sendMessage($message);
+            ]);
             ///////////////////////// FCM /////////////////////////////////
             foreach ($to as $user) {
                 if($me != $user) {
@@ -126,7 +123,7 @@ class MessageUser extends AbstractService
                             ->setSound("default")
                             ->setColor("#00A38B")
                             ->setTag("CONV".$conversation_id)
-                            ->setBody(((count($to) > 2)?$ar_name[$me]. ": ":"").$m_message->getText());
+                            ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").$m_message->getText());
                 
                         $gcm_message = new GcmMessage();
                         $gcm_message->setTo($gcmu)
