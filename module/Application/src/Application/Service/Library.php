@@ -322,11 +322,10 @@ class Library extends AbstractService
      */
     public function delete($id)
     {
-        $m_library = $this->getModel()
-            ->setId($id)
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        
-        return $this->getMapper()->update($m_library);
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $m_library = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+         
+        return $this->getMapper()->update($m_library, ['owner_id' => $user_id, 'id' => $id]);
     }
 
     /**

@@ -9,6 +9,8 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
+use ZendService\Google\Gcm\Message as GcmMessage;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class MessageUser.
@@ -44,6 +46,8 @@ class MessageUser extends AbstractService
             $to = array_unique($to);
         }
 
+        $m_message = $this->getServiceMessage()->get($id);
+        
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
                 ->setMessageId($message_id)
@@ -59,6 +63,28 @@ class MessageUser extends AbstractService
 
             if ($this->getMapper()->insert($m_message_user) <= 0) {
                 throw new \Exception('error insert message to');
+            }
+            
+            $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
+            if ($gcmu !== false) {
+                $gcm_notification = new GcmNotification();
+                $gcm_notification->setTitle('New Message')
+                    ->setBody("BODY")
+                    ->setSound("default")
+                    ->setColor("#00A38B")
+                    ->setTag("CONV".$conversation_id)
+                    ->setBody($m_message->getText());
+                
+                $gcm_message = new GcmMessage();
+                $gcm_message->setTo($gcmu)
+                ->setNotification($gcm_notification)
+                ->setData(['data' => $m_conversation_user->toArray()]);
+                
+                try {
+                    $message = $this->getServiceGcmClient()->send($gcm_message);
+                } catch (\Exception $e) {
+                    syslog(1, "error fcm: ".$e->getMessage());
+                }
             }
         }
 
@@ -295,6 +321,16 @@ class MessageUser extends AbstractService
     private function getServiceMessageDoc()
     {
         return $this->container->get('app_service_message_doc');
+    }
+    
+    /**
+     * Get Service Service Message
+     *
+     * @return \Application\Service\Message
+     */
+    private function getServiceMessage()
+    {
+        return $this->container->get('app_service_message');
     }
 
     /**

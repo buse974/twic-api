@@ -67,7 +67,7 @@ class User extends AbstractService
      */
     public function registerFcm($token, $uuid)
     {
-        return $this->getServiceGcmGroup()->create('fuser' . $this->getIdentity()['id'], $token);
+        return $this->getServiceGcmGroup()->create('user' . $this->getIdentity()['id'], $token, $uuid);
     }
     
     /**

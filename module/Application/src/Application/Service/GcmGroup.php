@@ -1,80 +1,69 @@
 <?php
-
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
 class GcmGroup extends AbstractService
 {
+
     /**
      *
-     * @param string $notification_key_name
-     * @param string|array $registration_ids
-     *
-     * @throws \Exception
-     * @return boolean
+     * @param string $notification_key_name            
+     * @param array $registration_id            
+     * @param string $uuid            
+     * @return bool
      */
-    public function create($notification_key_name, $registration_ids)
+    public function create($notification_key_name, $registration_id, $uuid)
     {
-        if (! is_array($registration_ids)) {
-            $registration_ids = [$registration_ids];
-        }
-        
         $m_gcm_group = $this->get($notification_key_name);
-        $gcm_group_id = $m_gcm_group->getId();
-        
-        $fregistration_ids = [];
-        foreach ($registration_ids as $registration_id) {
-            if(!$this->getServiceGcmRegistration()->has($gcm_group_id, $registration_id)) {
-                $fregistration_ids[] = $registration_id;
+        if (false !== $m_gcm_group) {
+            if ($this->getServiceGcmRegistration()->has($m_gcm_group->getId(), $uuid, $registration_id)) {
+                return false;
             }
         }
-        if(!empty($fregistration_ids)) {
-            //on suprime toutes les registration
-            $this->getServiceGcmRegistration()->delete($fregistration_ids);
-            
-            $notification_key = ( false !== $m_gcm_group ) ? $m_gcm_group->getNotificationKey() : null;
-            $rep = $this->getServiceGcmRegistration()->addFcm($notification_key_name, $fregistration_ids, $notification_key);
-            $gcm_group_id = ( false !== $m_gcm_group ) ? $m_gcm_group->getId() : $this->add($notification_key_name, $rep['notification_key']);
         
-            // on ajoute a la bdd les registration;
-            return $this->getServiceGcmRegistration()->add($gcm_group_id, $fregistration_ids);
-        }
+        // on suprime toutes les registrations
+        $this->getServiceGcmRegistration()->delete($uuid, $registration_id);
         
-        return false;
+        $notification_key = (false !== $m_gcm_group) ? $m_gcm_group->getNotificationKey() : null;
+        $rep = $this->getServiceGcmRegistration()->addFcm($notification_key_name, $registration_id, $notification_key);
+        $gcm_group_id = (false !== $m_gcm_group) ? $m_gcm_group->getId() : $this->add($notification_key_name, $rep['notification_key']);
+        
+        // on ajoute a la bdd les registration;
+        return $this->getServiceGcmRegistration()->add($gcm_group_id, $uuid, $registration_id);
     }
-    
+
     /**
      * Add GcmGroup In Bdd
      *
-     * @param string $notification_key_name
-     * @param string $notification_key
+     * @param string $notification_key_name            
+     * @param string $notification_key            
      * @throws \Exception
      * @return int
      */
     public function add($notification_key_name, $notification_key)
     {
         $m_gcm_group = $this->getModel()
-        ->setNotificationKeyName($notification_key_name)
-        ->setNotificationKey($notification_key);
-    
+            ->setNotificationKeyName($notification_key_name)
+            ->setNotificationKey($notification_key);
+        
         if ($this->getMapper()->insert($m_gcm_group) <= 0) {
             throw new \Exception('error insert gcm group');
         }
-    
+        
         return $this->getMapper()->getLastInsertValue();
     }
-    
+
     public function getNotificationKey($notification_key_name)
     {
         $m_gcm_group = $this->get($notification_key_name);
-    
+        
         return ($m_gcm_group !== false) ? $m_gcm_group->getNotificationKey() : false;
     }
-    
+
     /**
      *
-     * @param string $notification_key_name
+     * @param string $notification_key_name            
      *
      * @return \Application\Model\GcmGroup
      */
@@ -82,10 +71,10 @@ class GcmGroup extends AbstractService
     {
         $res_gcm_group = $this->getMapper()->select($this->getModel()
             ->setNotificationKeyName($notification_key_name));
-    
+        
         return ($res_gcm_group->count() > 0) ? $res_gcm_group->current() : false;
     }
-    
+
     /**
      *
      * @return \Application\Service\GcmRegistration
@@ -94,5 +83,4 @@ class GcmGroup extends AbstractService
     {
         return $this->container->get('app_service_gcm_registration');
     }
-
 }
