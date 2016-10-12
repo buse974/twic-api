@@ -128,22 +128,22 @@ class MessageUser extends AbstractService
                 if ($gcmu !== false) {
                     $gcm_notification = new GcmNotification();
                     $gcm_notification->setTitle(implode(", ", $ar_name))
-                    ->setSound("default")
-                    ->setColor("#00A38B")
-                    ->setTag("CONV".$conversation_id)
-                    ->setBody($owner. ": " .$m_message->getText());
+                        ->setSound("default")
+                        ->setColor("#00A38B")
+                        ->setTag("CONV".$conversation_id)
+                        ->setBody($owner. ": " .$m_message->getText());
             
                     $gcm_message = new GcmMessage();
                     $gcm_message->setTo($gcmu)
                     ->setNotification($gcm_notification)
-                    ->setData([
+                    ->setData(['data' => [
                         'type' => 'message',
                         'users' => $to,
                         'from' => $me,
                         'conversation' => $conversation_id,
                         'text' => $m_message->getText(),
                         'doc' => count($docs),
-                    ]);
+                    ]]);
             
                     try {
                         $message = $this->getServiceGcmClient()->send($gcm_message);
@@ -166,7 +166,10 @@ class MessageUser extends AbstractService
             ->setId(++ self::$id)
             ->setVersion('2.0');
         
-        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $this->getClient());
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+        
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {
             $rep = $client->doRequest($request);
             if ($rep->isError()) {
@@ -178,19 +181,6 @@ class MessageUser extends AbstractService
         }
     
         return $rep;
-    }
-    
-    /**
-     * Get Client Http.
-     *
-     * @return \Zend\Http\Client
-     */
-    private function getClient()
-    {
-        $client = new Client();
-        $client->setOptions($this->container->get('config')['http-adapter']);
-    
-        return $client;
     }
     
     /**
