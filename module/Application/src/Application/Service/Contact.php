@@ -9,6 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class Contact.
@@ -222,6 +223,36 @@ class Contact extends AbstractService
 
         return $listRequest;
     }
+    
+      /**
+     * Get User for mobile
+     *
+     * @invokable
+     *
+     * @param int|array $id            
+     * @return array
+     */
+    public function m_getList($search = null, $exclude = null, $filter = null)
+    {
+        $identity = $this->getServiceUser()->getIdentity();
+        if(null !== $exclude && !is_array($exclude)){
+            $exclude = [$exclude];
+        }
+        
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+          
+        $mapper = $this->getServiceUser()->getMapper();
+        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, null, null, null, null, null, $search, null, null, false, null, $exclude, null, 3);
+        
+        $res = $res->toArray();
+        $users = [];
+        foreach ($res as &$user) {
+            $users[] = $user['id'];
+        }
+        
+        return ['list' => $users,'count' => $mapper->count()];
+    }
+    
 
     /**
      * Get List Id of contact.
