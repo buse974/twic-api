@@ -17,6 +17,7 @@ class Conversation extends BaseConversation
     protected $messages;
     protected $users;
     protected $message_user;
+    protected $nb_unread;
 
     public function getMessages()
     {
@@ -50,6 +51,18 @@ class Conversation extends BaseConversation
     public function setUsers($users)
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function getNbUnread()
+    {
+        return $this->nb_unread;
+    }
+
+    public function setNbUnread($nb_unread)
+    {
+        $this->nb_unread = $nb_unread;
 
         return $this;
     }
