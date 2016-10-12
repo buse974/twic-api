@@ -600,6 +600,26 @@ class Conversation extends AbstractService
         return $conversation;
     }
     
+     /**
+     * Get Conversation id list with unread message.
+     *
+     * @invokable         
+     *
+     * @return \Application\Model\Conversation
+     */
+    public function m_getListUnread()
+    {
+        $res_conversation = $this->getMapper()->m_getListUnread($this->getServiceUser()->getIdentity()['id']);
+        
+        $conversations = [];
+        foreach ($res_conversation as $m_conversation) {
+            $conversations[$m_conversation->getId()] = $m_conversation->getNbUnread();            
+        }
+        
+        return $conversations;
+        
+    }
+    
     /**
      * Get Conversation
      *
