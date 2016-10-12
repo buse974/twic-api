@@ -37,8 +37,8 @@ class MessageDoc extends AbstractService
                 $name = (isset($d['name'])) ? $d['name']:null;  
                 $type = (isset($d['type'])) ? $d['type']:null;
                 
-                $library_id = $this->getServiceLibrary()->add($name,null,$token,$type,ModelLibrary::FOLDER_OTHER_INT);
-                $m_message_doc->setToken($token)->setName($name)->setLibraryId($library_id);
+                $m_library = $this->getServiceLibrary()->add($name,null,$token,$type,ModelLibrary::FOLDER_OTHER_INT);
+                $m_message_doc->setToken($token)->setName($name)->setLibraryId($m_library->getId());
                 
                 $ret[$token] = $this->getMapper()->insert($m_message_doc);
             }

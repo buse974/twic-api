@@ -30,9 +30,26 @@ class Library extends AbstractService
      * @throws \Exception
      * @return \Application\Model\Library
      */
-    public function add($name, $link = null, $token = null, $type = null, $folder_id = null)
+    public function add($name, $link = null, $token = null, $type = null, $folder_id = null, $global = null, $folder_name = null)
     {
         $urldms = $this->container->get('config')['app-conf']['urldms'];
+        
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if(null !== $folder_name && null === $folder_id) {
+            $m_library = $this->getModel()
+                ->setDeletedDate(new IsNull())
+                ->setName($folder_name);
+             
+            if(null === $global || false === $global) {
+                $m_library->setOwnerId($user_id);
+            } else {
+                $m_library->setGlobal(true);
+            }
+            $res_library = $this->getMapper()->select($m_library);
+            if($res_library->count() > 0) {
+                $folder_id = $res_library->current()->getId();
+            }
+        }
         
         $box_id = null;
         $u = (null !== $link) ? $link : $urldms . $token;
@@ -50,17 +67,14 @@ class Library extends AbstractService
             ->setGlobal(false)
             ->setFolderId($folder_id)
             ->setType($type)
-            ->setOwnerId($this->getServiceUser()
-            ->getIdentity()['id'])
+            ->setOwnerId($user_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         if ($this->getMapper()->insert($m_library) < 0) {
             throw new \Exception('Error insert file');
         }
         
-        $id = $this->getMapper()->getLastInsertValue();
-        
-        return $this->get($id);
+        return $this->get($this->getMapper()->getLastInsertValue());
     }
 
     /**
@@ -116,20 +130,34 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $folder_id            
+     * @param array $filter
+     * @param int $folder_id
+     * @param bool $global
+     * @param string $folder_name
      * @return array
-     */
-    public function getList($filter = null, $folder_id = null, $global = null)
+     */ 
+    function getList($filter = null, $folder_id = null, $global = null, $folder_name = null)
     {
-        if(null === $global) {
-            $global = false;
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if(null !== $folder_name && null === $folder_id) {
+            $m_library = $this->getModel()
+                ->setDeletedDate(new IsNull())
+                ->setName($folder_name);
+             
+            if(null === $global || false === $global) {
+                $m_library->setOwnerId($user_id);
+            } else {
+                $m_library->setGlobal(true);
+            }
+            $res_library = $this->getMapper()->select($m_library);
+            if($res_library->count() > 0) {
+                $folder_id = $res_library->current()->getId();
+            }
         }
         
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_library = $this->getModel()
             ->setFolderId(null !== $folder_id ? $folder_id : new IsNull())
             ->setDeletedDate(new IsNull())
-            ->setGlobal($global)
             ->setOwnerId($user_id);
        
         $mapper = (null !== $filter) ?

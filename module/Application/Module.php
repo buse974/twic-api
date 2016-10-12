@@ -53,4 +53,24 @@ class Module
     {
         return include __DIR__.'/config/module.config.php';
     }
+    
+    public function getServiceConfig()
+    {
+        return [
+            'aliases' => [
+                'gcm-client' => \ZendService\Google\Gcm\Client::class,
+            ],
+            'factories' => [
+                \ZendService\Google\Gcm\Client::class => function ($container) {
+                        $config = $container->get('config');
+                        $client = new \ZendService\Google\Gcm\Client();
+                        $client->setApiKey($config['gcm']['api_key'])
+                            ->setSenderId($config['gcm']['sender_id'])
+                            ->setHttpClient(new \Zend\Http\Client(null, $config[$config['gcm']['adapter']]));
+        
+                    return $client;
+                },
+            ],
+        ];
+    }
 }

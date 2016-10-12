@@ -61,6 +61,26 @@ class User extends AbstractService
     }
 
     /**
+     * @invokable
+     *
+     * @param string $token
+     */
+    public function registerFcm($token, $uuid)
+    {
+        return $this->getServiceGcmGroup()->create('fuser' . $this->getIdentity()['id'], $token);
+    }
+    
+    /**
+     *  
+     * @param unknown $uuid
+     * @param unknown $token
+     */
+    public function unregisterGcm($token = null, $uuid = null)
+    {
+        $this->getServiceGcmGroup()->delete($uuid, $token);
+    }
+    
+    /**
      * Get List User By Group.
      *
      * @param int $group_id            
@@ -1532,6 +1552,16 @@ class User extends AbstractService
     private function getServiceOrganizationUser()
     {
         return $this->container->get('app_service_organization_user');
+    }
+    
+    /**
+     * Get Service GcmGroup
+     *
+     * @return \Application\Service\GcmGroup
+     */
+    private function getServiceGcmGroup()
+    {
+        return $this->container->get('app_service_gcm_group');
     }
     
     /**
