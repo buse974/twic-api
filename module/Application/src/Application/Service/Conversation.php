@@ -613,7 +613,7 @@ class Conversation extends AbstractService
         
         $conversations = [];
         foreach ($res_conversation as $m_conversation) {
-            $conversations[$m_conversation->getId()] = $m_conversation->getNbUnread();            
+            $conversations[$m_conversation->getId()] = intval($m_conversation->getNbUnread());            
         }
         
         return $conversations;

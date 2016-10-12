@@ -129,7 +129,6 @@ class Conversation extends AbstractMapper
             ->where(['conversation.type' => ModelConversation::TYPE_CHAT])
             ->group('conversation.id')
             ->having('conversation$nb_unread > 0');
-        syslog(1, $this->printSql($select));
         
         return $this->selectWith($select);
         
