@@ -70,6 +70,8 @@ class MessageUser extends AbstractService
         
         // if type equal 2 CHAT
         $m_message = $this->getServiceMessage()->get($message_id);
+        $message_text = (is_string($m_message->getText())) ? $m_message->getText() : "";
+        
         if($m_message->getType() == 2) {
 
             //////////////////// USER //////////////////////////////////
@@ -101,7 +103,7 @@ class MessageUser extends AbstractService
             }
             //////////////////////// NODEJS //////////////////////////////:
             $this->sendMessage([
-                'content' => $m_message->getText(),
+                'content' => $message_text,
                 'cid' => (int)$conversation_id,
                 'document' => $docs,
                 'mid' => (int)$message_id,
@@ -120,14 +122,14 @@ class MessageUser extends AbstractService
                         ->setSound("default")
                         ->setColor("#00A38B")
                         ->setTag("CONV".$conversation_id)
-                        ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").$m_message->getText());
+                        ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").$message_text);
                     
                     $this->getServiceFcm()->send($user, ['data' => [
                             'type' => 'message',
                             'data' => ['users' => $to,
                                 'from' => $me,
                                 'conversation' => $conversation_id,
-                                'text' => (!empty($m_message->getText()) ? $m_message->getText() : count($docs) ." Documents Shared"),
+                                'text' => (!empty($message_text) ? $message_text : count($docs) ." Documents Shared"),
                                 'doc' => count($docs)
                             ],
                         ]], $gcm_notification);
