@@ -9,7 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 
 /**
- * Class Assignment.
+ * Class Assignment
  */
 class Assignment extends AbstractService
 {

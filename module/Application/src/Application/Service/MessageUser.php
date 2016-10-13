@@ -9,8 +9,6 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
-use ZendService\Google\Gcm\Message as GcmMessage;
-use ZendService\Google\Gcm\Notification as GcmNotification;
 use Zend\Json\Server\Request;
 use Zend\Http\Client;
 
@@ -114,35 +112,24 @@ class MessageUser extends AbstractService
             ///////////////////////// FCM /////////////////////////////////
             foreach ($to as $user) {
                 if($me != $user) {
-                    $gcmu = $this->getServiceGcmGroup()->getNotificationKey('user'.$user);
-                    if ($gcmu !== false) {
-                        $gcm_notification = new GcmNotification();
-                        $tmp_ar_name = $ar_name;
-                        unset($tmp_ar_name[$user]);
-                        $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
-                            ->setSound("default")
-                            ->setColor("#00A38B")
-                            ->setTag("CONV".$conversation_id)
-                            ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").$m_message->getText());
-                
-                        $gcm_message = new GcmMessage();
-                        $gcm_message->setTo($gcmu)
-                        ->setNotification($gcm_notification)
-                        ->setData(['data' => [
+                    $gcm_notification = new GcmNotification();
+                    $tmp_ar_name = $ar_name;
+                    unset($tmp_ar_name[$user]);
+                    $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
+                        ->setSound("default")
+                        ->setColor("#00A38B")
+                        ->setTag("CONV".$conversation_id)
+                        ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").$m_message->getText());
+                    
+                    $this->getServiceFcm()->send($user, ['data' => [
                             'type' => 'message',
-                            'users' => $to,
-                            'from' => $me,
-                            'conversation' => $conversation_id,
-                            'text' => $m_message->getText(),
-                            'doc' => count($docs),
-                        ]]);
-                
-                        try {
-                            $message = $this->getServiceGcmClient()->send($gcm_message);
-                        } catch (\Exception $e) {
-                            syslog(1, "error fcm: ".$e->getMessage());
-                        }
-                    }
+                            'data' => ['users' => $to,
+                                'from' => $me,
+                                'conversation' => $conversation_id,
+                                'text' => (!empty($m_message->getText()) ? $m_message->getText() : count($docs) ." Documents Shared"),
+                                'doc' => count($docs)
+                            ],
+                        ]], $gcm_notification);
                 }
             }
         }
@@ -417,23 +404,6 @@ class MessageUser extends AbstractService
     {
         return $this->container->get('app_service_message');
     }
-
-    /**
-     *
-     * @return \ZendService\Google\Gcm\Client
-     */
-    private function getServiceGcmClient()
-    {
-        return $this->container->get('gcm-client');
-    }
-    
-    /**
-     * @return \Application\Service\GcmGroup
-     */
-    private function getServiceGcmGroup()
-    {
-        return $this->container->get('app_service_gcm_group');
-    }
     
     /**
      * Get Service Service Conversation User.
@@ -443,5 +413,15 @@ class MessageUser extends AbstractService
     private function getServiceConversationUser()
     {
         return $this->container->get('app_service_conversation_user');
+    }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }

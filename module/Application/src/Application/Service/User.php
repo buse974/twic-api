@@ -67,7 +67,7 @@ class User extends AbstractService
      */
     public function registerFcm($token, $uuid)
     {
-        return $this->getServiceGcmGroup()->create('user' . $this->getIdentity()['id'], $token, $uuid);
+        return $this->getServiceFcm()->register($uuid, $token);
     }
     
     /**
@@ -1593,6 +1593,16 @@ class User extends AbstractService
     private function getServiceOrganizationUser()
     {
         return $this->container->get('app_service_organization_user');
+    }
+    
+    /**
+     * Get Service Fcm
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
     
     /**
