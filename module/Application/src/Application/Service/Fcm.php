@@ -78,9 +78,9 @@ class Fcm extends AbstractService
                 ->setData($data);
             
             if ($nbTo > 1) {
-                $gcm_message->setRegistrationIds($ids);
+                $gcm_message->setRegistrationIds($register_ids);
             } else {
-                $gcm_message->setTo(current($ids));
+                $gcm_message->setTo(current($register_ids));
             }
         
             try {

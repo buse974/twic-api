@@ -85,7 +85,7 @@ class Module
                 \Application\Service\Fcm::class => function ($container) {
                     return new Fcm(
                         $container->get('app_service_session'), 
-                        $container->get('gcm-client'), 
+                        $container->get('gcm-client'),
                         $container->get('app_service_user')->getIdentity()['token']
                     );
                 }
