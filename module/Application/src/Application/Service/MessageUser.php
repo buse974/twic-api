@@ -92,11 +92,11 @@ class MessageUser extends AbstractService
             ////////////////////// DOCUMENT /////////////////////////////
             $docs = [];
             $res_library = $this->getServiceMessageDoc()->getList($message_id);
-            foreach ($res_library as $m_library) {
+            foreach ($res_library as $library) {
                 $docs[] = [
-                    'name' => $m_library->getName(),
-                    'token' => $m_library->getToken(),
-                    'type' => $m_library->setType(),
+                    'name' => $library['name'],
+                    'token' => $library['token'],
+                    'type' => $library['type'],
                 ];
             }
             //////////////////////// NODEJS //////////////////////////////:

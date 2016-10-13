@@ -189,8 +189,9 @@ class Message extends AbstractService
         }
 
         $message_id = $this->getMapper()->getLastInsertValue();
-        $message_user_id = $this->getServiceMessageUser()->send($message_id, $conversation);
         $this->getServiceMessageDoc()->replace($message_id, $document);
+        $message_user_id = $this->getServiceMessageUser()->send($message_id, $conversation);
+        
         
         return $this->getServiceMessageUser()->getList($me, $message_id)['list']->current();
     }
