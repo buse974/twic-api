@@ -122,14 +122,14 @@ class MessageUser extends AbstractService
                         ->setSound("default")
                         ->setColor("#00A38B")
                         ->setTag("CONV".$conversation_id)
-                        ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").$message_text);
+                        ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text ));
                     
                     $this->getServiceFcm()->send($user, ['data' => [
                             'type' => 'message',
                             'data' => ['users' => $to,
                                 'from' => $me,
                                 'conversation' => $conversation_id,
-                                'text' => (!empty($message_text) ? $message_text : count($docs) ." Documents Shared"),
+                                'text' => $message_text,
                                 'doc' => count($docs)
                             ],
                         ]], $gcm_notification);
