@@ -15,6 +15,7 @@ use ZendService\Google\Gcm\Message as GcmMessage;
 class Fcm extends AbstractService
 {
     const PREFIX='sess_';
+    const ACTIVITY='FCM_PLUGIN_ACTIVITY';
     
     /**
      * Fcm Client
@@ -65,6 +66,10 @@ class Fcm extends AbstractService
     
     public function send($to, $data, $notification = null) 
     {
+        if(null !== $notification && empty($notification->getClickAction())) {
+            $notification->setClickAction(self::ACTIVITY);
+        }
+        
         $register_ids = [];
         $res_session = $this->session->get(null, $to);
         foreach ($res_session as $m_session){
