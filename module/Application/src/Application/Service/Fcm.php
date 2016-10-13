@@ -41,7 +41,7 @@ class Fcm extends AbstractService
      * 
      * @param \Application\Service\Session $session
      * @param \ZendService\Google\Gcm\Client $fcm_client
-     * @param string $token
+     * @param unknown $token
      */
     public function __construct($session, $fcm_client, $token) 
     {
