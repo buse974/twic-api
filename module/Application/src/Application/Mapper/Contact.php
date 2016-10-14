@@ -15,7 +15,7 @@ class Contact extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('accepted_date', 'contact_id'))
+        $select->columns(array('accepted_date', 'contact_id', 'user_id'))
             ->join('user', 'user.id=contact.contact_id', array())
             ->where(array('contact.user_id' => $user))
             ->where(array('contact.accepted_date IS NOT NULL'))
@@ -32,12 +32,14 @@ class Contact extends AbstractMapper
     /**
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getListRequest($user)
+    public function getListRequest($user = null, $contact = null)
     {
+        if (null === $user && null === $contact) {
+            throw new \Exception('Invalid params');
+        }
         $select = $this->tableGateway->getSql()->select();
-
+        
         $select->columns(array('request_date', 'user_id', 'contact_id'))
-            ->where(array('contact.user_id' => $user))
             ->where(array('
                 contact.request_date IS NOT NULL AND 
                 contact.accepted_date IS NULL AND 
@@ -45,7 +47,12 @@ class Contact extends AbstractMapper
                 requested IS false AND 
                 accepted IS false AND 
                 deleted IS false'));
-
+        if(null !== $user){
+            $select->where(array('contact.user_id' => $user));
+        }
+        if(null !== $contact){
+            $select->where(array('contact.contact_id' => $contact));
+        }
         return $this->selectWith($select);
     }
 
@@ -69,4 +76,6 @@ class Contact extends AbstractMapper
 
         return $this->insertWith($insert);
     }
+    
+   
 }
