@@ -109,9 +109,10 @@ class MessageUser extends AbstractService
                 'mid' => (int)$message_id,
                 'from' => (int)$me,
                 'users' => $to,
-                'created_date' => $date,
+                'created_date' => (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601),
                 'type' => 2,
             ]);
+            
             ///////////////////////// FCM /////////////////////////////////
             foreach ($to as $user) {
                 if($me != $user) {
