@@ -193,6 +193,15 @@ class Program extends AbstractService
         return $m_program;
     }
 
+    public function getLite($id)
+    {
+        $res_program = $this->getMapper()->select($this->getModel()->setId($id));
+
+        return (is_array($id)) ?
+            $res_program :
+            $res_program->current();
+    }
+
     /**
      * Delete Program by ID.
      *

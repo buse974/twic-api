@@ -188,9 +188,19 @@ class Course extends AbstractService
     public function getLite($id)
     {
         $res_course = $this->getMapper()->select($this->getModel()->setId($id));
-        
+
+        foreach ($res_course as $m_course) {
+            $m_program = $this->getServiceProgram()->getLite($m_course->getProgramId());
+            $m_course->setProgram($m_program);
+            $m_course->setSchoolId($m_program->getSchoolId());
+            $m_course->setInstructor($this->getServiceUser()
+              ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+        }
+
+        $res_course->rewind();
+
         return (is_array($id)) ? 
-            $res_course : 
+            $res_course :
             $res_course->current();
     }
 
@@ -244,7 +254,7 @@ class Course extends AbstractService
      */
     public function getListLite($program_id)
     {
-        return $this->getMapper()->select($this->getModel()->setProgramId($program_id));
+        $m_course = $this->getMapper()->select($this->getModel()->setProgramId($program_id));
     }
     /**
      * get Nbr Course by program.
@@ -308,5 +318,10 @@ class Course extends AbstractService
     private function getServiceEvent()
     {
         return $this->container->get('app_service_event');
+    }
+
+    private function getServiceProgram()
+    {
+        return $this->container->get('app_service_program');
     }
 }
