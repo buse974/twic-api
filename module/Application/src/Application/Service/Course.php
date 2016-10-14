@@ -254,7 +254,7 @@ class Course extends AbstractService
      */
     public function getListLite($program_id)
     {
-        $m_course = $this->getMapper()->select($this->getModel()->setProgramId($program_id));
+        return $this->getMapper()->select($this->getModel()->setProgramId($program_id));
     }
     /**
      * get Nbr Course by program.
