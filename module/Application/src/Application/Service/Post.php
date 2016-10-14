@@ -121,12 +121,17 @@ class Post extends AbstractService
             $m_post = $this->getLite($id);
             $is_private_page = (is_numeric($m_post->getTPageId()) && ($this->getServicePage()->getLite($m_post->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
             // if ce n'est pas un page privé
+            $eevent = [];
+            $pevent = [];
+            
             if(!$is_private_page) {
-                $this->getServicePostSubscription()->add(['P'.$this->getOwner($m_post)], $id, $date);
-                $this->getServiceEvent()->userPublication(['E'.$this->getOwner($m_post)], $id);
+                $pevent = $pevent + ['P'.$this->getOwner($m_post)];
+                $eevent = $eevent + ['E'.$this->getOwner($m_post)];
             }
-            $this->getServicePostSubscription()->add(['P'.$this->getTarget($m_post)], $id, $date);
-            $this->getServiceEvent()->userPublication([ 'E'.$this->getTarget($m_post)], $id);
+            $pevent = $pevent + ['P'.$this->getTarget($m_post)];
+            $eevent = $eevent + [ 'E'.$this->getTarget($m_post)];
+            $this->getServiceEvent()->userPublication(array_unique($eevent), $id);
+            $this->getServicePostSubscription()->add(array_unique($pevent), $id, $date);
         }
         
         return $this->get($id);
