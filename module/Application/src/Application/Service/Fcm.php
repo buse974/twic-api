@@ -80,7 +80,7 @@ class Fcm extends AbstractService
         if($nbTo > 0) {
             $gcm_message = new GcmMessage();
             $gcm_message->setNotification($notification)
-                ->setPriority(10)
+                ->setPriority("high")
                 ->setData($data);
             
             if ($nbTo > 1) {
