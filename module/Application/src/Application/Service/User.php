@@ -1117,7 +1117,7 @@ class User extends AbstractService
      * @param int|array $id            
      * @return array
      */
-    public function m_getList($search = null, $exclude = null, $filter = null)
+    public function m_getList($search = null, $exclude = null, $filter = null, $contact_state = null)
     {
         $identity = $this->getIdentity();
         if(null !== $exclude && !is_array($exclude)){
@@ -1127,7 +1127,7 @@ class User extends AbstractService
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
           
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, null, null, null, null, null, $search, null, null, false, null, $exclude, null, null);
+        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, null, null, null, null, null, null, $search, null, null, false, null, $exclude, null, $contact_state);
         
         $res = $res->toArray();
         $users = [];

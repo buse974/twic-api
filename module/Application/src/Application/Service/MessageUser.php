@@ -109,7 +109,7 @@ class MessageUser extends AbstractService
                 'mid' => (int)$message_id,
                 'from' => (int)$me,
                 'users' => $to,
-                'created_date' => (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601),
+                'created_date' => date('c'),
                 'type' => 2,
             ]);
             
