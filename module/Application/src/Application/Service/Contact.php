@@ -330,7 +330,7 @@ class Contact extends AbstractService
         }
         $res_contact = $this->getMapper()->getListRequest(null, $id);
         foreach($res_contact->toArray() as &$contact){
-            $contacts[$contact['user_id']][] = $contact['contact_id'];
+            $contacts[$contact['contact_id']][] = $contact['user_id'];
         }
 
         return $contacts;
@@ -359,7 +359,7 @@ class Contact extends AbstractService
         }
         $res_contact = $this->getMapper()->getListRequest($id);
         foreach($res_contact->toArray() as &$contact){
-            $contacts[$contact['contact_id']][] = $contact['user_id'];
+            $contacts[$contact['user_id']][] = $contact['contact_id'];
         }
 
         return $contacts;
