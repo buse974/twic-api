@@ -6,11 +6,26 @@ use Dal\Model\AbstractModel;
 
 class PostSubscription extends AbstractModel
 {
- 	protected $libelle;
+ 	protected $id;
+	protected $libelle;
 	protected $post_id;
 	protected $last_date;
+	protected $action;
+	protected $sub_post_id;
 
 	protected $prefix = 'post_subscription';
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function setId($id)
+	{
+		$this->id = $id;
+
+		return $this;
+	}
 
 	public function getLibelle()
 	{
@@ -44,6 +59,30 @@ class PostSubscription extends AbstractModel
 	public function setLastDate($last_date)
 	{
 		$this->last_date = $last_date;
+
+		return $this;
+	}
+
+	public function getAction()
+	{
+		return $this->action;
+	}
+
+	public function setAction($action)
+	{
+		$this->action = $action;
+
+		return $this;
+	}
+
+	public function getSubPostId()
+	{
+		return $this->sub_post_id;
+	}
+
+	public function setSubPostId($sub_post_id)
+	{
+		$this->sub_post_id = $sub_post_id;
 
 		return $this;
 	}

@@ -72,7 +72,7 @@ class MessageUser extends AbstractService
         $m_message = $this->getServiceMessage()->get($message_id);
         $message_text = (is_string($m_message->getText())) ? $m_message->getText() : "";
         
-        if($m_message->getType() == 2) {
+        if($m_message->getType() == 2 || $m_message->getType() == 3) {
 
             //////////////////// USER //////////////////////////////////
             $res_user = $this->getServiceUser()->getLite($to);
@@ -113,27 +113,29 @@ class MessageUser extends AbstractService
                 'type' => 2,
             ]);
             
-            ///////////////////////// FCM /////////////////////////////////
-            foreach ($to as $user) {
-                if($me != $user) {
-                    $gcm_notification = new GcmNotification();
-                    $tmp_ar_name = $ar_name;
-                    unset($tmp_ar_name[$user]);
-                    $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
-                        ->setSound("default")
-                        ->setColor("#00A38B")
-                        ->setTag("CONV".$conversation_id)
-                        ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text ));
-                    
-                    $this->getServiceFcm()->send($user, ['data' => [
-                            'type' => 'message',
-                            'data' => ['users' => $to,
-                                'from' => $me,
-                                'conversation' => $conversation_id,
-                                'text' => $message_text,
-                                'doc' => count($docs)
-                            ],
-                        ]], $gcm_notification);
+            if($m_message->getType() == 2) {
+                ///////////////////////// FCM /////////////////////////////////
+                foreach ($to as $user) {
+                    if($me != $user) {
+                        $gcm_notification = new GcmNotification();
+                        $tmp_ar_name = $ar_name;
+                        unset($tmp_ar_name[$user]);
+                        $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
+                            ->setSound("default")
+                            ->setColor("#00A38B")
+                            ->setTag("CONV".$conversation_id)
+                            ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text ));
+                        
+                        $this->getServiceFcm()->send($user, ['data' => [
+                                'type' => 'message',
+                                'data' => ['users' => $to,
+                                    'from' => $me,
+                                    'conversation' => $conversation_id,
+                                    'text' => $message_text,
+                                    'doc' => count($docs)
+                                ],
+                            ]], $gcm_notification);
+                    }
                 }
             }
         }
@@ -144,6 +146,7 @@ class MessageUser extends AbstractService
     
     public function sendMessage($data)
     {
+        $rep = false;
         $request = new Request();
         $request->setMethod('message.publish')
             ->setParams($data)

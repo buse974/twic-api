@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\PostSubscription as ModelPostSubscription;
 
 class PostLike extends AbstractService
 {
@@ -53,7 +54,7 @@ class PostLike extends AbstractService
                 'E'.$this->getUserLike($m_post_like),
             ];
             
-            $this->getServicePostSubscription()->add($sub_post, $post_id, $date);
+            $this->getServicePostSubscription()->add($sub_post, $post_id, $date, ModelPostSubscription::ACTION_LIKE);
             $this->getServiceEvent()->userLike($sub_event, $post_id);
         }
     

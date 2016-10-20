@@ -20,7 +20,6 @@ class Post extends AbstractMapper
         $is_liked = new Select('post_like');
         $is_liked->columns(['is_liked' => new Expression('COUNT(true)')])->where(['post_like.post_id=`post$id` AND post_like.is_like IS TRUE AND post_like.user_id=?' => $me_id]);
         
-        
         $columns = [
             'post$id' => new Expression('post.id'),
             'content',
@@ -43,7 +42,6 @@ class Post extends AbstractMapper
             'post$is_liked' => $is_liked,
             'post$nbr_likes' => $nbr_likes,
         ];
-        
         
         if($organization_id === null && $user_id === null && $course_id === null && $parent_id === null && $page_id === null)  {
             $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');

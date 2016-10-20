@@ -9,6 +9,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\PostSubscription as ModelPostSubscription;
 
 /**
  * Class PostSubscription
@@ -21,28 +22,26 @@ class PostSubscription extends AbstractService
      * @param string $libelle
      * @param int $post_id
      * @param string $last_date
-     * @return int
+     * @return bool
      */
-    public function add($libelle, $post_id, $last_date)
+    public function add($libelle, $post_id, $last_date, $action, $sub_post_id =null)
     {
         if(!is_array($libelle)) {
             $libelle = [$libelle];
         }
         
-        foreach ($libelle as $l) {
-            $m_post_subscription = $this->getModel()
-                ->setLibelle($l)
-                ->setPostId($post_id);
-            $res_post_subscription = $this->getMapper()->select($m_post_subscription);
-            if ($res_post_subscription->count() <= 0) {
-                $ret = $this->getMapper()->insert($m_post_subscription->setLastDate($last_date));
-            } else {
-                $ret =$this->getMapper()->update($this->getModel()->setLastDate($last_date),
-                    ['libelle' => $l, 'post_id' => $post_id]);
-            }
+        $m_post_subscription = $this->getModel()
+            ->setPostId($post_id)
+            ->setAction($action)
+            ->setSubPostId($sub_post_id)
+            ->setLastDate($last_date);
+        
+        foreach ($libelle as $l) { 
+            $m_post_subscription->setLibelle($l);
+            $this->getMapper()->insert($m_post_subscription);
         }
         
-        return $ret;
+        return true;
     }
     
     /**
@@ -66,11 +65,22 @@ class PostSubscription extends AbstractService
             if(substr($n,0,1) === '@') {
                 $tab = json_decode(str_replace("'", "\"", substr($n, 1)),true);
                 // remonte le post des abonner a la personne tagé
-                $this->add('U'.$tab[0].$tab[1], $id, $date);
+                $this->add('U'.$tab[0].$tab[1], $id, $date, ModelPostSubscription::ACTION_TAG);
             }
         }
     }
    
+    /**
+     * 
+     * @param int $post_id
+     */
+    public function getLast($post_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        
+        return $this->getMapper()->getLast($post_id, $user_id)->current();
+    }
+    
     /**
      * Get Service Post
      *

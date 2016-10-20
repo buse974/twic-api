@@ -11,6 +11,7 @@ namespace Application\Service;
 use Application\Model\Page as ModelPage;
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
+use Application\Model\PostSubscription as ModelPostSubscription;
 
 /**
  * Class Post
@@ -102,7 +103,7 @@ class Post extends AbstractService
                 $this->getServicePostSubscription()->add([
                     'P'.$this->getOwner($m_post), 
                     'P'.$this->getOwner($m_post_origin),
-                ], $origin_id, $date);
+                ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $id);
                 $this->getServiceEvent()->userPublication([
                     'E'.$this->getOwner($m_post),
                     'E'.$this->getOwner($m_post_origin),
@@ -111,7 +112,7 @@ class Post extends AbstractService
             $this->getServicePostSubscription()->add([
                 'P'.$this->getTarget($m_post), 
                 'P'.$this->getTarget($m_post_origin),
-            ], $origin_id, $date);
+            ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $id);
             $this->getServiceEvent()->userPublication([
                 'E'.$this->getTarget($m_post),
                 'E'.$this->getTarget($m_post_origin)
@@ -131,7 +132,7 @@ class Post extends AbstractService
             $pevent = $pevent + ['P'.$this->getTarget($m_post)];
             $eevent = $eevent + [ 'E'.$this->getTarget($m_post)];
             $this->getServiceEvent()->userPublication(array_unique($eevent), $id);
-            $this->getServicePostSubscription()->add(array_unique($pevent), $id, $date);
+            $this->getServicePostSubscription()->add(array_unique($pevent), $id, $date, ModelPostSubscription::ACTION_CREATE);
         }
         
         return $this->get($id);
@@ -179,14 +180,14 @@ class Post extends AbstractService
         $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
             
         $this->getServiceHashtag()->add($ar, $id);
-        $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
+        $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE, $id);
         $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
         /*
          * Subscription
          */
         $m_post = $this->getLite($id);
         $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
-        $this->getServicePostSubscription()->add($sub_post, $id, $date);
+        $this->getServicePostSubscription()->add($sub_post, $this->getTarget($m_post), $date, ModelPostSubscription::ACTION_UPDATE, $id);
         
         return $this->get($id);
     }
@@ -269,6 +270,7 @@ class Post extends AbstractService
             foreach ($res_posts as $m_post) {
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
                 $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
+                $m_post->setSubscription($this->getServicePostSubscription()->getLast($m_post->getId()));
             }            
         }
         

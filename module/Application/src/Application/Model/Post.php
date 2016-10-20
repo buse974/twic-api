@@ -13,8 +13,9 @@ class Post extends BasePost
     protected $is_liked;
     protected $nbr_likes;
     protected $user;
+    protected $subscription; 
     
-       public function exchangeArray(array &$data)
+    public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
             return;
@@ -25,6 +26,17 @@ class Post extends BasePost
         $this->user = $this->requireModel('app_model_user', $data);
     }
 
+    public function setSubscription($subscription)
+    {
+        $this->docs = $subscription;
+    
+        return $this;
+    }
+    
+    public function getSubscription()
+    {
+        return $this->subscription;
+    }
     
     public function setDocs($docs)
     {
