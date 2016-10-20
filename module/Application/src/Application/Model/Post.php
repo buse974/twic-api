@@ -28,7 +28,7 @@ class Post extends BasePost
 
     public function setSubscription($subscription)
     {
-        $this->docs = $subscription;
+        $this->subscription = $subscription;
     
         return $this;
     }
