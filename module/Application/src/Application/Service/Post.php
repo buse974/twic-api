@@ -103,7 +103,7 @@ class Post extends AbstractService
                 $this->getServicePostSubscription()->add([
                     'P'.$this->getOwner($m_post), 
                     'P'.$this->getOwner($m_post_origin),
-                ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $id);
+                ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $user_id, $id);
                 $this->getServiceEvent()->userPublication([
                     'E'.$this->getOwner($m_post),
                     'E'.$this->getOwner($m_post_origin),
@@ -112,7 +112,7 @@ class Post extends AbstractService
             $this->getServicePostSubscription()->add([
                 'P'.$this->getTarget($m_post), 
                 'P'.$this->getTarget($m_post_origin),
-            ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $id);
+            ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $user_id, $id);
             $this->getServiceEvent()->userPublication([
                 'E'.$this->getTarget($m_post),
                 'E'.$this->getTarget($m_post_origin)
@@ -132,7 +132,7 @@ class Post extends AbstractService
             $pevent = $pevent + ['P'.$this->getTarget($m_post)];
             $eevent = $eevent + [ 'E'.$this->getTarget($m_post)];
             $this->getServiceEvent()->userPublication(array_unique($eevent), $id);
-            $this->getServicePostSubscription()->add(array_unique($pevent), $id, $date, ModelPostSubscription::ACTION_CREATE);
+            $this->getServicePostSubscription()->add(array_unique($pevent), $id, $date, ModelPostSubscription::ACTION_CREATE, $user_id);
         }
         
         return $this->get($id);
@@ -157,6 +157,7 @@ class Post extends AbstractService
      */
     public function update($id, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, $link_desc = null, $lat = null, $lng = null, $docs =null)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         $m_post = $this->getModel()
             ->setContent($content)
@@ -177,17 +178,17 @@ class Post extends AbstractService
             return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
         });
         
-        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $user_id]);
             
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE, $id);
-        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
+        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $user_id]);
         /*
          * Subscription
          */
         $m_post = $this->getLite($id);
         $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
-        $this->getServicePostSubscription()->add($sub_post, $this->getTarget($m_post), $date, ModelPostSubscription::ACTION_UPDATE, $id);
+        $this->getServicePostSubscription()->add($sub_post, $m_post->getId(), $date, ModelPostSubscription::ACTION_UPDATE, $user_id, $id);
         
         return $this->get($id);
     }
@@ -243,12 +244,43 @@ class Post extends AbstractService
      */
     public function get($id) 
     {
+        $m_post = $this->_get($id);
+        $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
+        $m_post->setDocs($this->getServicePostDoc()->getList($id));
+        
+        return $m_post;
+    }
+    
+    /**
+     * Get Post
+     *
+     * @invokable
+     *
+     * @param int $id
+     * @return \Application\Model\Post
+     */
+    public function _get($id, $is_mobile = false)
+    {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
         $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
-        $m_post =  $this->getMapper()->get($me, $id, $is_sadmin)->current();
-        $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
+        
+        return  $this->getMapper()->get($me, $id, $is_sadmin, $is_mobile)->current();
+    }
+    
+    /**
+     * Get Post
+     *
+     * @invokable
+     *
+     * @param int $id
+     * @return \Application\Model\Post
+     */
+    public function m_get($id)
+    {
+        $m_post = $this->_get($id, true);
         $m_post->setDocs($this->getServicePostDoc()->getList($id));
+        $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
         
         return $m_post;
     }
@@ -257,6 +289,13 @@ class Post extends AbstractService
      * Get List Post
      * 
      * @invokable
+     * 
+     * @param array $filter
+     * @param int $user_id
+     * @param int $page_id
+     * @param int $organization_id
+     * @param int $course_id
+     * @param int $parent_id
      */
     public function getList($filter = null, $user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
     {
@@ -271,10 +310,36 @@ class Post extends AbstractService
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
                 $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
                 $m_post->setSubscription($this->getServicePostSubscription()->getLast($m_post->getId()));
-            }            
+            }
         }
         
         return (null !== $filter) ? 
+            ['count' => $mapper->count(), 'list' => $res_posts]:
+            $res_posts;
+    }
+    
+    /**
+     * Get List Post
+     *
+     * @invokable
+     *
+     * @param array $filter
+     * @param int $user_id
+     * @param int $page_id
+     * @param int $organization_id
+     * @param int $course_id
+     * @param int $parent_id
+     */
+    public function getListId($filter = null, $user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $mapper = (null !== $filter) ?
+            $this->getMapper()->usePaginator($filter) :
+            $this->getMapper();
+    
+        $res_posts = $mapper->getListId($me, $page_id, $organization_id, $user_id, $course_id, $parent_id);
+        
+        return (null !== $filter) ?
             ['count' => $mapper->count(), 'list' => $res_posts]:
             $res_posts;
     }

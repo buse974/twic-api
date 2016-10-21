@@ -8,7 +8,6 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
-use Zend\Db\Sql\Predicate\IsNotNull;
 use Application\Model\Role as ModelRole;
 
 /**
@@ -28,8 +27,8 @@ class Contact extends AbstractService
     public function add($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
-
-        if ($user == $identity['id']) {
+        $user_id = $identity['id'];
+        if ($user == $user_id) {
             throw new \Exception('error user equal myself');
         }
 
@@ -75,6 +74,31 @@ class Contact extends AbstractService
 
         $this->getServiceEvent()->userRequestconnection($user);
 
+        
+        $m_user = $this->getServiceUser()->getLite($user_id);
+        $name = "";
+        if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+            $name = $m_user->getNickname();
+        } else {
+            if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                $name = $m_user->getFirstname();
+            }
+            if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                $name .= ' '.$m_user->getLastname();
+            }
+        }
+        
+        $gcm_notification->setTitle($name)
+            ->setSound("default")
+            ->setColor("#00A38B")
+            ->setBody('Sent you a connection request');
+        
+        $this->getServiceFcm()->send($user, ['data' => [
+            'state' => 'request',
+            'user' => $user_id,
+            ]
+        ], $gcm_notification);
+        
         return $ret;
     }
 
@@ -90,6 +114,7 @@ class Contact extends AbstractService
     public function accept($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
+        $user_id = $identity['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         $m_contact = $this->getModel()
@@ -97,25 +122,47 @@ class Contact extends AbstractService
             ->setAccepted(false);
         $this->getMapper()->update($m_contact, array(
             'user_id' => $user,
-            'contact_id' => $identity['id'],
+            'contact_id' => $user_id,
         ));
 
         $m_contact = $this->getModel()
             ->setAcceptedDate($date)
             ->setAccepted(true);
         $this->getMapper()->update($m_contact, array(
-            'user_id' => $identity['id'],
+            'user_id' => $user_id,
             'contact_id' => $user,
         ));
 
-        $this->getServiceSubscription()->add('PU'.$user, $identity['id']);
-        $this->getServiceSubscription()->add('EU'.$user, $identity['id']);
-        
-        $this->getServiceSubscription()->add('PU'.$identity['id'], $user);
-        $this->getServiceSubscription()->add('EU'.$identity['id'], $user);
-        
-        $this->getServiceEvent()->userAddConnection($identity['id'], $user);
+        $this->getServiceSubscription()->add('PU'.$user, $user_id);
+        $this->getServiceSubscription()->add('EU'.$user, $user_id);
+        $this->getServiceSubscription()->add('PU'.$user_id, $user);
+        $this->getServiceSubscription()->add('EU'.$user_id, $user);
+        $this->getServiceEvent()->userAddConnection($user_id, $user);
 
+        $m_user = $this->getServiceUser()->getLite($user_id);
+        $name = "";
+        if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+            $name = $m_user->getNickname();
+        } else {
+            if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                $name = $m_user->getFirstname();
+            }
+            if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                $name .= ' '.$m_user->getLastname();
+            }
+        }
+        
+        $gcm_notification->setTitle($name)
+            ->setSound("default")
+            ->setColor("#00A38B")
+            ->setBody('Accepted your request');
+        
+        $this->getServiceFcm()->send($user, ['data' => [
+            'state' => 'accept',
+            'user' => $user_id,
+        ]
+        ], $gcm_notification);
+        
         return true;
     }
 
@@ -131,6 +178,7 @@ class Contact extends AbstractService
     public function remove($user)
     {
         $identity = $this->getServiceUser()->getIdentity();
+        $user_id = $identity['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
         $m_contact = $this->getModel()
@@ -138,25 +186,32 @@ class Contact extends AbstractService
             ->setDeleted(false);
         $this->getMapper()->update($m_contact, array(
             'user_id' => $user,
-            'contact_id' => $identity['id'],
+            'contact_id' => $user_id,
         ));
 
         $m_contact = $this->getModel()
             ->setDeletedDate($date)
             ->setDeleted(true);
         $this->getMapper()->update($m_contact, array(
-            'user_id' => $identity['id'],
+            'user_id' => $user_id,
             'contact_id' => $user,
         ));
 
-        $this->getServiceSubscription()->delete('PU'.$user, $identity['id']);
-        $this->getServiceSubscription()->delete('EU'.$user, $identity['id']);
+        $this->getServiceSubscription()->delete('PU'.$user, $user_id);
+        $this->getServiceSubscription()->delete('EU'.$user, $user_id);
         
-        $this->getServiceSubscription()->delete('PU'.$identity['id'], $user);
-        $this->getServiceSubscription()->delete('EU'.$identity['id'], $user);
+        $this->getServiceSubscription()->delete('PU'.$user_id, $user);
+        $this->getServiceSubscription()->delete('EU'.$user_id, $user);
         
-        $this->getServiceEvent()->userDeleteConnection($identity['id'], $user);
+        $this->getServiceEvent()->userDeleteConnection($user_id, $user);
 
+        $this->getServiceFcm()->send($user, [
+            'data' => [
+                'state' => 'remove',
+                'user' => $user_id,
+            ]
+        ]);
+        
         return true;
     }
 

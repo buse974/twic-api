@@ -22,9 +22,12 @@ class PostSubscription extends AbstractService
      * @param string $libelle
      * @param int $post_id
      * @param string $last_date
+     * @param string $action
+     * @param int $user_id
+     * @param int $sub_post_id
      * @return bool
      */
-    public function add($libelle, $post_id, $last_date, $action, $sub_post_id =null)
+    public function add($libelle, $post_id, $last_date, $action, $user_id, $sub_post_id =null)
     {
         if(!is_array($libelle)) {
             $libelle = [$libelle];
@@ -33,6 +36,7 @@ class PostSubscription extends AbstractService
         $m_post_subscription = $this->getModel()
             ->setPostId($post_id)
             ->setAction($action)
+            ->setUserId($user_id)
             ->setSubPostId($sub_post_id)
             ->setLastDate($last_date);
         
@@ -45,7 +49,6 @@ class PostSubscription extends AbstractService
     }
     
     /**
-     * 
      * @param string $libelle
      * @param int $post_id
      * @return int
@@ -61,11 +64,12 @@ class PostSubscription extends AbstractService
     
     public function addHashtag($ar, $id, $date)
     {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         foreach ($ar as $n) {
             if(substr($n,0,1) === '@') {
                 $tab = json_decode(str_replace("'", "\"", substr($n, 1)),true);
                 // remonte le post des abonner a la personne tagé
-                $this->add('U'.$tab[0].$tab[1], $id, $date, ModelPostSubscription::ACTION_TAG);
+                $this->add('U'.$tab[0].$tab[1], $id, $date, ModelPostSubscription::ACTION_TAG, $user_id);
             }
         }
     }
@@ -79,6 +83,17 @@ class PostSubscription extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         
         return $this->getMapper()->getLast($post_id, $user_id)->current();
+    }
+    
+    /**
+     *
+     * @param int $post_id
+     */
+    public function getLastLite($post_id)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+    
+        return $this->getMapper()->getLastLite($post_id, $user_id)->current();
     }
     
     /**
