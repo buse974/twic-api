@@ -92,7 +92,8 @@ class Course extends AbstractService
      * @param string $video_token            
      * @return int
      */
-    public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null)
+    public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, 
+        $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = false)
     {
         $m_course = $this->getModel()
             ->setId($id)
@@ -108,6 +109,7 @@ class Course extends AbstractService
             ->setLearningOutcomes($learning_outcomes)
             ->setVideoLink($video_link)
             ->setVideoToken($video_token)
+            ->setIsPublished($is_published)
             ->setUpdatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
         $ret = $this->getMapper()->update($m_course);
@@ -229,7 +231,7 @@ class Course extends AbstractService
             $identity = $this->getServiceUser()->_get($user);
         }
         
-        // @todo Faire du propre dans les roles une fois que les relations seront ok
+        //@todo Faire du propre dans les roles une fois que les relations seront ok
         $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
         
         $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school, $exclude, $is_admin_academic, $self);
