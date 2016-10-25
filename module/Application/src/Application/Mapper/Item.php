@@ -91,9 +91,9 @@ class Item extends AbstractMapper
             $select->where(array('item.course_id' => $course_id));
         }
         if (null === $start && null === $end) {
-            if ($parent_id === 0 || $parent_id === null) {
+            if ($parent_id === 0) {
                 $select->where(array('item.parent_id IS NULL'));
-            } else {
+            } else if(null !== $parent_id) {
                 $select->where(array('item.parent_id' => $parent_id));
             }
         }
