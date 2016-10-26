@@ -161,8 +161,8 @@ class Course extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
         
         $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
-        
-        $res_couse = $this->getMapper()->get($id, $identity['id'], $is_admin_academic);
+        $is_student = in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles']);
+        $res_couse = $this->getMapper()->get($id, $identity['id'], $is_admin_academic, $is_student);
         
         if ($res_couse->count() == 0) {
             throw new \Exception('no course with id: ' . $id);
@@ -233,8 +233,9 @@ class Course extends AbstractService
         
         //@todo Faire du propre dans les roles une fois que les relations seront ok
         $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
-        
-        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school, $exclude, $is_admin_academic, $self);
+        $is_student = in_array(ModelRole::ROLE_STUDENT_STR, $identity['roles']);
+       
+        $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school, $exclude, $is_admin_academic, $self, $is_student);
         
         foreach ($res_course as $m_course) {
             $m_course->setStudent($this->getServiceUser()
