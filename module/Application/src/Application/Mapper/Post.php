@@ -153,9 +153,11 @@ class Post extends AbstractMapper
         
         if (!$for_mobile) {
             $select->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'])
-                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])->where(['post.id' => $id]);
+                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo']);   
         }
-        $select->order([ 'post.id' => 'DESC']);
+        $select->where(['post.id' => $id])
+            ->order([ 'post.id' => 'DESC']);
+        
         if(!$is_sadmin){
             $select->where(['post.deleted_date IS NULL']);
         }
