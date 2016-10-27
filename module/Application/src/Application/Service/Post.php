@@ -248,7 +248,7 @@ class Post extends AbstractService
         
         foreach ($res_post as $m_post) {
             $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
-            $m_post->setDocs($this->getServicePostDoc()->getList($id));
+            $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
         }
         
         return (is_array($id) ? $res_post: $res_post->current());;
@@ -284,11 +284,11 @@ class Post extends AbstractService
         $res_post = $this->_get($id, true);
         
         foreach ($res_post as $m_post) {
-            $m_post->setDocs($this->getServicePostDoc()->getList($id));
+            $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
             $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
         }
         
-        return (is_array($id) ? $res_post: $res_post->current());
+        return (is_array($id) ? $res_post->toArray(['id']): $res_post->current());
     }
     
     /**
