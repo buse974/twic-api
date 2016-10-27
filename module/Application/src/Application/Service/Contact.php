@@ -157,10 +157,11 @@ class Contact extends AbstractService
             ->setColor("#00A38B")
             ->setBody('Accepted your request');
         
-        $this->getServiceFcm()->send($user, ['data' => [
-            'state' => 'accept',
-            'user' => $user_id,
-        ]
+        $this->getServiceFcm()->send($user, [
+            'data' => [
+                'state' => 'accept',
+                'user' => $user_id,
+            ]
         ], $gcm_notification);
         
         return true;

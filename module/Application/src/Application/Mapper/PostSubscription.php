@@ -15,7 +15,7 @@ class PostSubscription extends AbstractMapper
             ->join('post' , 'post.id=post_subscription.sub_post_id', ['id', 'content', 'organization_id', 'page_id'], $select::JOIN_LEFT)
             ->where(['subscription.user_id' => $user_id])
             ->where(['post_subscription.post_id' => $post_id])
-            ->order(['post_subscription.last_date' => 'DESC'])
+            ->order(['post_subscription.id' => 'id'])
             ->limit(1);
         
         return $this->selectWith($select);
@@ -29,7 +29,7 @@ class PostSubscription extends AbstractMapper
             ->join('post' , 'post.id=post_subscription.sub_post_id', ['id', 'content', 'organization_id', 'page_id'], $select::JOIN_LEFT)
             ->where(['subscription.user_id' => $user_id])
             ->where(['post_subscription.post_id' => $post_id])
-            ->order(['post_subscription.last_date' => 'DESC'])
+            ->order(['post_subscription.id' => 'id'])
             ->limit(1);
     
         return $this->selectWith($select);
