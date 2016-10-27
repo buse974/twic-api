@@ -450,4 +450,14 @@ class Contact extends AbstractService
     {
         return $this->container->get('app_service_user');
     }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
+    }
 }
