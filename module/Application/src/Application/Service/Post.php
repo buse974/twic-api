@@ -12,6 +12,7 @@ use Application\Model\Page as ModelPage;
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 use Application\Model\PostSubscription as ModelPostSubscription;
+use Dal\Db\ResultSet\ResultSet;
 
 /**
  * Class Post
@@ -245,13 +246,13 @@ class Post extends AbstractService
     public function get($id) 
     {
         $res_post = $this->_get($id);
-        
         foreach ($res_post as $m_post) {
             $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
         }
         
-        return ((is_array($id)) ? $res_post: $res_post->current());
+        $res_post->rewind();
+        return ((is_array($id)) ? $res_post : $res_post->current());
     }
     
     /**
@@ -260,7 +261,7 @@ class Post extends AbstractService
      * @invokable
      *
      * @param int $id
-     * @return \Application\Model\Post
+     * @return ResultSet
      */
     public function _get($id, $is_mobile = false)
     {
