@@ -251,7 +251,7 @@ class Post extends AbstractService
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
         }
         
-        return (is_array($id) ? $res_post: $res_post->current());;
+        return ((is_array($id)) ? $res_post: $res_post->current());
     }
     
     /**
