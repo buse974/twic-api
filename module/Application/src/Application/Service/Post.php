@@ -382,7 +382,7 @@ class Post extends AbstractService
      */
     public function unlike($id) 
     {
-        $this->getServicePostLike()->delete($id);
+        return $this->getServicePostLike()->delete($id);
     }
     
     public function getOwner($m_post)
