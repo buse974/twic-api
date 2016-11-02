@@ -74,7 +74,7 @@ class Post extends AbstractMapper
         
         $select->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'])
                 ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'])
-                ->where(['post.deleted_date IS NULL']);
+                ->where(['post.deleted_date IS NULL'])->order(['post.id' => 'DESC']);
         return $this->selectWith($select);
     }
     
