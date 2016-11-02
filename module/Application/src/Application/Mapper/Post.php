@@ -112,7 +112,7 @@ class Post extends AbstractMapper
             }
         }
     
-        $select->where(['post.deleted_date IS NULL']);
+        $select->where(['post.deleted_date IS NULL'])->order(['post.id' => 'DESC']);
         
         return $this->selectWith($select);
     }
