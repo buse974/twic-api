@@ -75,7 +75,6 @@ class Contact extends AbstractService
 
         $this->getServiceEvent()->userRequestconnection($user);
 
-        
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
         if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
@@ -89,6 +88,7 @@ class Contact extends AbstractService
             }
         }
         
+        $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
             ->setColor("#00A38B")
