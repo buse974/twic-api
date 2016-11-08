@@ -12,6 +12,7 @@ use Application\Model\Page as ModelPage;
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 use Application\Model\PostSubscription as ModelPostSubscription;
+use Dal\Db\ResultSet\ResultSet;
 
 /**
  * Class Post
@@ -244,11 +245,14 @@ class Post extends AbstractService
      */
     public function get($id) 
     {
-        $m_post = $this->_get($id);
-        $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
-        $m_post->setDocs($this->getServicePostDoc()->getList($id));
+        $res_post = $this->_get($id);
+        foreach ($res_post as $m_post) {
+            $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
+            $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
+        }
         
-        return $m_post;
+        $res_post->rewind();
+        return ((is_array($id)) ? $res_post : $res_post->current());
     }
     
     /**
@@ -257,7 +261,7 @@ class Post extends AbstractService
      * @invokable
      *
      * @param int $id
-     * @return \Application\Model\Post
+     * @return ResultSet
      */
     public function _get($id, $is_mobile = false)
     {
@@ -265,7 +269,7 @@ class Post extends AbstractService
         $me = $identity['id'];
         $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
         
-        return  $this->getMapper()->get($me, $id, $is_sadmin, $is_mobile)->current();
+        return  $this->getMapper()->get($me, $id, $is_sadmin, $is_mobile);
     }
     
     /**
@@ -278,11 +282,14 @@ class Post extends AbstractService
      */
     public function m_get($id)
     {
-        $m_post = $this->_get($id, true);
-        $m_post->setDocs($this->getServicePostDoc()->getList($id));
-        $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
+        $res_post = $this->_get($id, true);
         
-        return $m_post;
+        foreach ($res_post as $m_post) {
+            $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
+            $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
+        }
+        
+        return (is_array($id) ? $res_post->toArray(['id']): $res_post->current());
     }
     
     /**
@@ -376,7 +383,7 @@ class Post extends AbstractService
      */
     public function unlike($id) 
     {
-        $this->getServicePostLike()->delete($id);
+        return $this->getServicePostLike()->delete($id);
     }
     
     public function getOwner($m_post)

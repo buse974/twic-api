@@ -9,6 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Role as ModelRole;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class Contact.
@@ -74,7 +75,6 @@ class Contact extends AbstractService
 
         $this->getServiceEvent()->userRequestconnection($user);
 
-        
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
         if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
@@ -88,6 +88,7 @@ class Contact extends AbstractService
             }
         }
         
+        $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
             ->setColor("#00A38B")
@@ -157,6 +158,7 @@ class Contact extends AbstractService
             }
         }
         
+        $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
             ->setColor("#00A38B")
@@ -434,7 +436,7 @@ class Contact extends AbstractService
     
 
     /**
-     * Get Service Event.
+     * Get Service Event
      * 
      * @return \Application\Service\Event
      */
@@ -462,4 +464,26 @@ class Contact extends AbstractService
     {
         return $this->container->get('app_service_user');
     }
+    
+    /**
+     * Get Service Service Conversation User
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
+    }
+    
+    /**
+     * Get Service Post
+     *
+     * @return \Application\Service\Post
+     */
+    private function getServicePost()
+    {
+        return $this->container->get('app_service_post');
+    }
+    
+    
 }
