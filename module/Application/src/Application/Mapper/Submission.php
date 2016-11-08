@@ -129,7 +129,6 @@ class Submission extends AbstractMapper
         if (null !== $item_id) {
             $select->where(array('submission.item_id' => $item_id));
         }
-
         return $this->selectWith($select);
     }
 
