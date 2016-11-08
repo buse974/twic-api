@@ -93,9 +93,14 @@ class Contact extends AbstractService
             ->setColor("#00A38B")
             ->setBody('Sent you a connection request');
         
-        $this->getServiceFcm()->send($user, ['data' => [
-            'state' => 'request',
-            'user' => $user_id,
+        $this->getServiceFcm()->send($user, 
+        ['data' => [
+            'type' => 'connection',
+            'data' => 
+                [
+                'state' => 'request',
+                'user' => $user_id,
+                ]
             ]
         ], $gcm_notification);
         
@@ -157,10 +162,14 @@ class Contact extends AbstractService
             ->setColor("#00A38B")
             ->setBody('Accepted your request');
         
-        $this->getServiceFcm()->send($user, ['data' => [
-            'state' => 'accept',
-            'user' => $user_id,
-        ]
+        $this->getServiceFcm()->send($user,  ['data' => [
+            'type' => 'connection',
+            'data' => 
+                [
+                'state' => 'accept',
+                'user' => $user_id,
+                ]
+            ]
         ], $gcm_notification);
         
         return true;
@@ -205,10 +214,13 @@ class Contact extends AbstractService
         
         $this->getServiceEvent()->userDeleteConnection($user_id, $user);
 
-        $this->getServiceFcm()->send($user, [
-            'data' => [
+        $this->getServiceFcm()->send($user,  ['data' => [
+            'type' => 'connection',
+            'data' => 
+                [
                 'state' => 'remove',
                 'user' => $user_id,
+                ]
             ]
         ]);
         
