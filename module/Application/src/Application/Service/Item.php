@@ -466,7 +466,7 @@ class Item extends AbstractService
         
         
         $res_item = $this->getMapper()->getList($user_id, $course, $parent_id, $start, $end, $type, $is_admin_academic);
-        $ar_item = (null !== $start || null !== $end) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
+        $ar_item = (null !== $start || null !== $end || null === $parent_id) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
         
         foreach ($ar_item as $k => &$item) {
             $item['done'] = $this->getServiceCtDone()
