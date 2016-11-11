@@ -170,14 +170,13 @@ class Contact extends AbstractService
             ->setColor("#00A38B")
             ->setBody('Accepted your request');
         
-        $this->getServiceFcm()->send($user, [
+        $this->getServiceFcm()->send($user,  ['data' => [
+            'type' => 'connection',
             'data' => [
-                'type' => 'connection',
-                'data' => [
-                    'state' => 'accept',
-                    'user' => $user_id,
-                ],
-            ],
+                'state' => 'accept',
+                'user' => $user_id,
+                ]
+            ]
         ], $gcm_notification);
         
         $l = 'C'.(($user > $user_id) ? $user_id:$user);
@@ -227,11 +226,13 @@ class Contact extends AbstractService
         $this->getServiceSubscription()->delete('EU'.$user_id, $user);
         
         $this->getServiceEvent()->userDeleteConnection($user_id, $user);
-        $this->getServiceFcm()->send($user, [
+        $this->getServiceFcm()->send($user,  ['data' => [
+            'type' => 'connection',
             'data' => [
                 'state' => 'remove',
                 'user' => $user_id,
-            ],'type' => 'connection'
+                ]
+            ]
         ]);
         
         return true;

@@ -16,7 +16,7 @@ class Program extends AbstractMapper
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','name','level','sis','year'))->where(array('program.id' => $id));
+        $select->columns(array('id','name','level','sis','year', 'school_id'))->where(array('program.id' => $id));
         
         return $this->selectWith($select);
     }
