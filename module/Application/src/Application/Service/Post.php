@@ -101,14 +101,15 @@ class Post extends AbstractService
         }
         $id = $this->getMapper()->getLastInsertValue();
         
-        $base_id = ($origin_id) ? $origin_id:$id;
-        $m_post_base = $this->getLite($origin_id);
-        $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
-
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
         
+        
+        $base_id = ($origin_id) ? $origin_id:$id;
+        $m_post_base = $this->getLite($origin_id);
+        $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+
         // si c pas une notification on gére les hastags
         if(!$is_notif) {
             $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
@@ -180,7 +181,8 @@ class Post extends AbstractService
             $sub = [$sub];
         }
 
-        return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, $data, $event, $uid, $sub);
+        return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, 
+            $data, $event, $uid, $sub);
     }
     
     /**
@@ -196,13 +198,13 @@ class Post extends AbstractService
      * @param int $t_user_id
      * @param int $t_course_id
      */
-    public function updateSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,$t_user_id = null,$t_course_id = null)
+    public function updateSys($uid, $content, $data, $event, $sub = null)
     {
         if(!is_array($sub)) {
             $sub = [$sub];
         }
     
-        //return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, $data, $event, $uid, $sub);
+        return $this->update(null, $content, null,null, null, null, null, null, null, null, $data, $event, $uid, $sub); 
     }
     
     /**
@@ -222,46 +224,22 @@ class Post extends AbstractService
      * @param arrray $docs
      * @return int
      */
-    public function update($id, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, $link_desc = null, $lat = null, $lng = null, $docs =null)
+    public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, 
+        $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $this->_update($id, $content, $link, $picture, $name_picture, $link_title, $link_desc, $lat, $lng, $docs);
-
-        $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
-            return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
-        });
         
-        $this->getServiceHashtag()->add($ar, $id);
-        $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE, $id);
-        $m_post = $this->get($id);
-        $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
-        $this->getServicePostSubscription()->add($sub_post, $m_post->getId(), $date, ModelPostSubscription::ACTION_UPDATE, $user_id);
-    
-        return $m_post;
-    }
-
-    /**
-     * Update Post
-     *
-     * @invokable
-     *
-     * @param int $id
-     * @param string $content
-     * @param string $link
-     * @param string $picture
-     * @param string $name_picture
-     * @param string $link_title
-     * @param string $link_desc
-     * @param int $lat
-     * @param int $lng
-     * @param arrray $docs
-     * @return int
-     */
-    public function _update($id, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, $link_desc = null, $lat = null, $lng = null, $docs =null)
-    {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+
+        
+        $m_post_base = ($uid !== null && $id === null) ? $this->getLite(null, $uid) : $this->getLite($id);
+        $id = $m_post_base->getId();
+        
+        $w = ($uid !== null) ?  ['id' => $id, 'user_id' => $user_id] : ['uid' => $uid];
+        
+        $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
+        $event = (is_string($event) && !empty($event)) ? $event:false;
+        $is_notif = ($uid && $event);
         $m_post = $this->getModel()
             ->setContent($content)
             ->setLink(($link==='')?new IsNull():$link)
@@ -272,12 +250,53 @@ class Post extends AbstractService
             ->setLat($lat)
             ->setLng($lng)
             ->setUpdatedDate($date);
-    
+        
         if(null !== $docs) {
             $this->getServicePostDoc()->replace($id, $docs);
         }
         
-        return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $user_id]);
+        $this->getMapper()->update($m_post, $w);
+        $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+
+        // si c pas une notification on gére les hastags
+        if(!$is_notif) {
+            $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+            });
+        
+            $this->getServiceHashtag()->add($ar, $id);
+            $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE);
+        }
+        
+        $pevent = [];
+        // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
+        $et = $this->getTarget($m_post_base);
+        if(false !== $et) {
+            $pevent = $pevent + ['P'.$et];
+        }
+        
+        // if ce n'est pas un page privée
+        if(!$is_private_page &&  !$is_notif) {
+            $pevent = $pevent + ['P'.$this->getOwner($m_post_base)];
+        }
+        
+        if(!empty($sub)) {
+            $pevent = $pevent + $sub;
+        }
+        
+        $this->getServicePostSubscription()->add(
+            array_unique($pevent),
+            $id,
+            $date,
+            (!empty($event)? $event:ModelPostSubscription::ACTION_UPDATE ),
+            $user_id,
+            null,
+            $data);
+        
+        //$m_post = $this->get($id);
+        //$sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+
+        return $m_post;
     }
     
     /**
@@ -441,11 +460,12 @@ class Post extends AbstractService
      * Get Post Lite
      * 
      * @param int $id
+     * @param int $uid
      * @return \Application\Model\Post
      */
-    public function getLite($id)
+    public function getLite($id = null, $uid = null)
     {
-        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+        return $this->getMapper()->select($this->getModel()->setId($id)->setUid($uid))->current();
     }
     
     /**
