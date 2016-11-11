@@ -186,17 +186,12 @@ class Post extends AbstractService
     }
     
     /**
-     *
      * @param string $uid
      * @param string $content
      * @param string $data
      * @param string $event
-     * @param string $sub
-     * @param int $parent_id
-     * @param int $t_page_id
-     * @param int $t_organization_id
-     * @param int $t_user_id
-     * @param int $t_course_id
+     * @param array $sub
+     * @return int
      */
     public function updateSys($uid, $content, $data, $event, $sub = null)
     {
@@ -222,6 +217,10 @@ class Post extends AbstractService
      * @param int $lat
      * @param int $lng
      * @param arrray $docs
+     * @param string $data
+     * @param string $event
+     * @param int $uid
+     * @param array $sub
      * @return int
      */
     public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, 
