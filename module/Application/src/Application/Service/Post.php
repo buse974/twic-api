@@ -50,7 +50,7 @@ class Post extends AbstractService
      * 
      * @return \Application\Model\Post
      */
-    public function add($content, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  
+    public function add($content = null, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  
         $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, 
         $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null)
     {
