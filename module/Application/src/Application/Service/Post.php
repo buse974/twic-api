@@ -74,10 +74,6 @@ class Post extends AbstractService
             $t_user_id = $user_id;
         }
         
-        if(!empty($data) && !is_string($data)) {
-            $data = json_encode($data);
-        }
-        
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post = $this->getModel()
             ->setContent($content)
@@ -98,8 +94,6 @@ class Post extends AbstractService
             ->setTOrganizationId($t_organization_id)
             ->setTUserId($t_user_id)
             ->setTCourseId($t_course_id)
-            ->setData($data)
-            ->setEvent($event)
             ->setUid($uid);
         
         if($this->getMapper()->insert($m_post) <= 0) {
@@ -159,10 +153,10 @@ class Post extends AbstractService
             array_unique($pevent), 
             $base_id, 
             $date,
-            (($base_id!==$id) ? ModelPostSubscription::ACTION_COM : ModelPostSubscription ::ACTION_CREATE), 
+            ((!empty($event))? $event:(($base_id!==$id) ? ModelPostSubscription::ACTION_COM : ModelPostSubscription ::ACTION_CREATE)), 
             $user_id, 
-            (($base_id!==$id) ? $id:null) 
-        );
+            (($base_id!==$id) ? $id:null), 
+            $data);
         
         return $this->get($id);
     }
@@ -187,6 +181,28 @@ class Post extends AbstractService
         }
 
         return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, $data, $event, $uid, $sub);
+    }
+    
+    /**
+     *
+     * @param string $uid
+     * @param string $content
+     * @param string $data
+     * @param string $event
+     * @param string $sub
+     * @param int $parent_id
+     * @param int $t_page_id
+     * @param int $t_organization_id
+     * @param int $t_user_id
+     * @param int $t_course_id
+     */
+    public function updateSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,$t_user_id = null,$t_course_id = null)
+    {
+        if(!is_array($sub)) {
+            $sub = [$sub];
+        }
+    
+        //return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, $data, $event, $uid, $sub);
     }
     
     /**
@@ -224,11 +240,7 @@ class Post extends AbstractService
     
         return $m_post;
     }
-    
-    public function updateSys($uid, $content, $data, $event, $sub) 
-    {
-        
-    }
+
     /**
      * Update Post
      *

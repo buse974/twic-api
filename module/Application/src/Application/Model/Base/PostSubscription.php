@@ -13,6 +13,7 @@ class PostSubscription extends AbstractModel
 	protected $action;
 	protected $sub_post_id;
 	protected $user_id;
+	protected $data;
 
 	protected $prefix = 'post_subscription';
 
@@ -96,6 +97,18 @@ class PostSubscription extends AbstractModel
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
+
+		return $this;
+	}
+
+	public function getData()
+	{
+		return $this->data;
+	}
+
+	public function setData($data)
+	{
+		$this->data = $data;
 
 		return $this;
 	}

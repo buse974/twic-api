@@ -25,12 +25,17 @@ class PostSubscription extends AbstractService
      * @param string $action
      * @param int $user_id
      * @param int $sub_post_id
+     * @param mixed $data
      * @return bool
      */
-    public function add($libelle, $post_id, $last_date, $action, $user_id, $sub_post_id =null)
+    public function add($libelle, $post_id, $last_date, $action, $user_id, $sub_post_id =null, $data = null)
     {
         if(!is_array($libelle)) {
             $libelle = [$libelle];
+        }
+        
+        if(!empty($data) && !is_string($data)) {
+            $data = json_encode($data);
         }
         
         $m_post_subscription = $this->getModel()
@@ -38,6 +43,7 @@ class PostSubscription extends AbstractService
             ->setAction($action)
             ->setUserId($user_id)
             ->setSubPostId($sub_post_id)
+            ->setData($data)
             ->setLastDate($last_date);
         
         foreach ($libelle as $l) { 
