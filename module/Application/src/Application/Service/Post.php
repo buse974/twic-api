@@ -107,7 +107,7 @@ class Post extends AbstractService
         
         
         $base_id = ($origin_id) ? $origin_id:$id;
-        $m_post_base = $this->getLite($origin_id);
+        $m_post_base = $this->getLite($base_id);
         $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
 
         // si c pas une notification on gére les hastags
@@ -120,7 +120,6 @@ class Post extends AbstractService
             $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
         }
             
-        
         $pevent = [];
         // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
         $et = $this->getTarget($m_post_base);
@@ -143,7 +142,6 @@ class Post extends AbstractService
             if($is_notif && null === $sub && $et === false) {
                 $sub = $this->getServicePostSubscription()->getListLibelle($origin_id);
             }
-            // SI ON A FOURNIE DES SUB
         }
         
         if(!empty($sub)) {

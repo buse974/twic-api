@@ -74,7 +74,6 @@ class Contact extends AbstractService
         }
 
         $this->getServiceEvent()->userRequestconnection($user);
-
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
         if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
@@ -105,12 +104,12 @@ class Contact extends AbstractService
             
         ], $gcm_notification);
 
-        $l = 'C'.(($user > $user_id) ? $user_id:$user);
+        /*$l = 'C'.(($user > $user_id) ? $user_id:$user);
         $this->getServicePost()->addSys($l, 'Sent you a connection request', [
                     'state' => 'request',
                     'user' => $user_id,
                 ], 'user.requestConnection', ['M'.$user_id, 'M'.$user]);
-        
+        */
         return $ret;
     }
 
@@ -179,12 +178,12 @@ class Contact extends AbstractService
             ]
         ], $gcm_notification);
         
-        $l = 'C'.(($user > $user_id) ? $user_id:$user);
+        /*$l = 'C'.(($user > $user_id) ? $user_id:$user);
         $this->getServicePost()->updateSys($l, 'Accepted your request', [
                     'state' => 'accept',
                     'user' => $user_id,
                 ], 'user.acceptConnection', ['M'.$user_id, 'M'.$user]);
-        
+        */
         return true;
     }
 
@@ -368,8 +367,7 @@ class Contact extends AbstractService
     {
         if(!is_array($id)){
             $users = [$id];
-        }
-        else{
+        } else {
             $users = $id;
         }
         $contacts = [];
