@@ -510,7 +510,7 @@ class Conversation extends AbstractService
         $res_conversation = $this->getMapper()->getListBySubmission($submission_id, $user_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
-            $ret[] = $this->get($m_conversation->getId()) + $m_conversation->toArray();
+            $ret[] = array_merge($this->get($m_conversation->getId()), $m_conversation->toArray());
         }
         
         return $ret;
@@ -529,7 +529,7 @@ class Conversation extends AbstractService
         $res_conversation = $this->getMapper()->getListByItem($item_id, $submission_id);
         $ret = [];
         foreach ($res_conversation as $m_conversation) {
-            $ret[] = $this->get($m_conversation->getId()) + $m_conversation->toArray();
+            $ret[] = array_merge($this->get($m_conversation->getId()), $m_conversation->toArray());
         }
         
         return $ret;

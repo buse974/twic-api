@@ -93,7 +93,7 @@ class Course extends AbstractService
      * @return int
      */
     public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, 
-        $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = false)
+        $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = null)
     {
         $m_course = $this->getModel()
             ->setId($id)

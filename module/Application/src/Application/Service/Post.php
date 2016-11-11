@@ -104,7 +104,6 @@ class Post extends AbstractService
             $this->getServicePostDoc()->_add($id, $docs);
         }
         
-        
         $base_id = ($origin_id) ? $origin_id:$id;
         $m_post_base = $this->getLite($base_id);
         $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
@@ -123,19 +122,19 @@ class Post extends AbstractService
         // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
         $et = $this->getTarget($m_post_base);
         if(false !== $et) {
-            $pevent = $pevent + ['P'.$et];
+            $pevent = array_merge($pevent, ['P'.$et]);
         }
         
         // if ce n'est pas un page privée
         if(!$is_private_page &&  !$is_notif) {
-            $pevent = $pevent + ['P'.$this->getOwner($m_post_base)];
+            $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
         }
         
         if($parent_id && $origin_id) {
             // SI N'EST PAS PRIVATE ET QUE CE N'EST PAS UNE NOTIF -> ON NOTIFIE LES AMIES DES OWNER
             $m_post = $this->getLite($id);
             if(!$is_private_page &&  !$is_notif) {
-                $pevent = $pevent + ['P'.$this->getOwner($m_post)];
+                $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post)]);
             }
             // SI NOTIF ET QUE LE PARENT N'A PAS DE TARGET ON RECUPERE TTES LES SUBSCRIPTIONS
             if($is_notif && null === $sub && $et === false) {
@@ -144,7 +143,7 @@ class Post extends AbstractService
         }
         
         if(!empty($sub)) {
-            $pevent = $pevent + $sub;
+            $pevent = array_merge($pevent, $sub);
         }
         
         $this->getServicePostSubscription()->add(
@@ -270,16 +269,16 @@ class Post extends AbstractService
         // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
         $et = $this->getTarget($m_post_base);
         if(false !== $et) {
-            $pevent = $pevent + ['P'.$et];
+            $pevent = array_merge($pevent, ['P'.$et]);
         }
         
         // if ce n'est pas un page privée
         if(!$is_private_page &&  !$is_notif) {
-            $pevent = $pevent + ['P'.$this->getOwner($m_post_base)];
+            $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
         }
         
         if(!empty($sub)) {
-            $pevent = $pevent + $sub;
+            $pevent = array_merge($pevent, $sub);
         }
         
         $this->getServicePostSubscription()->add(
