@@ -156,6 +156,8 @@ class Post extends AbstractService
             (($base_id!==$id) ? $id:null), 
             $data);
         
+        $this->getServiceEvent()->userPublication(array_unique($pevent), $base_id);
+        
         return $this->get($id);
     }
 
