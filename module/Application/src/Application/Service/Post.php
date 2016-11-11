@@ -62,12 +62,11 @@ class Post extends AbstractService
                 $m_post->getOriginId()  :
                 $m_post->getId();
             $uid = $m_post->getUid();
-            $event = $m_post->getEvent();
+
         }
         
-        $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
-        $event = (is_string($event) && !empty($event)) ? $event:false;
-        $is_notif = ($uid && $event);
+        $uid = (($uid) && !empty($uid)) ? $uid:false;
+        $is_notif = !!$uid;
         
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         if (!$is_notif && null === $parent_id && null === $t_course_id && null === $t_organization_id && null === $t_page_id && null === $t_user_id) {
