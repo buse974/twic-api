@@ -11,7 +11,7 @@ use Zend\Json\Server\Request;
 use Zend\Http\Client;
 
 /**
- * Class Event.
+ * Class Event
  */
 class Event extends AbstractService
 {
@@ -30,12 +30,12 @@ class Event extends AbstractService
     /**
      * create event
      *
-     * @param string $event            
-     * @param mixed $source            
-     * @param mixed $object            
-     * @param array $user            
-     * @param mixed $target            
-     * @param mixed $src            
+     * @param string $event
+     * @param mixed $source
+     * @param mixed $object
+     * @param array $user
+     * @param mixed $target
+     * @param mixed $src
      * @throws \Exception
      * @return int
      */
@@ -57,7 +57,13 @@ class Event extends AbstractService
         $this->getServiceEventSubscription()->add($libelle, $event_id);
         $user = $this->getServiceSubscription()->getListUserId($libelle);
         if(count($user) > 0){
-            $this->sendRequest(array_values($user), array('id' => $event_id,'event' => $event,'source' => $source,'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),'object' => $object), $target);
+            $this->sendRequest(array_values($user), [
+                'id' => $event_id,
+                'event' => $event,
+                'source' => $source,
+                'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
+                'object' => $object]
+                , $target);
         }
         
         return $event_id;

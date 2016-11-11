@@ -13,6 +13,8 @@ use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 use Application\Model\PostSubscription as ModelPostSubscription;
 use Dal\Db\ResultSet\ResultSet;
+use Zend\Db\Sql\Predicate\IsNull;
+use function GuzzleHttp\json_encode;
 
 /**
  * Class Post
@@ -41,24 +43,42 @@ class Post extends AbstractService
      * @param int $lat
      * @param int $lng
      * @param array $docs
+     * @param string $data
+     * @param string $event
+     * @param string $uid
+     * @param array $sub
+     * 
+     * @return \Application\Model\Post
      */
-    public function add($content, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, $lng = null ,$docs = null)
+    public function add($content, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  
+        $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, 
+        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        
         $origin_id = null;
         if (null !== $parent_id) {
             $m_post = $this->getMapper()->select($this->getModel()->setId($parent_id))->current();
             $origin_id = (is_numeric($m_post->getOriginId())) ?
-                $m_post->getOriginId():
+                $m_post->getOriginId()  :
                 $m_post->getId();
+            $uid = $m_post->getUid();
+            $event = $m_post->getEvent();
         }
         
-        if(null === $parent_id && null === $t_course_id && null === $t_organization_id && null === $t_page_id && null === $t_user_id) {
+        $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
+        $event = (is_string($event) && !empty($event)) ? $event:false;
+        $is_notif = ($uid && $event);
+        
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+        if (!$is_notif && null === $parent_id && null === $t_course_id && null === $t_organization_id && null === $t_page_id && null === $t_user_id) {
             $t_user_id = $user_id;
         }
         
-        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+        if(!empty($data) && !is_string($data)) {
+            $data = json_encode($data);
+        }
+        
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post = $this->getModel()
             ->setContent($content)
             ->setPicture($picture)
@@ -67,7 +87,7 @@ class Post extends AbstractService
             ->setLink($link)
             ->setLinkTitle($link_title)
             ->setLinkDesc($link_desc)
-            ->setCreatedDate($date)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setOrganizationId($organization_id)
             ->setPageId($page_id)
             ->setLat($lat)
@@ -77,68 +97,98 @@ class Post extends AbstractService
             ->setTPageId($t_page_id)
             ->setTOrganizationId($t_organization_id)
             ->setTUserId($t_user_id)
-            ->setTCourseId($t_course_id);
-       
+            ->setTCourseId($t_course_id)
+            ->setData($data)
+            ->setEvent($event)
+            ->setUid($uid);
+        
         if($this->getMapper()->insert($m_post) <= 0) {
             throw new \Exception('error add post');
         }
-        
         $id = $this->getMapper()->getLastInsertValue();
-        $ar = array_filter(explode(' ', str_replace(array("\r\n","\n","\r"), ' ', $content)), function ($v) {
-            return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
-        });
-        $this->getServiceHashtag()->add($ar, $id);
-        $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
+        
+        $base_id = ($origin_id) ? $origin_id:$id;
+        $m_post_base = $this->getLite($origin_id);
+        $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
 
         if(null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
-        // Subscription
-        // IF C'est un commentaire
-        if($parent_id && $origin_id) {
-            $m_post = $this->getLite($id);
-            $m_post_origin = $this->getLite($origin_id);
-            $is_private_page = (is_numeric($m_post_origin->getTPageId()) && ($this->getServicePage()->getLite($m_post_origin->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
-            // if ce n'est pas un page privé
-            if(!$is_private_page) {
-                $this->getServicePostSubscription()->add([
-                    'P'.$this->getOwner($m_post), 
-                    'P'.$this->getOwner($m_post_origin),
-                ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $user_id, $id);
-                $this->getServiceEvent()->userPublication([
-                    'E'.$this->getOwner($m_post),
-                    'E'.$this->getOwner($m_post_origin),
-                ], $origin_id);
-            }
-            $this->getServicePostSubscription()->add([
-                'P'.$this->getTarget($m_post), 
-                'P'.$this->getTarget($m_post_origin),
-            ], $origin_id, $date, ModelPostSubscription::ACTION_COM, $user_id, $id);
-            $this->getServiceEvent()->userPublication([
-                'E'.$this->getTarget($m_post),
-                'E'.$this->getTarget($m_post_origin)
-            ], $origin_id);
-        // il c un post
-        } else {
-            $m_post = $this->getLite($id);
-            $is_private_page = (is_numeric($m_post->getTPageId()) && ($this->getServicePage()->getLite($m_post->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
-            // if ce n'est pas un page privé
-            $eevent = [];
-            $pevent = [];
+        
+        // si c pas une notification on gére les hastags
+        if(!$is_notif) {
+            $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+            });
             
-            if(!$is_private_page) {
-                $pevent = $pevent + ['P'.$this->getOwner($m_post)];
-                $eevent = $eevent + ['E'.$this->getOwner($m_post)];
-            }
-            $pevent = $pevent + ['P'.$this->getTarget($m_post)];
-            $eevent = $eevent + [ 'E'.$this->getTarget($m_post)];
-            $this->getServiceEvent()->userPublication(array_unique($eevent), $id);
-            $this->getServicePostSubscription()->add(array_unique($pevent), $id, $date, ModelPostSubscription::ACTION_CREATE, $user_id);
+            $this->getServiceHashtag()->add($ar, $id);
+            $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
         }
+            
+        
+        $pevent = [];
+        // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
+        $et = $this->getTarget($m_post_base);
+        if(false !== $et) {
+            $pevent = $pevent + ['P'.$et];
+        }
+        
+        // if ce n'est pas un page privée
+        if(!$is_private_page &&  !$is_notif) {
+            $pevent = $pevent + ['P'.$this->getOwner($m_post_base)];
+        }
+        
+        if($parent_id && $origin_id) {
+            // SI N'EST PAS PRIVATE ET QUE CE N'EST PAS UNE NOTIF -> ON NOTIFIE LES AMIES DES OWNER
+            $m_post = $this->getLite($id);
+            if(!$is_private_page &&  !$is_notif) {
+                $pevent = $pevent + ['P'.$this->getOwner($m_post)];
+            }
+            // SI NOTIF ET QUE LE PARENT N'A PAS DE TARGET ON RECUPERE TTES LES SUBSCRIPTIONS
+            if($is_notif && null === $sub && $et === false) {
+                $sub = $this->getServicePostSubscription()->getListLibelle($origin_id);
+            }
+            // SI ON A FOURNIE DES SUB
+        }
+        
+        if(!empty($sub)) {
+            $pevent = $pevent + $sub;
+        }
+        
+        $this->getServicePostSubscription()->add(
+            array_unique($pevent), 
+            $base_id, 
+            $date,
+            (($base_id!==$id) ? ModelPostSubscription::ACTION_COM : ModelPostSubscription ::ACTION_CREATE), 
+            $user_id, 
+            (($base_id!==$id) ? $id:null) 
+        );
         
         return $this->get($id);
     }
-        
+
+    /**
+     * 
+     * @param string $uid
+     * @param string $content
+     * @param string $data
+     * @param string $event
+     * @param string $sub
+     * @param int $parent_id
+     * @param int $t_page_id    
+     * @param int $t_organization_id
+     * @param int $t_user_id
+     * @param int $t_course_id
+     */
+    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,$t_user_id = null,$t_course_id = null) 
+    {
+        if(!is_array($sub)) {
+            $sub = [$sub];
+        }
+
+        return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, $data, $event, $uid, $sub);
+    }
+    
     /**
      * Update Post
      * 
@@ -160,38 +210,62 @@ class Post extends AbstractService
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        $m_post = $this->getModel()
-            ->setContent($content)
-            ->setLink($link)
-            ->setPicture($picture)
-            ->setNamePicture($name_picture)
-            ->setLinkTitle($link_title)
-            ->setLinkDesc($link_desc)
-            ->setLat($lat)
-            ->setLng($lng)
-            ->setUpdatedDate($date);
-        
-        if(null !== $docs) {
-            $this->getServicePostDoc()->replace($id, $docs);
-        }
-        
+        $this->_update($id, $content, $link, $picture, $name_picture, $link_title, $link_desc, $lat, $lng, $docs);
+
         $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
             return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
         });
         
-        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $user_id]);
-            
         $this->getServiceHashtag()->add($ar, $id);
         $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE, $id);
-        $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $user_id]);
-        /*
-         * Subscription
-         */
-        $m_post = $this->getLite($id);
+        $m_post = $this->get($id);
         $sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
-        $this->getServicePostSubscription()->add($sub_post, $m_post->getId(), $date, ModelPostSubscription::ACTION_UPDATE, $user_id, $id);
+        $this->getServicePostSubscription()->add($sub_post, $m_post->getId(), $date, ModelPostSubscription::ACTION_UPDATE, $user_id);
+    
+        return $m_post;
+    }
+    
+    public function updateSys($uid, $content, $data, $event, $sub) 
+    {
         
-        return $this->get($id);
+    }
+    /**
+     * Update Post
+     *
+     * @invokable
+     *
+     * @param int $id
+     * @param string $content
+     * @param string $link
+     * @param string $picture
+     * @param string $name_picture
+     * @param string $link_title
+     * @param string $link_desc
+     * @param int $lat
+     * @param int $lng
+     * @param arrray $docs
+     * @return int
+     */
+    public function _update($id, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, $link_desc = null, $lat = null, $lng = null, $docs =null)
+    {
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+        $m_post = $this->getModel()
+            ->setContent($content)
+            ->setLink(($link==='')?new IsNull():$link)
+            ->setPicture(($picture==='')?new IsNull():$picture)
+            ->setNamePicture(($name_picture==='')?new IsNull():$name_picture)
+            ->setLinkTitle(($link_title==='')?new IsNull():$link_title)
+            ->setLinkDesc(($link_desc==='')?new IsNull():$link_desc)
+            ->setLat($lat)
+            ->setLng($lng)
+            ->setUpdatedDate($date);
+    
+        if(null !== $docs) {
+            $this->getServicePostDoc()->replace($id, $docs);
+        }
+        
+        return $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $user_id]);
     }
     
     /**
@@ -419,7 +493,7 @@ class Post extends AbstractService
                 $t = 'U'.$m_post->getTUserId();
                 break;
             default:
-                $t = $this->getTarget($this->getLite($m_post->getOriginId()));
+                $t = false;
                 break;
         }
     

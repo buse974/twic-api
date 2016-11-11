@@ -54,22 +54,23 @@ class MaterialTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('material.add', ['course_id' => (int) $course_id,'name' => 'name','type' => 'type','link' => 'link','token' => 'token']);
         
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 11);
-        $this->assertEquals($data['result']['id'], 4);
-        $this->assertEquals($data['result']['name'], "name");
-        $this->assertEquals($data['result']['link'], "link");
-        $this->assertEquals($data['result']['token'], "token");
-        $this->assertEquals($data['result']['type'], "type");
-        $this->assertEquals(! empty($data['result']['created_date']), true);
-        $this->assertEquals($data['result']['deleted_date'], null);
-        $this->assertEquals($data['result']['updated_date'], null);
-        $this->assertEquals($data['result']['folder_id'], 1);
-        $this->assertEquals($data['result']['owner_id'], 1);
-        $this->assertEquals($data['result']['box_id'], null);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-        
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 12);
+        $this->assertEquals($data['result']['id'] , 6);
+        $this->assertEquals($data['result']['name'] , "name");
+        $this->assertEquals($data['result']['link'] , "link");
+        $this->assertEquals($data['result']['token'] , "token");
+        $this->assertEquals($data['result']['type'] , "type");
+        $this->assertEquals(!empty($data['result']['created_date']) , true);
+        $this->assertEquals($data['result']['deleted_date'] , null);
+        $this->assertEquals($data['result']['updated_date'] , null);
+        $this->assertEquals($data['result']['folder_id'] , 1);
+        $this->assertEquals($data['result']['owner_id'] , 1);
+        $this->assertEquals($data['result']['box_id'] , null);
+        $this->assertEquals($data['result']['global'] , 0);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
         return $data['result']['id'];
     }
 
@@ -82,11 +83,12 @@ class MaterialTest extends AbstractService
         $data = $this->jsonRpc('material.getList', [
             'course_id' => (int) $course_id
         ]);
-
+        
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result'][0]) , 11);
-        $this->assertEquals($data['result'][0]['id'] , 3);
+        $this->assertEquals($data['result'][0]['id'] , 5);
         $this->assertEquals($data['result'][0]['name'] , "name2");
         $this->assertEquals($data['result'][0]['link'] , "link2");
         $this->assertEquals($data['result'][0]['token'] , "token2");
@@ -98,7 +100,7 @@ class MaterialTest extends AbstractService
         $this->assertEquals($data['result'][0]['owner_id'] , 1);
         $this->assertEquals($data['result'][0]['box_id'] , null);
         $this->assertEquals(count($data['result'][1]) , 11);
-        $this->assertEquals($data['result'][1]['id'] , 4);
+        $this->assertEquals($data['result'][1]['id'] , 6);
         $this->assertEquals($data['result'][1]['name'] , "name");
         $this->assertEquals($data['result'][1]['link'] , "link");
         $this->assertEquals($data['result'][1]['token'] , "token");
@@ -109,8 +111,8 @@ class MaterialTest extends AbstractService
         $this->assertEquals($data['result'][1]['folder_id'] , 1);
         $this->assertEquals($data['result'][1]['owner_id'] , 1);
         $this->assertEquals($data['result'][1]['box_id'] , null);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
     }
     
     /**
@@ -140,7 +142,7 @@ class MaterialTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][0]) , 11);
-        $this->assertEquals($data['result'][0]['id'] , 3);
+        $this->assertEquals($data['result'][0]['id'] , 5);
         $this->assertEquals($data['result'][0]['name'] , "name2");
         $this->assertEquals($data['result'][0]['link'] , "link2");
         $this->assertEquals($data['result'][0]['token'] , "token2");

@@ -216,6 +216,7 @@ class Submission extends AbstractService
         if ($res_submission->count() <= 0) {
             throw new \Exception('error item and submission are null in submission.get');
         }
+        $res_submission->rewind();
         $m_submission = $res_submission->current();
         $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
             ->getListBySubmissionId($m_submission->getId()));

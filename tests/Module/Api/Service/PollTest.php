@@ -359,7 +359,7 @@ class PollTest extends AbstractService
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('bankquestion.getList', ['course_id' => $course['course_id']]);
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals(count($data['result']) , 4);
         $this->assertEquals(count($data['result'][0]) , 11);
@@ -390,7 +390,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['bank_question_item'][1]['order_id'] , null);
         $this->assertEquals(count($data['result'][0]['bank_question_media']) , 2);
         $this->assertEquals(count($data['result'][0]['bank_question_media'][0]) , 11);
-        $this->assertEquals($data['result'][0]['bank_question_media'][0]['id'] , 6);
+        $this->assertEquals($data['result'][0]['bank_question_media'][0]['id'] , 8);
         $this->assertEquals($data['result'][0]['bank_question_media'][0]['name'] , null);
         $this->assertEquals($data['result'][0]['bank_question_media'][0]['link'] , null);
         $this->assertEquals($data['result'][0]['bank_question_media'][0]['token'] , "token3");
@@ -402,7 +402,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['bank_question_media'][0]['owner_id'] , 4);
         $this->assertEquals($data['result'][0]['bank_question_media'][0]['box_id'] , null);
         $this->assertEquals(count($data['result'][0]['bank_question_media'][1]) , 11);
-        $this->assertEquals($data['result'][0]['bank_question_media'][1]['id'] , 7);
+        $this->assertEquals($data['result'][0]['bank_question_media'][1]['id'] , 9);
         $this->assertEquals($data['result'][0]['bank_question_media'][1]['name'] , null);
         $this->assertEquals($data['result'][0]['bank_question_media'][1]['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
         $this->assertEquals($data['result'][0]['bank_question_media'][1]['token'] , null);
@@ -655,10 +655,10 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['medias']) , 2); 
         $this->assertEquals(count($data['result']['medias'][0]) , 3); 
         $this->assertEquals($data['result']['medias'][0]['bank_question_id'] , 1); 
-        $this->assertEquals($data['result']['medias'][0]['library_id'] , 6); 
+        $this->assertEquals($data['result']['medias'][0]['library_id'] , 8); 
         $this->assertEquals(count($data['result']['medias'][1]) , 3); 
         $this->assertEquals($data['result']['medias'][1]['bank_question_id'] , 1); 
-        $this->assertEquals($data['result']['medias'][1]['library_id'] , 7); 
+        $this->assertEquals($data['result']['medias'][1]['library_id'] , 9); 
         $this->assertEquals(count($data['result']['poll']) , 6); 
         $this->assertEquals($data['result']['poll']['id'] , 1); 
         $this->assertEquals($data['result']['poll']['title'] , "un titre upd"); 
@@ -854,7 +854,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result'][0]['medias']) , 2);
         $this->assertEquals(count($data['result'][0]['medias'][0]) , 3);
         $this->assertEquals(count($data['result'][0]['medias'][0]['library']) , 11);
-        $this->assertEquals($data['result'][0]['medias'][0]['library']['id'] , 6);
+        $this->assertEquals($data['result'][0]['medias'][0]['library']['id'] , 8);
         $this->assertEquals($data['result'][0]['medias'][0]['library']['name'] , null);
         $this->assertEquals($data['result'][0]['medias'][0]['library']['link'] , null);
         $this->assertEquals($data['result'][0]['medias'][0]['library']['token'] , "token3");
@@ -866,10 +866,10 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['medias'][0]['library']['owner_id'] , 4);
         $this->assertEquals($data['result'][0]['medias'][0]['library']['box_id'] , null);
         $this->assertEquals($data['result'][0]['medias'][0]['bank_question_id'] , 1);
-        $this->assertEquals($data['result'][0]['medias'][0]['library_id'] , 6);
+        $this->assertEquals($data['result'][0]['medias'][0]['library_id'] , 8);
         $this->assertEquals(count($data['result'][0]['medias'][1]) , 3);
         $this->assertEquals(count($data['result'][0]['medias'][1]['library']) , 11);
-        $this->assertEquals($data['result'][0]['medias'][1]['library']['id'] , 7);
+        $this->assertEquals($data['result'][0]['medias'][1]['library']['id'] , 9);
         $this->assertEquals($data['result'][0]['medias'][1]['library']['name'] , null);
         $this->assertEquals($data['result'][0]['medias'][1]['library']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
         $this->assertEquals($data['result'][0]['medias'][1]['library']['token'] , null);
@@ -881,7 +881,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result'][0]['medias'][1]['library']['owner_id'] , 4);
         $this->assertEquals($data['result'][0]['medias'][1]['library']['box_id'] , null);
         $this->assertEquals($data['result'][0]['medias'][1]['bank_question_id'] , 1);
-        $this->assertEquals($data['result'][0]['medias'][1]['library_id'] , 7);
+        $this->assertEquals($data['result'][0]['medias'][1]['library_id'] , 9);
         $this->assertEquals(count($data['result'][0]['poll']) , 6);
         $this->assertEquals($data['result'][0]['poll']['id'] , 1);
         $this->assertEquals($data['result'][0]['poll']['attempt_count'] , null);
@@ -1065,7 +1065,7 @@ class PollTest extends AbstractService
         $this->assertEquals(count($data['result']['poll'][0]['medias']) , 2);
         $this->assertEquals(count($data['result']['poll'][0]['medias'][0]) , 3);
         $this->assertEquals(count($data['result']['poll'][0]['medias'][0]['library']) , 11);
-        $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['id'] , 6);
+        $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['id'] , 8);
         $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['name'] , null);
         $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['link'] , null);
         $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['token'] , "token3");
@@ -1077,10 +1077,10 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['owner_id'] , 4);
         $this->assertEquals($data['result']['poll'][0]['medias'][0]['library']['box_id'] , null);
         $this->assertEquals($data['result']['poll'][0]['medias'][0]['bank_question_id'] , 1);
-        $this->assertEquals($data['result']['poll'][0]['medias'][0]['library_id'] , 6);
+        $this->assertEquals($data['result']['poll'][0]['medias'][0]['library_id'] , 8);
         $this->assertEquals(count($data['result']['poll'][0]['medias'][1]) , 3);
         $this->assertEquals(count($data['result']['poll'][0]['medias'][1]['library']) , 11);
-        $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['id'] , 7);
+        $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['id'] , 9);
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['name'] , null);
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['link'] , "http://www.droit-technologie.org/upload/dossier/doc/183-1.pdf");
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['token'] , null);
@@ -1092,7 +1092,7 @@ class PollTest extends AbstractService
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['owner_id'] , 4);
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['library']['box_id'] , null);
         $this->assertEquals($data['result']['poll'][0]['medias'][1]['bank_question_id'] , 1);
-        $this->assertEquals($data['result']['poll'][0]['medias'][1]['library_id'] , 7);
+        $this->assertEquals($data['result']['poll'][0]['medias'][1]['library_id'] , 9);
         $this->assertEquals(count($data['result']['poll'][0]['poll']) , 6);
         $this->assertEquals($data['result']['poll'][0]['poll']['id'] , 1);
         $this->assertEquals($data['result']['poll'][0]['poll']['attempt_count'] , null);

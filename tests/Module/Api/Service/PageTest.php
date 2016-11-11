@@ -62,9 +62,9 @@ class PageTest extends AbstractService
         $this->assertEquals(count($data['result']) , 24);
         $this->assertEquals(count($data['result']['owner']) , 4);
         $this->assertEquals($data['result']['owner']['id'] , 1);
-        $this->assertEquals($data['result']['owner']['text'] , "Paul Boussekey");
+        $this->assertEquals($data['result']['owner']['text'] , "Morbi Corporation");
         $this->assertEquals($data['result']['owner']['img'] , null);
-        $this->assertEquals($data['result']['owner']['type'] , "user");
+        $this->assertEquals($data['result']['owner']['type'] , "organization");
         $this->assertEquals(count($data['result']['organization']) , 3);
         $this->assertEquals($data['result']['organization']['id'] , 1);
         $this->assertEquals($data['result']['organization']['name'] , "Morbi Corporation");
@@ -73,11 +73,12 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['page']['id'] , null);
         $this->assertEquals($data['result']['page']['title'] , null);
         $this->assertEquals($data['result']['page']['logo'] , null);
-        $this->assertEquals(count($data['result']['user']) , 4);
+        $this->assertEquals(count($data['result']['user']) , 5);
         $this->assertEquals($data['result']['user']['id'] , 1);
         $this->assertEquals($data['result']['user']['firstname'] , "Paul");
         $this->assertEquals($data['result']['user']['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['user']['avatar'] , null);
+        $this->assertEquals($data['result']['user']['ambassador'] , null);
         $this->assertEquals(count($data['result']['users']) , 2);
         $this->assertEquals(count($data['result']['users']['list']) , 3);
         $this->assertEquals(count($data['result']['users']['list'][0]) , 4);
@@ -108,7 +109,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['tags'][2]['weight'] , 1);
         $this->assertEquals(count($data['result']['docs']) , 1);
         $this->assertEquals(count($data['result']['docs'][0]) , 11);
-        $this->assertEquals($data['result']['docs'][0]['id'] , 3);
+        $this->assertEquals($data['result']['docs'][0]['id'] , 5);
         $this->assertEquals($data['result']['docs'][0]['name'] , "name");
         $this->assertEquals($data['result']['docs'][0]['link'] , "link");
         $this->assertEquals($data['result']['docs'][0]['token'] , null);
@@ -139,7 +140,6 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['organization_id'] , 1);
         $this->assertEquals($data['result']['page_id'] , null);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
     }
     
     /**
@@ -194,9 +194,9 @@ class PageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][0]) , 23);
         $this->assertEquals(count($data['result']['list'][0]['owner']) , 4);
         $this->assertEquals($data['result']['list'][0]['owner']['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['owner']['text'] , "Paul Boussekey");
+        $this->assertEquals($data['result']['list'][0]['owner']['text'] , "Morbi Corporation");
         $this->assertEquals($data['result']['list'][0]['owner']['img'] , null);
-        $this->assertEquals($data['result']['list'][0]['owner']['type'] , "user");
+        $this->assertEquals($data['result']['list'][0]['owner']['type'] , "organization");
         $this->assertEquals(count($data['result']['list'][0]['organization']) , 3);
         $this->assertEquals($data['result']['list'][0]['organization']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['organization']['name'] , "Morbi Corporation");
@@ -205,22 +205,25 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['page']['id'] , null);
         $this->assertEquals($data['result']['list'][0]['page']['title'] , null);
         $this->assertEquals($data['result']['list'][0]['page']['logo'] , null);
-        $this->assertEquals(count($data['result']['list'][0]['user']) , 4);
+        $this->assertEquals(count($data['result']['list'][0]['user']) , 5);
         $this->assertEquals($data['result']['list'][0]['user']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['user']['firstname'] , "Paul");
         $this->assertEquals($data['result']['list'][0]['user']['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['list'][0]['user']['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['user']['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][0]['users']) , 2);
-        $this->assertEquals(count($data['result']['list'][0]['users'][0]) , 4);
-        $this->assertEquals($data['result']['list'][0]['users'][0]['page_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['users'][0]['user_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['users'][0]['role'] , "admin");
-        $this->assertEquals($data['result']['list'][0]['users'][0]['state'] , "");
-        $this->assertEquals(count($data['result']['list'][0]['users'][1]) , 4);
-        $this->assertEquals($data['result']['list'][0]['users'][1]['page_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['users'][1]['user_id'] , 2);
-        $this->assertEquals($data['result']['list'][0]['users'][1]['role'] , "admin");
-        $this->assertEquals($data['result']['list'][0]['users'][1]['state'] , "member");
+        $this->assertEquals(count($data['result']['list'][0]['users']['list']) , 2);
+        $this->assertEquals(count($data['result']['list'][0]['users']['list'][0]) , 4);
+        $this->assertEquals($data['result']['list'][0]['users']['list'][0]['page_id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['users']['list'][0]['user_id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['users']['list'][0]['role'] , "admin");
+        $this->assertEquals($data['result']['list'][0]['users']['list'][0]['state'] , "");
+        $this->assertEquals(count($data['result']['list'][0]['users']['list'][1]) , 4);
+        $this->assertEquals($data['result']['list'][0]['users']['list'][1]['page_id'] , 1);
+        $this->assertEquals($data['result']['list'][0]['users']['list'][1]['user_id'] , 2);
+        $this->assertEquals($data['result']['list'][0]['users']['list'][1]['role'] , "admin");
+        $this->assertEquals($data['result']['list'][0]['users']['list'][1]['state'] , "member");
+        $this->assertEquals($data['result']['list'][0]['users']['count'] , 2);
         $this->assertEquals(count($data['result']['list'][0]['tags']) , 4);
         $this->assertEquals(count($data['result']['list'][0]['tags'][0]) , 2);
         $this->assertEquals($data['result']['list'][0]['tags'][0]['name'] , "toto");
@@ -236,7 +239,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['tags'][3]['weight'] , 1);
         $this->assertEquals(count($data['result']['list'][0]['docs']) , 1);
         $this->assertEquals(count($data['result']['list'][0]['docs'][0]) , 11);
-        $this->assertEquals($data['result']['list'][0]['docs'][0]['id'] , 4);
+        $this->assertEquals($data['result']['list'][0]['docs'][0]['id'] , 6);
         $this->assertEquals($data['result']['list'][0]['docs'][0]['name'] , "name");
         $this->assertEquals($data['result']['list'][0]['docs'][0]['link'] , "link");
         $this->assertEquals($data['result']['list'][0]['docs'][0]['token'] , null);
@@ -263,8 +266,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['user_id'] , 1);
         $this->assertEquals($data['result']['list'][0]['organization_id'] , 1);
         $this->assertEquals($data['result']['list'][0]['page_id'] , null);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-        
+        $this->assertEquals($data['jsonrpc'] , 2.0);    
     }
     
     /**

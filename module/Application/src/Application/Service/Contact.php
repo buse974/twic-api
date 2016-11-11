@@ -94,11 +94,23 @@ class Contact extends AbstractService
             ->setColor("#00A38B")
             ->setBody('Sent you a connection request');
         
-        $this->getServiceFcm()->send($user, ['data' => [
-            'state' => 'request',
-            'user' => $user_id,
-            ]
+        $this->getServiceFcm()->send($user, [
+            'data' => [
+                'type' => 'connection',
+                'data' => [
+                    'state' => 'request',
+                    'user' => $user_id,
+                ],
+            ],
+            
         ], $gcm_notification);
+
+        $l = 'C'.(($user > $user_id) ? $user_id:$user);
+        
+        $this->getServicePost()->addSys($l, 'Sent you a connection request', [
+                    'state' => 'request',
+                    'user' => $user_id,
+                ], 'user.connection', ['M'.$user_id, 'M'.$user]);
         
         return $ret;
     }
@@ -161,9 +173,12 @@ class Contact extends AbstractService
         
         $this->getServiceFcm()->send($user, [
             'data' => [
-                'state' => 'accept',
-                'user' => $user_id,
-            ]
+                'type' => 'connection',
+                'data' => [
+                    'state' => 'accept',
+                    'user' => $user_id,
+                ],
+            ],
         ], $gcm_notification);
         
         return true;
@@ -207,12 +222,11 @@ class Contact extends AbstractService
         $this->getServiceSubscription()->delete('EU'.$user_id, $user);
         
         $this->getServiceEvent()->userDeleteConnection($user_id, $user);
-
         $this->getServiceFcm()->send($user, [
             'data' => [
                 'state' => 'remove',
                 'user' => $user_id,
-            ]
+            ],'type' => 'connection'
         ]);
         
         return true;
@@ -311,7 +325,6 @@ class Contact extends AbstractService
         return ['list' => $users,'count' => $mapper->count()];
     }
     
-
     /**
      * Get List Id of contact.
      * 
@@ -336,7 +349,7 @@ class Contact extends AbstractService
         return $ret;
     }
     
-      /**
+    /**
      * Get list contact id by users.
      *
      * @invokable
@@ -365,7 +378,7 @@ class Contact extends AbstractService
         return $contacts;
     }
     
-      /**
+    /**
      * Get list contact id by users.
      *
      * @invokable
@@ -394,7 +407,7 @@ class Contact extends AbstractService
         return $contacts;
     }
     
-      /**
+    /**
      * Get list contact id by users.
      *
      * @invokable
@@ -473,6 +486,5 @@ class Contact extends AbstractService
     {
         return $this->container->get('app_service_post');
     }
-    
     
 }

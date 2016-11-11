@@ -89,6 +89,22 @@ class PostSubscription extends AbstractService
      *
      * @param int $post_id
      */
+    public function getListLibelle($post_id)
+    {
+        $res_post_subscription = $this->getMapper()->getListLibelle($post_id);
+        
+        $lib = [];
+        foreach ($res_post_subscription as $m_post_subscription) {
+            $lib[] = $m_post_subscription->getLibelle();
+        }
+        
+        return array_unique($lib);
+    }
+    
+    /**
+     *
+     * @param int $post_id
+     */
     public function getLastLite($post_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];

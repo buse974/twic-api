@@ -158,10 +158,10 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(count($data['result']) , 14);
         $this->assertEquals(count($data['result']['messages']) , 2);
         $this->assertEquals(count($data['result']['messages']['list']) , 1);
-        $this->assertEquals(count($data['result']['messages']['list'][0]) , 8);
+        $this->assertEquals(count($data['result']['messages']['list'][0]) , 9);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']) , 10);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from']) , 1);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]) , 15);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['school']) , 5);
@@ -179,6 +179,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['interest'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['avatar'] , null);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['ambassador'] , null);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['roles']) , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['roles'][0] , "student");
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['program']) , 1);
@@ -190,7 +191,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['program'][0]['year'] , null);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['document']) , 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to']) , 3);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]) , 15);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contact_state'] , 0);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['school']) , 5);
@@ -208,10 +209,11 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['interest'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['avatar'] , null);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['ambassador'] , null);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['roles']) , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['roles'][0] , "student");
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]) , 15);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contact_state'] , 0);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contacts_count'] , 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]['school']) , 5);
@@ -229,10 +231,11 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['interest'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['avatar'] , null);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['ambassador'] , null);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]['roles']) , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]['program']) , 0);
-        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]) , 14);
+        $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]) , 15);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['contact_state'] , 3);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['contacts_count'] , 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]['school']) , 5);
@@ -250,6 +253,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['position'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['interest'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['avatar'] , null);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['ambassador'] , null);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]['roles']) , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]['program']) , 0);
@@ -267,6 +271,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['user']['nickname'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result']['messages']['list'][0]['id'] , 1);
+        $this->assertEquals($data['result']['messages']['list'][0]['message_id'] , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['conversation_id'] , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['from_id'] , 1);
         $this->assertEquals($data['result']['messages']['list'][0]['user_id'] , 1);
@@ -327,7 +332,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['whiteboards'][0]['height'] , null);
         $this->assertEquals(count($data['result']['documents']) , 1);
         $this->assertEquals(count($data['result']['documents'][0]) , 11);
-        $this->assertEquals($data['result']['documents'][0]['id'] , 3);
+        $this->assertEquals($data['result']['documents'][0]['id'] , 5);
         $this->assertEquals($data['result']['documents'][0]['name'] , "un document");
         $this->assertEquals($data['result']['documents'][0]['link'] , "http://www.cellie.fr/wp-content/uploads/2015/01/Tutoriel_Google_Drive_Cellie.pdf");
         $this->assertEquals($data['result']['documents'][0]['token'] , null);
@@ -351,8 +356,6 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['submission_id'] , 1);
         $this->assertEquals(!empty($data['result']['user_token']) , true);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-        
-        
     }
    
     /**
@@ -411,7 +414,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(!empty($data['result'][0]['videos'][0]['created_date']) , true);
         $this->assertEquals(count($data['result'][0]['conversation_user']) , 4);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]) , 3);
-        $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']) , 20);
+        $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']) , 21);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']['origin']) , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['origin']['short_name'] , null);
@@ -439,6 +442,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['avatar'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['has_email_notifier'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['background'] , null);
+        $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['ambassador'] , null);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']['roles']) , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['roles'][0] , "student");
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']['program']) , 1);
@@ -452,7 +456,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][0]['conversation_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user_id'] , 1);
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]) , 3);
-        $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']) , 20);
+        $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']) , 21);
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']['origin']) , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['origin']['short_name'] , null);
@@ -480,6 +484,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['avatar'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['has_email_notifier'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['background'] , null);
+        $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['ambassador'] , null);
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']['roles']) , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['roles'][0] , "admin");
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']['program']) , 1);
@@ -493,7 +498,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][1]['conversation_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user_id'] , 2);
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]) , 3);
-        $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']) , 20);
+        $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']) , 21);
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']['origin']) , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['origin']['short_name'] , null);
@@ -521,6 +526,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['avatar'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['has_email_notifier'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['background'] , null);
+        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['ambassador'] , null);
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']['roles']) , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['roles'][0] , "academic");
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']['program']) , 1);
@@ -534,7 +540,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][2]['conversation_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user_id'] , 3);
         $this->assertEquals(count($data['result'][0]['conversation_user'][3]) , 3);
-        $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']) , 20);
+        $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']) , 21);
         $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']['origin']) , 2);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['origin']['id'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['origin']['short_name'] , null);
@@ -562,12 +568,14 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['avatar'] , null);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['has_email_notifier'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['background'] , null);
+        $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['ambassador'] , null);
         $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']['roles']) , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['roles'][0] , "student");
         $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']['program']) , 0);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['conversation_id'] , 1);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user_id'] , 4);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
         
     }
     

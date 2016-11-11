@@ -34,4 +34,15 @@ class PostSubscription extends AbstractMapper
     
         return $this->selectWith($select);
     }
+    
+    public function getListLibelle($post_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['libelle'])
+            ->where(['post_subscription.post_id' => $post_id])
+            ->quantifier('DISTINCT');
+    
+        return $this->selectWith($select);
+    }
+    
 }

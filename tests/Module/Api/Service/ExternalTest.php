@@ -73,7 +73,8 @@ class ExternalTest extends AbstractService
             'email' => 'u1@univ.fr', 'firstname' => 'f1', 'lastname' => 'l1', 'uid' => 'azerty'), self::$token);
         
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 20);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 21);
         $this->assertEquals(count($data['result']['origin']) , 2);
         $this->assertEquals($data['result']['origin']['id'] , null);
         $this->assertEquals($data['result']['origin']['short_name'] , null);
@@ -101,10 +102,10 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['avatar'] , null);
         $this->assertEquals($data['result']['has_email_notifier'] , 1);
         $this->assertEquals($data['result']['background'] , null);
+        $this->assertEquals($data['result']['ambassador'] , null);
         $this->assertEquals(count($data['result']['roles']) , 1);
         $this->assertEquals($data['result']['roles'][0] , "student");
         $this->assertEquals(count($data['result']['program']) , 0);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
@@ -114,9 +115,10 @@ class ExternalTest extends AbstractService
         $data = $this->jsonRpc('user.listing', [], self::$token);
         
         $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result']['list']) , 9);
-        $this->assertEquals(count($data['result']['list'][0]) , 14);
+        $this->assertEquals(count($data['result']['list'][0]) , 15);
         $this->assertEquals($data['result']['list'][0]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][0]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][0]['school']) , 5);
@@ -134,10 +136,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['position'] , null);
         $this->assertEquals($data['result']['list'][0]['interest'] , null);
         $this->assertEquals($data['result']['list'][0]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][0]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][0]['roles']) , 1);
         $this->assertEquals($data['result']['list'][0]['roles'][0] , "student");
         $this->assertEquals(count($data['result']['list'][0]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][1]) , 14);
+        $this->assertEquals(count($data['result']['list'][1]) , 15);
         $this->assertEquals($data['result']['list'][1]['contact_state'] , 0);
         $this->assertEquals($data['result']['list'][1]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][1]['school']) , 5);
@@ -155,10 +158,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][1]['position'] , null);
         $this->assertEquals($data['result']['list'][1]['interest'] , null);
         $this->assertEquals($data['result']['list'][1]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][1]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][1]['roles']) , 1);
         $this->assertEquals($data['result']['list'][1]['roles'][0] , "external");
         $this->assertEquals(count($data['result']['list'][1]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][2]) , 14);
+        $this->assertEquals(count($data['result']['list'][2]) , 15);
         $this->assertEquals($data['result']['list'][2]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][2]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][2]['school']) , 5);
@@ -176,10 +180,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][2]['position'] , null);
         $this->assertEquals($data['result']['list'][2]['interest'] , null);
         $this->assertEquals($data['result']['list'][2]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][2]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][2]['roles']) , 1);
         $this->assertEquals($data['result']['list'][2]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['list'][2]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][3]) , 14);
+        $this->assertEquals(count($data['result']['list'][3]) , 15);
         $this->assertEquals($data['result']['list'][3]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][3]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][3]['school']) , 5);
@@ -197,10 +202,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][3]['position'] , null);
         $this->assertEquals($data['result']['list'][3]['interest'] , null);
         $this->assertEquals($data['result']['list'][3]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][3]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][3]['roles']) , 1);
         $this->assertEquals($data['result']['list'][3]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][3]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][4]) , 14);
+        $this->assertEquals(count($data['result']['list'][4]) , 15);
         $this->assertEquals($data['result']['list'][4]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][4]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][4]['school']) , 5);
@@ -218,10 +224,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][4]['position'] , null);
         $this->assertEquals($data['result']['list'][4]['interest'] , null);
         $this->assertEquals($data['result']['list'][4]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][4]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][4]['roles']) , 1);
         $this->assertEquals($data['result']['list'][4]['roles'][0] , "instructor");
         $this->assertEquals(count($data['result']['list'][4]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][5]) , 14);
+        $this->assertEquals(count($data['result']['list'][5]) , 15);
         $this->assertEquals($data['result']['list'][5]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][5]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][5]['school']) , 5);
@@ -239,10 +246,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][5]['position'] , null);
         $this->assertEquals($data['result']['list'][5]['interest'] , null);
         $this->assertEquals($data['result']['list'][5]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][5]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][5]['roles']) , 1);
         $this->assertEquals($data['result']['list'][5]['roles'][0] , "student");
         $this->assertEquals(count($data['result']['list'][5]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][6]) , 14);
+        $this->assertEquals(count($data['result']['list'][6]) , 15);
         $this->assertEquals($data['result']['list'][6]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][6]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][6]['school']) , 5);
@@ -260,10 +268,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][6]['position'] , null);
         $this->assertEquals($data['result']['list'][6]['interest'] , null);
         $this->assertEquals($data['result']['list'][6]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][6]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][6]['roles']) , 1);
         $this->assertEquals($data['result']['list'][6]['roles'][0] , "academic");
         $this->assertEquals(count($data['result']['list'][6]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][7]) , 14);
+        $this->assertEquals(count($data['result']['list'][7]) , 15);
         $this->assertEquals($data['result']['list'][7]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][7]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][7]['school']) , 5);
@@ -281,10 +290,11 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][7]['position'] , null);
         $this->assertEquals($data['result']['list'][7]['interest'] , null);
         $this->assertEquals($data['result']['list'][7]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][7]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][7]['roles']) , 1);
         $this->assertEquals($data['result']['list'][7]['roles'][0] , "admin");
         $this->assertEquals(count($data['result']['list'][7]['program']) , 0);
-        $this->assertEquals(count($data['result']['list'][8]) , 14);
+        $this->assertEquals(count($data['result']['list'][8]) , 15);
         $this->assertEquals($data['result']['list'][8]['contact_state'] , 3);
         $this->assertEquals($data['result']['list'][8]['contacts_count'] , 8);
         $this->assertEquals(count($data['result']['list'][8]['school']) , 5);
@@ -302,12 +312,13 @@ class ExternalTest extends AbstractService
         $this->assertEquals($data['result']['list'][8]['position'] , null);
         $this->assertEquals($data['result']['list'][8]['interest'] , null);
         $this->assertEquals($data['result']['list'][8]['avatar'] , null);
+        $this->assertEquals($data['result']['list'][8]['ambassador'] , null);
         $this->assertEquals(count($data['result']['list'][8]['roles']) , 1);
         $this->assertEquals($data['result']['list'][8]['roles'][0] , "super_admin");
         $this->assertEquals(count($data['result']['list'][8]['program']) , 0);
         $this->assertEquals($data['result']['count'] , 9);
-        $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+        
         
         
     }
