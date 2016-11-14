@@ -10,7 +10,7 @@ class PostSubscription extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['action', 'last_date', 'sub_post_id', 'user_id'])
-            ->join('subscription', 'subscription.libelle=post_subscription.libelle', [])
+            ->join('subscription', 'subscription.libelle=post_subscription.libelle', [],  $select::JOIN_LEFT)
             ->join('user', 'user.id=post_subscription.user_id', ['id', 'firstname', 'lastname', 'nickname'], $select::JOIN_LEFT)
             ->join('post' , 'post.id=post_subscription.sub_post_id', ['id', 'content', 'organization_id', 'page_id'], $select::JOIN_LEFT)
             ->where(['subscription.user_id' => $user_id])
@@ -25,7 +25,7 @@ class PostSubscription extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['action', 'last_date', 'sub_post_id', 'user_id'])
-            ->join('subscription', 'subscription.libelle=post_subscription.libelle', [])
+            ->join('subscription', 'subscription.libelle=post_subscription.libelle', [],  $select::JOIN_LEFT)
             ->join('post' , 'post.id=post_subscription.sub_post_id', ['id', 'content', 'organization_id', 'page_id'], $select::JOIN_LEFT)
             ->where(['subscription.user_id' => $user_id])
             ->where(['post_subscription.post_id' => $post_id])

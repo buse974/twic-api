@@ -228,11 +228,15 @@ class Post extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
-        
         $m_post_base = ($uid !== null && $id === null) ? $this->getLite(null, $uid) : $this->getLite($id);
         $id = $m_post_base->getId();
         
-        $w = ($uid !== null) ?  ['id' => $id, 'user_id' => $user_id] : ['uid' => $uid];
+        
+        if($uid === null && $id === null) {
+            throw new \Exception('error update: no $id and no $uid');
+        }
+        
+        $w = ($uid !== null) ?  ['uid' => $uid] : ['id' => $id, 'user_id' => $user_id];
         
         $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
         $event = (is_string($event) && !empty($event)) ? $event:false;
