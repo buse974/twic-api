@@ -256,48 +256,51 @@ class Post extends AbstractService
             $this->getServicePostDoc()->replace($id, $docs);
         }
         
-        $this->getMapper()->update($m_post, $w);
-        $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
-
-        // si c pas une notification on gére les hastags
-        if(!$is_notif) {
-            $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
-                return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
-            });
-        
-            $this->getServiceHashtag()->add($ar, $id);
-            $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE);
-        }
-        
-        $pevent = [];
-        // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
-        $et = $this->getTarget($m_post_base);
-        if(false !== $et) {
-            $pevent = array_merge($pevent, ['P'.$et]);
-        }
-        
-        // if ce n'est pas un page privée
-        if(!$is_private_page &&  !$is_notif) {
-            $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
-        }
-        
-        if(!empty($sub)) {
-            $pevent = array_merge($pevent, $sub);
-        }
-        
-        $this->getServicePostSubscription()->add(
-            array_unique($pevent),
-            $id,
-            $date,
-            (!empty($event)? $event:ModelPostSubscription::ACTION_UPDATE ),
-            $user_id,
-            null,
-            $data);
-        
-        //$m_post = $this->get($id);
-        //$sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
+        if($this->getMapper()->update($m_post, $w) > 0) {
+            $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+    
+            // si c pas une notification on gére les hastags
+            if(!$is_notif) {
+                $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                    return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+                });
+            
+                $this->getServiceHashtag()->add($ar, $id);
+                $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE);
+            }
+            
+            $pevent = [];
+            // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
+            $et = $this->getTarget($m_post_base);
+            if(false !== $et) {
+                $pevent = array_merge($pevent, ['P'.$et]);
+            }
+            
+            // if ce n'est pas un page privée
+            if(!$is_private_page &&  !$is_notif) {
+                $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
+            }
+            
+            if(!empty($sub)) {
+                $pevent = array_merge($pevent, $sub);
+            }
+            
+            $this->getServicePostSubscription()->add(
+                array_unique($pevent),
+                $id,
+                $date,
+                (!empty($event)? $event:ModelPostSubscription::ACTION_UPDATE ),
+                $user_id,
+                null,
+                $data);
+            
+            //$m_post = $this->get($id);
+            //$sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
 
         return $m_post;
+        } 
+        
+        return false;
     }
     
     /**
