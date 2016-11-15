@@ -134,6 +134,8 @@ class Post extends AbstractService
             $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
         }
         
+        $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
+        
         if($parent_id && $origin_id) {
             // SI N'EST PAS PRIVATE ET QUE CE N'EST PAS UNE NOTIF -> ON NOTIFIE LES AMIES DES OWNER
             $m_post = $this->getLite($id);

@@ -47,8 +47,9 @@ class PostLike extends AbstractService
                 'P'.$this->getServicePost()->getOwner($m_post), 
                 'P'.$this->getServicePost()->getTarget($m_post), 
                 'P'.$this->getUserLike($m_post_like),
+                'M'.$m_post->getUserId(),
             ];
-           
+            
             $this->getServicePostSubscription()->add(array_unique($sub_post), $post_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id);
             $this->getServiceEvent()->userLike($sub_event, $post_id);
         }
