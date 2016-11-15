@@ -6,9 +6,9 @@
  */
 namespace Application\Service;
 
+use Application\Model\Role as ModelRole;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
-use Application\Model\Role as ModelRole;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
@@ -104,12 +104,12 @@ class Contact extends AbstractService
             
         ], $gcm_notification);
 
-        /*$l = 'C'.(($user > $user_id) ? $user_id:$user);
+        $l = 'C'.(($user > $user_id) ? $user_id:$user);
         $this->getServicePost()->addSys($l, 'Sent you a connection request', [
-                    'state' => 'request',
-                    'user' => $user_id,
-                ], 'user.requestConnection', ['M'.$user_id, 'M'.$user]);
-        */
+            'state' => 'request',
+            'user' => $user_id,
+        ], 'user.requestConnection', ['M'.$user_id, 'M'.$user]);
+        
         return $ret;
     }
 
@@ -178,12 +178,12 @@ class Contact extends AbstractService
             ]
         ], $gcm_notification);
         
-        /*$l = 'C'.(($user > $user_id) ? $user_id:$user);
+        $l = 'C'.(($user > $user_id) ? $user_id:$user);
         $this->getServicePost()->updateSys($l, 'Accepted your request', [
-                    'state' => 'accept',
-                    'user' => $user_id,
-                ], 'user.acceptConnection', ['M'.$user_id, 'M'.$user]);
-        */
+            'state' => 'accept',
+            'user' => $user_id,
+        ], 'user.acceptConnection', ['M'.$user_id, 'M'.$user]);
+        
         return true;
     }
 

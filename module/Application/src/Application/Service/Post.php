@@ -14,7 +14,6 @@ use Application\Model\Role as ModelRole;
 use Application\Model\PostSubscription as ModelPostSubscription;
 use Dal\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Predicate\IsNull;
-use function GuzzleHttp\json_encode;
 
 /**
  * Class Post
