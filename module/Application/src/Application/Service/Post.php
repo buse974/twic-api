@@ -363,6 +363,7 @@ class Post extends AbstractService
         foreach ($res_post as $m_post) {
             $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
+            $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
         }
         
         $res_post->rewind();
