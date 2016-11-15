@@ -46,12 +46,13 @@ class Post extends AbstractService
      * @param string $event
      * @param string $uid
      * @param array $sub
+     * @param string $type
      * 
      * @return \Application\Model\Post
      */
     public function add($content = null, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  
         $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, 
-        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null)
+        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $origin_id = null;
@@ -64,6 +65,9 @@ class Post extends AbstractService
 
         }
         
+        if(empty($type)) {
+            $type = 'post';
+        }
         $uid = (($uid) && !empty($uid)) ? $uid:false;
         $is_notif = !!$uid;
         
@@ -92,7 +96,8 @@ class Post extends AbstractService
             ->setTOrganizationId($t_organization_id)
             ->setTUserId($t_user_id)
             ->setTCourseId($t_course_id)
-            ->setUid($uid);
+            ->setUid($uid)
+            ->setType($type);
         
         if($this->getMapper()->insert($m_post) <= 0) {
             throw new \Exception('error add post');
@@ -172,14 +177,15 @@ class Post extends AbstractService
      * @param int $t_user_id
      * @param int $t_course_id
      */
-    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,$t_user_id = null,$t_course_id = null) 
+    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,
+        $t_user_id = null,$t_course_id = null, $type = null) 
     {
         if(!is_array($sub)) {
             $sub = [$sub];
         }
 
         return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, 
-            $data, $event, $uid, $sub);
+            $data, $event, $uid, $sub, $type);
     }
     
     /**

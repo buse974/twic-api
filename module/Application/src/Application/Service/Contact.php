@@ -108,7 +108,7 @@ class Contact extends AbstractService
         $this->getServicePost()->addSys($l, 'Sent you a connection request', [
             'state' => 'request',
             'user' => $user_id,
-        ], 'user.requestConnection', ['M'.$user_id, 'M'.$user]);
+        ], 'request', ['M'.$user_id, 'M'.$user], 'connection');
         
         return $ret;
     }
@@ -182,7 +182,7 @@ class Contact extends AbstractService
         $this->getServicePost()->updateSys($l, 'Accepted your request', [
             'state' => 'accept',
             'user' => $user_id,
-        ], 'user.acceptConnection', ['M'.$user_id, 'M'.$user]);
+        ], 'accept', ['M'.$user_id, 'M'.$user], 'connection');
         
         return true;
     }
@@ -344,7 +344,6 @@ class Contact extends AbstractService
         }
 
         $listRequest = $this->getMapper()->getList($user);
-
         $ret = [];
 
         foreach ($listRequest as $request) {
