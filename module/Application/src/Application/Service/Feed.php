@@ -118,7 +118,7 @@ class Feed extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $m_feed = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        if(!in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])){
+        if(!in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])){
             return $this->getMapper()->update($m_feed, array('user_id' => $identity['id'], 'id' => $id));
         }
         else{
@@ -205,7 +205,7 @@ class Feed extends AbstractService
         }
 
         //$mapper = $mapper->usePaginator($filter);
-        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']);
         return $mapper->getList($user, $me, $ids, $is_sadmin); //array('list' => $mapper->getList($user,$me, $ids), 'count' => $mapper->count());
     }
 

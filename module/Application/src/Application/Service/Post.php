@@ -315,7 +315,7 @@ class Post extends AbstractService
         //$this->deleteSubscription($id);
         
         $identity = $this->getServiceUser()->getIdentity();
-        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']);
         $m_post = $this->getModel()
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         if(!$is_sadmin){
@@ -375,7 +375,7 @@ class Post extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
-        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']);
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']);
         
         return  $this->getMapper()->get($me, $id, $is_sadmin, $is_mobile);
     }
