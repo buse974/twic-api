@@ -108,6 +108,7 @@ class Contact extends AbstractService
         $this->getServicePost()->addSys($l, 'Sent you a connection request', [
             'state' => 'request',
             'user' => $user_id,
+            'contact' => $user,
         ], 'request', ['M'.$user], null, null, null, null, null ,'connection');
         
         return $ret;
@@ -182,6 +183,7 @@ class Contact extends AbstractService
         $this->getServicePost()->updateSys($l, 'Accepted your request', [
             'state' => 'accept',
             'user' => $user_id,
+            'contact' => $user,
         ], 'accept', ['M'.$user_id, 'M'.$user]);
         
         return true;

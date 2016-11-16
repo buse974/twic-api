@@ -368,7 +368,11 @@ class Post extends AbstractService
         foreach ($res_post as $m_post) {
             $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
-            $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
+
+            $m_p_s = $this->getServicePostSubscription()->getLastLite($m_post->getId());
+            $m_p_s->setData(json_decode($m_p_s->getData()));
+            
+            $m_post->setSubscription($m_p_s);
         }
         
         $res_post->rewind();
@@ -406,7 +410,11 @@ class Post extends AbstractService
         
         foreach ($res_post as $m_post) {
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
-            $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
+            
+            $m_p_s = $this->getServicePostSubscription()->getLastLite($m_post->getId());
+            $m_p_s->setData(json_decode($m_p_s->getData()));
+            
+            $m_post->setSubscription($m_p_s);
         }
         
         return (is_array($id) ? $res_post->toArray(['id']): $res_post->current());
@@ -436,7 +444,12 @@ class Post extends AbstractService
             foreach ($res_posts as $m_post) {
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
                 $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
-                $m_post->setSubscription($this->getServicePostSubscription()->getLast($m_post->getId()));
+                
+                $m_p_s = $this->getServicePostSubscription()->getLast($m_post->getId());
+                $m_p_s->setData(json_decode($m_p_s->getData()));
+                
+                $m_post->setSubscription($m_p_s);
+                
             }
         }
         
