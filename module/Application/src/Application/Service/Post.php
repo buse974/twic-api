@@ -120,6 +120,8 @@ class Post extends AbstractService
             
             $this->getServiceHashtag()->add($ar, $id);
             $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
+            
+            $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
         }
             
         $pevent = [];
@@ -133,8 +135,6 @@ class Post extends AbstractService
         if(!$is_private_page &&  !$is_notif) {
             $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
         }
-        
-        $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
         
         if($parent_id && $origin_id) {
             // SI N'EST PAS PRIVATE ET QUE CE N'EST PAS UNE NOTIF -> ON NOTIFIE LES AMIES DES OWNER
