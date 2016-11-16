@@ -120,6 +120,14 @@ class Course extends AbstractService
             $this->getServiceEvent()->courseUpdated($id, $ar_course);
         }
         
+        if($is_published === true) {
+            $l = 'CC'.$id;
+            $this->getServicePost()->addSys($l, '', [
+                'state' => 'published',
+                'course_id' => $id,
+            ],  'published', null, null, null, null, null, $id ,'course');
+        }
+        
         return $ret;
     }
 
@@ -323,8 +331,23 @@ class Course extends AbstractService
         return $this->container->get('app_service_event');
     }
 
+    /**
+     * Get Service Program
+     * 
+     * @return \Application\Service\Program
+     */
     private function getServiceProgram()
     {
         return $this->container->get('app_service_program');
+    }
+    
+    /**
+     * Get Service Post
+     *
+     * @return \Application\Service\Post
+     */
+    private function getServicePost()
+    {
+        return $this->container->get('app_service_post');
     }
 }
