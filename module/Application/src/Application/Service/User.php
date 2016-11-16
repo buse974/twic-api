@@ -707,7 +707,7 @@ class User extends AbstractService
                         }
                     }
                 }
-                $this->getServiceSubscription()->add('CC'.$c, $u);
+                $this->getServiceSubscription()->add('PC'.$c, $u);
             }
         }
 
