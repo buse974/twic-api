@@ -340,6 +340,11 @@ class Post extends AbstractService
         }
     }
     
+    public function hardDelete($uid)
+    {
+        return (is_string($uid) && !empty($uid)) ?  $this->getMapper()->update($m_post, ['uid' => $uid]) : false;
+    }
+    
       /**
      * Reactivate Post
      * 

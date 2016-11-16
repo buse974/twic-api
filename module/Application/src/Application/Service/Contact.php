@@ -238,11 +238,7 @@ class Contact extends AbstractService
         
 
         $l = 'C'.(($user > $user_id) ? $user_id:$user);
-        $this->getServicePost()->updateSys($l, 'Remove your request', [
-            'state' => 'accept',
-            'user' => $user_id,
-            'contact' => $user,
-        ], 'remove', ['M'.$user_id]);
+        $this->getServicePost()->hardDelete($l);
         
         return true;
     }
