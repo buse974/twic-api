@@ -373,7 +373,7 @@ class Post extends AbstractService
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
             $m_p_s = $this->getServicePostSubscription()->getLastLite($m_post->getId());
             
-            if($m_p_s instanceof PostSubscription) {
+            if($m_p_s instanceof PostSubscription && is_string($m_p_s->getData())) {
                 $m_p_s->setData(json_decode($m_p_s->getData(), true));
                 $m_post->setSubscription($m_p_s);
             }
@@ -417,7 +417,7 @@ class Post extends AbstractService
             
             $m_p_s = $this->getServicePostSubscription()->getLastLite($m_post->getId());
             
-            if($m_p_s instanceof PostSubscription) {
+            if($m_p_s instanceof PostSubscription && is_string($m_p_s->getData())) {
                 $m_p_s->setData(json_decode($m_p_s->getData(), true));
                 $m_post->setSubscription($m_p_s);
             }
@@ -454,7 +454,7 @@ class Post extends AbstractService
                 
                 $m_p_s = $this->getServicePostSubscription()->getLast($m_post->getId());
                 
-                if($m_p_s instanceof PostSubscription) {
+                if($m_p_s instanceof PostSubscription && is_string($m_p_s->getData())) {
                     $m_p_s->setData(json_decode($m_p_s->getData(), true));
                     $m_post->setSubscription($m_p_s);
                 }
