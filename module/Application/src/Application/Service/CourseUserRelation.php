@@ -80,6 +80,8 @@ class CourseUserRelation extends AbstractService
                 $ret[$u][$c] = $this->getMapper()->delete($this->getModel()
                     ->setCourseId($c)
                     ->setUserId($u));
+                
+                $this->getServiceSubscription()->delete('PC'.$c, $u);
             }
         }
 
@@ -116,5 +118,15 @@ class CourseUserRelation extends AbstractService
     private function getServiceCourse()
     {
         return $this->container->get('app_service_course');
+    }
+    
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 }
