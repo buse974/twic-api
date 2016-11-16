@@ -52,7 +52,6 @@ class Post extends AbstractMapper
                 ->where(['( post.parent_id IS NULL '])
                 ->where(['  (subscription.user_id = ? ' => $me_id])
                 ->where(['  post_subscription.libelle = ? ' => 'M'.$me_id], Predicate::OP_OR)
-                //->where(['  post_subscription.libelle = ? ' => 'PU'.$me_id], Predicate::OP_OR)
                 ->where(['  post.user_id = ?))' => $me_id], Predicate::OP_OR)
                 ->order(['post$last_date' => 'DESC', 'post.id' => 'DESC'])
                 ->group('post.id');

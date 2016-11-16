@@ -15,7 +15,8 @@ class Event extends AbstractMapper
             ->order(['event.id' => 'DESC']);
         if (null === $id && $source === null) {
             $select->join('event_subscription', 'event_subscription.event_id=event.id', [])
-                ->join('subscription', 'subscription.libelle=event_subscription.libelle', [])->where(['subscription.user_id' => $me]);
+                ->join('subscription', 'subscription.libelle=event_subscription.libelle', [])
+                ->where(['subscription.user_id' => $me]);
         }
         if (null !== $events) {
             $select->where(['event.event' => $events]);
@@ -31,3 +32,5 @@ class Event extends AbstractMapper
     }
 
 }
+
+
