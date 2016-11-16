@@ -100,7 +100,6 @@ class DbAdapter extends AbstractAdapter
                 $message[] = $arrayIdentity['suspension_reason'];
             }
             else{
-                
                 $code = Result::SUCCESS;
                 $message[] = 'Authentication successful.';
                 $identity = $this->getResult()->exchangeArray($arrayIdentity);

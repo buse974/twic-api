@@ -113,6 +113,8 @@ class Post extends AbstractService
         $m_post_base = $this->getLite($base_id);
         $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
 
+        $pevent = [];
+        
         // si c pas une notification on gére les hastags
         if(!$is_notif) {
             $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
@@ -125,7 +127,7 @@ class Post extends AbstractService
             $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
         }
             
-        $pevent = [];
+        
         // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
         $et = $this->getTarget($m_post_base);
         if(false !== $et) {
