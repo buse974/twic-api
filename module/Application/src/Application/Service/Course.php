@@ -120,7 +120,7 @@ class Course extends AbstractService
             $this->getServiceEvent()->courseUpdated($id, $ar_course);
         }
         
-        if($is_published === true) {
+        if($is_published == 1) {
             $l = 'CC'.$id;
             $this->getServicePost()->addSys($l, '', [
                 'state' => 'published',
