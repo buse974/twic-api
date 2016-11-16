@@ -342,7 +342,7 @@ class Post extends AbstractService
     
     public function hardDelete($uid)
     {
-        return (is_string($uid) && !empty($uid)) ?  $this->getMapper()->update($m_post, ['uid' => $uid]) : false;
+        return (is_string($uid) && !empty($uid)) ?  $this->getMapper()->delete($m_post->setUid($uid)) : false;
     }
     
       /**
