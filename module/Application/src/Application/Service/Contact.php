@@ -182,7 +182,7 @@ class Contact extends AbstractService
         $this->getServicePost()->updateSys($l, 'Accepted your request', [
             'state' => 'accept',
             'user' => $user_id,
-        ], 'accept', ['M'.$user]);
+        ], 'accept', ['M'.$user_id, 'M'.$user]);
         
         return true;
     }
