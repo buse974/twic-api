@@ -304,8 +304,11 @@ class Post extends AbstractService
             //$m_post = $this->get($id);
             //$sub_post = ['U'.$this->getOwner($m_post), 'U'.$this->getTarget($m_post)];
 
+            $this->getServiceEvent()->userPublication(array_unique($pevent), $id);
+            
         return $m_post;
         } 
+        
         
         return false;
     }
