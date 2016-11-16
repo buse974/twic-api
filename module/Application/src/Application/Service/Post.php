@@ -189,7 +189,11 @@ class Post extends AbstractService
             $sub = [$sub];
         }
 
-        return $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, 
+        $res_post = $this->getMapper()->select($this->getModel()->setUid($uid));
+        
+        return ($res_post->count() > 0) ?
+            $this->updateSys($uid, $content, $data, $event) :
+            $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, 
             $data, $event, $uid, $sub, $type);
     }
     
