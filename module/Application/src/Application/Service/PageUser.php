@@ -103,7 +103,7 @@ class PageUser extends AbstractService
         
         $ret =  $this->getMapper()->delete($m_page_user);
         if($ret) {
-            $this->getServicePost()->addSys('PPM'.$page_id.'_'.$user_id);
+            $this->getServicePost()->hardDelete('PPM'.$page_id.'_'.$user_id);
         }
         
         return $ret;
