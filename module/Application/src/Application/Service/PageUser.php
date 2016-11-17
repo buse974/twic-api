@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
+use Application\Model\Page as ModelPage;
 
 class PageUser extends AbstractService
 {
@@ -32,6 +33,7 @@ class PageUser extends AbstractService
         $ret = 0;
         foreach($user_id as $uid){
             // inviter only event
+            $m_page = $this->getServicePage()->getLite($page_id);
             if($state === ModelPageUser::STATE_INVITED) {
                 //$this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
                 //$this->getServiceEvent()->pageNew($sub, $page_id);
@@ -40,14 +42,21 @@ class PageUser extends AbstractService
                     'state' => 'invited',
                     'user' => $uid,
                     'page' => $page_id,
-                    'type' => $this->getServicePage()->getLite($page_id)->getType(),
+                    'type' => $m_page->getType(),
                 ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
                 
             // member only group
             } elseif($state === ModelPageUser::STATE_MEMBER) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
-                $this->getServiceSubscription()->add('EP'.$page_id, $uid);
-                $this->getServiceEvent()->pageUserMember(['SU'.$uid],$page_id);
+                
+                if($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                    $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
+                        'state' => 'member',
+                        'user' => $uid,
+                        'page' => $page_id,
+                        'type' => $m_page->getType(),
+                    ], 'member', ['PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
+                }
             } 
             
             $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
