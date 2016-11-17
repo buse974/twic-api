@@ -33,8 +33,8 @@ class PageUser extends AbstractService
         foreach($user_id as $uid){
             // inviter only event
             if($state === ModelPageUser::STATE_INVITED) {
-                $this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
-                $this->getServiceEvent()->pageNew($sub, $page_id);
+                //$this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
+                //$this->getServiceEvent()->pageNew($sub, $page_id);
                 
                 $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
