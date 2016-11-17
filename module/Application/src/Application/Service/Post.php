@@ -185,7 +185,7 @@ class Post extends AbstractService
     public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,
         $t_user_id = null,$t_course_id = null, $type = null) 
     {
-        if(!is_array($sub)) {
+        if($sub !== null && !is_array($sub)) {
             $sub = [$sub];
         }
 
