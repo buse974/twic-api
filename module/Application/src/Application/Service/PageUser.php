@@ -55,7 +55,7 @@ class PageUser extends AbstractService
                         'user' => $uid,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                    ], 'member', ['PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
+                    ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
                 }
             } 
             
