@@ -85,6 +85,17 @@ class PageUser extends AbstractService
             if($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
                 $this->getServiceSubscription()->add('EP'.$page_id, $user_id);
+                
+                $m_page = $this->getServicePage()->getLite($page_id);
+                if($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                    $this->getServicePost()->addSys('PPM'.$page_id.'_'.$user_id, '', [
+                        'state' => 'member',
+                        'user' => $user_id,
+                        'page' => $page_id,
+                        'type' => $m_page->getType(),
+                    ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
+                }
+                
             }
         }
         
