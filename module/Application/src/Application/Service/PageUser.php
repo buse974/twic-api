@@ -40,6 +40,7 @@ class PageUser extends AbstractService
                     'state' => 'invited',
                     'user' => $uid,
                     'page' => $page_id,
+                    'type' => $this->getServicePage()->getLite($page_id)->getType(),
                 ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
                 
             // member only group
@@ -186,6 +187,16 @@ class PageUser extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
+    }
+    
+    /**
+     * Get Service Post
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
     }
 
 }
