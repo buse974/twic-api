@@ -104,12 +104,13 @@ class Page extends AbstractService
             }
             
             $this->getServiceEvent()->pageNew($sub, $id);
-            $this->getServicePost()->addSys('PP'.$id, 'Sent you a connection request', [
+            $this->getServicePost()->addSys('PP'.$id, '', [
                 'state' => 'create',
-                'own_user' => $user_id,
-                'own_org' => $organization_id,
-                'own_page' => $page_id,
+                'user' => $user_id,
+                'org' => $organization_id,
+                'parent' => $page_id,
                 'page' => $id,
+                'type' => $type,
             ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $organization_id/*org*/, $user_id/*user*/, null/*course*/,'page');
         }
         return $id;
