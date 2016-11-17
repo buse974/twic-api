@@ -34,9 +34,9 @@ class PageUser extends AbstractService
             // inviter only event
             if($state === ModelPageUser::STATE_INVITED) {
                 $this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
-                $this->getServiceEvent()->pageNew($sub, $id);
+                $this->getServiceEvent()->pageNew($sub, $page_id);
                 
-                $this->getServicePost()->addSys('PPM'.$id, '', [
+                $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
                     'user' => $user_id,
                     'page' => $id,
@@ -101,7 +101,12 @@ class PageUser extends AbstractService
             ->setPageId($page_id)
             ->setUserId($user_id);
         
-        return $this->getMapper()->delete($m_page_user);
+        $ret =  $this->getMapper()->delete($m_page_user);
+        if($ret) {
+            $this->getServicePost()->addSys('PPM'.$page_id.'_'.$user_id);
+        }
+        
+        return $ret;
     }
     
     /**

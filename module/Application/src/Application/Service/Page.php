@@ -158,7 +158,7 @@ class Page extends AbstractService
             ->setUserId($user_id)
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
-        
+
         if (null !== $users) {
             $is_present = false;
             foreach ($users as $ar_u) {
