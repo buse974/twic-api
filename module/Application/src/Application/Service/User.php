@@ -855,7 +855,7 @@ class User extends AbstractService
         
         
         if(null !== $avatar) {
-            $this->getServicePost()->addSys('UU'.$id, 'Avatar update', [
+            $this->getServicePost()->addSys('UU'.$id. 'A'.$avatar, 'Avatar update', [
                 'state' => 'update',
                 'user' => $id,
                 'avatar' => $avatar,
