@@ -39,7 +39,7 @@ class PageUser extends AbstractService
                 $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
                     'user' => $user_id,
-                    'page' => $id,
+                    'page' => $page_id,
                 ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
                 
             // member only group
