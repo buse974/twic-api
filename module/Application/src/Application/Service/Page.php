@@ -183,6 +183,27 @@ class Page extends AbstractService
             $this->getServicePageDoc()->replace($id, $docs);
         }
         
+        if($confidentiality !== null) {
+            $tmp_m_post = $this->getMapper()->select($this->getModel()->setId($id));
+            if($tmp_m_post->getConfidentiality() !== $confidentiality) {
+                if($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
+                    $this->getServicePost()->hardDelete( 'PP'.$id);
+                } else if (ModelPage::CONFIDENTIALITY_PUBLIC) {
+                    $this->getServicePost()->addSys('PP'.$id, '', [
+                        'state' => 'create',
+                        'user' => $tmp_m_post->getUserId(),
+                        'org' => $tmp_m_post->getOrganizationId(),
+                        'parent' => $tmp_m_post->getPageId(),
+                        'page' => $id,
+                        'type' => $tmp_m_post->getType(),
+                    ], 'create', null/*sub*/, null/*parent*/, 
+                        $tmp_m_post->getPageId()/*page*/, 
+                        $tmp_m_post->getOrganizationId()/*org*/, 
+                        $tmp_m_post->getUserId()/*user*/, null/*course*/,'page');
+                }
+            }
+        }
+        
         $this->getMapper()->update( $this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
         return $this->getMapper()->update($m_page);
     }
