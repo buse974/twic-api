@@ -159,8 +159,6 @@ class Page extends AbstractService
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
         
-       
-        
         if (null !== $users) {
             $is_present = false;
             foreach ($users as $ar_u) {
@@ -199,10 +197,14 @@ class Page extends AbstractService
      */
     public function delete($id)
     {
-        
         $m_page = $this->getModel()->setId($id)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        return $this->getMapper()->update($m_page);
+        if($this->getMapper()->update($m_page)) {
+            $this->getServicePost()->hardDelete( 'PP'.$id);
+            return true;
+        }
+        
+        return false;
     }
     
       /**
