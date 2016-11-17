@@ -34,6 +34,14 @@ class PageUser extends AbstractService
             // inviter only event
             if($state === ModelPageUser::STATE_INVITED) {
                 $this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
+                $this->getServiceEvent()->pageNew($sub, $id);
+                
+                $this->getServicePost()->addSys('PPM'.$id, '', [
+                    'state' => 'invited',
+                    'user' => $user_id,
+                    'page' => $id,
+                ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
+                
             // member only group
             } elseif($state === ModelPageUser::STATE_MEMBER) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
@@ -163,6 +171,16 @@ class PageUser extends AbstractService
     private function getServiceEvent()
     {
         return $this->container->get('app_service_event');
+    }
+    
+    /**
+     * Get Service Post
+     *
+     * @return \Application\Service\Post
+     */
+    private function getServicePost()
+    {
+        return $this->container->get('app_service_post');
     }
 
 }
