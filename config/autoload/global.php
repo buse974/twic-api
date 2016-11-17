@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.2",
-    'build-commit' => 203,
+    'build-commit' => 205,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -162,9 +162,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS203',
+                    'namespace' => 'LMS205',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS203'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS205'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
