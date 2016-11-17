@@ -46,7 +46,8 @@ class PageUser extends AbstractService
                 ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, null/*user*/, null/*course*/,'page');
                 
             // member only group
-            } elseif($state === ModelPageUser::STATE_MEMBER) {
+            } elseif($state === ModelPageUser::STATE_MEMBER && $m_page->getUserId() !== $user_id) {
+                
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 
                 if($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
