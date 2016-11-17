@@ -186,9 +186,9 @@ class Page extends AbstractService
         if($confidentiality !== null) {
             $tmp_m_post = $this->getMapper()->select($this->getModel()->setId($id))->current();
             if($tmp_m_post->getConfidentiality() !== $confidentiality) {
-                if($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
+                if($confidentiality === ModelPage::CONFIDENTIALITY_PRIVATE) {
                     $this->getServicePost()->hardDelete( 'PP'.$id);
-                } else if (ModelPage::CONFIDENTIALITY_PUBLIC) {
+                } else if ($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC) {
                     $this->getServicePost()->addSys('PP'.$id, '', [
                         'state' => 'create',
                         'user' => $tmp_m_post->getUserId(),
