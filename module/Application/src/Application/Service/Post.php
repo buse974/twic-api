@@ -257,6 +257,10 @@ class Post extends AbstractService
         
         $w = ($uid !== null) ?  ['uid' => $uid] : ['id' => $id, 'user_id' => $user_id];
         
+        if(!empty($data) && !is_string($data)) {
+            $data = json_encode($data);
+        }
+        
         $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
         $event = (is_string($event) && !empty($event)) ? $event:false;
         $is_notif = ($uid && $event);
