@@ -48,13 +48,12 @@ class Post extends AbstractService
      * @param string $uid
      * @param array $sub
      * @param string $type
-     * @param string $data
      * 
      * @return \Application\Model\Post
      */
     public function add($content = null, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  
         $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, 
-        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null, $data = null)
+        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $origin_id = null;
