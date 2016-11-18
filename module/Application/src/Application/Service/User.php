@@ -670,7 +670,7 @@ class User extends AbstractService
         
         $ret = [];
         foreach ($res_user as $m_user) {
-            $ret = $m_user->getId();
+            $ret[] = $m_user->getId();
         }
         
         return $ret;
