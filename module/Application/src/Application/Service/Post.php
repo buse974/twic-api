@@ -393,7 +393,7 @@ class Post extends AbstractService
             $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
 
             if(is_string($m_post->getData())) {
-                $m_p_s->setData(json_decode($m_post->getData(), true));
+                $m_post->setData(json_decode($m_post->getData(), true));
             }
         }
         
@@ -435,7 +435,7 @@ class Post extends AbstractService
             $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
             
             if(is_string($m_post->getData())) {
-                $m_p_s->setData(json_decode($m_post->getData(), true));
+                $m_post->setData(json_decode($m_post->getData(), true));
             }
         }
         
@@ -466,14 +466,11 @@ class Post extends AbstractService
             foreach ($res_posts as $m_post) {
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
                 $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
+                $m_post->setSubscription($this->getServicePostSubscription()->getLast($m_post->getId()));
                 
-                $m_p_s = $this->getServicePostSubscription()->getLast($m_post->getId());
-                
-                if($m_p_s instanceof PostSubscription && is_string($m_p_s->getData())) {
-                    $m_p_s->setData(json_decode($m_p_s->getData(), true));
+                if(is_string($m_post->getData())) {
+                    $m_post->setData(json_decode($m_post->getData(), true));
                 }
-                $m_post->setSubscription($m_p_s);
-                
             }
         }
         
