@@ -48,12 +48,13 @@ class Post extends AbstractService
      * @param string $uid
      * @param array $sub
      * @param string $type
+     * @param string $data
      * 
      * @return \Application\Model\Post
      */
     public function add($content = null, $picture = null,  $name_picture = null, $link = null, $link_title = null,  $link_desc = null, $parent_id = null,  
         $t_page_id = null,  $t_organization_id = null,  $t_user_id = null,  $t_course_id = null, $page_id = null, $organization_id = null, $lat =null, 
-        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null)
+        $lng = null ,$docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null, $data = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $origin_id = null;
@@ -98,7 +99,8 @@ class Post extends AbstractService
             ->setTUserId($t_user_id)
             ->setTCourseId($t_course_id)
             ->setUid($uid)
-            ->setType($type);
+            ->setType($type)
+            ->setData($data);
         
         if($this->getMapper()->insert($m_post) <= 0) {
             throw new \Exception('error add post');
@@ -192,9 +194,9 @@ class Post extends AbstractService
         $res_post = $this->getMapper()->select($this->getModel()->setUid($uid));
         
         return ($res_post->count() > 0) ?
-            $this->updateSys($uid, $content, $data, $event) :
+            $this->updateSys($uid, $content, $data, $event) : 
             $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, 
-            $data, $event, $uid, $sub, $type);
+            $data, $event, $uid, $sub, $type, $data);
     }
     
     /**
@@ -264,6 +266,7 @@ class Post extends AbstractService
             ->setLinkDesc(($link_desc==='')?new IsNull():$link_desc)
             ->setLat($lat)
             ->setLng($lng)
+            ->setData($data)
             ->setUpdatedDate($date);
         
         if(null !== $docs) {

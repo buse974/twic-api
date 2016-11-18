@@ -43,7 +43,7 @@ class PostSubscription extends AbstractService
             ->setAction($action)
             ->setUserId($user_id)
             ->setSubPostId($sub_post_id)
-            ->setData($data)
+            //->setData($data)
             ->setLastDate($last_date);
         
         foreach ($libelle as $l) { 

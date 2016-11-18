@@ -851,9 +851,6 @@ class User extends AbstractService
         // on supprime son cache identity pour qu'a ca prochaine cannection il el recré.
         $this->deleteCachedIdentityOfUser($id);
         
-        
-        
-        
         if(null !== $avatar) {
             $this->getServicePost()->addSys('UU'.$id. 'A'.$avatar, 'Avatar update', [
                 'state' => 'update',

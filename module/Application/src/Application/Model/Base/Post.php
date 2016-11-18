@@ -29,6 +29,7 @@ class Post extends AbstractModel
 	protected $lng;
 	protected $uid;
 	protected $type;
+	protected $data;
 
 	protected $prefix = 'post';
 
@@ -304,6 +305,18 @@ class Post extends AbstractModel
 	public function setType($type)
 	{
 		$this->type = $type;
+
+		return $this;
+	}
+
+	public function getData()
+	{
+		return $this->data;
+	}
+
+	public function setData($data)
+	{
+		$this->data = $data;
 
 		return $this;
 	}
