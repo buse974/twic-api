@@ -685,7 +685,7 @@ class User extends AbstractService
      */
     public function getListIdInstructorAndAcademicByItem($item_id)
     {
-        $res_user =  $this->getMapper()->getListIdInstructorAndAcademicByItem($item_id);
+        $res_user =  $this->getMapper()->getListInstructorAndAcademicByItem($item_id);
     
         $ret = [];
         foreach ($res_user as $m_user) {
