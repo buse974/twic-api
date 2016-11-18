@@ -674,7 +674,7 @@ class Submission extends AbstractService
         }
         
         if ($submit === 1) {
-            $instructors_id = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
+            $instructors_id = $this->getServiceUser()->getListIdInstructorAndAcademicByItem($m_item->getId());
             
             $miid = [];
             foreach ($instructors_id as $instructor_id) {
@@ -686,11 +686,13 @@ class Submission extends AbstractService
                'submission' => $submission_id,
                'course' => $m_item->getCourseId(),
                'item' => $m_item->getId(),
-            ], 'submit', $miid/*sub*/, null/*parent*/,
+            ], 'submit', $miid/*sub*/, 
+                null/*parent*/,
                 null/*page*/,
                 null/*org*/,
                 null/*user*/, 
-                $m_item->getCourseId()/*course*/,'submission');
+                $m_item->getCourseId()/*course*/,
+                'submission');
 
             $m_opt_grading = $this->getServiceOptGrading()->get($m_item->getId());
             if ($m_opt_grading && $m_opt_grading->getHasPg()) {

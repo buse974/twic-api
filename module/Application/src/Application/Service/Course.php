@@ -124,7 +124,7 @@ class Course extends AbstractService
             $l = 'CC'.$id;
             $this->getServicePost()->addSys($l, '', [
                 'state' => 'published',
-                'course_id' => $id,
+                'course' => $id,
             ],  'published', null, null, null, null, null, $id ,'course');
         }
         

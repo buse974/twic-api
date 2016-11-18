@@ -490,8 +490,21 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
-
     
+    public function getListInstructorAndAcademicByItem($item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar'])
+            ->join('user_role', 'user_role.user_id=user.id', ['role$id' => 'role_id'])
+            ->join('course_user_relation', 'course_user_relation.user_id=user.id', [])
+            ->join('item', 'item.course_id=course_user_relation.course_id', [])
+            ->where(['item.id' => $item_id])
+            ->where([' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_ACADEMIC_ID])
+            ->where(['  user_role.role_id = ? ) ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID], Predicate::OP_OR);
+        
+        return $this->selectWith($select);
+    }
+
     public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
