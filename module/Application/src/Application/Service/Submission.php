@@ -684,6 +684,7 @@ class Submission extends AbstractService
             $this->getServicePost()->addSys('SS'.$submission_id, '', [
                'state' => 'submit',
                'submission' => $submission_id,
+               'course' => $m_item->getCourseId(),
                'item' => $m_item->getId(),
             ], 'submit', $miid/*sub*/, null/*parent*/,
                 null/*page*/,
