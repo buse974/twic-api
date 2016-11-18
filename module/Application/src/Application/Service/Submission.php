@@ -681,7 +681,7 @@ class Submission extends AbstractService
                 $miid[] = 'M'.$instructor_id;
             }
             
-            $this->getServicePost()->addSys('SS'.$id, '', [
+            $this->getServicePost()->addSys('SS'.$submission_id, '', [
                'state' => 'submit',
                'submission' => $submission_id,
                'item' => $m_item->getId(),
