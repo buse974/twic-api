@@ -59,7 +59,81 @@ class User extends AbstractService
         
         return $identity;
     }
+    
 
+    /**
+     * delete language to user.
+     *
+     * @invokable
+     *
+     * @param int $id
+     *
+     * @return int
+     */
+    public function deleteLanguage($id)
+    {
+        return $this->getServiceUserLanguage()->delete($id);
+    }
+    
+    /**
+     * Get Number users by school.
+     *
+     * @param int $school_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function nbrBySchool($school_id)
+    {
+        return $this->getMapper()->nbrBySchool($school_id);
+    }
+    
+    ////////////////// EXTERNAL METHODE ///////////////////
+    
+    /**
+     * Log In User.
+     *
+     * @invokable
+     *
+     * @param int $user
+     * @param int $password
+     * @throws JrpcException
+     * @return array
+     */
+    public function auth($user, $password)
+    {
+        $auth = $this->getServiceAuth();
+        $auth->getAdapter()->setIdentity($user);
+        $auth->getAdapter()->setCredential($password);
+    
+        $result = $auth->authenticate();
+        if (! $result->isValid()) {
+            throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
+        }
+    
+        return $this->getIdentity(true, true);
+    }
+    
+    /**
+     * Add User
+     *
+     * @invokable
+     *
+     * @param string $email
+     * @param string $firstname
+     * @param string $lastname
+     * @param string $uid
+     * @param string $role
+     * @return int
+     */
+    public function create($email, $firstname, $lastname, $uid, $role = null)
+    {
+        $id = $this->add($firstname, $lastname, $email, null, null, null, $uid, null, null, null, null, null, null, $role);
+    
+        return $this->get($id);
+    }
+
+    ////////////////// EXTERNAL METHODE ///////////////////
+    
     /**
      * @invokable
      *
@@ -78,18 +152,6 @@ class User extends AbstractService
     public function unregisterGcm($token = null, $uuid = null)
     {
         $this->getServiceGcmGroup()->delete($uuid, $token);
-    }
-    
-    /**
-     * Get List User By Group.
-     *
-     * @param int $group_id            
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUsersByGroup($group_id)
-    {
-        return $this->getMapper()->getListUsersByGroup($group_id);
     }
 
     /**
@@ -1385,76 +1447,17 @@ class User extends AbstractService
     }
 
     /**
-     * delete language to user.
+     * Get List User By Group.
      *
-     * @invokable
-     *
-     * @param int $id            
-     *
-     * @return int
-     */
-    public function deleteLanguage($id)
-    {
-        return $this->getServiceUserLanguage()->delete($id);
-    }
-
-    /**
-     * Get Number users by school.
-     *
-     * @param int $school_id            
+     * @param int $group_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function nbrBySchool($school_id)
+    public function getListUsersByGroup($group_id)
     {
-        return $this->getMapper()->nbrBySchool($school_id);
+        return $this->getMapper()->getListUsersByGroup($group_id);
     }
     
-    // //////////////// EXTERNAL METHODE ///////////////////
-    
-    /**
-     * Log In User.
-     *
-     * @invokable
-     *
-     * @param int $user            
-     * @param int $password            
-     * @throws JrpcException
-     * @return array
-     */
-    public function auth($user, $password)
-    {
-        $auth = $this->getServiceAuth();
-        $auth->getAdapter()->setIdentity($user);
-        $auth->getAdapter()->setCredential($password);
-        
-        $result = $auth->authenticate();
-        if (! $result->isValid()) {
-            throw new JrpcException($result->getMessages()[0], $result->getCode()['code']);
-        }
-        
-        return $this->getIdentity(true, true);
-    }
-
-    /**
-     * Add User
-     *
-     * @invokable
-     *
-     * @param string $email            
-     * @param string $firstname            
-     * @param string $lastname            
-     * @param string $uid            
-     * @param string $role            
-     * @return int
-     */
-    public function create($email, $firstname, $lastname, $uid, $role = null)
-    {
-        $id = $this->add($firstname, $lastname, $email, null, null, null, $uid, null, null, null, null, null, null, $role);
-        
-        return $this->get($id);
-    }
-
     /**
      * Get Service Post
      *

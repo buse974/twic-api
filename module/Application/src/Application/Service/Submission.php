@@ -674,7 +674,7 @@ class Submission extends AbstractService
         }
         
         if ($submit === 1) {
-            $instructors_id = $this->getServiceUser()->getListIdInstructorByItem($item_id);
+            $instructors_id = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
             
             $miid = [];
             foreach ($instructors_id as $instructor_id) {
