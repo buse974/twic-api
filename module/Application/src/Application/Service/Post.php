@@ -150,6 +150,9 @@ class Post extends AbstractService
             if(!$is_private_page &&  !$is_notif) {
                 $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post)]);
             }
+            
+            $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
+            
             // SI NOTIF ET QUE LE PARENT N'A PAS DE TARGET ON RECUPERE TTES LES SUBSCRIPTIONS
             if($is_notif && null === $sub && $et === false) {
                 $sub = $this->getServicePostSubscription()->getListLibelle($origin_id);
@@ -429,7 +432,6 @@ class Post extends AbstractService
     public function m_get($id)
     {
         $res_post = $this->_get($id, true);
-        
         foreach ($res_post as $m_post) {
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
             $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
