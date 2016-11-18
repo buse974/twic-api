@@ -592,9 +592,28 @@ class User extends AbstractService
      */
     public function getInstructorByItem($item_id)
     {
-        return $this->getMapper()->getInstructorByItem($item_id);
+        return $this->getMapper()->getListInstructorByItem($item_id);
     }
 
+    /**
+     * Get List Id Intructor By Item.
+     *
+     * @param int $item_id
+     *
+     * @return int[]
+     */
+    public function getListIdInstructorByItem($item_id)
+    {
+        $res_user =  $this->getMapper()->getListInstructorByItem($item_id);
+        
+        $ret = [];
+        foreach ($res_user as $m_user) {
+            $ret = $m_user->getId();
+        }
+        
+        return $ret;
+    }
+    
     /**
      * Get List Contact.
      *

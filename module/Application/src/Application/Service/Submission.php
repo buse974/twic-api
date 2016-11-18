@@ -674,7 +674,23 @@ class Submission extends AbstractService
         }
         
         if ($submit === 1) {
-            $this->getServiceEvent()->endSubmit($submission_id);
+            $instructors_id = $this->getServiceUser()->getListIdInstructorByItem($item_id);
+            
+            $miid = [];
+            foreach ($instructors_id as $instructor_id) {
+                $miid[] = 'M'.$instructor_id;
+            }
+            
+            $this->getServicePost()->addSys('SS'.$id, '', [
+               'state' => 'submit',
+               'submission' => $submission_id,
+               'item' => $m_item->getId(),
+            ], 'submit', $miid/*sub*/, null/*parent*/,
+                null/*page*/,
+                null/*org*/,
+                null/*user*/, 
+                $m_item->getCourseId()/*course*/,'submission');
+
             $m_opt_grading = $this->getServiceOptGrading()->get($m_item->getId());
             if ($m_opt_grading && $m_opt_grading->getHasPg()) {
                 $this->getServiceEvent()->pgAssigned($submission_id);
@@ -1220,5 +1236,15 @@ class Submission extends AbstractService
     private function getServiceSubmissionPg()
     {
         return $this->container->get('app_service_submission_pg');
+    }
+    
+    /**
+     * Get Service Post
+     *
+     * @return \Application\Service\Post
+     */
+    private function getServicePost()
+    {
+        return $this->container->get('app_service_post');
     }
 }

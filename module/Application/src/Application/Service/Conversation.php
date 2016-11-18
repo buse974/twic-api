@@ -171,7 +171,7 @@ class Conversation extends AbstractService
          */
         $has_joined = false;
         $identity = $this->getServiceUser()->getIdentity();
-        if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
+        if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
             $res_user = $this->getServiceUser()->getListByConversation($id);
             $is_present = false;
             foreach ($res_user as $m_user) {

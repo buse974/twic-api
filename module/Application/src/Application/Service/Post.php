@@ -132,10 +132,10 @@ class Post extends AbstractService
             $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
         }
             
-        
-        // S'IL Y A UNE CIBLE A LA BASE ON NOTIFIE
         $et = $this->getTarget($m_post_base);
-        if(false !== $et) {
+        
+        // S'IL Y A UNE CIBLE A LA BASE ET que l'on a pas definie d'abonnement ON NOTIFIE  P{target}nbr
+        if(false !== $et && empty($sub)) {
             $pevent = array_merge($pevent, ['P'.$et]);
         }
         
