@@ -1004,7 +1004,7 @@ class Submission extends AbstractService
             $miid[] = 'M'.$u_id;
         }
         
-        $this->getServicePost()->addSys('SS'.$submission_id, '', [
+        $this->getServicePost()->addSys('SS'.$id, '', [
             'state' => 'comment',
             'submission' => $id,
             'user' => $me,
