@@ -1001,7 +1001,6 @@ class Submission extends AbstractService
             $miid[] = 'M'.$instructor_id;
         }
         
-        
         if(!is_numeric($post_id)) {
             $m_post = $this->getServicePost()->addSys('SS'.$id, '', [
                 'state' => 'com',

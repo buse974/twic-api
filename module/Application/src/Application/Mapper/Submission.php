@@ -115,6 +115,7 @@ class Submission extends AbstractMapper
             'group_id',
             'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
             'is_graded',
+            'post_id',
             'submission$nbr_comments' => $this->getSelectNbrComments(),
         ])
             ->join('submission_user', 'submission_user.submission_id=submission.id', [])
