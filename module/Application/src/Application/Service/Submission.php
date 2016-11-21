@@ -993,6 +993,15 @@ class Submission extends AbstractService
         $post_id = $this->getBySubmission($id)->getPostId();
         $m_item = $this->getServiceItem()->getBySubmission($id);
         
+        $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
+        $m_user = $this->getServiceUser()->getListIdBySubmission($id);
+        
+        $miid = [];
+        foreach (array_merge($m_inst, $m_user) as $instructor_id) {
+            $miid[] = 'M'.$instructor_id;
+        }
+        
+        
         if(!is_numeric($post_id)) {
             $m_post = $this->getServicePost()->addSys('SS'.$id, '', [
                 'state' => 'com',
