@@ -147,28 +147,6 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListUsersBySubmission($submission_id)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(['user$id' => new Expression('user.id'),
-            'firstname',
-            'gender',
-            'lastname',
-            'nickname',
-            'email',
-            'has_email_notifier',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
-            'position',
-            'interest',
-            'avatar',
-            'school_id',
-        ])
-        ->join('submission_user', 'submission_user.user_id=user.id', array())
-        ->where(array('submission_user.submission_id' => $submission_id));
-
-        return $this->selectWith($select);
-    }
-
     public function get($user, $me)
     {
         $columns = array(
@@ -448,13 +426,15 @@ class User extends AbstractMapper
     public function getListBySubmission($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
+        $select->columns(['id', 'firstname', 'lastname', 'gender','nickname', 'avatar', 'email', 'has_email_notifier', 
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'school_id'])
             ->join('submission_user', 'submission_user.user_id=user.id', [])
-            ->where(array('submission_user.submission_id' => $submission_id));
+            ->where(['submission_user.submission_id' => $submission_id]);
 
         return $this->selectWith($select);
     }
 
+    
     public function getListByItem($item_id)
     {
         $select = $this->tableGateway->getSql()->select();

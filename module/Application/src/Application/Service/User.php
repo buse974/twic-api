@@ -505,17 +505,6 @@ class User extends AbstractService
     }
 
     /**
-     * Get List User By Submission
-     *
-     * @param int $submission_id   
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUsersBySubmission($submission_id)
-    {
-        return $this->getMapper()->getListUsersBySubmission($submission_id);
-    }
-
-    /**
      * Get List User By Item.
      *
      * @invokable
@@ -1388,7 +1377,36 @@ class User extends AbstractService
     {
         return $this->getMapper()->getListBySubmission($submission_id);
     }
+    
+    /**
+     * Get List.
+     *
+     * @param int $submission_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListIdBySubmission($submission_id)
+    {
+        $res_user = $this->getMapper()->getListBySubmission($submission_id);
+        $ret = [];
+        foreach ($res_user as $m_user) {
+            $ret[] = $m_user->getId();
+        }
+        
+        return $ret;
+    }
 
+    /**
+     * Get List User By Submission
+     *
+     * @param int $submission_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListUsersBySubmission($submission_id)
+    {
+        return $this->getMapper()->getListBySubmission($submission_id);
+    }
+    
     /**
      * Get user list for submission and those available.
      *

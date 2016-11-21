@@ -994,6 +994,30 @@ class Submission extends AbstractService
         $me = $this->getServiceUser()->getIdentity()['id'];
         
         $m_submission_comments = $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
+        
+        $m_item = $this->getServiceItem()->getBySubmission($id);
+        $student_id = $this->getServiceUser()->getListIdBySubmission($id);
+        $instructors_id = $this->getServiceUser()->getListIdInstructorAndAcademicByItem($m_item->getId());
+        
+        $miid = [];
+        foreach (array_merge($student_id, $instructors_id) as $u_id) {
+            $miid[] = 'M'.$u_id;
+        }
+        
+        $this->getServicePost()->addSys('SS'.$submission_id, '', [
+            'state' => 'comment',
+            'submission' => $id,
+            'user' => $me,
+            'course' => $m_item->getCourseId(),
+            'item' => $m_item->getId()
+        ], 'comment', $miid/*sub*/,
+            null/*parent*/,
+            null/*page*/,
+            null/*org*/,
+            null/*user*/,
+            $m_item->getCourseId()/*course*/,
+            'submission');
+        
         $this->getServiceEvent()->submissionCommented($id, $m_submission_comments->getId());
         
         return ['submission_id' => $id,'comment' => $m_submission_comments];
