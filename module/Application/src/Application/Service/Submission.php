@@ -974,14 +974,11 @@ class Submission extends AbstractService
     }
 
     /**
-     * Add Comment.
+     * Add Comment
      *
      * @invokable
      *
-     * @param int $id            
-     * @param int $group            
-     * @param int $user            
-     * @param int $item            
+     * @param int $id        
      * @param string $file_name            
      * @param string $file_token            
      * @param string $audio            
@@ -989,38 +986,35 @@ class Submission extends AbstractService
      *
      * @return []
      */
-    public function addComment($id, $group = null, $user = null, $item = null, $file_name = null, $file_token = null, $audio = null, $text = null)
+    public function addComment($id, $file_name = null, $file_token = null, $audio = null, $text = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         
-        $m_submission_comments = $this->getServiceSubmissionComments()->add($id, $me, $file_name, $file_token, $audio, $text);
-        
+        $post_id = $this->getBySubmission($id)->getPostId();
         $m_item = $this->getServiceItem()->getBySubmission($id);
-        $student_id = $this->getServiceUser()->getListIdBySubmission($id);
-        $instructors_id = $this->getServiceUser()->getListIdInstructorAndAcademicByItem($m_item->getId());
         
-        $miid = [];
-        foreach (array_merge($student_id, $instructors_id) as $u_id) {
-            $miid[] = 'M'.$u_id;
+        if(!is_numeric($post_id)) {
+            $m_post = $this->getServicePost()->addSys('SS'.$id, '', [
+                'state' => 'com',
+                'submission' => $id,
+                'user' => $me,
+                'course' => $m_item->getCourseId(),
+                'item' => $m_item->getId()
+            ], 'create', $miid/*sub*/,
+                null/*parent*/,
+                null/*page*/,
+                null/*org*/,
+                null/*user*/,
+                $m_item->getCourseId()/*course*/,
+                'submission');
+            
+            $post_id = $m_post->getId();
+            $this->getMapper()->update($this->getModel()->setId($id)->setPostId($post_id));
         }
         
-        $this->getServicePost()->addSys('SS'.$id, '', [
-            'state' => 'com',
-            'submission' => $id,
-            'user' => $me,
-            'course' => $m_item->getCourseId(),
-            'item' => $m_item->getId()
-        ], 'com', $miid/*sub*/,
-            null/*parent*/,
-            null/*page*/,
-            null/*org*/,
-            null/*user*/,
-            $m_item->getCourseId()/*course*/,
-            'submission');
-        
-        $this->getServiceEvent()->submissionCommented($id, $m_submission_comments->getId());
-        
-        return ['submission_id' => $id,'comment' => $m_submission_comments];
+        $m_post = $this->getServicePost()->add($text, null, null, null,null,null, $post_id);
+
+        return ['submission_id' => $id,'post' => $m_post];
     }
 
     /**
@@ -1255,6 +1249,16 @@ class Submission extends AbstractService
         return $this->container->get('app_service_whiteboard');
     }
 
+    /**
+     * Get Service SubmissionPg.
+     *
+     * @return \Application\Service\Submission
+     */
+    private function getServiceSubmission()
+    {
+        return $this->container->get('app_service_submission');
+    }
+    
     /**
      * Get Service SubmissionPg.
      *

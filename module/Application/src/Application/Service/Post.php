@@ -178,6 +178,7 @@ class Post extends AbstractService
     }
 
     /**
+     * Add Sys 
      * 
      * @param string $uid
      * @param string $content
@@ -189,6 +190,8 @@ class Post extends AbstractService
      * @param int $t_organization_id
      * @param int $t_user_id
      * @param int $t_course_id
+     * 
+     * @return \Application\Model\Post
      */
     public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,$t_organization_id = null,
         $t_user_id = null,$t_course_id = null, $type = null) 
