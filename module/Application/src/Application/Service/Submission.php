@@ -1028,7 +1028,11 @@ class Submission extends AbstractService
      */
     public function getComments($id = null)
     {
-        return $this->getServiceSubmissionComments()->getList($id);
+        $m_submission = $this->get(null, $id);
+        $post_id = $m_submission->getPostId();
+        
+        return (is_numeric($post_id)) ?
+            $this->getServicePost()->getList(null,null,null,null,null,$post_id) : false;
     }
 
     /**
