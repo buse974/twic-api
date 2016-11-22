@@ -103,7 +103,6 @@ class SubmissionUser extends AbstractService
         $grade = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
         if ($grade) {
             
-            
             $m_item = $this->getServiceItem()->getBySubmission($submission_id);
             $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
             $m_user = $this->getServiceUser()->getListIdBySubmission($id);
@@ -317,6 +316,16 @@ class SubmissionUser extends AbstractService
     private function getServiceEvent()
     {
         return $this->container->get('app_service_event');
+    }
+    
+    /**
+     * Get Service Item.
+     *
+     * @return \Application\Service\Item
+     */
+    private function getServiceItem()
+    {
+        return $this->container->get('app_service_item');
     }
     
     /**
