@@ -100,6 +100,26 @@ class VideoArchive extends AbstractService
     }
 
     /**
+     * Update Status Video.
+     *
+     * @param string $token
+     * @param string $status
+     * @param int    $duration
+     * @param string $link
+     *
+     * @return int
+     */
+    public function updateByArchiveToken($archive_token, $status, $duration = null, $link = null)
+    {
+        $m_video_archive = $this->getModel();
+        $m_video_archive->setArchiveDuration($duration)
+        ->setArchiveStatus($status)
+        ->setArchiveLink($link);
+    
+        return $this->getMapper()->update($m_video_archive, ['archive_token' => $archive_token]);
+    }
+    
+    /**
      * Valide the video transfer
      * 
      * @param array $json
@@ -120,7 +140,6 @@ class VideoArchive extends AbstractService
                 }
                 
                 $m_item = $this->getServiceItem()->get($item_id);
-
                 $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
                 $m_user = $this->getServiceUser()->getListIdByConversation($m_conversation->getId());
                 
@@ -145,26 +164,6 @@ class VideoArchive extends AbstractService
         }
         
         return $ret;
-    }
-    
-    /**
-     * Update Status Video.
-     *
-     * @param string $token
-     * @param string $status
-     * @param int    $duration
-     * @param string $link
-     *
-     * @return int
-     */
-    public function updateByArchiveToken($archive_token, $status, $duration = null, $link = null)
-    {
-        $m_video_archive = $this->getModel();
-        $m_video_archive->setArchiveDuration($duration)
-        ->setArchiveStatus($status)
-        ->setArchiveLink($link);
-    
-        return $this->getMapper()->update($m_video_archive, ['archive_token' => $archive_token]);
     }
     
     /**
