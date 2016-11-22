@@ -99,9 +99,31 @@ class SubmissionUser extends AbstractService
             $grade = 0;
         }
 
+        
         $grade = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
         if ($grade) {
-            $this->getServiceEvent()->submissionGraded($submission_id, [$user_id]);
+            
+            
+            $m_item = $this->getServiceItem()->getBySubmission($submission_id);
+            $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
+            $m_user = $this->getServiceUser()->getListIdBySubmission($id);
+            $miid = [];
+            foreach (array_merge($m_inst, $m_user) as $instructor_id) {
+                $miid[] = 'M'.$instructor_id;
+            }
+            
+            $this->getServicePost()->addSys('SS'.$submission_id, '', [
+                'state' => 'grade',
+                'submission' => $submission_id,
+                'course' => $m_item->getCourseId(),
+                'item' => $m_item->getId(),
+            ], 'grade', $miid/*sub*/,
+                null/*parent*/,
+                null/*page*/,
+                null/*org*/,
+                null/*user*/,
+                $m_item->getCourseId()/*course*/,
+                'submission');
         }
 
         return $grade;
@@ -295,5 +317,15 @@ class SubmissionUser extends AbstractService
     private function getServiceEvent()
     {
         return $this->container->get('app_service_event');
+    }
+    
+    /**
+     * Get Service Post
+     *
+     * @return \Application\Service\Post
+     */
+    private function getServicePost()
+    {
+        return $this->container->get('app_service_post');
     }
 }
