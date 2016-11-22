@@ -116,6 +116,7 @@ class SubmissionUser extends AbstractService
                 'submission' => $submission_id,
                 'course' => $m_item->getCourseId(),
                 'item' => $m_item->getId(),
+                'grade' => $grade
             ], 'grade', $miid/*sub*/,
                 null/*parent*/,
                 null/*page*/,
