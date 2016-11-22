@@ -105,7 +105,7 @@ class SubmissionUser extends AbstractService
             
             $m_item = $this->getServiceItem()->getBySubmission($submission_id);
             $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
-            $m_user = $this->getServiceUser()->getListIdBySubmission($id);
+            $m_user = $this->getServiceUser()->getListIdBySubmission($submission_id);
             $miid = [];
             foreach (array_merge($m_inst, $m_user) as $instructor_id) {
                 $miid[] = 'M'.$instructor_id;
