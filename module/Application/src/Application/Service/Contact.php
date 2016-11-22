@@ -149,7 +149,6 @@ class Contact extends AbstractService
         $this->getServiceSubscription()->add('EU'.$user, $user_id);
         $this->getServiceSubscription()->add('PU'.$user_id, $user);
         $this->getServiceSubscription()->add('EU'.$user_id, $user);
-        $this->getServiceEvent()->userAddConnection($user_id, $user);
 
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";

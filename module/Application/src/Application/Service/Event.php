@@ -202,11 +202,21 @@ class Event extends AbstractService
      * @param array $sub
      * @return number
      */
-    public function userPublication($sub, $post_id)
+    public function userPublication($sub, $post_id, $type = null, $ev = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-    
-        return $this->create('user.publication', $this->getDataUser(), $this->getDataPost($post_id), $sub, self::TARGET_TYPE_USER, $user_id);
+        $data_post = $this->getDataPost($post_id);
+        
+        if (null === $type) {
+            'user.publication';
+        } else {
+            $event = $type;
+            if(null !== $ev) {
+                $event = '.'.$ev;
+            }
+        }
+        
+        return $this->create($event, $this->getDataUser(), $data_post, $sub, self::TARGET_TYPE_USER, $user_id);
     }
     
     /**
@@ -649,22 +659,23 @@ class Event extends AbstractService
      */
     private function getDataPost($post_id)
     {
-        $ar_post = $this->getServicePost()->get($post_id)->toArray();
-    
+        $m_post = $this->getServicePost()->get($post_id);
+
         return [
-            'id' => $ar_post['id'],
+            'id' => $m_post->getId(),
             'name' => 'post',
             'data' => [
-                'id' =>  $ar_post['id'],
-                'content' => $ar_post['content'],
-                'picture' => $ar_post['picture'],
-                'name_picture' => $ar_post['name_picture'],
-                'link' => $ar_post['link'],
-                't_organization_id' => $ar_post['t_organization_id'],
-                't_page_id' => $ar_post['t_page_id'],
-                't_user_id' => $ar_post['t_user_id'],
-                't_course_id' => $ar_post['t_course_id'],
-                'parent_id' => $ar_post['parent_id']
+                'id' =>  $m_post->getId(),
+                'content' => $m_post->getContent(),
+                'picture' => $m_post->getPicture(),
+                'name_picture' => $m_post->getNamePicture(),
+                'link' => $m_post->getLink(),
+                't_organization_id' => $m_post->getTOrganizationId(),
+                't_page_id' => $m_post->getTPageId(),
+                't_user_id' => $m_post->getTUserId(),
+                't_course_id' => $m_post->getTCourseId(),
+                'parent_id' => $m_post->getParentId(),
+                'type' => $m_post->getType(),
             ]
         ];
     }
