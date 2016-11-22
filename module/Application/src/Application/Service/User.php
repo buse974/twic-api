@@ -408,7 +408,8 @@ class User extends AbstractService
         }
         
         if (empty($password)) {
-            $cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
+            //$cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
+            $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             $long = strlen($cars);
             srand((double) microtime() * 1000000);
             $password = '';
@@ -1082,7 +1083,8 @@ class User extends AbstractService
             $id = [$id];
         }
         
-        $cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
+        //$cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
+        $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $long = strlen($cars);
         
         foreach ($id as $uid) {
@@ -1457,6 +1459,25 @@ class User extends AbstractService
         }
         
         return $res_user;
+    }
+    
+    /**
+     * Get List Id user By conversation
+     *
+     * @invokable
+     *
+     * @param int $conversation_id
+     * @return int[]
+     */
+    public function getListIdByConversation($conversation_id)
+    {
+        $res_user = $this->getMapper()->getListByConversation($conversation_id);
+        $ret = [];
+        foreach ($res_user as $m_user) {
+            $ret[] = $m_user->getId();
+        }
+    
+        return $ret;
     }
 
     /**

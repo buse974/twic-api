@@ -208,7 +208,7 @@ class Event extends AbstractService
         $data_post = $this->getDataPost($post_id);
         
         if (null === $type) {
-            'user.publication';
+            $event = 'user.publication';
         } else {
             $event = $type;
             if(null !== $ev) {
