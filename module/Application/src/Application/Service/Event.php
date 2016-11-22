@@ -313,7 +313,7 @@ class Event extends AbstractService
             $to = [$to];
         }
         foreach ($to as $tt) {
-            $ttto[] = 'SU'.$tt;
+            $ttto[] = 'M'.$tt;
         }
         $from = $this->getDataUser();
         $ret = $this->create('message.new', $from, $this->getDataMessage($message_id), $ttto, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
