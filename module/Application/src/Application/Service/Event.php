@@ -212,7 +212,7 @@ class Event extends AbstractService
         } else {
             $event = $type;
             if(null !== $ev) {
-                $event = '.'.$ev;
+                $event .= '.'.$ev;
             }
         }
         
