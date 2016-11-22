@@ -81,6 +81,10 @@ class Post extends AbstractService
             $data = json_encode($data);
         }
         
+        if(null !== $parent_id) {
+            $uid = null;
+        }
+        
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post = $this->getModel()
             ->setContent($content)

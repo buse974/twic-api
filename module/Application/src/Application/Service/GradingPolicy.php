@@ -140,13 +140,11 @@ class GradingPolicy extends AbstractService
      *
      * @param int $submission_id
      *
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return \Application\Model\GradingPolicy
      */
     public function getBySubmission($submission_id)
     {
-        $m_grading_policy = $this->getMapper()
-            ->getBySubmission($submission_id)
-            ->current();
+        $m_grading_policy = $this->getMapper()->getBySubmission($submission_id)->current();
         $m_grading_policy->setCriterias($this->getServiceCriteria()
             ->getList($m_grading_policy->getId()));
 
