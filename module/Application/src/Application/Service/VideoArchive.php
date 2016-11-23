@@ -125,7 +125,7 @@ class VideoArchive extends AbstractService
      * @param array $json
      */
     public function checkStatus($json)
-    {
+    {    
         $ret = false;
         if($json['status'] == 'uploaded') {
             $ret = $this->updateByArchiveToken($json['id'], CVF::ARV_AVAILABLE, null, $json['link']);

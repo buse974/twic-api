@@ -17,8 +17,9 @@ return [
     'controller_plugins' => [
         'factories' => [
             'conf' => ConfFactory::class,
-            'videoArchive' => function (\Interop\Container\ContainerInterface\ContainerInterface $container) {
-                
+            //'videoArchive' => function (\Interop\Container\ContainerInterface\ContainerInterface $container) {
+              'videoArchive' => function ($container) {
+
                 return new videoArchive($container->get('app_service_video_archive'));
             }
         ],
