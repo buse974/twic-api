@@ -416,7 +416,7 @@ class Post extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $me = $identity['id'];
-        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']);
+        $is_sadmin = $identity && (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         
         return  $this->getMapper()->get($me, $id, $is_sadmin, $is_mobile);
     }
