@@ -668,7 +668,24 @@ class Submission extends AbstractService
                     }
                 }
                 if (count($user) > 0) {
-                    $this->getServiceEvent()->requestSubmit($submission_id, $user);
+                    //$this->getServiceEvent()->requestSubmit($submission_id, $user);
+                    $miid = [];
+                    foreach ($user as $u) {
+                        $miid[] = 'M'.$u;
+                    }
+                    $m_post = $this->getServicePost()->addSys('SS'.$id, '', [
+                        'state' => 'request',
+                        'submission' => $id,
+                        'user' => $me,
+                        'course' => $m_item->getCourseId(),
+                        'item' => $m_item->getId()
+                    ], 'request', $miid/*sub*/,
+                        null/*parent*/,
+                        null/*page*/,
+                        null/*org*/,
+                        null/*user*/,
+                        $m_item->getCourseId()/*course*/,
+                        'submission');
                 }
             }
         }
@@ -696,7 +713,7 @@ class Submission extends AbstractService
 
             $m_opt_grading = $this->getServiceOptGrading()->get($m_item->getId());
             if ($m_opt_grading && $m_opt_grading->getHasPg()) {
-                $this->getServiceEvent()->pgAssigned($submission_id);
+                //$this->getServiceEvent()->pgAssigned($submission_id);
             }
             $this->forceSubmitBySubmission($submission_id);
         }
