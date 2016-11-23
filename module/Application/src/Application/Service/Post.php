@@ -206,7 +206,7 @@ class Post extends AbstractService
         $res_post = $this->getMapper()->select($this->getModel()->setUid($uid));
         
         return ($res_post->count() > 0) ?
-            $this->updateSys($uid, $content, $data, $event, $sub) : 
+            $this->update(null, $content, null,null, null, null, null, null, null, null, $data, $event, $uid, $sub) : 
             $this->add($content, null,null,null,null,null,$parent_id,$t_page_id,$t_organization_id,$t_user_id,$t_course_id,null,null,null,null,null, 
             $data, $event, $uid, $sub, $type);
     }
@@ -247,7 +247,8 @@ class Post extends AbstractService
      * @param string $event
      * @param int $uid
      * @param array $sub
-     * @return int
+     * 
+     * @return \Application\Model\Post
      */
     public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, 
         $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null)
@@ -326,11 +327,10 @@ class Post extends AbstractService
                 null,
                 $data);
             
-        return $m_post;
+        
         } 
         
-        
-        return false;
+        return $this->getLite($id);
     }
     
     /**
