@@ -144,8 +144,8 @@ class VideoArchive extends AbstractService
                 $m_user = $this->getServiceUser()->getListIdByConversation($m_conversation->getId());
                 
                 $miid = [];
-                foreach (array_merge($m_inst, $m_user) as $instructor_id) {
-                    $miid[] = 'M'.$instructor_id;
+                foreach (array_merge($m_inst, $m_user) as $u_id) {
+                    $miid[] = 'M'.$u_id;
                 }
                 
                 $this->getServicePost()->addSys('VCONV'.$m_conversation->getId(), '', [
