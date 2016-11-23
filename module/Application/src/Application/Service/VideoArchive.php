@@ -139,8 +139,8 @@ class VideoArchive extends AbstractService
                     $item_id = $m_conversation_opt->getItemId();
                 }
                 
-                $m_item = $this->getServiceItem()->get($item_id);
-                $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
+                $m_course = $this->getServiceCourse()->getByItem($item_id);
+                $m_inst = $this->getServiceUser()->getListIdInstructorByItem($item_id);
                 $m_user = $this->getServiceUser()->getListIdByConversation($m_conversation->getId());
                 
                 $miid = [];
@@ -150,7 +150,7 @@ class VideoArchive extends AbstractService
                 
                 $this->getServicePost()->addSys('VCONV'.$m_conversation->getId(), '', [
                     'item' => $item_id,
-                    'course' => $m_item->getCourseId(),
+                    'course' => $m_course->getId(),
                     'conversation' => $m_conversation->getId(),
                     'link' => $json['link']
                 ], 'create', $miid/*sub*/,
@@ -158,7 +158,7 @@ class VideoArchive extends AbstractService
                     null/*page*/,
                     null/*org*/,
                     null/*user*/,
-                    $m_item->getCourseId()/*course*/,
+                    $m_course->getId()/*course*/,
                     'video');
             }
         }
@@ -245,6 +245,16 @@ class VideoArchive extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
+    }
+    
+    /**
+     * Get Service Course
+     *
+     * @return \Application\Service\Course
+     */
+    private function getServiceCourse()
+    {
+        return $this->container->get('app_service_course');
     }
     
     /**

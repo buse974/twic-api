@@ -45,6 +45,23 @@ class Course extends AbstractMapper
     }
 
     /**
+     * Request Course Get
+     *
+     * @param int $item_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getByItem($item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id','title','abstract','description','picture','objectives','teaching',
+            'attendance','duration','video_link','video_token','learning_outcomes','notes', 'is_published'])
+            ->join('item', 'item.course_id=course.id', [])
+            ->where(['item.id' => $item_id]);
+    
+        return $this->selectWith($select);
+    }
+
+    /**
      * Request Course Get List
      *
      * @param int $program_id            

@@ -217,6 +217,19 @@ class Course extends AbstractService
     }
 
     /**
+     * Get Course Lite
+     *
+     * @invokable
+     *
+     * @param int $item_id
+     * @return \Application\Model\Course
+     */
+    public function getByItem($item_id)
+    {
+        return $this->getMapper()->getByItem($item_id)->current();
+    }
+    
+    /**
      * Get List Courses.
      *
      * @invokable
