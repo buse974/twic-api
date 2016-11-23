@@ -673,9 +673,9 @@ class Submission extends AbstractService
                     foreach ($user as $u) {
                         $miid[] = 'M'.$u;
                     }
-                    $m_post = $this->getServicePost()->addSys('SS'.$id, '', [
+                    $m_post = $this->getServicePost()->addSys('SS'.$submission_id, '', [
                         'state' => 'request',
-                        'submission' => $id,
+                        'submission' => $submission_id,
                         'user' => $me,
                         'course' => $m_item->getCourseId(),
                         'item' => $m_item->getId()
