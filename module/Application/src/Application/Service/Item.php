@@ -464,7 +464,6 @@ class Item extends AbstractService
         // @todo Faire du propre dans les roles une fois que les relations seront ok
         $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
         
-        
         $res_item = $this->getMapper()->getList($user_id, $course, $parent_id, $start, $end, $type, $is_admin_academic);
         $ar_item = (null !== $start || null !== $end || null === $parent_id) ? $res_item->toArray() : $res_item->toArrayParent('order_id');
         

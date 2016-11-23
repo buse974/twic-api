@@ -108,7 +108,9 @@ class Item extends AbstractMapper
         if ($is_admin_academic === true) {
             $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])->where(['organization_user.user_id' => $user_id]);
         } else {
-            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])->where(['course_user_relation.user_id' => $user_id]);
+            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])
+                ->where(['course.is_published IS TRUE'])
+                ->where(['course_user_relation.user_id' => $user_id]);
         }
         
         $select->group('item.id');
