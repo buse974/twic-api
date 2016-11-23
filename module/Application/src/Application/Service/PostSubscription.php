@@ -131,16 +131,6 @@ class PostSubscription extends AbstractService
     }
     
     /**
-     * Get Service Post Like
-     *
-     * @return \Application\Service\PostLike
-     */
-    private function getServicePostLike()
-    {
-        return $this->container->get('app_service_post_like');
-    }
-    
-    /**
      * Get Service User
      *
      * @return \Application\Service\User
@@ -148,6 +138,16 @@ class PostSubscription extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+    
+    /**
+     * Get Service Event.
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
     
 }
