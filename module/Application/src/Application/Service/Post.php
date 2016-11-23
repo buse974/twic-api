@@ -177,8 +177,6 @@ class Post extends AbstractService
             (($base_id!==$id) ? $id:null), 
             $data);
         
-        $this->getServiceEvent()->userPublication(array_unique($pevent), $base_id, $type, $ev);
-        
         return $this->get($id);
     }
 
@@ -254,7 +252,6 @@ class Post extends AbstractService
     public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, 
         $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null)
     {
-        
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
 
@@ -328,8 +325,6 @@ class Post extends AbstractService
                 $user_id,
                 null,
                 $data);
-            
-            $this->getServiceEvent()->userPublication(array_unique($pevent), $id, $m_post_base->getType(), $event);
             
         return $m_post;
         } 
@@ -474,7 +469,6 @@ class Post extends AbstractService
                 $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
                 $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
                 $m_post->setSubscription($this->getServicePostSubscription()->getLast($m_post->getId()));
-                
                 if(is_string($m_post->getData())) {
                     $m_post->setData(json_decode($m_post->getData(), true));
                 }

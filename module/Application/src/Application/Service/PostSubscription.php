@@ -50,6 +50,9 @@ class PostSubscription extends AbstractService
             $this->getMapper()->insert($m_post_subscription);
         }
         
+        $m_post = $this->getServicePost()->getLite($post_id);
+        $this->getServiceEvent()->userPublication($libelle, $m_post->getId(), $m_post->getType() ,$action);
+        
         return true;
     }
     

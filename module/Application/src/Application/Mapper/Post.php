@@ -59,19 +59,23 @@ class Post extends AbstractMapper
         } else {
             $select->columns($columns)->order([ 'post.id' => $parent_id === null ? 'DESC' : 'ASC']);
             if(null !== $organization_id) {
-                $select->where(['post.parent_id IS NULL'])->where(['post.t_organization_id' => $organization_id]);
+                $select->where(['post.parent_id IS NULL'])
+                    ->where(['post.t_organization_id' => $organization_id]);
             }
             if(null !== $user_id) {
-                $select->where(['post.parent_id IS NULL'])->where(['post.t_user_id' => $user_id]);
+                $select->where(['post.parent_id IS NULL'])
+                    ->where(['post.t_user_id' => $user_id]);
             }
             if(null !== $course_id) {
-                $select->where(['post.parent_id IS NULL'])->where(['post.t_course_id' => $course_id]);
+                $select->where(['post.parent_id IS NULL'])
+                    ->where(['post.t_course_id' => $course_id]);
             }
             if(null !== $parent_id) {
                 $select->where(['post.parent_id' => $parent_id]);
             }
             if(null !== $page_id) {
-                $select->where(['post.parent_id IS NULL'])->where(['post.t_page_id' => $page_id]);
+                $select->where(['post.parent_id IS NULL'])
+                    ->where(['post.t_page_id' => $page_id]);
             }
         }
         
