@@ -95,6 +95,7 @@ class Course extends AbstractService
     public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, 
         $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = null)
     {
+        $is_published_old = $this->getLite($id)->getIsPublished();
         $m_course = $this->getModel()
             ->setId($id)
             ->setTitle($title)
@@ -120,12 +121,13 @@ class Course extends AbstractService
             $this->getServiceEvent()->courseUpdated($id, $ar_course);
         }
         
-        if($is_published == 1) {
-            $l = 'CC'.$id;
-            $this->getServicePost()->addSys($l, '', [
+        if($is_published_old == 0 && $is_published == 1) {
+            $this->getServicePost()->addSys('CC'.$id, '', [
                 'state' => 'published',
                 'course' => $id,
             ],  'published', null, null, null, null, null, $id ,'course');
+        } elseif($is_published_old == 1 && $is_published == 0){
+            $this->getServicePost()->hardDelete('CC'.$id);
         }
         
         return $ret;
