@@ -659,7 +659,7 @@ class Event extends AbstractService
      */
     private function getDataPost($post_id)
     {
-        $m_post = $this->getServicePost()->get($post_id);
+        $m_post = $this->getServicePost()->getLite($post_id);
 
         return [
             'id' => $m_post->getId(),
