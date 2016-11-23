@@ -687,6 +687,9 @@ class Submission extends AbstractService
                         null/*user*/,
                         $m_item->getCourseId()/*course*/,
                         'submission');
+                    
+                    $post_id = $m_post->getId();
+                    $this->getMapper()->update($this->getModel()->setId($submission_id)->setPostId($post_id));
                 }
             }
         }
@@ -699,7 +702,7 @@ class Submission extends AbstractService
                 $miid[] = 'M'.$instructor_id;
             }
             
-            $this->getServicePost()->addSys('SS'.$submission_id, '', [
+            $m_post = $this->getServicePost()->addSys('SS'.$submission_id, '', [
                'state' => 'submit',
                'submission' => $submission_id,
                'course' => $m_item->getCourseId(),
@@ -712,6 +715,9 @@ class Submission extends AbstractService
                 $m_item->getCourseId()/*course*/,
                 'submission');
 
+            $post_id = $m_post->getId();
+            $this->getMapper()->update($this->getModel()->setId($submission_id)->setPostId($post_id));
+            
             $m_opt_grading = $this->getServiceOptGrading()->get($m_item->getId());
             if ($m_opt_grading && $m_opt_grading->getHasPg()) {
                 //$this->getServiceEvent()->pgAssigned($submission_id);
