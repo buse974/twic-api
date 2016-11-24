@@ -291,8 +291,7 @@ class User extends AbstractService
     {
         $auth = $this->getServiceAuth();
         
-        return $auth->getStorage()->getListSession($auth->getIdentity()
-            ->getId());
+        return $auth->getStorage()->getListSession($auth->getIdentity()->getId());
     }
 
     /**
@@ -1736,15 +1735,5 @@ class User extends AbstractService
     private function getServiceOrganization()
     {
         return $this->container->get('app_service_school');
-    }
-    
-    /**
-     * Get Service Subscription
-     *
-     * @return \Application\Service\Subscription
-     */
-    private function getServiceSubscription()
-    {
-        return $this->container->get('app_service_subscription');
     }
 }

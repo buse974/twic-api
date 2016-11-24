@@ -285,17 +285,13 @@ class Contact extends AbstractService
      *
      * @return \Application\Model\Contact[]
      */
-    public function getList($user = null, $exclude = null)
+    public function getList($user_id = null, $exclude = null)
     {
-        if (null === $user) {
-            $user = $this->getServiceUser()->getIdentity();
+        if (null === $user_id) {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
 
-        if (!$user['id']) {
-            throw new \Exception('user parameter without id');
-        }
-
-        $listRequest = $this->getMapper()->getList($user['id'], $exclude);
+        $listRequest = $this->getMapper()->getList($user_id, $exclude);
         foreach ($listRequest as $request) {
             $request->setContact($this->getServiceUser()
                 ->get($request->getContactId()));
