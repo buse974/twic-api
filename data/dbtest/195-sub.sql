@@ -1,4 +1,4 @@
-INSERT IGNORE INTO `apilms`.`subscription`
+INSERT IGNORE INTO `subscription`
 (`libelle`, `user_id`, `created_date`) 
 SELECT CONCAT('PU',contact.contact_id), contact.user_id, UTC_TIMESTAMP() FROM contact
 LEFT JOIN subscription ON subscription.user_id=contact.user_id AND subscription.libelle=CONCAT('PU',contact.contact_id) 
