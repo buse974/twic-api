@@ -22,22 +22,7 @@ class Post extends AbstractMapper
         
         $columns = [
             'post$id' => new Expression('post.id'),
-            'content',
-            'link',
-            'picture',
-            'name_picture',
-            'link_title',
-            'link_desc',
-            'user_id',
-            'organization_id',
-            'page_id',
-            't_user_id',
-            't_organization_id',
-            't_page_id',
-            't_course_id',
-            'parent_id',
-            'type',
-            'data',
+            'content', 'link', 'picture', 'name_picture', 'link_title', 'link_desc', 'user_id', 'organization_id', 'page_id', 't_user_id', 't_organization_id', 't_page_id', 't_course_id', 'parent_id', 'type', 'data',
             'post$created_date' => new Expression('DATE_FORMAT(post.created_date, "%Y-%m-%dT%TZ")'),
             'post$updated_date' => new Expression('DATE_FORMAT(post.updated_date, "%Y-%m-%dT%TZ")'),
             'post$nbr_comments' => $nbr_comments,
@@ -51,18 +36,19 @@ class Post extends AbstractMapper
         } else {
             $select->order([ 'post.id' => $parent_id === null ? 'DESC' : 'ASC']);
         }
-        $select->columns($columns);
+        
+        $select->columns($columns)
+            ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
+            ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
+            ->where(['post.deleted_date IS NULL'])
+            ->group('post.id');
         
         if(null === $parent_id) {
             $select->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
                 ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
-                ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
-                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
-                ->where(['post.deleted_date IS NULL'])
-                ->where(['post.parent_id IS NULL'])
-                ->group('post.id');
+                ->where(['post.parent_id IS NULL']);  
         }
         if(null !== $organization_id) {
             $select->where(['post.t_organization_id' => $organization_id]);
