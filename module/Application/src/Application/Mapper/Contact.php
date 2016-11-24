@@ -14,7 +14,6 @@ class Contact extends AbstractMapper
     public function getList($user_id, $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
-
         $select->columns(array('accepted_date', 'contact_id', 'user_id'))
             ->join('user', 'user.id=contact.contact_id',[])
             ->where(array('contact.user_id' => $user_id))

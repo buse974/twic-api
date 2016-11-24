@@ -52,14 +52,17 @@ class Post extends AbstractMapper
             $select->order([ 'post.id' => $parent_id === null ? 'DESC' : 'ASC']);
         }
         
+        if($parent_id === null) {
+            $select->where(['post.parent_id IS NULL']);
+        }
+        
         $select->columns($columns)
             ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
             ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
             ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
             ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
-            ->where(['( post.parent_id IS NULL '])
             ->where(['  (subscription.user_id = ? ' => $me_id])
-            ->where(['  post_subscription.libelle = ? )) ' => 'M'.$me_id], Predicate::OP_OR)
+            ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
             ->where(['post.deleted_date IS NULL'])
             ->group('post.id');
 
