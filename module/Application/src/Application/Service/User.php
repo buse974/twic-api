@@ -427,6 +427,14 @@ class User extends AbstractService
         if ($school_id !== null) {
             $this->addSchool($school_id, $id, true);
             $this->getServiceContact()->addBySchool($school_id);
+            
+            $res_contact = $this->getServiceContact()->getList($id);
+            foreach($res_contact as $m_contact) {
+                $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $id);
+                $this->getServiceSubscription()->add('PU'.$id, $m_contact->getContactId());
+            }
+            
+            $this->getListBySchool($school_id);
         }
         /*try {
             $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));
@@ -820,7 +828,7 @@ class User extends AbstractService
     }
 
     /**
-     * Delete user to program.
+     * Delete user to program.v
      *
      * @invokable
      *
@@ -1728,5 +1736,15 @@ class User extends AbstractService
     private function getServiceOrganization()
     {
         return $this->container->get('app_service_school');
+    }
+    
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 }

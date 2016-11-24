@@ -146,9 +146,7 @@ class Contact extends AbstractService
         ));
 
         $this->getServiceSubscription()->add('PU'.$user, $user_id);
-        $this->getServiceSubscription()->add('EU'.$user, $user_id);
         $this->getServiceSubscription()->add('PU'.$user_id, $user);
-        $this->getServiceSubscription()->add('EU'.$user_id, $user);
 
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
@@ -273,7 +271,7 @@ class Contact extends AbstractService
             $request->setContact($this->getServiceUser()
                 ->get($request->getContactId()));
         }
-
+    
         return $listRequest;
     }
 
@@ -285,7 +283,7 @@ class Contact extends AbstractService
      * @param int   $user
      * @param array $exclude
      *
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return \Application\Model\Contact[]
      */
     public function getList($user = null, $exclude = null)
     {

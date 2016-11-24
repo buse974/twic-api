@@ -47,42 +47,42 @@ class Post extends AbstractMapper
         
         if($organization_id === null && $user_id === null && $course_id === null && $parent_id === null && $page_id === null)  {
             $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
-            $select->columns($columns)
-                ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
-                ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
-                ->where(['( post.parent_id IS NULL '])
-                ->where(['  (subscription.user_id = ? ' => $me_id])
-                ->where(['  post_subscription.libelle = ? )) ' => 'M'.$me_id], Predicate::OP_OR)
-               // ->where(['  post.user_id = ?))' => $me_id], Predicate::OP_OR)
-                ->order(['post$last_date' => 'DESC', 'post.id' => 'DESC'])
-                ->group('post.id');
+            $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
         } else {
-            $select->columns($columns)->order([ 'post.id' => $parent_id === null ? 'DESC' : 'ASC']);
-            if(null !== $organization_id) {
-                $select->where(['post.parent_id IS NULL'])
-                    ->where(['post.t_organization_id' => $organization_id]);
-            }
-            if(null !== $user_id) {
-                $select->where(['post.parent_id IS NULL'])
-                    ->where(['post.t_user_id' => $user_id]);
-            }
-            if(null !== $course_id) {
-                $select->where(['post.parent_id IS NULL'])
-                    ->where(['post.t_course_id' => $course_id]);
-            }
-            if(null !== $parent_id) {
-                $select->where(['post.parent_id' => $parent_id]);
-            }
-            if(null !== $page_id) {
-                $select->where(['post.parent_id IS NULL'])
-                    ->where(['post.t_page_id' => $page_id]);
-            }
+            $select->order([ 'post.id' => $parent_id === null ? 'DESC' : 'ASC']);
         }
         
-        $select->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
-                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
-                ->where(['post.deleted_date IS NULL'])
-                ->order(['post.id' => 'DESC']);
+        $select->columns($columns)
+            ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
+            ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
+            ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
+            ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
+            ->where(['( post.parent_id IS NULL '])
+            ->where(['  (subscription.user_id = ? ' => $me_id])
+            ->where(['  post_subscription.libelle = ? )) ' => 'M'.$me_id], Predicate::OP_OR)
+            ->where(['post.deleted_date IS NULL'])
+            ->group('post.id');
+
+        if(null !== $organization_id) {
+            $select->where(['post.parent_id IS NULL'])
+                ->where(['post.t_organization_id' => $organization_id]);
+        }
+        if(null !== $user_id) {
+            $select->where(['post.parent_id IS NULL'])
+                ->where(['post.t_user_id' => $user_id]);
+        }
+        if(null !== $course_id) {
+            $select->where(['post.parent_id IS NULL'])
+                ->where(['post.t_course_id' => $course_id]);
+        }
+        if(null !== $parent_id) {
+            $select->where(['post.parent_id' => $parent_id]);
+        }
+        if(null !== $page_id) {
+            $select->where(['post.parent_id IS NULL'])
+                ->where(['post.t_page_id' => $page_id]);
+        }
+        
         return $this->selectWith($select);
     }
     
