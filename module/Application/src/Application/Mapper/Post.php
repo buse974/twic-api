@@ -9,17 +9,17 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Post extends AbstractMapper
 {
-    public function getList($me_id, $page_id = null, $organization_id = null, $user_id = null, $course_id = null, $parent_id = null)
+    public function getList($me_id, $page_id = null, $organization_id = null, $user_id = null, $course_id = null, $parent_id = null, $id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        
+
         $nbr_comments = $this->tableGateway->getSql()->select();
         $nbr_comments->columns(['nbr_comments' => new Expression('COUNT(true)')])->where(['post.parent_id=`post$id` AND post.deleted_date IS NULL']);
         $nbr_likes = new Select('post_like');
         $nbr_likes->columns(['nbr_likes' => new Expression('COUNT(true)')])->where(['post_like.post_id=`post$id` AND post_like.is_like IS TRUE']);
         $is_liked = new Select('post_like');
         $is_liked->columns(['is_liked' => new Expression('COUNT(true)')])->where(['post_like.post_id=`post$id` AND post_like.is_like IS TRUE AND post_like.user_id=?' => $me_id]);
-        
+
         $columns = [
             'post$id' => new Expression('post.id'),
             'content', 'link', 'picture', 'name_picture', 'link_title', 'link_desc', 'user_id', 'organization_id', 'page_id', 't_user_id', 't_organization_id', 't_page_id', 't_course_id', 'parent_id', 'type', 'data',
@@ -29,26 +29,26 @@ class Post extends AbstractMapper
             'post$is_liked' => $is_liked,
             'post$nbr_likes' => $nbr_likes,
         ];
-        
+
         if($organization_id === null && $user_id === null && $course_id === null && $parent_id === null && $page_id === null)  {
             $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
             $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
         } else {
             $select->order([ 'post.id' => ($parent_id === null ? 'DESC' : 'ASC')]);
         }
-        
+
         $select->columns($columns)
             ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
             ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
             ->where(['post.deleted_date IS NULL'])
             ->group('post.id');
-        
+
         if(null === $parent_id) {
             $select->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
                 ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
-                ->where(['post.parent_id IS NULL']);  
+                ->where(['post.parent_id IS NULL']);
         }
         if(null !== $organization_id) {
             $select->where(['post.t_organization_id' => $organization_id]);
@@ -65,10 +65,13 @@ class Post extends AbstractMapper
         if(null !== $page_id) {
             $select->where(['post.t_page_id' => $page_id]);
         }
-        
+        if(null !== $id) {
+          $select->where(['post.id' => $id]);
+        }
+
         return $this->selectWith($select);
     }
-    
+
     public function getListId($me_id, $page_id = null, $organization_id = null, $user_id = null, $course_id = null, $parent_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -103,16 +106,16 @@ class Post extends AbstractMapper
                 $select->where(['post.parent_id IS NULL'])->where(['post.t_page_id' => $page_id]);
             }
         }
-    
+
         $select->where(['post.deleted_date IS NULL'])->order(['post.id' => 'DESC']);
-        
+
         return $this->selectWith($select);
     }
-    
-    public function get($me_id, $id, $is_sadmin = false, $for_mobile = false) 
+
+    public function get($me_id, $id, $is_sadmin = false, $for_mobile = false)
     {
         $select = $this->tableGateway->getSql()->select();
-        
+
         $nbr_comments = $this->tableGateway->getSql()->select();
         $nbr_comments->columns(['nbr_comments' => new Expression('COUNT(true)')])->where(['post.parent_id=`post$id` AND post.deleted_date IS NULL']);
         $nbr_likes = new Select('post_like');
@@ -144,20 +147,19 @@ class Post extends AbstractMapper
             'post$is_liked' => $is_liked,
             'post$nbr_likes' => $nbr_likes,
         ]);
-        
+
         if (!$for_mobile) {
             $select->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
-                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT);   
+                ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT);
         }
         $select->where(['post.id' => $id])
             ->order([ 'post.id' => 'DESC']);
-        
+
         if(!$is_sadmin){
             $select->where(['post.deleted_date IS NULL']);
         }
-            
+
         return $this->selectWith($select);
     }
 
 }
-    
