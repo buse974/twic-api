@@ -155,7 +155,6 @@ class Post extends AbstractService
             }
             
             $pevent = array_merge($pevent, ['M'.$m_post_base->getUserId()]);
-            
             // SI NOTIF ET QUE LE PARENT N'A PAS DE TARGET ON RECUPERE TTES LES SUBSCRIPTIONS
             if($is_notif && null === $sub && $et === false) {
                 $sub = $this->getServicePostSubscription()->getListLibelle($origin_id);
@@ -252,26 +251,29 @@ class Post extends AbstractService
     public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null, 
         $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null)
     {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-
-        $m_post_base = ($uid !== null && $id === null) ? $this->getLite(null, $uid) : $this->getLite($id);
-        $id = $m_post_base->getId();
-        
-        
         if($uid === null && $id === null) {
             throw new \Exception('error update: no $id and no $uid');
         }
         
-        $w = ($uid !== null) ?  ['uid' => $uid] : ['id' => $id, 'user_id' => $user_id];
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+
+        //recup id de base
+        $m_post_base = ($uid !== null && $id === null) ? $this->getLite(null, $uid) : $this->getLite($id);
+        $id = $m_post_base->getId();
+        
+        // check if notif
+        $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
+        $event = (is_string($event) && !empty($event)) ? $event:false;
+        $is_notif = ($uid && $event);
+        
+        // create where request
+        $w = ($uid !== false) ?  ['id' => $id] : ['id' => $id, 'user_id' => $user_id];
         
         if(!empty($data) && !is_string($data)) {
             $data = json_encode($data);
         }
         
-        $uid = (is_string($uid) && !empty($uid)) ? $uid:false;
-        $event = (is_string($event) && !empty($event)) ? $event:false;
-        $is_notif = ($uid && $event);
         $m_post = $this->getModel()
             ->setContent($content)
             ->setLink(($link==='')?new IsNull():$link)
@@ -307,16 +309,13 @@ class Post extends AbstractService
             if(false !== $et) {
                 $pevent = array_merge($pevent, ['P'.$et]);
             }
-            
             // if ce n'est pas un page privée
             if(!$is_private_page &&  !$is_notif) {
                 $pevent = array_merge($pevent, ['P'.$this->getOwner($m_post_base)]);
             }
-            
             if(!empty($sub)) {
                 $pevent = array_merge($pevent, $sub);
             }
-            
             $this->getServicePostSubscription()->add(
                 array_unique($pevent),
                 $id,
@@ -325,8 +324,6 @@ class Post extends AbstractService
                 $user_id,
                 null,
                 $data);
-            
-        
         } 
         
         return $this->getLite($id);
