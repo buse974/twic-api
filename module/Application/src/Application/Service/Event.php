@@ -659,23 +659,23 @@ class Event extends AbstractService
      */
     private function getDataPost($post_id)
     {
-        $m_post = $this->getServicePost()->getLite($post_id);
+        $ar_post = $this->getServicePost()->getLite($post_id)->toArray();
 
         return [
-            'id' => $m_post->getId(),
+            'id' => $ar_post['id'],
             'name' => 'post',
             'data' => [
-                'id' =>  $m_post->getId(),
-                'content' => $m_post->getContent(),
-                'picture' => $m_post->getPicture(),
-                'name_picture' => $m_post->getNamePicture(),
-                'link' => $m_post->getLink(),
-                't_organization_id' => $m_post->getTOrganizationId(),
-                't_page_id' => $m_post->getTPageId(),
-                't_user_id' => $m_post->getTUserId(),
-                't_course_id' => $m_post->getTCourseId(),
-                'parent_id' => $m_post->getParentId(),
-                'type' => $m_post->getType(),
+                'id' =>  $ar_post['id'],
+                'content' => $ar_post['content'],
+                'picture' => $ar_post['picture'],
+                'name_picture' => $ar_post['name_picture'],
+                'link' => $ar_post['link'],
+                't_organization_id' => $ar_post['t_organization_id'],
+                't_page_id' => $ar_post['t_page_id'],
+                't_user_id' => $ar_post['t_user_id'],
+                't_course_id' => $ar_post['t_course_id'],
+                'parent_id' => $ar_post['parent_id'],
+                'type' => $ar_post['type'],
             ]
         ];
     }
