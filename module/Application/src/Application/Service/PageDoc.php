@@ -7,9 +7,9 @@ class PageDoc extends AbstractService
 {
     /**
      * Add Page Document Relation
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $page_id
      * @param int|array $library
      * @return int
@@ -21,18 +21,32 @@ class PageDoc extends AbstractService
         } elseif(!is_numeric($var)) {
             throw new \Exception('error add document');
         }
-            
+
         $m_page_doc = $this->getModel()
             ->setPageId($page_id)
             ->setLibraryId($library);
-        
+
         $this->getMapper()->insert($m_page_doc);
         return $library;
     }
 
+
+    /**
+     * Delete Doc
+
+     * @invokable
+     * @param int $library_id
+     **/
+    public function delete($library_id)
+    {
+        $this->getMapper()->delete($this->getModel()->setLibraryId($library_id));
+
+        return $this->getServiceLibrary()->delete($library_id);
+    }
+
     /**
      * Add Array
-     * 
+     *
      * @param int $page_id
      * @param array $data
      * @return array
@@ -43,10 +57,10 @@ class PageDoc extends AbstractService
         foreach ($data as $d) {
             $ret[] = $this->add($page_id, $d);
         }
-        
+
         return $ret;
     }
-    
+
     /**
      * Replace Array
      *
@@ -57,12 +71,12 @@ class PageDoc extends AbstractService
     public function replace($page_id, $data)
     {
         $this->getMapper()->delete($this->getModel()->setPageId($page_id));
-        
+
         return $this->_add($page_id, $data);
     }
-    
+
     /**
-     * 
+     *
      * @param unknown $page_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -70,7 +84,7 @@ class PageDoc extends AbstractService
     {
         return $this->getServiceLibrary()->getListByPage($page_id);
     }
-    
+
     /**
      *
      * @return \Application\Service\Library
@@ -79,7 +93,7 @@ class PageDoc extends AbstractService
     {
         return $this->container->get('app_service_library');
     }
-    
+
     /**
      * Get Service Page User
      *
