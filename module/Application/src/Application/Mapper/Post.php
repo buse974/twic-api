@@ -43,10 +43,10 @@ class Post extends AbstractMapper
             ->join('page','page.id = post.t_page_id',[], $select::JOIN_LEFT)
             ->join(['organization' => 'school'],'organization.id = post.t_organization_id',[], $select::JOIN_LEFT)
             ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
-            ->join(['post_subscription_page' => 'page'],'post_subscription_page.id = post_subscription.page_id',[], $select::JOIN_LEFT)
+            //->join(['post_subscription_page' => 'page'],'post_subscription_page.id = post_subscription.page_id',[], $select::JOIN_LEFT)
             ->where(['post.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
-            ->where(['post_subscription_page.deleted_date IS NULL'])
+            //->where(['post_subscription_page.deleted_date IS NULL'])
             ->where(['organization.deleted_date IS NULL'])
             ->group('post.id');
 
