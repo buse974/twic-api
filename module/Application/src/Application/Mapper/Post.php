@@ -40,7 +40,11 @@ class Post extends AbstractMapper
         $select->columns($columns)
             ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
             ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
+            ->join('page','page.id = post.t_page_id',[], $select::JOIN_LEFT)
+            ->join('school','school.id = post.t_organization_id',[], $select::JOIN_LEFT)
             ->where(['post.deleted_date IS NULL'])
+            ->where(['page.deleted_date IS NULL'])
+            ->where(['school.deleted_date IS NULL'])
             ->group('post.id');
 
         if(null === $parent_id) {
