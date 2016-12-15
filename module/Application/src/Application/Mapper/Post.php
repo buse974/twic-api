@@ -37,12 +37,12 @@ class Post extends AbstractMapper
             $select->order([ 'post.id' => ($parent_id === null ? 'DESC' : 'ASC')]);
         }
 
-        $select->columns($columns)
-            ->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
+        $select->columns($columns);
+        $select->join('user','user.id = post.user_id',['id', 'firstname', 'lastname', 'nickname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
             ->join('school','user.school_id = school.id',['id', 'short_name', 'logo'], $select::JOIN_LEFT)
             ->join('page','page.id = post.t_page_id',[], $select::JOIN_LEFT)
             ->join(['organization' => 'school'],'organization.id = post.t_organization_id',[], $select::JOIN_LEFT)
-            ->join('post_subscription','post_subscription.post_id = post.id',[], $select::JOIN_LEFT)
+            ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
             ->join(['post_subscription_page' => 'page'],'post_subscription_page.id = post_subscription.page_id',[], $select::JOIN_LEFT)
             ->where(['post.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
@@ -51,8 +51,7 @@ class Post extends AbstractMapper
             ->group('post.id');
 
         if(null === $parent_id) {
-            $select->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
-                ->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
+            $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
