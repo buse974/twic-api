@@ -52,12 +52,13 @@ class PostLike extends AbstractService
             ];
 
             $origin_id = $m_post->getOriginId();
+            $base_id = (is_numeric($origin_id)) ? $origin_id:$post_id;
             if(is_numeric($origin_id)) {
               $m_post_base = $this->getServicePost()->getLite($origin_id);
               $sub_post = array_merge($sub_post, ['P'.$this->getServicePost()->getTarget($m_post_base)]);
             }
 
-            $this->getServicePostSubscription()->add(array_unique($sub_post), $post_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id, null,
+            $this->getServicePostSubscription()->add(array_unique($sub_post), $base_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id, null,
             ['id' => $post_id, 'parent_id' => $m_post->getParentId(), 'origin_id' => $m_post->getOriginId()]);
         }
 
