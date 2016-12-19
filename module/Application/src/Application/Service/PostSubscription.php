@@ -33,25 +33,26 @@ class PostSubscription extends AbstractService
         if (!is_array($libelle)) {
             $libelle = [$libelle];
         }
-        
+
         $m_post_subscription = $this->getModel()
             ->setPostId($post_id)
             ->setAction($action)
             ->setUserId($user_id)
             ->setSubPostId($sub_post_id)
+            ->setData($data)
             ->setLastDate($last_date);
-        
+
         foreach ($libelle as $l) {
             $m_post_subscription->setLibelle($l);
             $this->getMapper()->insert($m_post_subscription);
         }
-        
+
         $m_post = $this->getServicePost()->getLite($post_id);
         $this->getServiceEvent()->userPublication($libelle, $m_post->getId(), $m_post->getType(), $action);
-        
+
         return true;
     }
-    
+
     /**
      * @param string $libelle
      * @param int $post_id
@@ -62,10 +63,10 @@ class PostSubscription extends AbstractService
         $m_post_subscription = $this->getModel()
             ->setLibelle($libelle)
             ->setPostId($post_id);
-    
+
         return $this->getMapper()->delete($m_post_subscription);
     }
-    
+
     public function addHashtag($ar, $id, $date)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -77,7 +78,7 @@ class PostSubscription extends AbstractService
             }
         }
     }
-   
+
     /**
      *
      * @param int $post_id
@@ -85,10 +86,10 @@ class PostSubscription extends AbstractService
     public function getLast($post_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        
+
         return $this->getMapper()->getLast($post_id, $user_id)->current();
     }
-    
+
     /**
      *
      * @param int $post_id
@@ -96,15 +97,15 @@ class PostSubscription extends AbstractService
     public function getListLibelle($post_id)
     {
         $res_post_subscription = $this->getMapper()->getListLibelle($post_id);
-        
+
         $lib = [];
         foreach ($res_post_subscription as $m_post_subscription) {
             $lib[] = $m_post_subscription->getLibelle();
         }
-        
+
         return array_unique($lib);
     }
-    
+
     /**
      *
      * @param int $post_id
@@ -112,10 +113,10 @@ class PostSubscription extends AbstractService
     public function getLastLite($post_id)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-    
+
         return $this->getMapper()->getLastLite($post_id, $user_id)->current();
     }
-    
+
     /**
      * Get Service Post
      *
@@ -125,7 +126,7 @@ class PostSubscription extends AbstractService
     {
         return $this->container->get('app_service_post');
     }
-    
+
     /**
      * Get Service User
      *
@@ -135,7 +136,7 @@ class PostSubscription extends AbstractService
     {
         return $this->container->get('app_service_user');
     }
-    
+
     /**
      * Get Service Event.
      *
