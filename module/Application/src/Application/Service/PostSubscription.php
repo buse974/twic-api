@@ -91,7 +91,13 @@ class PostSubscription extends AbstractService
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
-        return $this->getMapper()->getLast($post_id, $user_id)->current();
+        $m_post_subscription = $this->getMapper()->getLast($post_id, $user_id)->current();
+
+        if (is_string($m_post_subscription->getData())) {
+            $m_post_subscription->setData(json_decode($m_post_subscription->getData(), true));
+        }
+
+        return $m_post_subscription;
     }
 
     /**
@@ -118,7 +124,13 @@ class PostSubscription extends AbstractService
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
-        return $this->getMapper()->getLastLite($post_id, $user_id)->current();
+        $m_post_subscription = $this->getMapper()->getLastLite($post_id, $user_id)->current();
+
+        if (is_string($m_post_subscription->getData())) {
+            $m_post_subscription->setData(json_decode($m_post_subscription->getData(), true));
+        }
+
+        return $m_post_subscription;
     }
 
     /**
