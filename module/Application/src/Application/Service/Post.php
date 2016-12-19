@@ -114,13 +114,13 @@ class Post extends AbstractService
         }
         $id = $this->getMapper()->getLastInsertValue();
 
-        $d = ['id' => $id, 'parent_id' => $parent_id, 'origin_id' => $origin_id];
+        $d = ['id' => (int)$id, 'parent_id' => $parent_id, 'origin_id' => $origin_id];
         if(is_array($data)) {
           $data = array_merge($d, $data);
         } else {
           $data = $d;
         }
-        
+
         if (null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
