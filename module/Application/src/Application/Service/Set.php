@@ -15,7 +15,7 @@ class Set extends AbstractService
 {
     /**
      * Add Group Set.
-     * 
+     *
      * @invokable
      *
      * @param int    $course
@@ -57,7 +57,7 @@ class Set extends AbstractService
 
     /**
      * Delete Group Set.
-     * 
+     *
      * @invokable
      *
      * @param int $id

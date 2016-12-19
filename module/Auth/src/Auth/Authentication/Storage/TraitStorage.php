@@ -4,31 +4,32 @@ namespace Auth\Authentication\Storage;
 
 use Zend\Http\Request;
 
-trait TraitStorage {
-/**
+trait TraitStorage
+{
+    /**
      * @var string
      */
     protected $token;
 
     /**
-     * 
+     *
      * @var Request
      */
     protected $request;
 
     /**
      * Token Connexion
-     * 
+     *
      * @return string
      */
     public function getToken()
     {
         if (null===$this->token && null!==$this->request) {
             $aut = $this->request->getHeader('Authorization', null);
-            if(null===$aut) {
+            if (null===$aut) {
                 $aut = $this->request->getHeader('x-auth-token', null);
             }
-            if(null!==$aut) {
+            if (null!==$aut) {
                 $this->token = $aut->getFieldValue();
             }
         }
@@ -37,7 +38,7 @@ trait TraitStorage {
     }
     
     /**
-     * 
+     *
      * {@inheritDoc}
      * @see \Auth\Authentication\Storage\StorageInterface::setToken()
      */
@@ -49,7 +50,7 @@ trait TraitStorage {
     }
     
     /**
-     * 
+     *
      * @param Request $request
      */
     public function setRequest(Request $request)

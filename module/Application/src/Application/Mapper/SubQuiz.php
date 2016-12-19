@@ -35,7 +35,7 @@ class SubQuiz extends AbstractMapper
      * @param int  $submission_id
      * @param int  $user_id
      * @param bool $is_finish
-     * 
+     *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($id = null, $submission_id = null, $user_id = null, $is_finish = null, $is_timeover = null)

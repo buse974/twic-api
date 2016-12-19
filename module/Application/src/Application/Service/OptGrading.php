@@ -15,7 +15,7 @@ class OptGrading extends AbstractService
 {
     /**
      * Add Option Grading.
-     * 
+     *
      * @invokable
      *
      * @param int    $item_id
@@ -50,7 +50,7 @@ class OptGrading extends AbstractService
 
     /**
      * Update Option Grading.
-     * 
+     *
      * @invokable
      *
      * @param int    $item_id
@@ -83,7 +83,7 @@ class OptGrading extends AbstractService
 
     /**
      * Delete Option Grading.
-     * 
+     *
      * @invokable
      *
      * @param int $item_id
@@ -99,7 +99,7 @@ class OptGrading extends AbstractService
 
     /**
      * Get Option Grading.
-     * 
+     *
      * @param int $item_id
      *
      * @return \Application\Model\OptGrading

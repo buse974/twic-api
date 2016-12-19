@@ -15,7 +15,7 @@ class SetGroup extends AbstractService
 {
     /**
      * Add Set Group.
-     * 
+     *
      * @param int $set
      * @param int $group
      *

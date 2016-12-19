@@ -144,12 +144,30 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getByItem" title="getByItem :: Get Course Lite">
+            <span class="description">Get Course Lite</span><pre>getByItem</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_getList" title="getList :: Get List Courses.">
             <span class="description">Get List Courses.</span><pre>getList</pre>
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+                                                                                                        <li class="method public">
+        <a href="#method_getListLite" title="getListLite :: Get List Lite Courses">
+            <span class="description">Get List Lite Courses</span><pre>getListLite</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getLite" title="getLite :: Get Course Lite">
+            <span class="description">Get Course Lite</span><pre>getLite</pre>
+        </a>
+    </li>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
         <a href="#method_update" title="update :: Update course">
             <span class="description">Update course</span><pre>update</pre>
         </a>
@@ -159,11 +177,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                <li class="method private">
+                                                                                                                                                                                                                                                                                                                                                                            <li class="method private">
                             <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event.">
                                 <span class="description">Get Service Event.</span><pre>getServiceEvent</pre>
                             </a>
@@ -181,6 +199,16 @@
                                                                                 <li class="method private">
                             <a href="#method_getServiceItem" title="getServiceItem :: Get Service Item.">
                                 <span class="description">Get Service Item.</span><pre>getServiceItem</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServicePost" title="getServicePost :: Get Service Post">
+                                <span class="description">Get Service Post</span><pre>getServicePost</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceProgram" title="getServiceProgram :: Get Service Program">
+                                <span class="description">Get Service Program</span><pre>getServiceProgram</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -429,6 +457,42 @@
                             </div>
 
                         </div>
+                                            <a id="method_getByItem"></a>
+                        <div class="element clickable method public  method_getByItem" data-toggle="collapse" data-target=".method_getByItem .collapse">
+                            <h2>Get Course Lite</h2>
+                            <pre>getByItem(integer $item_id) : \Application\Model\Course</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$item_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Model.Course.html">\Application\Model\Course</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get List Courses.</h2>
@@ -485,6 +549,78 @@
                                                                             
                                                                             <h3>Response</h3>
                                         <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getListLite"></a>
+                        <div class="element clickable method public  method_getListLite" data-toggle="collapse" data-target=".method_getListLite .collapse">
+                            <h2>Get List Lite Courses</h2>
+                            <pre>getListLite(integer $program_id) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$program_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getLite"></a>
+                        <div class="element clickable method public  method_getLite" data-toggle="collapse" data-target=".method_getLite .collapse">
+                            <h2>Get Course Lite</h2>
+                            <pre>getLite(integer $id) : \Dal\Db\ResultSet\ResultSet|\Application\Model\Course</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet|<a href="../classes/Application.Model.Course.html">\Application\Model\Course</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -605,6 +741,64 @@
                             </div>
 
                         </div>
+                                            <a id="method_getServicePost"></a>
+                        <div class="element clickable method private  method_getServicePost" data-toggle="collapse" data-target=".method_getServicePost .collapse">
+                            <h2>Get Service Post</h2>
+                            <pre>getServicePost() : \Application\Service\Post</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Post.html">\Application\Service\Post</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceProgram"></a>
+                        <div class="element clickable method private  method_getServiceProgram" data-toggle="collapse" data-target=".method_getServiceProgram .collapse">
+                            <h2>Get Service Program</h2>
+                            <pre>getServiceProgram() : \Application\Service\Program</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Program.html">\Application\Service\Program</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getServiceUser"></a>
                         <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
                             <h2>Get Service User.</h2>
@@ -637,7 +831,7 @@
                                             <a id="method_update"></a>
                         <div class="element clickable method public  method_update" data-toggle="collapse" data-target=".method_update .collapse">
                             <h2>Update course</h2>
-                            <pre>update(integer $id, string $title = null, string $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, integer $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null) : integer</pre>
+                            <pre>update(integer $id, string $title = null, string $picture = null, string $abstract = null, string $description = null, string $objectives = null, string $teaching = null, string $attendance = null, integer $duration = null, string $notes = null, string $learning_outcomes = null, string $video_link = null, string $video_token = null,  $is_published = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -711,6 +905,10 @@
                                                 <h4>$video_token</h4>
                                                 <code>string</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_published</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>integer</code><p></p>
@@ -740,7 +938,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:34 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:37 +0100.<br/>
     </footer>
     </body>
 </html>

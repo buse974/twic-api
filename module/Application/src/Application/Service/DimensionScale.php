@@ -15,7 +15,7 @@ class DimensionScale extends AbstractService
 {
     /**
      * Add Dimension Scale.
-     * 
+     *
      * @invokable
      *
      * @param int    $dimension
@@ -40,7 +40,7 @@ class DimensionScale extends AbstractService
 
     /**
      * Delete Dimension Scale.
-     * 
+     *
      * @invokable
      *
      * @param int $id
@@ -55,7 +55,7 @@ class DimensionScale extends AbstractService
 
     /**
      * Update Get Dimension Scale.
-     * 
+     *
      * @invokable
      *
      * @param int    $id
@@ -78,7 +78,7 @@ class DimensionScale extends AbstractService
 
     /**
      * Get List Dimension Scale.
-     * 
+     *
      * @invokable
      *
      * @param array $filter

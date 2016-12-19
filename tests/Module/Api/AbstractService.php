@@ -10,7 +10,6 @@ use JrpcMock\Json\Server\Server;
 
 abstract class AbstractService extends AbstractHttpControllerTestCase
 {
-
     protected $traceError = true;
 
     public function setUp()
@@ -129,10 +128,11 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
                     } elseif (is_bool($val)) {
                         print("\$this->assertEquals(" . $name . $fkey . " , " . (($val) ? "true" : "false") . "); \n");
                     } elseif (is_string($val)) {
-                        if (strlen($val) > 300 || $this->validateDate($val) || $this->validateToken($val))
+                        if (strlen($val) > 300 || $this->validateDate($val) || $this->validateToken($val)) {
                             print("\$this->assertEquals(!empty(" . $name . $fkey . ") , true); \n");
-                        else
+                        } else {
                             print("\$this->assertEquals(" . $name . $fkey . " , \"" . $val . "\"); \n");
+                        }
                     } elseif (is_null($val)) {
                         print("\$this->assertEquals(" . $name . $fkey . " , null); \n");
                     }

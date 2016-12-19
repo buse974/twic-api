@@ -34,7 +34,7 @@ class CourseUserRelation extends AbstractService
         foreach ($user_id as $u) {
             foreach ($course_id as $c) {
                 $ret[$u][$c] = $this->_add($u, $c);
-                if($ret[$u][$c] > 0) {
+                if ($ret[$u][$c] > 0) {
                     $m_course = $this->getServiceCourse()->getLite($c);
                     $this->getServiceProgramUserRelation()->_add($u, $m_course->getProgramId());
                 }
@@ -46,7 +46,7 @@ class CourseUserRelation extends AbstractService
 
     /**
      * Add relation user and course
-     * 
+     *
      * @param int $user_id
      * @param int $course_id
      * @return int
@@ -108,7 +108,7 @@ class CourseUserRelation extends AbstractService
     private function getServiceProgramUserRelation()
     {
         return $this->container->get('app_service_program_user_relation');
-    } 
+    }
     
     /**
      * Get Service Course

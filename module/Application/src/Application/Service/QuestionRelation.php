@@ -15,7 +15,7 @@ class QuestionRelation extends AbstractService
 {
     /**
      * Add QuestionRelation.
-     * 
+     *
      * @param int $group_question_id
      * @param int $bank_question_id
      *
@@ -28,7 +28,7 @@ class QuestionRelation extends AbstractService
 
     /**
      * Get List QuestionRelation.
-     * 
+     *
      * @param int $group_question_id
      *
      * @return \Dal\Db\ResultSet\ResultSet

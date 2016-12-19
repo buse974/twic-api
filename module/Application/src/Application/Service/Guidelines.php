@@ -15,7 +15,7 @@ class Guidelines extends AbstractService
 {
     /**
      * Add Guidelines.
-     * 
+     *
      * @invokable
      *
      * @param string $state
@@ -36,7 +36,7 @@ class Guidelines extends AbstractService
 
     /**
      * Update GuiideLines.
-     * 
+     *
      * @invokable
      *
      * @param int    $id

@@ -22,11 +22,11 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param string $name            
-     * @param int $school_id            
-     * @param string $level            
-     * @param string $sis            
-     * @param string $year            
+     * @param string $name
+     * @param int $school_id
+     * @param string $level
+     * @param string $sis
+     * @param string $year
      *
      * @throws \Exception
      *
@@ -35,7 +35,7 @@ class Program extends AbstractService
     public function add($name, $school_id, $level = null, $sis = null, $year = null)
     {
         if (!$this->getServiceUser()->checkOrg($school_id)) {
-             throw new JrpcException('unauthorized orgzanization: ' . $school_id);
+            throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
         
         $m_program = $this->getModel();
@@ -57,18 +57,18 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
-     * @param string $school_id            
-     * @param string $level            
-     * @param string $sis            
-     * @param string $year            
+     * @param int $id
+     * @param string $name
+     * @param string $school_id
+     * @param string $level
+     * @param string $sis
+     * @param string $year
      * @return int
      */
     public function update($id, $name = null, $school_id = null, $level = null, $sis = null, $year = null)
     {
         if (null !== $school_id && !$this->getServiceUser()->checkOrg($school_id)) {
-             throw new JrpcException('unauthorized orgzanization: ' . $school_id);
+            throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
         
         $m_program = $this->getModel();
@@ -87,10 +87,10 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter            
-     * @param string $search            
-     * @param int $school            
-     * @param bool $self            
+     * @param array $filter
+     * @param string $search
+     * @param int $school
+     * @param bool $self
      * @param
      *            array exclude
      * @return \Dal\Db\ResultSet\ResultSet
@@ -115,7 +115,7 @@ class Program extends AbstractService
     /**
      * Get List By User.
      *
-     * @param int $user_id            
+     * @param int $user_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -127,12 +127,12 @@ class Program extends AbstractService
     /**
      * Get List By User.
      *
-     * @param array $filter            
-     * @param int $user_id            
-     * @param string $search            
-     * @param int $school_id            
-     * @param bool $self            
-     * @param array $exclude            
+     * @param array $filter
+     * @param int $user_id
+     * @param string $search
+     * @param int $school_id
+     * @param bool $self
+     * @param array $exclude
      * @return array
      */
     public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null, $self = true, $exclude = null)
@@ -156,7 +156,7 @@ class Program extends AbstractService
     /**
      * Get List By User
      *
-     * @param inr $school_id            
+     * @param inr $school_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySchool($school_id)
@@ -171,7 +171,7 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      * @return \Application\Model\Program
      */
     public function get($id)
@@ -207,7 +207,7 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return int
      */

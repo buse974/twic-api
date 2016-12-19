@@ -9,7 +9,7 @@ class Group extends AbstractMapper
     /**
      * @param int    $set
      * @param string $name
-     * 
+     *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($set = null, $name = null, $course)

@@ -16,7 +16,7 @@ class GroupQuestion extends AbstractService
 {
     /**
      * Add Group Question.
-     * 
+     *
      * @param array $group_question
      * @param int   $nb
      *
@@ -40,7 +40,7 @@ class GroupQuestion extends AbstractService
 
     /**
      * Get List Group Question.
-     * 
+     *
      * @param int $group_question_id
      *
      * @return \Application\Model\GroupQuestion
@@ -69,7 +69,7 @@ class GroupQuestion extends AbstractService
 
     /**
      * Get Service QuestionRelation.
-     * 
+     *
      * @return \Application\Service\QuestionRelation
      */
     private function getServiceQuestionRelation()

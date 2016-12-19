@@ -57,7 +57,7 @@ class Thread extends AbstractService
      * @invokable
      *
      * @todo Add updated date
-     *      
+     *
      * @param int    $id
      * @param string $title
      * @param int    $item_id

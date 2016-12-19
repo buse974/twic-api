@@ -19,7 +19,7 @@ class Resume extends AbstractService
      * Add experience.
      *
      * @invokable
-     * 
+     *
      * @param string $start_date
      * @param string $end_date
      * @param string $address
@@ -178,25 +178,24 @@ class Resume extends AbstractService
      * Get list resume id by users.
      *
      * @invokable
-     * 
+     *
      * @param int|array $id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function m_getListIdByUser($id)
     {
-        if(!is_array($id)){
+        if (!is_array($id)) {
             $users = [$id];
-        }
-        else{
+        } else {
             $users = $id;
         }
         $resumes = [];
-        foreach($users as &$user){
+        foreach ($users as &$user) {
             $resumes[$user] = [];
         }
         $res_resume = $this->getMapper()->m_getListIdByUser($user);
-        foreach($res_resume->toArray() as &$resume){
+        foreach ($res_resume->toArray() as &$resume) {
             $resumes[$resume['user_id']][] = $resume['id'];
         }
 
@@ -209,12 +208,12 @@ class Resume extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id            
+     * @param int|array $id
      * @return array
      */
     public function m_get($id = null)
     {
-       if(!is_array($id)){
+        if (!is_array($id)) {
             $id = [$id];
         }
         
@@ -226,7 +225,7 @@ class Resume extends AbstractService
      * Get Resume.
      *
      * @invokable
-     * 
+     *
      * @param int $user
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -242,7 +241,7 @@ class Resume extends AbstractService
 
     /**
      * Get Service Event.
-     * 
+     *
      * @return \Application\Service\Event
      */
     private function getServiceEvent()
@@ -252,7 +251,7 @@ class Resume extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

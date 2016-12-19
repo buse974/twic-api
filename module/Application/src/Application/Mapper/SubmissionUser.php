@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * Submission User
@@ -22,11 +22,11 @@ class SubmissionUser extends AbstractMapper
     /**
      * Request get List SubmissionUser Grade
      *
-     * @param int $user_id            
-     * @param array $avg            
-     * @param array $filter            
-     * @param string $search            
-     * @param bool $is_academic            
+     * @param int $user_id
+     * @param array $avg
+     * @param array $filter
+     * @param string $search
+     * @param bool $is_academic
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListGrade($user_id, $avg = [], $filter = [], $search = null, $is_academic = false)
@@ -86,8 +86,8 @@ class SubmissionUser extends AbstractMapper
 
     /**
      *
-     * @param int $submission_id            
-     * @param int $user_id            
+     * @param int $submission_id
+     * @param int $user_id
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
@@ -110,7 +110,7 @@ class SubmissionUser extends AbstractMapper
 
     /**
      *
-     * @param unknown $item_id            
+     * @param unknown $item_id
      */
     public function getListByItemId($item_id)
     {
@@ -124,7 +124,7 @@ class SubmissionUser extends AbstractMapper
 
     /**
      *
-     * @param int $submission            
+     * @param int $submission
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -144,7 +144,7 @@ class SubmissionUser extends AbstractMapper
 
     /**
      *
-     * @param int $submission            
+     * @param int $submission
      *
      * @return bool
      */

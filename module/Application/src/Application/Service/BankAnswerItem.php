@@ -34,7 +34,7 @@ class BankAnswerItem extends AbstractService
 
     /**
      * Copy Answer Item.
-     * 
+     *
      * @param int $bank_question_item_id_new
      * @param int $bank_question_item_id_old
      *
@@ -52,7 +52,7 @@ class BankAnswerItem extends AbstractService
 
     /**
      * Get Answer Item.
-     * 
+     *
      * @param int $bank_question_item_id
      *
      * @return \Application\Model\BankAnswerItem|null

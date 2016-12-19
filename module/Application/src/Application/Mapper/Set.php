@@ -9,7 +9,7 @@ class Set extends AbstractMapper
     /**
      * @param int    $set
      * @param string $name
-     * 
+     *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($course, $name = null)

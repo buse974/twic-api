@@ -8,7 +8,7 @@ class Research extends AbstractMapper
 {
     /**
      * Get research list.
-     * 
+     *
      * @param string $string
      * @param bool $is_sadmin_admin
      *
@@ -25,7 +25,7 @@ class Research extends AbstractMapper
                 ->order(array('facette', 'firstname'))
                 ->quantifier('distinct');
 
-        if($is_sadmin_admin === false) {
+        if ($is_sadmin_admin === false) {
             $select->join(['ou' => 'organization_user'], 'ou.user_id=research.user_id', [], $select::JOIN_LEFT)
                 ->join('course', 'course.id=research.course_id', [], $select::JOIN_LEFT)
                 ->join('program', 'program.id=course.program_id', [], $select::JOIN_LEFT)

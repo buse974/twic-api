@@ -5,7 +5,6 @@ use ModuleTest\Api\AbstractService;
 
 class RoleTest extends AbstractService
 {
-
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
@@ -83,5 +82,4 @@ class RoleTest extends AbstractService
         $this->assertEquals($datas['id'], 1);
         $this->assertEquals($datas['jsonrpc'], 2.0);
     }
-
 }

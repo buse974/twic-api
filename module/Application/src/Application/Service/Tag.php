@@ -7,15 +7,15 @@ use Dal\Service\AbstractService;
 class Tag extends AbstractService
 {
     /**
-     * Add tag 
-     * 
+     * Add tag
+     *
      * @param string $name
      * @return int
      */
     public function add($name)
     {
         $res_tag = $this->getMapper()->select($this->getModel()->setName($name));
-        if($res_tag->count() <= 0) {
+        if ($res_tag->count() <= 0) {
             $this->getMapper()->insert($this->getModel()->setName($name)->setWeight(1));
             $id = $this->getMapper()->getLastInsertValue();
         } else {
@@ -28,7 +28,7 @@ class Tag extends AbstractService
     }
     
     /**
-     * 
+     *
      * @param int $page_id
      */
     public function getListByPage($page_id)

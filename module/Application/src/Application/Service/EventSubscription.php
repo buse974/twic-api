@@ -8,14 +8,14 @@ class EventSubscription extends AbstractService
 {
     /**
      * Add Event Subscription
-     * 
+     *
      * @param string $libelle
      * @param int $event_id
      */
     public function add($libelle, $event_id)
     {
         $libelle = array_unique($libelle);
-        if(!is_array($libelle)) {
+        if (!is_array($libelle)) {
             $libelle = [$libelle];
         }
         $m_event_subscription = $this->getModel()->setEventId($event_id);

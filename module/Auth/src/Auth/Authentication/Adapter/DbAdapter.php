@@ -92,14 +92,12 @@ class DbAdapter extends AbstractAdapter
             $code = Result::FAILURE_IDENTITY_AMBIGUOUS;
             $message[] = 'More than one record matches the supplied identity.';
         } else {
-
             $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
             $arrayIdentity = current($arrayIdentity);
-            if(null !== $arrayIdentity['suspension_date']){
+            if (null !== $arrayIdentity['suspension_date']) {
                 $code = self::FAILURE_ACCOUNT_SUSPENDED;
                 $message[] = $arrayIdentity['suspension_reason'];
-            }
-            else{
+            } else {
                 $code = Result::SUCCESS;
                 $message[] = 'Authentication successful.';
                 $identity = $this->getResult()->exchangeArray($arrayIdentity);
@@ -109,7 +107,6 @@ class DbAdapter extends AbstractAdapter
                 $statement = $sql->prepareStatementForSqlObject($update);
                 $statement->execute();
             }
-            
         }
         return new Result($code, $identity, $message);
     }

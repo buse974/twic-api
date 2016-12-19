@@ -8,7 +8,7 @@ class Tag extends AbstractMapper
 {
     /**
      * Get List Tag By Page
-     * 
+     *
      * @param int $page_id
      */
     public function getListByPage($page_id)

@@ -21,7 +21,7 @@ class Feed extends AbstractService
      * Add feed.
      *
      * @invokable
-     * 
+     *
      * @param string $content
      * @param string $link
      * @param string $video
@@ -118,10 +118,9 @@ class Feed extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $m_feed = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        if(!in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])){
+        if (!in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
             return $this->getMapper()->update($m_feed, array('user_id' => $identity['id'], 'id' => $id));
-        }
-        else{
+        } else {
             return $this->getMapper()->update($m_feed, array('id' => $id));
         }
     }
@@ -134,7 +133,8 @@ class Feed extends AbstractService
      *
      * @return int
      */
-    public function reactivate($id){
+    public function reactivate($id)
+    {
         return $this->getMapper()->update($this->getModel()->setId($id)->setDeletedDate(new IsNull()));
     }
 
@@ -183,7 +183,7 @@ class Feed extends AbstractService
      * GetList Feed.
      *
      * @invokable
-     * 
+     *
      * @param string $filter
      * @param string $ids
      * @param int    $user
@@ -211,7 +211,7 @@ class Feed extends AbstractService
 
     /**
      * Get Feed.
-     * 
+     *
      * @param int $id
      *
      * @return \Application\Model\Feed|null
@@ -225,8 +225,8 @@ class Feed extends AbstractService
 
     /**
      * Get preview Crawler.
-     * 
-     * @invokable 
+     *
+     * @invokable
      *
      * @param string $url
      *
@@ -259,7 +259,7 @@ class Feed extends AbstractService
 
     /**
      * Get Service FeedComment.
-     * 
+     *
      * @return \Application\Service\FeedComment
      */
     private function getServiceFeedComment()
@@ -269,7 +269,7 @@ class Feed extends AbstractService
 
     /**
      * Get Service Contact.
-     * 
+     *
      * @return \Application\Service\Contact
      */
     private function getServiceContact()
@@ -279,7 +279,7 @@ class Feed extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -289,7 +289,7 @@ class Feed extends AbstractService
 
     /**
      * Get Service PageCrawler.
-     * 
+     *
      * @return \SimplePageCrawler\PageCrawler
      */
     private function getServiceSimplePageCrawler()
@@ -299,7 +299,7 @@ class Feed extends AbstractService
 
     /**
      * Get Service Event.
-     * 
+     *
      * @return \Application\Service\Event
      */
     private function getServiceEvent()

@@ -41,9 +41,9 @@ class User extends AbstractService
         $result = $auth->authenticate();
         if (! $result->isValid()) {
             switch ($result->getCode()) {
-                case -3 : $code = -32030;break;
-                case -5 : $code = -32031;break;
-                default : $code = -32000;break;
+                case -3: $code = -32030;break;
+                case -5: $code = -32031;break;
+                default: $code = -32000;break;
             }
 
             throw new JrpcException($result->getMessages()[0], $code);
@@ -52,7 +52,7 @@ class User extends AbstractService
         $identity = $this->getIdentity(true);
 
         // ici on check que le role externe ne ce connect pas avec login
-        if(in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles']) === 1) {
+        if (in_array(ModelRole::ROLE_EXTERNAL_STR, $identity['roles']) && count($identity['roles']) === 1) {
             $this->logout();
             throw new \Exception("Error: unauthorized Role");
         }
@@ -213,7 +213,7 @@ class User extends AbstractService
         $organizations = $this->getIdentity()['organizations'];
 
         foreach ($organizations as $org) {
-            if($org['id'] === $organization) {
+            if ($org['id'] === $organization) {
                 $is_present = true;
                 break;
             }
@@ -325,7 +325,7 @@ class User extends AbstractService
                 ->setId($id)
                 ->setSuspensionDate(1 === $suspend ? (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s') : new IsNull())
                 ->setSuspensionReason(1 === $suspend ? $reason : new IsNull());
-        if(1 === $suspend){
+        if (1 === $suspend) {
             $this->getServiceAuth()->getStorage()->clearSession($id);
         }
         return $this->getMapper()->update($m_user);
@@ -397,11 +397,11 @@ class User extends AbstractService
 
            // print_r($this->getIdentity());
         if (in_array(ModelRole::ROLE_ACADEMIC_STR, $this->getIdentity()['roles']) && $school_id !== null) {
-            if($this->checkOrg($school_id) !== true) {
+            if ($this->checkOrg($school_id) !== true) {
                 $user = $this->get();
                 $school_id = $user['school_id'];
             }
-        } else if (!in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
+        } elseif (!in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
             $user = $this->get();
             $school_id = $user['school_id'];
         }
@@ -428,7 +428,7 @@ class User extends AbstractService
             $this->getServiceContact()->addBySchool($school_id);
 
             $res_contact = $this->getServiceContact()->getList($id);
-            foreach($res_contact as $m_contact) {
+            foreach ($res_contact as $m_contact) {
                 $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $id);
                 $this->getServiceSubscription()->add('PU'.$id, $m_contact->getContactId());
             }
@@ -947,13 +947,13 @@ class User extends AbstractService
             $this->lostPassword($this->get($id)['email']);
         }
 
-        if(null !== $suspend){
+        if (null !== $suspend) {
             $this->suspend($id, $suspend, $suspension_reason);
         }
         // on supprime son cache identity pour qu'a ca prochaine cannection il el recré.
         $this->deleteCachedIdentityOfUser($id);
 
-        if(null !== $avatar) {
+        if (null !== $avatar) {
             $this->getServicePost()->addSys('UU'.$id. 'A'.$avatar, 'Avatar update', [
                 'state' => 'update',
                 'user' => $id,
@@ -964,7 +964,7 @@ class User extends AbstractService
                 null/*page*/,
                 null/*org*/,
                 $id/*user*/,
-                null/*course*/,'user');
+                null/*course*/, 'user');
         }
 
         return $ret;
@@ -1091,7 +1091,7 @@ class User extends AbstractService
      */
     public function sendPassword($id)
     {
-        if(!is_array($id)) {
+        if (!is_array($id)) {
             $id = [$id];
         }
 
@@ -1101,7 +1101,7 @@ class User extends AbstractService
 
         foreach ($id as $uid) {
             $res_user = $this->getMapper()->select($this->getModel()->setId($uid));
-            if($res_user->count() <= 0) {
+            if ($res_user->count() <= 0) {
                 continue;
             }
 
@@ -1204,8 +1204,7 @@ class User extends AbstractService
         $user_id = $this->getIdentity()['id'];
         if ($id === null) {
             $id = [$user_id];
-        }
-        else if(!is_array($id)){
+        } elseif (!is_array($id)) {
             $id = [$id];
         }
 
@@ -1238,7 +1237,7 @@ class User extends AbstractService
     public function m_getList($search = null, $exclude = null, $filter = null, $contact_state = null)
     {
         $identity = $this->getIdentity();
-        if(null !== $exclude && !is_array($exclude)){
+        if (null !== $exclude && !is_array($exclude)) {
             $exclude = [$exclude];
         }
 

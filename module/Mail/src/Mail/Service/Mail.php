@@ -10,7 +10,7 @@ use Zend\Mime\Mime;
 use Mail\Mail\Message;
 use Mail\Template\Storage\AbstractStorage;
 
-class Mail  
+class Mail
 {
     protected $storage;
     protected $tpl_storage;
@@ -20,11 +20,11 @@ class Mail
 
     public function init($login = null, $password = null)
     {
-        if(null !== $login) {
+        if (null !== $login) {
             $this->options['transport']['options']['connection_config']['username'] = $login;
             $this->options['storage']['user'] = $login;
         }
-        if(null !== $password) {
+        if (null !== $password) {
             $this->options['transport']['options']['connection_config']['username'] = $password;
             $this->options['storage']['password'] = $password;
         }

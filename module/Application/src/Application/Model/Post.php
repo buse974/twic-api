@@ -13,7 +13,7 @@ class Post extends BasePost
     protected $is_liked;
     protected $nbr_likes;
     protected $user;
-    protected $subscription; 
+    protected $subscription;
     
     public function exchangeArray(array &$data)
     {
@@ -121,5 +121,4 @@ class Post extends BasePost
     {
         return $this->user;
     }
-    
 }

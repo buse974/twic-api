@@ -60,5 +60,4 @@ class FsS3Storage extends AbstractStorage
         
         return $this;
     }
-
 }

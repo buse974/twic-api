@@ -57,7 +57,7 @@ class TextEditor extends AbstractService
 
     /**
      * Create Text Editor.
-     * 
+     *
      * @invokable
      *
      * @param int    $submission_id
@@ -94,7 +94,7 @@ class TextEditor extends AbstractService
 
     /**
      * Create Text Editor.
-     * 
+     *
      * @param array $data
      *
      * @return int

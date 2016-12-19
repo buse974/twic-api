@@ -25,5 +25,4 @@ abstract class AbstractStorage implements StorageInterface
 
         return $this->events;
     }
-
 }

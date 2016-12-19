@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * PageTag
@@ -17,12 +17,12 @@ class PageTag extends AbstractService
 {
     /**
      * Add Page Tag
-     * 
+     *
      * @param int $page_id
      * @param string $tag
      * @return int
      */
-    public function add($page_id, $tag) 
+    public function add($page_id, $tag)
     {
         $m_page_tag = $this->getModel()
             ->setPageId($page_id)
@@ -50,7 +50,7 @@ class PageTag extends AbstractService
     
     /**
      * Replacec Array
-     * 
+     *
      * @param int $page_id
      * @param array $data
      * @return array
@@ -63,8 +63,8 @@ class PageTag extends AbstractService
     }
     
     /**
-     * Get List 
-     * 
+     * Get List
+     *
      * @param int $page_id
      */
     public function getList($page_id)
@@ -73,7 +73,7 @@ class PageTag extends AbstractService
     }
     
     /**
-     * 
+     *
      * @return \Application\Service\Tag
      */
     private function getServiceTag()

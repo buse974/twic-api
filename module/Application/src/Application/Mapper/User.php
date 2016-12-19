@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * User
@@ -16,7 +16,7 @@ use Zend\Db\Sql\Predicate\NotIn;
 use Zend\Db\Sql\Where;
 
 /**
- * 
+ *
  * Class  User
  *
  */
@@ -25,7 +25,7 @@ class User extends AbstractMapper
     
     /**
      * Request Get List Users Group By Item And User
-     * 
+     *
      * @param int $item_id
      * @param int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
@@ -63,7 +63,7 @@ class User extends AbstractMapper
 
     /**
      * Check If Do Belongs By Item Have Submission
-     * 
+     *
      * @param int $item_id
      * @param int $user_id
      * @return boolean
@@ -82,7 +82,7 @@ class User extends AbstractMapper
 
     /**
      * Check If Do Belongs By Item Of Course User
-     * 
+     *
      * @param int $item_id
      * @param int $user_id
      * @return boolean
@@ -189,8 +189,7 @@ class User extends AbstractMapper
     public function getList($user_id, $is_sadmin_admin, $filter = null, $post = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $message = null, $contact_state = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        if($is_sadmin_admin){
-            
+        if ($is_sadmin_admin) {
             $select->columns(array(
                 'user$id' => new Expression('user.id'),
                 'firstname', 'lastname', 'email', 'nickname', 'ambassador',
@@ -198,8 +197,7 @@ class User extends AbstractMapper
                 'position', 'interest', 'avatar', 'suspension_date', 'suspension_reason',
                 'user$contact_state' => $this->getSelectContactState($user_id),
                 'user$contacts_count' => $this->getSelectContactCount(), ));
-        }
-        else{
+        } else {
             $select->columns(array(
                 'user$id' => new Expression('user.id'),
                 'firstname', 'lastname', 'email', 'nickname','ambassador',
@@ -212,12 +210,12 @@ class User extends AbstractMapper
         ->group('user.id')
         ->quantifier('DISTINCT');
         
-       if($is_sadmin_admin === false) {
-           $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
+        if ($is_sadmin_admin === false) {
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
            ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
            ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
            ->where(['organization_user.user_id' => $user_id]);
-       }
+        }
 
         switch ($order) {
             case 'firstname':
@@ -296,12 +294,12 @@ class User extends AbstractMapper
                 ->where(array(' message_user.type = ? ) ' => 'RS'), Predicate::OP_OR);
         }
         
-        if(null !== $contact_state){
-            if(!is_array($contact_state)){
+        if (null !== $contact_state) {
+            if (!is_array($contact_state)) {
                 $contact_state = [$contact_state];
             }
             $select->having(['user$contact_state' => $contact_state]);
-            if(in_array(0, $contact_state)){
+            if (in_array(0, $contact_state)) {
                 $select->having('user$contact_state IS NULL', Predicate::OP_OR);
             }
         }
@@ -323,62 +321,62 @@ class User extends AbstractMapper
             ->quantifier('DISTINCT');
             
         
-            if(null !== $roles){
-                $select->join('user_role', 'user_role.user_id=user.id', [])
+        if (null !== $roles) {
+            $select->join('user_role', 'user_role.user_id=user.id', [])
                         ->where(['user_role.role_id' => $roles]);
-            }
-            if($is_sadmin_admin === false) {
-                $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
+        }
+        if ($is_sadmin_admin === false) {
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                 ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
                 ->where(['organization_user.user_id' => $user_id]);
-            }
+        }
             
-            if (!empty($course) || !empty($exclude_course)) {
-                $select->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
-            }
-            if (!empty($program) || !empty($exclude_program)) {
-                $select->join('program_user_relation', 'program_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
-            }
-             if (!empty($page)) {
-                $select->join('page_user', 'page_user.user_id=user.id', [], $select::JOIN_LEFT)
+        if (!empty($course) || !empty($exclude_course)) {
+            $select->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
+        }
+        if (!empty($program) || !empty($exclude_program)) {
+            $select->join('program_user_relation', 'program_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
+        }
+        if (!empty($page)) {
+            $select->join('page_user', 'page_user.user_id=user.id', [], $select::JOIN_LEFT)
                         ->where(['page_user.page_id' => $page]);
-            }
-            if (!empty($school)) {
-                $select->where(['school.id' => $school]);
-            }
-            if (!empty($course)) {
-                $select->where(['course_user_relation.course_id' => $course]);
-            }
-            if (!empty($program)) {
-                $select->where(['program_user_relation.program_id' => $program]);
-            }
-           if (!empty($exclude_page)) {
-                $select_ex_page = $this->tableGateway->getSql()->select();
-                $select_ex_page->columns(['id'])
+        }
+        if (!empty($school)) {
+            $select->where(['school.id' => $school]);
+        }
+        if (!empty($course)) {
+            $select->where(['course_user_relation.course_id' => $course]);
+        }
+        if (!empty($program)) {
+            $select->where(['program_user_relation.program_id' => $program]);
+        }
+        if (!empty($exclude_page)) {
+            $select_ex_page = $this->tableGateway->getSql()->select();
+            $select_ex_page->columns(['id'])
                        ->join('page_user', 'page_user.user_id=user.id', [])
                        ->where(['page_user.page_id' => $exclude_page]);
-                $select->where(new NotIn('user.id', $select_ex_page));
-            }
-            if (!empty($exclude_course)) {
-                $select_ex_course = $this->tableGateway->getSql()->select();
-                $select_ex_course->columns(['id'])
+            $select->where(new NotIn('user.id', $select_ex_page));
+        }
+        if (!empty($exclude_course)) {
+            $select_ex_course = $this->tableGateway->getSql()->select();
+            $select_ex_course->columns(['id'])
                        ->join('course_user_relation', 'course_user_relation.user_id=user.id', [])
                        ->where(['course_user_relation.course_id' => $exclude_course]);
-                $select->where(new NotIn('user.id', $select_ex_course));
-            }
-            if (!empty($exclude_program)) {
-                $select_ex_program = $this->tableGateway->getSql()->select();
-                $select_ex_program->columns(['id'])
+            $select->where(new NotIn('user.id', $select_ex_course));
+        }
+        if (!empty($exclude_program)) {
+            $select_ex_program = $this->tableGateway->getSql()->select();
+            $select_ex_program->columns(['id'])
                     ->join('program_user_relation', 'program_user_relation.user_id=user.id', [])
                     ->where(['program_user_relation.program_id' => $exclude_program]);
                 
-                $select->where(new NotIn('user.id', $select_ex_program));
-            }
-            if (!empty($exclude_user)) {
-                $select->where(new NotIn('user.id', $exclude_user));
-            }
-            return $this->selectWith($select);
+            $select->where(new NotIn('user.id', $select_ex_program));
+        }
+        if (!empty($exclude_user)) {
+            $select->where(new NotIn('user.id', $exclude_user));
+        }
+        return $this->selectWith($select);
     }
     
     public function getListContact($me, $type = null, $date = null)
@@ -399,19 +397,19 @@ class User extends AbstractMapper
             ->quantifier('DISTINCT');
 
         switch ($type) {
-            case 1 : // on me demande en contact
+            case 1: // on me demande en contact
                 $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS false AND accepted IS false AND deleted IS false'));
                 break;
-            case 2 : // j'ai demander en contact
+            case 2: // j'ai demander en contact
                 $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS true AND accepted IS false AND deleted IS false'));
                 break;
-            case 3 : // on ma refuser en contact
+            case 3: // on ma refuser en contact
                 $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NOT NULL AND requested IS true AND accepted IS false AND deleted IS false'));
                 break;
-            case 4 : // on ma suprimé alors que je suis en contact
+            case 4: // on ma suprimé alors que je suis en contact
                 $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NOT NULL AND deleted IS false'));
                 break;
-            case 5 : // contact ok
+            case 5: // contact ok
                 $select->where(array('contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
                 break;
         }
@@ -426,7 +424,7 @@ class User extends AbstractMapper
     public function getListBySubmission($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'firstname', 'lastname', 'gender','nickname', 'avatar', 'email', 'has_email_notifier', 
+        $select->columns(['id', 'firstname', 'lastname', 'gender','nickname', 'avatar', 'email', 'has_email_notifier',
             'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'), 'position', 'interest', 'school_id'])
             ->join('submission_user', 'submission_user.user_id=user.id', [])
             ->where(['submission_user.submission_id' => $submission_id]);
@@ -493,7 +491,7 @@ class User extends AbstractMapper
             ->join('school', 'user.school_id=school.id', [])
             ->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT)
             ->join('submission_user', 'submission_user.user_id=user.id', [], $select::JOIN_LEFT)
-            ->join('submission', 'submission.id=submission_user.submission_id', [],  $select::JOIN_LEFT)
+            ->join('submission', 'submission.id=submission_user.submission_id', [], $select::JOIN_LEFT)
             ->join('item', 'submission.item_id=item.id', [], $select::JOIN_LEFT)
             ->join('course', 'item.course_id=course.id OR course_user_relation.course_id=course.id', [])
             ->where(array('submission.id' => $submission_id))
@@ -626,7 +624,7 @@ class User extends AbstractMapper
 
     /**
      * Get Select Objet for Contact State
-     * 
+     *
      * @param int $user
      * @return \Zend\Db\Sql\Select
      */
@@ -646,7 +644,7 @@ class User extends AbstractMapper
 
     /**
      * Get Select Objet for Contact Count
-     * 
+     *
      * @return \Zend\Db\Sql\Select
      */
     public function getSelectContactCount()
@@ -661,7 +659,7 @@ class User extends AbstractMapper
 
     /**
      * Get List User PairGraders
-     * 
+     *
      * @param int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */

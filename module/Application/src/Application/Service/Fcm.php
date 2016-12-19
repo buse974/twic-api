@@ -19,32 +19,32 @@ class Fcm extends AbstractService
     
     /**
      * Fcm Client
-     * 
+     *
      * @var \ZendService\Google\Gcm\Client
      */
     protected $fcm_client;
     
     /**
      * Service Session
-     * 
+     *
      * @var \Application\Service\Session
      */
     protected $session;
     
     /**
      * Token user
-     * 
+     *
      * @var string
      */
     protected $token;
     
     /**
-     * 
+     *
      * @param \Application\Service\Session $session
      * @param \ZendService\Google\Gcm\Client $fcm_client
      * @param unknown $token
      */
-    public function __construct($session, $fcm_client, $token) 
+    public function __construct($session, $fcm_client, $token)
     {
         $this->setToken($token);
         $this->session = $session;
@@ -56,7 +56,7 @@ class Fcm extends AbstractService
         $res_session = $this->session->get($uuid);
         foreach ($res_session as $m_session) {
             // if c un autre uuid que moi on suprime la session puis le champ bdd
-            if($this->token !== $m_session->getToken()) {
+            if ($this->token !== $m_session->getToken()) {
                 $this->session->delete(null, $m_session->getToken());
             }
         }
@@ -64,20 +64,20 @@ class Fcm extends AbstractService
         return $this->session->update($this->token, $uuid, $registration_id);
     }
     
-    public function send($to, $data, $notification = null) 
+    public function send($to, $data, $notification = null)
     {
-        if(null !== $notification && empty($notification->getClickAction())) {
+        if (null !== $notification && empty($notification->getClickAction())) {
             $notification->setClickAction(self::ACTIVITY);
         }
         
         $register_ids = [];
         $res_session = $this->session->get(null, $to);
-        foreach ($res_session as $m_session){
+        foreach ($res_session as $m_session) {
             $register_ids[] = $m_session->getRegistrationId();
         }
         
         $nbTo = count($register_ids);
-        if($nbTo > 0) {
+        if ($nbTo > 0) {
             $gcm_message = new GcmMessage();
             $gcm_message->setNotification($notification)
                 ->setPriority("high")
@@ -101,7 +101,7 @@ class Fcm extends AbstractService
 
     /**
      * Set Client Fcm
-     * 
+     *
      * @param \ZendService\Google\Gcm\Client $fcm_client
      * @return \Application\Service\Fcm
      */
@@ -114,7 +114,7 @@ class Fcm extends AbstractService
 
     /**
      * Set Service Session
-     * 
+     *
      * @param \Application\Service\Session $session
      * @return \Application\Service\Fcm
      */
@@ -127,7 +127,7 @@ class Fcm extends AbstractService
     
     /**
      * Set Token User
-     * 
+     *
      * @param string $token
      * @return \Application\Service\Fcm
      */

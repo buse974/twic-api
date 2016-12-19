@@ -15,7 +15,7 @@ class SubConversation extends AbstractService
 {
     /**
      * Add Submission to Conversation.
-     * 
+     *
      * @param int $conversation_id
      * @param int $submission_id
      *
@@ -28,7 +28,7 @@ class SubConversation extends AbstractService
 
     /**
      * Get List Conversation Submission relation.
-     * 
+     *
      * @param int $conversation_id
      * @param int $submission_id
      *

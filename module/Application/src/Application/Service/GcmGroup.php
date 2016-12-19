@@ -8,9 +8,9 @@ class GcmGroup extends AbstractService
 
     /**
      *
-     * @param string $notification_key_name            
-     * @param array $registration_id            
-     * @param string $uuid            
+     * @param string $notification_key_name
+     * @param array $registration_id
+     * @param string $uuid
      * @return bool
      */
     public function create($notification_key_name, $registration_id, $uuid)
@@ -36,8 +36,8 @@ class GcmGroup extends AbstractService
     /**
      * Add GcmGroup In Bdd
      *
-     * @param string $notification_key_name            
-     * @param string $notification_key            
+     * @param string $notification_key_name
+     * @param string $notification_key
      * @throws \Exception
      * @return int
      */
@@ -63,7 +63,7 @@ class GcmGroup extends AbstractService
 
     /**
      *
-     * @param string $notification_key_name            
+     * @param string $notification_key_name
      *
      * @return \Application\Model\GcmGroup
      */

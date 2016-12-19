@@ -17,7 +17,7 @@ class Activity extends AbstractService
 {
     /**
      * Create Activity
-     * 
+     *
      * @invokable
      *
      * @param array $activities
@@ -43,7 +43,7 @@ class Activity extends AbstractService
 
     /**
      * Create Activity.
-     * 
+     *
      * @param string $date
      * @param string $event
      * @param array  $object
@@ -96,7 +96,7 @@ class Activity extends AbstractService
     
      /**
      * Get List activity.
-     * 
+     *
      * @invokable
      *
      * @param string $event
@@ -115,21 +115,20 @@ class Activity extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
         $is_academic = in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']);
      
-        if($is_academic){
-            if(null !== $school_id){
-                if(!is_array($school_id)){
+        if ($is_academic) {
+            if (null !== $school_id) {
+                if (!is_array($school_id)) {
                     $school_id = [$school_id];
                 }
-                foreach($school_id as $school){
+                foreach ($school_id as $school) {
                     if (!$this->getServiceUser()->checkOrg($school)) {
                         throw new JrpcException('unauthorized orgzanization: ' . $school);
                     }
                 }
-            }
-            else{
+            } else {
                 $school_id = [];
-                foreach($identity['organizations'] as $school){
-                  $school_id[] = $school['id'];
+                foreach ($identity['organizations'] as $school) {
+                    $school_id[] = $school['id'];
                 }
             }
         }
@@ -153,7 +152,7 @@ class Activity extends AbstractService
 
     /**
      * Get List activity.
-     * 
+     *
      * @invokable
      *
      * @param string $date
@@ -169,8 +168,6 @@ class Activity extends AbstractService
      */
     public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null, $filter = null)
     {
-        
-        
         $m_activity = $this->getModel();
         $m_activity->setEvent($event)
             ->setDate($date)
@@ -222,7 +219,7 @@ class Activity extends AbstractService
 
     /**
      * Get List Activity With User Model.
-     * 
+     *
      * @invokable
      *
      * @param array  $filter
@@ -240,7 +237,7 @@ class Activity extends AbstractService
 
     /**
      * Aggregate Activity.
-     * 
+     *
      * @invokable
      *
      * @param array|string $event
@@ -270,7 +267,7 @@ class Activity extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -280,7 +277,7 @@ class Activity extends AbstractService
 
     /**
      * Get Service Connection.
-     * 
+     *
      * @return \Application\Service\Connection
      */
     private function getServiceConnection()

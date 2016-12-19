@@ -37,7 +37,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get SubmissionQuiz.
-     * 
+     *
      * @param int $id
      *
      * @return array
@@ -74,7 +74,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Start SubmissionQuiz.
-     * 
+     *
      * @invokable
      *
      * @param int $submission_id
@@ -134,9 +134,9 @@ class SubQuiz extends AbstractService
 
     /**
      * Get SubmissionQuiz Started.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @return array
      */
     public function getStarted()
@@ -153,7 +153,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Add answer.
-     * 
+     *
      * @invokable
      *
      * @param int   $sub_question_id
@@ -213,7 +213,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Calcule submissionQuiz.
-     * 
+     *
      * @param int $submission_id
      * @param int $item_id
      * @param int $sub_quiz_id
@@ -275,7 +275,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Rate submissionQuiz.
-     * 
+     *
      * @invokable
      *
      * @param int   $id
@@ -301,9 +301,9 @@ class SubQuiz extends AbstractService
 
     /**
      * Check Grade.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function checkGrade()
@@ -323,7 +323,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service BankQuestionMedia.
-     * 
+     *
      * @return \Application\Service\BankQuestionMedia
      */
     private function getServiceBankQuestionMedia()
@@ -333,7 +333,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service BankQuestionItem.
-     * 
+     *
      * @return \Application\Service\BankQuestionItem
      */
     private function getServiceBankQuestionItem()
@@ -343,7 +343,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service BankQuestion.
-     * 
+     *
      * @return \Application\Service\BankQuestion
      */
     private function getServiceBankQuestion()
@@ -353,7 +353,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service GroupQuestion.
-     * 
+     *
      * @return \Application\Service\GroupQuestion
      */
     private function getServiceGroupQuestion()
@@ -363,7 +363,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -373,7 +373,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service BankAnswerItem.
-     * 
+     *
      * @return \Application\Service\BankAnswerItem
      */
     private function getServiceBankAnswerItem()
@@ -383,7 +383,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service SubAnswer.
-     * 
+     *
      * @return \Application\Service\SubAnswer
      */
     private function getServiceSubAnswer()
@@ -393,7 +393,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service SubQuestion.
-     * 
+     *
      * @return \Application\Service\SubQuestion
      */
     private function getServiceSubQuestion()
@@ -403,7 +403,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service SubmissionUser.
-     * 
+     *
      * @return \Application\Service\SubmissionUser
      */
     private function getServiceSubmissionUser()
@@ -413,7 +413,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service Submission.
-     * 
+     *
      * @return \Application\Service\Submission
      */
     private function getServiceSubmission()
@@ -423,7 +423,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service Poll.
-     * 
+     *
      * @return \Application\Service\Poll
      */
     private function getServicePoll()
@@ -433,7 +433,7 @@ class SubQuiz extends AbstractService
 
     /**
      * Get Service PollItem.
-     * 
+     *
      * @return \Application\Service\PollItem
      */
     private function getServicePollItem()

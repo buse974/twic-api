@@ -15,7 +15,7 @@ class ProgramUserRelation extends AbstractService
 {
     /**
      * Add Users to Program.
-     * 
+     *
      * @param array $user
      * @param array $program
      *
@@ -54,7 +54,7 @@ class ProgramUserRelation extends AbstractService
 
     /**
      * Delete User To Program.
-     * 
+     *
      * @param array $user
      * @param array $program
      *
@@ -75,7 +75,7 @@ class ProgramUserRelation extends AbstractService
         foreach ($user as $u) {
             foreach ($program as $p) {
                 $ret[$u][$p] = $this->getMapper()->delete($this->getModel()->setProgramId($p)->setUserId($u));
-                if($ret[$u][$p] > 0) {
+                if ($ret[$u][$p] > 0) {
                     $res_course = $this->getServiceCourse()->getListLite($p);
                     foreach ($res_course as $m_course) {
                         $this->getServiceCourseUserRelation()->deleteCourse($u, $m_course->getId());
@@ -89,7 +89,7 @@ class ProgramUserRelation extends AbstractService
 
     /**
      * Delete user of all program.
-     * 
+     *
      * @param int $user_id
      *
      * @return int

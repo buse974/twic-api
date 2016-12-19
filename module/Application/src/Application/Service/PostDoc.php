@@ -10,16 +10,16 @@ class PostDoc extends AbstractService
      * Add Post Document Relation
      *
      * @invokable
-     * 
+     *
      * @param int $post_id
      * @param int|array $library
      * @return int
      */
     public function add($post_id, $library)
     {
-        if(is_array($library)) {
+        if (is_array($library)) {
             $library = $this->getServiceLibrary()->_add($library)->getId();
-        } elseif(!is_numeric($library)) {
+        } elseif (!is_numeric($library)) {
             throw new \Exception('error add document');
         }
     

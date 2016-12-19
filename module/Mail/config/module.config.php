@@ -25,7 +25,7 @@ return [];
         'storage' => [
             'active' => true,
             'host' => 'imap.xxxxxx.fr',
-               'ssl' => 'tls', 
+               'ssl' => 'tls',
         ],
         'transport' => [
             'active' => true,
@@ -34,7 +34,7 @@ return [];
                 'name' => 'christophe',
                 'host' => '',
                 'port' => 587,
-                'connection_class' => 'plain', //login 
+                'connection_class' => 'plain', //login
                 'connection_config' => [
                     'ssl' => 'tls',
                     'username' => 'user',

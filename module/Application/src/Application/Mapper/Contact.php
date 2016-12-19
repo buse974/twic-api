@@ -15,7 +15,7 @@ class Contact extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('accepted_date', 'contact_id', 'user_id'))
-            ->join('user', 'user.id=contact.contact_id',[])
+            ->join('user', 'user.id=contact.contact_id', [])
             ->where(array('contact.user_id' => $user_id))
             ->where(array('contact.accepted_date IS NOT NULL'))
             ->where(array('contact.deleted_date IS NULL'))
@@ -46,10 +46,10 @@ class Contact extends AbstractMapper
                 requested IS false AND 
                 accepted IS false AND 
                 deleted IS false'));
-        if(null !== $user){
+        if (null !== $user) {
             $select->where(array('contact.user_id' => $user));
         }
-        if(null !== $contact){
+        if (null !== $contact) {
             $select->where(array('contact.contact_id' => $contact));
         }
         return $this->selectWith($select);
@@ -75,6 +75,4 @@ class Contact extends AbstractMapper
 
         return $this->insertWith($insert);
     }
-    
-   
 }

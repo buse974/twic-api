@@ -15,7 +15,7 @@ class ConversationDoc extends AbstractService
 {
     /**
      * Add relation conversation document.
-     * 
+     *
      * @param int $conversation_id
      * @param int $library_id
      *
@@ -30,7 +30,7 @@ class ConversationDoc extends AbstractService
 
     /**
      * Delete relation conversation document.
-     * 
+     *
      * @param int $library_id
      */
     public function delete($library_id)
@@ -48,7 +48,7 @@ class ConversationDoc extends AbstractService
 
     /**
      * Get Service Library.
-     * 
+     *
      * @return \Application\Service\Library
      */
     private function getServiceLibrary()

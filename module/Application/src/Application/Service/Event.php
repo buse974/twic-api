@@ -56,14 +56,13 @@ class Event extends AbstractService
         $event_id = $this->getMapper()->getLastInsertValue();
         $this->getServiceEventSubscription()->add($libelle, $event_id);
         $user = $this->getServiceSubscription()->getListUserId($libelle);
-        if(count($user) > 0){
+        if (count($user) > 0) {
             $this->sendRequest(array_values($user), [
                 'id' => $event_id,
                 'event' => $event,
                 'source' => $source,
                 'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
-                'object' => $object]
-                , $target);
+                'object' => $object], $target);
         }
 
         return $event_id;
@@ -169,7 +168,8 @@ class Event extends AbstractService
         $ar_event = $res_event->toArray();
         foreach ($ar_event as &$event) {
             $event['source'] = json_decode($event['source'], true);
-            $event['object'] = json_decode($event['object'], true);;
+            $event['object'] = json_decode($event['object'], true);
+            ;
         }
 
         return ['list' => $ar_event,'count' => $count];
@@ -211,7 +211,7 @@ class Event extends AbstractService
             $event = 'user.publication';
         } else {
             $event = $type;
-            if(is_string($ev)) {
+            if (is_string($ev)) {
                 $event .= '.'.$ev;
             }
         }
@@ -230,7 +230,6 @@ class Event extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
         return $this->create('user.like', $this->getDataUser(), $this->getDataPost($post_id), $sub, self::TARGET_TYPE_USER, $user_id);
-
     }
 
     /**
@@ -309,7 +308,7 @@ class Event extends AbstractService
      */
     public function messageNew($message_id, $to)
     {
-        if(!is_array($to)) {
+        if (!is_array($to)) {
             $to = [$to];
         }
         foreach ($to as $tt) {
@@ -321,7 +320,7 @@ class Event extends AbstractService
         foreach ($to as $t) {
             $u = $this->getDataUser($t);
             //if (!$this->isConnected($t)  $u['data']['has_email_notifier'] == true) {
-            if ( $u['data']['has_email_notifier'] == true) {
+            if ($u['data']['has_email_notifier'] == true) {
                 try {
                     $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array('to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],'from_avatar' => $from['data']['avatar']));
                 } catch (\Exception $e) {

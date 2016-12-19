@@ -16,7 +16,7 @@ class Research extends AbstractService
 {
     /**
      * Get List Research.
-     * 
+     *
      * @invokable
      *
      * @param string $string

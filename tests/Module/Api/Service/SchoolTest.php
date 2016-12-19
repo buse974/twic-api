@@ -5,7 +5,6 @@ use ModuleTest\Api\AbstractService;
 
 class SchoolTest extends AbstractService
 {
-
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
@@ -26,7 +25,7 @@ class SchoolTest extends AbstractService
             'libelle' => 'gnam',
             'custom' => '{chainejson}',
             'programme' => 'super programme',
-            'background' => 'background',   
+            'background' => 'background',
             'phone' => '+33480547852',
             'contact' => 'contact@ium.com',
             'contact_id' => 1,
@@ -41,13 +40,12 @@ class SchoolTest extends AbstractService
             'libelle' => 'gnam'
         ));
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 3);
-        $this->assertEquals($data['result']['id'] , 3);
-        $this->assertEquals($data['result']['custom'] , "{chainejson}");
-        $this->assertEquals($data['result']['libelle'] , "gnam");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 3);
+        $this->assertEquals($data['result']['id'], 3);
+        $this->assertEquals($data['result']['custom'], "{chainejson}");
+        $this->assertEquals($data['result']['libelle'], "gnam");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
-   
 }

@@ -7,7 +7,6 @@ use Mail\Service\Mail;
 
 class Module implements ConfigProviderInterface
 {
-
     public function getConfig()
     {
         return include __DIR__.'/config/module.config.php';
@@ -20,17 +19,17 @@ class Module implements ConfigProviderInterface
                 'mail.service' => Mail\Service\Mail::class,
             ],
             'factories' => [
-                Mail\Service\Mail::class => function($container) {
+                Mail\Service\Mail::class => function ($container) {
                     $conf_mail = $container->get('config')['mail-conf'];
                     $conf_storage = $conf_mail['template']['storage'];
                     $bj_storage = null;
                     
                     switch ($conf_storage['name']) {
-                        case 'fs' :
+                        case 'fs':
                             $bj_storage = new \Mail\Template\Storage\FsStorage();
                             $bj_storage->init($conf_storage);
                             break;
-                        case 's3' :
+                        case 's3':
                             $bj_storage = new \Mail\Template\Storage\FsS3Storage();
                             $bj_storage->init($conf_storage);
                             break;

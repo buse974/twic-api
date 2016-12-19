@@ -5,7 +5,6 @@ use Application\Model\Base\Circle as BaseCircle;
 
 class Circle extends BaseCircle
 {
-
     protected $organizations;
 
     public function setOrganizations($organizations)

@@ -120,6 +120,12 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
+        <a href="#method__add" title="_add :: Add relation user and course">
+            <span class="description">Add relation user and course</span><pre>_add</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_add" title="add :: Add relation user and course.">
             <span class="description">Add relation user and course.</span><pre>add</pre>
         </a>
@@ -137,15 +143,30 @@
         </a>
     </li>
 
-                                                </ul>
+                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                                                                                            <li class="method private">
+                            <a href="#method_getServiceCourse" title="getServiceCourse :: Get Service Course">
+                                <span class="description">Get Service Course</span><pre>getServiceCourse</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceProgramUserRelation" title="getServiceProgramUserRelation :: Get Service ProgramUserRelation.">
+                                <span class="description">Get Service ProgramUserRelation.</span><pre>getServiceProgramUserRelation</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceSubscription" title="getServiceSubscription :: Get Service Subscription">
+                                <span class="description">Get Service Subscription</span><pre>getServiceSubscription</pre>
+                            </a>
+                        </li>
+                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -181,7 +202,38 @@
                                                                                                                                                                                 </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_add"></a>
+                                                                <a id="method__add"></a>
+                        <div class="element clickable method public  method__add" data-toggle="collapse" data-target=".method__add .collapse">
+                            <h2>Add relation user and course</h2>
+                            <pre>_add(integer $user_id, integer $course_id) : integer</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$course_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>Add relation user and course.</h2>
                             <pre>add(integer|array $user_id, integer|array $course_id) : array</pre>
@@ -270,6 +322,93 @@
                             </div>
 
                         </div>
+                                            <a id="method_getServiceCourse"></a>
+                        <div class="element clickable method private  method_getServiceCourse" data-toggle="collapse" data-target=".method_getServiceCourse .collapse">
+                            <h2>Get Service Course</h2>
+                            <pre>getServiceCourse() : \Application\Service\Course</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Course.html">\Application\Service\Course</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceProgramUserRelation"></a>
+                        <div class="element clickable method private  method_getServiceProgramUserRelation" data-toggle="collapse" data-target=".method_getServiceProgramUserRelation .collapse">
+                            <h2>Get Service ProgramUserRelation.</h2>
+                            <pre>getServiceProgramUserRelation() : \Application\Service\ProgramUserRelation</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.ProgramUserRelation.html">\Application\Service\ProgramUserRelation</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceSubscription"></a>
+                        <div class="element clickable method private  method_getServiceSubscription" data-toggle="collapse" data-target=".method_getServiceSubscription .collapse">
+                            <h2>Get Service Subscription</h2>
+                            <pre>getServiceSubscription() : \Application\Service\Subscription</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Subscription.html">\Application\Service\Subscription</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                     
                     
                                                         </div>
@@ -292,7 +431,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:35 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:38 +0100.<br/>
     </footer>
     </body>
 </html>

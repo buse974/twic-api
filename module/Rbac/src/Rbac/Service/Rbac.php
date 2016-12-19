@@ -5,7 +5,7 @@ namespace Rbac\Service;
 use Zend\Permissions\Rbac\Role;
 use Zend\Permissions\Rbac\Rbac as ZRBac;
 
-class Rbac  
+class Rbac
 {
     /**
      * @var \Zend\Permissions\Rbac\Rbac
@@ -24,7 +24,7 @@ class Rbac
 
     /**
      * Constructor
-     * 
+     *
      * @param \Rbac\Db\Service\Role $service_role
      * @param \Zend\Cache\Storage\StorageInterface $cache
      */
@@ -116,5 +116,4 @@ class Rbac
 
         return $this->rbac;
     }
-
 }

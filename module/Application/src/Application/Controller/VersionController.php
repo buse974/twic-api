@@ -21,6 +21,4 @@ class VersionController extends AbstractActionController
             'version' => $this->conf()->getVersion()
         ]))->setTerminal(true);
     }
-    
-    
 }

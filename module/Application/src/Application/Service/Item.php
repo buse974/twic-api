@@ -31,27 +31,27 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course            
-     * @param int $grading_policy_id            
-     * @param string $title            
-     * @param string $describe            
-     * @param int $duration            
-     * @param string $type            
-     * @param array $data            
-     * @param array $ct            
-     * @param array $opt            
-     * @param int $set_id            
-     * @param bool $has_submission            
-     * @param string $start            
-     * @param string $end            
-     * @param string $cut_off            
-     * @param int $parent_id            
-     * @param int $order_id            
-     * @param bool $has_all_student            
-     * @param bool $is_grouped            
-     * @param array $submission            
-     * @param bool $is_complete            
-     * @param int $coefficient            
+     * @param int $course
+     * @param int $grading_policy_id
+     * @param string $title
+     * @param string $describe
+     * @param int $duration
+     * @param string $type
+     * @param array $data
+     * @param array $ct
+     * @param array $opt
+     * @param int $set_id
+     * @param bool $has_submission
+     * @param string $start
+     * @param string $end
+     * @param string $cut_off
+     * @param int $parent_id
+     * @param int $order_id
+     * @param bool $has_all_student
+     * @param bool $is_grouped
+     * @param array $submission
+     * @param bool $is_complete
+     * @param int $coefficient
      *
      * @throws \Exception
      *
@@ -138,9 +138,9 @@ class Item extends AbstractService
     /**
      * Initialisation Component.
      *
-     * @param string $type            
-     * @param array $data            
-     * @param int $item_id            
+     * @param string $type
+     * @param array $data
+     * @param int $item_id
      */
     private function initCmp($type, $data, $item_id)
     {
@@ -157,9 +157,9 @@ class Item extends AbstractService
     /**
      * Factory Component.
      *
-     * @param string $component            
-     * @param array $data            
-     * @param int $item_id            
+     * @param string $component
+     * @param array $data
+     * @param int $item_id
      *
      * @return mixed
      */
@@ -191,8 +191,8 @@ class Item extends AbstractService
     /**
      * Add Poll to item.
      *
-     * @param array $data            
-     * @param int $item_id            
+     * @param array $data
+     * @param int $item_id
      *
      * @return int
      */
@@ -214,8 +214,8 @@ class Item extends AbstractService
     /**
      * Add hangout to item.
      *
-     * @param array $data            
-     * @param int $item_id            
+     * @param array $data
+     * @param int $item_id
      *
      * @return int
      */
@@ -233,8 +233,8 @@ class Item extends AbstractService
     /**
      * Add Thread to Item.
      *
-     * @param array $data            
-     * @param int $item_id            
+     * @param array $data
+     * @param int $item_id
      *
      * @return int
      */
@@ -257,8 +257,8 @@ class Item extends AbstractService
     /**
      * Add Document to Item.
      *
-     * @param array $data            
-     * @param int $item_id            
+     * @param array $data
+     * @param int $item_id
      *
      * @return int
      */
@@ -281,8 +281,8 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $item_id            
-     * @param int $user_id            
+     * @param int $item_id
+     * @param int $user_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -296,13 +296,13 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter            
-     * @param string $type            
-     * @param array $program            
-     * @param array $course            
-     * @param string $due            
-     * @param bool $notgraded            
-     * @param string $search            
+     * @param array $filter
+     * @param string $type
+     * @param array $program
+     * @param array $course
+     * @param string $due
+     * @param bool $notgraded
+     * @param string $search
      *
      * @return array
      */
@@ -322,26 +322,26 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param int $grading_policy_id            
-     * @param string $title            
-     * @param string $describe            
-     * @param int $duration            
-     * @param string $type            
-     * @param string $data            
-     * @param int $set_id            
-     * @param bool $has_submission            
-     * @param string $start            
-     * @param string $end            
-     * @param string $cut_off            
-     * @param int $parent_id            
-     * @param int $order_id            
-     * @param bool $has_all_student            
-     * @param bool $is_grouped            
-     * @param array $submission            
-     * @param bool $is_complete            
-     * @param int $coefficient            
-     * @param array $opt            
+     * @param int $id
+     * @param int $grading_policy_id
+     * @param string $title
+     * @param string $describe
+     * @param int $duration
+     * @param string $type
+     * @param string $data
+     * @param int $set_id
+     * @param bool $has_submission
+     * @param string $start
+     * @param string $end
+     * @param string $cut_off
+     * @param int $parent_id
+     * @param int $order_id
+     * @param bool $has_all_student
+     * @param bool $is_grouped
+     * @param array $submission
+     * @param bool $is_complete
+     * @param int $coefficient
+     * @param array $opt
      *
      * @return int
      */
@@ -425,7 +425,7 @@ class Item extends AbstractService
     /**
      * Get List Item By Course.
      *
-     * @param int $course_id            
+     * @param int $course_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -440,10 +440,10 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course            
-     * @param int $parent_id            
-     * @param int $start            
-     * @param int $end            
+     * @param int $course
+     * @param int $parent_id
+     * @param int $start
+     * @param int $end
      * @param array $type
      *            @retun array
      */
@@ -490,10 +490,10 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course            
-     * @param int $parent_id            
-     * @param int $start            
-     * @param int $end            
+     * @param int $course
+     * @param int $parent_id
+     * @param int $start
+     * @param int $end
      * @param array $type
      *            @retun array
      */
@@ -523,8 +523,8 @@ class Item extends AbstractService
     /**
      * Check if user is allowed.
      *
-     * @param int $item_id            
-     * @param int $user_id            
+     * @param int $item_id
+     * @param int $user_id
      *
      * @return bool
      */
@@ -540,8 +540,8 @@ class Item extends AbstractService
     /**
      * Check visibility to item by contrainte.
      *
-     * @param array $item            
-     * @param int $user_id            
+     * @param array $item
+     * @param int $user_id
      *
      * @return bool
      */
@@ -608,8 +608,8 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param string $start            
-     * @param string $end            
+     * @param string $start
+     * @param string $end
      *
      * @return array
      */
@@ -624,7 +624,7 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $user            
+     * @param int $user
      *
      * @return array
      */
@@ -641,7 +641,7 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -655,8 +655,8 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course            
-     * @param int $type            
+     * @param int $course
+     * @param int $type
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -674,7 +674,7 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return bool
      */
@@ -686,7 +686,7 @@ class Item extends AbstractService
         
         foreach ($id as $i) {
             $sort = $this->sort($i);
-            if($sort <= 1){
+            if ($sort <= 1) {
                 try {
                     $this->getMapper()->delete($this->getModel()->setId($i));
                 } catch (\Exception $e) {
@@ -695,8 +695,7 @@ class Item extends AbstractService
 
                     return false;
                 }
-            }
-            else{
+            } else {
                 $this->cancelSort($i);
                 return false;
             }
@@ -710,10 +709,10 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $grading_policy_id            
-     * @param int $course            
-     * @param int $user            
-     * @param int $submission            
+     * @param int $grading_policy_id
+     * @param int $course
+     * @param int $user
+     * @param int $submission
      */
     public function getListGradeItem($grading_policy_id = null, $course = null, $user = null, $submission = null)
     {
@@ -723,7 +722,7 @@ class Item extends AbstractService
     /**
      * Get item by submission.
      *
-     * @param int $submission_id            
+     * @param int $submission_id
      *
      * @return null|\Application\Model\Item
      */
@@ -739,7 +738,7 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @throws \Exception
      *
@@ -794,9 +793,9 @@ class Item extends AbstractService
     /**
      * Update Order Id of item.
      *
-     * @param int $item            
-     * @param int $parent_target            
-     * @param int $order_id            
+     * @param int $item
+     * @param int $parent_target
+     * @param int $order_id
      */
     public function updateOrderId($item, $parent_target = null, $order_id = null)
     {
@@ -847,7 +846,7 @@ class Item extends AbstractService
     /**
      * Sort item.
      *
-     * @param int $item_id            
+     * @param int $item_id
      *
      * @return int
      */
@@ -858,7 +857,7 @@ class Item extends AbstractService
             ->setId($item_id))
             ->current();
         
-        if(!$me_item){
+        if (!$me_item) {
             return 0;
         }
         
@@ -869,7 +868,7 @@ class Item extends AbstractService
     /**
      * Cancel a sort item.
      *
-     * @param intem $item            
+     * @param intem $item
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -881,7 +880,7 @@ class Item extends AbstractService
             ->current();
         
          
-        if(!$me_item){
+        if (!$me_item) {
             return 0;
         }
         

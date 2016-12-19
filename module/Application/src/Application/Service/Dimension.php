@@ -15,9 +15,9 @@ class Dimension extends AbstractService
 {
     /**
      * Get List Dimension.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param array  $filter
      * @param string $search
      *
@@ -102,9 +102,9 @@ class Dimension extends AbstractService
 
     /**
      * Get EqCq By School.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $school
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -116,7 +116,7 @@ class Dimension extends AbstractService
 
     /**
      * Get Service Component.
-     * 
+     *
      * @return \Application\Service\Component
      */
     private function getServiceComponent()

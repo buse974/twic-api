@@ -15,7 +15,7 @@ class FeedComment extends AbstractService
 {
     /**
      * Add Feed Comment.
-     * 
+     *
      * @param string $content
      * @param int    $feed_id
      *
@@ -40,7 +40,7 @@ class FeedComment extends AbstractService
 
     /**
      * Delete Feed Comment.
-     * 
+     *
      * @param int $id
      *
      * @return int
@@ -56,7 +56,7 @@ class FeedComment extends AbstractService
 
     /**
      * Get List Feed Comment.
-     * 
+     *
      * @param int $id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -68,7 +68,7 @@ class FeedComment extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

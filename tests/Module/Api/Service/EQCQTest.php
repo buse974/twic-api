@@ -5,7 +5,6 @@ use ModuleTest\Api\AbstractService;
 
 class EQCQTest extends AbstractService
 {
-
     public static $session;
 
     public static function setUpBeforeClass()
@@ -99,10 +98,10 @@ class EQCQTest extends AbstractService
                 'is_complete' => true
             ]);
          
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     
         return $data['result'];
     }
@@ -126,27 +125,26 @@ class EQCQTest extends AbstractService
         $this->reset();
         
         $this->setIdentity(1);
-        $data = $this->jsonRpc('questionnaire.getByItem',['item' => 1]);
+        $data = $this->jsonRpc('questionnaire.getByItem', ['item' => 1]);
         $fd = $data;
         foreach ($fd['result']['questions'] as $d) {
             $this->setIdentity(1);
             $data = $this->jsonRpc('questionnaire.answer',
-                [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1,6)]);
+                [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1, 6)]);
             $this->reset();
             $this->setIdentity(1);
             $data = $this->jsonRpc('questionnaire.answer',
-                [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1,6)]);
+                [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1, 6)]);
             $this->reset();
             $this->setIdentity(2);
             $data = $this->jsonRpc('questionnaire.answer',
-                [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1,6)]);
+                [ 'item' => 1, 'user' => 1, 'question' => $d['id'], 'scale' => rand(1, 6)]);
             $this->reset();
             $this->setIdentity(2);
             $data = $this->jsonRpc('questionnaire.answer',
-                [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1,6)]);
+                [ 'item' => 1, 'user' => 2, 'question' => $d['id'], 'scale' => rand(1, 6)]);
             $this->reset();
         }
-        
     }
     
     public function testAddDimension()
@@ -187,102 +185,102 @@ class EQCQTest extends AbstractService
         
         $data = $this->jsonRpc('dimension.getList', array());
 
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals($data['result']['count'] , 3);
-        $this->assertEquals(count($data['result']['list']) , 3);
-        $this->assertEquals(count($data['result']['list'][0]) , 5);
-        $this->assertEquals(count($data['result']['list'][0]['component']) , 3);
-        $this->assertEquals(count($data['result']['list'][0]['component'][0]) , 5);
-        $this->assertEquals(count($data['result']['list'][0]['component'][0]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][0]['component'][0]['dimension']['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][0]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result']['list'][0]['component'][0]['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][0]['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result']['list'][0]['component'][0]['dimension_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][0]['describe'] , "Individuals with multicultural awareness recognize that communication, negotiation and leadership styles may vary based on country of origin and other cultural factors. They are interested by this observation, and seek ways to learn more about it.");
-        $this->assertEquals(count($data['result']['list'][0]['component'][1]) , 5);
-        $this->assertEquals(count($data['result']['list'][0]['component'][1]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][0]['component'][1]['dimension']['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][1]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result']['list'][0]['component'][1]['id'] , 2);
-        $this->assertEquals($data['result']['list'][0]['component'][1]['name'] , "Multicultural sensitivity");
-        $this->assertEquals($data['result']['list'][0]['component'][1]['dimension_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][1]['describe'] , "Individuals with multicultural sensitivity are not only aware of and interested in potential differences in communication, negotiation and leadership styles, but also make an effort to adapt their own communication and leadership styles accordingly.");
-        $this->assertEquals(count($data['result']['list'][0]['component'][2]) , 5);
-        $this->assertEquals(count($data['result']['list'][0]['component'][2]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][0]['component'][2]['dimension']['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][2]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result']['list'][0]['component'][2]['id'] , 3);
-        $this->assertEquals($data['result']['list'][0]['component'][2]['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result']['list'][0]['component'][2]['dimension_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['component'][2]['describe'] , "Communicating with people from different cultures requires even more active listening and questioning styles to ensure that what you interpret is indeed aligned with the intent of the speaker. Accordingly the communication style needs to be interactive and accommodating.");
-        $this->assertEquals($data['result']['list'][0]['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['name'] , "CQ");
-        $this->assertEquals(!empty($data['result']['list'][0]['describe']) , true);
-        $this->assertEquals($data['result']['list'][0]['deleted_date'] , null);
-        $this->assertEquals(count($data['result']['list'][1]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component']) , 6);
-        $this->assertEquals(count($data['result']['list'][1]['component'][0]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component'][0]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][0]['dimension']['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][0]['dimension']['name'] , "EQ");
-        $this->assertEquals($data['result']['list'][1]['component'][0]['id'] , 4);
-        $this->assertEquals($data['result']['list'][1]['component'][0]['name'] , "Communication & presentation");
-        $this->assertEquals($data['result']['list'][1]['component'][0]['dimension_id'] , 2);
-        $this->assertEquals(!empty($data['result']['list'][1]['component'][0]['describe']) , true);
-        $this->assertEquals(count($data['result']['list'][1]['component'][1]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component'][1]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][1]['dimension']['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][1]['dimension']['name'] , "EQ");
-        $this->assertEquals($data['result']['list'][1]['component'][1]['id'] , 5);
-        $this->assertEquals($data['result']['list'][1]['component'][1]['name'] , "Team player");
-        $this->assertEquals($data['result']['list'][1]['component'][1]['dimension_id'] , 2);
-        $this->assertEquals(!empty($data['result']['list'][1]['component'][1]['describe']) , true);
-        $this->assertEquals(count($data['result']['list'][1]['component'][2]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component'][2]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][2]['dimension']['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][2]['dimension']['name'] , "EQ");
-        $this->assertEquals($data['result']['list'][1]['component'][2]['id'] , 6);
-        $this->assertEquals($data['result']['list'][1]['component'][2]['name'] , "Leadership");
-        $this->assertEquals($data['result']['list'][1]['component'][2]['dimension_id'] , 2);
-        $this->assertEquals(!empty($data['result']['list'][1]['component'][2]['describe']) , true);
-        $this->assertEquals(count($data['result']['list'][1]['component'][3]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component'][3]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][3]['dimension']['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][3]['dimension']['name'] , "EQ");
-        $this->assertEquals($data['result']['list'][1]['component'][3]['id'] , 7);
-        $this->assertEquals($data['result']['list'][1]['component'][3]['name'] , "Critical thinking");
-        $this->assertEquals($data['result']['list'][1]['component'][3]['dimension_id'] , 2);
-        $this->assertEquals(!empty($data['result']['list'][1]['component'][3]['describe']) , true);
-        $this->assertEquals(count($data['result']['list'][1]['component'][4]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component'][4]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][4]['dimension']['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][4]['dimension']['name'] , "EQ");
-        $this->assertEquals($data['result']['list'][1]['component'][4]['id'] , 8);
-        $this->assertEquals($data['result']['list'][1]['component'][4]['name'] , "Empathy");
-        $this->assertEquals($data['result']['list'][1]['component'][4]['dimension_id'] , 2);
-        $this->assertEquals(!empty($data['result']['list'][1]['component'][4]['describe']) , true);
-        $this->assertEquals(count($data['result']['list'][1]['component'][5]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['component'][5]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][5]['dimension']['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['component'][5]['dimension']['name'] , "EQ");
-        $this->assertEquals($data['result']['list'][1]['component'][5]['id'] , 9);
-        $this->assertEquals($data['result']['list'][1]['component'][5]['name'] , "Enthusiasm");
-        $this->assertEquals($data['result']['list'][1]['component'][5]['dimension_id'] , 2);
-        $this->assertEquals(!empty($data['result']['list'][1]['component'][5]['describe']) , true);
-        $this->assertEquals($data['result']['list'][1]['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['name'] , "EQ");
-        $this->assertEquals(!empty($data['result']['list'][1]['describe']) , true);
-        $this->assertEquals($data['result']['list'][1]['deleted_date'] , null);
-        $this->assertEquals(count($data['result']['list'][2]) , 5);
-        $this->assertEquals(count($data['result']['list'][2]['component']) , 0);
-        $this->assertEquals($data['result']['list'][2]['id'] , 3);
-        $this->assertEquals($data['result']['list'][2]['name'] , null);
-        $this->assertEquals($data['result']['list'][2]['describe'] , "une super dimension UPT");
-        $this->assertEquals($data['result']['list'][2]['deleted_date'] , null);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals($data['result']['count'], 3);
+        $this->assertEquals(count($data['result']['list']), 3);
+        $this->assertEquals(count($data['result']['list'][0]), 5);
+        $this->assertEquals(count($data['result']['list'][0]['component']), 3);
+        $this->assertEquals(count($data['result']['list'][0]['component'][0]), 5);
+        $this->assertEquals(count($data['result']['list'][0]['component'][0]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][0]['component'][0]['dimension']['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][0]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result']['list'][0]['component'][0]['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][0]['name'], "Multicultural awareness");
+        $this->assertEquals($data['result']['list'][0]['component'][0]['dimension_id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][0]['describe'], "Individuals with multicultural awareness recognize that communication, negotiation and leadership styles may vary based on country of origin and other cultural factors. They are interested by this observation, and seek ways to learn more about it.");
+        $this->assertEquals(count($data['result']['list'][0]['component'][1]), 5);
+        $this->assertEquals(count($data['result']['list'][0]['component'][1]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][0]['component'][1]['dimension']['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][1]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result']['list'][0]['component'][1]['id'], 2);
+        $this->assertEquals($data['result']['list'][0]['component'][1]['name'], "Multicultural sensitivity");
+        $this->assertEquals($data['result']['list'][0]['component'][1]['dimension_id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][1]['describe'], "Individuals with multicultural sensitivity are not only aware of and interested in potential differences in communication, negotiation and leadership styles, but also make an effort to adapt their own communication and leadership styles accordingly.");
+        $this->assertEquals(count($data['result']['list'][0]['component'][2]), 5);
+        $this->assertEquals(count($data['result']['list'][0]['component'][2]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][0]['component'][2]['dimension']['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][2]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result']['list'][0]['component'][2]['id'], 3);
+        $this->assertEquals($data['result']['list'][0]['component'][2]['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result']['list'][0]['component'][2]['dimension_id'], 1);
+        $this->assertEquals($data['result']['list'][0]['component'][2]['describe'], "Communicating with people from different cultures requires even more active listening and questioning styles to ensure that what you interpret is indeed aligned with the intent of the speaker. Accordingly the communication style needs to be interactive and accommodating.");
+        $this->assertEquals($data['result']['list'][0]['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['name'], "CQ");
+        $this->assertEquals(!empty($data['result']['list'][0]['describe']), true);
+        $this->assertEquals($data['result']['list'][0]['deleted_date'], null);
+        $this->assertEquals(count($data['result']['list'][1]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component']), 6);
+        $this->assertEquals(count($data['result']['list'][1]['component'][0]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component'][0]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['component'][0]['dimension']['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['component'][0]['dimension']['name'], "EQ");
+        $this->assertEquals($data['result']['list'][1]['component'][0]['id'], 4);
+        $this->assertEquals($data['result']['list'][1]['component'][0]['name'], "Communication & presentation");
+        $this->assertEquals($data['result']['list'][1]['component'][0]['dimension_id'], 2);
+        $this->assertEquals(!empty($data['result']['list'][1]['component'][0]['describe']), true);
+        $this->assertEquals(count($data['result']['list'][1]['component'][1]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component'][1]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['component'][1]['dimension']['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['component'][1]['dimension']['name'], "EQ");
+        $this->assertEquals($data['result']['list'][1]['component'][1]['id'], 5);
+        $this->assertEquals($data['result']['list'][1]['component'][1]['name'], "Team player");
+        $this->assertEquals($data['result']['list'][1]['component'][1]['dimension_id'], 2);
+        $this->assertEquals(!empty($data['result']['list'][1]['component'][1]['describe']), true);
+        $this->assertEquals(count($data['result']['list'][1]['component'][2]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component'][2]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['component'][2]['dimension']['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['component'][2]['dimension']['name'], "EQ");
+        $this->assertEquals($data['result']['list'][1]['component'][2]['id'], 6);
+        $this->assertEquals($data['result']['list'][1]['component'][2]['name'], "Leadership");
+        $this->assertEquals($data['result']['list'][1]['component'][2]['dimension_id'], 2);
+        $this->assertEquals(!empty($data['result']['list'][1]['component'][2]['describe']), true);
+        $this->assertEquals(count($data['result']['list'][1]['component'][3]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component'][3]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['component'][3]['dimension']['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['component'][3]['dimension']['name'], "EQ");
+        $this->assertEquals($data['result']['list'][1]['component'][3]['id'], 7);
+        $this->assertEquals($data['result']['list'][1]['component'][3]['name'], "Critical thinking");
+        $this->assertEquals($data['result']['list'][1]['component'][3]['dimension_id'], 2);
+        $this->assertEquals(!empty($data['result']['list'][1]['component'][3]['describe']), true);
+        $this->assertEquals(count($data['result']['list'][1]['component'][4]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component'][4]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['component'][4]['dimension']['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['component'][4]['dimension']['name'], "EQ");
+        $this->assertEquals($data['result']['list'][1]['component'][4]['id'], 8);
+        $this->assertEquals($data['result']['list'][1]['component'][4]['name'], "Empathy");
+        $this->assertEquals($data['result']['list'][1]['component'][4]['dimension_id'], 2);
+        $this->assertEquals(!empty($data['result']['list'][1]['component'][4]['describe']), true);
+        $this->assertEquals(count($data['result']['list'][1]['component'][5]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['component'][5]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['component'][5]['dimension']['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['component'][5]['dimension']['name'], "EQ");
+        $this->assertEquals($data['result']['list'][1]['component'][5]['id'], 9);
+        $this->assertEquals($data['result']['list'][1]['component'][5]['name'], "Enthusiasm");
+        $this->assertEquals($data['result']['list'][1]['component'][5]['dimension_id'], 2);
+        $this->assertEquals(!empty($data['result']['list'][1]['component'][5]['describe']), true);
+        $this->assertEquals($data['result']['list'][1]['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['name'], "EQ");
+        $this->assertEquals(!empty($data['result']['list'][1]['describe']), true);
+        $this->assertEquals($data['result']['list'][1]['deleted_date'], null);
+        $this->assertEquals(count($data['result']['list'][2]), 5);
+        $this->assertEquals(count($data['result']['list'][2]['component']), 0);
+        $this->assertEquals($data['result']['list'][2]['id'], 3);
+        $this->assertEquals($data['result']['list'][2]['name'], null);
+        $this->assertEquals($data['result']['list'][2]['describe'], "une super dimension UPT");
+        $this->assertEquals($data['result']['list'][2]['deleted_date'], null);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
     public function testAddQuestion()
@@ -295,13 +293,12 @@ class EQCQTest extends AbstractService
                 'component' => 1
         ));
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 60);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 60);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
-        
     }
     
     /**
@@ -318,10 +315,10 @@ class EQCQTest extends AbstractService
                 'component' => 2
             ));
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
@@ -336,10 +333,10 @@ class EQCQTest extends AbstractService
                 'id' => $question,
             ));
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
@@ -353,76 +350,76 @@ class EQCQTest extends AbstractService
             'question.getList', array()
             );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 59);
-        $this->assertEquals(count($data['result'][0]) , 3);
-        $this->assertEquals(count($data['result'][0]['component']) , 2);
-        $this->assertEquals($data['result'][0]['component']['id'] , 1);
-        $this->assertEquals($data['result'][0]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['text'] , "When working with others in a multicultural group, \$subject like(s) to know about the historical, legal, political and economic conditions of their different countries.");
-        $this->assertEquals(count($data['result'][1]) , 3);
-        $this->assertEquals(count($data['result'][1]['component']) , 2);
-        $this->assertEquals($data['result'][1]['component']['id'] , 1);
-        $this->assertEquals($data['result'][1]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['text'] , "In group meetings \$subject assume(s) that cultural values will differ amongst participants.");
-        $this->assertEquals(count($data['result'][2]) , 3);
-        $this->assertEquals(count($data['result'][2]['component']) , 2);
-        $this->assertEquals($data['result'][2]['component']['id'] , 1);
-        $this->assertEquals($data['result'][2]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][2]['id'] , 3);
-        $this->assertEquals($data['result'][2]['text'] , "\$subject believe(s) that gender roles may vary amongst people from different countries and/or cultures.");
-        $this->assertEquals(count($data['result'][3]) , 3);
-        $this->assertEquals(count($data['result'][3]['component']) , 2);
-        $this->assertEquals($data['result'][3]['component']['id'] , 2);
-        $this->assertEquals($data['result'][3]['component']['name'] , "Multicultural sensitivity");
-        $this->assertEquals($data['result'][3]['id'] , 4);
-        $this->assertEquals($data['result'][3]['text'] , "\$subject believe(s) that gender roles may vary amongst people from different countries and/or cultures.");
-        $this->assertEquals(count($data['result'][4]) , 3);
-        $this->assertEquals(count($data['result'][4]['component']) , 2);
-        $this->assertEquals($data['result'][4]['component']['id'] , 2);
-        $this->assertEquals($data['result'][4]['component']['name'] , "Multicultural sensitivity");
-        $this->assertEquals($data['result'][4]['id'] , 5);
-        $this->assertEquals($data['result'][4]['text'] , "\$subject realize(s) that because of different cultural backgrounds in our team, our perspectives may not be the same as those of team members from other regions.");
-        $this->assertEquals(count($data['result'][5]) , 3);
-        $this->assertEquals(count($data['result'][5]['component']) , 2);
-        $this->assertEquals($data['result'][5]['component']['id'] , 2);
-        $this->assertEquals($data['result'][5]['component']['name'] , "Multicultural sensitivity");
-        $this->assertEquals($data['result'][5]['id'] , 6);
-        $this->assertEquals($data['result'][5]['text'] , "\$subject believe(s)  that different cultural norms and values can affect business decisions in group work.");
-        $this->assertEquals(count($data['result'][6]) , 3);
-        $this->assertEquals(count($data['result'][6]['component']) , 2);
-        $this->assertEquals($data['result'][6]['component']['id'] , 3);
-        $this->assertEquals($data['result'][6]['component']['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result'][6]['id'] , 7);
-        $this->assertEquals($data['result'][6]['text'] , "\$subject adapt(s) my/his/her communication style to the cultural sensitivities in the group.");
-        $this->assertEquals(count($data['result'][7]) , 3);
-        $this->assertEquals(count($data['result'][7]['component']) , 2);
-        $this->assertEquals($data['result'][7]['component']['id'] , 3);
-        $this->assertEquals($data['result'][7]['component']['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result'][7]['id'] , 8);
-        $this->assertEquals($data['result'][7]['text'] , "When interacting with team members from different countries, \$subject ask(s) questions to avoid misunderstanding.");
-        $this->assertEquals(count($data['result'][8]) , 3);
-        $this->assertEquals(count($data['result'][8]['component']) , 2);
-        $this->assertEquals($data['result'][8]['component']['id'] , 3);
-        $this->assertEquals($data['result'][8]['component']['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result'][8]['id'] , 9);
-        $this->assertEquals($data['result'][8]['text'] , "In group meetings with people from different countries, \$subject never lose(s) patience and stop listening.");
-        $this->assertEquals(count($data['result'][9]) , 3);
-        $this->assertEquals(count($data['result'][9]['component']) , 2);
-        $this->assertEquals($data['result'][9]['component']['id'] , 4);
-        $this->assertEquals($data['result'][9]['component']['name'] , "Communication & presentation");
-        $this->assertEquals($data['result'][9]['id'] , 10);
-        $this->assertEquals($data['result'][9]['text'] , "\$subject am/is a good listener and pay(s) attention to what is being said by others.");
-        $this->assertEquals(count($data['result'][10]) , 3);
-        $this->assertEquals(count($data['result'][10]['component']) , 2);
-        $this->assertEquals($data['result'][10]['component']['id'] , 4);
-        $this->assertEquals($data['result'][10]['component']['name'] , "Communication & presentation");
-        $this->assertEquals($data['result'][10]['id'] , 11);
-        $this->assertEquals($data['result'][10]['text'] , "\$subject am/is able to easily persuade other team members and win them over to my/his/her perspective.");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 59);
+        $this->assertEquals(count($data['result'][0]), 3);
+        $this->assertEquals(count($data['result'][0]['component']), 2);
+        $this->assertEquals($data['result'][0]['component']['id'], 1);
+        $this->assertEquals($data['result'][0]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][0]['id'], 1);
+        $this->assertEquals($data['result'][0]['text'], "When working with others in a multicultural group, \$subject like(s) to know about the historical, legal, political and economic conditions of their different countries.");
+        $this->assertEquals(count($data['result'][1]), 3);
+        $this->assertEquals(count($data['result'][1]['component']), 2);
+        $this->assertEquals($data['result'][1]['component']['id'], 1);
+        $this->assertEquals($data['result'][1]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][1]['id'], 2);
+        $this->assertEquals($data['result'][1]['text'], "In group meetings \$subject assume(s) that cultural values will differ amongst participants.");
+        $this->assertEquals(count($data['result'][2]), 3);
+        $this->assertEquals(count($data['result'][2]['component']), 2);
+        $this->assertEquals($data['result'][2]['component']['id'], 1);
+        $this->assertEquals($data['result'][2]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][2]['id'], 3);
+        $this->assertEquals($data['result'][2]['text'], "\$subject believe(s) that gender roles may vary amongst people from different countries and/or cultures.");
+        $this->assertEquals(count($data['result'][3]), 3);
+        $this->assertEquals(count($data['result'][3]['component']), 2);
+        $this->assertEquals($data['result'][3]['component']['id'], 2);
+        $this->assertEquals($data['result'][3]['component']['name'], "Multicultural sensitivity");
+        $this->assertEquals($data['result'][3]['id'], 4);
+        $this->assertEquals($data['result'][3]['text'], "\$subject believe(s) that gender roles may vary amongst people from different countries and/or cultures.");
+        $this->assertEquals(count($data['result'][4]), 3);
+        $this->assertEquals(count($data['result'][4]['component']), 2);
+        $this->assertEquals($data['result'][4]['component']['id'], 2);
+        $this->assertEquals($data['result'][4]['component']['name'], "Multicultural sensitivity");
+        $this->assertEquals($data['result'][4]['id'], 5);
+        $this->assertEquals($data['result'][4]['text'], "\$subject realize(s) that because of different cultural backgrounds in our team, our perspectives may not be the same as those of team members from other regions.");
+        $this->assertEquals(count($data['result'][5]), 3);
+        $this->assertEquals(count($data['result'][5]['component']), 2);
+        $this->assertEquals($data['result'][5]['component']['id'], 2);
+        $this->assertEquals($data['result'][5]['component']['name'], "Multicultural sensitivity");
+        $this->assertEquals($data['result'][5]['id'], 6);
+        $this->assertEquals($data['result'][5]['text'], "\$subject believe(s)  that different cultural norms and values can affect business decisions in group work.");
+        $this->assertEquals(count($data['result'][6]), 3);
+        $this->assertEquals(count($data['result'][6]['component']), 2);
+        $this->assertEquals($data['result'][6]['component']['id'], 3);
+        $this->assertEquals($data['result'][6]['component']['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result'][6]['id'], 7);
+        $this->assertEquals($data['result'][6]['text'], "\$subject adapt(s) my/his/her communication style to the cultural sensitivities in the group.");
+        $this->assertEquals(count($data['result'][7]), 3);
+        $this->assertEquals(count($data['result'][7]['component']), 2);
+        $this->assertEquals($data['result'][7]['component']['id'], 3);
+        $this->assertEquals($data['result'][7]['component']['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result'][7]['id'], 8);
+        $this->assertEquals($data['result'][7]['text'], "When interacting with team members from different countries, \$subject ask(s) questions to avoid misunderstanding.");
+        $this->assertEquals(count($data['result'][8]), 3);
+        $this->assertEquals(count($data['result'][8]['component']), 2);
+        $this->assertEquals($data['result'][8]['component']['id'], 3);
+        $this->assertEquals($data['result'][8]['component']['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result'][8]['id'], 9);
+        $this->assertEquals($data['result'][8]['text'], "In group meetings with people from different countries, \$subject never lose(s) patience and stop listening.");
+        $this->assertEquals(count($data['result'][9]), 3);
+        $this->assertEquals(count($data['result'][9]['component']), 2);
+        $this->assertEquals($data['result'][9]['component']['id'], 4);
+        $this->assertEquals($data['result'][9]['component']['name'], "Communication & presentation");
+        $this->assertEquals($data['result'][9]['id'], 10);
+        $this->assertEquals($data['result'][9]['text'], "\$subject am/is a good listener and pay(s) attention to what is being said by others.");
+        $this->assertEquals(count($data['result'][10]), 3);
+        $this->assertEquals(count($data['result'][10]['component']), 2);
+        $this->assertEquals($data['result'][10]['component']['id'], 4);
+        $this->assertEquals($data['result'][10]['component']['name'], "Communication & presentation");
+        $this->assertEquals($data['result'][10]['id'], 11);
+        $this->assertEquals($data['result'][10]['text'], "\$subject am/is able to easily persuade other team members and win them over to my/his/her perspective.");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
@@ -434,42 +431,42 @@ class EQCQTest extends AbstractService
     
         $data = $this->jsonRpc(
             'question.getList', array(
-                'filter' => ['n'=>5,'p'=>2], 
-                'dimension' => 'CQ', 
+                'filter' => ['n'=>5,'p'=>2],
+                'dimension' => 'CQ',
                 'search' => '$subject'
             )
         );
 
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals($data['result']['count'] , 9);
-        $this->assertEquals(count($data['result']['list']) , 4);
-        $this->assertEquals(count($data['result']['list'][0]) , 3);
-        $this->assertEquals(count($data['result']['list'][0]['component']) , 2);
-        $this->assertEquals($data['result']['list'][0]['component']['id'] , 2);
-        $this->assertEquals($data['result']['list'][0]['component']['name'] , "Multicultural sensitivity");
-        $this->assertEquals($data['result']['list'][0]['id'] , 6);
-        $this->assertEquals($data['result']['list'][0]['text'] , "\$subject believe(s)  that different cultural norms and values can affect business decisions in group work.");
-        $this->assertEquals(count($data['result']['list'][1]) , 3);
-        $this->assertEquals(count($data['result']['list'][1]['component']) , 2);
-        $this->assertEquals($data['result']['list'][1]['component']['id'] , 3);
-        $this->assertEquals($data['result']['list'][1]['component']['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result']['list'][1]['id'] , 7);
-        $this->assertEquals($data['result']['list'][1]['text'] , "\$subject adapt(s) my/his/her communication style to the cultural sensitivities in the group.");
-        $this->assertEquals(count($data['result']['list'][2]) , 3);
-        $this->assertEquals(count($data['result']['list'][2]['component']) , 2);
-        $this->assertEquals($data['result']['list'][2]['component']['id'] , 3);
-        $this->assertEquals($data['result']['list'][2]['component']['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result']['list'][2]['id'] , 8);
-        $this->assertEquals($data['result']['list'][2]['text'] , "When interacting with team members from different countries, \$subject ask(s) questions to avoid misunderstanding.");
-        $this->assertEquals(count($data['result']['list'][3]) , 3);
-        $this->assertEquals(count($data['result']['list'][3]['component']) , 2);
-        $this->assertEquals($data['result']['list'][3]['component']['id'] , 3);
-        $this->assertEquals($data['result']['list'][3]['component']['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result']['list'][3]['id'] , 9);
-        $this->assertEquals($data['result']['list'][3]['text'] , "In group meetings with people from different countries, \$subject never lose(s) patience and stop listening.");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals($data['result']['count'], 9);
+        $this->assertEquals(count($data['result']['list']), 4);
+        $this->assertEquals(count($data['result']['list'][0]), 3);
+        $this->assertEquals(count($data['result']['list'][0]['component']), 2);
+        $this->assertEquals($data['result']['list'][0]['component']['id'], 2);
+        $this->assertEquals($data['result']['list'][0]['component']['name'], "Multicultural sensitivity");
+        $this->assertEquals($data['result']['list'][0]['id'], 6);
+        $this->assertEquals($data['result']['list'][0]['text'], "\$subject believe(s)  that different cultural norms and values can affect business decisions in group work.");
+        $this->assertEquals(count($data['result']['list'][1]), 3);
+        $this->assertEquals(count($data['result']['list'][1]['component']), 2);
+        $this->assertEquals($data['result']['list'][1]['component']['id'], 3);
+        $this->assertEquals($data['result']['list'][1]['component']['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result']['list'][1]['id'], 7);
+        $this->assertEquals($data['result']['list'][1]['text'], "\$subject adapt(s) my/his/her communication style to the cultural sensitivities in the group.");
+        $this->assertEquals(count($data['result']['list'][2]), 3);
+        $this->assertEquals(count($data['result']['list'][2]['component']), 2);
+        $this->assertEquals($data['result']['list'][2]['component']['id'], 3);
+        $this->assertEquals($data['result']['list'][2]['component']['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result']['list'][2]['id'], 8);
+        $this->assertEquals($data['result']['list'][2]['text'], "When interacting with team members from different countries, \$subject ask(s) questions to avoid misunderstanding.");
+        $this->assertEquals(count($data['result']['list'][3]), 3);
+        $this->assertEquals(count($data['result']['list'][3]['component']), 2);
+        $this->assertEquals($data['result']['list'][3]['component']['id'], 3);
+        $this->assertEquals($data['result']['list'][3]['component']['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result']['list'][3]['id'], 9);
+        $this->assertEquals($data['result']['list'][3]['text'], "In group meetings with people from different countries, \$subject never lose(s) patience and stop listening.");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testAddComponent()
@@ -484,10 +481,10 @@ class EQCQTest extends AbstractService
             )
         );
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 10);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 10);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
@@ -508,10 +505,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
@@ -525,36 +522,36 @@ class EQCQTest extends AbstractService
             'component.getList', array('filter' => ['n' => 3], 'dimension' => 1, 'search' => 'multicultural')
         );
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals($data['result']['count'] , 3);
-        $this->assertEquals(count($data['result']['list']) , 3);
-        $this->assertEquals(count($data['result']['list'][0]) , 5);
-        $this->assertEquals(count($data['result']['list'][0]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][0]['dimension']['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result']['list'][0]['id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result']['list'][0]['dimension_id'] , 1);
-        $this->assertEquals($data['result']['list'][0]['describe'] , "Individuals with multicultural awareness recognize that communication, negotiation and leadership styles may vary based on country of origin and other cultural factors. They are interested by this observation, and seek ways to learn more about it.");
-        $this->assertEquals(count($data['result']['list'][1]) , 5);
-        $this->assertEquals(count($data['result']['list'][1]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][1]['dimension']['id'] , 1);
-        $this->assertEquals($data['result']['list'][1]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result']['list'][1]['id'] , 2);
-        $this->assertEquals($data['result']['list'][1]['name'] , "Multicultural sensitivity");
-        $this->assertEquals($data['result']['list'][1]['dimension_id'] , 1);
-        $this->assertEquals($data['result']['list'][1]['describe'] , "Individuals with multicultural sensitivity are not only aware of and interested in potential differences in communication, negotiation and leadership styles, but also make an effort to adapt their own communication and leadership styles accordingly.");
-        $this->assertEquals(count($data['result']['list'][2]) , 5);
-        $this->assertEquals(count($data['result']['list'][2]['dimension']) , 2);
-        $this->assertEquals($data['result']['list'][2]['dimension']['id'] , 1);
-        $this->assertEquals($data['result']['list'][2]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result']['list'][2]['id'] , 3);
-        $this->assertEquals($data['result']['list'][2]['name'] , "Multicultural communication skill");
-        $this->assertEquals($data['result']['list'][2]['dimension_id'] , 1);
-        $this->assertEquals($data['result']['list'][2]['describe'] , "Communicating with people from different cultures requires even more active listening and questioning styles to ensure that what you interpret is indeed aligned with the intent of the speaker. Accordingly the communication style needs to be interactive and accommodating.");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals($data['result']['count'], 3);
+        $this->assertEquals(count($data['result']['list']), 3);
+        $this->assertEquals(count($data['result']['list'][0]), 5);
+        $this->assertEquals(count($data['result']['list'][0]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][0]['dimension']['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result']['list'][0]['id'], 1);
+        $this->assertEquals($data['result']['list'][0]['name'], "Multicultural awareness");
+        $this->assertEquals($data['result']['list'][0]['dimension_id'], 1);
+        $this->assertEquals($data['result']['list'][0]['describe'], "Individuals with multicultural awareness recognize that communication, negotiation and leadership styles may vary based on country of origin and other cultural factors. They are interested by this observation, and seek ways to learn more about it.");
+        $this->assertEquals(count($data['result']['list'][1]), 5);
+        $this->assertEquals(count($data['result']['list'][1]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][1]['dimension']['id'], 1);
+        $this->assertEquals($data['result']['list'][1]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result']['list'][1]['id'], 2);
+        $this->assertEquals($data['result']['list'][1]['name'], "Multicultural sensitivity");
+        $this->assertEquals($data['result']['list'][1]['dimension_id'], 1);
+        $this->assertEquals($data['result']['list'][1]['describe'], "Individuals with multicultural sensitivity are not only aware of and interested in potential differences in communication, negotiation and leadership styles, but also make an effort to adapt their own communication and leadership styles accordingly.");
+        $this->assertEquals(count($data['result']['list'][2]), 5);
+        $this->assertEquals(count($data['result']['list'][2]['dimension']), 2);
+        $this->assertEquals($data['result']['list'][2]['dimension']['id'], 1);
+        $this->assertEquals($data['result']['list'][2]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result']['list'][2]['id'], 3);
+        $this->assertEquals($data['result']['list'][2]['name'], "Multicultural communication skill");
+        $this->assertEquals($data['result']['list'][2]['dimension_id'], 1);
+        $this->assertEquals($data['result']['list'][2]['describe'], "Communicating with people from different cultures requires even more active listening and questioning styles to ensure that what you interpret is indeed aligned with the intent of the speaker. Accordingly the communication style needs to be interactive and accommodating.");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     
@@ -569,10 +566,10 @@ class EQCQTest extends AbstractService
             )
         );
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 7);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 7);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testScaleAddTwo()
@@ -586,10 +583,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 8); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 8);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
@@ -610,10 +607,10 @@ class EQCQTest extends AbstractService
             )
         );
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testScaleGetList($filter = null)
@@ -625,46 +622,46 @@ class EQCQTest extends AbstractService
             )
         );
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 8); 
-        $this->assertEquals(count($data['result'][0]) , 3); 
-        $this->assertEquals($data['result'][0]['id'] , 1); 
-        $this->assertEquals($data['result'][0]['name'] , "Strongly disagree"); 
-        $this->assertEquals($data['result'][0]['value'] , 1); 
-        $this->assertEquals(count($data['result'][1]) , 3); 
-        $this->assertEquals($data['result'][1]['id'] , 2); 
-        $this->assertEquals($data['result'][1]['name'] , "Disagree"); 
-        $this->assertEquals($data['result'][1]['value'] , 2); 
-        $this->assertEquals(count($data['result'][2]) , 3); 
-        $this->assertEquals($data['result'][2]['id'] , 3); 
-        $this->assertEquals($data['result'][2]['name'] , "Neither agree, nor disagree"); 
-        $this->assertEquals($data['result'][2]['value'] , 3); 
-        $this->assertEquals(count($data['result'][3]) , 3); 
-        $this->assertEquals($data['result'][3]['id'] , 4); 
-        $this->assertEquals($data['result'][3]['name'] , "Agree"); 
-        $this->assertEquals($data['result'][3]['value'] , 4); 
-        $this->assertEquals(count($data['result'][4]) , 3); 
-        $this->assertEquals($data['result'][4]['id'] , 5); 
-        $this->assertEquals($data['result'][4]['name'] , "Strongly agree"); 
-        $this->assertEquals($data['result'][4]['value'] , 5); 
-        $this->assertEquals(count($data['result'][5]) , 3); 
-        $this->assertEquals($data['result'][5]['id'] , 6); 
-        $this->assertEquals($data['result'][5]['name'] , "I don't Know"); 
-        $this->assertEquals($data['result'][5]['value'] , 0); 
-        $this->assertEquals(count($data['result'][6]) , 3); 
-        $this->assertEquals($data['result'][6]['id'] , 7); 
-        $this->assertEquals($data['result'][6]['name'] , "name"); 
-        $this->assertEquals($data['result'][6]['value'] , 55); 
-        $this->assertEquals(count($data['result'][7]) , 3); 
-        $this->assertEquals($data['result'][7]['id'] , 8); 
-        $this->assertEquals($data['result'][7]['name'] , "name2updt"); 
-        $this->assertEquals($data['result'][7]['value'] , 999); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 8);
+        $this->assertEquals(count($data['result'][0]), 3);
+        $this->assertEquals($data['result'][0]['id'], 1);
+        $this->assertEquals($data['result'][0]['name'], "Strongly disagree");
+        $this->assertEquals($data['result'][0]['value'], 1);
+        $this->assertEquals(count($data['result'][1]), 3);
+        $this->assertEquals($data['result'][1]['id'], 2);
+        $this->assertEquals($data['result'][1]['name'], "Disagree");
+        $this->assertEquals($data['result'][1]['value'], 2);
+        $this->assertEquals(count($data['result'][2]), 3);
+        $this->assertEquals($data['result'][2]['id'], 3);
+        $this->assertEquals($data['result'][2]['name'], "Neither agree, nor disagree");
+        $this->assertEquals($data['result'][2]['value'], 3);
+        $this->assertEquals(count($data['result'][3]), 3);
+        $this->assertEquals($data['result'][3]['id'], 4);
+        $this->assertEquals($data['result'][3]['name'], "Agree");
+        $this->assertEquals($data['result'][3]['value'], 4);
+        $this->assertEquals(count($data['result'][4]), 3);
+        $this->assertEquals($data['result'][4]['id'], 5);
+        $this->assertEquals($data['result'][4]['name'], "Strongly agree");
+        $this->assertEquals($data['result'][4]['value'], 5);
+        $this->assertEquals(count($data['result'][5]), 3);
+        $this->assertEquals($data['result'][5]['id'], 6);
+        $this->assertEquals($data['result'][5]['name'], "I don't Know");
+        $this->assertEquals($data['result'][5]['value'], 0);
+        $this->assertEquals(count($data['result'][6]), 3);
+        $this->assertEquals($data['result'][6]['id'], 7);
+        $this->assertEquals($data['result'][6]['name'], "name");
+        $this->assertEquals($data['result'][6]['value'], 55);
+        $this->assertEquals(count($data['result'][7]), 3);
+        $this->assertEquals($data['result'][7]['id'], 8);
+        $this->assertEquals($data['result'][7]['name'], "name2updt");
+        $this->assertEquals($data['result'][7]['value'], 999);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
-     * 
+     *
      * @depends testScaleAddTwo
      */
     public function testScaleDeltete($id)
@@ -677,10 +674,10 @@ class EQCQTest extends AbstractService
             )
         );
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
     public function testDimensionScaleAdd()
@@ -696,10 +693,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testDimensionScaleAddTwo()
@@ -715,10 +712,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 2);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 2);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     
         return $data['result'];
     }
@@ -741,10 +738,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testDimensionScaleGetList($filter = null)
@@ -753,28 +750,28 @@ class EQCQTest extends AbstractService
     
         $data = $this->jsonRpc('dimensionscale.getList', []);
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result'][0]) , 6);
-        $this->assertEquals(count($data['result'][0]['dimension']) , 2);
-        $this->assertEquals($data['result'][0]['dimension']['id'] , 1);
-        $this->assertEquals($data['result'][0]['dimension']['name'] , "CQ");
-        $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['dimension_id'] , 1);
-        $this->assertEquals($data['result'][0]['min'] , 110);
-        $this->assertEquals($data['result'][0]['max'] , 120);
-        $this->assertEquals($data['result'][0]['describe'] , "describe");
-        $this->assertEquals(count($data['result'][1]) , 6);
-        $this->assertEquals(count($data['result'][1]['dimension']) , 2);
-        $this->assertEquals($data['result'][1]['dimension']['id'] , 3);
-        $this->assertEquals($data['result'][1]['dimension']['name'] , null);
-        $this->assertEquals($data['result'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['dimension_id'] , 3);
-        $this->assertEquals($data['result'][1]['min'] , 140);
-        $this->assertEquals($data['result'][1]['max'] , 150);
-        $this->assertEquals($data['result'][1]['describe'] , "describe2updt");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals(count($data['result'][0]), 6);
+        $this->assertEquals(count($data['result'][0]['dimension']), 2);
+        $this->assertEquals($data['result'][0]['dimension']['id'], 1);
+        $this->assertEquals($data['result'][0]['dimension']['name'], "CQ");
+        $this->assertEquals($data['result'][0]['id'], 1);
+        $this->assertEquals($data['result'][0]['dimension_id'], 1);
+        $this->assertEquals($data['result'][0]['min'], 110);
+        $this->assertEquals($data['result'][0]['max'], 120);
+        $this->assertEquals($data['result'][0]['describe'], "describe");
+        $this->assertEquals(count($data['result'][1]), 6);
+        $this->assertEquals(count($data['result'][1]['dimension']), 2);
+        $this->assertEquals($data['result'][1]['dimension']['id'], 3);
+        $this->assertEquals($data['result'][1]['dimension']['name'], null);
+        $this->assertEquals($data['result'][1]['id'], 2);
+        $this->assertEquals($data['result'][1]['dimension_id'], 3);
+        $this->assertEquals($data['result'][1]['min'], 140);
+        $this->assertEquals($data['result'][1]['max'], 150);
+        $this->assertEquals($data['result'][1]['describe'], "describe2updt");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
         
     /**
@@ -791,10 +788,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
       
     ////////////////////////////////////////////////////////////::
@@ -812,10 +809,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 37);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 37);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testComponentScaleAddTwo()
@@ -832,10 +829,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 38);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 38);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     
         return $data['result'];
     }
@@ -859,10 +856,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     public function testComponentScaleGetList($filter = null)
@@ -871,50 +868,50 @@ class EQCQTest extends AbstractService
     
         $data = $this->jsonRpc('componentscale.getList', []);
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 38);
-        $this->assertEquals(count($data['result'][0]) , 7);
-        $this->assertEquals(count($data['result'][0]['component']) , 2);
-        $this->assertEquals($data['result'][0]['component']['id'] , 1);
-        $this->assertEquals($data['result'][0]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['component_id'] , 1);
-        $this->assertEquals($data['result'][0]['min'] , 0);
-        $this->assertEquals($data['result'][0]['max'] , 25);
-        $this->assertEquals(!empty($data['result'][0]['describe']) , true);
-        $this->assertEquals($data['result'][0]['recommandation'] , "You are strongly advised to familiarize yourself with periodicals and newspapers which cover world events, and to also begin reading books about the history, politics and economic infrastructures of different regions.");
-        $this->assertEquals(count($data['result'][1]) , 7);
-        $this->assertEquals(count($data['result'][1]['component']) , 2);
-        $this->assertEquals($data['result'][1]['component']['id'] , 1);
-        $this->assertEquals($data['result'][1]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['component_id'] , 1);
-        $this->assertEquals($data['result'][1]['min'] , 25);
-        $this->assertEquals($data['result'][1]['max'] , 50);
-        $this->assertEquals($data['result'][1]['describe'] , "You have an average appreciation of differences in communication, negotiation and leadership styles in different regions.");
-        $this->assertEquals(!empty($data['result'][1]['recommandation']) , true);
-        $this->assertEquals(count($data['result'][2]) , 7);
-        $this->assertEquals(count($data['result'][2]['component']) , 2);
-        $this->assertEquals($data['result'][2]['component']['id'] , 1);
-        $this->assertEquals($data['result'][2]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][2]['id'] , 3);
-        $this->assertEquals($data['result'][2]['component_id'] , 1);
-        $this->assertEquals($data['result'][2]['min'] , 50);
-        $this->assertEquals($data['result'][2]['max'] , 75);
-        $this->assertEquals($data['result'][2]['describe'] , "You have a good appreciation of the differences amongst countries.");
-        $this->assertEquals($data['result'][2]['recommandation'] , "This can be further improved not only by reading relevant journals, but also through travel abroad and associating personally and professionally as often as possible with people from different cultures.");
-        $this->assertEquals(count($data['result'][3]) , 7);
-        $this->assertEquals(count($data['result'][3]['component']) , 2);
-        $this->assertEquals($data['result'][3]['component']['id'] , 1);
-        $this->assertEquals($data['result'][3]['component']['name'] , "Multicultural awareness");
-        $this->assertEquals($data['result'][3]['id'] , 4);
-        $this->assertEquals($data['result'][3]['component_id'] , 1);
-        $this->assertEquals($data['result'][3]['min'] , 75);
-        $this->assertEquals($data['result'][3]['max'] , 100);
-        $this->assertEquals($data['result'][3]['describe'] , "You have a thorough to excellent awareness of the differences amongst countries, and you are able to use this to your advantage in your professional negotiations with customers, suppliers, distributors, colleagues, and superiors.");
-        $this->assertEquals($data['result'][3]['recommandation'] , "You can further improve your skills by learning (more) languages, travelling frequently, and associating with individuals from different countries.");
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 38);
+        $this->assertEquals(count($data['result'][0]), 7);
+        $this->assertEquals(count($data['result'][0]['component']), 2);
+        $this->assertEquals($data['result'][0]['component']['id'], 1);
+        $this->assertEquals($data['result'][0]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][0]['id'], 1);
+        $this->assertEquals($data['result'][0]['component_id'], 1);
+        $this->assertEquals($data['result'][0]['min'], 0);
+        $this->assertEquals($data['result'][0]['max'], 25);
+        $this->assertEquals(!empty($data['result'][0]['describe']), true);
+        $this->assertEquals($data['result'][0]['recommandation'], "You are strongly advised to familiarize yourself with periodicals and newspapers which cover world events, and to also begin reading books about the history, politics and economic infrastructures of different regions.");
+        $this->assertEquals(count($data['result'][1]), 7);
+        $this->assertEquals(count($data['result'][1]['component']), 2);
+        $this->assertEquals($data['result'][1]['component']['id'], 1);
+        $this->assertEquals($data['result'][1]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][1]['id'], 2);
+        $this->assertEquals($data['result'][1]['component_id'], 1);
+        $this->assertEquals($data['result'][1]['min'], 25);
+        $this->assertEquals($data['result'][1]['max'], 50);
+        $this->assertEquals($data['result'][1]['describe'], "You have an average appreciation of differences in communication, negotiation and leadership styles in different regions.");
+        $this->assertEquals(!empty($data['result'][1]['recommandation']), true);
+        $this->assertEquals(count($data['result'][2]), 7);
+        $this->assertEquals(count($data['result'][2]['component']), 2);
+        $this->assertEquals($data['result'][2]['component']['id'], 1);
+        $this->assertEquals($data['result'][2]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][2]['id'], 3);
+        $this->assertEquals($data['result'][2]['component_id'], 1);
+        $this->assertEquals($data['result'][2]['min'], 50);
+        $this->assertEquals($data['result'][2]['max'], 75);
+        $this->assertEquals($data['result'][2]['describe'], "You have a good appreciation of the differences amongst countries.");
+        $this->assertEquals($data['result'][2]['recommandation'], "This can be further improved not only by reading relevant journals, but also through travel abroad and associating personally and professionally as often as possible with people from different cultures.");
+        $this->assertEquals(count($data['result'][3]), 7);
+        $this->assertEquals(count($data['result'][3]['component']), 2);
+        $this->assertEquals($data['result'][3]['component']['id'], 1);
+        $this->assertEquals($data['result'][3]['component']['name'], "Multicultural awareness");
+        $this->assertEquals($data['result'][3]['id'], 4);
+        $this->assertEquals($data['result'][3]['component_id'], 1);
+        $this->assertEquals($data['result'][3]['min'], 75);
+        $this->assertEquals($data['result'][3]['max'], 100);
+        $this->assertEquals($data['result'][3]['describe'], "You have a thorough to excellent awareness of the differences amongst countries, and you are able to use this to your advantage in your professional negotiations with customers, suppliers, distributors, colleagues, and superiors.");
+        $this->assertEquals($data['result'][3]['recommandation'], "You can further improve your skills by learning (more) languages, travelling frequently, and associating with individuals from different countries.");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
@@ -931,10 +928,10 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
     
     /**
@@ -950,10 +947,9 @@ class EQCQTest extends AbstractService
             )
         );
     
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
     }
-    
 }

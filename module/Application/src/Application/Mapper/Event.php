@@ -6,7 +6,6 @@ use Zend\Db\Sql\Expression;
 
 class Event extends AbstractMapper
 {
-
     public function getList($me, $events = null, $id = null, $source = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -30,7 +29,4 @@ class Event extends AbstractMapper
         
         return $this->selectWith($select);
     }
-
 }
-
-

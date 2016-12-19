@@ -15,7 +15,7 @@ class QuestionnaireQuestion extends AbstractService
 {
     /**
      * Create Questionnaire Question.
-     * 
+     *
      * @param int $questionnaire
      *
      * @return bool
@@ -37,7 +37,7 @@ class QuestionnaireQuestion extends AbstractService
 
     /**
      * Get Questionnaire Question.
-     * 
+     *
      * @param int $questionnaire
      * @param int $question
      *
@@ -52,7 +52,7 @@ class QuestionnaireQuestion extends AbstractService
 
     /**
      * Get Service Component.
-     * 
+     *
      * @return \Application\Service\Component
      */
     private function getServiceComponent()
@@ -62,7 +62,7 @@ class QuestionnaireQuestion extends AbstractService
 
     /**
      * Get Service Question.
-     * 
+     *
      * @return \Application\Service\Question
      */
     private function getServiceQuestion()

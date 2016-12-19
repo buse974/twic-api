@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * CacheBddStorage
@@ -12,43 +12,43 @@ use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql as DbSql;
 
 /**
- * Class CacheBddStorage    
+ * Class CacheBddStorage
  */
 class CacheBddStorage implements StorageInterface
 {
     use TraitStorage;
     
     /**
-     * Bdd Adapter 
-     * 
+     * Bdd Adapter
+     *
      * @var \Zend\Db\Adapter\Adapter
      */
     protected $db_adapter;
     
     /**
-     * Cache 
-     * 
+     * Cache
+     *
      * @var \Zend\Cache\Storage\StorageInterface
      */
     protected $cache;
     
     /**
      * Data Session
-     * 
+     *
      * @var mixed
      */
     protected $data;
     
     /**
      * Prefix token
-     * 
+     *
      * @var string
      */
     protected $prefix_session = 'sess_';
 
     /**
-     * Constructor 
-     * 
+     * Constructor
+     *
      * @param \Zend\Db\Adapter\Adapter $adapter
      * @param \Zend\Cache\Storage\StorageInterface $cache
      */
@@ -112,26 +112,26 @@ class CacheBddStorage implements StorageInterface
     
     /**
      * Get Session If exist
-     * 
+     *
      * @return false|mixed
      */
     protected function getSession()
     {
-        if(!$this->data && $this->getToken() !== null && ($this->cache === null || ($this->cache !== null && ($this->data = $this->cache->getItem($this->getPrefixToken())) === null))) {
+        if (!$this->data && $this->getToken() !== null && ($this->cache === null || ($this->cache !== null && ($this->data = $this->cache->getItem($this->getPrefixToken())) === null))) {
             $sql = new DbSql($this->db_adapter);
             $select = $sql->select('session');
             $select->columns(['token', 'data', 'uid'])
                 ->where(['token' => $this->getPrefixToken()]);
             $statement = $sql->prepareStatementForSqlObject($select);
             $results = $statement->execute();
-            if($results->count() > 0) {
+            if ($results->count() > 0) {
                 $this->data = $results->current()['data'];
                 $this->data = unserialize($this->data);
                 $this->saveCacheSession($this->data);
             }
         }
            
-       return $this->data;
+        return $this->data;
     }
     
     /**
@@ -146,14 +146,14 @@ class CacheBddStorage implements StorageInterface
     
     /**
      * Save Cache Session
-     * 
+     *
      * @param string $data
      * @return boolean
      */
     protected function saveCacheSession($data)
     {
         $ret = false;
-        if($this->cache !== null) {
+        if ($this->cache !== null) {
             if ($this->cache->getItem($this->getPrefixToken()) === null) {
                 $this->cache->addItem($this->getPrefixToken(), $data);
             } else {
@@ -167,7 +167,7 @@ class CacheBddStorage implements StorageInterface
     
     /**
      * Save Bdd Session
-     * 
+     *
      * @param string $data
      * @return boolean
      */
@@ -180,12 +180,13 @@ class CacheBddStorage implements StorageInterface
             ->where(['token' => $this->getPrefixToken()]);
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
-        if($results->count() > 0) {
+        if ($results->count() > 0) {
             $update = $sql->update('session');
             $update->set(['data' => serialize($data)])
                    ->set(['uid' => $data->getId()])
                    ->where(['token' => $this->getPrefixToken()]);
-            $sql->prepareStatementForSqlObject($update)->execute();;
+            $sql->prepareStatementForSqlObject($update)->execute();
+            ;
             
             $ret = true;
         } else {
@@ -204,17 +205,17 @@ class CacheBddStorage implements StorageInterface
     
     /**
      * Clear Token
-     * 
+     *
      * @param string $token
      */
     protected function clearToken($token = null)
     {
-        if(null === $token) {
+        if (null === $token) {
             $token = $this->getPrefixToken();
             $this->data = null;
         }
         
-        if($this->cache !== null && $this->cache->hasItem($token)) {
+        if ($this->cache !== null && $this->cache->hasItem($token)) {
             $this->cache->removeItem($token);
         }
         
@@ -226,7 +227,7 @@ class CacheBddStorage implements StorageInterface
     
     /**
      * Clear Session
-     * 
+     *
      * @param int $uid
      * @return boolean
      */
@@ -247,7 +248,7 @@ class CacheBddStorage implements StorageInterface
     
     /**
      * GetListSession
-     * 
+     *
      * @param int $uid
      * @return array
      */
@@ -266,5 +267,4 @@ class CacheBddStorage implements StorageInterface
         
         return $ret;
     }
-    
 }

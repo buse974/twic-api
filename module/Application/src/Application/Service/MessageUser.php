@@ -22,7 +22,7 @@ class MessageUser extends AbstractService
     
     /**
      * Send message.
-     * 
+     *
      * @param int   $message_id
      * @param int   $conversation_id
      * @param array $to
@@ -72,20 +72,20 @@ class MessageUser extends AbstractService
         $m_message = $this->getServiceMessage()->get($message_id);
         $message_text = (is_string($m_message->getText())) ? $m_message->getText() : "";
         
-        if($m_message->getType() == 2 || $m_message->getType() == 3) {
+        if ($m_message->getType() == 2 || $m_message->getType() == 3) {
 
             //////////////////// USER //////////////////////////////////
             $res_user = $this->getServiceUser()->getLite($to);
             $ar_name = [];
             foreach ($res_user as $m_user) {
                 $name = "";
-                if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+                if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
                     $name = $m_user->getNickname();
                 } else {
-                    if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                    if (!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
                         $name = $m_user->getFirstname();
                     }
-                    if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                    if (!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
                         $name .= ' '.$m_user->getLastname();
                     }
                 }
@@ -113,10 +113,10 @@ class MessageUser extends AbstractService
                 'type' => 2,
             ]);
             
-            if($m_message->getType() == 2) {
+            if ($m_message->getType() == 2) {
                 ///////////////////////// FCM /////////////////////////////////
                 foreach ($to as $user) {
-                    if($me != $user) {
+                    if ($me != $user) {
                         $gcm_notification = new GcmNotification();
                         $tmp_ar_name = $ar_name;
                         unset($tmp_ar_name[$user]);
@@ -124,7 +124,7 @@ class MessageUser extends AbstractService
                             ->setSound("default")
                             ->setColor("#00A38B")
                             ->setTag("CONV".$conversation_id)
-                            ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text ));
+                            ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text));
                         
                         $this->getServiceFcm()->send($user, ['data' => [
                                 'type' => 'message',
@@ -172,7 +172,7 @@ class MessageUser extends AbstractService
     
     /**
      * Get List MessasgeUser.
-     * 
+     *
      * @param int    $user_id
      * @param int    $message_id
      * @param int    $conversation_id
@@ -189,7 +189,7 @@ class MessageUser extends AbstractService
         $res_message_user = $mapper->usePaginator($filter)->getList($user_id, $message_id, $conversation_id, $tag, $type, $filter, $search);
         foreach ($res_message_user as $m_message_user) {
             $m_message_user->getMessage()->setTo($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, ['R', $m_message_user->getMessage()->getId()])['list']);
-            $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, ['S', $m_message_user->getMessage()->getId()])['list']); 
+            $m_message_user->getMessage()->setFrom($this->getServiceUser()->getList(null, null, null, null, null, null, null, null, false, null, null, null, ['S', $m_message_user->getMessage()->getId()])['list']);
             $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
             $m_message_user->getMessage()->setDocument((count($d) !== 0) ? $d : []);
         }
@@ -199,16 +199,16 @@ class MessageUser extends AbstractService
     }
     
     /**
-     * 
+     *
      * @param int $user_id
      * @param int $conversation_id
-     * 
+     *
      * @return \Dal\Db\ResultSet\
      */
     public function getListLastMessage($filter = null, $conversation_id = null)
     {
-        $mapper = (null !== $filter) ? 
-            $this->getMapper()->usePaginator($filter) : 
+        $mapper = (null !== $filter) ?
+            $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
         
         $res_message_user = $mapper->getListLastMessage($this->getServiceUser()->getIdentity()['id'], $conversation_id);
@@ -222,7 +222,7 @@ class MessageUser extends AbstractService
 
     /**
      * Get MessasgeUser By Message id.
-     * 
+     *
      * @param int $message_id
      *
      * @return \Application\Model\MessageUser
@@ -235,7 +235,7 @@ class MessageUser extends AbstractService
 
     /**
      * Count number of tag.
-     * 
+     *
      * @param string $tag
      * @param int    $type
      *

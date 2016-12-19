@@ -5,7 +5,6 @@ use ModuleTest\Api\AbstractService;
 
 class GradingTest extends AbstractService
 {
-
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
@@ -59,17 +58,17 @@ class GradingTest extends AbstractService
         $this->setIdentity(1, 5);
         $data = $this->jsonRpc('gradingpolicy.add', array('course_id' => $course_id,'name' => 'tata','grade' => 50));
         $grading_policy_id = $data['result'];
-        $this->reset();        
+        $this->reset();
         
         // ADD ITEM
         $this->setIdentity(1, 5);
-        $data = $this->jsonRpc('item.add', 
+        $data = $this->jsonRpc('item.add',
             [
                 'type' => 'IA',
                 'title' => 'item',
-                'desc' => 'blablabla', 
-                'course' => $course_id, 
-                'grading_policy_id' => $grading_policy_id,  
+                'desc' => 'blablabla',
+                'course' => $course_id,
+                'grading_policy_id' => $grading_policy_id,
                 'submission' => [
                     [ 'submission_user' => [4]],
                     [ 'submission_user' => [7]],
@@ -77,18 +76,18 @@ class GradingTest extends AbstractService
                 ],
                 'has_all_student' => false,
                 'is_grouped' => true,
-                'opt' => [ 
-                        'grading' => [ 
-                            'mode' => 'average', 
-                            'has_pg' => 0, 
-                            'pg_nb'=>1, 
-                            'pg_auto' => 1, 
+                'opt' => [
+                        'grading' => [
+                            'mode' => 'average',
+                            'has_pg' => 0,
+                            'pg_nb'=>1,
+                            'pg_auto' => 1,
                             'pg_due_date' => null,
                             'pg_can_view' => 1,
                             'user_can_view' => 1,
                             'pg_stars' => 0
                         ]
-                    ]                            
+                    ]
         ]);
         
         $item_id = $data['result'];
@@ -126,10 +125,10 @@ class GradingTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('criteria.add', array('grading_policy' => $params['grading_policy_id'],'name' => 'criteria','points' => 40, 'description' =>  'description!!'));
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         
         return $data['result'];
@@ -143,10 +142,10 @@ class GradingTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('criteria.add', array('grading_policy' => $params['grading_policy_id'],'name' => 'criteria2','points' => 50, 'description' =>  'description!!'));
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 2); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 2);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         
         return $data['result'];
@@ -161,10 +160,10 @@ class GradingTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.assignGraders', array('id' => $params['submission_id'],'users' => [7, 6]));
         
-	    $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
@@ -178,10 +177,10 @@ class GradingTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.assignGraders', array('id' => $params['submission_id2'],'users' => [4]));
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
@@ -194,15 +193,15 @@ class GradingTest extends AbstractService
         $this->setIdentity(3);
         $data = $this->jsonRpc('criteria.get', array('id' => $criteria));
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 5); 
-        $this->assertEquals($data['result']['id'] , 1); 
-        $this->assertEquals($data['result']['name'] , "criteria"); 
-        $this->assertEquals($data['result']['points'] , 40); 
-        $this->assertEquals($data['result']['description'] , "description!!"); 
-        $this->assertEquals($data['result']['grading_policy_id'] , 6); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 5);
+        $this->assertEquals($data['result']['id'], 1);
+        $this->assertEquals($data['result']['name'], "criteria");
+        $this->assertEquals($data['result']['points'], 40);
+        $this->assertEquals($data['result']['description'], "description!!");
+        $this->assertEquals($data['result']['grading_policy_id'], 6);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
 
         
@@ -210,7 +209,7 @@ class GradingTest extends AbstractService
     }
     
       /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      * @depends testAddCriteria
      * @depends testAddCriteria2
      */
@@ -219,17 +218,17 @@ class GradingTest extends AbstractService
         $this->setIdentity(7);
         $data = $this->jsonRpc('submission.pairRates', ['id' => $params['submission_id'], 'criterias' => [ $criteria => [ 4 => 30 ], $criteria2 => [ 4 => 40]]]);
        
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
     
     
       /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      * @depends testAddCriteria
      * @depends testAddCriteria2
      */
@@ -238,16 +237,16 @@ class GradingTest extends AbstractService
         $this->setIdentity(6);
         $data = $this->jsonRpc('submission.pairRates', ['id' => $params['submission_id'], 'criterias' => [ $criteria => [ 4 => 40 ], $criteria2 => [ 4 => 40]]]);
       
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
     
       /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      * @depends testAddCriteria
      * @depends testAddCriteria2
      */
@@ -255,36 +254,36 @@ class GradingTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('submission.instructorRates', [
-            'id' => $params['submission_id'], 
-            'criterias' => [ 
-                $criteria => [ 4 => 10 ], 
+            'id' => $params['submission_id'],
+            'criterias' => [
+                $criteria => [ 4 => 10 ],
                 $criteria2 => [ 4 => 10]]]);
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
     
        /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
    public function testInstructorRates2($params)
-    {
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('submission.instructorRates', ['id' => $params['submission_id2'], 'grades' => [ 7  => 10 ]]);
+   {
+       $this->setIdentity(1);
+       $data = $this->jsonRpc('submission.instructorRates', ['id' => $params['submission_id2'], 'grades' => [ 7  => 10 ]]);
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , $params['submission_id2']); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+       $this->assertEquals(count($data), 3);
+       $this->assertEquals($data['result'], $params['submission_id2']);
+       $this->assertEquals($data['id'], 1);
+       $this->assertEquals($data['jsonrpc'], 2.0);
         
-        return $data['result'];
-    }
+       return $data['result'];
+   }
     
       /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      * @depends testAddCriteria
      * @depends testAddCriteria2
      */
@@ -293,143 +292,143 @@ class GradingTest extends AbstractService
         $this->setIdentity(6);
         $data = $this->jsonRpc('submission.pairRates', ['id' => $params['submission_id'], 'criterias' => [ $criteria => [ 4 => 50 ], $criteria2 => [ 4 => 50]]]);
       
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
     
       /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testPairRates4($params)
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('submission.pairRates', ['id' => $params['submission_id2'], 'grades' => [ 7  => 35 ]]);
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         
         return $data['result'];
     }
     
     /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetUserGrades($params)
     {
-        $this->setIdentity(1); 
+        $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getUserGrades', ['id' => $params['submission_id']]);
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 1); 
-        $this->assertEquals(count($data['result'][0]) , 7); 
-        $this->assertEquals($data['result'][0]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][0]['user_id'] , 4); 
-        $this->assertEquals($data['result'][0]['grade'] , 95); 
-        $this->assertEquals($data['result'][0]['submit_date'] , null); 
-        $this->assertEquals($data['result'][0]['overwritten'] , 0); 
-        $this->assertEquals($data['result'][0]['start_date'] , null); 
-        $this->assertEquals($data['result'][0]['end_date'] , null);
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 1);
+        $this->assertEquals(count($data['result'][0]), 7);
+        $this->assertEquals($data['result'][0]['submission_id'], 1);
+        $this->assertEquals($data['result'][0]['user_id'], 4);
+        $this->assertEquals($data['result'][0]['grade'], 95);
+        $this->assertEquals($data['result'][0]['submit_date'], null);
+        $this->assertEquals($data['result'][0]['overwritten'], 0);
+        $this->assertEquals($data['result'][0]['start_date'], null);
+        $this->assertEquals($data['result'][0]['end_date'], null);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
     
       
     /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetPGCriterias($params)
     {
-        $this->setIdentity(1); 
+        $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getPGCriterias', ['id' => $params['submission_id']]);
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals(count($data['result']) , 4);
-        $this->assertEquals(count($data['result'][0]) , 5);
-        $this->assertEquals($data['result'][0]['pg_id'] , 6);
-        $this->assertEquals($data['result'][0]['user_id'] , 4);
-        $this->assertEquals($data['result'][0]['criteria_id'] , 1);
-        $this->assertEquals($data['result'][0]['submission_id'] , 1);
-        $this->assertEquals($data['result'][0]['points'] , 50);
-        $this->assertEquals(count($data['result'][1]) , 5);
-        $this->assertEquals($data['result'][1]['pg_id'] , 6);
-        $this->assertEquals($data['result'][1]['user_id'] , 4);
-        $this->assertEquals($data['result'][1]['criteria_id'] , 2);
-        $this->assertEquals($data['result'][1]['submission_id'] , 1);
-        $this->assertEquals($data['result'][1]['points'] , 50);
-        $this->assertEquals(count($data['result'][2]) , 5);
-        $this->assertEquals($data['result'][2]['pg_id'] , 7);
-        $this->assertEquals($data['result'][2]['user_id'] , 4);
-        $this->assertEquals($data['result'][2]['criteria_id'] , 1);
-        $this->assertEquals($data['result'][2]['submission_id'] , 1);
-        $this->assertEquals($data['result'][2]['points'] , 30);
-        $this->assertEquals(count($data['result'][3]) , 5);
-        $this->assertEquals($data['result'][3]['pg_id'] , 7);
-        $this->assertEquals($data['result'][3]['user_id'] , 4);
-        $this->assertEquals($data['result'][3]['criteria_id'] , 2);
-        $this->assertEquals($data['result'][3]['submission_id'] , 1);
-        $this->assertEquals($data['result'][3]['points'] , 40);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 4);
+        $this->assertEquals(count($data['result'][0]), 5);
+        $this->assertEquals($data['result'][0]['pg_id'], 6);
+        $this->assertEquals($data['result'][0]['user_id'], 4);
+        $this->assertEquals($data['result'][0]['criteria_id'], 1);
+        $this->assertEquals($data['result'][0]['submission_id'], 1);
+        $this->assertEquals($data['result'][0]['points'], 50);
+        $this->assertEquals(count($data['result'][1]), 5);
+        $this->assertEquals($data['result'][1]['pg_id'], 6);
+        $this->assertEquals($data['result'][1]['user_id'], 4);
+        $this->assertEquals($data['result'][1]['criteria_id'], 2);
+        $this->assertEquals($data['result'][1]['submission_id'], 1);
+        $this->assertEquals($data['result'][1]['points'], 50);
+        $this->assertEquals(count($data['result'][2]), 5);
+        $this->assertEquals($data['result'][2]['pg_id'], 7);
+        $this->assertEquals($data['result'][2]['user_id'], 4);
+        $this->assertEquals($data['result'][2]['criteria_id'], 1);
+        $this->assertEquals($data['result'][2]['submission_id'], 1);
+        $this->assertEquals($data['result'][2]['points'], 30);
+        $this->assertEquals(count($data['result'][3]), 5);
+        $this->assertEquals($data['result'][3]['pg_id'], 7);
+        $this->assertEquals($data['result'][3]['user_id'], 4);
+        $this->assertEquals($data['result'][3]['criteria_id'], 2);
+        $this->assertEquals($data['result'][3]['submission_id'], 1);
+        $this->assertEquals($data['result'][3]['points'], 40);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
     
     /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetPGGrades($params)
     {
-        $this->setIdentity(1); 
+        $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getPGGrades', ['id' => $params['submission_id']]);
      
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 2); 
-        $this->assertEquals(count($data['result'][0]) , 4); 
-        $this->assertEquals($data['result'][0]['pg_id'] , 6); 
-        $this->assertEquals($data['result'][0]['user_id'] , 4); 
-        $this->assertEquals($data['result'][0]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][0]['grade'] , 111); 
-        $this->assertEquals(count($data['result'][1]) , 4); 
-        $this->assertEquals($data['result'][1]['pg_id'] , 7); 
-        $this->assertEquals($data['result'][1]['user_id'] , 4); 
-        $this->assertEquals($data['result'][1]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][1]['grade'] , 78); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals(count($data['result'][0]), 4);
+        $this->assertEquals($data['result'][0]['pg_id'], 6);
+        $this->assertEquals($data['result'][0]['user_id'], 4);
+        $this->assertEquals($data['result'][0]['submission_id'], 1);
+        $this->assertEquals($data['result'][0]['grade'], 111);
+        $this->assertEquals(count($data['result'][1]), 4);
+        $this->assertEquals($data['result'][1]['pg_id'], 7);
+        $this->assertEquals($data['result'][1]['user_id'], 4);
+        $this->assertEquals($data['result'][1]['submission_id'], 1);
+        $this->assertEquals($data['result'][1]['grade'], 78);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
     
      /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetCriteriasByItem($params)
     {
-        $this->setIdentity(1); 
+        $this->setIdentity(1);
         $data = $this->jsonRpc('item.getCriterias', ['id' => $params['item_id']]);
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 2); 
-        $this->assertEquals(count($data['result'][0]) , 4); 
-        $this->assertEquals($data['result'][0]['id'] , 1); 
-        $this->assertEquals($data['result'][0]['name'] , "criteria"); 
-        $this->assertEquals($data['result'][0]['points'] , 40); 
-        $this->assertEquals($data['result'][0]['description'] , "description!!"); 
-        $this->assertEquals(count($data['result'][1]) , 4); 
-        $this->assertEquals($data['result'][1]['id'] , 2); 
-        $this->assertEquals($data['result'][1]['name'] , "criteria2"); 
-        $this->assertEquals($data['result'][1]['points'] , 50); 
-        $this->assertEquals($data['result'][1]['description'] , "description!!"); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals(count($data['result'][0]), 4);
+        $this->assertEquals($data['result'][0]['id'], 1);
+        $this->assertEquals($data['result'][0]['name'], "criteria");
+        $this->assertEquals($data['result'][0]['points'], 40);
+        $this->assertEquals($data['result'][0]['description'], "description!!");
+        $this->assertEquals(count($data['result'][1]), 4);
+        $this->assertEquals($data['result'][1]['id'], 2);
+        $this->assertEquals($data['result'][1]['name'], "criteria2");
+        $this->assertEquals($data['result'][1]['points'], 50);
+        $this->assertEquals($data['result'][1]['description'], "description!!");
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
 
 
@@ -437,70 +436,70 @@ class GradingTest extends AbstractService
     }
     
      /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetPairGraders($params)
     {
-        $this->setIdentity(1); 
+        $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getPairGraders', ['id' => $params['submission_id']]);
        
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 2); 
-        $this->assertEquals(count($data['result'][0]) , 5); 
-        $this->assertEquals($data['result'][0]['id'] , 6); 
-        $this->assertEquals($data['result'][0]['firstname'] , "Guillaume"); 
-        $this->assertEquals($data['result'][0]['lastname'] , "Masmejean"); 
-        $this->assertEquals($data['result'][0]['nickname'] , null); 
-        $this->assertEquals($data['result'][0]['avatar'] , null); 
-        $this->assertEquals(count($data['result'][1]) , 5); 
-        $this->assertEquals($data['result'][1]['id'] , 7); 
-        $this->assertEquals($data['result'][1]['firstname'] , "Arthur"); 
-        $this->assertEquals($data['result'][1]['lastname'] , "Flachs"); 
-        $this->assertEquals($data['result'][1]['nickname'] , null); 
-        $this->assertEquals($data['result'][1]['avatar'] , null); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals(count($data['result'][0]), 5);
+        $this->assertEquals($data['result'][0]['id'], 6);
+        $this->assertEquals($data['result'][0]['firstname'], "Guillaume");
+        $this->assertEquals($data['result'][0]['lastname'], "Masmejean");
+        $this->assertEquals($data['result'][0]['nickname'], null);
+        $this->assertEquals($data['result'][0]['avatar'], null);
+        $this->assertEquals(count($data['result'][1]), 5);
+        $this->assertEquals($data['result'][1]['id'], 7);
+        $this->assertEquals($data['result'][1]['firstname'], "Arthur");
+        $this->assertEquals($data['result'][1]['lastname'], "Flachs");
+        $this->assertEquals($data['result'][1]['nickname'], null);
+        $this->assertEquals($data['result'][1]['avatar'], null);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
     
      /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetUserCriterias($params)
     {
-        $this->setIdentity(1); 
+        $this->setIdentity(1);
         $data = $this->jsonRpc('submission.getUserCriterias', ['id' => $params['submission_id']]);
         
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals(count($data['result']) , 2); 
-        $this->assertEquals(count($data['result'][0]) , 6); 
-        $this->assertEquals($data['result'][0]['id'] , 5); 
-        $this->assertEquals($data['result'][0]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][0]['user_id'] , 4); 
-        $this->assertEquals($data['result'][0]['criteria_id'] , 1); 
-        $this->assertEquals($data['result'][0]['points'] , 40); 
-        $this->assertEquals($data['result'][0]['overwritten'] , 0); 
-        $this->assertEquals(count($data['result'][1]) , 6); 
-        $this->assertEquals($data['result'][1]['id'] , 6); 
-        $this->assertEquals($data['result'][1]['submission_id'] , 1); 
-        $this->assertEquals($data['result'][1]['user_id'] , 4); 
-        $this->assertEquals($data['result'][1]['criteria_id'] , 2); 
-        $this->assertEquals($data['result'][1]['points'] , 45); 
-        $this->assertEquals($data['result'][1]['overwritten'] , 0); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals(count($data['result'][0]), 6);
+        $this->assertEquals($data['result'][0]['id'], 5);
+        $this->assertEquals($data['result'][0]['submission_id'], 1);
+        $this->assertEquals($data['result'][0]['user_id'], 4);
+        $this->assertEquals($data['result'][0]['criteria_id'], 1);
+        $this->assertEquals($data['result'][0]['points'], 40);
+        $this->assertEquals($data['result'][0]['overwritten'], 0);
+        $this->assertEquals(count($data['result'][1]), 6);
+        $this->assertEquals($data['result'][1]['id'], 6);
+        $this->assertEquals($data['result'][1]['submission_id'], 1);
+        $this->assertEquals($data['result'][1]['user_id'], 4);
+        $this->assertEquals($data['result'][1]['criteria_id'], 2);
+        $this->assertEquals($data['result'][1]['points'], 45);
+        $this->assertEquals($data['result'][1]['overwritten'], 0);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
     
      /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testaddSubmissionComment($params)
     {
-        $this->setIdentity(1); 
-        $data = $this->jsonRpc('submission.addComment', 
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('submission.addComment',
             [
                 'id' => $params['submission_id'],
                 'file_name' => 'FILE NAME',
@@ -509,39 +508,38 @@ class GradingTest extends AbstractService
                 
             ]);
 
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals($data['result']['submission_id'] , 1);
-        $this->assertEquals(count($data['result']['comment']) , 10);
-        $this->assertEquals(count($data['result']['comment']['user']) , 5);
-        $this->assertEquals($data['result']['comment']['user']['id'] , 1);
-        $this->assertEquals($data['result']['comment']['user']['firstname'] , "Paul");
-        $this->assertEquals($data['result']['comment']['user']['lastname'] , "Boussekey");
-        $this->assertEquals($data['result']['comment']['user']['nickname'] , null);
-        $this->assertEquals($data['result']['comment']['user']['avatar'] , null);
-        $this->assertEquals($data['result']['comment']['id'] , 1);
-        $this->assertEquals($data['result']['comment']['text'] , "COMMENT 1memzr!");
-        $this->assertEquals($data['result']['comment']['audio'] , null);
-        $this->assertEquals($data['result']['comment']['user_id'] , 1);
-        $this->assertEquals($data['result']['comment']['submission_id'] , 1);
-        $this->assertEquals($data['result']['comment']['file_token'] , "azerty");
-        $this->assertEquals($data['result']['comment']['file_name'] , "FILE NAME");
-        $this->assertEquals($data['result']['comment']['created_date'] , null);
-        $this->assertEquals($data['result']['comment']['read_date'] , null);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals($data['result']['submission_id'], 1);
+        $this->assertEquals(count($data['result']['comment']), 10);
+        $this->assertEquals(count($data['result']['comment']['user']), 5);
+        $this->assertEquals($data['result']['comment']['user']['id'], 1);
+        $this->assertEquals($data['result']['comment']['user']['firstname'], "Paul");
+        $this->assertEquals($data['result']['comment']['user']['lastname'], "Boussekey");
+        $this->assertEquals($data['result']['comment']['user']['nickname'], null);
+        $this->assertEquals($data['result']['comment']['user']['avatar'], null);
+        $this->assertEquals($data['result']['comment']['id'], 1);
+        $this->assertEquals($data['result']['comment']['text'], "COMMENT 1memzr!");
+        $this->assertEquals($data['result']['comment']['audio'], null);
+        $this->assertEquals($data['result']['comment']['user_id'], 1);
+        $this->assertEquals($data['result']['comment']['submission_id'], 1);
+        $this->assertEquals($data['result']['comment']['file_token'], "azerty");
+        $this->assertEquals($data['result']['comment']['file_name'], "FILE NAME");
+        $this->assertEquals($data['result']['comment']['created_date'], null);
+        $this->assertEquals($data['result']['comment']['read_date'], null);
+        $this->assertEquals($data['jsonrpc'], 2.0);
         
         return $data['result'];
     }
     
       /**
-     * @depends testCreateInit 
+     * @depends testCreateInit
      */
     public function testgetListSubmissionComment($params)
     {
-        
-        $this->setIdentity(4); 
-        $data = $this->jsonRpc('submission.addComment', 
+        $this->setIdentity(4);
+        $data = $this->jsonRpc('submission.addComment',
             [
                 'id' => $params['submission_id'],
                 'file_name' => 'FILE NAME',
@@ -549,48 +547,48 @@ class GradingTest extends AbstractService
                 'text' => 'COMMENT 2!!!',
                 
             ]);
-        $this->setIdentity(1); 
-        $data = $this->jsonRpc('submission.getComments', 
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('submission.getComments',
             [
-                'id' => $params['submission_id']                
+                'id' => $params['submission_id']
             ]);
         
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result'][0]) , 10);
-        $this->assertEquals(count($data['result'][0]['user']) , 5);
-        $this->assertEquals($data['result'][0]['user']['id'] , 1);
-        $this->assertEquals($data['result'][0]['user']['firstname'] , "Paul");
-        $this->assertEquals($data['result'][0]['user']['lastname'] , "Boussekey");
-        $this->assertEquals($data['result'][0]['user']['nickname'] , null);
-        $this->assertEquals($data['result'][0]['user']['avatar'] , null);
-        $this->assertEquals($data['result'][0]['id'] , 1);
-        $this->assertEquals($data['result'][0]['text'] , "COMMENT 1memzr!");
-        $this->assertEquals($data['result'][0]['audio'] , null);
-        $this->assertEquals($data['result'][0]['user_id'] , 1);
-        $this->assertEquals($data['result'][0]['submission_id'] , 1);
-        $this->assertEquals($data['result'][0]['file_token'] , "azerty");
-        $this->assertEquals($data['result'][0]['file_name'] , "FILE NAME");
-        $this->assertEquals($data['result'][0]['created_date'] , null);
-        $this->assertEquals($data['result'][0]['read_date'] , null);
-        $this->assertEquals(count($data['result'][1]) , 10);
-        $this->assertEquals(count($data['result'][1]['user']) , 5);
-        $this->assertEquals($data['result'][1]['user']['id'] , 4);
-        $this->assertEquals($data['result'][1]['user']['firstname'] , "Salim");
-        $this->assertEquals($data['result'][1]['user']['lastname'] , "Bendacha");
-        $this->assertEquals($data['result'][1]['user']['nickname'] , null);
-        $this->assertEquals($data['result'][1]['user']['avatar'] , null);
-        $this->assertEquals($data['result'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['text'] , "COMMENT 2!!!");
-        $this->assertEquals($data['result'][1]['audio'] , null);
-        $this->assertEquals($data['result'][1]['user_id'] , 4);
-        $this->assertEquals($data['result'][1]['submission_id'] , 1);
-        $this->assertEquals($data['result'][1]['file_token'] , "azerty");
-        $this->assertEquals($data['result'][1]['file_name'] , "FILE NAME");
-        $this->assertEquals($data['result'][1]['created_date'] , null);
-        $this->assertEquals($data['result'][1]['read_date'] , null);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals(count($data['result']), 2);
+        $this->assertEquals(count($data['result'][0]), 10);
+        $this->assertEquals(count($data['result'][0]['user']), 5);
+        $this->assertEquals($data['result'][0]['user']['id'], 1);
+        $this->assertEquals($data['result'][0]['user']['firstname'], "Paul");
+        $this->assertEquals($data['result'][0]['user']['lastname'], "Boussekey");
+        $this->assertEquals($data['result'][0]['user']['nickname'], null);
+        $this->assertEquals($data['result'][0]['user']['avatar'], null);
+        $this->assertEquals($data['result'][0]['id'], 1);
+        $this->assertEquals($data['result'][0]['text'], "COMMENT 1memzr!");
+        $this->assertEquals($data['result'][0]['audio'], null);
+        $this->assertEquals($data['result'][0]['user_id'], 1);
+        $this->assertEquals($data['result'][0]['submission_id'], 1);
+        $this->assertEquals($data['result'][0]['file_token'], "azerty");
+        $this->assertEquals($data['result'][0]['file_name'], "FILE NAME");
+        $this->assertEquals($data['result'][0]['created_date'], null);
+        $this->assertEquals($data['result'][0]['read_date'], null);
+        $this->assertEquals(count($data['result'][1]), 10);
+        $this->assertEquals(count($data['result'][1]['user']), 5);
+        $this->assertEquals($data['result'][1]['user']['id'], 4);
+        $this->assertEquals($data['result'][1]['user']['firstname'], "Salim");
+        $this->assertEquals($data['result'][1]['user']['lastname'], "Bendacha");
+        $this->assertEquals($data['result'][1]['user']['nickname'], null);
+        $this->assertEquals($data['result'][1]['user']['avatar'], null);
+        $this->assertEquals($data['result'][1]['id'], 2);
+        $this->assertEquals($data['result'][1]['text'], "COMMENT 2!!!");
+        $this->assertEquals($data['result'][1]['audio'], null);
+        $this->assertEquals($data['result'][1]['user_id'], 4);
+        $this->assertEquals($data['result'][1]['submission_id'], 1);
+        $this->assertEquals($data['result'][1]['file_token'], "azerty");
+        $this->assertEquals($data['result'][1]['file_name'], "FILE NAME");
+        $this->assertEquals($data['result'][1]['created_date'], null);
+        $this->assertEquals($data['result'][1]['read_date'], null);
+        $this->assertEquals($data['jsonrpc'], 2.0);
 
         return $data['result'];
     }
@@ -602,13 +600,12 @@ class GradingTest extends AbstractService
     {
         $this->setIdentity(3);
         $data = $this->jsonRpc('criteria.delete', array('id' => $criteria));
-        
-        $this->assertEquals(count($data) , 3); 
-        $this->assertEquals($data['result'] , 1); 
-        $this->assertEquals($data['id'] , 1); 
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
-        
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
         return $data['result'];
     }  */
-    
 }

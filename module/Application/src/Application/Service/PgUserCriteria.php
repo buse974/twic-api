@@ -15,7 +15,7 @@ class PgUserCriteria extends AbstractService
 {
     /**
      * Add peer criteria.
-     * 
+     *
      * @param int $pg_id
      * @param int $user_id
      * @param int $submission_id
@@ -36,7 +36,7 @@ class PgUserCriteria extends AbstractService
 
     /**
      * Get List peer criteria.
-     * 
+     *
      * @param int $submission_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -49,7 +49,7 @@ class PgUserCriteria extends AbstractService
 
     /**
      * Get Processed Grades.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *

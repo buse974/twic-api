@@ -6,9 +6,9 @@ use Dal\Mapper\AbstractMapper;
 
 class SubmissionComments extends AbstractMapper
 {
-    /* 
+    /*
      * @param integer $id
-     * 
+     *
      * @return \Application\Model\SubmissionComments
      */
     public function get($id)
@@ -20,9 +20,9 @@ class SubmissionComments extends AbstractMapper
         return $this->selectWith($select);
     }
 
-     /* 
+     /*
      * @param integer $submission
-     * 
+     *
      * @return array
      */
     public function getList($submission)

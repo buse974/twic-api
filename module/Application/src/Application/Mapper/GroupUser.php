@@ -9,7 +9,7 @@ class GroupUser extends AbstractMapper
     /**
      * @param int $item_id
      * @param int $user
-     * 
+     *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getGroupIdByItemUser($item_id, $user_id)

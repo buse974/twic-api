@@ -37,32 +37,32 @@ class Activity extends AbstractMapper
             ->join('course', 'item.course_id = course.id', ['activity$course_id' => 'id'])
             ->join('program', 'course.program_id = program.id', ['activity$program_id' => 'id','activity$school_id' => 'school_id'])
             ->quantifier('DISTINCT');
-        if(null !== $event){
+        if (null !== $event) {
             $select->where(['event' => $event]);
         }
-        if(null !== $object_id){
+        if (null !== $object_id) {
             $select->where(['object_id' => $object_id]);
         }
-        if(null !== $object_name){
+        if (null !== $object_name) {
             $select->where(['object_name' => $object_name]);
         }
-        if(null !== $school_id){
+        if (null !== $school_id) {
             $select->where(['program.school_id' => $school_id]);
         }
-        if(null !== $program_id){
+        if (null !== $program_id) {
             $select->where(['program.id' => $program_id]);
         }
-        if(null !== $course_id){
+        if (null !== $course_id) {
             $select->where(['course.id' => $course_id]);
         }
-        if(null !== $item_id){
+        if (null !== $item_id) {
             $select->where(['item.id' => $item_id]);
         }
-        if(null !== $user_id && !empty($user_id)){
+        if (null !== $user_id && !empty($user_id)) {
             $select->where(['activity.user_id' => $user_id]);
         }
-        if(!$is_academic){
-            $select->join('course_user_relation','course.id = course_user_relation.course_id')
+        if (!$is_academic) {
+            $select->join('course_user_relation', 'course.id = course_user_relation.course_id')
                    ->where(['course_user_relation.user_id' => $me ]);
         }
         

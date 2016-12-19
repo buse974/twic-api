@@ -126,6 +126,12 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getByItem" title="getByItem :: Request Course Get">
+            <span class="description">Request Course Get</span><pre>getByItem</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_getCount" title="getCount :: Request Course Get Count By Program">
             <span class="description">Request Course Get Count By Program</span><pre>getCount</pre>
         </a>
@@ -141,11 +147,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -184,7 +190,7 @@
                                                                 <a id="method_get"></a>
                         <div class="element clickable method public  method_get" data-toggle="collapse" data-target=".method_get .collapse">
                             <h2>Request Course Get</h2>
-                            <pre>get(integer $id) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>get(integer $id, integer $user_id, boolean $is_admin_academic,  $is_student) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -199,6 +205,45 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$user_id</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_admin_academic</h4>
+                                                <code>boolean</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_student</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getByItem"></a>
+                        <div class="element clickable method public  method_getByItem" data-toggle="collapse" data-target=".method_getByItem .collapse">
+                            <h2>Request Course Get</h2>
+                            <pre>getByItem(integer $item_id) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$item_id</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
@@ -238,7 +283,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Request Course Get List</h2>
-                            <pre>getList(integer $program_id = null, string $search = null, array $filter = null, integer $user_id = null, integer $school_id = null, array $exclude = null, string $is_admin_academic = false, string $self = true) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>getList(integer $program_id = null, string $search = null, array $filter = null, integer $user_id = null, integer $school_id = null, array $exclude = null, string $is_admin_academic = false, string $self = true,  $is_student = true) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -283,6 +328,10 @@
                                                 <h4>$self</h4>
                                                 <code>string</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_student</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
@@ -312,7 +361,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:34 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:37 +0100.<br/>
     </footer>
     </body>
 </html>

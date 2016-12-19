@@ -161,5 +161,4 @@ class Page extends BasePage
     {
         return $this->state;
     }
-    
 }

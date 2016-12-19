@@ -28,7 +28,7 @@ class Opentok implements ServiceLocatorAwareInterface
      *
      * @invokable
      *
-     * @param string $media_mode            
+     * @param string $media_mode
      *
      * @return string
      */
@@ -50,7 +50,7 @@ class Opentok implements ServiceLocatorAwareInterface
     /**
      * Set service locator.
      *
-     * @param ServiceLocatorInterface $serviceLocator            
+     * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {

@@ -16,9 +16,9 @@ class PageDoc extends AbstractService
      */
     public function add($page_id, $library)
     {
-        if(is_array($library)) {
+        if (is_array($library)) {
             $library = $this->getServiceLibrary()->_add($library)->getId();
-        } elseif(!is_numeric($var)) {
+        } elseif (!is_numeric($var)) {
             throw new \Exception('error add document');
         }
 

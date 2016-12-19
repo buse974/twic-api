@@ -9,7 +9,7 @@ class Session extends AbstractService
     /**
      * Get Session By $uuid
      *
-     * @param string $uuid            
+     * @param string $uuid
      * @return \Application\Model\Session[]
      */
     public function get($uuid = null, $uid = null)
@@ -24,7 +24,7 @@ class Session extends AbstractService
 
     /**
      * Update session fcm
-     * 
+     *
      * @param string $token
      * @param string $uuid
      * @param string $registration_id
@@ -34,11 +34,11 @@ class Session extends AbstractService
     {
         return $this->getMapper()->update($this->getModel()
             ->setUuid($uuid)
-            ->setRegistrationId($registration_id),['token' => $token]);
+            ->setRegistrationId($registration_id), ['token' => $token]);
     }
     /**
      * Delete sesion and fcm session
-     * 
+     *
      * @param string $uuid
      * @param string $token
      * @param string $registration_id

@@ -22,20 +22,20 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $program_id            
-     * @param string $title            
-     * @param string $picture            
-     * @param string $abstract            
-     * @param string $description            
-     * @param string $objectives            
-     * @param string $teaching            
-     * @param string $attendance            
-     * @param int $duration            
-     * @param string $notes            
-     * @param string $learning_outcomes            
-     * @param string $video_link            
-     * @param string $video_token            
-     * @param array $material_document            
+     * @param int $program_id
+     * @param string $title
+     * @param string $picture
+     * @param string $abstract
+     * @param string $description
+     * @param string $objectives
+     * @param string $teaching
+     * @param string $attendance
+     * @param int $duration
+     * @param string $notes
+     * @param string $learning_outcomes
+     * @param string $video_link
+     * @param string $video_token
+     * @param array $material_document
      * @throws \Exception
      * @return \Application\Model\Course
      */
@@ -77,22 +77,22 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $title            
-     * @param string $picture            
-     * @param string $abstract            
-     * @param string $description            
-     * @param string $objectives            
-     * @param string $teaching            
-     * @param string $attendance            
-     * @param int $duration            
-     * @param string $notes            
-     * @param string $learning_outcomes            
-     * @param string $video_link            
-     * @param string $video_token            
+     * @param int $id
+     * @param string $title
+     * @param string $picture
+     * @param string $abstract
+     * @param string $description
+     * @param string $objectives
+     * @param string $teaching
+     * @param string $attendance
+     * @param int $duration
+     * @param string $notes
+     * @param string $learning_outcomes
+     * @param string $video_link
+     * @param string $video_token
      * @return int
      */
-    public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null, 
+    public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null,
         $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = null)
     {
         $is_published_old = $this->getLite($id)->getIsPublished();
@@ -121,12 +121,12 @@ class Course extends AbstractService
             $this->getServiceEvent()->courseUpdated($id, $ar_course);
         }
         
-        if($is_published_old == 0 && $is_published == 1) {
+        if ($is_published_old == 0 && $is_published == 1) {
             $this->getServicePost()->addSys('CC'.$id, '', [
                 'state' => 'published',
                 'course' => $id,
-            ],  'published', null, null, null, null, null, $id ,'course');
-        } elseif($is_published_old == 1 && $is_published == 0){
+            ], 'published', null, null, null, null, null, $id, 'course');
+        } elseif ($is_published_old == 1 && $is_published == 0) {
             $this->getServicePost()->hardDelete('CC'.$id);
         }
         
@@ -138,7 +138,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param array|int $id            
+     * @param array|int $id
      * @return array
      */
     public function delete($id)
@@ -162,7 +162,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      * @throws \Exception
      * @return \Application\Model\Course
      */
@@ -190,7 +190,7 @@ class Course extends AbstractService
     }
     
     /**
-     * Get Course Lite 
+     * Get Course Lite
      *
      * @invokable
      *
@@ -211,7 +211,7 @@ class Course extends AbstractService
 
         $res_course->rewind();
 
-        return (is_array($id)) ? 
+        return (is_array($id)) ?
             $res_course :
             $res_course->current();
     }
@@ -234,13 +234,13 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $program            
-     * @param string $search            
-     * @param array $filter            
-     * @param int $user            
-     * @param int $school            
-     * @param array $exclude            
-     * @param bool $self            
+     * @param int $program
+     * @param string $search
+     * @param array $filter
+     * @param int $user
+     * @param int $school
+     * @param array $exclude
+     * @param bool $self
      * @return array
      */
     public function getList($program = null, $search = null, $filter = null, $user = null, $school = null, $exclude = null, $self = null)
@@ -285,7 +285,7 @@ class Course extends AbstractService
     /**
      * get Nbr Course by program.
      *
-     * @param int $program            
+     * @param int $program
      *
      * @return int
      */
@@ -348,7 +348,7 @@ class Course extends AbstractService
 
     /**
      * Get Service Program
-     * 
+     *
      * @return \Application\Service\Program
      */
     private function getServiceProgram()

@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * Post Subscription
@@ -18,7 +18,7 @@ class PostSubscription extends AbstractService
 {
     /**
      * Add Post Subscription
-     * 
+     *
      * @param string $libelle
      * @param int $post_id
      * @param string $last_date
@@ -30,7 +30,7 @@ class PostSubscription extends AbstractService
      */
     public function add($libelle, $post_id, $last_date, $action, $user_id, $sub_post_id =null, $data = null)
     {
-        if(!is_array($libelle)) {
+        if (!is_array($libelle)) {
             $libelle = [$libelle];
         }
         
@@ -41,13 +41,13 @@ class PostSubscription extends AbstractService
             ->setSubPostId($sub_post_id)
             ->setLastDate($last_date);
         
-        foreach ($libelle as $l) { 
+        foreach ($libelle as $l) {
             $m_post_subscription->setLibelle($l);
             $this->getMapper()->insert($m_post_subscription);
         }
         
         $m_post = $this->getServicePost()->getLite($post_id);
-        $this->getServiceEvent()->userPublication($libelle, $m_post->getId(), $m_post->getType() ,$action);
+        $this->getServiceEvent()->userPublication($libelle, $m_post->getId(), $m_post->getType(), $action);
         
         return true;
     }
@@ -70,8 +70,8 @@ class PostSubscription extends AbstractService
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         foreach ($ar as $n) {
-            if(substr($n,0,1) === '@') {
-                $tab = json_decode(str_replace("'", "\"", substr($n, 1)),true);
+            if (substr($n, 0, 1) === '@') {
+                $tab = json_decode(str_replace("'", "\"", substr($n, 1)), true);
                 // remonte le post des abonner a la personne tagé
                 $this->add('U'.$tab[0].$tab[1], $id, $date, ModelPostSubscription::ACTION_TAG, $user_id);
             }
@@ -79,7 +79,7 @@ class PostSubscription extends AbstractService
     }
    
     /**
-     * 
+     *
      * @param int $post_id
      */
     public function getLast($post_id)
@@ -145,5 +145,4 @@ class PostSubscription extends AbstractService
     {
         return $this->container->get('app_service_event');
     }
-    
 }

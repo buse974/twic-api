@@ -168,6 +168,12 @@
     </li>
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                         <li class="method public">
+        <a href="#method_m_getList" title="m_getList :: Get List By user Conversation">
+            <span class="description">Get List By user Conversation</span><pre>m_getList</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_read" title="read :: Read Message(s).">
             <span class="description">Read Message(s).</span><pre>read</pre>
         </a>
@@ -201,7 +207,7 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
@@ -235,7 +241,7 @@
                                 <span class="description">Get Service User.</span><pre>getServiceUser</pre>
                             </a>
                         </li>
-                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -274,7 +280,7 @@
                                                                 <a id="method__send"></a>
                         <div class="element clickable method public  method__send" data-toggle="collapse" data-target=".method__send .collapse">
                             <h2>Send message generique.</h2>
-                            <pre>_send(string $text = null, integer|array $to = null, integer $conversation = null, integer $type = null, integer $item = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>_send(string $text = null, integer|array $to = null, integer $conversation = null, integer $type = null, integer $item = null, integer $document = null) : \Application\Model\MessageUser</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -316,9 +322,13 @@
                                                 <h4>$item</h4>
                                                 <code>integer</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$document</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                        <code><a href="../classes/Application.Model.MessageUser.html">\Application\Model\MessageUser</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -758,6 +768,51 @@
                             </div>
 
                         </div>
+                                            <a id="method_m_getList"></a>
+                        <div class="element clickable method public  method_m_getList" data-toggle="collapse" data-target=".method_m_getList .collapse">
+                            <h2>Get List By user Conversation</h2>
+                            <pre>m_getList(integer $conversation, array $filter = array()) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$conversation</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$filter</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_read"></a>
                         <div class="element clickable method public  method_read" data-toggle="collapse" data-target=".method_read .collapse">
                             <h2>Read Message(s).</h2>
@@ -797,7 +852,7 @@
                                             <a id="method_send"></a>
                         <div class="element clickable method public  method_send" data-toggle="collapse" data-target=".method_send .collapse">
                             <h2>Send message.</h2>
-                            <pre>send(string $text = null, integer|array $to = null, integer $conversation = null, integer $type = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>send(string $text = null, integer|array $to = null, integer $conversation = null, integer $type = null, array $document = null) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -834,6 +889,10 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$type</h4>
                                                 <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$document</h4>
+                                                <code>array</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -1022,7 +1081,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:34 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:37 +0100.<br/>
     </footer>
     </body>
 </html>

@@ -27,15 +27,15 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $type            
-     * @param int|array $submission_id            
-     * @param array $users            
-     * @param string $text            
-     * @param int $item_id            
-     * @param array $text_editors            
-     * @param array $whiteboards            
-     * @param array $documents            
-     * @param bool $has_video            
+     * @param int $type
+     * @param int|array $submission_id
+     * @param array $users
+     * @param string $text
+     * @param int $item_id
+     * @param array $text_editors
+     * @param array $whiteboards
+     * @param array $documents
+     * @param bool $has_video
      *
      * @throws \Exception
      *
@@ -131,7 +131,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return int
      */
@@ -145,7 +145,7 @@ class Conversation extends AbstractService
         $token = $m_conversation->getToken();
         $media_mode = $m_conversation->getType() === ModelConversation::TYPE_CHAT ? MediaMode::RELAYED : MediaMode::ROUTED;
                        
-        return ($token === null || $token instanceof IsNull) ? 
+        return ($token === null || $token instanceof IsNull) ?
             $this->getMapper()->update($this->getModel()->setToken($this->getServiceZOpenTok()
             ->getSessionId($media_mode)), ['id' => $id, new IsNull('token')]) : 0;
     }
@@ -158,8 +158,8 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $has_video            
+     * @param int $id
+     * @param string $has_video
      *
      * @return array
      */
@@ -234,7 +234,7 @@ class Conversation extends AbstractService
     /**
      * Get Conversation Lite Version.
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return \Application\Model\Conversation
      */
@@ -255,11 +255,11 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $program_id            
-     * @param int $course_id            
-     * @param int $item_id            
-     * @param int $organization_id            
-     * @param array $users            
+     * @param int $program_id
+     * @param int $course_id
+     * @param int $item_id
+     * @param int $organization_id
+     * @param array $users
      * @return array
      */
     public function getListId($program_id = null, $course_id = null, $item_id = null, $organization_id = null, $users = null)
@@ -289,8 +289,8 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $submission_id            
-     * @param int $item_id            
+     * @param int $submission_id
+     * @param int $item_id
      *
      * @return int
      */
@@ -390,15 +390,14 @@ class Conversation extends AbstractService
                         return $id;
                     }
                 }
-            } else 
-                if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
-                    // si item donc forcement liveclass on récupere tt les user de litem
+            } elseif (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
+                // si item donc forcement liveclass on récupere tt les user de litem
                     if (null !== $item_id) {
                         $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);
                     } else {
                         $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
                     }
-                }
+            }
             
             if ($res_submission_user === null) {
                 throw new \Exception('error submission is not exist');
@@ -424,9 +423,9 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param array $users            
-     * @param string $text            
-     * @param int $submission            
+     * @param array $users
+     * @param string $text
+     * @param int $submission
      */
     public function createSubmission($users, $text, $submission)
     {
@@ -443,7 +442,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $users            
+     * @param int|array $users
      *
      * @return int
      */
@@ -462,7 +461,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation            
+     * @param int $conversation
      *
      * @return array
      */
@@ -475,7 +474,7 @@ class Conversation extends AbstractService
     /**
      * Basique get conversation.
      *
-     * @param int $id            
+     * @param int $id
      *
      * @return \Application\Model\Conversation
      */
@@ -497,10 +496,10 @@ class Conversation extends AbstractService
     /**
      * Get List Conversation By Submission.
      *
-     * @param int $submission_id            
+     * @param int $submission_id
      * @param bool $all
      *            Si false on teste pour tous le monde sinon on filtre l'utilisateur courant
-     *            
+     *
      * @return array
      */
     public function getListBySubmission($submission_id, $all = false)
@@ -519,8 +518,8 @@ class Conversation extends AbstractService
     /**
      * Get List Conversation By Item.
      *
-     * @param int $item_id            
-     * @param int $submission_id            
+     * @param int $item_id
+     * @param int $submission_id
      *
      * @return array
      */
@@ -538,7 +537,7 @@ class Conversation extends AbstractService
     /**
      * Get List Conversation Or Create If not exist.
      *
-     * @param int $submission_id            
+     * @param int $submission_id
      *
      * @return array
      */
@@ -578,11 +577,11 @@ class Conversation extends AbstractService
     
     /**
      * Get List Conversation
-     * 
+     *
      * @invokable
-     * 
+     *
      * @todo faire une requete pour simplifier
-     * 
+     *
      * @param array $filter
      */
     public function getList($filter)
@@ -603,7 +602,7 @@ class Conversation extends AbstractService
      /**
      * Get Conversation id list with unread message.
      *
-     * @invokable         
+     * @invokable
      *
      * @return \Application\Model\Conversation
      */
@@ -613,11 +612,10 @@ class Conversation extends AbstractService
         
         $conversations = [];
         foreach ($res_conversation as $m_conversation) {
-            $conversations[$m_conversation->getId()] = intval($m_conversation->getNbUnread());            
+            $conversations[$m_conversation->getId()] = intval($m_conversation->getNbUnread());
         }
         
         return $conversations;
-        
     }
     
     /**
@@ -632,7 +630,7 @@ class Conversation extends AbstractService
         /**
          * @todo enlever To From User
          */
-        if(!is_array($id)) {
+        if (!is_array($id)) {
             $id = [$id];
         }
         
@@ -652,8 +650,8 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation            
-     * @param array $text_editors            
+     * @param int $conversation
+     * @param array $text_editors
      */
     public function addTextEditor($conversation, $text_editors)
     {
@@ -686,7 +684,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $text_editor            
+     * @param int $text_editor
      *
      * @return int
      */
@@ -700,7 +698,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $whiteboard            
+     * @param int $whiteboard
      *
      * @return int
      */
@@ -714,7 +712,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $document            
+     * @param int $document
      *
      * @return int
      */
@@ -728,8 +726,8 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation            
-     * @param array $text_editors            
+     * @param int $conversation
+     * @param array $text_editors
      */
     public function addWhiteboard($conversation, $whiteboards)
     {
@@ -762,8 +760,8 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation            
-     * @param array $documents            
+     * @param int $conversation
+     * @param array $documents
      *
      * @return array|int
      */
@@ -801,7 +799,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $conversation            
+     * @param int|array $conversation
      *
      * @return int
      */
@@ -815,7 +813,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $conversation            
+     * @param int|array $conversation
      *
      * @return int
      */
@@ -829,7 +827,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $conversation            
+     * @param int|array $conversation
      */
     public function delete($conversation)
     {

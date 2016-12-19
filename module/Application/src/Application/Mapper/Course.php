@@ -11,8 +11,8 @@ class Course extends AbstractMapper
     /**
      * Request Course Get
      *
-     * @param int $id      
-     * @param int $user_id      
+     * @param int $id
+     * @param int $user_id
      * @param bool $is_admin_academic
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -30,14 +30,14 @@ class Course extends AbstractMapper
             ->group('course.id');
         
         if ($is_admin_academic === true) {
-                $select->join('school', 'school.id=course_program.school_id', [])
+            $select->join('school', 'school.id=course_program.school_id', [])
                     ->join('organization_user', 'organization_user.organization_id=school.id', [])
                     ->where(['organization_user.user_id' => $user_id]);
         } else {
-                $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])
+            $select->join('course_user_relation', 'course_user_relation.course_id=course.id', [])
                     ->where(['course_user_relation.user_id' => $user_id]);
         }
-        if($is_student){
+        if ($is_student) {
             $select->where('course.is_published = 1');
         }
             
@@ -64,14 +64,14 @@ class Course extends AbstractMapper
     /**
      * Request Course Get List
      *
-     * @param int $program_id            
-     * @param string $search            
-     * @param array $filter            
-     * @param int $user_id            
-     * @param int $school_id            
-     * @param array $exclude            
-     * @param string $is_admin_academic            
-     * @param string $self            
+     * @param int $program_id
+     * @param string $search
+     * @param array $filter
+     * @param int $user_id
+     * @param int $school_id
+     * @param array $exclude
+     * @param string $is_admin_academic
+     * @param string $self
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($program_id = null, $search = null, $filter = null, $user_id = null, $school_id = null, $exclude = null, $is_admin_academic = false, $self = true, $is_student = true)
@@ -105,7 +105,7 @@ class Course extends AbstractMapper
         if (null == ! $search) {
             $select->where(array('course.title LIKE ? ' => '%' . $search . '%'));
         }
-        if($is_student){
+        if ($is_student) {
             $select->where('course.is_published = 1');
         }
         
@@ -115,7 +115,7 @@ class Course extends AbstractMapper
     /**
      * Request Course Get Count By Program
      *
-     * @param int $program_id            
+     * @param int $program_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getCount($program_id)

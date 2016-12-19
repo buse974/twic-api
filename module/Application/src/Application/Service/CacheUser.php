@@ -9,25 +9,25 @@ namespace Application\Service;
 /**
  * Class CacheUser
  */
-class CacheUser 
+class CacheUser
 {
     /**
      * Prefix.
-     * 
+     *
      * @var string
      */
     protected $prefix = 'identity_';
 
     /**
      * Name key local.
-     * 
+     *
      * @var string
      */
     protected $key_local = 'token';
 
     /**
      * Name key Global.
-     * 
+     *
      * @var string
      */
     protected $key_global = 'id';

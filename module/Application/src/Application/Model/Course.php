@@ -5,7 +5,6 @@ use Application\Model\Base\Course as BaseCourse;
 
 class Course extends BaseCourse
 {
-
     protected $creator;
 
     protected $grading;

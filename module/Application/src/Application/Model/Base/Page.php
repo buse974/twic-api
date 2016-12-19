@@ -6,215 +6,214 @@ use Dal\Model\AbstractModel;
 
 class Page extends AbstractModel
 {
- 	protected $id;
-	protected $title;
-	protected $logo;
-	protected $background;
-	protected $description;
-	protected $confidentiality;
-	protected $admission;
-	protected $start_date;
-	protected $end_date;
-	protected $location;
-	protected $type;
-	protected $user_id;
-	protected $organization_id;
-	protected $page_id;
-	protected $address_id;
-	protected $deleted_date;
+    protected $id;
+    protected $title;
+    protected $logo;
+    protected $background;
+    protected $description;
+    protected $confidentiality;
+    protected $admission;
+    protected $start_date;
+    protected $end_date;
+    protected $location;
+    protected $type;
+    protected $user_id;
+    protected $organization_id;
+    protected $page_id;
+    protected $address_id;
+    protected $deleted_date;
 
-	protected $prefix = 'page';
+    protected $prefix = 'page';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getTitle()
-	{
-		return $this->title;
-	}
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	public function setTitle($title)
-	{
-		$this->title = $title;
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getLogo()
-	{
-		return $this->logo;
-	}
+    public function getLogo()
+    {
+        return $this->logo;
+    }
 
-	public function setLogo($logo)
-	{
-		$this->logo = $logo;
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getBackground()
-	{
-		return $this->background;
-	}
+    public function getBackground()
+    {
+        return $this->background;
+    }
 
-	public function setBackground($background)
-	{
-		$this->background = $background;
+    public function setBackground($background)
+    {
+        $this->background = $background;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getDescription()
-	{
-		return $this->description;
-	}
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	public function setDescription($description)
-	{
-		$this->description = $description;
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getConfidentiality()
-	{
-		return $this->confidentiality;
-	}
+    public function getConfidentiality()
+    {
+        return $this->confidentiality;
+    }
 
-	public function setConfidentiality($confidentiality)
-	{
-		$this->confidentiality = $confidentiality;
+    public function setConfidentiality($confidentiality)
+    {
+        $this->confidentiality = $confidentiality;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getAdmission()
-	{
-		return $this->admission;
-	}
+    public function getAdmission()
+    {
+        return $this->admission;
+    }
 
-	public function setAdmission($admission)
-	{
-		$this->admission = $admission;
+    public function setAdmission($admission)
+    {
+        $this->admission = $admission;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getStartDate()
-	{
-		return $this->start_date;
-	}
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
 
-	public function setStartDate($start_date)
-	{
-		$this->start_date = $start_date;
+    public function setStartDate($start_date)
+    {
+        $this->start_date = $start_date;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getEndDate()
-	{
-		return $this->end_date;
-	}
+    public function getEndDate()
+    {
+        return $this->end_date;
+    }
 
-	public function setEndDate($end_date)
-	{
-		$this->end_date = $end_date;
+    public function setEndDate($end_date)
+    {
+        $this->end_date = $end_date;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getLocation()
-	{
-		return $this->location;
-	}
+    public function getLocation()
+    {
+        return $this->location;
+    }
 
-	public function setLocation($location)
-	{
-		$this->location = $location;
+    public function setLocation($location)
+    {
+        $this->location = $location;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getType()
-	{
-		return $this->type;
-	}
+    public function getType()
+    {
+        return $this->type;
+    }
 
-	public function setType($type)
-	{
-		$this->type = $type;
+    public function setType($type)
+    {
+        $this->type = $type;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getUserId()
-	{
-		return $this->user_id;
-	}
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
 
-	public function setUserId($user_id)
-	{
-		$this->user_id = $user_id;
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getOrganizationId()
-	{
-		return $this->organization_id;
-	}
+    public function getOrganizationId()
+    {
+        return $this->organization_id;
+    }
 
-	public function setOrganizationId($organization_id)
-	{
-		$this->organization_id = $organization_id;
+    public function setOrganizationId($organization_id)
+    {
+        $this->organization_id = $organization_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getPageId()
-	{
-		return $this->page_id;
-	}
+    public function getPageId()
+    {
+        return $this->page_id;
+    }
 
-	public function setPageId($page_id)
-	{
-		$this->page_id = $page_id;
+    public function setPageId($page_id)
+    {
+        $this->page_id = $page_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getAddressId()
-	{
-		return $this->address_id;
-	}
+    public function getAddressId()
+    {
+        return $this->address_id;
+    }
 
-	public function setAddressId($address_id)
-	{
-		$this->address_id = $address_id;
+    public function setAddressId($address_id)
+    {
+        $this->address_id = $address_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getDeletedDate()
-	{
-		return $this->deleted_date;
-	}
+    public function getDeletedDate()
+    {
+        return $this->deleted_date;
+    }
 
-	public function setDeletedDate($deleted_date)
-	{
-		$this->deleted_date = $deleted_date;
+    public function setDeletedDate($deleted_date)
+    {
+        $this->deleted_date = $deleted_date;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

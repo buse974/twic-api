@@ -15,7 +15,7 @@ class SubQuestion extends AbstractService
 {
     /**
      * Get List Lite Submission Question.
-     * 
+     *
      * @param int $sub_quiz_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -27,7 +27,7 @@ class SubQuestion extends AbstractService
 
     /**
      * Get Submission Question.
-     * 
+     *
      * @param int $id
      *
      * @return \Application\Model\SubQuestion
@@ -39,7 +39,7 @@ class SubQuestion extends AbstractService
 
     /**
      * Update Answered of Submission Question.
-     * 
+     *
      * @param int $id
      *
      * @return int
@@ -55,7 +55,7 @@ class SubQuestion extends AbstractService
 
     /**
      * Update Point Submission Question.
-     * 
+     *
      * @param int $id
      * @param int $point
      *
@@ -72,7 +72,7 @@ class SubQuestion extends AbstractService
 
     /**
      * Add Submission Question.
-     * 
+     *
      * @param int $sub_quiz_id
      * @param int $poll_item_id
      * @param int $bank_question_id

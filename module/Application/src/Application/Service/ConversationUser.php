@@ -15,9 +15,9 @@ class ConversationUser extends AbstractService
 {
     /**
      * Get Conversation OR Create if not exist.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param array $users
      * @param int   $type
      *
@@ -45,7 +45,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Get List Conversation.
-     * 
+     *
      * @invokable
      *
      * @param int $submission_id
@@ -59,7 +59,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Get User By Conversation.
-     * 
+     *
      * @param int $conversation_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -95,7 +95,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Check If is in conversation.
-     * 
+     *
      * @param int $conversation_id
      * @param int $user_id
      *
@@ -110,7 +110,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Add User in the Conversation.
-     * 
+     *
      * @param int       $conversation_id
      * @param int|array $users
      *
@@ -132,7 +132,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Replace user in conversation.
-     * 
+     *
      * @param int   $conversation_id
      * @param array $users
      *
@@ -147,7 +147,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Get Service Conversation.
-     * 
+     *
      * @return \Application\Service\Conversation
      */
     private function getServiceConversation()
@@ -157,7 +157,7 @@ class ConversationUser extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

@@ -15,7 +15,7 @@ class PollItem extends AbstractService
 {
     /**
      * Add Poll Item.
-     * 
+     *
      * @param int   $poll_id
      * @param array $data
      *
@@ -44,7 +44,7 @@ class PollItem extends AbstractService
 
     /**
      * Add General Poll Item.
-     * 
+     *
      * @param int   $poll_id
      * @param int   $nb_point
      * @param int   $bank_question_id
@@ -78,9 +78,9 @@ class PollItem extends AbstractService
 
     /**
      * replace poll item.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int   $poll_id
      * @param array $data
      *
@@ -95,7 +95,7 @@ class PollItem extends AbstractService
 
     /**
      * Delete Poll Item.
-     * 
+     *
      * @param int $poll_id
      *
      * @return bool
@@ -107,7 +107,7 @@ class PollItem extends AbstractService
 
     /**
      * Get Poll Item.
-     * 
+     *
      * @param int $id
      *
      * @return \Application\Model\PollItem
@@ -119,7 +119,7 @@ class PollItem extends AbstractService
 
     /**
      * Get List Poll Item.
-     * 
+     *
      * @param int $poll_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -142,7 +142,7 @@ class PollItem extends AbstractService
 
     /**
      * Get List Lite Poll Item.
-     * 
+     *
      * @param int $poll_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -154,7 +154,7 @@ class PollItem extends AbstractService
 
     /**
      * Get Service GroupQuestion.
-     * 
+     *
      * @return \Application\Service\GroupQuestion
      */
     private function getServiceGroupQuestion()

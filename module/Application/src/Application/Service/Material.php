@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * Material
@@ -20,7 +20,7 @@ class Material extends AbstractService
      * Add Material
      *
      * @invokable
-     * 
+     *
      * @param int $course_id
      * @param string $name
      * @param string $type
@@ -63,7 +63,7 @@ class Material extends AbstractService
         $ret = $this->getMapper()->delete($this->getModel()
             ->setLibraryId($library_id));
         
-        if($ret > 0) {
+        if ($ret > 0) {
             $this->getServiceLibrary()->delete($library_id);
         }
         

@@ -15,7 +15,7 @@ class SubAnswer extends AbstractService
 {
     /**
      * Get List Lite.
-     * 
+     *
      * @param int $sub_question_ids
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -27,7 +27,7 @@ class SubAnswer extends AbstractService
 
     /**
      * Add Sub Answer.
-     * 
+     *
      * @param int $sub_question_id
      * @param int $bank_question_item_id
      * @param int $answer

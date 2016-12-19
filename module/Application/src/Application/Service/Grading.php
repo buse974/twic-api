@@ -101,7 +101,7 @@ class Grading extends AbstractService
 
     /**
      * Add Grading.
-     * 
+     *
      * @param int    $letter
      * @param int    $min
      * @param int    $max
@@ -128,7 +128,7 @@ class Grading extends AbstractService
 
     /**
      * Initialise grading with template.
-     * 
+     *
      * @param int $school_id
      *
      * @return bool
@@ -150,7 +150,7 @@ class Grading extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

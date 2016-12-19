@@ -6,13 +6,13 @@ use Zend\Mail\Message as BaseMessage;
 use Zend\Mime\Message as MimeMessage;
 use Mail\Template\Storage\AbstractStorage;
 
-class Message extends BaseMessage 
+class Message extends BaseMessage
 {
     protected $has_template = false;
     
     /**
      * Storage Tpl
-     * 
+     *
      * @var AbstractStorage
      */
     protected $tpl_storage;

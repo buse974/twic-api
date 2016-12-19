@@ -15,7 +15,7 @@ class Connection extends AbstractService
 {
     /**
      * Add Connection.
-     * 
+     *
      * @return int
      */
     public function add()
@@ -43,7 +43,7 @@ class Connection extends AbstractService
 
     /**
      * Select Last Connection.
-     * 
+     *
      * @return \Application\Model\Connection
      */
     public function selectLast()
@@ -61,9 +61,9 @@ class Connection extends AbstractService
 
     /**
      * Get Avg connection.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $school
      *
      * @return array
@@ -80,7 +80,7 @@ class Connection extends AbstractService
 
     /**
      * Get Service user.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

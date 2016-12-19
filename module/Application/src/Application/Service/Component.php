@@ -79,7 +79,7 @@ class Component extends AbstractService
 
     /**
      * Get EqCq.
-     * 
+     *
      * @invokable
      *
      * @param int          $school
@@ -106,7 +106,7 @@ class Component extends AbstractService
 
     /**
      * Get List EqCq.
-     * 
+     *
      * @invokable
      *
      * @param array        $school

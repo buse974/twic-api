@@ -15,7 +15,7 @@ class Report extends AbstractService
 {
     /**
      * Create Report.
-     * 
+     *
      * @invokable
      *
      * @param int $user_id
@@ -26,9 +26,8 @@ class Report extends AbstractService
      *
      * @return int
      */
-    public function add( $reason, $description = null, $user_id = null, $post_id = null, $page_id = null)
+    public function add($reason, $description = null, $user_id = null, $post_id = null, $page_id = null)
     {
-        
         $identity = $this->getServiceAuth()->getIdentity();
         $m_report = $this->getModel()
             ->setReporterId($identity->getId())
@@ -36,7 +35,7 @@ class Report extends AbstractService
             ->setPostId($post_id)
             ->setPageId($page_id);
         
-        if($this->getMapper()->select($m_report)->count() > 0){
+        if ($this->getMapper()->select($m_report)->count() > 0) {
             throw new \Exception('Duplicate report');
         }
         $m_report
@@ -53,9 +52,9 @@ class Report extends AbstractService
     
     /**
      * Get List of Reports.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param array $filter
      * @param bool $treated
      *
@@ -71,35 +70,33 @@ class Report extends AbstractService
 
     /**
      * Get List of Reports.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $id
      * @param bool $treat
      *
      * @return int
      */
-    public function treat($validate, $user_id = null, $post_id = null,  $description = null, $page_id = null)
+    public function treat($validate, $user_id = null, $post_id = null, $description = null, $page_id = null)
     {
         $m_report = $this->getModel()->setValidate($validate)->setTreated(1)->setTreatmentDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        if(null !== $post_id){
-            if(1 === $validate){
+        if (null !== $post_id) {
+            if (1 === $validate) {
                 $this->getServicePost()->delete($post_id);
-            }
-            else{
+            } else {
                 $this->getServicePost()->reactivate($post_id);
             }
         }
-         if(null !== $page_id){
-            if(1 === $validate){
+        if (null !== $page_id) {
+            if (1 === $validate) {
                 $this->getServicePage()->delete($page_id);
-            }
-            else{
+            } else {
                 $this->getServicePage()->reactivate($page_id);
             }
         }
         
-        if(null !== $user_id){
+        if (null !== $user_id) {
             $this->getServiceUser()->suspend($user_id, $validate, $description);
         }
         return $this->getMapper()->update($m_report, [ 'post_id' => $post_id, 'user_id' => $user_id, 'page_id' => $page_id]);
@@ -125,7 +122,7 @@ class Report extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
-    } 
+    }
     
     
     /**
@@ -136,7 +133,7 @@ class Report extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
-    } 
+    }
     
     /**
      * Get Service EventComment.
@@ -146,7 +143,7 @@ class Report extends AbstractService
     private function getServiceEventComment()
     {
         return $this->container->get('app_service_event_comment');
-    } 
+    }
     
     /**
      * Get Service User.
@@ -156,9 +153,5 @@ class Report extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
-    } 
-
-   
+    }
 }
-
-

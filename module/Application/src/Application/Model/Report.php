@@ -81,5 +81,4 @@ class Report extends BaseReport
 
         return $this;
     }
-
 }

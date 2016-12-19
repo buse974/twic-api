@@ -53,7 +53,7 @@ class Like extends AbstractService
 
     /**
      * UnLike Event.
-     * 
+     *
      * @invokable
      *
      * @param int $event
@@ -70,7 +70,7 @@ class Like extends AbstractService
 
     /**
      * Get List Like to event.
-     * 
+     *
      * @invokable
      *
      * @param int $feed
@@ -84,7 +84,7 @@ class Like extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -94,7 +94,7 @@ class Like extends AbstractService
 
     /**
      * Get Service Feed.
-     * 
+     *
      * @return \Application\Service\Feed
      */
     private function getServiceFeed()
@@ -104,7 +104,7 @@ class Like extends AbstractService
 
     /**
      * Get Service Contact.
-     * 
+     *
      * @return \Application\Service\Contact
      */
     private function getServiceContact()
@@ -114,7 +114,7 @@ class Like extends AbstractService
 
     /**
      * Get Service Event.
-     * 
+     *
      * @return \Application\Service\Event
      */
     private function getServiceEvent()

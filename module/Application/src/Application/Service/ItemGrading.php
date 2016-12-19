@@ -17,7 +17,7 @@ class ItemGrading extends AbstractService
 {
     /**
      * Get List Item Grading.
-     * 
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function _getList()
@@ -27,7 +27,7 @@ class ItemGrading extends AbstractService
 
     /**
      * Delete Item Grading.
-     * 
+     *
      * @param int $submission_user_id
      *
      * @return int
@@ -39,7 +39,7 @@ class ItemGrading extends AbstractService
 
     /**
      * Add/Update Item Grading.
-     * 
+     *
      * @param int $submission_user_id
      * @param int $grade
      *
@@ -57,7 +57,7 @@ class ItemGrading extends AbstractService
 
     /**
      * Add Item Grading.
-     * 
+     *
      * @param int $submission_user_id
      * @param int $grade
      *
@@ -74,7 +74,7 @@ class ItemGrading extends AbstractService
 
     /**
      * Update Item Grading.
-     * 
+     *
      * @param int $id
      * @param int $grade
      *

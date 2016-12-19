@@ -18,7 +18,7 @@ class Contact extends AbstractService
 {
     /**
      * Request Contact.
-     * 
+     *
      * @invokable
      *
      * @param int $user
@@ -76,13 +76,13 @@ class Contact extends AbstractService
         $this->getServiceEvent()->userRequestconnection($user);
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
-        if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+        if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
             $name = $m_user->getNickname();
         } else {
-            if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+            if (!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
                 $name = $m_user->getFirstname();
             }
-            if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+            if (!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
                 $name .= ' '.$m_user->getLastname();
             }
         }
@@ -109,14 +109,14 @@ class Contact extends AbstractService
             'state' => 'request',
             'user' => $user_id,
             'contact' => $user,
-        ], 'request', ['M'.$user], null, null, null, null, null ,'connection');
+        ], 'request', ['M'.$user], null, null, null, null, null, 'connection');
         
         return $ret;
     }
 
     /**
      * Accept Contact.
-     * 
+     *
      * @invokable
      *
      * @param int $user
@@ -150,13 +150,13 @@ class Contact extends AbstractService
 
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
-        if(!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+        if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
             $name = $m_user->getNickname();
         } else {
-            if(!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+            if (!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
                 $name = $m_user->getFirstname();
             }
-            if(!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+            if (!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
                 $name .= ' '.$m_user->getLastname();
             }
         }
@@ -167,7 +167,7 @@ class Contact extends AbstractService
             ->setColor("#00A38B")
             ->setBody('Accepted your request');
         
-        $this->getServiceFcm()->send($user,  ['data' => [
+        $this->getServiceFcm()->send($user, ['data' => [
             'type' => 'connection',
             'data' => [
                 'state' => 'accept',
@@ -188,7 +188,7 @@ class Contact extends AbstractService
 
     /**
      * Remove Contact
-     * 
+     *
      * @invokable
      *
      * @param int $user
@@ -224,7 +224,7 @@ class Contact extends AbstractService
         $this->getServiceSubscription()->delete('EU'.$user_id, $user);
         
         $this->getServiceEvent()->userDeleteConnection($user_id, $user);
-        $this->getServiceFcm()->send($user,  ['data' => [
+        $this->getServiceFcm()->send($user, ['data' => [
             'type' => 'connection',
             'data' => [
                 'state' => 'remove',
@@ -242,7 +242,7 @@ class Contact extends AbstractService
 
     /**
      * Add Contact all school.
-     * 
+     *
      * @invokable
      *
      * @param int $school
@@ -256,7 +256,7 @@ class Contact extends AbstractService
 
     /**
      * Get List Request Contact.
-     * 
+     *
      * @invokable
      *
      * @param bool $all
@@ -277,7 +277,7 @@ class Contact extends AbstractService
 
     /**
      * Get List Contact.
-     * 
+     *
      * @invokable
      *
      * @param int   $user
@@ -305,13 +305,13 @@ class Contact extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id            
+     * @param int|array $id
      * @return array
      */
     public function m_getList($search = null, $exclude = null, $filter = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        if(null !== $exclude && !is_array($exclude)){
+        if (null !== $exclude && !is_array($exclude)) {
             $exclude = [$exclude];
         }
         
@@ -331,7 +331,7 @@ class Contact extends AbstractService
     
     /**
      * Get List Id of contact.
-     * 
+     *
      * @param int $user
      *
      * @return array
@@ -356,24 +356,24 @@ class Contact extends AbstractService
      * Get list contact id by users.
      *
      * @invokable
-     * 
+     *
      * @param int|array $id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function m_getListIdByUser($id)
     {
-        if(!is_array($id)){
+        if (!is_array($id)) {
             $users = [$id];
         } else {
             $users = $id;
         }
         $contacts = [];
-        foreach($users as &$user){
+        foreach ($users as &$user) {
             $contacts[$user] = [];
         }
         $res_contact = $this->getMapper()->getList($id);
-        foreach($res_contact->toArray() as &$contact){
+        foreach ($res_contact->toArray() as &$contact) {
             $contacts[$contact['user_id']][] = $contact['contact_id'];
         }
 
@@ -384,25 +384,24 @@ class Contact extends AbstractService
      * Get list contact id by users.
      *
      * @invokable
-     * 
+     *
      * @param int|array $id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function m_getListRequestByUser($id)
     {
-        if(!is_array($id)){
+        if (!is_array($id)) {
             $users = [$id];
-        }
-        else{
+        } else {
             $users = $id;
         }
         $contacts = [];
-        foreach($users as &$user){
+        foreach ($users as &$user) {
             $contacts[$user] = [];
         }
         $res_contact = $this->getMapper()->getListRequest(null, $id);
-        foreach($res_contact->toArray() as &$contact){
+        foreach ($res_contact->toArray() as &$contact) {
             $contacts[$contact['contact_id']][] = $contact['user_id'];
         }
 
@@ -413,25 +412,24 @@ class Contact extends AbstractService
      * Get list contact id by users.
      *
      * @invokable
-     * 
+     *
      * @param int|array $id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function m_getListRequestByContact($id)
     {
-        if(!is_array($id)){
+        if (!is_array($id)) {
             $users = [$id];
-        }
-        else{
+        } else {
             $users = $id;
         }
         $contacts = [];
-        foreach($users as &$user){
+        foreach ($users as &$user) {
             $contacts[$user] = [];
         }
         $res_contact = $this->getMapper()->getListRequest($id);
-        foreach($res_contact->toArray() as &$contact){
+        foreach ($res_contact->toArray() as &$contact) {
             $contacts[$contact['user_id']][] = $contact['contact_id'];
         }
 
@@ -441,7 +439,7 @@ class Contact extends AbstractService
 
     /**
      * Get Service Event
-     * 
+     *
      * @return \Application\Service\Event
      */
     private function getServiceEvent()
@@ -488,5 +486,4 @@ class Contact extends AbstractService
     {
         return $this->container->get('app_service_post');
     }
-    
 }

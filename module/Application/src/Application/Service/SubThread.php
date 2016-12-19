@@ -15,7 +15,7 @@ class SubThread extends AbstractService
 {
     /**
      * Add Submission thread.
-     * 
+     *
      * @param int $thread_id
      * @param int $submission_id
      *

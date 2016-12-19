@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * Subscription User
@@ -17,7 +17,7 @@ class SubscriptionUser extends AbstractService
 {
     /**
      * Add subscription
-     * 
+     *
      * @param string $libelle
      * @return int
      */
@@ -33,7 +33,7 @@ class SubscriptionUser extends AbstractService
     
     /**
      * Delete Subscription
-     * 
+     *
      * @param string $libelle
      * @return int
      */

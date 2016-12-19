@@ -16,7 +16,7 @@ class VideoArchive extends AbstractService
 {
     /**
      * Get List Video.
-     * 
+     *
      * @invokable
      *
      * @param int $item_id
@@ -121,21 +121,21 @@ class VideoArchive extends AbstractService
     
     /**
      * Valide the video transfer
-     * 
+     *
      * @param array $json
      */
     public function checkStatus($json)
-    {    
+    {
         $ret = false;
-        if($json['status'] == 'uploaded') {
+        if ($json['status'] == 'uploaded') {
             $ret = $this->updateByArchiveToken($json['id'], CVF::ARV_AVAILABLE, null, $json['link']);
-            if($ret) {
+            if ($ret) {
                 $m_video_archive = $this->getMapper()->select($this->getModel()->setArchiveToken($json['id']))->current();
                 $m_conversation = $this->getServiceConversation()->getLite($m_video_archive->getConversationId());
                 $m_conversation_opt = $this->getServiceConversationOpt()->get($m_conversation->getConversationOptId());
                 
                 $item_id = null;
-                if(null !== $m_conversation_opt) {
+                if (null !== $m_conversation_opt) {
                     $item_id = $m_conversation_opt->getItemId();
                 }
                 

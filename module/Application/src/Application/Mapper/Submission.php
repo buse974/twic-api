@@ -13,7 +13,7 @@ class Submission extends AbstractMapper
 {
     /**
      * @param int $id
-     * 
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function checkGraded($id)
@@ -33,7 +33,7 @@ class Submission extends AbstractMapper
     /**
      * @param int $user
      * @param int $questionnaire
-     * 
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByUserAndQuestionnaire($user, $questionnaire)
@@ -51,7 +51,7 @@ class Submission extends AbstractMapper
     /**
      * @param int $user_id
      * @param int $conversation_id
-     * 
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getByUserAndConversation($user_id, $conversation_id)
@@ -102,7 +102,7 @@ class Submission extends AbstractMapper
      * @param int $item_id
      * @param int $user_id
      * @param int $submission_id
-     * 
+     *
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function get($item_id = null, $user_id = null, $submission_id = null)
@@ -207,14 +207,14 @@ class Submission extends AbstractMapper
                    ->where(array('submission_item_program.name LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
         }
         if (!empty($type)) {
-            if(in_array('A', $type)) {
+            if (in_array('A', $type)) {
                 $select->where->NEST->in('item.type', $type)->OR->NEST->literal("item.is_grouped IS FALSE AND item.type = 'IA'")->UNNEST->UNNEST;
-            }elseif(in_array('GA', $type)) {
+            } elseif (in_array('GA', $type)) {
                 $select->where->NEST->in('item.type', $type)->OR->NEST->literal("item.is_grouped IS TRUE AND item.type = 'IA'")->UNNEST->UNNEST;
-            }elseif(in_array('GA', $type) && in_array('A', $type) && !in_array('IA', $type) ) {
+            } elseif (in_array('GA', $type) && in_array('A', $type) && !in_array('IA', $type)) {
                 $type[] = 'IA';
                 $select->where->in('item.type', $type);
-            }else{
+            } else {
                 $select->where->in('item.type', $type);
             }
         }

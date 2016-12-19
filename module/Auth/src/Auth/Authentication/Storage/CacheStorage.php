@@ -2,7 +2,7 @@
 
 namespace Auth\Authentication\Storage;
 
-class CacheStorage implements StorageInterface 
+class CacheStorage implements StorageInterface
 {
     use TraitStorage;
     /**
@@ -89,10 +89,9 @@ class CacheStorage implements StorageInterface
      */
     public function clearSession($uid)
     {
-        
         $session_user = $this->cache->getItem($uid);
-        if(null !== $session_user){
-            foreach($this->cache->getItem($uid) as $key => $session) {
+        if (null !== $session_user) {
+            foreach ($this->cache->getItem($uid) as $key => $session) {
                 $session_user->offsetUnset($key);
                 $this->cache->removeItem($key);
             }

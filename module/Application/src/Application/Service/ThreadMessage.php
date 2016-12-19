@@ -61,7 +61,7 @@ class ThreadMessage extends AbstractService
      * @invokable
      *
      * @todo set UpdateDate value
-     *      
+     *
      * @param string $message
      * @param int    $id
      * @param int    $parent_id

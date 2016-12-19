@@ -34,7 +34,7 @@ class videoArchive extends AbstractPlugin
 
     /**
      * check Status
-     * 
+     *
      * @param string $json
      */
     public function checkStatus($json)

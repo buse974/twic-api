@@ -149,13 +149,19 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                                                                                <li class="method public">
         <a href="#method_getList" title="getList :: Get school list">
             <span class="description">Get school list</span><pre>getList</pre>
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        <li class="method public">
+        <a href="#method_m_get" title="m_get :: Get School for mobile">
+            <span class="description">Get School for mobile</span><pre>m_get</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_update" title="update :: Update school">
             <span class="description">Update school</span><pre>update</pre>
         </a>
@@ -165,13 +171,23 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                    <li class="method private">
+                                                                                                                                                                                                                                                                <li class="method private">
+                            <a href="#method_getFormattedWebsite" title="getFormattedWebsite :: Generate a formatted website url for the school.">
+                                <span class="description">Generate a formatted website url for the school.</span><pre>getFormattedWebsite</pre>
+                            </a>
+                        </li>
+                                                                                                                    <li class="method private">
                             <a href="#method_getServiceAddress" title="getServiceAddress :: Get Service Address">
                                 <span class="description">Get Service Address</span><pre>getServiceAddress</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceCircle" title="getServiceCircle :: Get Service Cicle">
+                                <span class="description">Get Service Cicle</span><pre>getServiceCircle</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -190,11 +206,11 @@
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service Grading">
-                                <span class="description">Get Service Grading</span><pre>getServiceUser</pre>
+                            <a href="#method_getServiceUser" title="getServiceUser :: Get Service User">
+                                <span class="description">Get Service User</span><pre>getServiceUser</pre>
                             </a>
                         </li>
-                                                                                    </ul>
+                                                                                                                        </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -260,7 +276,7 @@
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
                             <h2>add school</h2>
-                            <pre>add(string $name, string $next_name = null, string $short_name = null, string $logo = null, string $describe = null, string $website = null, string $background = null, string $phone = null, string $contact = null, integer $contact_id = null, array $address = null, string $custom = null, string $libelle = null) : \Application\Model\School</pre>
+                            <pre>add(string $name, string $next_name = null, string $short_name = null, string $logo = null, string $describe = null, string $website = null, string $background = null, string $phone = null, string $contact = null, integer $contact_id = null, array $address = null, string $custom = null, string $libelle = null, string $circle_id = null,  $type = null) : \Application\Model\School</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -342,6 +358,14 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$libelle</h4>
                                                 <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$circle_id</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$type</h4>
+                                                <code></code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -458,10 +482,37 @@
                             </div>
 
                         </div>
+                                            <a id="method_getFormattedWebsite"></a>
+                        <div class="element clickable method private  method_getFormattedWebsite" data-toggle="collapse" data-target=".method_getFormattedWebsite .collapse">
+                            <h2>Generate a formatted website url for the school.</h2>
+                            <pre>getFormattedWebsite(string $website) : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$website</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get school list</h2>
-                            <pre>getList(array $filter = null, string $search = null, array $exclude = null) : array</pre>
+                            <pre>getList(array $filter = null, string $search = null, array $exclude = null,  $type = null,  $parent_id = null) : array</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -495,6 +546,14 @@
                                                 <h4>$exclude</h4>
                                                 <code>array</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$type</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$parent_id</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>array</code><p></p>
@@ -527,6 +586,35 @@
                                     
                                                                             <h3>Response</h3>
                                         <code>\Address\Service\Address</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceCircle"></a>
+                        <div class="element clickable method private  method_getServiceCircle" data-toggle="collapse" data-target=".method_getServiceCircle .collapse">
+                            <h2>Get Service Cicle</h2>
+                            <pre>getServiceCircle() : \Application\Service\Circle</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Circle.html">\Application\Service\Circle</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -620,7 +708,7 @@
                         </div>
                                             <a id="method_getServiceUser"></a>
                         <div class="element clickable method private  method_getServiceUser" data-toggle="collapse" data-target=".method_getServiceUser .collapse">
-                            <h2>Get Service Grading</h2>
+                            <h2>Get Service User</h2>
                             <pre>getServiceUser() : \Application\Service\User</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -643,6 +731,42 @@
                                     
                                                                             <h3>Response</h3>
                                         <code><a href="../classes/Application.Service.User.html">\Application\Service\User</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_get"></a>
+                        <div class="element clickable method public  method_m_get" data-toggle="collapse" data-target=".method_m_get .collapse">
+                            <h2>Get School for mobile</h2>
+                            <pre>m_get(integer|array $id = null) : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>integer|array</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
                                                                     </div>
                             </div>
 
@@ -745,7 +869,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:35 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:40 +0100.<br/>
     </footer>
     </body>
 </html>

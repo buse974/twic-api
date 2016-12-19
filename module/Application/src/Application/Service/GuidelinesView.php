@@ -15,7 +15,7 @@ class GuidelinesView extends AbstractService
 {
     /**
      * Add State to a Guidelines.
-     * 
+     *
      * @param string $state
      */
     public function add($state)
@@ -26,7 +26,7 @@ class GuidelinesView extends AbstractService
 
     /**
      * Check is state exist.
-     * 
+     *
      * @param string $state
      *
      * @return bool
@@ -43,7 +43,7 @@ class GuidelinesView extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

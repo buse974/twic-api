@@ -4,7 +4,7 @@ namespace JrpcMock\Json\Server;
 
 use JRpc\Json\Server\Server as BaseJRpcServer;
 
-class Server extends BaseJRpcServer 
+class Server extends BaseJRpcServer
 {
     public function readInput()
     {

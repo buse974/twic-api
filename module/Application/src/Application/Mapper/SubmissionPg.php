@@ -23,7 +23,7 @@ class SubmissionPg extends AbstractMapper
     /**
      * @param int $submission
      * @param int $user
-     * 
+     *
      * @return int
      */
     public function checkGraded($submission, $user)
@@ -47,7 +47,7 @@ class SubmissionPg extends AbstractMapper
 
     /**
      * @param int $item_id
-     * 
+     *
      * @return \Application\Model\Submission
      */
     public function getListByItem($item_id)

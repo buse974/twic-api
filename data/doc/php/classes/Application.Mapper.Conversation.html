@@ -137,15 +137,21 @@
         </a>
     </li>
 
+                                                                                                        <li class="method public">
+        <a href="#method_m_getListUnread" title="m_getListUnread :: ">
+            <span class="description"></span><pre>m_getListUnread</pre>
+        </a>
+    </li>
+
                                                 </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                        </ul>
+                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -246,7 +252,7 @@
                                             <a id="method_getListId"></a>
                         <div class="element clickable method public  method_getListId" data-toggle="collapse" data-target=".method_getListId .collapse">
                             <h2>Request Get List Id</h2>
-                            <pre>getListId(integer $user_id, integer $organization_id = null, integer $program_id = null, \Application\Mapper\unkintnown $course_id = null, integer $item_id = null, integer $submission_id = null, array $users = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>getListId(integer $user_id, integer $organization_id = null, integer $program_id = null, \Application\Mapper\unkintnown $course_id = null, integer $item_id = null, integer $submission_id = null, array $users = null,  $is_admin = false) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -287,9 +293,52 @@
                                                 <h4>$users</h4>
                                                 <code>array</code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_admin</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getListUnread"></a>
+                        <div class="element clickable method public  method_m_getListUnread" data-toggle="collapse" data-target=".method_m_getListUnread .collapse">
+                            <h2>m_getListUnread</h2>
+                            <pre>m_getListUnread( $id) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -316,7 +365,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:36 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:41 +0100.<br/>
     </footer>
     </body>
 </html>

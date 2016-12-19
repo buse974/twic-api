@@ -94,7 +94,7 @@ class ProfessionalExperience extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServicUser()

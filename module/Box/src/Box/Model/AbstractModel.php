@@ -17,7 +17,7 @@ abstract class AbstractModel implements JsonSerializable
 
     /**
      * Populate from an array.
-     * 
+     *
      * @param array $data
      *
      * @return AbstractModel

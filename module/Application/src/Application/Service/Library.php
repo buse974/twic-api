@@ -22,11 +22,11 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param string $name            
-     * @param string $link            
-     * @param string $token            
-     * @param string $type            
-     * @param int $folder_id            
+     * @param string $name
+     * @param string $link
+     * @param string $token
+     * @param string $type
+     * @param int $folder_id
      * @throws \Exception
      * @return \Application\Model\Library
      */
@@ -35,18 +35,18 @@ class Library extends AbstractService
         $urldms = $this->container->get('config')['app-conf']['urldms'];
         
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-        if(null !== $folder_name && null === $folder_id) {
+        if (null !== $folder_name && null === $folder_id) {
             $m_library = $this->getModel()
                 ->setDeletedDate(new IsNull())
                 ->setName($folder_name);
              
-            if(null === $global || false === $global) {
+            if (null === $global || false === $global) {
                 $m_library->setOwnerId($user_id);
             } else {
                 $m_library->setGlobal(true);
             }
             $res_library = $this->getMapper()->select($m_library);
-            if($res_library->count() > 0) {
+            if ($res_library->count() > 0) {
                 $folder_id = $res_library->current()->getId();
             }
         }
@@ -80,7 +80,7 @@ class Library extends AbstractService
     /**
      * Add library
      *
-     * @param array $data            
+     * @param array $data
      * @return \Application\Model\Library
      */
     public function _add($data)
@@ -99,11 +99,11 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
-     * @param string $link            
-     * @param string $token            
-     * @param int $folder_id            
+     * @param int $id
+     * @param string $name
+     * @param string $link
+     * @param string $token
+     * @param int $folder_id
      * @return \Application\Model\Library
      */
     public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
@@ -136,27 +136,27 @@ class Library extends AbstractService
      * @param string $folder_name
      * @param unknown $user_id
      * @return array
-     */ 
-    function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null)
+     */
+    public function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null)
     {
-        if(null !== $user_id) {
+        if (null !== $user_id) {
             $global = true;
         } else {
             $user_id = $this->getServiceUser()->getIdentity()['id'];
         }
         
-        if(null !== $folder_name && null === $folder_id) {
+        if (null !== $folder_name && null === $folder_id) {
             $m_library = $this->getModel()
                 ->setDeletedDate(new IsNull())
                 ->setName($folder_name);
              
-            if(null === $global || false === $global) {
+            if (null === $global || false === $global) {
                 $m_library->setOwnerId($user_id);
             } else {
                 $m_library->setGlobal(true);
             }
             $res_library = $this->getMapper()->select($m_library);
-            if($res_library->count() > 0) {
+            if ($res_library->count() > 0) {
                 $folder_id = $res_library->current()->getId();
             }
         }
@@ -167,13 +167,13 @@ class Library extends AbstractService
             ->setOwnerId($user_id);
        
         $mapper = (null !== $filter) ?
-            $this->getMapper()->usePaginator($filter) : 
+            $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
         
         $res_library = $mapper->select($m_library);
         $ar = [
-            'count' => $mapper->count(), 
-            'documents' => $res_library, 
+            'count' => $mapper->count(),
+            'documents' => $res_library,
             'folder' => null,
             'parent' => null
         ];
@@ -197,7 +197,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $item            
+     * @param int $item
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item)
@@ -210,7 +210,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $item            
+     * @param int $item
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByParentItem($item)
@@ -221,7 +221,7 @@ class Library extends AbstractService
     /**
      * Get List Library By bank question id
      *
-     * @param int $bank_question_id            
+     * @param int $bank_question_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByBankQuestion($bank_question_id)
@@ -254,7 +254,7 @@ class Library extends AbstractService
     /**
      * Get List Library Material
      *
-     * @param int $course_id            
+     * @param int $course_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListMaterials($course_id)
@@ -267,7 +267,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $submission_id            
+     * @param int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id)
@@ -278,7 +278,7 @@ class Library extends AbstractService
     /**
      * Get List Library By conversation id
      *
-     * @param int $conversation_id            
+     * @param int $conversation_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByConversation($conversation_id)
@@ -289,7 +289,7 @@ class Library extends AbstractService
     /**
      * Get Library By item id
      *
-     * @param int $item_id            
+     * @param int $item_id
      * @return \Application\Model\Library
      */
     public function getByItem($item_id)
@@ -304,7 +304,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $item            
+     * @param int $item
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByCt($item)
@@ -317,7 +317,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      * @return int
      */
     public function delete($id)
@@ -333,7 +333,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id            
+     * @param int|array $id
      * @return \Application\Model\Library|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
@@ -349,8 +349,8 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $box_id            
+     * @param int $id
+     * @param string $box_id
      * @throws \Exception
      * @throws JrpcException
      * @return void|\Box\Model\Session

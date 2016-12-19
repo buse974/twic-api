@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * Conversation
@@ -20,7 +20,7 @@ class Conversation extends AbstractMapper
     
     /**
      * Request Get List By Submission
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
@@ -42,8 +42,8 @@ class Conversation extends AbstractMapper
     }
 
     /**
-     * Request Get List By Item 
-     * 
+     * Request Get List By Item
+     *
      * @param int $item_id
      * @param int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
@@ -66,7 +66,7 @@ class Conversation extends AbstractMapper
 
     /**
      * Request Get List Id
-     * 
+     *
      * @param int $user_id
      * @param int $organization_id
      * @param int $program_id
@@ -86,20 +86,20 @@ class Conversation extends AbstractMapper
             ->join('course', 'course.id = item.course_id', [])
             ->join('program', 'program.id = course.program_id', [])
             ->quantifier('distinct');
-        if(true === $is_admin){
-            if(null === $organization_id) {
+        if (true === $is_admin) {
+            if (null === $organization_id) {
                 $select->join('organization_user', 'organization_user.organization_id=program.school_id', [])
                     ->where(['organization_user.user_id' => $user_id]);
             } else {
                 $select->where(['program.school_id' => $organization_id]);
             }
-        } else{
-            if(null === $users){
+        } else {
+            if (null === $users) {
                 $users = [];
             }
             $users[] = $user_id;
         }
-        if(!empty($users)) {
+        if (!empty($users)) {
             $select->join('conversation_user', 'conversation_user.conversation_id=conversation.id', [])
                 ->where(['conversation_user.user_id' => $users]);
         }
@@ -131,6 +131,5 @@ class Conversation extends AbstractMapper
             ->having('conversation$nb_unread > 0');
         
         return $this->selectWith($select);
-        
     }
 }

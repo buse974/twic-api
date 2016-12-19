@@ -75,7 +75,7 @@ class RolePermission extends AbstractService
 
     /**
      * @invokable
-     * 
+     *
      * @param int $id
      * @param int $role_id
      * @param int $permission_id

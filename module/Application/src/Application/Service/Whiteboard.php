@@ -15,9 +15,9 @@ class Whiteboard extends AbstractService
 {
     /**
      * Create Whiteboard.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param string $name
      * @param int    $width
      * @param int    $height
@@ -43,7 +43,7 @@ class Whiteboard extends AbstractService
 
     /**
      * Create Whiteboard.
-     * 
+     *
      * @param array $data
      *
      * @return int
@@ -59,7 +59,7 @@ class Whiteboard extends AbstractService
 
     /**
      * Delete Whiteboard.
-     * 
+     *
      * @param int $id
      *
      * @return int
@@ -83,7 +83,7 @@ class Whiteboard extends AbstractService
 
     /**
      * Get List By Conversation.
-     * 
+     *
      * @param int $conversation_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -95,7 +95,7 @@ class Whiteboard extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()

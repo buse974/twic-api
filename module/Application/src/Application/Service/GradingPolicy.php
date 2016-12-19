@@ -38,7 +38,7 @@ class GradingPolicy extends AbstractService
      * add grading.
      *
      * @invokable
-     * 
+     *
      * @param string $name
      * @param int    $grade
      * @param int    $course_id

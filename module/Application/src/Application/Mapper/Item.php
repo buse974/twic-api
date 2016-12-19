@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * TheStudnet (http://thestudnet.com)
  *
  * Item
@@ -25,7 +25,7 @@ class Item extends AbstractMapper
     /**
      * Request Get Itel By Submission
      *
-     * @param int $submission_id            
+     * @param int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getBySubmission($submission_id)
@@ -93,7 +93,7 @@ class Item extends AbstractMapper
         if (null === $start && null === $end) {
             if ($parent_id === 0) {
                 $select->where(array('item.parent_id IS NULL'));
-            } else if(null !== $parent_id) {
+            } elseif (null !== $parent_id) {
                 $select->where(array('item.parent_id' => $parent_id));
             }
         }
@@ -120,7 +120,7 @@ class Item extends AbstractMapper
 
     /**
      *
-     * @param array $me            
+     * @param array $me
      */
     public function getListForCalendar($me, $start = null, $end = null)
     {
@@ -178,7 +178,7 @@ class Item extends AbstractMapper
     /**
      * Get Last parent id.
      *
-     * @param int $course            
+     * @param int $course
      *
      * @return int
      */
@@ -222,13 +222,13 @@ class Item extends AbstractMapper
     /**
      * Request Get List Item Submission
      *
-     * @param int $user_id            
-     * @param string $type            
-     * @param int $program            
-     * @param int $course            
-     * @param string $due            
-     * @param bool $notgraded            
-     * @param string $search   
+     * @param int $user_id
+     * @param string $type
+     * @param int $program
+     * @param int $course
+     * @param string $due
+     * @param bool $notgraded
+     * @param string $search
      * @param bool $is_academic
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -256,8 +256,8 @@ class Item extends AbstractMapper
                         INNER JOIN 
                     `program` ON `program`.`id` = `course`.`program_id` ';
         
-            $sql .= ($is_academic) ? 
-                ' INNER JOIN `organization_user` ON `organization_user`.`organization_id`=`program`.`school_id` ' : 
+        $sql .= ($is_academic) ?
+                ' INNER JOIN `organization_user` ON `organization_user`.`organization_id`=`program`.`school_id` ' :
                 ' INNER JOIN `course_user_relation` ON `course_user_relation`.`course_id`=`course`.`id` ';
         
         $sql .= ' WHERE ';
@@ -325,8 +325,8 @@ class Item extends AbstractMapper
         
         $val[':sc'] = $user_id;
         
-        $where[] = ($is_academic) ? 
-            'organization_user.user_id=:sc': 
+        $where[] = ($is_academic) ?
+            'organization_user.user_id=:sc':
             'course_user_relation.user_id=:sc';
         
         $where[] = 'item.updated_date IS NOT NULL';
@@ -348,8 +348,8 @@ class Item extends AbstractMapper
     /**
      * Get Last parent id
      *
-     * @param int $course_id            
-     * @param int $id            
+     * @param int $course_id
+     * @param int $id
      * @return int
      */
     public function selectLastParentId($course_id = null, $id = null)
@@ -381,10 +381,10 @@ class Item extends AbstractMapper
     /**
      * Request Get List Item Grade
      *
-     * @param int $grading_policy_id            
-     * @param int $course_id            
-     * @param int $user_id            
-     * @param int $submission_id            
+     * @param int $grading_policy_id
+     * @param int $course_id
+     * @param int $user_id
+     * @param int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListGradeItem($grading_policy_id = null, $course_id = null, $user_id = null, $submission_id = null)

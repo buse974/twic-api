@@ -126,8 +126,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_add" title="add :: Create conversation.">
-            <span class="description">Create conversation.</span><pre>add</pre>
+        <a href="#method_add" title="add :: Create conversation with users">
+            <span class="description">Create conversation with users</span><pre>add</pre>
         </a>
     </li>
 
@@ -156,8 +156,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_create" title="create :: Create New Conversation.">
-            <span class="description">Create New Conversation.</span><pre>create</pre>
+        <a href="#method_create" title="create :: Create New Conversation">
+            <span class="description">Create New Conversation</span><pre>create</pre>
         </a>
     </li>
 
@@ -182,6 +182,12 @@
                                                                                                         <li class="method public">
         <a href="#method_getId" title="getId :: Get conversation id.">
             <span class="description">Get conversation id.</span><pre>getId</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getList" title="getList :: Get List Conversation">
+            <span class="description">Get List Conversation</span><pre>getList</pre>
         </a>
     </li>
 
@@ -222,6 +228,18 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_m_get" title="m_get :: Get Conversation">
+            <span class="description">Get Conversation</span><pre>m_get</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_m_getListUnread" title="m_getListUnread :: Get Conversation id list with unread message.">
+            <span class="description">Get Conversation id list with unread message.</span><pre>m_getListUnread</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_read" title="read :: Mark Read Message(s).">
             <span class="description">Mark Read Message(s).</span><pre>read</pre>
         </a>
@@ -255,11 +273,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <li class="method private">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method private">
                             <a href="#method_getServiceConversationDoc" title="getServiceConversationDoc :: Get Service Service Conversation Document.">
                                 <span class="description">Get Service Service Conversation Document.</span><pre>getServiceConversationDoc</pre>
                             </a>
@@ -354,7 +372,7 @@
                                 <span class="description">Get Service Service OpenTok.</span><pre>getServiceZOpenTok</pre>
                             </a>
                         </li>
-                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -419,7 +437,7 @@
                         </div>
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
-                            <h2>Create conversation.</h2>
+                            <h2>Create conversation with users</h2>
                             <pre>add(integer|array $users) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -621,7 +639,7 @@
                         </div>
                                             <a id="method_create"></a>
                         <div class="element clickable method public  method_create" data-toggle="collapse" data-target=".method_create .collapse">
-                            <h2>Create New Conversation.</h2>
+                            <h2>Create New Conversation</h2>
                             <pre>create(integer $type = null, integer|array $submission_id = null, array $users = null, string $text = null, integer $item_id = null, array $text_editors = null, array $whiteboards = null, array $documents = null, boolean $has_video = null) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -864,6 +882,56 @@ of current user school If not exist create</p></div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getList"></a>
+                        <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
+                            <h2>Get List Conversation</h2>
+                            <pre>getList(array $filter) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    todo
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        <p>faire une requete pour simplifier</p>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$filter</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -1624,6 +1692,85 @@ of current user school</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_m_get"></a>
+                        <div class="element clickable method public  method_m_get" data-toggle="collapse" data-target=".method_m_get .collapse">
+                            <h2>Get Conversation</h2>
+                            <pre>m_get(array $id) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getListUnread"></a>
+                        <div class="element clickable method public  method_m_getListUnread" data-toggle="collapse" data-target=".method_m_getListUnread .collapse">
+                            <h2>Get Conversation id list with unread message.</h2>
+                            <pre>m_getListUnread() : \Application\Model\Conversation</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Model.Conversation.html">\Application\Model\Conversation</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_read"></a>
                         <div class="element clickable method public  method_read" data-toggle="collapse" data-target=".method_read .collapse">
                             <h2>Mark Read Message(s).</h2>
@@ -1826,7 +1973,7 @@ of current user school</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:35 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:40 +0100.<br/>
     </footer>
     </body>
 </html>

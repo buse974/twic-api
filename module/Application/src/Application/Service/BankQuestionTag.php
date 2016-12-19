@@ -15,7 +15,7 @@ class BankQuestionTag extends AbstractService
 {
     /**
      * Add Bank Question Tag.
-     * 
+     *
      * @param int   $bank_question_id
      * @param array $data
      *

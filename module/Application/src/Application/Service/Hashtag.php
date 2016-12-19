@@ -17,7 +17,7 @@ class Hashtag extends AbstractService
             $m_hashtag->setName(substr($n, 1))
                 ->setType(substr($n, 0, 1));
             
-            if($this->getMapper()->select($m_hashtag)->count() <= 0 ) {
+            if ($this->getMapper()->select($m_hashtag)->count() <= 0) {
                 $m_hashtag->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
                 $this->getMapper()->insert($m_hashtag);
             }
@@ -38,5 +38,4 @@ class Hashtag extends AbstractService
     
         return ['count' => $mapper->count(), 'list' => $res_account];
     }
-
 }

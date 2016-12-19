@@ -155,9 +155,33 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                        <li class="method public">
-        <a href="#method_remove" title="remove :: Remove Contact.">
-            <span class="description">Remove Contact.</span><pre>remove</pre>
+                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+        <a href="#method_m_getList" title="m_getList :: Get User for mobile">
+            <span class="description">Get User for mobile</span><pre>m_getList</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_m_getListIdByUser" title="m_getListIdByUser :: Get list contact id by users.">
+            <span class="description">Get list contact id by users.</span><pre>m_getListIdByUser</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_m_getListRequestByContact" title="m_getListRequestByContact :: Get list contact id by users.">
+            <span class="description">Get list contact id by users.</span><pre>m_getListRequestByContact</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_m_getListRequestByUser" title="m_getListRequestByUser :: Get list contact id by users.">
+            <span class="description">Get list contact id by users.</span><pre>m_getListRequestByUser</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_remove" title="remove :: Remove Contact">
+            <span class="description">Remove Contact</span><pre>remove</pre>
         </a>
     </li>
 
@@ -165,13 +189,28 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
                                                                                                                                                                                                                                                                                                     <li class="method private">
-                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event.">
-                                <span class="description">Get Service Event.</span><pre>getServiceEvent</pre>
+                            <a href="#method_getServiceEvent" title="getServiceEvent :: Get Service Event">
+                                <span class="description">Get Service Event</span><pre>getServiceEvent</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceFcm" title="getServiceFcm :: Get Service Service Conversation User">
+                                <span class="description">Get Service Service Conversation User</span><pre>getServiceFcm</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServicePost" title="getServicePost :: Get Service Post">
+                                <span class="description">Get Service Post</span><pre>getServicePost</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
+                            <a href="#method_getServiceSubscription" title="getServiceSubscription :: Get Service Subscription">
+                                <span class="description">Get Service Subscription</span><pre>getServiceSubscription</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -179,7 +218,7 @@
                                 <span class="description">Get Service User.</span><pre>getServiceUser</pre>
                             </a>
                         </li>
-                                                                                    </ul>
+                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -326,7 +365,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get List Contact.</h2>
-                            <pre>getList(integer $user = null, array $exclude = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>getList( $user_id = null, array $exclude = null) : array&lt;mixed,\Application\Model\Contact&gt;</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -349,8 +388,8 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$user</h4>
-                                                <code>integer</code><p></p>
+                                                <h4>$user_id</h4>
+                                                <code></code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$exclude</h4>
@@ -358,7 +397,7 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                        <code>array&lt;mixed,<a href="../classes/Application.Model.Contact.html">\Application\Model\Contact</a>&gt;</code><p></p>
                                                                     </div>
                             </div>
 
@@ -428,7 +467,7 @@
                         </div>
                                             <a id="method_getServiceEvent"></a>
                         <div class="element clickable method private  method_getServiceEvent" data-toggle="collapse" data-target=".method_getServiceEvent .collapse">
-                            <h2>Get Service Event.</h2>
+                            <h2>Get Service Event</h2>
                             <pre>getServiceEvent() : \Application\Service\Event</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -451,6 +490,93 @@
                                     
                                                                             <h3>Response</h3>
                                         <code><a href="../classes/Application.Service.Event.html">\Application\Service\Event</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceFcm"></a>
+                        <div class="element clickable method private  method_getServiceFcm" data-toggle="collapse" data-target=".method_getServiceFcm .collapse">
+                            <h2>Get Service Service Conversation User</h2>
+                            <pre>getServiceFcm() : \Application\Service\Fcm</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Fcm.html">\Application\Service\Fcm</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServicePost"></a>
+                        <div class="element clickable method private  method_getServicePost" data-toggle="collapse" data-target=".method_getServicePost .collapse">
+                            <h2>Get Service Post</h2>
+                            <pre>getServicePost() : \Application\Service\Post</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Post.html">\Application\Service\Post</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceSubscription"></a>
+                        <div class="element clickable method private  method_getServiceSubscription" data-toggle="collapse" data-target=".method_getServiceSubscription .collapse">
+                            <h2>Get Service Subscription</h2>
+                            <pre>getServiceSubscription() : \Application\Service\Subscription</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Subscription.html">\Application\Service\Subscription</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -484,9 +610,161 @@
                             </div>
 
                         </div>
+                                            <a id="method_m_getList"></a>
+                        <div class="element clickable method public  method_m_getList" data-toggle="collapse" data-target=".method_m_getList .collapse">
+                            <h2>Get User for mobile</h2>
+                            <pre>m_getList( $search = null,  $exclude = null,  $filter = null) : array</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$search</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$exclude</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$filter</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getListIdByUser"></a>
+                        <div class="element clickable method public  method_m_getListIdByUser" data-toggle="collapse" data-target=".method_m_getListIdByUser .collapse">
+                            <h2>Get list contact id by users.</h2>
+                            <pre>m_getListIdByUser(integer|array $id) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>integer|array</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getListRequestByContact"></a>
+                        <div class="element clickable method public  method_m_getListRequestByContact" data-toggle="collapse" data-target=".method_m_getListRequestByContact .collapse">
+                            <h2>Get list contact id by users.</h2>
+                            <pre>m_getListRequestByContact(integer|array $id) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>integer|array</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getListRequestByUser"></a>
+                        <div class="element clickable method public  method_m_getListRequestByUser" data-toggle="collapse" data-target=".method_m_getListRequestByUser .collapse">
+                            <h2>Get list contact id by users.</h2>
+                            <pre>m_getListRequestByUser(integer|array $id) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$id</h4>
+                                                <code>integer|array</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_remove"></a>
                         <div class="element clickable method public  method_remove" data-toggle="collapse" data-target=".method_remove .collapse">
-                            <h2>Remove Contact.</h2>
+                            <h2>Remove Contact</h2>
                             <pre>remove(integer $user) : boolean</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -542,7 +820,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:37 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:44 +0100.<br/>
     </footer>
     </body>
 </html>

@@ -144,12 +144,6 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getInstructorByItem" title="getInstructorByItem :: ">
-            <span class="description"></span><pre>getInstructorByItem</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
         <a href="#method_getList" title="getList :: ">
             <span class="description"></span><pre>getList</pre>
         </a>
@@ -198,6 +192,18 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getListInstructorAndAcademicByItem" title="getListInstructorAndAcademicByItem :: ">
+            <span class="description"></span><pre>getListInstructorAndAcademicByItem</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getListInstructorByItem" title="getListInstructorByItem :: ">
+            <span class="description"></span><pre>getListInstructorByItem</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_getListLite" title="getListLite :: ">
             <span class="description"></span><pre>getListLite</pre>
         </a>
@@ -230,12 +236,6 @@
                                                                                                         <li class="method public">
         <a href="#method_getListUsersBySet" title="getListUsersBySet :: ">
             <span class="description"></span><pre>getListUsersBySet</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_getListUsersBySubmission" title="getListUsersBySubmission :: ">
-            <span class="description"></span><pre>getListUsersBySubmission</pre>
         </a>
     </li>
 
@@ -467,10 +467,10 @@
                             </div>
 
                         </div>
-                                            <a id="method_getInstructorByItem"></a>
-                        <div class="element clickable method public  method_getInstructorByItem" data-toggle="collapse" data-target=".method_getInstructorByItem .collapse">
-                            <h2>getInstructorByItem</h2>
-                            <pre>getInstructorByItem( $item_id) </pre>
+                                            <a id="method_getList"></a>
+                        <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
+                            <h2>getList</h2>
+                            <pre>getList( $user_id,  $is_sadmin_admin,  $filter = null,  $post = null,  $type = null,  $level = null,  $course = null,  $program = null,  $search = null,  $noprogram = null,  $nocourse = null,  $schools = null,  $order = null, array $exclude = null,  $message = null,  $contact_state = null) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -498,54 +498,19 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$item_id</h4>
+                                                <h4>$user_id</h4>
                                                 <code></code><p></p>
                                             </div>
-                                                                            
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_getList"></a>
-                        <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>getList</h2>
-                            <pre>getList( $filter = null,  $event = null,  $user_school,  $type = null,  $level = null,  $course = null,  $program = null,  $search = null,  $noprogram = null,  $nocourse = null,  $schools = null,  $order = null, array $exclude = null,  $message = null) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_sadmin_admin</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$filter</h4>
                                                 <code></code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$event</h4>
-                                                <code></code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$user_school</h4>
+                                                <h4>$post</h4>
                                                 <code></code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
@@ -592,6 +557,10 @@
                                                 <h4>$message</h4>
                                                 <code></code><p></p>
                                             </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$contact_state</h4>
+                                                <code></code><p></p>
+                                            </div>
                                                                             
                                                                     </div>
                             </div>
@@ -600,7 +569,7 @@
                                             <a id="method_getListAttendees"></a>
                         <div class="element clickable method public  method_getListAttendees" data-toggle="collapse" data-target=".method_getListAttendees .collapse">
                             <h2>getListAttendees</h2>
-                            <pre>getListAttendees( $course = null,  $program = null,  $school = null,  $exclude_course = null,  $exclude_program = null,  $exclude_user = null) </pre>
+                            <pre>getListAttendees( $user_id,  $is_sadmin_admin,  $course = null,  $program = null,  $school = null,  $page = null,  $exclude_course = null,  $exclude_program = null,  $exclude_user = null,  $exclude_page = null,  $roles = null) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -628,6 +597,14 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
+                                                <h4>$user_id</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_sadmin_admin</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
                                                 <h4>$course</h4>
                                                 <code></code><p></p>
                                             </div>
@@ -640,6 +617,10 @@
                                                 <code></code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
+                                                <h4>$page</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
                                                 <h4>$exclude_course</h4>
                                                 <code></code><p></p>
                                             </div>
@@ -649,6 +630,14 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$exclude_user</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$exclude_page</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$roles</h4>
                                                 <code></code><p></p>
                                             </div>
                                                                             
@@ -886,6 +875,84 @@
                             </div>
 
                         </div>
+                                            <a id="method_getListInstructorAndAcademicByItem"></a>
+                        <div class="element clickable method public  method_getListInstructorAndAcademicByItem" data-toggle="collapse" data-target=".method_getListInstructorAndAcademicByItem .collapse">
+                            <h2>getListInstructorAndAcademicByItem</h2>
+                            <pre>getListInstructorAndAcademicByItem( $item_id) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$item_id</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getListInstructorByItem"></a>
+                        <div class="element clickable method public  method_getListInstructorByItem" data-toggle="collapse" data-target=".method_getListInstructorByItem .collapse">
+                            <h2>getListInstructorByItem</h2>
+                            <pre>getListInstructorByItem( $item_id) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$item_id</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getListLite"></a>
                         <div class="element clickable method public  method_getListLite" data-toggle="collapse" data-target=".method_getListLite .collapse">
                             <h2>getListLite</h2>
@@ -1101,45 +1168,6 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$set_id</h4>
-                                                <code></code><p></p>
-                                            </div>
-                                                                            
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_getListUsersBySubmission"></a>
-                        <div class="element clickable method public  method_getListUsersBySubmission" data-toggle="collapse" data-target=".method_getListUsersBySubmission .collapse">
-                            <h2>getListUsersBySubmission</h2>
-                            <pre>getListUsersBySubmission( $submission_id) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$submission_id</h4>
                                                 <code></code><p></p>
                                             </div>
                                                                             
@@ -1365,7 +1393,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:36 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:42 +0100.<br/>
     </footer>
     </body>
 </html>

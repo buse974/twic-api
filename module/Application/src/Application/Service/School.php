@@ -21,7 +21,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param string $libelle            
+     * @param string $libelle
      * @return \Application\Model\School
      */
     public function getCustom($libelle)
@@ -40,20 +40,20 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param string $name            
-     * @param string $next_name            
-     * @param string $short_name            
-     * @param string $logo            
-     * @param string $describe            
-     * @param string $website            
-     * @param string $background            
-     * @param string $phone            
-     * @param string $contact            
-     * @param int $contact_id            
-     * @param array $address            
-     * @param string $custom            
-     * @param string $libelle  
-     * @param string $circle_id            
+     * @param string $name
+     * @param string $next_name
+     * @param string $short_name
+     * @param string $logo
+     * @param string $describe
+     * @param string $website
+     * @param string $background
+     * @param string $phone
+     * @param string $contact
+     * @param int $contact_id
+     * @param array $address
+     * @param string $custom
+     * @param string $libelle
+     * @param string $circle_id
      * @throws \Exception
      * @return \Application\Model\School
      */
@@ -88,7 +88,7 @@ class School extends AbstractService
         
         $school_id = $this->getMapper()->getLastInsertValue();
         
-        if(null !== $circle_id) {
+        if (null !== $circle_id) {
             $this->getServiceCircle()->addOrganizations($circle_id, $school_id);
         }
         //$this->getServiceEvent()->schoolNew($school_id);
@@ -115,17 +115,17 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
-     * @param string $logo            
-     * @param string $describe            
-     * @param string $website            
-     * @param string $short_name            
-     * @param string $phone            
-     * @param array $address            
-     * @param string $background            
-     * @param string $custom            
-     * @param string $libelle            
+     * @param int $id
+     * @param string $name
+     * @param string $logo
+     * @param string $describe
+     * @param string $website
+     * @param string $short_name
+     * @param string $phone
+     * @param array $address
+     * @param string $background
+     * @param string $custom
+     * @param string $libelle
      * @return int
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null, $custom = null, $libelle = null)
@@ -163,7 +163,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id            
+     * @param int|array $id
      * @return \Application\Model\School|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
@@ -174,8 +174,8 @@ class School extends AbstractService
             throw new \Exception('not school with id: ' . $id);
         }
         
-        return (is_array($id)) ? 
-            $results : 
+        return (is_array($id)) ?
+            $results :
             $results->current();
     }
     
@@ -184,12 +184,12 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id            
+     * @param int|array $id
      * @return array
      */
     public function m_get($id = null)
     {
-        if(!is_array($id)){
+        if (!is_array($id)) {
             $id = [$id];
         }
         
@@ -201,9 +201,9 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter            
-     * @param string $search   
-     * @param array $exclude         
+     * @param array $filter
+     * @param string $search
+     * @param array $exclude
      * @return array
      */
     public function getList($filter = null, $search = null, $exclude = null, $type = null, $parent_id = null)
@@ -213,7 +213,7 @@ class School extends AbstractService
         
         $me = $identity['id'];
         $mapper = $this->getMapper();
-        $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me,$filter, $search, null, $exclude, $type, $parent_id);
+        $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me, $filter, $search, null, $exclude, $type, $parent_id);
         
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
@@ -226,7 +226,7 @@ class School extends AbstractService
     /**
      * Get List organization by user
      *
-     * @param int $user_id            
+     * @param int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function _getList($user_id)
@@ -239,7 +239,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      * @return array
      */
     public function delete($id)

@@ -2,7 +2,7 @@
 /**
  * TheStudnet (http://thestudnet.com).
  *
- * Conversation Option 
+ * Conversation Option
  */
 namespace Application\Service;
 
@@ -15,7 +15,7 @@ class ConversationOpt extends AbstractService
 {
     /**
      * If item existe Add Else Update Conversation option.
-     * 
+     *
      * @param int  $item_id
      * @param bool $record
      * @param int  $nb_user_autorecord
@@ -34,7 +34,7 @@ class ConversationOpt extends AbstractService
 
     /**
      * Create conversation opt.
-     * 
+     *
      * @param int  $item_id
      * @param bool $record
      * @param int  $nb_user_autorecord
@@ -61,9 +61,9 @@ class ConversationOpt extends AbstractService
 
     /**
      * Update Conversation option.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int  $item_id
      * @param bool $record
      * @param int  $nb_user_autorecord
@@ -91,7 +91,7 @@ class ConversationOpt extends AbstractService
 
     /**
      * Get Option Conversation.
-     * 
+     *
      * @param int $id
      *
      * @return \Application\Model\ConversationOpt
@@ -105,7 +105,7 @@ class ConversationOpt extends AbstractService
 
     /**
      * Get Option Conversation By Item.
-     * 
+     *
      * @param int $item_id
      *
      * @return \Application\Model\ConversationOpt

@@ -17,8 +17,8 @@ class OrganizationUser extends AbstractService
     /**
      * Add relation Organization user
      *
-     * @param int $organization_id            
-     * @param int $user_id            
+     * @param int $organization_id
+     * @param int $user_id
      * @return int
      */
     public function add($organization_id, $user_id)
@@ -42,8 +42,8 @@ class OrganizationUser extends AbstractService
     /**
      * Delete relation Organization user
      *
-     * @param int $organization_id            
-     * @param int $user_id            
+     * @param int $organization_id
+     * @param int $user_id
      * @return int
      */
     public function remove($organization_id, $user_id)
@@ -59,8 +59,8 @@ class OrganizationUser extends AbstractService
     /**
      * Get List relation relation Organization User
      *
-     * @param int $organization_id            
-     * @param int $user_id            
+     * @param int $organization_id
+     * @param int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($organization_id = null, $user_id = null)

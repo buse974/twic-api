@@ -11,7 +11,7 @@ class MessageUser extends AbstractMapper
 {
     /**
      * Request Get list MessageUser.
-     * 
+     *
      * @param int    $user_id
      * @param int    $message_id
      * @param int    $conversation_id
@@ -101,7 +101,7 @@ class MessageUser extends AbstractMapper
     
     /**
      * Get List last Message
-     * 
+     *
      * @param int $user_id
      * @param int $conversation_id
      */
@@ -109,7 +109,7 @@ class MessageUser extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'user_id', 'from_id', 'read_date', 'message_id', 'conversation_id', 'created_date'])
-            ->join(['message_user_message' => 'message'], 'message_user_message.id=message_user.message_id', 
+            ->join(['message_user_message' => 'message'], 'message_user_message.id=message_user.message_id',
                 ['id', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")])
             ->where(['message_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
@@ -143,19 +143,19 @@ class MessageUser extends AbstractMapper
             ->group(['message_user.conversation_id']);
 
         switch ($tag) {
-            case 'INBOX' :
+            case 'INBOX':
                 $select->where(['message.is_draft IS FALSE'])
                     ->where([' ( message_user.type = "R" OR message_user.type = "RS" )']);
                 break;
-            case 'SENT' :
+            case 'SENT':
                 $select->where(['message.is_draft IS FALSE'])
                     ->where([' ( message_user.type = "S" OR message_user.type = "RS" )']);
                 break;
-            case 'DRAFT' :
+            case 'DRAFT':
                 $select->where(['message.is_draft IS TRUE'])
                     ->where(['message_user.user_id=message_user.from_id']);
                 break;
-            case 'NOREAD' :
+            case 'NOREAD':
                 $select->where(['message_user.read_date IS NULL'])
                     ->where(['message.is_draft IS FALSE'])
                     ->where([' ( message_user.type = "R" OR message_user.type = "RS" )']);

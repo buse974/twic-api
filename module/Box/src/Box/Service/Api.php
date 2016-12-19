@@ -35,7 +35,7 @@ class Api extends AbstractApi
 
     /**
      * @param string $url
-     * 
+     *
      * @return \Box\Model\Document
      */
     public function addFile($url, $type)
@@ -53,7 +53,7 @@ class Api extends AbstractApi
     /**
      * @param int $document_id
      * @param int $duration
-     * 
+     *
      * @return \Box\Model\Session
      */
     public function createSession($document_id, $duration = 60)

@@ -15,7 +15,7 @@ class SubmissionUserCriteria extends AbstractService
 {
     /**
      * Add Submission User Criteria.
-     * 
+     *
      * @param int  $submission_id
      * @param int  $user_id
      * @param int  $criteria_id
@@ -34,7 +34,7 @@ class SubmissionUserCriteria extends AbstractService
 
     /**
      * Delete Submission User Criteria By Submission.
-     * 
+     *
      * @param int $submission_id
      *
      * @return int
@@ -46,7 +46,7 @@ class SubmissionUserCriteria extends AbstractService
 
     /**
      * Get Processed Grades.
-     * 
+     *
      * @param int $submission_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -58,7 +58,7 @@ class SubmissionUserCriteria extends AbstractService
 
     /**
      * Get List By Submission.
-     * 
+     *
      * @invokable
      *
      * @param int $submission

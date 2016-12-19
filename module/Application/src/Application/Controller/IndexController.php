@@ -14,13 +14,13 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
 
 /**
- * Controller Index 
+ * Controller Index
  */
 class IndexController extends AbstractActionController
 {
     /**
-     * Index 
-     * 
+     * Index
+     *
      * {@inheritDoc}
      * @see \Zend\Mvc\Controller\AbstractActionController::indexAction()
      */
@@ -35,13 +35,13 @@ class IndexController extends AbstractActionController
     
     /**
      * Check Status
-     * 
+     *
      * @return \Zend\View\Model\JsonModel
      */
     public function statusChangeAction()
     {
-         $ret = $this->videoArchive()->checkStatus($this->getRequest()->getContent());
+        $ret = $this->videoArchive()->checkStatus($this->getRequest()->getContent());
 
-         return new JsonModel(['code'=>$ret]);
+        return new JsonModel(['code'=>$ret]);
     }
 }

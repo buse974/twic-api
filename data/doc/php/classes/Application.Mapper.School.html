@@ -132,8 +132,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getList" title="getList :: Get school list.">
-            <span class="description">Get school list.</span><pre>getList</pre>
+        <a href="#method_getList" title="getList :: Get school list">
+            <span class="description">Get school list</span><pre>getList</pre>
         </a>
     </li>
 
@@ -163,7 +163,7 @@
                 <small style="display: block; text-align: right">
                                             Extends \Dal\Mapper\AbstractMapper
                                                         </small>
-                <p class="short_description"></p>
+                <p class="short_description">Class School</p>
                 <div class="details">
                     <div class="long_description">
                         
@@ -237,8 +237,8 @@
                         </div>
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
-                            <h2>Get school list.</h2>
-                            <pre>getList(string $filter = null,  $search = null, integer $user_id = null, array $exclude = null) : \Zend\Db\ResultSet\ResultSet</pre>
+                            <h2>Get school list</h2>
+                            <pre>getList(integer $me = null, array $filter = null, string $search = null, integer $user_id = null, array $exclude = null,  $type = null,  $parent_id = null) : \Zend\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -252,12 +252,16 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
+                                                <h4>$me</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
                                                 <h4>$filter</h4>
-                                                <code>string</code><p></p>
+                                                <code>array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$search</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$user_id</h4>
@@ -266,6 +270,14 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$exclude</h4>
                                                 <code>array</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$type</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$parent_id</h4>
+                                                <code></code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -296,7 +308,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:35 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:39 +0100.<br/>
     </footer>
     </body>
 </html>

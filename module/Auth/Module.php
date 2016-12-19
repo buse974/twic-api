@@ -8,7 +8,6 @@ use Auth\Authentication\Storage\CacheBddStorage;
 
 class Module implements ConfigProviderInterface
 {
-
     public function getConfig()
     {
         return include __DIR__.'/config/module.config.php';
@@ -27,12 +26,12 @@ class Module implements ConfigProviderInterface
                     $conf = $container->get('Config')['auth-conf'];
 
                     return new \Zend\Authentication\AuthenticationService(
-                        $container->get($conf['storage']['name']), 
+                        $container->get($conf['storage']['name']),
                         new Authentication\Adapter\DbAdapter(
-                            $container->get($conf['adapter']['name']), 
-                            $conf['adapter']['options']['table'], 
-                            $conf['adapter']['options']['identity'], 
-                            $conf['adapter']['options']['credential'], 
+                            $container->get($conf['adapter']['name']),
+                            $conf['adapter']['options']['table'],
+                            $conf['adapter']['options']['identity'],
+                            $conf['adapter']['options']['credential'],
                             $conf['adapter']['options']['hash']
                         )
                     );

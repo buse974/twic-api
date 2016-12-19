@@ -172,7 +172,7 @@
                                                                 <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get research list.</h2>
-                            <pre>getList(string $string) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>getList(string $string, boolean $is_sadmin_admin,  $user_id) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -188,6 +188,14 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$string</h4>
                                                 <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$is_sadmin_admin</h4>
+                                                <code>boolean</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$user_id</h4>
+                                                <code></code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -218,7 +226,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 09 Aug 2016 15:59:36 +0200.<br/>
+            generated on Mon, 19 Dec 2016 09:30:42 +0100.<br/>
     </footer>
     </body>
 </html>

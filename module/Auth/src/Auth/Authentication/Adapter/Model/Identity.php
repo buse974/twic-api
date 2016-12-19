@@ -2,7 +2,7 @@
 
 namespace Auth\Authentication\Adapter\Model;
 
-class Identity  implements IdentityInterface
+class Identity implements IdentityInterface
 {
     protected $id;
     protected $lastname;

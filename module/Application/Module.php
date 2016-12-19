@@ -19,7 +19,6 @@ use Application\Service\Fcm;
 
 class Module
 {
-
     public function onBootstrap(MvcEvent $event)
     {
         $sge = new Sge();
@@ -84,7 +83,7 @@ class Module
                 },
                 \Application\Service\Fcm::class => function ($container) {
                     return new Fcm(
-                        $container->get('app_service_session'), 
+                        $container->get('app_service_session'),
                         $container->get('gcm-client'),
                         $container->get('app_service_user')->getIdentity()['token']
                     );

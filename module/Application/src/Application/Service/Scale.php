@@ -15,7 +15,7 @@ class Scale extends AbstractService
 {
     /**
      * Add Scale.
-     * 
+     *
      * @invokable
      *
      * @param string $name
@@ -36,7 +36,7 @@ class Scale extends AbstractService
 
     /**
      * Delete Scale.
-     * 
+     *
      * @invokable
      *
      * @param int $id
@@ -51,7 +51,7 @@ class Scale extends AbstractService
 
     /**
      * Update Scale.
-     * 
+     *
      * @invokable
      *
      * @param int    $id
@@ -70,7 +70,7 @@ class Scale extends AbstractService
 
     /**
      * Get List Scale.
-     * 
+     *
      * @invokable
      *
      * @param array $filter

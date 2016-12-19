@@ -16,7 +16,7 @@ class BankQuestionMedia extends AbstractService
 {
     /**
      * Add Bank Question Media.
-     * 
+     *
      * @param int   $bank_question_id
      * @param array $data
      *
@@ -41,7 +41,7 @@ class BankQuestionMedia extends AbstractService
 
     /**
      * Replace All Bank Question Media.
-     * 
+     *
      * @param int   $bank_question_id
      * @param array $data
      *
@@ -56,7 +56,7 @@ class BankQuestionMedia extends AbstractService
 
     /**
      * Copy Bank Question Media.
-     * 
+     *
      * @param int $bank_question_id_new
      * @param int $bank_question_id_old
      *
@@ -75,7 +75,7 @@ class BankQuestionMedia extends AbstractService
 
     /**
      * Genral add Bank Question Media.
-     * 
+     *
      * @param int    $bank_question_id
      * @param string $name
      * @param stirng $link
@@ -103,7 +103,7 @@ class BankQuestionMedia extends AbstractService
 
     /**
      * Get List Bank Question Media.
-     * 
+     *
      * @param int $bank_question_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -115,7 +115,7 @@ class BankQuestionMedia extends AbstractService
 
     /**
      * Get List Bank Question.
-     * 
+     *
      * @param int $bank_question_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -127,7 +127,7 @@ class BankQuestionMedia extends AbstractService
 
     /**
      * Get Service Library.
-     * 
+     *
      * @return \Application\Service\Library
      */
     private function getServiceLibrary()

@@ -8,7 +8,7 @@ class GcmRegistration extends AbstractService
 {
 
     /**
-     * 
+     *
      * @param string $notification_key_name
      * @param string $registration_id
      * @param string $notification_key
@@ -44,9 +44,9 @@ class GcmRegistration extends AbstractService
     /**
      * Get If relation exist
      *
-     * @param int $gcm_group_id            
-     * @param string $uuid            
-     * @param string $registration_id            
+     * @param int $gcm_group_id
+     * @param string $uuid
+     * @param string $registration_id
      * @return bool
      */
     public function has($gcm_group_id, $uuid, $registration_id)

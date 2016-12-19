@@ -15,7 +15,7 @@ class Poll extends AbstractService
 {
     /**
      * Add/Update Poll.
-     * 
+     *
      * @param int    $item_id
      * @param string $title
      * @param int    $poll_item

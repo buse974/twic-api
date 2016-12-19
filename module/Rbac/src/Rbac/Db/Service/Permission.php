@@ -26,10 +26,10 @@ class Permission extends AbstractService
      * Add permission.
      *
      * @invokable
-     * 
+     *
      * @param string $libelle
      * @param int    $role
-     * 
+     *
      * @throws \Exception
      *
      * @return int

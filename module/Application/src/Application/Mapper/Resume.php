@@ -6,9 +6,8 @@ use Dal\Mapper\AbstractMapper;
 
 class Resume extends AbstractMapper
 {
-     public function m_getListIdByUser($user)
+    public function m_getListIdByUser($user)
     {
-        
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'user_id'])
                ->where(['user_id' => $user]);
@@ -17,6 +16,5 @@ class Resume extends AbstractMapper
         
 
         return $this->selectWith($select);
-    }    
-    
+    }
 }

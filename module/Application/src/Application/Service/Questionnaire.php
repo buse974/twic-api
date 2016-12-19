@@ -17,7 +17,7 @@ class Questionnaire extends AbstractService
 {
     /**
      * Create Questionnaire.
-     * 
+     *
      * @param int $item_id
      *
      * @throws \Exception
@@ -43,9 +43,9 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Bt item.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $item
      *
      * @return \Application\Model\Questionnaire
@@ -73,7 +73,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Add a answer.
-     * 
+     *
      * @invokable
      *
      * @param int $item
@@ -114,7 +114,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get number question No completed.
-     * 
+     *
      * @param int $item_id
      *
      * @return null|int
@@ -140,7 +140,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Answer.
-     * 
+     *
      * @invokable
      *
      * @param int $item
@@ -163,7 +163,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service Dimension.
-     * 
+     *
      * @return \Application\Service\Dimension
      */
     private function getServiceDimension()
@@ -173,7 +173,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service Submission.
-     * 
+     *
      * @return \Application\Service\Submission
      */
     private function getServiceSubmission()
@@ -183,7 +183,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service SubmissionUser.
-     * 
+     *
      * @return \Application\Service\SubmissionUser
      */
     private function getServiceSubmissionUser()
@@ -193,7 +193,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -203,7 +203,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service Question.
-     * 
+     *
      * @return \Application\Service\Question
      */
     private function getServiceQuestion()
@@ -213,7 +213,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service QuestionnaireUser.
-     * 
+     *
      * @return \Application\Service\QuestionnaireUser
      */
     private function getServiceQuestionnaireUser()
@@ -223,7 +223,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service Item.
-     * 
+     *
      * @return \Application\Service\Item
      */
     private function getServiceItem()
@@ -233,7 +233,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service Answer.
-     * 
+     *
      * @return \Application\Service\Answer
      */
     private function getServiceAnswer()
@@ -243,7 +243,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service Event.
-     * 
+     *
      * @return \Application\Service\Event
      */
     private function getServiceEvent()
@@ -253,7 +253,7 @@ class Questionnaire extends AbstractService
 
     /**
      * Get Service QuestionnaireQuestion.
-     * 
+     *
      * @return \Application\Service\QuestionnaireQuestion
      */
     private function getServiceQuestionnaireQuestion()

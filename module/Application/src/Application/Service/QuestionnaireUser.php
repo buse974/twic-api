@@ -15,7 +15,7 @@ class QuestionnaireUser extends AbstractService
 {
     /**
      * Get Questionnaire User.
-     * 
+     *
      * @param unknown $questionnaire_id
      * @param unknown $item_id
      *
@@ -48,7 +48,7 @@ class QuestionnaireUser extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -58,7 +58,7 @@ class QuestionnaireUser extends AbstractService
 
     /**
      * Get Service Submission.
-     * 
+     *
      * @return \Application\Service\Submission
      */
     private function getServiceSubmission()

@@ -41,7 +41,7 @@ class Page extends AbstractService
      * @param array $docs
      * @return int
      */
-    public function add($title, $description, $confidentiality, $type, $logo = null,$admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
+    public function add($title, $description, $confidentiality, $type, $logo = null, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
@@ -93,11 +93,11 @@ class Page extends AbstractService
             $this->getServicePageDoc()->_add($id, $docs);
         }
 
-        if($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC) {
+        if ($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC) {
             $sub=[];
-            if(null !== $page_id) {
+            if (null !== $page_id) {
                 $sub[] = 'EP'.$page_id;
-            } else if(null !== $organization_id) {
+            } elseif (null !== $organization_id) {
                 $sub[] = 'EO'.$organization_id;
             } else {
                 $sub[] = 'EU'.$user_id;
@@ -111,7 +111,7 @@ class Page extends AbstractService
                 'parent' => $page_id,
                 'page' => $id,
                 'type' => $type,
-            ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $organization_id/*org*/, $user_id/*user*/, null/*course*/,'page');
+            ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $organization_id/*org*/, $user_id/*user*/, null/*course*/, 'page');
         }
         return $id;
     }
@@ -183,12 +183,12 @@ class Page extends AbstractService
             $this->getServicePageDoc()->replace($id, $docs);
         }
 
-        if($confidentiality !== null) {
+        if ($confidentiality !== null) {
             $tmp_m_post = $this->getMapper()->select($this->getModel()->setId($id))->current();
-            if($tmp_m_post->getConfidentiality() !== $confidentiality) {
-                if($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
-                    $this->getServicePost()->hardDelete( 'PP'.$id);
-                } else if ($confidentiality == ModelPage::CONFIDENTIALITY_PUBLIC) {
+            if ($tmp_m_post->getConfidentiality() !== $confidentiality) {
+                if ($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
+                    $this->getServicePost()->hardDelete('PP'.$id);
+                } elseif ($confidentiality == ModelPage::CONFIDENTIALITY_PUBLIC) {
                     $this->getServicePost()->addSys('PP'.$id, '', [
                         'state' => 'create',
                         'user' => $tmp_m_post->getUserId(),
@@ -199,12 +199,12 @@ class Page extends AbstractService
                     ], 'create', null/*sub*/, null/*parent*/,
                         $tmp_m_post->getPageId()/*page*/,
                         $tmp_m_post->getOrganizationId()/*org*/,
-                        $tmp_m_post->getUserId()/*user*/, null/*course*/,'page');
+                        $tmp_m_post->getUserId()/*user*/, null/*course*/, 'page');
                 }
             }
         }
 
-        $this->getMapper()->update( $this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
+        $this->getMapper()->update($this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
         return $this->getMapper()->update($m_page);
     }
 
@@ -220,8 +220,8 @@ class Page extends AbstractService
     {
         $m_page = $this->getModel()->setId($id)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        if($this->getMapper()->update($m_page)) {
-            $this->getServicePost()->hardDelete( 'PP'.$id);
+        if ($this->getMapper()->update($m_page)) {
+            $this->getServicePost()->hardDelete('PP'.$id);
             return true;
         }
 
@@ -238,7 +238,6 @@ class Page extends AbstractService
      */
     public function reactivate($id)
     {
-
         $m_page = $this->getModel()->setId($id)->setDeletedDate(new \Zend\Db\Sql\Predicate\IsNull());
 
         return $this->getMapper()->update($m_page);
@@ -255,20 +254,19 @@ class Page extends AbstractService
      */
     public function get($id = null, $parent_id = null, $type = null)
     {
-
-        if(null === $id && null === $parent_id) {
+        if (null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $m_page = $this->getMapper()->get( $identity['id'], $id, $parent_id, $type, $is_sadmin_admin)->current();
-        if(false === $m_page){
+        $m_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_sadmin_admin)->current();
+        if (false === $m_page) {
             throw new \Exception('This page does not exist');
         }
 
         $m_page->setTags($this->getServicePageTag()->getList($id));
         $m_page->setDocs($this->getServicePageDoc()->getList($id));
-        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'p' => 1 ] , $m_page->getRole()));
+        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'p' => 1 ], $m_page->getRole()));
         $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, [ 'n' => 4, 'p' => 1 ]));
         $this->getOwner($m_page);
 
@@ -326,7 +324,7 @@ class Page extends AbstractService
     {
         $owner = [];
         switch (true) {
-            case is_numeric($m_page->getPageId()) :
+            case is_numeric($m_page->getPageId()):
                 $ar_page = $m_page->getPage()->toArray();
                 $owner = [
                     'id' => $ar_page['id'],
@@ -335,7 +333,7 @@ class Page extends AbstractService
                     'type' => 'page',
                 ];
                 break;
-            case is_numeric($m_page->getOrganizationId()) :
+            case is_numeric($m_page->getOrganizationId()):
                 $ar_organization = $m_page->getOrganization()->toArray();
                 $owner = [
                     'id' => $ar_organization['id'],
@@ -344,7 +342,7 @@ class Page extends AbstractService
                     'type' => 'organization',
                 ];
                 break;
-            case is_numeric($m_page->getUserId()) :
+            case is_numeric($m_page->getUserId()):
                 $ar_user = $m_page->getUser()->toArray();
                 $owner = [
                     'id' => $ar_user['id'],

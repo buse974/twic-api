@@ -26,7 +26,7 @@ class PostLike extends AbstractService
         if ($this->getMapper()->select($m_post_like)->count() > 0) {
             $m_post_like->setIsLike(true);
             $res = $this->getMapper()->update($m_post_like, [
-                'post_id' => $post_id, 
+                'post_id' => $post_id,
                 'user_id' => $user_id
             ]);
         } else {
@@ -44,8 +44,8 @@ class PostLike extends AbstractService
             $m_post = $this->getServicePost()->getLite($post_id);
             $m_post_like = $this->getLite($res);
             $sub_post = [
-                'P'.$this->getServicePost()->getOwner($m_post), 
-                'P'.$this->getServicePost()->getTarget($m_post), 
+                'P'.$this->getServicePost()->getOwner($m_post),
+                'P'.$this->getServicePost()->getTarget($m_post),
                 'P'.$this->getUserLike($m_post_like),
                 'M'.$m_post->getUserId(),
             ];
@@ -58,9 +58,9 @@ class PostLike extends AbstractService
     
     /**
      * UnLike Post
-     * 
+     *
      * @toto check que le user soit bien encore admin de la page ou de lorganization
-     * 
+     *
      * @param int $post_id
      * @return int
      */
@@ -80,8 +80,8 @@ class PostLike extends AbstractService
     {
         $res_post_like = $this->getMapper()->select($this->getModel()->setId($id));
         
-        return (is_array($id)) ? 
-            $res_post_like : 
+        return (is_array($id)) ?
+            $res_post_like :
             $res_post_like->current();
     }
     

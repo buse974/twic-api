@@ -6,7 +6,6 @@ use ModuleTest\Api\AbstractService;
 
 class LiveClassTest extends AbstractService
 {
-
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
@@ -85,7 +84,7 @@ class LiveClassTest extends AbstractService
     {
         $this->setIdentity(1);
         
-        $data = $this->jsonRpc('item.add', 
+        $data = $this->jsonRpc('item.add',
             [
                 'course' => (int)$data['course_id'],
                 //'grading_policy_id' => 6,
@@ -100,19 +99,19 @@ class LiveClassTest extends AbstractService
                 ],
                 'opt' => [
                     'grading' => [
-                        'mode' => 'average', 
-                        'has_pg' => true, 
-                        'pg_nb' => 2, 
-                        'pg_auto' => true, 
-                        'pg_due_date' => 
-                        '2016-10-10', 
-                        'pg_can_view' => true, 
-                        'user_can_view' => true, 
+                        'mode' => 'average',
+                        'has_pg' => true,
+                        'pg_nb' => 2,
+                        'pg_auto' => true,
+                        'pg_due_date' =>
+                        '2016-10-10',
+                        'pg_can_view' => true,
+                        'user_can_view' => true,
                         'pg_stars' => true
-                    ], 
+                    ],
                 ],
                 'parent' => null,
-                'order' => null, 
+                'order' => null,
             ]);
 
         return $data['result'];
@@ -152,7 +151,7 @@ class LiveClassTest extends AbstractService
             [
                 'users' => [1,2],
                 'text' => 'TOTOTO',
-                'submission_id' => 1 
+                'submission_id' => 1
             ]);
     }
     
@@ -181,5 +180,4 @@ class LiveClassTest extends AbstractService
                 'conversation' => 2
             ]);
     }
-
 }

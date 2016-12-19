@@ -43,7 +43,7 @@ class BankQuestion extends AbstractService
 
     /**
      * Update Bank question.
-     * 
+     *
      * @invokable
      *
      * @param int    $id
@@ -101,7 +101,7 @@ class BankQuestion extends AbstractService
 
     /**
      * Copy Bank Question.
-     * 
+     *
      * Si utiliser il copy et on retour le nouvelle id,
      * si utiliser mais for_delete alors on le passe simplement a older.
      *
@@ -140,7 +140,7 @@ class BankQuestion extends AbstractService
 
     /**
      * Delete Bank question.
-     * 
+     *
      * @invokable
      *
      * @param int $id
@@ -168,7 +168,7 @@ class BankQuestion extends AbstractService
 
     /**
      * Add Bank Question (Global).
-     * 
+     *
      * @param int    $course_id
      * @param string $question
      * @param int    $bank_question_type_id

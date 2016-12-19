@@ -19,9 +19,8 @@ return [
             'conf' => ConfFactory::class,
             //'videoArchive' => function (\Interop\Container\ContainerInterface\ContainerInterface $container) {
               'videoArchive' => function ($container) {
-
-                return new videoArchive($container->get('app_service_video_archive'));
-            }
+                  return new videoArchive($container->get('app_service_video_archive'));
+              }
         ],
     ],
     'router' =>[

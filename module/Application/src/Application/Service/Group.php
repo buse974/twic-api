@@ -15,7 +15,7 @@ class Group extends AbstractService
 {
     /**
      * Add Group.
-     * 
+     *
      * @invokable
      *
      * @param string    $set
@@ -48,7 +48,7 @@ class Group extends AbstractService
 
     /**
      * Delete Group.
-     * 
+     *
      * @invokable
      *
      * @param int $id
@@ -63,7 +63,7 @@ class Group extends AbstractService
 
     /**
      * Update Group.
-     * 
+     *
      * @invokable
      *
      * @param int    $id
@@ -80,7 +80,7 @@ class Group extends AbstractService
 
     /**
      * Add User to group.
-     * 
+     *
      * @invokable
      *
      * @param integr       $id
@@ -104,7 +104,7 @@ class Group extends AbstractService
 
     /**
      * Delete And Add users to group.
-     * 
+     *
      * @invokable
      *
      * @param int       $id
@@ -130,7 +130,7 @@ class Group extends AbstractService
 
     /**
      * Get List Group.
-     * 
+     *
      * @invokable
      *
      * @param int    $course

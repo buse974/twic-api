@@ -43,8 +43,9 @@ class bootstrap
         $previousDir = '.';
         while (! is_dir($dir . '/' . $path)) {
             $dir = dirname($dir);
-            if ($previousDir === $dir)
+            if ($previousDir === $dir) {
                 return false;
+            }
             $previousDir = $dir;
         }
         

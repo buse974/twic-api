@@ -2,7 +2,7 @@
 /**
  * TheStudnet (http://thestudnet.com).
  *
- * School  
+ * School
  */
 namespace Application\Mapper;
 
@@ -18,7 +18,7 @@ class School extends AbstractMapper
     /**
      * Execute Request Get Custom
      *
-     * @param string $libelle            
+     * @param string $libelle
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getCustom($libelle)
@@ -33,7 +33,7 @@ class School extends AbstractMapper
     /**
      * Get school by id.
      *
-     * @param int $school            
+     * @param int $school
      *
      * @return \Zend\Db\ResultSet\ResultSet
      */
@@ -72,7 +72,7 @@ class School extends AbstractMapper
             ->join(array('school_address_country' => 'country'), 'school_address_country.id=school_address.country_id', array('school_address_country!id' => 'id','short_name','name'), $select::JOIN_LEFT)
             ->quantifier('DISTINCT');
         
-        if(null !== $me) {
+        if (null !== $me) {
             $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
             ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
             ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
@@ -81,17 +81,17 @@ class School extends AbstractMapper
         if (! empty($search)) {
             $select->where(array('(school.name LIKE ? ' => '%' . $search . '%'))->where(array('school.short_name LIKE ? )' => '%' . $search . '%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR);
         }
-        if(!empty($exclude)) {
+        if (!empty($exclude)) {
             $select->where(new NotIn('school.id', $exclude));
         }
         if (null !== $user_id) {
             $select->join(['ou' => 'organization_user'], 'ou.organization_id = school.id', [], $select::JOIN_LEFT)->where(['ou.user_id' => $user_id]);
         }
-        if(null !== $type){
+        if (null !== $type) {
             $select->where(array('type' => $type));
         }
 
-        if(null !== $parent_id) {
+        if (null !== $parent_id) {
             $select->join(['org' => 'organization_relation'], 'org.organization_id=school.id', [], $select::JOIN_LEFT)->where(['org.parent_id' => $parent_id]);
         }
 

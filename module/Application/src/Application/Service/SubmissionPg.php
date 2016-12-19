@@ -15,7 +15,7 @@ class SubmissionPg extends AbstractService
 {
     /**
      * Add Submission Speed Grader.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -30,7 +30,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Delete Submission Speed Grader.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -43,9 +43,9 @@ class SubmissionPg extends AbstractService
 
     /**
      * Get List Submission Speed Grader.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $item_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -57,7 +57,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Get List.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -76,7 +76,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Delete By Item.
-     * 
+     *
      * @param int $item_id
      *
      * @return bool
@@ -94,7 +94,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Check Grader.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -107,7 +107,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Replace submission peer grader.
-     * 
+     *
      * @param int   $submission_id
      * @param array $user_id
      *
@@ -125,9 +125,9 @@ class SubmissionPg extends AbstractService
 
     /**
      * Auto Assign peer.
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $item_id
      */
     public function autoAssign($item_id)
@@ -165,11 +165,11 @@ class SubmissionPg extends AbstractService
 
     /**
      * Auto Assign peer (while === false).
-     * 
+     *
      * @param array $ar_u
      * @param array $ar_s
      * @param int   $nb
-     * 
+     *
      * @return array
      */
     public function _autoAssign($users, $submissions, $nb)
@@ -225,7 +225,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Get Service Submission.
-     * 
+     *
      * @return \Application\Service\Submission
      */
     private function getServiceSubmission()
@@ -235,7 +235,7 @@ class SubmissionPg extends AbstractService
 
     /**
      * Get Service OptGrading.
-     * 
+     *
      * @return \Application\Service\OptGrading
      */
     private function getServiceOptGrading()

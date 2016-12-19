@@ -17,7 +17,7 @@ class SubmissionUser extends AbstractService
 {
     /**
      * Create Submission User, Add and remove do a diff.
-     * 
+     *
      * @param int   $submission_id
      * @param array $users
      *
@@ -53,7 +53,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Add Submission User.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -66,7 +66,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Overwritten Grade.
-     * 
+     *
      * @param int $submission_id
      * @param int $grade
      *
@@ -83,7 +83,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Set Grade submission user.
-     * 
+     *
      * @invokable
      *
      * @param int  $submission_id
@@ -102,7 +102,6 @@ class SubmissionUser extends AbstractService
         
         $ret_grade = $this->getMapper()->update($this->getModel()->setGrade($grade)->setOverwritten($overwritten), ['submission_id' => $submission_id, 'user_id' => $user_id]);
         if ($ret_grade) {
-            
             $m_item = $this->getServiceItem()->getBySubmission($submission_id);
             $m_inst = $this->getServiceUser()->getListIdInstructorByItem($m_item->getId());
             $m_user = $this->getServiceUser()->getListIdBySubmission($submission_id);
@@ -131,7 +130,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Get Submission with user model.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -163,7 +162,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Get Processed Grades.
-     * 
+     *
      * @param int $submission_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -175,7 +174,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Get List Submission User.
-     * 
+     *
      * @param int $submission_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
@@ -187,7 +186,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Get List Grade Submission User.
-     * 
+     *
      * @invokable
      *
      * @param array  $avg
@@ -215,7 +214,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Submit Submission User.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -234,7 +233,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Cancel a submit.
-     * 
+     *
      * @param int $submission_id
      * @param int $user_id
      *
@@ -253,7 +252,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Start the submission user.
-     * 
+     *
      * @invokable
      *
      * @param int $submission
@@ -271,7 +270,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * End the submission user.
-     * 
+     *
      * @invokable
      *
      * @param int $submission
@@ -289,7 +288,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Check if is finish.
-     * 
+     *
      * @param int $submission_id
      *
      * @return bool
@@ -301,7 +300,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Get Service User.
-     * 
+     *
      * @return \Application\Service\User
      */
     private function getServiceUser()
@@ -311,7 +310,7 @@ class SubmissionUser extends AbstractService
 
     /**
      * Get Service Event.
-     * 
+     *
      * @return \Application\Service\Event
      */
     private function getServiceEvent()

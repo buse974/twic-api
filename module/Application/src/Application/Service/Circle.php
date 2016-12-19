@@ -19,7 +19,7 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param string $name            
+     * @param string $name
      * @throws \Exception
      * @return int
      */
@@ -38,8 +38,8 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
-     * @param string $name            
+     * @param int $id
+     * @param string $name
      * @return int
      */
     public function update($id, $name)
@@ -54,7 +54,7 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id            
+     * @param int $id
      * @return int
      */
     public function delete($id)
@@ -97,9 +97,9 @@ class Circle extends AbstractService
     
     /**
      * Add relation Circle Organizations
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $id
      * @param int|array $organizations
      */
@@ -110,9 +110,9 @@ class Circle extends AbstractService
     
     /**
      * Remove relation Circle Organizations
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $id
      * @param int|array $organizations
      */
@@ -123,13 +123,11 @@ class Circle extends AbstractService
     
     /**
      * Get Service CircleOrganization
-     * 
+     *
      * @return \Application\Service\CircleOrganization
      */
     private function getServiceCircleOrganization()
     {
         return $this->container->get('app_service_circle_organization');
     }
-    
-    
 }

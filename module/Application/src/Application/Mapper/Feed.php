@@ -17,7 +17,7 @@ class Feed extends AbstractMapper
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo'), $select::JOIN_LEFT)
             ->group('feed.id')
             ->order(array('feed.id DESC'));
-        if(true !== $is_sadmin){
+        if (true !== $is_sadmin) {
             $select->where(array('feed.deleted_date IS NULL'));
         }
         if (null !== $ids) {
