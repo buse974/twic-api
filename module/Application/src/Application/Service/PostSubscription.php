@@ -34,6 +34,10 @@ class PostSubscription extends AbstractService
             $libelle = [$libelle];
         }
 
+        if(is_array($data)) {
+          $data = json_encode($data);
+        }
+
         $m_post_subscription = $this->getModel()
             ->setPostId($post_id)
             ->setAction($action)
