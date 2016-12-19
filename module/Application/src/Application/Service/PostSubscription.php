@@ -93,7 +93,7 @@ class PostSubscription extends AbstractService
 
         $m_post_subscription = $this->getMapper()->getLast($post_id, $user_id)->current();
 
-        if (is_string($m_post_subscription->getData())) {
+        if ($m_post_subscription && is_string($m_post_subscription->getData())) {
             $m_post_subscription->setData(json_decode($m_post_subscription->getData(), true));
         }
 
@@ -126,7 +126,7 @@ class PostSubscription extends AbstractService
 
         $m_post_subscription = $this->getMapper()->getLastLite($post_id, $user_id)->current();
 
-        if (is_string($m_post_subscription->getData())) {
+        if ($m_post_subscription && is_string($m_post_subscription->getData())) {
             $m_post_subscription->setData(json_decode($m_post_subscription->getData(), true));
         }
 
