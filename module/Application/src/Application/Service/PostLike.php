@@ -23,7 +23,8 @@ class PostLike extends AbstractService
             ->setPostId($post_id)
             ->setUserId($user_id);
 
-        if ($this->getMapper()->select($m_post_like)->count() > 0) {
+        $m_post_like = $this->getMapper()->select($m_post_like);
+        if ($m_post_like && $m_post_like->count() > 0) {
             $m_post_like->setIsLike(true);
             $res = $this->getMapper()->update($m_post_like, [
                 'post_id' => $post_id,

@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.3",
-    'build-commit' => 296,
+    'build-commit' => 297,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -30,6 +30,11 @@ return [
                 'model' => 'Application\\Model',
             ],
         ],
+    ],
+    'box-conf' => [
+        'apikey' => 'cxtjsc7gmibtu84caf0grun8thbp2ga1',
+        'url' => 'https://view-api.box.com/1',
+        'adapter' => 'http-adapter',
     ],
     'gcm' => [
         'api_key' => 'AIzaSyCOoniWUpLoLIQTaVWfMfv_hisjm6mXFUI',
@@ -162,9 +167,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS296',
+                    'namespace' => 'LMS297',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS296'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS297'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
