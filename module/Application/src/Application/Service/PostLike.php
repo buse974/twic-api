@@ -22,7 +22,7 @@ class PostLike extends AbstractService
         $m_post_like = $this->getModel()
             ->setPostId($post_id)
             ->setUserId($user_id);
-    
+
         if ($this->getMapper()->select($m_post_like)->count() > 0) {
             $m_post_like->setIsLike(true);
             $res = $this->getMapper()->update($m_post_like, [
@@ -37,7 +37,7 @@ class PostLike extends AbstractService
                 throw new \Exception('error add like');
             }
             $res = $this->getMapper()->getLastInsertValue();
-            
+
             /*
              * Subscription
              */
@@ -49,13 +49,14 @@ class PostLike extends AbstractService
                 'P'.$this->getUserLike($m_post_like),
                 'M'.$m_post->getUserId(),
             ];
-            
-            $this->getServicePostSubscription()->add(array_unique($sub_post), $post_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id);
+
+            $this->getServicePostSubscription()->add(array_unique($sub_post), $post_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id, null,
+            ['id' => $post_id, 'parent_id' => $m_post->getParentId(), 'origin_id' => $m_post->getOriginId()]);
         }
-    
+
         return $res;
     }
-    
+
     /**
      * UnLike Post
      *
@@ -69,7 +70,7 @@ class PostLike extends AbstractService
         return $this->getMapper()->update($this->getModel()->setIsLike(false), [
             'post_id' => $post_id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]);
     }
-    
+
     /**
      * Get Post Like Lite
      *
@@ -79,12 +80,12 @@ class PostLike extends AbstractService
     public function getLite($id)
     {
         $res_post_like = $this->getMapper()->select($this->getModel()->setId($id));
-        
+
         return (is_array($id)) ?
             $res_post_like :
             $res_post_like->current();
     }
-    
+
     public function getUserLike(\Application\Model\PostLike $m_post_like)
     {
         switch (true) {
@@ -98,10 +99,10 @@ class PostLike extends AbstractService
                 $u ='U'.$m_post_like->getUserId();
                 break;
         }
-    
+
         return $u;
     }
-    
+
     /**
      * Get Service User
      *
@@ -111,7 +112,7 @@ class PostLike extends AbstractService
     {
         return $this->container->get('app_service_user');
     }
-    
+
     /**
      * Get Service Event.
      *
@@ -121,7 +122,7 @@ class PostLike extends AbstractService
     {
         return $this->container->get('app_service_event');
     }
-    
+
     /**
      * Get Service Post Like
      *
@@ -131,7 +132,7 @@ class PostLike extends AbstractService
     {
         return $this->container->get('app_service_post');
     }
-    
+
     /**
      * Get Service Post Like
      *

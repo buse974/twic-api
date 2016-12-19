@@ -55,6 +55,7 @@ class Post extends AbstractService
         $t_page_id = null, $t_organization_id = null, $t_user_id = null, $t_course_id = null, $page_id = null, $organization_id = null, $lat =null,
         $lng = null, $docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null)
     {
+
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $origin_id = null;
         if (null !== $parent_id) {
@@ -113,6 +114,13 @@ class Post extends AbstractService
         }
         $id = $this->getMapper()->getLastInsertValue();
 
+        $d = ['id' => $id, 'parent_id' => $parent_id, 'origin_id' => $origin_id];
+        if(is_array($data)) {
+          $data = array_merge($d, $data);
+        } else {
+          $data = $d;
+        }
+        
         if (null !== $docs) {
             $this->getServicePostDoc()->_add($id, $docs);
         }
