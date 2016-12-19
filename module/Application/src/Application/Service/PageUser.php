@@ -105,7 +105,6 @@ class PageUser extends AbstractService
         return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
     }
 
-
     /**
      * Delete Page User Relation
      *

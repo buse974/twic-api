@@ -674,6 +674,7 @@ class Event extends AbstractService
                 't_user_id' => $ar_post['t_user_id'],
                 't_course_id' => $ar_post['t_course_id'],
                 'parent_id' => $ar_post['parent_id'],
+                'origin_id' => $ar_post['origin_id'],
                 'type' => $ar_post['type'],
             ]
         ];
