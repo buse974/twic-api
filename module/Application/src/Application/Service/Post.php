@@ -145,7 +145,7 @@ class Post extends AbstractService
 
         $et = $this->getTarget($m_post_base);
         // S'IL Y A UNE CIBLE A LA BASE ET que l'on a pas definie d'abonnement ON NOTIFIE  P{target}nbr
-        if (false !== $et && empty($sub) && null === $parent_id) {
+        if (false !== $et && empty($sub) /*&& null === $parent_id*/) {
             $pevent = array_merge($pevent, ['P'.$et]);
         }
 
