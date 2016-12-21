@@ -124,8 +124,8 @@ class Feed extends AbstractService
             return $this->getMapper()->update($m_feed, array('id' => $id));
         }
     }
-    
-    
+
+
     /**
      * Reactivate Feed.
      *

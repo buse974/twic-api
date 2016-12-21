@@ -55,14 +55,14 @@ class PageUser extends AbstractService
                         'user' => $uid,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                    ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page');
+                    ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
                 } else {
                     $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
                         'state' => 'member',
                         'user' => $uid,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                    ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page');
+                    ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
                 }
             }
 
@@ -100,7 +100,7 @@ class PageUser extends AbstractService
                         'user' => $user_id,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                    ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page');
+                    ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $user_id/*user*/, null/*course*/, 'page');
                 }
             }
         }
