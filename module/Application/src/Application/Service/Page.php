@@ -266,8 +266,8 @@ class Page extends AbstractService
 
         $m_page->setTags($this->getServicePageTag()->getList($id));
         $m_page->setDocs($this->getServicePageDoc()->getList($id));
-        $m_page->setUsers($this->getServicePageUser()->getList($id, [ 'p' => 1 ], $m_page->getRole()));
-        $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, [ 'n' => 4, 'p' => 1 ]));
+        $m_page->setUsers($this->getServicePageUser()->getList($id, null, $m_page->getRole()));
+        $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, null));
         $this->getOwner($m_page);
 
         return $m_page;
@@ -312,7 +312,7 @@ class Page extends AbstractService
         foreach ($res_page as $m_page) {
             $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
             $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
-            $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), [ 'p' => 1, 'n' => 5 ], $m_page->getRole()));
+            $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), null, $m_page->getRole()));
             $this->getOwner($m_page);
         }
 

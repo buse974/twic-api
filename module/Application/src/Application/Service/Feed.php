@@ -242,7 +242,6 @@ class Feed extends AbstractService
 
         $return = $page->getMeta()->toArray();
         $return['images'] = $page->getImages()->getImages();
-
         if (isset($return['meta'])) {
             foreach ($return['meta'] as &$v) {
                 $v = html_entity_decode(html_entity_decode($v));
