@@ -86,13 +86,13 @@ class Contact extends AbstractService
                 $name .= ' '.$m_user->getLastname();
             }
         }
-        
+
         $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
             ->setColor("#00A38B")
             ->setBody('Sent you a connection request');
-        
+
         $this->getServiceFcm()->send($user, [
             'data' => [
                 'type' => 'connection',
@@ -101,16 +101,16 @@ class Contact extends AbstractService
                     'user' => $user_id,
                 ],
             ],
-            
+
         ], $gcm_notification);
 
-        $l = 'C'.(($user > $user_id) ? $user_id:$user);
+        $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->addSys($l, 'Sent you a connection request', [
             'state' => 'request',
             'user' => $user_id,
             'contact' => $user,
         ], 'request', ['M'.$user], null, null, null, null, null, 'connection');
-        
+
         return $ret;
     }
 
@@ -160,13 +160,13 @@ class Contact extends AbstractService
                 $name .= ' '.$m_user->getLastname();
             }
         }
-        
+
         $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
             ->setColor("#00A38B")
             ->setBody('Accepted your request');
-        
+
         $this->getServiceFcm()->send($user, ['data' => [
             'type' => 'connection',
             'data' => [
@@ -175,14 +175,14 @@ class Contact extends AbstractService
                 ]
             ]
         ], $gcm_notification);
-        
-        $l = 'C'.(($user > $user_id) ? $user_id:$user);
+
+        $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->updateSys($l, 'Accepted your request', [
             'state' => 'accept',
             'user' => $user_id,
             'contact' => $user,
         ], 'accept', ['M'.$user_id, 'M'.$user]);
-        
+
         return true;
     }
 
@@ -219,10 +219,10 @@ class Contact extends AbstractService
 
         $this->getServiceSubscription()->delete('PU'.$user, $user_id);
         $this->getServiceSubscription()->delete('EU'.$user, $user_id);
-        
+
         $this->getServiceSubscription()->delete('PU'.$user_id, $user);
         $this->getServiceSubscription()->delete('EU'.$user_id, $user);
-        
+
         $this->getServiceEvent()->userDeleteConnection($user_id, $user);
         $this->getServiceFcm()->send($user, ['data' => [
             'type' => 'connection',
@@ -232,11 +232,10 @@ class Contact extends AbstractService
                 ]
             ]
         ]);
-        
 
-        $l = 'C'.(($user > $user_id) ? $user_id:$user);
+        $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->hardDelete($l);
-        
+
         return true;
     }
 
@@ -271,7 +270,7 @@ class Contact extends AbstractService
             $request->setContact($this->getServiceUser()
                 ->get($request->getContactId()));
         }
-    
+
         return $listRequest;
     }
 
@@ -299,7 +298,7 @@ class Contact extends AbstractService
 
         return $listRequest;
     }
-    
+
       /**
      * Get User for mobile
      *
@@ -314,21 +313,21 @@ class Contact extends AbstractService
         if (null !== $exclude && !is_array($exclude)) {
             $exclude = [$exclude];
         }
-        
+
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-          
+
         $mapper = $this->getServiceUser()->getMapper();
         $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, null, null, null, null, null, $search, null, null, false, null, $exclude, null, 3);
-        
+
         $res = $res->toArray();
         $users = [];
         foreach ($res as &$user) {
             $users[] = $user['id'];
         }
-        
+
         return ['list' => $users,'count' => $mapper->count()];
     }
-    
+
     /**
      * Get List Id of contact.
      *
@@ -351,7 +350,7 @@ class Contact extends AbstractService
 
         return $ret;
     }
-    
+
     /**
      * Get list contact id by users.
      *
@@ -379,7 +378,7 @@ class Contact extends AbstractService
 
         return $contacts;
     }
-    
+
     /**
      * Get list contact id by users.
      *
@@ -407,7 +406,7 @@ class Contact extends AbstractService
 
         return $contacts;
     }
-    
+
     /**
      * Get list contact id by users.
      *
@@ -435,7 +434,7 @@ class Contact extends AbstractService
 
         return $contacts;
     }
-    
+
 
     /**
      * Get Service Event
@@ -446,7 +445,7 @@ class Contact extends AbstractService
     {
         return $this->container->get('app_service_event');
     }
-    
+
     /**
      * Get Service Subscription
      *
@@ -466,7 +465,7 @@ class Contact extends AbstractService
     {
         return $this->container->get('app_service_user');
     }
-    
+
     /**
      * Get Service Service Conversation User
      *
@@ -476,7 +475,7 @@ class Contact extends AbstractService
     {
         return $this->container->get('fcm');
     }
-    
+
     /**
      * Get Service Post
      *
