@@ -392,8 +392,9 @@ class Post extends AbstractService
     public function get($id)
     {
         $res_post = $this->_get($id);
+        $me = $this->getServiceUser()->getIdentity()['id'];
         foreach ($res_post as $m_post) {
-            $m_post->setComments($this->getMapper()->getList(null, null, null, null, null, $m_post->getId()));
+            $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
             $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
             $m_post->setSubscription($this->getServicePostSubscription()->getLastLite($m_post->getId()));
 
