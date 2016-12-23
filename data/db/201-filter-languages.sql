@@ -1,1 +1,1 @@
-DELETE FROM apilms.language WHERE libelle LIKE '%(%)%';
+DELETE FROM language WHERE libelle LIKE '%(%)%';
