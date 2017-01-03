@@ -3,6 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Page as ModelPage;
 use Application\Model\PostSubscription as ModelPostSubscription;
 
 class PostLike extends AbstractService
@@ -45,17 +46,24 @@ class PostLike extends AbstractService
             $m_post = $this->getServicePost()->getLite($post_id);
             $m_post_like = $this->getLite($res);
             $sub_post = [
-                'P'.$this->getServicePost()->getOwner($m_post),
                 'P'.$this->getServicePost()->getTarget($m_post),
-                'P'.$this->getUserLike($m_post_like),
                 'M'.$m_post->getUserId(),
             ];
 
             $origin_id = $m_post->getOriginId();
             $base_id = (is_numeric($origin_id)) ? $origin_id:$post_id;
+            $m_post_base = $this->getServicePost()->getLite($origin_id);
             if(is_numeric($origin_id)) {
-              $m_post_base = $this->getServicePost()->getLite($origin_id);
               $sub_post = array_merge($sub_post, ['P'.$this->getServicePost()->getTarget($m_post_base)]);
+            }
+
+            $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+            // si ce n'est pas privé on notifie les personne abonné au propriétaitre du like et du poste
+            if(!$is_private_page) {
+              $sub_post = array_merge($sub_post, [
+                  'P'.$this->getServicePost()->getOwner($m_post),
+                  'P'.$this->getUserLike($m_post_like),
+              ]);
             }
 
             $this->getServicePostSubscription()->add(array_unique($sub_post), $base_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id, null,
@@ -139,6 +147,16 @@ class PostLike extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
+    }
+
+    /**
+     * Get Service Page
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
     }
 
     /**

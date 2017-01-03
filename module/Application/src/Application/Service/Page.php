@@ -60,7 +60,7 @@ class Page extends AbstractService
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
         $this->getMapper()->insert($m_page);
-        $id = $this->getMapper()->getLastInsertValue();
+        $id = (int)$this->getMapper()->getLastInsertValue();
 
         if (! is_array($users)) {
             $users = [];

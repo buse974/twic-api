@@ -35,9 +35,6 @@ class PageUser extends AbstractService
             // inviter only event
             $m_page = $this->getServicePage()->getLite($page_id);
             if ($state === ModelPageUser::STATE_INVITED) {
-                //$this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
-                //$this->getServiceEvent()->pageNew($sub, $page_id);
-
                 $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
                     'user' => $uid,
@@ -46,23 +43,25 @@ class PageUser extends AbstractService
                 ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page');
 
             // member only group
-            } elseif ($state === ModelPageUser::STATE_MEMBER && $m_page->getUserId() !== $uid) {
+            } elseif ($state === ModelPageUser::STATE_MEMBER) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
-
-                if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                    $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
-                        'state' => 'member',
-                        'user' => $uid,
-                        'page' => $page_id,
-                        'type' => $m_page->getType(),
-                    ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
-                } else {
-                    $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
-                        'state' => 'member',
-                        'user' => $uid,
-                        'page' => $page_id,
-                        'type' => $m_page->getType(),
-                    ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
+                // Si il n'est pas le propriétaire on lui envoie une notification
+                if($m_page->getUserId() !== $uid) {
+                  if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                      $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
+                          'state' => 'member',
+                          'user' => $uid,
+                          'page' => $page_id,
+                          'type' => $m_page->getType(),
+                      ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
+                  } else {
+                      $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
+                          'state' => 'member',
+                          'user' => $uid,
+                          'page' => $page_id,
+                          'type' => $m_page->getType(),
+                      ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
+                  }
                 }
             }
 
@@ -91,7 +90,6 @@ class PageUser extends AbstractService
             $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
             if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
-                $this->getServiceSubscription()->add('EP'.$page_id, $user_id);
 
                 $m_page = $this->getServicePage()->getLite($page_id);
                 if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
@@ -192,16 +190,6 @@ class PageUser extends AbstractService
     private function getServiceSubscription()
     {
         return $this->container->get('app_service_subscription');
-    }
-
-    /**
-     * Get Service Event.
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**
