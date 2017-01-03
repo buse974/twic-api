@@ -426,15 +426,9 @@ class User extends AbstractService
 
         if ($school_id !== null) {
             $this->addSchool($school_id, $id, true);
-            $this->getServiceContact()->addBySchool($school_id);
 
-            $res_contact = $this->getServiceContact()->getList($id);
-            foreach ($res_contact as $m_contact) {
-                $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $id);
-                $this->getServiceSubscription()->add('PU'.$id, $m_contact->getContactId());
-            }
 
-            $this->getListBySchool($school_id);
+            //$this->getListBySchool($school_id);
         }
         /*try {
             $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));
@@ -989,6 +983,13 @@ class User extends AbstractService
             $ret = $this->getMapper()->update($this->getModel()
                 ->setId($user_id)
                 ->setSchoolId($school_id));
+
+            $this->getServiceContact()->addBySchool($school_id);
+            $res_contact = $this->getServiceContact()->getList($id);
+            foreach ($res_contact as $m_contact) {
+                $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $id);
+                $this->getServiceSubscription()->add('PU'.$id, $m_contact->getContactId());
+            }
         }
 
         return $ret;
