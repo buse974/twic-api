@@ -128,7 +128,6 @@ class Post extends AbstractService
         $base_id = ($origin_id) ? $origin_id:$id;
         $m_post_base = $this->getLite($base_id);
         $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
-
         $pevent = [];
 
         // si c pas une notification on gére les hastags
@@ -646,13 +645,4 @@ class Post extends AbstractService
         return $this->container->get('app_service_hashtag');
     }
 
-    /**
-     * Get Service Event.
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
-    }
 }

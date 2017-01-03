@@ -35,9 +35,6 @@ class PageUser extends AbstractService
             // inviter only event
             $m_page = $this->getServicePage()->getLite($page_id);
             if ($state === ModelPageUser::STATE_INVITED) {
-                //$this->getServiceEvent()->pageUserInvited(['SU'.$uid],$page_id);
-                //$this->getServiceEvent()->pageNew($sub, $page_id);
-
                 $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
                     'user' => $uid,
@@ -91,7 +88,6 @@ class PageUser extends AbstractService
             $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
             if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
-                $this->getServiceSubscription()->add('EP'.$page_id, $user_id);
 
                 $m_page = $this->getServicePage()->getLite($page_id);
                 if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
@@ -192,16 +188,6 @@ class PageUser extends AbstractService
     private function getServiceSubscription()
     {
         return $this->container->get('app_service_subscription');
-    }
-
-    /**
-     * Get Service Event.
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**
