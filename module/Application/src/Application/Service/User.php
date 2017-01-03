@@ -13,6 +13,7 @@ use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Role as ModelRole;
 use Firebase\Token\TokenGenerator;
 use Zend\Db\Sql\Predicate\IsNull;
+use Zend\Db\Sql\Predicate\IsNotNull;
 use Application\Model\Item as ModelItem;
 use Auth\Authentication\Adapter\Model\Identity;
 
@@ -1063,13 +1064,14 @@ class User extends AbstractService
             $password .= substr($cars, rand(0, $long - 1), 1);
         }
 
-        $ret = $this->getMapper()->update($this->getModel()
-            ->setNewPassword(md5($password)), array('email' => $email));
+        $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['email' => $email]);
 
         if ($ret > 0) {
             $user = $this->getMapper()
                 ->select($this->getModel()
                 ->setEmail($email))
+                ->setSuspensionDate(new IsNull())
+                ->setDeletedDate(new IsNull())
                 ->current();
 
             try {
