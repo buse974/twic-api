@@ -488,7 +488,7 @@ class User extends AbstractService
         $error = [];
         foreach ($data as $u) {
             try {
-                $id = $this->add($u['firstname'], $u['lastname'], $u['email'], null, null, null, $u['uid'], null, null, null, array_key_exists('school', $u) ? $u['school'] : null, null, null, [$u['role']]);
+                $id = $this->add($u['firstname'], $u['lastname'], $u['email'], null, null, null,  array_key_exists('uid', $u) ? $u['uid'] : null, null, null, null, array_key_exists('school', $u) ? $u['school'] : null, null, null, [$u['role']], null, null, array_key_exists('nickname', $u) ? $u['nickname'] : null);
             } catch (JrpcException $e) {
                 $error[] = ['field' => $u,'code' => $e->getCode(),'message' => $e->getMessage()];
             }
