@@ -1068,13 +1068,12 @@ class User extends AbstractService
         $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['email' => $email]);
 
         if ($ret > 0) {
-            $user = $this->getMapper()
-                ->select($this->getModel()
-                ->setEmail($email))
-                ->setSuspensionDate(new IsNull())
-                ->setDeletedDate(new IsNull())
-                ->current();
+          $m_user = $this->getModel()
+            ->setEmail($email)
+            ->setSuspensionDate(new IsNull())
+            ->setDeletedDate(new IsNull());
 
+            $user = $this->getMapper()->select($m_user)->current();
             try {
                 $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, array('password' => $password,'email' => $email,'lastname' => $user->getLastname(),'firstname' => $user->getFirstname()));
             } catch (\Exception $e) {
