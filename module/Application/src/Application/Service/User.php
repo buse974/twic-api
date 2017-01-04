@@ -985,10 +985,10 @@ class User extends AbstractService
                 ->setSchoolId($school_id));
 
             $this->getServiceContact()->addBySchool($school_id);
-            $res_contact = $this->getServiceContact()->getList($id);
+            $res_contact = $this->getServiceContact()->getList($user_id);
             foreach ($res_contact as $m_contact) {
-                $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $id);
-                $this->getServiceSubscription()->add('PU'.$id, $m_contact->getContactId());
+                $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $user_id);
+                $this->getServiceSubscription()->add('PU'.$user_id, $m_contact->getContactId());
             }
         }
 
