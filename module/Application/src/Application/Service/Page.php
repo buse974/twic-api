@@ -155,7 +155,6 @@ class Page extends AbstractService
             ->setEndDate($end_date)
             ->setLocation($location)
             ->setType($type)
-            ->setUserId($user_id)
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
 
