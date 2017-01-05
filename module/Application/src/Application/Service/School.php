@@ -27,11 +27,11 @@ class School extends AbstractService
     public function getCustom($libelle)
     {
         $res_school = $this->getMapper()->getCustom($libelle);
-        
+
         if ($res_school->count() <= 0) {
             throw new JrpcException('No custom fields for ' . $libelle);
         }
-        
+
         return $res_school->current();
     }
 
@@ -74,26 +74,26 @@ class School extends AbstractService
             ->setLibelle($libelle)
             ->setContactId($contact_id)
             ->setType($type);
-        
+
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);
             if ($address && null !== ($address_id = $address->getId())) {
                 $m_school->setAddressId($address_id);
             }
         }
-        
+
         if ($this->getMapper()->insert($m_school) <= 0) {
             throw new \Exception('error insert');
         }
-        
+
         $school_id = $this->getMapper()->getLastInsertValue();
-        
+
         if (null !== $circle_id) {
             $this->getServiceCircle()->addOrganizations($circle_id, $school_id);
         }
         //$this->getServiceEvent()->schoolNew($school_id);
         $this->getServiceGrading()->initTpl($school_id);
-        
+
         return $this->get($school_id);
     }
 
@@ -140,12 +140,12 @@ class School extends AbstractService
             ->setShortName($short_name)
             ->setPhone($phone)
             ->setBackground($background);
-        
+
         $identity = $this->getServiceUser()->getIdentity();
         if (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) {
             $m_school->setCustom($custom)->setLibelle($libelle);
         }
-        
+
         if ($address !== null) {
             $address_id = $this->getServiceAddress()
                 ->getAddress($address)
@@ -154,7 +154,7 @@ class School extends AbstractService
                 $m_school->setAddressId($address_id);
             }
         }
-        
+
         return $this->getMapper()->update($m_school);
     }
 
@@ -169,16 +169,16 @@ class School extends AbstractService
     public function get($id)
     {
         $results = $this->getMapper()->get($id);
-        
-        if ($m_school = $results->count() <= 0) {
+
+        if ($results->count() <= 0) {
             throw new \Exception('not school with id: ' . $id);
         }
-        
+
         return (is_array($id)) ?
-            $results :
+            $results->toArray(['id']) :
             $results->current();
     }
-    
+
        /**
      * Get School for mobile
      *
@@ -192,7 +192,7 @@ class School extends AbstractService
         if (!is_array($id)) {
             $id = [$id];
         }
-        
+
         return $this->getMapper()->select($this->getModel()->setId($id))->toArray(['id']);
     }
 
@@ -210,16 +210,16 @@ class School extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        
+
         $me = $identity['id'];
         $mapper = $this->getMapper();
         $res_school = $mapper->usePaginator($filter)->getList(($is_sadmin_admin) ? null:$me, $filter, $search, null, $exclude, $type, $parent_id);
-        
+
         foreach ($res_school as $m_school) {
             $program = $this->getServiceProgram()->getListBySchool($m_school->getId());
             $m_school->setProgram(($program->count() > 0) ? $program : []);
         }
-        
+
         return ['count' => $mapper->count(),'list' => $res_school];
     }
 
@@ -245,18 +245,18 @@ class School extends AbstractService
     public function delete($id)
     {
         $ret = array();
-        
+
         if (! is_array($id)) {
             $id = array($id);
         }
-        
+
         foreach ($id as $i) {
             $m_school = $this->getModel()
                 ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
                 ->setId($i);
             $ret[$i] = $this->getMapper()->update($m_school);
         }
-        
+
         return $ret;
     }
 
@@ -309,7 +309,7 @@ class School extends AbstractService
     {
         return $this->container->get('app_service_circle');
     }
-    
+
     /**
      * Get Service User
      *

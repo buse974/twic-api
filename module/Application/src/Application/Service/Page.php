@@ -258,18 +258,21 @@ class Page extends AbstractService
         }
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $m_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_sadmin_admin)->current();
-        if (false === $m_page) {
+        $res_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_sadmin_admin);
+
+        if($res_page->count() <= 0) {
             throw new \Exception('This page does not exist');
         }
 
-        $m_page->setTags($this->getServicePageTag()->getList($id));
-        $m_page->setDocs($this->getServicePageDoc()->getList($id));
-        $m_page->setUsers($this->getServicePageUser()->getList($id, null, $m_page->getRole()));
-        $m_page->setEvents($this->getList(null, $id, null, null, ModelPage::TYPE_EVENT, null, null, null, null));
-        $this->getOwner($m_page);
+        foreach ($res_page as $m_page) {
+            $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
+            $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
+            $m_page->setUsers($this->getServicePageUser()->getList(v, null, $m_page->getRole()));
+            $m_page->setEvents($this->getList(null, $m_page->getId(), null, null, ModelPage::TYPE_EVENT, null, null, null, null));
+            $this->getOwner($m_page);
+        }
 
-        return $m_page;
+        return (is_array($id)) ? $res_page->toArray(['id']) : $res_page->current();
     }
 
     /**
