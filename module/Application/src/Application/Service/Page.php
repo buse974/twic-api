@@ -271,7 +271,8 @@ class Page extends AbstractService
             $m_page->setEvents($this->getList(null, $m_page->getId(), null, null, ModelPage::TYPE_EVENT, null, null, null, null));
             $this->getOwner($m_page);
         }
-
+        
+        $res_page->rewind();
         return (is_array($id)) ? $res_page->toArray(['id']) : $res_page->current();
     }
 
