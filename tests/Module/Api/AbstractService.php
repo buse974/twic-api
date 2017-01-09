@@ -20,7 +20,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     public function reset($keepPersistence = false)
     {
         parent::reset($keepPersistence);
-        
+
         $this->setApplicationConfig(include __DIR__ . '/../../config/application.config.php');
         $serviceLocator = $this->getApplicationServiceLocator();
         $serviceLocator->setAllowOverride(true);
@@ -49,7 +49,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     public function jsonRpc($method, array $params, $hasToken = null)
     {
         $postJson = array('method' => $method,'id' => 1,'params' => $params);
-        
+
         return $this->jsonRpcRequest($postJson, $hasToken);
     }
 
@@ -64,10 +64,10 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         $postJson = json_encode($request);
         file_put_contents(__DIR__ . '/../../_files/input.data', $postJson);
         $this->getRequest()->setMethod('POST');
-        
+
         $this->dispatch('/api.json-rpc');
         $response = $this->getResponse()->getContent();
-        
+
         if (is_string($response)) {
             exit($response);
         } elseif (is_array($response)) {
@@ -77,7 +77,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         } else {
             $ret = Json::decode($response, Json::TYPE_ARRAY);
         }
-        
+
         return $ret;
     }
 
@@ -96,16 +96,16 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
     {
         return file_get_contents(__DIR__ . '/../../_files/mail.data');
     }
-    
+
     // /////////////////////////////////////////////////////////////////////////////
     // /////////////////////////////////////////////////////////////////////////////
     public function validateDate($date, $format = 'Y-m-d H:i:s')
     {
         $d1 = \DateTime::createFromFormat('Y-m-d\TH:i:s\Z', $date, new \DateTimeZone('UTC'));
         $d2 = \DateTime::createFromFormat('Y-m-d H:i:s', $date, new \DateTimeZone('UTC'));
-        
+
         $d = ($d1 != false) ? $d1 : (($d2 != false) ? $d2 : false);
-        
+
         return $d && ($d->format('Y-m-d\TH:i:s\Z') == $date || $d->format('Y-m-d H:i:s') == $date);
     }
 
@@ -165,7 +165,7 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
                 }
             }
         }
-        
+
         return $data;
     }
 
@@ -174,43 +174,43 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         $identityMock = $this->getMockBuilder('\Auth\Authentication\Adapter\Model\Identity')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $identityMock->expects($this->any())
             ->method('getId')
             ->will($this->returnValue($id));
-        
+
         $identityMock->expects($this->any())
             ->method('toArray')
             ->will($this->returnValue(['id' => $id,'token' => $id . '-token','firstname' => 'toto','avatar' => 'avatar','lastname' => 'tata','organizations' => [['id' => 1],['id' => 3]]]));
-        
+
         $authMock = $this->getMockBuilder('\Zend\Authentication\AuthenticationService')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $authMock->expects($this->any())
             ->method('getIdentity')
             ->will($this->returnValue($identityMock));
-        
+
         $authMock->expects($this->any())
             ->method('hasIdentity')
             ->will($this->returnValue(true));
-        
+
         $rbacMock->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true));
-        
+
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
-        
+
         if (null !== $role) {
             if (! is_array($role)) {
                 $role = [$role];
             }
-            
+
             $tr = [];
             foreach ($role as $rr) {
                 switch ($rr) {
@@ -234,15 +234,15 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
                         break;
                 }
             }
-            
+
             $userMock = $this->getMockBuilder('\Application\Service\User')->getMock();
             $userMock->expects($this->any())
                 ->method('getIdentity')
                 ->willReturn(['id' => $id,'token' => $id . '-token','firstname' => 'toto','avatar' => 'avatar','lastname' => 'tata','roles' => $tr,'school' => ['id' => 1,'name' => 'Morbi Corporation','short_name' => 'turpis','logo' => '','background' => ''],'organizations' => [['id' => 1],['id' => 3]],'organization_id' => 1,'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5','fbtoken' => 'eyJ0eXAiOiJKV1QiL']);
-            
+
             $serviceManager->setService('app_service_user', $userMock);
         }
-        
+
         $serviceManager->setService('auth.service', $authMock);
         $serviceManager->setService('rbac.service', $rbacMock);
     }
@@ -252,11 +252,11 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         $rbacMock = $this->getMockBuilder('\Rbac\Service\Rbac')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $rbacMock->expects($this->any())
             ->method('isGranted')
             ->will($this->returnValue(true));
-        
+
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         $serviceManager->setService('rbac.service', $rbacMock);

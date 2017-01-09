@@ -76,8 +76,10 @@ class PageDoc extends AbstractService
     }
 
     /**
+     * List Document of Page
      *
-     * @param unknown $page_id
+     * @param int $page_id
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($page_id)
@@ -86,6 +88,7 @@ class PageDoc extends AbstractService
     }
 
     /**
+     * Get Service Library
      *
      * @return \Application\Service\Library
      */

@@ -37,18 +37,18 @@ class Program extends AbstractService
         if (!$this->getServiceUser()->checkOrg($school_id)) {
             throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
-        
+
         $m_program = $this->getModel();
         $m_program->setName($name)
             ->setSchoolId($school_id)
             ->setLevel($level)
             ->setSis($sis)
             ->setYear($year);
-        
+
         if ($this->getMapper()->insert($m_program) <= 0) {
             throw new \Exception('error insert');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -70,7 +70,7 @@ class Program extends AbstractService
         if (null !== $school_id && !$this->getServiceUser()->checkOrg($school_id)) {
             throw new JrpcException('unauthorized orgzanization: ' . $school_id);
         }
-        
+
         $m_program = $this->getModel();
         $m_program->setId($id)
             ->setName($name)
@@ -78,7 +78,7 @@ class Program extends AbstractService
             ->setLevel($level)
             ->setSis($sis)
             ->setYear($year);
-        
+
         return $this->getMapper()->update($m_program);
     }
 
@@ -108,7 +108,7 @@ class Program extends AbstractService
             $m_program->setCourse($this->getServiceCourse()
                 ->count($m_program->getId()));
         }
-        
+
         return $res_program;
     }
 
@@ -143,13 +143,13 @@ class Program extends AbstractService
         } else {
             $identity = $this->getServiceUser()->_get($user_id);
         }
-        
+
         $mapper = $this->getMapper();
         // @todo Faire du propre dans les roles une fois que les relations seront ok
         $is_admin_academic = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) || (in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']));
-        
+
         $res = $mapper->usePaginator($filter)->getList($user_id, $search, $school_id, $is_admin_academic, $self, $exclude);
-        
+
         return ['list' => $res,'count' => $mapper->count()];
     }
 
@@ -177,11 +177,11 @@ class Program extends AbstractService
     public function get($id)
     {
         $res_program = $this->getMapper()->get($id);
-        
+
         if ($res_program->count() <= 0) {
             throw new \Exception('error get program');
         }
-        
+
         $m_program = $res_program->current();
         $m_program->setStudent($this->getServiceUser()
             ->getList(null, 'student', null, null, $m_program->getId()));
@@ -189,10 +189,17 @@ class Program extends AbstractService
             ->getList(null, 'instructor', null, null, $m_program->getId()));
         $m_program->setCourse($this->getServiceCourse()
             ->getList($m_program->getId()));
-        
+
         return $m_program;
     }
 
+   /**
+    * Get List Program
+    *
+    * @param int $id
+    *
+    * @return \application\Model\Program|\Dal\
+    **/
     public function getLite($id)
     {
         $res_program = $this->getMapper()->select($this->getModel()->setId($id));
@@ -217,12 +224,12 @@ class Program extends AbstractService
         if (! is_array($id)) {
             $id = array($id);
         }
-        
+
         foreach ($id as $p) {
             $ret[$p] = $this->getMapper()->delete($this->getModel()
                 ->setId($p));
         }
-        
+
         return $ret;
     }
 

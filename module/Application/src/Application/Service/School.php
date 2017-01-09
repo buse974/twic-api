@@ -54,10 +54,13 @@ class School extends AbstractService
      * @param string $custom
      * @param string $libelle
      * @param string $circle_id
+     * @param string $type
+     * 
      * @throws \Exception
      * @return \Application\Model\School
      */
-    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null, $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null, $type = null)
+    public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null,
+    $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null, $type = null)
     {
         $formattedWebsite = $this->getFormattedWebsite($website);
         $m_school = $this->getModel()
@@ -204,6 +207,9 @@ class School extends AbstractService
      * @param array $filter
      * @param string $search
      * @param array $exclude
+     * @param string $type
+     * @param int $parent_id
+     *
      * @return array
      */
     public function getList($filter = null, $search = null, $exclude = null, $type = null, $parent_id = null)

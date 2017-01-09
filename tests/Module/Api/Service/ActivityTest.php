@@ -10,14 +10,13 @@ class ActivityTest extends AbstractService
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
-        
+
         parent::setUpBeforeClass();
     }
 
     public function testCanAdd()
     {
         $this->setIdentity(4);
-
         $data = $this->jsonRpc('activity.add', [
             'activities' => [
                 [
@@ -49,7 +48,7 @@ class ActivityTest extends AbstractService
             ]
             ]
         ]);
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals($data['result'][0], 1);
@@ -61,10 +60,8 @@ class ActivityTest extends AbstractService
     public function testCanAddTwo()
     {
         $this->setIdentity(4);
-        
         $data = $this->jsonRpc('activity.add', [
             'activities' => [[
-                
                 'date' => '2015-01-04',
                 'event' => 'eventdeux',
                 'object' => [
@@ -79,7 +76,7 @@ class ActivityTest extends AbstractService
                 ],
             ]],
         ]);
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals($data['result'][0], 3);
@@ -90,12 +87,12 @@ class ActivityTest extends AbstractService
     public function testCanGetListDate()
     {
         $this->setIdentity(1);
-    
+
         $data = $this->jsonRpc('activity.getList', array(
             'start_date' => '2015-01-03 ',
             'end_date' => '2015-01-04'
         ));
-    
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result'][0]), 11);
@@ -125,19 +122,19 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-    
+
     public function testCanAggregate()
     {
         $this->setIdentity(1);
-    
-        
+
+
         $data = $this->jsonRpc('activity.aggregate', array(
             'event' => 'event',
             'user' => 4,
             'object_id' => 3,
             'object_name' => 'submission'
         ));
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals(count($data['result']['event']), 3);
@@ -151,9 +148,9 @@ class ActivityTest extends AbstractService
     public function testCanGetList()
     {
         $this->setIdentity(1);
-        
+
         $data = $this->jsonRpc('activity.getList', array('event' => 'event'));
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 2);
         $this->assertEquals(count($data['result'][0]), 11);

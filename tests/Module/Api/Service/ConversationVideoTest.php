@@ -11,7 +11,7 @@ class ConversationVideoTest extends AbstractService
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
-        
+
         parent::setUpBeforeClass();
     }
 
@@ -22,24 +22,24 @@ class ConversationVideoTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.update', array('school_id' => $school_id));
         $this->reset();
-    
+
         // ADD PROGRAM
         $this->setIdentity(1);
         $data = $this->jsonRpc('program.add', array('name' => 'program name','school_id' => $school_id,'level' => 'emba','sis' => 'sis'));
         $program_id = $data['result'];
         $this->reset();
-         
+
         // ADD COURSE
         $this->setIdentity(1);
         $data = $this->jsonRpc('course.add', array('title' => 'IMERIR','abstract' => 'un_token','description' => 'description','objectives' => 'objectives','teaching' => 'teaching','attendance' => 'attendance','duration' => 18,'notes' => 'notes','learning_outcomes' => 'learning_outcomes','video_link' => 'http://google.fr','video_token' => 'video_token','material_document' => array(array('type' => 'link','title' => 'title','author' => 'author','link' => 'link','source' => 'source','token' => 'token','date' => '2011-01-01')),'program_id' => $program_id));
         $course_id = $data['result']['id'];
         $this->reset();
-    
+
         // ADD Program USER
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.addProgram', array('user' => 1,'program' => $program_id));
         $this->reset();
-        
+
         // ADD COURSE USER
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.addCourse', array('user' => 1,'course' => $course_id));
@@ -51,20 +51,20 @@ class ConversationVideoTest extends AbstractService
         $this->reset();
 
         $this->reset();
-    
+
         return [
             'school_id' => $school_id,
             'course_id' => $course_id
         ];
     }
-     
+
     /**
      * @depends testCreateInit
      */
     public function testAddItem($data)
     {
         $this->setIdentity(1);
-    
+
         $data = $this->jsonRpc('item.add',
             [
                 'course' => (int)$data['course_id'],
@@ -81,15 +81,15 @@ class ConversationVideoTest extends AbstractService
                 'parent' => null,
                 'order' => null,
             ]);
-    
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
-    
+
         return $data['result'];
     }
-    
+
     public function testCanAdd()
     {
         $this->setIdentity(1);
@@ -105,53 +105,53 @@ class ConversationVideoTest extends AbstractService
             'submission_id' => 1,
             'has_video' => true,
         ]);
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
-        
+
         return $data['result'];
     }
-    
+
     public function testCanGetListId()
     {
         $this->setIdentity(1, 4);
-    
+
         $data = $this->jsonRpc('conversation.getListId', []);
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 1);
         $this->assertEquals($data['result'][0], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-    
+
     public function testCanGetId()
     {
         $this->setIdentity(1, 4);
-    
+
         $data = $this->jsonRpc('conversation.getId', [
             'item_id' => 1,
         ]);
-    
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-    
+
     /**
      * @depends testCanAdd
      */
     public function testCanGet($conv_id)
     {
         $this->setIdentity(1);
-    
+
         $data = $this->jsonRpc('conversation.get', [
             'id' => $conv_id,
         ]);
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals(count($data['result']), 14);
@@ -162,7 +162,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from']), 1);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]), 15);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contact_state'], 0);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contacts_count'], 1);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['contacts_count'], 6);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['from'][0]['school']), 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['school']['id'], 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['from'][0]['school']['name'], "Morbi Corporation");
@@ -191,8 +191,8 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['document']), 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to']), 3);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]), 15);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contact_state'], 0);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contacts_count'], 0);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contact_state'], 3);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['contacts_count'], 6);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['school']), 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['school']['id'], 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['school']['name'], "Morbi Corporation");
@@ -213,8 +213,8 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][0]['roles'][0], "student");
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][0]['program']), 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]), 15);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contact_state'], 0);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contacts_count'], 0);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contact_state'], 3);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['contacts_count'], 6);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]['school']), 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['school']['id'], 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][1]['school']['name'], "Morbi Corporation");
@@ -236,7 +236,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][1]['program']), 0);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]), 15);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['contact_state'], 3);
-        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['contacts_count'], 1);
+        $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['contacts_count'], 6);
         $this->assertEquals(count($data['result']['messages']['list'][0]['message']['to'][2]['school']), 5);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['school']['id'], 1);
         $this->assertEquals($data['result']['messages']['list'][0]['message']['to'][2]['school']['name'], "Morbi Corporation");
@@ -356,7 +356,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals(!empty($data['result']['user_token']), true);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-   
+
     /**
      * @depends testCanAdd
      */
@@ -370,25 +370,25 @@ class ConversationVideoTest extends AbstractService
         $mock->expects($this->any())
             ->method('getArchive')
             ->willReturn(json_encode(['status' => 'available', 'duration' => 1234, 'url' => 'http://google.fr']));
-        
+
         $serviceManager->setAllowOverride(true);
         $serviceManager->setService('opentok.service', $mock);
         //MOCK
-        
+
         $this->setIdentity(1);
         $s_va = $serviceManager->get('app_service_video_archive');
         $s_va->add($con_id, 'myToken');
         $s_va->add($con_id, 'myToken2');
         $s_va->add($con_id, 'myToken3');
         $s_va->add($con_id, 'myToken4');
-        
+
         $s_va->checkStatus([
             'id' => 'myToken',
             'status' => 'uploaded',
             'link' => 'link'
         ]);
     }
-    
+
     /**
      * @depends testAddItem
      */
@@ -396,7 +396,7 @@ class ConversationVideoTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('videoarchive.getList', ['item_id' => $item_id]);
-    
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals(count($data['result']), 1);
@@ -422,7 +422,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['nationality']['short_name'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['gender'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['contact_state'], 0);
-        $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['contacts_count'], 1);
+        $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['contacts_count'], 6);
         $this->assertEquals(count($data['result'][0]['conversation_user'][0]['user']['school']), 5);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['school']['id'], 1);
         $this->assertEquals($data['result'][0]['conversation_user'][0]['user']['school']['name'], "Morbi Corporation");
@@ -464,7 +464,7 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['nationality']['short_name'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['gender'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['contact_state'], 3);
-        $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['contacts_count'], 1);
+        $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['contacts_count'], 6);
         $this->assertEquals(count($data['result'][0]['conversation_user'][1]['user']['school']), 5);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['school']['id'], 1);
         $this->assertEquals($data['result'][0]['conversation_user'][1]['user']['school']['name'], "Morbi Corporation");
@@ -505,8 +505,8 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['nationality']['id'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['nationality']['short_name'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['gender'], null);
-        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['contact_state'], 0);
-        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['contacts_count'], 0);
+        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['contact_state'], 3);
+        $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['contacts_count'], 6);
         $this->assertEquals(count($data['result'][0]['conversation_user'][2]['user']['school']), 5);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['school']['id'], 1);
         $this->assertEquals($data['result'][0]['conversation_user'][2]['user']['school']['name'], "Morbi Corporation");
@@ -547,8 +547,8 @@ class ConversationVideoTest extends AbstractService
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['nationality']['id'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['nationality']['short_name'], null);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['gender'], null);
-        $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['contact_state'], 0);
-        $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['contacts_count'], 0);
+        $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['contact_state'], 3);
+        $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['contacts_count'], 6);
         $this->assertEquals(count($data['result'][0]['conversation_user'][3]['user']['school']), 5);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['school']['id'], 1);
         $this->assertEquals($data['result'][0]['conversation_user'][3]['user']['school']['name'], "Morbi Corporation");

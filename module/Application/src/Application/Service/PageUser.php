@@ -1,11 +1,18 @@
 <?php
-
+/**
+ * TheStudnet (http://thestudnet.com).
+ *
+ * Page User
+ */
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
 
+/**
+ * Class PageUser
+ */
 class PageUser extends AbstractService
 {
 
@@ -138,6 +145,10 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
+     * @param int $page_id
+     * @param array $filter
+     * @param string $state
+
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($page_id, $filter = null, $state = null)

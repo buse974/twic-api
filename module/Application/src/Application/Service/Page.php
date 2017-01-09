@@ -25,12 +25,12 @@ class Page extends AbstractService
      * @invokable
      *
      * @param string $title
-     * @param string $logo
-     * @param string $background
      * @param string $description
-     * @param int $confidentiality
+     * @param string $confidentiality
      * @param string $type
+     * @param string $logo
      * @param string $admission
+     * @param string $background
      * @param string $start_date
      * @param string $end_date
      * @param string $location
@@ -39,9 +39,11 @@ class Page extends AbstractService
      * @param array $users
      * @param array $tags
      * @param array $docs
+     *
      * @return int
      */
-    public function add($title, $description, $confidentiality, $type, $logo = null, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
+    public function add($title, $description, $confidentiality, $type, $logo = null, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null,
+    $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [])
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
@@ -181,7 +183,6 @@ class Page extends AbstractService
         if (null !== $docs) {
             $this->getServicePageDoc()->replace($id, $docs);
         }
-
         if ($confidentiality !== null) {
             $tmp_m_post = $this->getMapper()->select($this->getModel()->setId($id))->current();
             if ($tmp_m_post->getConfidentiality() !== $confidentiality) {
@@ -259,7 +260,6 @@ class Page extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $res_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_sadmin_admin);
-
         if($res_page->count() <= 0) {
             throw new \Exception('This page does not exist');
         }
@@ -271,6 +271,8 @@ class Page extends AbstractService
             $m_page->setEvents($this->getList(null, $m_page->getId(), null, null, ModelPage::TYPE_EVENT, null, null, null, null));
             $this->getOwner($m_page);
         }
+
+        $res_page->rewind();
 
         return (is_array($id)) ? $res_page->toArray(['id']) : $res_page->current();
     }
@@ -288,6 +290,7 @@ class Page extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
+
     /**
      * Get Page
      *
@@ -297,6 +300,15 @@ class Page extends AbstractService
      * @param int $parent_id
      * @param int $user_id
      * @param int $organization_id
+     * @param string $type
+     * @param string $start_date
+     * @param string $end_date
+     * @param int $member_id
+     * @param array $filter
+     * @param bool $strict_dates
+     * @param string $search
+     * @param array $tags
+     *
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -321,7 +333,11 @@ class Page extends AbstractService
         return ['count' => $mapper->count(), 'list' => $res_page];
     }
 
-
+   /**
+    * Get owner string by Page Model
+    *
+    * @param \Application\Model\Page $m_page
+    */
     private function getOwner(\Application\Model\Page $m_page)
     {
         $owner = [];

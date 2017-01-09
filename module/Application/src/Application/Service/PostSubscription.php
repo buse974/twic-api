@@ -58,6 +58,8 @@ class PostSubscription extends AbstractService
     }
 
     /**
+     * Hard Delete Post Subscription
+     *
      * @param string $libelle
      * @param int $post_id
      * @return int
@@ -71,6 +73,13 @@ class PostSubscription extends AbstractService
         return $this->getMapper()->delete($m_post_subscription);
     }
 
+   /**
+    * Add Tag in Post
+    *
+    * @param array $ar
+    * @param int $id
+    * @param string $date
+    **/
     public function addHashtag($ar, $id, $date)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -84,8 +93,11 @@ class PostSubscription extends AbstractService
     }
 
     /**
+     * Get Last Model Post Subscription
      *
      * @param int $post_id
+     *
+     * @return \Application\Model\PostSubscription
      */
     public function getLast($post_id)
     {
@@ -101,8 +113,11 @@ class PostSubscription extends AbstractService
     }
 
     /**
+     * Get List Libelle of Post
      *
      * @param int $post_id
+     *
+     * @return array
      */
     public function getListLibelle($post_id)
     {
@@ -117,8 +132,11 @@ class PostSubscription extends AbstractService
     }
 
     /**
+     * Get Last Post Subscription
      *
      * @param int $post_id
+     *
+     * @return \Application\Model\PostSubscription
      */
     public function getLastLite($post_id)
     {

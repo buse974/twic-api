@@ -8,7 +8,7 @@ class SchoolTest extends AbstractService
     public static function setUpBeforeClass()
     {
         system('phing -q reset-db deploy-db');
-        
+
         parent::setUpBeforeClass();
     }
 
@@ -16,7 +16,7 @@ class SchoolTest extends AbstractService
     {
         // ADD SCHOOL
         $this->setIdentity(1);
-        $data = $this->jsonRpc('school.add', array(
+        $data = $this->jsonRpc('school.add', [
             'name' => 'université de monaco',
             'next_name' => 'buisness school',
             'short_name' => 'IUM','logo' => 'token',
@@ -29,17 +29,19 @@ class SchoolTest extends AbstractService
             'phone' => '+33480547852',
             'contact' => 'contact@ium.com',
             'contact_id' => 1,
-            'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))));
+            'address' => array("street_no" => 12,"street_type" => "rue","street_name" => "du stade","city" => array("name" => "Monaco"),"country" => array("name" => "Monaco"))]
+          );
+
         return $data['result']['id'];
     }
-    
+
     public function testCustom()
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('school.getCustom', array(
             'libelle' => 'gnam'
         ));
-        
+
         $this->assertEquals(count($data), 3);
         $this->assertEquals(count($data['result']), 3);
         $this->assertEquals($data['result']['id'], 3);

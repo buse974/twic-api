@@ -57,7 +57,7 @@ class PostLike extends AbstractService
               $sub_post = array_merge($sub_post, ['P'.$this->getServicePost()->getTarget($m_post_base)]);
             }
 
-            $is_private_page = (is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
+            $is_private_page = ($m_post_base && is_numeric($m_post_base->getTPageId()) && ($this->getServicePage()->getLite($m_post_base->getTPageId())->getConfidentiality() === ModelPage::CONFIDENTIALITY_PRIVATE));
             // si ce n'est pas privé on notifie les personne abonné au propriétaitre du like et du poste
             if(!$is_private_page) {
               $sub_post = array_merge($sub_post, [

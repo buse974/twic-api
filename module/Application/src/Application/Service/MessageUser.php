@@ -19,7 +19,7 @@ use ZendService\Google\Gcm\Notification as GcmNotification;
 class MessageUser extends AbstractService
 {
     private static $id = 0;
-    
+
     /**
      * Send message.
      *
@@ -48,7 +48,7 @@ class MessageUser extends AbstractService
             }
             $to = array_unique($to);
         }
-            
+
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         foreach ($to as $user) {
             $m_message_user = $this->getModel()
@@ -67,11 +67,11 @@ class MessageUser extends AbstractService
                 throw new \Exception('error insert message to');
             }
         }
-        
+
         // if type equal 2 CHAT
         $m_message = $this->getServiceMessage()->get($message_id);
         $message_text = (is_string($m_message->getText())) ? $m_message->getText() : "";
-        
+
         if ($m_message->getType() == 2 || $m_message->getType() == 3) {
 
             //////////////////// USER //////////////////////////////////
@@ -112,7 +112,7 @@ class MessageUser extends AbstractService
                 'created_date' => date('c'),
                 'type' => 2,
             ]);
-            
+
             if ($m_message->getType() == 2) {
                 ///////////////////////// FCM /////////////////////////////////
                 foreach ($to as $user) {
@@ -125,7 +125,7 @@ class MessageUser extends AbstractService
                             ->setColor("#00A38B")
                             ->setTag("CONV".$conversation_id)
                             ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text));
-                        
+
                         $this->getServiceFcm()->send($user, ['data' => [
                                 'type' => 'message',
                                 'data' => ['users' => $to,
@@ -139,11 +139,15 @@ class MessageUser extends AbstractService
                 }
             }
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
-    
+   /**
+    * Send Message Node message.publish
+    *
+    * @param string $data
+    */
     public function sendMessage($data)
     {
         $rep = false;
@@ -152,10 +156,10 @@ class MessageUser extends AbstractService
             ->setParams($data)
             ->setId(++ self::$id)
             ->setVersion('2.0');
-        
+
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
-        
+
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {
             $rep = $client->doRequest($request);
@@ -166,10 +170,10 @@ class MessageUser extends AbstractService
             syslog(1, 'Request: ' . $request->toJson());
             syslog(1, $e->getMessage());
         }
-    
+
         return $rep;
     }
-    
+
     /**
      * Get List MessasgeUser.
      *
@@ -197,7 +201,7 @@ class MessageUser extends AbstractService
 
         return ['list' => $res_message_user, 'count' => $mapper->count()];
     }
-    
+
     /**
      *
      * @param int $user_id
@@ -210,13 +214,13 @@ class MessageUser extends AbstractService
         $mapper = (null !== $filter) ?
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
-        
+
         $res_message_user = $mapper->getListLastMessage($this->getServiceUser()->getIdentity()['id'], $conversation_id);
         foreach ($res_message_user as $m_message_user) {
             $d = $this->getServiceMessageDoc()->getList($m_message_user->getMessage()->getId());
             $m_message_user->getMessage()->setDocument((count($d) !== 0) ? $d :[]);
         }
-        
+
         return $res_message_user;
     }
 
@@ -401,7 +405,7 @@ class MessageUser extends AbstractService
     {
         return $this->container->get('app_service_message_doc');
     }
-    
+
     /**
      * Get Service Service Message
      *
@@ -411,7 +415,7 @@ class MessageUser extends AbstractService
     {
         return $this->container->get('app_service_message');
     }
-    
+
     /**
      * Get Service Service Conversation User.
      *
@@ -421,7 +425,7 @@ class MessageUser extends AbstractService
     {
         return $this->container->get('app_service_conversation_user');
     }
-    
+
     /**
      * Get Service Service Conversation User.
      *
