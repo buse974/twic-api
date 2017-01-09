@@ -55,7 +55,7 @@ class School extends AbstractService
      * @param string $libelle
      * @param string $circle_id
      * @param string $type
-     * 
+     *
      * @throws \Exception
      * @return \Application\Model\School
      */
@@ -178,7 +178,7 @@ class School extends AbstractService
         }
 
         return (is_array($id)) ?
-            $results->toArray(['id']) :
+            $results->toArray() :
             $results->current();
     }
 
