@@ -192,7 +192,7 @@ class User extends AbstractMapper
         if ($is_sadmin_admin) {
             $select->columns(array(
                 'user$id' => new Expression('user.id'),
-                'firstname', 'lastname', 'email', 'nickname', 'ambassador',
+                'firstname', 'lastname', 'email', 'nickname', 'ambassador', 'email_sent',
                 'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
                 'position', 'interest', 'avatar', 'suspension_date', 'suspension_reason',
                 'user$contact_state' => $this->getSelectContactState($user_id),
@@ -306,6 +306,7 @@ class User extends AbstractMapper
         $select->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(array('user.id' => 'DESC'));
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 

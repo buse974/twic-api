@@ -389,6 +389,7 @@ class User extends AbstractService
             ->setBackground($background)
             ->setNickname($nickname)
             ->setAmbassador($ambassador)
+            ->setEmailSent(0)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         /*
          * schoolid vérifier que si il n'est pas admin le school id est
@@ -1112,7 +1113,7 @@ class User extends AbstractService
             for ($i = 0; $i < 8; ++ $i) {
                 $password .= substr($cars, rand(0, $long - 1), 1);
             }
-            $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['id' => $uid]);
+            $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password))->setEmailSent(1), ['id' => $uid]);
             if ($ret > 0) {
                 $m_user = $res_user->current();
                 try {
