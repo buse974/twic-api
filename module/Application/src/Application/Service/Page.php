@@ -217,11 +217,18 @@ class Page extends AbstractService
      * @return int
      */
     public function delete($id)
-    {
+    {   
+        
+        if(!is_array($id)){
+            $id = [$id];
+        }
         $m_page = $this->getModel()->setId($id)
             ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         if ($this->getMapper()->update($m_page)) {
-            $this->getServicePost()->hardDelete('PP'.$id);
+            foreach($id as $i){
+                $this->getServicePost()->hardDelete('PP'.$i);
+                
+            }
             return true;
         }
 

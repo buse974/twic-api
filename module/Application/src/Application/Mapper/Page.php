@@ -60,16 +60,7 @@ class Page extends AbstractMapper
             ->join(['page_page' => 'page'], 'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT)
             ->where(['page.deleted_date IS NULL']);
 
-        if (null !== $parent_id) {
-            $select->join(['parent' => 'page'], 'page.page_id = parent.id', [])
-                ->join(['parent_user' => 'page'], 'parent_user.page_id = parent.id', [], $select::JOIN_LEFT)
-                ->where(["( parent.confidentiality = 0 "])
-                ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
-        } else {
-            $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
-                ->where(["( page.confidentiality = 0 "])
-                ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
-        }
+     
 
         $select->where($where);
 
@@ -107,6 +98,17 @@ class Page extends AbstractMapper
         }
 
         if ($is_sadmin_admin === false) {
+            
+            if (null !== $parent_id) {
+                $select->join(['parent' => 'page'], 'page.page_id = parent.id', [])
+                    ->join(['parent_user' => 'page'], 'parent_user.page_id = parent.id', [], $select::JOIN_LEFT)
+                    ->where(["( parent.confidentiality = 0 "])
+                    ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
+            } else {
+                $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
+                    ->where(["( page.confidentiality = 0 "])
+                    ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
+            }
             $select->join('user', 'page.user_id=user.id', [])
                ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
@@ -155,22 +157,24 @@ class Page extends AbstractMapper
         if (null !== $id) {
             $select->where(array('page.id' => $id));
         }
-        if (null !== $parent_id) {
-            $select
-                ->join(['parent' => 'page','page.page_id = parent.id'], [])
-                ->join(['parent_user' => 'page_user'], 'parent_user.page_id = parent.page_id', [], $select::JOIN_LEFT)
-                ->where(["( parent.confidentiality = 0 "])
-                ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
-        } else {
-            $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
-                ->where(["( page.confidentiality = 0 "])
-                ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
-            ;
-        }
+       
         if (null !== $type) {
             $select->where(array('page.type' => $type));
         }
         if ($is_sadmin_admin === false) {
+            if (null !== $parent_id) {
+                $select
+                    ->join(['parent' => 'page','page.page_id = parent.id'], [])
+                    ->join(['parent_user' => 'page_user'], 'parent_user.page_id = parent.page_id', [], $select::JOIN_LEFT)
+                    ->where(["( parent.confidentiality = 0 "])
+                    ->where([" parent_user.user_id = ? )" => $me], Predicate::OP_OR);
+            } else {
+                $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
+                    ->where(["( page.confidentiality = 0 "])
+                    ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
+                ;
+            }
+            
             $select->join('user', 'page.user_id=user.id', [])
                 ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
