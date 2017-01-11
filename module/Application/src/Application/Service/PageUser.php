@@ -100,9 +100,6 @@ class PageUser extends AbstractService
      */
     public function update($page_id, $user_id, $role, $state)
     {
-        /**
-
-      **/
         // si on doit labonner
         if (ModelPageUser::STATE_MEMBER === $state) {
             $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
@@ -164,13 +161,74 @@ class PageUser extends AbstractService
 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($page_id, $filter = null, $state = null)
+    public function getList($page_id, $filter = null, $role = null)
     {
-        $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($page_id, $state);
+      //@TODO Petit hack pour le filtre getList dans le mapper a optimisé
+      if(null === $role) {
+        $role = 'norole';
+      }
+      $mapper = $this->getMapper();
+      $res = $mapper->usePaginator($filter)->getList($page_id, $role);
 
-        return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
+      return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
+
+   /**
+     * Get List pageId by User and state
+     *
+     * @invokable
+     *
+     * @param array $users
+     * @param string $state
+     **/
+    public function _getListByUser($users, $state)
+    {
+      $result = $this->getMapper()->getList(null, null, $users, $state);
+      $ret = [];
+      foreach ($result as $m_page_user) {
+         $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
+      }
+
+      return $ret;
+    }
+
+   /**
+    * Get List MEMBER pageId by User
+    *
+    * @invokable
+    *
+    * @param array $users
+    */
+    public function m_getListByUser($users)
+    {
+    return $this->_getListByUser($users, ModelPageUser::STATE_MEMBER);
+    }
+
+    /**
+     * Get List INVITED pageId by User
+     *
+     * @invokable
+     *
+     * @param array $users
+     */
+     public function m_getInvitationListByUser($users)
+     {
+       return $this->_getListByUser($users, ModelPageUser::STATE_INVITED);
+     }
+
+     /**
+      * Get List PENDING pageId by User
+      *
+      * @invokable
+      *
+      * @param array $users
+      */
+      public function m_getApplicationListByUser($users)
+      {
+        return $this->_getListByUser($users, ModelPageUser::STATE_PENDING);
+      }
+
+
     /**
      * Add Array
      *
