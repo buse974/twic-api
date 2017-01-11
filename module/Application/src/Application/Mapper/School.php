@@ -18,7 +18,7 @@ class School extends AbstractMapper
     /**
      * Execute Request Get Custom
      *
-     * @param string $libelle
+     * @param  string $libelle
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getCustom($libelle)
@@ -55,11 +55,11 @@ class School extends AbstractMapper
     /**
      * Get school list
      *
-     * @param int $me
-     * @param array $filter
-     * @param string $search
-     * @param int $user_id
-     * @param array $exclude
+     * @param  int    $me
+     * @param  array  $filter
+     * @param  string $search
+     * @param  int    $user_id
+     * @param  array  $exclude
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function getList($me = null, $filter = null, $search = null, $user_id = null, $exclude = null, $type = null, $parent_id = null)
@@ -74,9 +74,9 @@ class School extends AbstractMapper
         
         if (null !== $me) {
             $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
-            ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
-            ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
-            ->where(['organization_user.user_id' => $me]);
+                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+                ->where(['organization_user.user_id' => $me]);
         }
         if (! empty($search)) {
             $select->where(array('(school.name LIKE ? ' => '%' . $search . '%'))->where(array('school.short_name LIKE ? )' => '%' . $search . '%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR);

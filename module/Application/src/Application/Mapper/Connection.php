@@ -24,9 +24,11 @@ class Connection extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns([
+        $select->columns(
+            [
             'connection$avg' => new Expression('AVG(TIMESTAMPDIFF(SECOND, connection.start, connection.end))'),
-            'connection$nbr_session' => new Expression('SUM(true)'), ])
+            'connection$nbr_session' => new Expression('SUM(true)'), ]
+        )
             ->join('user', 'user.id=connection.user_id', [])
             ->where(['user.school_id' => $school]);
 

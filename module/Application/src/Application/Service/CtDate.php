@@ -77,7 +77,9 @@ class CtDate extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 }

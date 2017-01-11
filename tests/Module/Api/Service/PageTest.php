@@ -183,7 +183,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.getList', ['user_id' => 1]);
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);

@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Post Subscription
- *
  */
 namespace Application\Service;
 
@@ -19,13 +17,13 @@ class PostSubscription extends AbstractService
     /**
      * Add Post Subscription
      *
-     * @param string $libelle
-     * @param int $post_id
-     * @param string $last_date
-     * @param string $action
-     * @param int $user_id
-     * @param int $sub_post_id
-     * @param mixed $data
+     * @param  string $libelle
+     * @param  int    $post_id
+     * @param  string $last_date
+     * @param  string $action
+     * @param  int    $user_id
+     * @param  int    $sub_post_id
+     * @param  mixed  $data
      * @return bool
      */
     public function add($libelle, $post_id, $last_date, $action, $user_id, $sub_post_id =null, $data = null)
@@ -34,8 +32,8 @@ class PostSubscription extends AbstractService
             $libelle = [$libelle];
         }
 
-        if(is_array($data)) {
-          $data = json_encode($data);
+        if (is_array($data)) {
+            $data = json_encode($data);
         }
 
         $m_post_subscription = $this->getModel()
@@ -60,8 +58,8 @@ class PostSubscription extends AbstractService
     /**
      * Hard Delete Post Subscription
      *
-     * @param string $libelle
-     * @param int $post_id
+     * @param  string $libelle
+     * @param  int    $post_id
      * @return int
      */
     public function delete($libelle, $post_id)
@@ -73,11 +71,11 @@ class PostSubscription extends AbstractService
         return $this->getMapper()->delete($m_post_subscription);
     }
 
-   /**
+    /**
     * Add Tag in Post
     *
-    * @param array $ar
-    * @param int $id
+    * @param array  $ar
+    * @param int    $id
     * @param string $date
     **/
     public function addHashtag($ar, $id, $date)

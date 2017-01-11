@@ -28,12 +28,14 @@ class ComponentScale extends AbstractService
      */
     public function add($component, $min, $max, $describe, $recommandation)
     {
-        if ($this->getMapper()->insert($this->getModel()
-            ->setComponentId($component)
-            ->setMin($min)
-            ->setMax($max)
-            ->setDescribe($describe)
-            ->setRecommandation($recommandation)) <= 0) {
+        if ($this->getMapper()->insert(
+            $this->getModel()
+                ->setComponentId($component)
+                ->setMin($min)
+                ->setMax($max)
+                ->setDescribe($describe)
+                ->setRecommandation($recommandation)
+        ) <= 0) {
             throw new \Exception('error insert component scale');
         }
 
@@ -51,8 +53,10 @@ class ComponentScale extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -71,13 +75,15 @@ class ComponentScale extends AbstractService
      */
     public function update($id, $component, $min, $max, $describe, $recommandation)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setId($id)
-            ->setComponentId($component)
-            ->setMin($min)
-            ->setMax($max)
-            ->setDescribe($describe)
-            ->setRecommandation($recommandation));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setComponentId($component)
+                ->setMin($min)
+                ->setMax($max)
+                ->setDescribe($describe)
+                ->setRecommandation($recommandation)
+        );
     }
 
     /**

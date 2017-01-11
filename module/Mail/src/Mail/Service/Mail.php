@@ -55,8 +55,8 @@ class Mail
     {
         $m_tpl = new TplModel();
         $m_tpl->setName($name)
-              ->setSubject($subject)
-              ->setFrom($from);
+            ->setSubject($subject)
+            ->setFrom($from);
 
         $html = new Part($content);
         $html->setEncoding(Mime::ENCODING_8BIT);

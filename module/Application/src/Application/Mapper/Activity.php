@@ -63,7 +63,7 @@ class Activity extends AbstractMapper
         }
         if (!$is_academic) {
             $select->join('course_user_relation', 'course.id = course_user_relation.course_id')
-                   ->where(['course_user_relation.user_id' => $me ]);
+                ->where(['course_user_relation.user_id' => $me ]);
         }
         
         return $this->selectWith($select);
@@ -76,8 +76,8 @@ class Activity extends AbstractMapper
 
         if (null !== $search) {
             $select->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
-                    ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
-                    ->where(['nickname LIKE ? ' => ''.$search.'%'], Predicate::OP_OR);
+                ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                ->where(['nickname LIKE ? ' => ''.$search.'%'], Predicate::OP_OR);
         }
         $select->order(['activity.id' => 'DESC']);
 

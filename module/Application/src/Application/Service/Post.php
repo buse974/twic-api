@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Post
- *
  */
 namespace Application\Service;
 
@@ -33,29 +31,28 @@ class Post extends AbstractService
      * @param string $name_picture
      * @param string $link_title
      * @param string $link_desc
-     * @param int $parent_id
-     * @param int $t_page_id
-     * @param int $t_organization_id
-     * @param int $t_user_id
-     * @param int $t_course_id
-     * @param int $page_id
-     * @param int $organization_id
-     * @param int $lat
-     * @param int $lng
-     * @param array $docs
+     * @param int    $parent_id
+     * @param int    $t_page_id
+     * @param int    $t_organization_id
+     * @param int    $t_user_id
+     * @param int    $t_course_id
+     * @param int    $page_id
+     * @param int    $organization_id
+     * @param int    $lat
+     * @param int    $lng
+     * @param array  $docs
      * @param string $data
      * @param string $event
      * @param string $uid
-     * @param array $sub
+     * @param array  $sub
      * @param string $type
      *
      * @return \Application\Model\Post
      */
     public function add($content = null, $picture = null, $name_picture = null, $link = null, $link_title = null, $link_desc = null, $parent_id = null,
         $t_page_id = null, $t_organization_id = null, $t_user_id = null, $t_course_id = null, $page_id = null, $organization_id = null, $lat =null,
-        $lng = null, $docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null)
-    {
-
+        $lng = null, $docs = null, $data = null, $event = null, $uid = null, $sub = null, $type = null
+    ) {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $origin_id = null;
         if (null !== $parent_id) {
@@ -115,10 +112,10 @@ class Post extends AbstractService
         $id = $this->getMapper()->getLastInsertValue();
 
         $d = ['id' => (int)$id, 'parent_id' => $parent_id, 'origin_id' => $origin_id];
-        if(is_array($data)) {
-          $data = array_merge($d, $data);
+        if (is_array($data)) {
+            $data = array_merge($d, $data);
         } else {
-          $data = $d;
+            $data = $d;
         }
 
         if (null !== $docs) {
@@ -132,9 +129,11 @@ class Post extends AbstractService
 
         // si c pas une notification on gére les hastags
         if (!$is_notif) {
-            $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
-                return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
-            });
+            $ar = array_filter(
+                explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                    return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+                }
+            );
 
             $this->getServiceHashtag()->add($ar, $id);
             $this->getServicePostSubscription()->addHashtag($ar, $id, $date);
@@ -179,7 +178,8 @@ class Post extends AbstractService
             $ev,
             $user_id,
             (($base_id!==$id) ? $id:null),
-            $data);
+            $data
+        );
 
         return $this->get($id);
     }
@@ -192,17 +192,17 @@ class Post extends AbstractService
      * @param string $data
      * @param string $event
      * @param string $sub
-     * @param int $parent_id
-     * @param int $t_page_id
-     * @param int $t_organization_id
-     * @param int $t_user_id
-     * @param int $t_course_id
+     * @param int    $parent_id
+     * @param int    $t_page_id
+     * @param int    $t_organization_id
+     * @param int    $t_user_id
+     * @param int    $t_course_id
      *
      * @return \Application\Model\Post
      */
     public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null, $t_organization_id = null,
-        $t_user_id = null, $t_course_id = null, $type = null)
-    {
+        $t_user_id = null, $t_course_id = null, $type = null
+    ) {
         if ($sub !== null && !is_array($sub)) {
             $sub = [$sub];
         }
@@ -211,8 +211,10 @@ class Post extends AbstractService
 
         return ($res_post->count() > 0) ?
             $this->update(null, $content, null, null, null, null, null, null, null, null, $data, $event, $uid, $sub) :
-            $this->add($content, null, null, null, null, null, $parent_id, $t_page_id, $t_organization_id, $t_user_id, $t_course_id, null, null, null, null, null,
-            $data, $event, $uid, $sub, $type);
+            $this->add(
+                $content, null, null, null, null, null, $parent_id, $t_page_id, $t_organization_id, $t_user_id, $t_course_id, null, null, null, null, null,
+                $data, $event, $uid, $sub, $type
+            );
     }
 
     /**
@@ -220,7 +222,7 @@ class Post extends AbstractService
      * @param string $content
      * @param string $data
      * @param string $event
-     * @param array $sub
+     * @param array  $sub
      * @return int
      */
     public function updateSys($uid, $content, $data, $event, $sub = null)
@@ -237,26 +239,26 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int    $id
      * @param string $content
      * @param string $link
      * @param string $picture
      * @param string $name_picture
      * @param string $link_title
      * @param string $link_desc
-     * @param int $lat
-     * @param int $lng
+     * @param int    $lat
+     * @param int    $lng
      * @param arrray $docs
      * @param string $data
      * @param string $event
-     * @param int $uid
-     * @param array $sub
+     * @param int    $uid
+     * @param array  $sub
      *
      * @return \Application\Model\Post
      */
     public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null,
-        $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null)
-    {
+        $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null
+    ) {
         if ($uid === null && $id === null) {
             throw new \Exception('error update: no $id and no $uid');
         }
@@ -301,9 +303,11 @@ class Post extends AbstractService
 
             // si c pas une notification on gére les hastags
             if (!$is_notif) {
-                $ar = array_filter(explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
-                    return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
-                });
+                $ar = array_filter(
+                    explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                        return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
+                    }
+                );
 
                 $this->getServiceHashtag()->add($ar, $id);
                 $this->getServicePostSubscription()->addHashtag($ar, $id, $date, ModelPostSubscription::ACTION_UPDATE);
@@ -329,7 +333,8 @@ class Post extends AbstractService
                 (!empty($event)? $event:ModelPostSubscription::ACTION_UPDATE),
                 $user_id,
                 null,
-                $data);
+                $data
+            );
         }
 
         return $this->getLite($id);
@@ -340,7 +345,7 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return int
      */
     public function delete($id)
@@ -368,7 +373,7 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return int
      */
     public function reactivate($id)
@@ -385,7 +390,7 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return \Application\Model\Post
      */
     public function get($id)
@@ -411,7 +416,7 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return ResultSet
      */
     public function _get($id, $is_mobile = false)
@@ -428,7 +433,7 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return \Application\Model\Post
      */
     public function m_get($id)
@@ -452,12 +457,12 @@ class Post extends AbstractService
      * @invokable
      *
      * @param array $filter
-     * @param int $user_id
-     * @param int $page_id
-     * @param int $organization_id
-     * @param int $course_id
-     * @param int $parent_id
-     * @param int $id
+     * @param int   $user_id
+     * @param int   $page_id
+     * @param int   $organization_id
+     * @param int   $course_id
+     * @param int   $parent_id
+     * @param int   $id
      */
     public function getList($filter = null, $user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null, $id = null)
     {
@@ -489,11 +494,11 @@ class Post extends AbstractService
      * @invokable
      *
      * @param array $filter
-     * @param int $user_id
-     * @param int $page_id
-     * @param int $organization_id
-     * @param int $course_id
-     * @param int $parent_id
+     * @param int   $user_id
+     * @param int   $page_id
+     * @param int   $organization_id
+     * @param int   $course_id
+     * @param int   $parent_id
      */
     public function getListId($filter = null, $user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null)
     {
@@ -512,8 +517,8 @@ class Post extends AbstractService
     /**
      * Get Post Lite
      *
-     * @param int $id
-     * @param int $uid
+     * @param  int $id
+     * @param  int $uid
      * @return \Application\Model\Post
      */
     public function getLite($id = null, $uid = null)
@@ -548,15 +553,15 @@ class Post extends AbstractService
     public function getOwner($m_post)
     {
         switch (true) {
-            case (is_numeric($m_post->getOrganizationId())):
-                $u = 'O'.$m_post->getOrganizationId();
-                break;
-            case (is_numeric($m_post->getPageId())):
-                $u = 'P'.$m_post->getPageId();
-                break;
-            default:
-                $u ='U'.$m_post->getUserId();
-                break;
+        case (is_numeric($m_post->getOrganizationId())):
+            $u = 'O'.$m_post->getOrganizationId();
+            break;
+        case (is_numeric($m_post->getPageId())):
+            $u = 'P'.$m_post->getPageId();
+            break;
+        default:
+            $u ='U'.$m_post->getUserId();
+            break;
         }
 
         return $u;
@@ -565,21 +570,21 @@ class Post extends AbstractService
     public function getTarget($m_post)
     {
         switch (true) {
-            case (is_numeric($m_post->getTCourseId())):
-                $t = 'C'.$m_post->getTCourseId();
-                break;
-            case (is_numeric($m_post->getTOrganizationId())):
-                $t = 'O'.$m_post->getTOrganizationId();
-                break;
-            case (is_numeric($m_post->getTPageId())):
-                $t = 'P'.$m_post->getTPageId();
-                break;
-            case (is_numeric($m_post->getTUserId())):
-                $t = 'U'.$m_post->getTUserId();
-                break;
-            default:
-                $t = false;
-                break;
+        case (is_numeric($m_post->getTCourseId())):
+            $t = 'C'.$m_post->getTCourseId();
+            break;
+        case (is_numeric($m_post->getTOrganizationId())):
+            $t = 'O'.$m_post->getTOrganizationId();
+            break;
+        case (is_numeric($m_post->getTPageId())):
+            $t = 'P'.$m_post->getTPageId();
+            break;
+        case (is_numeric($m_post->getTUserId())):
+            $t = 'U'.$m_post->getTUserId();
+            break;
+        default:
+            $t = false;
+            break;
         }
 
         return $t;
@@ -644,5 +649,4 @@ class Post extends AbstractService
     {
         return $this->container->get('app_service_hashtag');
     }
-
 }

@@ -27,9 +27,11 @@ class GroupUser extends AbstractService
             $users = [$users];
         }
         foreach ($users as $u) {
-            $this->getMapper()->insert($this->getModel()
-                ->setGroupId($group_id)
-                ->setUserId($u));
+            $this->getMapper()->insert(
+                $this->getModel()
+                    ->setGroupId($group_id)
+                    ->setUserId($u)
+            );
         }
 
         return true;
@@ -44,8 +46,10 @@ class GroupUser extends AbstractService
      */
     public function getListUser($group_id)
     {
-        $res_group_user = $this->getMapper()->select($this->getModel()
-            ->setGroupId($group_id));
+        $res_group_user = $this->getMapper()->select(
+            $this->getModel()
+                ->setGroupId($group_id)
+        );
         $u = [];
         foreach ($res_group_user as $m_group_user) {
             $u[] = $m_group_user->getUserId();
@@ -79,8 +83,10 @@ class GroupUser extends AbstractService
      */
     public function delete($group_id, $user_id = null)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setGroupId($group_id)
-            ->setUserId($user_id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setGroupId($group_id)
+                ->setUserId($user_id)
+        );
     }
 }

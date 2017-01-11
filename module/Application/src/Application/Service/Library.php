@@ -22,11 +22,11 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param string $name
-     * @param string $link
-     * @param string $token
-     * @param string $type
-     * @param int $folder_id
+     * @param  string $name
+     * @param  string $link
+     * @param  string $token
+     * @param  string $type
+     * @param  int    $folder_id
      * @throws \Exception
      * @return \Application\Model\Library
      */
@@ -80,7 +80,7 @@ class Library extends AbstractService
     /**
      * Add library
      *
-     * @param array $data
+     * @param  array $data
      * @return \Application\Model\Library
      */
     public function _add($data)
@@ -99,11 +99,11 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $name
-     * @param string $link
-     * @param string $token
-     * @param int $folder_id
+     * @param  int    $id
+     * @param  string $name
+     * @param  string $link
+     * @param  string $token
+     * @param  int    $folder_id
      * @return \Application\Model\Library
      */
     public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
@@ -130,11 +130,11 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
-     * @param int $folder_id
-     * @param bool $global
-     * @param string $folder_name
-     * @param unknown $user_id
+     * @param  array   $filter
+     * @param  int     $folder_id
+     * @param  bool    $global
+     * @param  string  $folder_name
+     * @param  unknown $user_id
      * @return array
      */
     public function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null)
@@ -197,7 +197,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $item
+     * @param  int $item
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item)
@@ -210,7 +210,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $item
+     * @param  int $item
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByParentItem($item)
@@ -221,7 +221,7 @@ class Library extends AbstractService
     /**
      * Get List Library By bank question id
      *
-     * @param int $bank_question_id
+     * @param  int $bank_question_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByBankQuestion($bank_question_id)
@@ -232,7 +232,7 @@ class Library extends AbstractService
     /**
      * Get List Library By Page id
      *
-     * @param int $page_id
+     * @param  int $page_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByPage($page_id)
@@ -243,7 +243,7 @@ class Library extends AbstractService
     /**
      * Get List Library By Post id
      *
-     * @param int $post_id
+     * @param  int $post_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByPost($post_id)
@@ -254,7 +254,7 @@ class Library extends AbstractService
     /**
      * Get List Library Material
      *
-     * @param int $course_id
+     * @param  int $course_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListMaterials($course_id)
@@ -267,7 +267,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $submission_id
+     * @param  int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id)
@@ -278,7 +278,7 @@ class Library extends AbstractService
     /**
      * Get List Library By conversation id
      *
-     * @param int $conversation_id
+     * @param  int $conversation_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByConversation($conversation_id)
@@ -289,7 +289,7 @@ class Library extends AbstractService
     /**
      * Get Library By item id
      *
-     * @param int $item_id
+     * @param  int $item_id
      * @return \Application\Model\Library
      */
     public function getByItem($item_id)
@@ -304,7 +304,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $item
+     * @param  int $item
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByCt($item)
@@ -317,7 +317,7 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return int
      */
     public function delete($id)
@@ -333,13 +333,15 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id
+     * @param  int|array $id
      * @return \Application\Model\Library|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
     {
-        $res_library = $this->getMapper()->select($this->getModel()
-            ->setId($id));
+        $res_library = $this->getMapper()->select(
+            $this->getModel()
+                ->setId($id)
+        );
         
         return (is_array($id)) ? $res_library : $res_library->current();
     }
@@ -349,8 +351,8 @@ class Library extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $box_id
+     * @param  int    $id
+     * @param  string $box_id
      * @throws \Exception
      * @throws JrpcException
      * @return void|\Box\Model\Session
@@ -362,8 +364,10 @@ class Library extends AbstractService
         }
         
         if (null !== $id) {
-            $res_library = $this->getMapper()->select($this->getModel()
-                ->setId($id));
+            $res_library = $this->getMapper()->select(
+                $this->getModel()
+                    ->setId($id)
+            );
             
             if ($res_library->count() <= 0) {
                 throw new \Exception();

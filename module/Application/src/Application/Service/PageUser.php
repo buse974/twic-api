@@ -12,6 +12,8 @@ use Application\Model\Page as ModelPage;
 
 /**
  * Class PageUser
+ *
+ *  @TODO Check vérification sécuriter des user page + parmas par default role use + exposer méthode spécifique pour l'acceptation
  */
 class PageUser extends AbstractService
 {
@@ -21,10 +23,10 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int|array $user_id
-     * @param string $role
-     * @param strung $state
+     * @param  int       $page_id
+     * @param  int|array $user_id
+     * @param  string    $role
+     * @param  strung    $state
      * @return int
      */
     public function add($page_id, $user_id, $role, $state)
@@ -42,33 +44,39 @@ class PageUser extends AbstractService
             // inviter only event
             $m_page = $this->getServicePage()->getLite($page_id);
             if ($state === ModelPageUser::STATE_INVITED) {
-                $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
+                $this->getServicePost()->addSys(
+                    'PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
                     'user' => $uid,
                     'page' => $page_id,
                     'type' => $m_page->getType(),
-                ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page');
+                    ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page'
+                );
 
-            // member only group
+                // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 // Si il n'est pas le propriétaire on lui envoie une notification
-                if($m_page->getUserId() !== $uid) {
-                  if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                      $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
-                          'state' => 'member',
-                          'user' => $uid,
-                          'page' => $page_id,
-                          'type' => $m_page->getType(),
-                      ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
-                  } else {
-                      $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
-                          'state' => 'member',
-                          'user' => $uid,
-                          'page' => $page_id,
-                          'type' => $m_page->getType(),
-                      ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
-                  }
+                if ($m_page->getUserId() !== $uid) {
+                    if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                        $this->getServicePost()->addSys(
+                            'PPM'.$page_id.'_'.$uid, '', [
+                            'state' => 'member',
+                            'user' => $uid,
+                            'page' => $page_id,
+                            'type' => $m_page->getType(),
+                            ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                        );
+                    } else {
+                        $this->getServicePost()->addSys(
+                            'PPM'.$page_id.'_'.$uid, '', [
+                            'state' => 'member',
+                            'user' => $uid,
+                            'page' => $page_id,
+                            'type' => $m_page->getType(),
+                            ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                        );
+                    }
                 }
             }
 
@@ -84,14 +92,17 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int $user_id
-     * @param string $role
-     * @param strung $state
+     * @param  int    $page_id
+     * @param  int    $user_id
+     * @param  string $role
+     * @param  strung $state
      * @return int
      */
     public function update($page_id, $user_id, $role, $state)
     {
+        /**
+
+      **/
         // si on doit labonner
         if (ModelPageUser::STATE_MEMBER === $state) {
             $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
@@ -100,12 +111,14 @@ class PageUser extends AbstractService
 
                 $m_page = $this->getServicePage()->getLite($page_id);
                 if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                    $this->getServicePost()->addSys('PPM'.$page_id.'_'.$user_id, '', [
+                    $this->getServicePost()->addSys(
+                        'PPM'.$page_id.'_'.$user_id, '', [
                         'state' => 'member',
                         'user' => $user_id,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                    ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $user_id/*user*/, null/*course*/, 'page');
+                        ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $user_id/*user*/, null/*course*/, 'page'
+                    );
                 }
             }
         }
@@ -122,8 +135,8 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int $user_id
+     * @param  int $page_id
+     * @param  int $user_id
      * @return int
      */
     public function delete($page_id, $user_id)
@@ -145,8 +158,8 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param array $filter
+     * @param int    $page_id
+     * @param array  $filter
      * @param string $state
 
      * @return \Dal\Db\ResultSet\ResultSet
@@ -161,8 +174,8 @@ class PageUser extends AbstractService
     /**
      * Add Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function _add($page_id, $data)
@@ -182,8 +195,8 @@ class PageUser extends AbstractService
     /**
      * Add Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function replace($page_id, $data)

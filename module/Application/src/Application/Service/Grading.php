@@ -115,13 +115,13 @@ class Grading extends AbstractService
     public function _add($letter, $min, $max, $grade, $description, $school_id = null, $program_id = null)
     {
         $m_grading = $this->getModel()
-                           ->setLetter($letter)
-                           ->setMin($min)
-                           ->setMax($max)
-                           ->setGrade($grade)
-                           ->setDescription($description)
-                           ->setSchoolId($school_id)
-                           ->setProgramId($program_id);
+            ->setLetter($letter)
+            ->setMin($min)
+            ->setMax($max)
+            ->setGrade($grade)
+            ->setDescription($description)
+            ->setSchoolId($school_id)
+            ->setProgramId($program_id);
 
         return $this->getMapper()->insert($m_grading);
     }
@@ -139,8 +139,8 @@ class Grading extends AbstractService
 
         foreach ($res_grading as $m_grading) {
             $m_grading->setId(null)
-                      ->setSchoolId($school_id)
-                      ->setTpl(false);
+                ->setSchoolId($school_id)
+                ->setTpl(false);
 
             $this->getMapper()->insert($m_grading);
         }

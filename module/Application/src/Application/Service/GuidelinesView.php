@@ -20,8 +20,10 @@ class GuidelinesView extends AbstractService
      */
     public function add($state)
     {
-        return $this->getMapper()->view($state, $this->getServiceUser()
-            ->getIdentity()['id']);
+        return $this->getMapper()->view(
+            $state, $this->getServiceUser()
+                ->getIdentity()['id']
+        );
     }
 
     /**
@@ -34,10 +36,14 @@ class GuidelinesView extends AbstractService
     public function exist($state)
     {
         return ($this->getMapper()
-            ->select($this->getModel()
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id'])
-            ->setState($state))
+            ->select(
+                $this->getModel()
+                    ->setUserId(
+                        $this->getServiceUser()
+                            ->getIdentity()['id']
+                    )
+                    ->setState($state)
+            )
             ->count() > 0) ? true : false;
     }
 

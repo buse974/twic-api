@@ -10,7 +10,7 @@ class Program extends AbstractMapper
     /**
      * Request Get Program
      *
-     * @param int $id
+     * @param  int $id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
@@ -24,7 +24,7 @@ class Program extends AbstractMapper
     /**
      * Request Get List Program By User
      *
-     * @param int $user_id
+     * @param  int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListUser($user_id)
@@ -41,12 +41,12 @@ class Program extends AbstractMapper
     /**
      * Request Program Get List
      *
-     * @param int $user_id
-     * @param string $search
-     * @param int $school_id
-     * @param bool $is_admin_academic
-     * @param bool $self
-     * @param array $exclude
+     * @param  int    $user_id
+     * @param  string $search
+     * @param  int    $school_id
+     * @param  bool   $is_admin_academic
+     * @param  bool   $self
+     * @param  array  $exclude
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($user_id, $search = null, $school_id = null, $is_admin_academic = false, $self = true, $exclude = null)

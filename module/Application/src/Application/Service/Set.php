@@ -66,8 +66,10 @@ class Set extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -83,10 +85,12 @@ class Set extends AbstractService
      */
     public function update($id, $uid = null, $name = null)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setId($id)
-            ->setUid($uid)
-            ->setName($name));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setUid($uid)
+                ->setName($name)
+        );
     }
 
     /**
@@ -100,16 +104,20 @@ class Set extends AbstractService
      */
     public function get($id)
     {
-        $res_set = $this->getMapper()->select($this->getModel()
-            ->setId($id));
+        $res_set = $this->getMapper()->select(
+            $this->getModel()
+                ->setId($id)
+        );
 
         if ($res_set->count() <= 0) {
             throw new \Exception('error select set group');
         }
 
         $m_set = $res_set->current();
-        $m_set->setGroups($this->getServiceGroup()
-            ->getList($m_set->getCourseId(), $m_set->getId()));
+        $m_set->setGroups(
+            $this->getServiceGroup()
+                ->getList($m_set->getCourseId(), $m_set->getId())
+        );
 
         return $m_set;
     }
@@ -130,8 +138,10 @@ class Set extends AbstractService
         $mapper = $this->getMapper();
         $res_set = $mapper->usePaginator($filter)->getList($course, $name);
         foreach ($res_set as $m_set) {
-            $m_set->setGroups($this->getServiceGroup()
-                ->getList($m_set->getCourseId(), $m_set->getId()));
+            $m_set->setGroups(
+                $this->getServiceGroup()
+                    ->getList($m_set->getCourseId(), $m_set->getId())
+            );
         }
 
         return ($filter === null) ? $res_set : ['count' => $mapper->count(), 'list' => $res_set];

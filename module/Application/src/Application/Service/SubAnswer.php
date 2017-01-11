@@ -36,9 +36,11 @@ class SubAnswer extends AbstractService
      */
     public function add($sub_question_id, $bank_question_item_id, $answer)
     {
-        return $this->getMapper()->insert($this->getModel()
-            ->setSubQuestionId($sub_question_id)
-            ->setAnswer($answer)
-            ->setBankQuestionItemId($bank_question_item_id));
+        return $this->getMapper()->insert(
+            $this->getModel()
+                ->setSubQuestionId($sub_question_id)
+                ->setAnswer($answer)
+                ->setBankQuestionItemId($bank_question_item_id)
+        );
     }
 }

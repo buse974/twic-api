@@ -16,8 +16,8 @@ class Set extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'uid', 'name', 'course_id'))
-                     ->where(array('set.course_id' => $course))
-                     ->where('set.is_used = 0');
+            ->where(array('set.course_id' => $course))
+            ->where('set.is_used = 0');
 
         if ($name !== null) {
             $select->where(['set.name LIKE ?' => '%'.$name.'%']);

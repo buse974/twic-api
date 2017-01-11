@@ -29,7 +29,7 @@ class Subscription extends AbstractService
     /**
      * Get List User Id
      *
-     * @param string $libelle
+     * @param  string $libelle
      * @return array
      */
     public function getListUserId($libelle)

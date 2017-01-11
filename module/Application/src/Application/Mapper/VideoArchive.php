@@ -34,7 +34,7 @@ class VideoArchive extends AbstractMapper
     {
         $sub_select = $this->tableGateway->getSql()->select();
         $sub_select->columns(['conversation_id'])
-                  ->where(['id' => $video_archive]);
+            ->where(['id' => $video_archive]);
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'archive_status', 'conversation_id'))

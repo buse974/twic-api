@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * CacheBddStorage
- *
  */
 namespace Auth\Authentication\Storage;
 
@@ -49,7 +47,7 @@ class CacheBddStorage implements StorageInterface
     /**
      * Constructor
      *
-     * @param \Zend\Db\Adapter\Adapter $adapter
+     * @param \Zend\Db\Adapter\Adapter             $adapter
      * @param \Zend\Cache\Storage\StorageInterface $cache
      */
     public function __construct($adapter, $cache)
@@ -85,7 +83,7 @@ class CacheBddStorage implements StorageInterface
     /**
      * Writes $contents to storage
      *
-     * @param mixed $contents
+     * @param  mixed $contents
      * @throws \Zend\Authentication\Exception\InvalidArgumentException If writing $contents to storage is impossible
      */
     public function write($data)
@@ -147,7 +145,7 @@ class CacheBddStorage implements StorageInterface
     /**
      * Save Cache Session
      *
-     * @param string $data
+     * @param  string $data
      * @return boolean
      */
     protected function saveCacheSession($data)
@@ -168,7 +166,7 @@ class CacheBddStorage implements StorageInterface
     /**
      * Save Bdd Session
      *
-     * @param string $data
+     * @param  string $data
      * @return boolean
      */
     protected function saveDbbSession($data)
@@ -183,18 +181,20 @@ class CacheBddStorage implements StorageInterface
         if ($results->count() > 0) {
             $update = $sql->update('session');
             $update->set(['data' => serialize($data)])
-                   ->set(['uid' => $data->getId()])
-                   ->where(['token' => $this->getPrefixToken()]);
+                ->set(['uid' => $data->getId()])
+                ->where(['token' => $this->getPrefixToken()]);
             $sql->prepareStatementForSqlObject($update)->execute();
             ;
             
             $ret = true;
         } else {
             $insert = $sql->insert('session');
-            $insert->values([
+            $insert->values(
+                [
                 'token' => $this->getPrefixToken(),
                 'data' => serialize($data),
-                'uid' => $data->getId()]);
+                'uid' => $data->getId()]
+            );
             $sql->prepareStatementForSqlObject($insert)->execute();
 
             $ret = true;
@@ -228,7 +228,7 @@ class CacheBddStorage implements StorageInterface
     /**
      * Clear Session
      *
-     * @param int $uid
+     * @param  int $uid
      * @return boolean
      */
     public function clearSession($uid)
@@ -249,7 +249,7 @@ class CacheBddStorage implements StorageInterface
     /**
      * GetListSession
      *
-     * @param int $uid
+     * @param  int $uid
      * @return array
      */
     public function getListSession($uid)

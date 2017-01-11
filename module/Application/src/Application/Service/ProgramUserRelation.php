@@ -42,8 +42,8 @@ class ProgramUserRelation extends AbstractService
     /**
      * Add Users to Program
      *
-     * @param int $user
-     * @param int $program
+     * @param  int $user
+     * @param  int $program
      * @return int
      */
     public function _add($user_id, $program_id)

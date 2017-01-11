@@ -132,8 +132,10 @@ class BankQuestion extends AbstractService
             $this->getServiceBankQuestionItem()->copy($bank_question_id, $id);
         }
 
-        $this->getMapper()->update($this->getModel()
-            ->setOlder((null === $bank_question_id) ? $id : $bank_question_id), ['id' => $id]);
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setOlder((null === $bank_question_id) ? $id : $bank_question_id), ['id' => $id]
+        );
 
         return $bank_question_id;
     }
@@ -156,8 +158,10 @@ class BankQuestion extends AbstractService
         $ret = [];
         foreach ($id as $i) {
             if ($this->copy($i, true) === $i) {
-                $ret[$i] = $this->getMapper()->delete($this->getModel()
-                    ->setId($i));
+                $ret[$i] = $this->getMapper()->delete(
+                    $this->getModel()
+                        ->setId($i)
+                );
             } else {
                 $ret[$i] = true;
             }
@@ -233,12 +237,18 @@ class BankQuestion extends AbstractService
 
         foreach ($res_bank_question as $m_bank_question) {
             $bank_question_id = $m_bank_question->getId();
-            $m_bank_question->setBankQuestionItem($this->getServiceBankQuestionItem()
-                ->getList($bank_question_id));
-            $m_bank_question->setBankQuestionMedia($this->getServiceBankQuestionMedia()
-                ->getList($bank_question_id));
-            $m_bank_question->setBankQuestionTag($this->getServiceBankQuestionTag()
-                ->getList($bank_question_id));
+            $m_bank_question->setBankQuestionItem(
+                $this->getServiceBankQuestionItem()
+                    ->getList($bank_question_id)
+            );
+            $m_bank_question->setBankQuestionMedia(
+                $this->getServiceBankQuestionMedia()
+                    ->getList($bank_question_id)
+            );
+            $m_bank_question->setBankQuestionTag(
+                $this->getServiceBankQuestionTag()
+                    ->getList($bank_question_id)
+            );
         }
 
         return (null !== $filter) ? ['list' => $res_bank_question, 'count' => $mapper->count()] : $res_bank_question;
@@ -253,8 +263,10 @@ class BankQuestion extends AbstractService
      */
     public function getListLite($ids)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setId($ids));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setId($ids)
+        );
     }
 
     /**
@@ -267,8 +279,10 @@ class BankQuestion extends AbstractService
     public function get($id)
     {
         return $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id))
+            ->select(
+                $this->getModel()
+                    ->setId($id)
+            )
             ->current();
     }
 

@@ -27,15 +27,15 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $type
+     * @param int       $type
      * @param int|array $submission_id
-     * @param array $users
-     * @param string $text
-     * @param int $item_id
-     * @param array $text_editors
-     * @param array $whiteboards
-     * @param array $documents
-     * @param bool $has_video
+     * @param array     $users
+     * @param string    $text
+     * @param int       $item_id
+     * @param array     $text_editors
+     * @param array     $whiteboards
+     * @param array     $documents
+     * @param bool      $has_video
      *
      * @throws \Exception
      *
@@ -115,11 +115,11 @@ class Conversation extends AbstractService
         }
         if (null !== $text) {
             switch ($type) {
-                case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT:
-                    $this->getServiceMessage()->sendSubmission($text, null, $conversation_id);
-                    break;
-                default:
-                    $this->getServiceMessage()->send($text, null, $conversation_id);
+            case ModelConversation::TYPE_ITEM_GROUP_ASSIGNMENT:
+                $this->getServiceMessage()->sendSubmission($text, null, $conversation_id);
+                break;
+            default:
+                $this->getServiceMessage()->send($text, null, $conversation_id);
             }
         }
         
@@ -138,16 +138,22 @@ class Conversation extends AbstractService
     public function addVideo($id)
     {
         $m_conversation = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id))
+            ->select(
+                $this->getModel()
+                    ->setId($id)
+            )
             ->current();
         
         $token = $m_conversation->getToken();
         $media_mode = $m_conversation->getType() === ModelConversation::TYPE_CHAT ? MediaMode::RELAYED : MediaMode::ROUTED;
                        
         return ($token === null || $token instanceof IsNull) ?
-            $this->getMapper()->update($this->getModel()->setToken($this->getServiceZOpenTok()
-            ->getSessionId($media_mode)), ['id' => $id, new IsNull('token')]) : 0;
+            $this->getMapper()->update(
+                $this->getModel()->setToken(
+                    $this->getServiceZOpenTok()
+                        ->getSessionId($media_mode)
+                ), ['id' => $id, new IsNull('token')]
+            ) : 0;
     }
 
     /**
@@ -158,7 +164,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int    $id
      * @param string $has_video
      *
      * @return array
@@ -241,8 +247,10 @@ class Conversation extends AbstractService
     public function getLite($id)
     {
         $res_conversation = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id));
+            ->select(
+                $this->getModel()
+                    ->setId($id)
+            );
         
         return (is_array($id)) ? $res_conversation : $res_conversation->current();
     }
@@ -255,11 +263,11 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $program_id
-     * @param int $course_id
-     * @param int $item_id
-     * @param int $organization_id
-     * @param array $users
+     * @param  int   $program_id
+     * @param  int   $course_id
+     * @param  int   $item_id
+     * @param  int   $organization_id
+     * @param  array $users
      * @return array
      */
     public function getListId($program_id = null, $course_id = null, $item_id = null, $organization_id = null, $users = null)
@@ -392,11 +400,11 @@ class Conversation extends AbstractService
                 }
             } elseif (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $identity['roles']) || in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles'])) {
                 // si item donc forcement liveclass on récupere tt les user de litem
-                    if (null !== $item_id) {
-                        $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);
-                    } else {
-                        $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
-                    }
+                if (null !== $item_id) {
+                    $res_submission_user = $this->getServiceSubmissionUser()->getListByItemId($item_id);
+                } else {
+                    $res_submission_user = $this->getServiceSubmissionUser()->getList($submission_id);
+                }
             }
             
             if ($res_submission_user === null) {
@@ -423,9 +431,9 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param array $users
+     * @param array  $users
      * @param string $text
-     * @param int $submission
+     * @param int    $submission
      */
     public function createSubmission($users, $text, $submission)
     {
@@ -467,8 +475,10 @@ class Conversation extends AbstractService
      */
     public function join($conversation)
     {
-        return $this->getServiceConversationUser()->add($conversation, $this->getServiceUser()
-            ->getIdentity()['id']);
+        return $this->getServiceConversationUser()->add(
+            $conversation, $this->getServiceUser()
+                ->getIdentity()['id']
+        );
     }
 
     /**
@@ -481,14 +491,20 @@ class Conversation extends AbstractService
     public function _get($id)
     {
         $conv = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id))
+            ->select(
+                $this->getModel()
+                    ->setId($id)
+            )
             ->current();
-        $conv->setMessages($this->getServiceMessage()
-            ->getList($id, []));
-        $conv->setUsers($this->getServiceUser()
-            ->getListByConversation($id)
-            ->toArray(['id']));
+        $conv->setMessages(
+            $this->getServiceMessage()
+                ->getList($id, [])
+        );
+        $conv->setUsers(
+            $this->getServiceUser()
+                ->getListByConversation($id)
+                ->toArray(['id'])
+        );
         
         return $conv;
     }
@@ -496,7 +512,7 @@ class Conversation extends AbstractService
     /**
      * Get List Conversation By Submission.
      *
-     * @param int $submission_id
+     * @param int  $submission_id
      * @param bool $all
      *            Si false on teste pour tous le monde sinon on filtre l'utilisateur courant
      *
@@ -650,7 +666,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation
+     * @param int   $conversation
      * @param array $text_editors
      */
     public function addTextEditor($conversation, $text_editors)
@@ -726,7 +742,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation
+     * @param int   $conversation
      * @param array $text_editors
      */
     public function addWhiteboard($conversation, $whiteboards)
@@ -760,7 +776,7 @@ class Conversation extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation
+     * @param int   $conversation
      * @param array $documents
      *
      * @return array|int

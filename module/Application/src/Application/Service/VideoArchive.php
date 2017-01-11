@@ -113,8 +113,8 @@ class VideoArchive extends AbstractService
     {
         $m_video_archive = $this->getModel();
         $m_video_archive->setArchiveDuration($duration)
-        ->setArchiveStatus($status)
-        ->setArchiveLink($link);
+            ->setArchiveStatus($status)
+            ->setArchiveLink($link);
     
         return $this->getMapper()->update($m_video_archive, ['archive_token' => $archive_token]);
     }
@@ -148,18 +148,20 @@ class VideoArchive extends AbstractService
                     $miid[] = 'M'.$u_id;
                 }
                 
-                $this->getServicePost()->addSys('VCONV'.$m_conversation->getId(), '', [
+                $this->getServicePost()->addSys(
+                    'VCONV'.$m_conversation->getId(), '', [
                     'item' => $item_id,
                     'course' => $m_course->getId(),
                     'conversation' => $m_conversation->getId(),
                     'link' => $json['link']
-                ], 'create', $miid/*sub*/,
+                    ], 'create', $miid/*sub*/,
                     null/*parent*/,
                     null/*page*/,
                     null/*org*/,
                     null/*user*/,
                     $m_course->getId()/*course*/,
-                    'video');
+                    'video'
+                );
             }
         }
         
@@ -178,9 +180,9 @@ class VideoArchive extends AbstractService
     {
         $m_video_archive = $this->getModel();
         $m_video_archive->setConversationId($conversation_id)
-        ->setArchiveToken($token)
-        ->setArchiveStatus(CVF::ARV_STARTED)
-        ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            ->setArchiveToken($token)
+            ->setArchiveStatus(CVF::ARV_STARTED)
+            ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
     
         $this->getMapper()->insert($m_video_archive);
     

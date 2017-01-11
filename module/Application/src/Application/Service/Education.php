@@ -35,8 +35,10 @@ class Education extends AbstractService
             ->setLogo($logo)
             ->setTitle($title)
             ->setDescription($description)
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id']);
+            ->setUserId(
+                $this->getServiceUser()
+                    ->getIdentity()['id']
+            );
 
         if ($this->getMapper()->insert($m_education) <= 0) {
             throw new \Exception('error insert');
@@ -69,8 +71,10 @@ class Education extends AbstractService
             ->setTitle($title)
             ->setDescription($description);
 
-        return $this->getMapper()->update($m_education, array('id' => $id, 'user_id' => $this->getServiceUser()
-            ->getIdentity()['id'], ));
+        return $this->getMapper()->update(
+            $m_education, array('id' => $id, 'user_id' => $this->getServiceUser()
+                ->getIdentity()['id'], )
+        );
     }
 
     /**
@@ -86,8 +90,10 @@ class Education extends AbstractService
     {
         $m_education = $this->getModel();
 
-        $m_education->setId($id)->setUserId($this->getServiceUser()
-            ->getIdentity()['id']);
+        $m_education->setId($id)->setUserId(
+            $this->getServiceUser()
+                ->getIdentity()['id']
+        );
 
         return $this->getMapper()->delete($m_education);
     }

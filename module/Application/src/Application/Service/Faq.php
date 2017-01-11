@@ -26,11 +26,13 @@ class Faq extends AbstractService
      */
     public function add($ask, $answer, $course)
     {
-        $res = $this->getMapper()->insert($this->getModel()
-                                               ->setAsk($ask)
-                                               ->setAnswer($answer)
-                                               ->setCourseId($course)
-                                               ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
+        $res = $this->getMapper()->insert(
+            $this->getModel()
+                ->setAsk($ask)
+                ->setAnswer($answer)
+                ->setCourseId($course)
+                ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+        );
 
         if ($res <= 0) {
             throw new \Exception('error insert faq');
@@ -52,10 +54,12 @@ class Faq extends AbstractService
      */
     public function update($id, $ask = null, $answer = null)
     {
-        return $this->getMapper()->update($this->getModel()
-                                                ->setId($id)
-                                                ->setAsk($ask)
-                                                ->setAnswer($answer));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setAsk($ask)
+                ->setAnswer($answer)
+        );
     }
 
     /**

@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Subscription User
- *
  */
 namespace Application\Service;
 
@@ -18,7 +16,7 @@ class SubscriptionUser extends AbstractService
     /**
      * Add subscription
      *
-     * @param string $libelle
+     * @param  string $libelle
      * @return int
      */
     public function add($libelle)
@@ -34,7 +32,7 @@ class SubscriptionUser extends AbstractService
     /**
      * Delete Subscription
      *
-     * @param string $libelle
+     * @param  string $libelle
      * @return int
      */
     public function delete($libelle)

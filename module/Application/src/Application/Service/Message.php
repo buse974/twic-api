@@ -38,7 +38,7 @@ class Message extends AbstractService
      * @param int|array $to
      * @param int       $conversation
      * @param int       $type
-     * @param array $document
+     * @param array     $document
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -218,7 +218,7 @@ class Message extends AbstractService
      *
      * @invokable
      *
-     * @param int $conversation
+     * @param int   $conversation
      * @param array $filter
      */
     public function m_getList($conversation, $filter = [])
@@ -307,8 +307,10 @@ class Message extends AbstractService
      */
     public function getListConversation($filter = null, $tag = null, $type = null, $search = null)
     {
-        return $this->getServiceMessageUser()->getList($this->getServiceUser()
-            ->getIdentity()['id'], null, null, $filter, $tag, $type, $search);
+        return $this->getServiceMessageUser()->getList(
+            $this->getServiceUser()
+                ->getIdentity()['id'], null, null, $filter, $tag, $type, $search
+        );
     }
 
     /**
@@ -320,8 +322,10 @@ class Message extends AbstractService
      */
     public function get($id)
     {
-        $res_message = $this->getMapper()->select($this->getModel()
-            ->setId($id));
+        $res_message = $this->getMapper()->select(
+            $this->getModel()
+                ->setId($id)
+        );
         if ($res_message->count() <= 0) {
             throw new \Exception('error select message with id :'.$id);
         }

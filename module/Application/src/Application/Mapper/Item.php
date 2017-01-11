@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Item
- *
  */
 namespace Application\Mapper;
 
@@ -25,7 +23,7 @@ class Item extends AbstractMapper
     /**
      * Request Get Itel By Submission
      *
-     * @param int $submission_id
+     * @param  int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getBySubmission($submission_id)
@@ -222,14 +220,14 @@ class Item extends AbstractMapper
     /**
      * Request Get List Item Submission
      *
-     * @param int $user_id
-     * @param string $type
-     * @param int $program
-     * @param int $course
-     * @param string $due
-     * @param bool $notgraded
-     * @param string $search
-     * @param bool $is_academic
+     * @param  int    $user_id
+     * @param  string $type
+     * @param  int    $program
+     * @param  int    $course
+     * @param  string $due
+     * @param  bool   $notgraded
+     * @param  string $search
+     * @param  bool   $is_academic
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListSubmissions($user_id, $type = null, $program = null, $course = null, $due = null, $notgraded = null, $search = null, $is_academic = true)
@@ -348,8 +346,8 @@ class Item extends AbstractMapper
     /**
      * Get Last parent id
      *
-     * @param int $course_id
-     * @param int $id
+     * @param  int $course_id
+     * @param  int $id
      * @return int
      */
     public function selectLastParentId($course_id = null, $id = null)
@@ -381,10 +379,10 @@ class Item extends AbstractMapper
     /**
      * Request Get List Item Grade
      *
-     * @param int $grading_policy_id
-     * @param int $course_id
-     * @param int $user_id
-     * @param int $submission_id
+     * @param  int $grading_policy_id
+     * @param  int $course_id
+     * @param  int $user_id
+     * @param  int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListGradeItem($grading_policy_id = null, $course_id = null, $user_id = null, $submission_id = null)

@@ -167,8 +167,10 @@ class SubQuiz extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_sub_question = $this->getServiceSubQuestion()->get($sub_question_id);
         $m_sub_quiz = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($m_sub_question->getSubQuizId()))
+            ->select(
+                $this->getModel()
+                    ->setId($m_sub_question->getSubQuizId())
+            )
             ->current();
 
         if (null === $m_sub_quiz || $m_sub_quiz->getUserId() !== $user_id || !(null === $m_sub_question->getAnsweredDate() || $m_sub_question->getAnsweredDate() instanceof IsNull)) {
@@ -259,9 +261,11 @@ class SubQuiz extends AbstractService
         }
 
         $grade = 100 * $total_final_grade / $total_final;
-        $this->getMapper()->update($this->getModel()
-            ->setGrade($grade)
-            ->setId($sub_quiz_id));
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setGrade($grade)
+                ->setId($sub_quiz_id)
+        );
 
         if (null === $grade && $grade < 0) {
             $grade = 0;
@@ -286,9 +290,11 @@ class SubQuiz extends AbstractService
      */
     public function rate($id, $grade, $questions)
     {
-        $this->getMapper()->update($this->getModel()
-            ->setGrade($grade)
-            ->setId($id));
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setGrade($grade)
+                ->setId($id)
+        );
         $m_sub_quiz = $this->getMapper()
             ->get($id)
             ->current();
@@ -312,9 +318,11 @@ class SubQuiz extends AbstractService
         foreach ($res_sub_quiz as $m_sub_quiz) {
             $id = $m_sub_quiz->getId();
             $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-            $this->getMapper()->update($this->getModel()
-                ->setId($id)
-                ->setEndDate($date));
+            $this->getMapper()->update(
+                $this->getModel()
+                    ->setId($id)
+                    ->setEndDate($date)
+            );
             $this->calc(null, null, $m_sub_quiz->getId());
         }
 

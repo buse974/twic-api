@@ -31,27 +31,27 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course
-     * @param int $grading_policy_id
+     * @param int    $course
+     * @param int    $grading_policy_id
      * @param string $title
      * @param string $describe
-     * @param int $duration
+     * @param int    $duration
      * @param string $type
-     * @param array $data
-     * @param array $ct
-     * @param array $opt
-     * @param int $set_id
-     * @param bool $has_submission
+     * @param array  $data
+     * @param array  $ct
+     * @param array  $opt
+     * @param int    $set_id
+     * @param bool   $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
-     * @param int $parent_id
-     * @param int $order_id
-     * @param bool $has_all_student
-     * @param bool $is_grouped
-     * @param array $submission
-     * @param bool $is_complete
-     * @param int $coefficient
+     * @param int    $parent_id
+     * @param int    $order_id
+     * @param bool   $has_all_student
+     * @param bool   $is_grouped
+     * @param array  $submission
+     * @param bool   $is_complete
+     * @param int    $coefficient
      *
      * @throws \Exception
      *
@@ -139,8 +139,8 @@ class Item extends AbstractService
      * Initialisation Component.
      *
      * @param string $type
-     * @param array $data
-     * @param int $item_id
+     * @param array  $data
+     * @param int    $item_id
      */
     private function initCmp($type, $data, $item_id)
     {
@@ -158,8 +158,8 @@ class Item extends AbstractService
      * Factory Component.
      *
      * @param string $component
-     * @param array $data
-     * @param int $item_id
+     * @param array  $data
+     * @param int    $item_id
      *
      * @return mixed
      */
@@ -167,22 +167,22 @@ class Item extends AbstractService
     {
         $cmp = false;
         switch ($component) {
-            case ModelItem::CMP_CHAT:
-                break;
-            case ModelItem::CMP_DISCUSSION:
-                $cmp = $this->addCmpThread($data, $item_id);
-                break;
-            case ModelItem::CMP_DOCUMENT:
-                $this->addCmpDocument($data, $item_id);
-                break;
-            case ModelItem::CMP_EQCQ:
-                break;
-            case ModelItem::CMP_POLL:
-                $cmp = $this->addCmpPoll($data, $item_id);
-                break;
-            case ModelItem::CMP_VIDEOCONF:
-                $cmp = $this->addCmpVideoconf($data, $item_id);
-                break;
+        case ModelItem::CMP_CHAT:
+            break;
+        case ModelItem::CMP_DISCUSSION:
+            $cmp = $this->addCmpThread($data, $item_id);
+            break;
+        case ModelItem::CMP_DOCUMENT:
+            $this->addCmpDocument($data, $item_id);
+            break;
+        case ModelItem::CMP_EQCQ:
+            break;
+        case ModelItem::CMP_POLL:
+            $cmp = $this->addCmpPoll($data, $item_id);
+            break;
+        case ModelItem::CMP_VIDEOCONF:
+            $cmp = $this->addCmpVideoconf($data, $item_id);
+            break;
         }
         
         return $cmp;
@@ -192,7 +192,7 @@ class Item extends AbstractService
      * Add Poll to item.
      *
      * @param array $data
-     * @param int $item_id
+     * @param int   $item_id
      *
      * @return int
      */
@@ -215,7 +215,7 @@ class Item extends AbstractService
      * Add hangout to item.
      *
      * @param array $data
-     * @param int $item_id
+     * @param int   $item_id
      *
      * @return int
      */
@@ -234,7 +234,7 @@ class Item extends AbstractService
      * Add Thread to Item.
      *
      * @param array $data
-     * @param int $item_id
+     * @param int   $item_id
      *
      * @return int
      */
@@ -258,7 +258,7 @@ class Item extends AbstractService
      * Add Document to Item.
      *
      * @param array $data
-     * @param int $item_id
+     * @param int   $item_id
      *
      * @return int
      */
@@ -296,12 +296,12 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
+     * @param array  $filter
      * @param string $type
-     * @param array $program
-     * @param array $course
+     * @param array  $program
+     * @param array  $course
      * @param string $due
-     * @param bool $notgraded
+     * @param bool   $notgraded
      * @param string $search
      *
      * @return array
@@ -322,26 +322,26 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param int $grading_policy_id
+     * @param int    $id
+     * @param int    $grading_policy_id
      * @param string $title
      * @param string $describe
-     * @param int $duration
+     * @param int    $duration
      * @param string $type
      * @param string $data
-     * @param int $set_id
-     * @param bool $has_submission
+     * @param int    $set_id
+     * @param bool   $has_submission
      * @param string $start
      * @param string $end
      * @param string $cut_off
-     * @param int $parent_id
-     * @param int $order_id
-     * @param bool $has_all_student
-     * @param bool $is_grouped
-     * @param array $submission
-     * @param bool $is_complete
-     * @param int $coefficient
-     * @param array $opt
+     * @param int    $parent_id
+     * @param int    $order_id
+     * @param bool   $has_all_student
+     * @param bool   $is_grouped
+     * @param array  $submission
+     * @param bool   $is_complete
+     * @param int    $coefficient
+     * @param array  $opt
      *
      * @return int
      */
@@ -392,8 +392,10 @@ class Item extends AbstractService
         $actual_start = null;
         if ($is_complete == true || $start !== true) {
             $actual_item = $this->getMapper()
-                ->select($this->getModel()
-                ->setId($id))
+                ->select(
+                    $this->getModel()
+                        ->setId($id)
+                )
                 ->current();
             if ($is_complete == true) {
                 $actual_is_complete = $actual_item->getIsComplete();
@@ -431,8 +433,10 @@ class Item extends AbstractService
      */
     public function getListByCourse($course_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setCourseId($course_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setCourseId($course_id)
+        );
     }
 
     /**
@@ -440,10 +444,10 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course
-     * @param int $parent_id
-     * @param int $start
-     * @param int $end
+     * @param int   $course
+     * @param int   $parent_id
+     * @param int   $start
+     * @param int   $end
      * @param array $type
      *            @retun array
      */
@@ -490,10 +494,10 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param int $course
-     * @param int $parent_id
-     * @param int $start
-     * @param int $end
+     * @param int   $course
+     * @param int   $parent_id
+     * @param int   $start
+     * @param int   $end
      * @param array $type
      *            @retun array
      */
@@ -541,7 +545,7 @@ class Item extends AbstractService
      * Check visibility to item by contrainte.
      *
      * @param array $item
-     * @param int $user_id
+     * @param int   $user_id
      *
      * @return bool
      */
@@ -615,8 +619,10 @@ class Item extends AbstractService
      */
     public function getListForCalendar($start = null, $end = null)
     {
-        return $this->getMapper()->getListForCalendar($this->getServiceUser()
-            ->getIdentity(), $start, $end);
+        return $this->getMapper()->getListForCalendar(
+            $this->getServiceUser()
+                ->getIdentity(), $start, $end
+        );
     }
 
     /**
@@ -631,8 +637,10 @@ class Item extends AbstractService
     public function getListByUser($user)
     {
         return $this->getMapper()
-            ->select($this->getModel()
-            ->setCourseId($course))
+            ->select(
+                $this->getModel()
+                    ->setCourseId($course)
+            )
             ->toArray();
     }
 
@@ -764,27 +772,45 @@ class Item extends AbstractService
             }
         }
         
-        $m_item->setCtDate($this->getServiceCtDate()
-            ->get($m_item->getId()))
-            ->setCtDone($this->getServiceCtDone()
-            ->get($m_item->getId()))
-            ->setCtRate($this->getServiceCtRate()
-            ->get($m_item->getId()))
-            ->setCtGroup($this->getServiceCtGroup()
-            ->get($m_item->getId()))
-            ->setVideoconf($this->getServiceConversationOpt()
-            ->getByItem($m_item->getId()))
-            ->setThread($this->getServiceThread()
-            ->getByItem($m_item->getId()))
-            ->setPoll($this->getServicePoll()
-            ->getByItem($m_item->getId()));
+        $m_item->setCtDate(
+            $this->getServiceCtDate()
+                ->get($m_item->getId())
+        )
+            ->setCtDone(
+                $this->getServiceCtDone()
+                    ->get($m_item->getId())
+            )
+            ->setCtRate(
+                $this->getServiceCtRate()
+                    ->get($m_item->getId())
+            )
+            ->setCtGroup(
+                $this->getServiceCtGroup()
+                    ->get($m_item->getId())
+            )
+            ->setVideoconf(
+                $this->getServiceConversationOpt()
+                    ->getByItem($m_item->getId())
+            )
+            ->setThread(
+                $this->getServiceThread()
+                    ->getByItem($m_item->getId())
+            )
+            ->setPoll(
+                $this->getServicePoll()
+                    ->getByItem($m_item->getId())
+            );
         
         if ($m_item->getType() === ModelItem::TYPE_DOCUMENT) {
-            $m_item->setDocument($this->getServiceLibrary()
-                ->getListByItem($m_item->getId()));
+            $m_item->setDocument(
+                $this->getServiceLibrary()
+                    ->getListByItem($m_item->getId())
+            );
         } else {
-            $m_item->setDocument($this->getServiceLibrary()
-                ->getListByParentItem($m_item->getId()));
+            $m_item->setDocument(
+                $this->getServiceLibrary()
+                    ->getListByParentItem($m_item->getId())
+            );
         }
         
         return $m_item;
@@ -800,8 +826,10 @@ class Item extends AbstractService
     public function updateOrderId($item, $parent_target = null, $order_id = null)
     {
         $me_item = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($item))
+            ->select(
+                $this->getModel()
+                    ->setId($item)
+            )
             ->current();
         
         $parent_id = ($me_item->getParentId() == null || $me_item->getParentId() instanceof IsNull) ? new IsNull('parent_id') : ['parent_id' => $me_item->getParentId()];
@@ -832,15 +860,21 @@ class Item extends AbstractService
         $rentre = array_merge($rentrep, $rentre);
         
         // JE SORT
-        $this->getMapper()->update($this->getModel()
-            ->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort);
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), $sort
+        );
         
         // JE RENTRE
-        $this->getMapper()->update($this->getModel()
-            ->setOrderId($item), $rentre);
-        $this->getMapper()->update($this->getModel()
-            ->setId($item)
-            ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull() : $order_id));
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setOrderId($item), $rentre
+        );
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setId($item)
+                ->setOrderId(($order_id === null || $order_id === 0) ? new IsNull() : $order_id)
+        );
     }
 
     /**
@@ -853,16 +887,20 @@ class Item extends AbstractService
     public function sort($item_id)
     {
         $me_item = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($item_id))
+            ->select(
+                $this->getModel()
+                    ->setId($item_id)
+            )
             ->current();
         
         if (!$me_item) {
             return 0;
         }
         
-        return $this->getMapper()->update($this->getModel()
-            ->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), ['order_id' => $me_item->getId(),'course_id' => $me_item->getCourseId()]);
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setOrderId($me_item->getOrderId() === null ? new IsNull() : $me_item->getOrderId()), ['order_id' => $me_item->getId(),'course_id' => $me_item->getCourseId()]
+        );
     }
 
     /**
@@ -875,8 +913,10 @@ class Item extends AbstractService
     public function cancelSort($item_id)
     {
         $me_item = $this->getMapper()
-            ->select($this->getModel()
-            ->setId($item_id))
+            ->select(
+                $this->getModel()
+                    ->setId($item_id)
+            )
             ->current();
         
          

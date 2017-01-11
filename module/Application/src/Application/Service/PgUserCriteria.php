@@ -26,12 +26,14 @@ class PgUserCriteria extends AbstractService
      */
     public function add($pg_id, $user_id, $submission_id, $criteria_id, $points)
     {
-        return $this->getMapper()->insert($this->getModel()
-            ->setPgId($pg_id)
-            ->setUserId($user_id)
-            ->setSubmissionId($submission_id)
-            ->setCriteriaId($criteria_id)
-            ->setPoints($points));
+        return $this->getMapper()->insert(
+            $this->getModel()
+                ->setPgId($pg_id)
+                ->setUserId($user_id)
+                ->setSubmissionId($submission_id)
+                ->setCriteriaId($criteria_id)
+                ->setPoints($points)
+        );
     }
 
     /**
@@ -43,8 +45,10 @@ class PgUserCriteria extends AbstractService
      */
     public function getListBySubmission($submission_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setSubmissionId($submission_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setSubmissionId($submission_id)
+        );
     }
 
     /**
@@ -70,8 +74,10 @@ class PgUserCriteria extends AbstractService
      */
     public function deleteByUserAndSubmission($user_id, $submission_id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setPgId($user_id)
-            ->setSubmissionId($submission_id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setPgId($user_id)
+                ->setSubmissionId($submission_id)
+        );
     }
 }

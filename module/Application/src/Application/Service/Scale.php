@@ -25,9 +25,11 @@ class Scale extends AbstractService
      */
     public function add($name, $value)
     {
-        if ($this->getMapper()->insert($this->getModel()
-            ->setName($name)
-            ->setValue($value)) <= 0) {
+        if ($this->getMapper()->insert(
+            $this->getModel()
+                ->setName($name)
+                ->setValue($value)
+        ) <= 0) {
             throw new \Exception('error insert scale');
         }
 
@@ -45,8 +47,10 @@ class Scale extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -62,10 +66,12 @@ class Scale extends AbstractService
      */
     public function update($id, $name, $value)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setId($id)
-            ->setName($name)
-            ->setValue($value));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setName($name)
+                ->setValue($value)
+        );
     }
 
     /**

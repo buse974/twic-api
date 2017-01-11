@@ -15,7 +15,7 @@ class SubmissionComments extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->join('user', 'submission_comments.user_id = user.id', ['id', 'firstname', 'lastname', 'nickname', 'avatar'])
-                ->where(['submission_comments.id' => $id]);
+            ->where(['submission_comments.id' => $id]);
 
         return $this->selectWith($select);
     }
@@ -29,7 +29,7 @@ class SubmissionComments extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->join('user', 'submission_comments.user_id = user.id', ['id', 'firstname', 'lastname', 'nickname', 'avatar'])
-                ->where(['submission_comments.submission_id' => $submission]);
+            ->where(['submission_comments.submission_id' => $submission]);
 
         return $this->selectWith($select);
     }

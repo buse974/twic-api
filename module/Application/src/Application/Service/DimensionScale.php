@@ -27,11 +27,13 @@ class DimensionScale extends AbstractService
      */
     public function add($dimension, $min, $max, $describe)
     {
-        if ($this->getMapper()->insert($this->getModel()
-            ->setDimensionId($dimension)
-            ->setMin($min)
-            ->setMax($max)
-            ->setDescribe($describe)) <= 0) {
+        if ($this->getMapper()->insert(
+            $this->getModel()
+                ->setDimensionId($dimension)
+                ->setMin($min)
+                ->setMax($max)
+                ->setDescribe($describe)
+        ) <= 0) {
             throw new \Exception('error insert scale');
         }
 
@@ -49,8 +51,10 @@ class DimensionScale extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -68,12 +72,14 @@ class DimensionScale extends AbstractService
      */
     public function update($id, $dimension, $min, $max, $describe)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setId($id)
-            ->setDimensionId($dimension)
-            ->setMin($min)
-            ->setMax($max)
-            ->setDescribe($describe));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setDimensionId($dimension)
+                ->setMin($min)
+                ->setMax($max)
+                ->setDescribe($describe)
+        );
     }
 
     /**

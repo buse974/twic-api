@@ -65,18 +65,18 @@ abstract class AbstractApi
         if ($resp->isClientError()) {
             if ($resp->getStatusCode() === 403) {
                 throw new \Exception(
-                        $resp->getStatusCode()
+                    $resp->getStatusCode()
                 );
             } else {
                 throw new JrpcException(
-                        $resp->getBody(),
-                        $resp->getStatusCode()
+                    $resp->getBody(),
+                    $resp->getStatusCode()
                 );
             }
         } elseif ($resp->isServerError()) {
             throw new \Exception(
-                    'The API server responded with an error: '.$resp->getReasonPhrase().' Code: '.$resp->getStatusCode(),
-                    $resp->getStatusCode()
+                'The API server responded with an error: '.$resp->getReasonPhrase().' Code: '.$resp->getStatusCode(),
+                $resp->getStatusCode()
             );
         } else {
             throw new \Exception('An unexpected error occurred:'.$resp->getReasonPhrase());

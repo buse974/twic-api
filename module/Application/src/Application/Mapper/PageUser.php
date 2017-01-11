@@ -17,7 +17,7 @@ class PageUser extends AbstractMapper
             $select->where('state = "'.ModelPageUser::STATE_MEMBER.'"');
         } else {
             $select->where('state <> "'.ModelPageUser::STATE_REJECTED.'"')
-                    ->order(new Expression('IF(state = "'.ModelPageUser::STATE_PENDING.'", 0, 1)'));
+                ->order(new Expression('IF(state = "'.ModelPageUser::STATE_PENDING.'", 0, 1)'));
         }
 
        

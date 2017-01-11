@@ -120,14 +120,16 @@ class TextEditor extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
      * Update TextEditor.
      *
-     * @todo créer le replace de $submission_id sub_text_editor
+     * @todo      créer le replace de $submission_id sub_text_editor
      * @invokable
      *
      * @param int    $id

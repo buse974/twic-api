@@ -19,14 +19,16 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param string $name
+     * @param  string $name
      * @throws \Exception
      * @return int
      */
     public function add($name)
     {
-        if ($this->getMapper()->insert($this->getModel()
-            ->setName($name)) <= 0) {
+        if ($this->getMapper()->insert(
+            $this->getModel()
+                ->setName($name)
+        ) <= 0) {
             throw new \Exception('error insert circle');
         }
         
@@ -38,15 +40,17 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $name
+     * @param  int    $id
+     * @param  string $name
      * @return int
      */
     public function update($id, $name)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setId($id)
-            ->setName($name));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setName($name)
+        );
     }
 
     /**
@@ -54,13 +58,15 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return int
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
     
     /**
@@ -68,13 +74,15 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return \Application\Model\Circle
      */
     public function get($id)
     {
-        $m_organization = $this->getMapper()->select($this->getModel()
-            ->setId($id))->current();
+        $m_organization = $this->getMapper()->select(
+            $this->getModel()
+                ->setId($id)
+        )->current();
         
         $res_circle_organiszation = $this->getServiceCircleOrganization()->getList($id);
         $m_organization->setOrganizations(($res_circle_organiszation->count() > 0)?$res_circle_organiszation:[]);
@@ -100,7 +108,7 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int       $id
      * @param int|array $organizations
      */
     public function addOrganizations($id, $organizations)
@@ -113,7 +121,7 @@ class Circle extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int       $id
      * @param int|array $organizations
      */
     public function deleteOrganizations($id, $organizations)

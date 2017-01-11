@@ -11,8 +11,8 @@ class PostDoc extends AbstractService
      *
      * @invokable
      *
-     * @param int $post_id
-     * @param int|array $library
+     * @param  int       $post_id
+     * @param  int|array $library
      * @return int
      */
     public function add($post_id, $library)
@@ -24,8 +24,8 @@ class PostDoc extends AbstractService
         }
     
         $m_post_doc = $this->getModel()
-        ->setPostId($post_id)
-        ->setLibraryId($library);
+            ->setPostId($post_id)
+            ->setLibraryId($library);
     
         return $this->getMapper()->insert($m_post_doc);
     }
@@ -33,8 +33,8 @@ class PostDoc extends AbstractService
     /**
      * Add Array
      *
-     * @param int $post_id
-     * @param array $data
+     * @param  int   $post_id
+     * @param  array $data
      * @return array
      */
     public function _add($post_id, $data)
@@ -50,8 +50,8 @@ class PostDoc extends AbstractService
     /**
      * Replace Array
      *
-     * @param int $post_id
-     * @param array $data
+     * @param  int   $post_id
+     * @param  array $data
      * @return array
      */
     public function replace($post_id, $data)
@@ -64,7 +64,7 @@ class PostDoc extends AbstractService
     /**
      *Get List Post Doc
      *
-     * @param int $post_id
+     * @param  int $post_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($post_id)
@@ -75,7 +75,7 @@ class PostDoc extends AbstractService
       /**
      *Get  Post Doc
      *
-     * @param int $id
+     * @param  int $id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function get($id)

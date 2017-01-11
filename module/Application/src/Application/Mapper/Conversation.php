@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Conversation
- *
  */
 namespace Application\Mapper;
 
@@ -21,8 +19,8 @@ class Conversation extends AbstractMapper
     /**
      * Request Get List By Submission
      *
-     * @param int $submission_id
-     * @param int $user_id
+     * @param  int $submission_id
+     * @param  int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id, $user_id = null)
@@ -44,8 +42,8 @@ class Conversation extends AbstractMapper
     /**
      * Request Get List By Item
      *
-     * @param int $item_id
-     * @param int $submission_id
+     * @param  int $item_id
+     * @param  int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item_id, $submission_id = null)
@@ -67,13 +65,13 @@ class Conversation extends AbstractMapper
     /**
      * Request Get List Id
      *
-     * @param int $user_id
-     * @param int $organization_id
-     * @param int $program_id
-     * @param unkintnown $course_id
-     * @param int $item_id
-     * @param int $submission_id
-     * @param array $users
+     * @param  int        $user_id
+     * @param  int        $organization_id
+     * @param  int        $program_id
+     * @param  unkintnown $course_id
+     * @param  int        $item_id
+     * @param  int        $submission_id
+     * @param  array      $users
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListId($user_id, $organization_id = null, $program_id = null, $course_id = null, $item_id = null, $submission_id = null, $users = null, $is_admin = false)

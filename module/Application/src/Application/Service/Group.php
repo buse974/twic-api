@@ -57,8 +57,10 @@ class Group extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -73,9 +75,11 @@ class Group extends AbstractService
      */
     public function update($id, $name)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setId($id)
-            ->setName($name));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setId($id)
+                ->setName($name)
+        );
     }
 
     /**
@@ -146,8 +150,10 @@ class Group extends AbstractService
         $res_group = $mapper->usePaginator($filter)->getList($set, $name, $course);
 
         foreach ($res_group as $m_group) {
-            $m_group->setUsers($this->getServiceGroupUser()
-                ->getListUser($m_group->getId()));
+            $m_group->setUsers(
+                $this->getServiceGroupUser()
+                    ->getListUser($m_group->getId())
+            );
         }
 
         return ($filter === null) ? $res_group : ['count' => $mapper->count(), 'list' => $res_group];

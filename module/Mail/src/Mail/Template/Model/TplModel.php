@@ -58,28 +58,28 @@ class TplModel extends ArrayObject implements \JsonSerializable
 
         foreach ($ar as $k => $v) {
             switch ($k) {
-                case 'flag':
-                    $this->setFlags($v);
-                    break;
-                case 'storage':
-                    $this->exchangeArray($v);
-                    break;
-                case 'iteratorClass':
-                    $this->setIteratorClass($v);
-                    break;
-                case 'name':
-                    $this->setName($v);
-                    break;
-                case 'from':
-                    $this->setFrom($v);
-                    break;
-                case 'subject':
-                    $this->setSubject($v);
-                    break;
-                case 'protectedProperties':
-                    continue;
-                default:
-                    $this->__set($k, $v);
+            case 'flag':
+                $this->setFlags($v);
+                break;
+            case 'storage':
+                $this->exchangeArray($v);
+                break;
+            case 'iteratorClass':
+                $this->setIteratorClass($v);
+                break;
+            case 'name':
+                $this->setName($v);
+                break;
+            case 'from':
+                $this->setFrom($v);
+                break;
+            case 'subject':
+                $this->setSubject($v);
+                break;
+            case 'protectedProperties':
+                continue;
+            default:
+                $this->__set($k, $v);
             }
         }
     }

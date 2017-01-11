@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Material
- *
  */
 namespace Application\Service;
 
@@ -21,11 +19,11 @@ class Material extends AbstractService
      *
      * @invokable
      *
-     * @param int $course_id
-     * @param string $name
-     * @param string $type
-     * @param string $link
-     * @param string $token
+     * @param  int    $course_id
+     * @param  string $name
+     * @param  string $type
+     * @param  string $link
+     * @param  string $token
      * @throws \Exception
      * @return \Application\Model\Library|\Dal\Db\ResultSet\ResultSet
      */
@@ -55,13 +53,15 @@ class Material extends AbstractService
      *
      * @invokable
      *
-     * @param int $library_id
+     * @param  int $library_id
      * @return int
      */
     public function delete($library_id)
     {
-        $ret = $this->getMapper()->delete($this->getModel()
-            ->setLibraryId($library_id));
+        $ret = $this->getMapper()->delete(
+            $this->getModel()
+                ->setLibraryId($library_id)
+        );
         
         if ($ret > 0) {
             $this->getServiceLibrary()->delete($library_id);
@@ -75,7 +75,7 @@ class Material extends AbstractService
      *
      * @invokable
      *
-     * @param int $course_id
+     * @param  int $course_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($course_id)

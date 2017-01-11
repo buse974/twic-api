@@ -31,8 +31,10 @@ class ThreadMessage extends AbstractService
             ->setMessage($message)
             ->setThreadId($thread)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id'])
+            ->setUserId(
+                $this->getServiceUser()
+                    ->getIdentity()['id']
+            )
             ->setParentId(($parent_id === 0) ? null : $parent_id);
 
         if ($this->getMapper()->insert($m_thread_message) <= 0) {
@@ -92,9 +94,11 @@ class ThreadMessage extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'], 'id' => $id, ));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
+                    ->getIdentity()['id'], 'id' => $id, )
+        );
     }
 
     /**
@@ -116,8 +120,10 @@ class ThreadMessage extends AbstractService
 
         foreach ($res_thread_message as $m_thread_message) {
             $roles = [];
-            foreach ($this->getServiceRole()->getRoleByUser($m_thread_message->getUser()
-                ->getId()) as $role) {
+            foreach ($this->getServiceRole()->getRoleByUser(
+                $m_thread_message->getUser()
+                    ->getId()
+            ) as $role) {
                 $roles[] = $role->getName();
             }
             $m_thread_message->getUser()->setRoles($roles);

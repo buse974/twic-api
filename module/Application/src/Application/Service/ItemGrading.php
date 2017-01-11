@@ -65,11 +65,12 @@ class ItemGrading extends AbstractService
      */
     public function _add($submission_user_id, $grade)
     {
-        return $this->getMapper()->insert($this->getModel()
+        return $this->getMapper()->insert(
+            $this->getModel()
                 ->setItemProgUserId($submission_user_id)
                 ->setGrade($grade)
                 ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-                );
+        );
     }
 
     /**
@@ -82,7 +83,8 @@ class ItemGrading extends AbstractService
      */
     public function _update($id, $grade)
     {
-        return $this->getMapper()->update($this->getModel()
+        return $this->getMapper()->update(
+            $this->getModel()
                 ->setId($id)
                 ->setGrade($grade)
                 ->setCreatedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))

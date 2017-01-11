@@ -10,7 +10,7 @@ class Research extends AbstractMapper
      * Get research list.
      *
      * @param string $string
-     * @param bool $is_sadmin_admin
+     * @param bool   $is_sadmin_admin
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
@@ -19,11 +19,11 @@ class Research extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
 
         $select->columns(array('id', 'firstname', 'lastname', 'nickname', 'avatar', 'category', 'role'))
-                ->where(array('(firstname LIKE ?' => '%'.$string.'%'))
-                ->where(array('lastname LIKE ?' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
-                ->where(array('nickname LIKE ?)' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
-                ->order(array('facette', 'firstname'))
-                ->quantifier('distinct');
+            ->where(array('(firstname LIKE ?' => '%'.$string.'%'))
+            ->where(array('lastname LIKE ?' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
+            ->where(array('nickname LIKE ?)' => '%'.$string.'%'), \Zend\Db\Sql\Predicate\Predicate::OP_OR)
+            ->order(array('facette', 'firstname'))
+            ->quantifier('distinct');
 
         if ($is_sadmin_admin === false) {
             $select->join(['ou' => 'organization_user'], 'ou.user_id=research.user_id', [], $select::JOIN_LEFT)

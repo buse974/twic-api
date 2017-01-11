@@ -34,8 +34,10 @@ class Thread extends AbstractService
             ->setTitle($title)
             ->setItemId($item_id)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id']);
+            ->setUserId(
+                $this->getServiceUser()
+                    ->getIdentity()['id']
+            );
 
         if ($this->getMapper()->insert($m_thread) <= 0) {
             throw new \Exception('error insert thread');
@@ -94,11 +96,15 @@ class Thread extends AbstractService
         $mapper = $this->getMapper();
         $res_thread = $mapper->usePaginator($filter)->getList($course, null, $name);
         foreach ($res_thread as $m_thread) {
-            $m_thread->setMessage($this->getServiceThreadMessage()
-                ->getLast($m_thread->getId()));
+            $m_thread->setMessage(
+                $this->getServiceThreadMessage()
+                    ->getLast($m_thread->getId())
+            );
             $roles = [];
-            foreach ($this->getServiceRole()->getRoleByUser($m_thread->getUser()
-                ->getId()) as $role) {
+            foreach ($this->getServiceRole()->getRoleByUser(
+                $m_thread->getUser()
+                    ->getId()
+            ) as $role) {
                 $roles[] = $role->getName();
             }
             $m_thread->getUser()->setRoles($roles);
@@ -122,8 +128,10 @@ class Thread extends AbstractService
         }
 
         $m_thread = $res_thread->current();
-        $m_thread->setMessage($this->getServiceThreadMessage()
-            ->getLast($m_thread->getId()));
+        $m_thread->setMessage(
+            $this->getServiceThreadMessage()
+                ->getLast($m_thread->getId())
+        );
 
         return $m_thread;
     }
@@ -149,11 +157,15 @@ class Thread extends AbstractService
         }
 
         $m_thread = $res_thread->current();
-        $m_thread->setMessage($this->getServiceThreadMessage()
-            ->getLast($m_thread->getId()));
+        $m_thread->setMessage(
+            $this->getServiceThreadMessage()
+                ->getLast($m_thread->getId())
+        );
         $roles = [];
-        foreach ($this->getServiceRole()->getRoleByUser($m_thread->getUser()
-            ->getId()) as $role) {
+        foreach ($this->getServiceRole()->getRoleByUser(
+            $m_thread->getUser()
+                ->getId()
+        ) as $role) {
             $roles[] = $role->getName();
         }
         $m_thread->getUser()->setRoles($roles);
@@ -170,8 +182,10 @@ class Thread extends AbstractService
      */
     public function getByItem($item_id)
     {
-        $res_thread = $this->getMapper()->select($this->getModel()
-            ->setItemId($item_id));
+        $res_thread = $this->getMapper()->select(
+            $this->getModel()
+                ->setItemId($item_id)
+        );
 
         return ($res_thread->count() > 0) ? $res_thread->current() : null;
     }
@@ -187,9 +201,11 @@ class Thread extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
-            ->getIdentity()['id'], 'id' => $id, ));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), array('user_id' => $this->getServiceUser()
+                    ->getIdentity()['id'], 'id' => $id, )
+        );
     }
 
     /**

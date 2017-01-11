@@ -25,8 +25,10 @@ class Criteria extends AbstractService
     public function get($id)
     {
         return $this->getMapper()
-            ->select($this->getModel()
-            ->setId($id))
+            ->select(
+                $this->getModel()
+                    ->setId($id)
+            )
             ->current();
     }
 
@@ -41,8 +43,10 @@ class Criteria extends AbstractService
      */
     public function getList($grading_policy)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setGradingPolicyId($grading_policy));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setGradingPolicyId($grading_policy)
+        );
     }
 
     /**
@@ -95,8 +99,10 @@ class Criteria extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**

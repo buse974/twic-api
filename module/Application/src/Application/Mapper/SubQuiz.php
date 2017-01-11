@@ -41,14 +41,16 @@ class SubQuiz extends AbstractMapper
     public function getList($id = null, $submission_id = null, $user_id = null, $is_finish = null, $is_timeover = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns([
+        $select->columns(
+            [
             'id',
             'poll_id',
             'sub_quiz$start_date' => new Expression('DATE_FORMAT(sub_quiz.start_date, "%Y-%m-%dT%TZ")'),
             'sub_quiz$end_date' => new Expression('DATE_FORMAT(sub_quiz.end_date, "%Y-%m-%dT%TZ")'),
             'user_id',
             'submission_id',
-            'grade', ]);
+            'grade', ]
+        );
 
         if (null !== $id) {
             $select->where(array('sub_quiz.id' => $id));
@@ -67,8 +69,9 @@ class SubQuiz extends AbstractMapper
         }
         if ($is_timeover === true) {
             $select->join('poll', 'poll.id=sub_quiz.poll_id', [])
-                   ->join('item', 'item.id=poll.item_id', [])
-                   ->where(['sub_quiz.end_date IS NULL AND sub_quiz.grade IS NULL 
+                ->join('item', 'item.id=poll.item_id', [])
+                ->where(
+                    ['sub_quiz.end_date IS NULL AND sub_quiz.grade IS NULL 
                             AND (
                             (poll.expiration_date IS NOT NULL AND poll.expiration_date < UTC_TIMESTAMP())
                             OR
@@ -76,7 +79,8 @@ class SubQuiz extends AbstractMapper
                             OR 
                             (item.cut_off IS NOT NULL AND item.cut_off < UTC_TIMESTAMP())
                             OR 
-                            (item.cut_off IS NULL AND item.end IS NOT NULL AND item.end < UTC_TIMESTAMP()))']);
+                            (item.cut_off IS NULL AND item.end IS NOT NULL AND item.end < UTC_TIMESTAMP()))']
+                );
         }
 
         return  $this->selectWith($select);
@@ -86,14 +90,16 @@ class SubQuiz extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns([
+        $select->columns(
+            [
             'id',
             'poll_id',
             'sub_quiz$start_date' => new Expression('DATE_FORMAT(sub_quiz.start_date, "%Y-%m-%dT%TZ")'),
             'sub_quiz$end_date' => new Expression('DATE_FORMAT(sub_quiz.end_date, "%Y-%m-%dT%TZ")'),
             'user_id',
             'submission_id',
-            'grade', ])
+            'grade', ]
+        )
             ->where(array('sub_quiz.id' => $id));
 
         return  $this->selectWith($select);

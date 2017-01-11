@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Library
- *
  */
 namespace Application\Mapper;
 
@@ -19,7 +17,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Parent Item
      *
-     * @param int $item_id
+     * @param  int $item_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByParentItem($item_id)
@@ -36,7 +34,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Page id
      *
-     * @param int $page_id
+     * @param  int $page_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByPage($page_id)
@@ -53,15 +51,15 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Post id
      *
-     * @param int $page_id
+     * @param  int $page_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByPost($post_id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
-        ->join('post_doc', 'post_doc.library_id=library.id', [])
-        ->where(['post_doc.post_id' => $post_id]);
+            ->join('post_doc', 'post_doc.library_id=library.id', [])
+            ->where(['post_doc.post_id' => $post_id]);
     
         return $this->selectWith($select);
     }
@@ -69,7 +67,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Item
      *
-     * @param int $item_id
+     * @param  int $item_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByItem($item_id)
@@ -85,7 +83,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Bank Question
      *
-     * @param int $bank_question_id
+     * @param  int $bank_question_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByBankQuestion($bank_question_id)
@@ -101,7 +99,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Conversation
      *
-     * @param int $conversation_id
+     * @param  int $conversation_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByConversation($conversation_id)
@@ -117,7 +115,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library Material
      *
-     * @param int $course_id
+     * @param  int $course_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListMaterials($course_id)
@@ -133,7 +131,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Submission
      *
-     * @param int $submission_id
+     * @param  int $submission_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySubmission($submission_id)
@@ -149,7 +147,7 @@ class Library extends AbstractMapper
     /**
      * Get List Library By Ct
      *
-     * @param int $item_id
+     * @param  int $item_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListByCt($item_id)

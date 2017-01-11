@@ -683,7 +683,7 @@ class AssignmentTest extends AbstractService
         $data = $this->jsonRpc('submission.getList', [
             'item_id' => $item_id
         ]);
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);

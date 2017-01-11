@@ -39,8 +39,10 @@ class Document extends AbstractService
         }
 
         if (null !== $item_id) {
-            $this->getMapper()->delete($this->getModel()
-                ->setItemId($item_id));
+            $this->getMapper()->delete(
+                $this->getModel()
+                    ->setItemId($item_id)
+            );
         }
 
         $library_id = $this->getServiceLibrary()
@@ -119,8 +121,10 @@ class Document extends AbstractService
      */
     public function getListByItem($item_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setItemId($item_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setItemId($item_id)
+        );
     }
 
     /**
@@ -140,10 +144,12 @@ class Document extends AbstractService
             return false;
         }
 
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id)
-            ->setSubmissionId($submission_id)
-            ->setLibraryId($library_id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+                ->setSubmissionId($submission_id)
+                ->setLibraryId($library_id)
+        );
     }
 
     /**
