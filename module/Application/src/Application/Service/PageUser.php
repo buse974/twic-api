@@ -189,6 +189,12 @@ class PageUser extends AbstractService
          $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
       }
 
+      foreach ($users as $user_id) {
+        if(!isset($ret[$user_id])) {
+          $ret[$user_id] = [];
+        }
+      }
+
       return $ret;
     }
 
