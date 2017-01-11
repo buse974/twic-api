@@ -914,7 +914,7 @@ class User extends AbstractService
             ->setAmbassador($ambassador)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        //@todo secu school_id
+        //@TODO secu school_id
         if ($school_id !== null) {
             if ($school_id === 'null') {
                 $school_id = new IsNull('school_id');

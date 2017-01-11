@@ -9,6 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class PageUser
@@ -41,6 +42,7 @@ class PageUser extends AbstractService
             ->setState($state);
         $ret = 0;
         foreach ($user_id as $uid) {
+            $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
             // inviter only event
             $m_page = $this->getServicePage()->getLite($page_id);
             if ($state === ModelPageUser::STATE_INVITED) {
@@ -52,6 +54,24 @@ class PageUser extends AbstractService
                     'type' => $m_page->getType(),
                     ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page'
                 );
+
+                //$gcm_notification = new GcmNotification();
+                /*$gcm_notification->setTitle($name)
+                    ->setSound("default")
+                    ->setColor("#00A38B")
+                    ->setBody('Sent you a connection request');*/
+                $this->getServiceFcm()->send(
+                    $uid, [
+                    'data' => [
+                        'type' => 'userpage',
+                        'data' => [
+                            'state' => 'invited',
+                            'page' => $page_id,
+                        ],
+                    ],
+                  ] //, $gcm_notification
+                );
+
 
                 // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
@@ -77,10 +97,34 @@ class PageUser extends AbstractService
                             ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
                         );
                     }
+
+                    $this->getServiceFcm()->send(
+                        $uid, [
+                        'data' => [
+                            'type' => 'userpage',
+                            'data' => [
+                                'state' => 'member',
+                                'page' => $page_id,
+                            ],
+                        ],
+                      ]
+                    );
                 }
+            } else {
+              $this->getServiceFcm()->send(
+                  $uid, [
+                  'data' => [
+                      'type' => 'userpage',
+                      'data' => [
+                          'state' => 'pending',
+                          'page' => $page_id,
+                      ],
+                  ],
+                ]
+              );
             }
 
-            $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
+
         }
 
         return $ret;
@@ -119,6 +163,18 @@ class PageUser extends AbstractService
                 }
             }
         }
+
+        $this->getServiceFcm()->send(
+            $user_id, [
+            'data' => [
+                'type' => 'userpage',
+                'data' => [
+                    'state' => $state,
+                    'page' => $page_id,
+                ],
+            ],
+          ]
+        );
 
         $m_page_user = $this->getModel()
             ->setRole($role)
@@ -298,5 +354,15 @@ class PageUser extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+
+    /**
+     * Get Service Service Conversation User
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }
