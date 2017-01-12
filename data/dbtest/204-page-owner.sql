@@ -4,7 +4,7 @@ ADD INDEX `fk_page_5_idx` (`owner_id` ASC);
 ALTER TABLE `page` 
 ADD CONSTRAINT `fk_page_5`
   FOREIGN KEY (`owner_id`)
-  REFERENCES `apilms`.`user` (`id`)
+  REFERENCES `user` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
