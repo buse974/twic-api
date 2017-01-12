@@ -374,7 +374,7 @@ class Page extends AbstractService
                 ];
                 break;
             case is_numeric($m_page->getOwnerId()):
-                $ar_user = $m_page->getOwner()->toArray();
+                $ar_user = $m_page->getUser()->toArray();
                 $owner = [
                     'id' => $ar_user['id'],
                     'text' => $ar_user['firstname'] . ' ' . $ar_user['lastname'],

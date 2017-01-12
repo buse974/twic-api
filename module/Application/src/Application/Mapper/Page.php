@@ -51,6 +51,7 @@ class Page extends AbstractMapper
             'location',
             'type',
             'user_id',
+            'owner_id',
             'organization_id',
             'page_id',
             'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
@@ -148,6 +149,7 @@ class Page extends AbstractMapper
                 'type',
                 'page_id',
                 'user_id',
+                'owner_id',
                 'organization_id',
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
