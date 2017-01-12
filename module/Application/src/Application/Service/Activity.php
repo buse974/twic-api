@@ -20,7 +20,7 @@ class Activity extends AbstractService
      *
      * @invokable
      *
-     * @param array $activities
+     * @param  array $activities
      * @return array
      */
     public function add($activities)
@@ -100,13 +100,13 @@ class Activity extends AbstractService
      * @invokable
      *
      * @param string $event
-     * @param id $object_id
+     * @param id     $object_id
      * @param string $object_name
-     * @param array $school_id
-     * @param array $program_id
-     * @param array $course_id
-     * @param array $item_id
-     * @param array $user_id
+     * @param array  $school_id
+     * @param array  $program_id
+     * @param array  $course_id
+     * @param array  $item_id
+     * @param array  $user_id
      *
      * @return array
      */

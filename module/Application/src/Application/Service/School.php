@@ -21,7 +21,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param string $libelle
+     * @param  string $libelle
      * @return \Application\Model\School
      */
     public function getCustom($libelle)
@@ -49,8 +49,8 @@ class School extends AbstractService
      * @param string $background
      * @param string $phone
      * @param string $contact
-     * @param int $contact_id
-     * @param array $address
+     * @param int    $contact_id
+     * @param array  $address
      * @param string $custom
      * @param string $libelle
      * @param string $circle_id
@@ -60,8 +60,8 @@ class School extends AbstractService
      * @return \Application\Model\School
      */
     public function add($name, $next_name = null, $short_name = null, $logo = null, $describe = null, $website = null, $background = null, $phone = null, $contact = null,
-    $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null, $type = null)
-    {
+        $contact_id = null, $address = null, $custom = null, $libelle = null, $circle_id = null, $type = null
+    ) {
         $formattedWebsite = $this->getFormattedWebsite($website);
         $m_school = $this->getModel()
             ->setName($name)
@@ -118,17 +118,17 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $name
-     * @param string $logo
-     * @param string $describe
-     * @param string $website
-     * @param string $short_name
-     * @param string $phone
-     * @param array $address
-     * @param string $background
-     * @param string $custom
-     * @param string $libelle
+     * @param  int    $id
+     * @param  string $name
+     * @param  string $logo
+     * @param  string $describe
+     * @param  string $website
+     * @param  string $short_name
+     * @param  string $phone
+     * @param  array  $address
+     * @param  string $background
+     * @param  string $custom
+     * @param  string $libelle
      * @return int
      */
     public function update($id, $name = null, $logo = null, $describe = null, $website = null, $short_name = null, $phone = null, $address = null, $background = null, $custom = null, $libelle = null)
@@ -166,7 +166,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id
+     * @param  int|array $id
      * @return \Application\Model\School|\Dal\Db\ResultSet\ResultSet
      */
     public function get($id)
@@ -187,7 +187,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id
+     * @param  int|array $id
      * @return array
      */
     public function m_get($id = null)
@@ -204,11 +204,11 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
+     * @param array  $filter
      * @param string $search
-     * @param array $exclude
+     * @param array  $exclude
      * @param string $type
-     * @param int $parent_id
+     * @param int    $parent_id
      *
      * @return array
      */
@@ -232,7 +232,7 @@ class School extends AbstractService
     /**
      * Get List organization by user
      *
-     * @param int $user_id
+     * @param  int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function _getList($user_id)
@@ -245,7 +245,7 @@ class School extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return array
      */
     public function delete($id)

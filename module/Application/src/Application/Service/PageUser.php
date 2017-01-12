@@ -9,9 +9,12 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class PageUser
+ *
+ *  @TODO Check vérification sécuriter des user page + parmas par default role use + exposer méthode spécifique pour l'acceptation
  */
 class PageUser extends AbstractService
 {
@@ -21,10 +24,10 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int|array $user_id
-     * @param string $role
-     * @param strung $state
+     * @param  int       $page_id
+     * @param  int|array $user_id
+     * @param  string    $role
+     * @param  strung    $state
      * @return int
      */
     public function add($page_id, $user_id, $role, $state)
@@ -39,40 +42,89 @@ class PageUser extends AbstractService
             ->setState($state);
         $ret = 0;
         foreach ($user_id as $uid) {
+            $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
             // inviter only event
             $m_page = $this->getServicePage()->getLite($page_id);
             if ($state === ModelPageUser::STATE_INVITED) {
-                $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
+                $this->getServicePost()->addSys(
+                    'PPM'.$page_id.'_'.$uid, '', [
                     'state' => 'invited',
                     'user' => $uid,
                     'page' => $page_id,
                     'type' => $m_page->getType(),
-                ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page');
+                    ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page'
+                );
 
-            // member only group
+                //$gcm_notification = new GcmNotification();
+                /*$gcm_notification->setTitle($name)
+                    ->setSound("default")
+                    ->setColor("#00A38B")
+                    ->setBody('Sent you a connection request');*/
+                $this->getServiceFcm()->send(
+                    $uid, [
+                    'data' => [
+                        'type' => 'userpage',
+                        'data' => [
+                            'state' => 'invited',
+                            'page' => $page_id,
+                        ],
+                    ],
+                  ] //, $gcm_notification
+                );
+
+
+                // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 // Si il n'est pas le propriétaire on lui envoie une notification
-                if($m_page->getUserId() !== $uid) {
-                  if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                      $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
-                          'state' => 'member',
-                          'user' => $uid,
-                          'page' => $page_id,
-                          'type' => $m_page->getType(),
-                      ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
-                  } else {
-                      $this->getServicePost()->addSys('PPM'.$page_id.'_'.$uid, '', [
-                          'state' => 'member',
-                          'user' => $uid,
-                          'page' => $page_id,
-                          'type' => $m_page->getType(),
-                      ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page');
-                  }
+                if ($m_page->getUserId() !== $uid) {
+                    if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                        $this->getServicePost()->addSys(
+                            'PPM'.$page_id.'_'.$uid, '', [
+                            'state' => 'member',
+                            'user' => $uid,
+                            'page' => $page_id,
+                            'type' => $m_page->getType(),
+                            ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                        );
+                    } else {
+                        $this->getServicePost()->addSys(
+                            'PPM'.$page_id.'_'.$uid, '', [
+                            'state' => 'member',
+                            'user' => $uid,
+                            'page' => $page_id,
+                            'type' => $m_page->getType(),
+                            ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                        );
+                    }
+
+                    $this->getServiceFcm()->send(
+                        $uid, [
+                        'data' => [
+                            'type' => 'userpage',
+                            'data' => [
+                                'state' => 'member',
+                                'page' => $page_id,
+                            ],
+                        ],
+                      ]
+                    );
                 }
+            } else {
+              $this->getServiceFcm()->send(
+                  $uid, [
+                  'data' => [
+                      'type' => 'userpage',
+                      'data' => [
+                          'state' => 'pending',
+                          'page' => $page_id,
+                      ],
+                  ],
+                ]
+              );
             }
 
-            $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
+
         }
 
         return $ret;
@@ -84,10 +136,10 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int $user_id
-     * @param string $role
-     * @param strung $state
+     * @param  int    $page_id
+     * @param  int    $user_id
+     * @param  string $role
+     * @param  strung $state
      * @return int
      */
     public function update($page_id, $user_id, $role, $state)
@@ -100,15 +152,29 @@ class PageUser extends AbstractService
 
                 $m_page = $this->getServicePage()->getLite($page_id);
                 if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                    $this->getServicePost()->addSys('PPM'.$page_id.'_'.$user_id, '', [
+                    $this->getServicePost()->addSys(
+                        'PPM'.$page_id.'_'.$user_id, '', [
                         'state' => 'member',
                         'user' => $user_id,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                    ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $user_id/*user*/, null/*course*/, 'page');
+                        ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $user_id/*user*/, null/*course*/, 'page'
+                    );
                 }
             }
         }
+
+        $this->getServiceFcm()->send(
+            $user_id, [
+            'data' => [
+                'type' => 'userpage',
+                'data' => [
+                    'state' => $state,
+                    'page' => $page_id,
+                ],
+            ],
+          ]
+        );
 
         $m_page_user = $this->getModel()
             ->setRole($role)
@@ -122,8 +188,8 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int $user_id
+     * @param  int $page_id
+     * @param  int $user_id
      * @return int
      */
     public function delete($page_id, $user_id)
@@ -145,24 +211,91 @@ class PageUser extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param array $filter
+     * @param int    $page_id
+     * @param array  $filter
      * @param string $state
 
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($page_id, $filter = null, $state = null)
+    public function getList($page_id, $filter = null, $role = null)
     {
-        $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($page_id, $state);
+      //@TODO Petit hack pour le filtre getList dans le mapper a optimisé
+      if(null === $role) {
+        $role = 'norole';
+      }
+      $mapper = $this->getMapper();
+      $res = $mapper->usePaginator($filter)->getList($page_id, $role);
 
-        return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
+      return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
+
+   /**
+     * Get List pageId by User and state
+     *
+     * @invokable
+     *
+     * @param array $users
+     * @param string $state
+     **/
+    public function _getListByUser($users, $state)
+    {
+      $result = $this->getMapper()->getList(null, null, $users, $state);
+      $ret = [];
+      foreach ($result as $m_page_user) {
+         $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
+      }
+
+      foreach ($users as $user_id) {
+        if(!isset($ret[$user_id])) {
+          $ret[$user_id] = [];
+        }
+      }
+
+      return $ret;
+    }
+
+   /**
+    * Get List MEMBER pageId by User
+    *
+    * @invokable
+    *
+    * @param array $users
+    */
+    public function m_getListByUser($users)
+    {
+    return $this->_getListByUser($users, ModelPageUser::STATE_MEMBER);
+    }
+
+    /**
+     * Get List INVITED pageId by User
+     *
+     * @invokable
+     *
+     * @param array $users
+     */
+     public function m_getInvitationListByUser($users)
+     {
+       return $this->_getListByUser($users, ModelPageUser::STATE_INVITED);
+     }
+
+     /**
+      * Get List PENDING pageId by User
+      *
+      * @invokable
+      *
+      * @param array $users
+      */
+      public function m_getApplicationListByUser($users)
+      {
+        return $this->_getListByUser($users, ModelPageUser::STATE_PENDING);
+      }
+
+
     /**
      * Add Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function _add($page_id, $data)
@@ -182,8 +315,8 @@ class PageUser extends AbstractService
     /**
      * Add Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function replace($page_id, $data)
@@ -221,5 +354,15 @@ class PageUser extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+
+    /**
+     * Get Service Service Conversation User
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }

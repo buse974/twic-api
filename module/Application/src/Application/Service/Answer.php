@@ -34,8 +34,10 @@ class Answer extends AbstractService
             ->setQuestionnaireUserId($questionnaire_user_id)
             ->setScaleId($scale_id)
             ->setPeerId($peer_id)
-            ->setType((($peer_id == $this->getServiceUser()
-            ->getIdentity()['id']) ? 'SELF' : 'PEER'))
+            ->setType(
+                (($peer_id == $this->getServiceUser()
+                    ->getIdentity()['id']) ? 'SELF' : 'PEER')
+            )
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($this->getMapper()->insert($m_answer) <= 0) {
@@ -71,8 +73,10 @@ class Answer extends AbstractService
      */
     public function getByQuestionnaireUser($questionnaire_user_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setQuestionnaireUserId($questionnaire_user_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setQuestionnaireUserId($questionnaire_user_id)
+        );
     }
 
     /**

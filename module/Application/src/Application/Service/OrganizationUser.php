@@ -17,8 +17,8 @@ class OrganizationUser extends AbstractService
     /**
      * Add relation Organization user
      *
-     * @param int $organization_id
-     * @param int $user_id
+     * @param  int $organization_id
+     * @param  int $user_id
      * @return int
      */
     public function add($organization_id, $user_id)
@@ -26,9 +26,11 @@ class OrganizationUser extends AbstractService
         $ret = null;
         $res_organization_user = $this->getList($organization_id, $user_id);
         if ($res_organization_user->count() === 0) {
-            $ret = $this->getMapper()->insert($this->getModel()
-                ->setUserId($user_id)
-                ->setOrganizationId($organization_id));
+            $ret = $this->getMapper()->insert(
+                $this->getModel()
+                    ->setUserId($user_id)
+                    ->setOrganizationId($organization_id)
+            );
             
             $this->getServiceSubscription()->add('PO'.$organization_id, $user_id);
             $this->getServiceSubscription()->add('EO'.$organization_id, $user_id);
@@ -42,15 +44,17 @@ class OrganizationUser extends AbstractService
     /**
      * Delete relation Organization user
      *
-     * @param int $organization_id
-     * @param int $user_id
+     * @param  int $organization_id
+     * @param  int $user_id
      * @return int
      */
     public function remove($organization_id, $user_id)
     {
-        $this->getMapper()->delete($this->getModel()
-            ->setUserId($user_id)
-            ->setOrganizationId($organization_id));
+        $this->getMapper()->delete(
+            $this->getModel()
+                ->setUserId($user_id)
+                ->setOrganizationId($organization_id)
+        );
         
         $this->getServiceSubscription()->delete('PO'.$organization_id, $user_id);
         $this->getServiceSubscription()->delete('EO'.$organization_id, $user_id);
@@ -59,8 +63,8 @@ class OrganizationUser extends AbstractService
     /**
      * Get List relation relation Organization User
      *
-     * @param int $organization_id
-     * @param int $user_id
+     * @param  int $organization_id
+     * @param  int $user_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($organization_id = null, $user_id = null)
@@ -69,9 +73,11 @@ class OrganizationUser extends AbstractService
             throw new \Exception('Error params');
         }
         
-        return $this->getMapper()->select($this->getModel()
-            ->setUserId($user_id)
-            ->setOrganizationId($organization_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setUserId($user_id)
+                ->setOrganizationId($organization_id)
+        );
     }
     
     /**

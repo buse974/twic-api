@@ -18,9 +18,9 @@ class Report extends AbstractService
      *
      * @invokable
      *
-     * @param int $user_id
-     * @param int $post_id
-     * @param int $comment_id
+     * @param int    $user_id
+     * @param int    $post_id
+     * @param int    $comment_id
      * @param string $reason
      * @param string $description
      *
@@ -56,7 +56,7 @@ class Report extends AbstractService
      * @invokable
      *
      * @param array $filter
-     * @param bool $treated
+     * @param bool  $treated
      *
      * @return array
      */
@@ -73,7 +73,7 @@ class Report extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int  $id
      * @param bool $treat
      *
      * @return int

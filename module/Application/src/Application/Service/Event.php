@@ -30,12 +30,12 @@ class Event extends AbstractService
     /**
      * create event
      *
-     * @param string $event
-     * @param mixed $source
-     * @param mixed $object
-     * @param array $user
-     * @param mixed $target
-     * @param mixed $src
+     * @param  string $event
+     * @param  mixed  $source
+     * @param  mixed  $object
+     * @param  array  $user
+     * @param  mixed  $target
+     * @param  mixed  $src
      * @throws \Exception
      * @return int
      */
@@ -57,12 +57,14 @@ class Event extends AbstractService
         $this->getServiceEventSubscription()->add($libelle, $event_id);
         $user = $this->getServiceSubscription()->getListUserId($libelle);
         if (count($user) > 0) {
-            $this->sendRequest(array_values($user), [
+            $this->sendRequest(
+                array_values($user), [
                 'id' => $event_id,
                 'event' => $event,
                 'source' => $source,
                 'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
-                'object' => $object], $target);
+                'object' => $object], $target
+            );
         }
 
         return $event_id;
@@ -147,11 +149,11 @@ class Event extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
+     * @param array  $filter
      * @param string $events
-     * @param int $user
-     * @param int $id
-     * @param int $source
+     * @param int    $user
+     * @param int    $id
+     * @param int    $source
      *
      * @return array
      */
@@ -185,8 +187,10 @@ class Event extends AbstractService
     public function get($id)
     {
         $m_event = $this->getMapper()
-            ->getList($this->getServiceUser()
-            ->getIdentity()['id'], null, $id)
+            ->getList(
+                $this->getServiceUser()
+                    ->getIdentity()['id'], null, $id
+            )
             ->current();
 
         return $m_event;
@@ -198,8 +202,8 @@ class Event extends AbstractService
     /**
      * Event user.publication
      *
-     * @param int $post_id
-     * @param array $sub
+     * @param  int   $post_id
+     * @param  array $sub
      * @return number
      */
     public function userPublication($sub, $post_id, $type = null, $ev = null)
@@ -223,7 +227,7 @@ class Event extends AbstractService
      * Event user.like
      *
      * @param array $sub
-     * @param int $post_id
+     * @param int   $post_id
      */
     public function userLike($sub, $post_id)
     {
@@ -235,9 +239,9 @@ class Event extends AbstractService
     /**
      * Event profile.updated
      *
-     * @param array $sub
-     * @param int $user_id
-     * @param array $dataprofile
+     * @param  array $sub
+     * @param  int   $user_id
+     * @param  array $dataprofile
      * @return int
      */
     public function profileUpdated($sub, $user_id, $dataprofile)
@@ -248,8 +252,8 @@ class Event extends AbstractService
     /**
      * Event profile.newresume.
      *
-     * @param inr $sub
-     * @param inr $resume
+     * @param  inr $sub
+     * @param  inr $resume
      * @return int
      */
     public function profileNewresume($sub, $resume)
@@ -263,7 +267,7 @@ class Event extends AbstractService
      * Event page.new
      *
      * @param array $sub
-     * @param int $page
+     * @param int   $page
      */
     public function pageNew($sub, $page)
     {
@@ -276,7 +280,7 @@ class Event extends AbstractService
      * Event pageuser.invited
      *
      * @param array $sub
-     * @param int $page
+     * @param int   $page
      */
     public function pageUserInvited($sub, $page)
     {
@@ -289,7 +293,7 @@ class Event extends AbstractService
      * Event pageuser.member
      *
      * @param array $sub
-     * @param int $page
+     * @param int   $page
      */
     public function pageUserMember($sub, $page)
     {
@@ -301,7 +305,7 @@ class Event extends AbstractService
     /**
      * Event message.new
      *
-     * @param int $message_id
+     * @param int   $message_id
      * @param array $to
      *
      * @return int
@@ -350,7 +354,7 @@ class Event extends AbstractService
     /**
      * Event task.shared.
      *
-     * @param int $task_id
+     * @param int   $task_id
      * @param array $users
      *
      * @return int
@@ -483,7 +487,7 @@ class Event extends AbstractService
      * Event record.available
      *
      * @param \Application\Model\VideoArchive $m_video_archive
-     * @param int $item_id
+     * @param int                             $item_id
      *
      * @return int
      */
@@ -563,7 +567,7 @@ class Event extends AbstractService
     /**
      * Event course.updated.
      *
-     * @param int $course_id
+     * @param int   $course_id
      * @param array $dataupdated
      *
      * @return int
@@ -653,7 +657,7 @@ class Event extends AbstractService
     /**
      * Get Data Post
      *
-     * @param int $post_id
+     * @param  int $post_id
      * @return array
      */
     private function getDataPost($post_id)
@@ -750,7 +754,7 @@ class Event extends AbstractService
     /**
      * Get Data User for update profile.
      *
-     * @param int $user_id
+     * @param int   $user_id
      * @param array $dataupdated
      *
      * @return array
@@ -781,7 +785,7 @@ class Event extends AbstractService
     /**
      * Get Data Course for update.
      *
-     * @param int $course_id
+     * @param int   $course_id
      * @param array $dataupdated
      *
      * @return array
@@ -849,8 +853,10 @@ class Event extends AbstractService
      */
     private function getDataThreadMessage(\Application\Model\ThreadMessage $m_thread_message)
     {
-        $m_thread = $this->getServiceThread()->get($m_thread_message->getThread()
-            ->getId());
+        $m_thread = $this->getServiceThread()->get(
+            $m_thread_message->getThread()
+                ->getId()
+        );
 
         return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)['data']]];
     }
@@ -894,7 +900,7 @@ class Event extends AbstractService
     /**
      * Get Data Submission Comment.
      *
-     * @param \Application\Model\Submission $m_submisssion
+     * @param \Application\Model\Submission         $m_submisssion
      * @param \Application\Model\SubmissionComments $m_comment
      *
      * @return array

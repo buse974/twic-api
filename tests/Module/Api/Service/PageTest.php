@@ -183,7 +183,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.getList', ['user_id' => 1]);
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
@@ -262,6 +262,102 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['user_id'] , 1);
         $this->assertEquals($data['result']['list'][0]['organization_id'] , 1);
         $this->assertEquals($data['result']['list'][0]['page_id'] , null);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+    *
+    * @depends testPageAdd
+    **/
+    public function testAddUserPage($page_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.add', [
+          'page_id' => $page_id,
+          'user_id' => 3,
+          'state' => 'pending' ,
+          'role' => 'user']);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testMGetApplicationListByUser()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.m_getApplicationListByUser', ['users' => [3]]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][3]) , 1);
+        $this->assertEquals($data['result'][3][0] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+    *
+    * @depends testPageAdd
+    **/
+    public function testAddUserPageInvited($page_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.update', [
+          'page_id' => $page_id,
+          'user_id' => 3,
+          'state' => 'invited' ,
+          'role' => 'user']);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testMGetInvitationListByUser()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.m_getInvitationListByUser', ['users' => [3]]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][3]) , 1);
+        $this->assertEquals($data['result'][3][0] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+    *
+    * @depends testPageAdd
+    **/
+    public function testAddUserPageMember($page_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.update', [
+          'page_id' => $page_id,
+          'user_id' => 3,
+          'state' => 'member' ,
+          'role' => 'user']);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testMGetListByUser()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.m_getListByUser', ['users' => [3]]);
+
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][3]) , 1);
+        $this->assertEquals($data['result'][3][0] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 

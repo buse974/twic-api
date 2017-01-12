@@ -36,8 +36,8 @@ class Feed extends AbstractService
      * @return int
      */
     public function add($content = null, $link = null, $video = null, $picture = null, $document = null, $name_picture = null,
-        $name_document = null, $link_desc = null, $link_title = null, $type = null)
-    {
+        $name_document = null, $link_desc = null, $link_title = null, $type = null
+    ) {
         $user = $this->getServiceUser()->getIdentity()['id'];
 
         $m_feed = $this->getModel()

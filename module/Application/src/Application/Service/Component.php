@@ -45,8 +45,10 @@ class Component extends AbstractService
         $res_component = $this->getMapper()->fetchAll();
 
         foreach ($res_component as $m_component) {
-            $m_component->setComponentScales($this->getServiceComponentScale()
-                ->getList($m_component->getId()));
+            $m_component->setComponentScales(
+                $this->getServiceComponentScale()
+                    ->getList($m_component->getId())
+            );
         }
 
         return $res_component;

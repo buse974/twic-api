@@ -9,7 +9,7 @@ class Tag extends AbstractService
     /**
      * Add tag
      *
-     * @param string $name
+     * @param  string $name
      * @return int
      */
     public function add($name)

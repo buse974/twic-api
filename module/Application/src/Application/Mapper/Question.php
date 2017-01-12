@@ -23,11 +23,11 @@ class Question extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'text'))
-               ->join('component', 'component.id=question.component_id', array('id', 'name'));
+            ->join('component', 'component.id=question.component_id', array('id', 'name'));
 
         if (null !== $questionnaire) {
             $select->join('questionnaire_question', 'questionnaire_question.question_id=question.id', array())
-            ->where(array('questionnaire_question.questionnaire_id' => $questionnaire));
+                ->where(array('questionnaire_question.questionnaire_id' => $questionnaire));
         }
 
         if (null !== $dimension) {

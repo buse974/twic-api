@@ -44,7 +44,9 @@ class UserRole extends AbstractService
      */
     public function deleteByUser($user_id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setUserId($user_id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setUserId($user_id)
+        );
     }
 }

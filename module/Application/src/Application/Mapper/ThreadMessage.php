@@ -15,8 +15,10 @@ class ThreadMessage extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
 
-        $select->columns(array('id', 'message', 'parent_id',
-            'thread_message$created_date' => new Expression('DATE_FORMAT(thread_message.created_date, "%Y-%m-%dT%TZ")'), ))
+        $select->columns(
+            array('id', 'message', 'parent_id',
+            'thread_message$created_date' => new Expression('DATE_FORMAT(thread_message.created_date, "%Y-%m-%dT%TZ")'), )
+        )
             ->join(array('thread_message_user' => 'user'), 'thread_message_user.id=thread_message.user_id', array('id', 'firstname', 'lastname', 'nickname', 'avatar'))
             ->join('thread', 'thread.id=thread_message.thread_id', array('id', 'course_id'))
             ->join(array('thread_message_parent' => 'thread_message'), 'thread_message_parent.id=thread_message.parent_id', array('id', 'thread_message_parent$deleted_date' => new Expression('DATE_FORMAT(thread_message_parent.deleted_date, "%Y-%m-%dT%TZ")')), $select::JOIN_LEFT)

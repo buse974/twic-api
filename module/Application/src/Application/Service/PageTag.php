@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * PageTag
- *
  */
 namespace Application\Service;
 
@@ -18,8 +16,8 @@ class PageTag extends AbstractService
     /**
      * Add Page Tag
      *
-     * @param int $page_id
-     * @param string $tag
+     * @param  int    $page_id
+     * @param  string $tag
      * @return int
      */
     public function add($page_id, $tag)
@@ -34,8 +32,8 @@ class PageTag extends AbstractService
     /**
      * Add Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function _add($page_id, $data)
@@ -51,8 +49,8 @@ class PageTag extends AbstractService
     /**
      * Replacec Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function replace($page_id, $data)

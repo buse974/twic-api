@@ -23,9 +23,11 @@ class PgUserGrade extends AbstractService
      */
     public function deleteByUserAndSubmission($user, $submission)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setPgId($user)
-            ->setSubmissionId($submission));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setPgId($user)
+                ->setSubmissionId($submission)
+        );
     }
 
     /**
@@ -49,8 +51,10 @@ class PgUserGrade extends AbstractService
      */
     public function getListBySubmission($submission_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setSubmissionId($submission_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setSubmissionId($submission_id)
+        );
     }
 
     /**
@@ -65,10 +69,12 @@ class PgUserGrade extends AbstractService
      */
     public function add($pg_id, $user_id, $submission_id, $grade)
     {
-        return $this->getMapper()->insert($this->getModel()
-            ->setPgId($pg_id)
-            ->setUserId($user_id)
-            ->setSubmissionId($submission_id)
-            ->setGrade($grade));
+        return $this->getMapper()->insert(
+            $this->getModel()
+                ->setPgId($pg_id)
+                ->setUserId($user_id)
+                ->setSubmissionId($submission_id)
+                ->setGrade($grade)
+        );
     }
 }

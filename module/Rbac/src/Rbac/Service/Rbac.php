@@ -25,7 +25,7 @@ class Rbac
     /**
      * Constructor
      *
-     * @param \Rbac\Db\Service\Role $service_role
+     * @param \Rbac\Db\Service\Role                $service_role
      * @param \Zend\Cache\Storage\StorageInterface $cache
      */
     public function __construct($service_role, $cache)

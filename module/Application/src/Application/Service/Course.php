@@ -22,20 +22,20 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $program_id
-     * @param string $title
-     * @param string $picture
-     * @param string $abstract
-     * @param string $description
-     * @param string $objectives
-     * @param string $teaching
-     * @param string $attendance
-     * @param int $duration
-     * @param string $notes
-     * @param string $learning_outcomes
-     * @param string $video_link
-     * @param string $video_token
-     * @param array $material_document
+     * @param  int    $program_id
+     * @param  string $title
+     * @param  string $picture
+     * @param  string $abstract
+     * @param  string $description
+     * @param  string $objectives
+     * @param  string $teaching
+     * @param  string $attendance
+     * @param  int    $duration
+     * @param  string $notes
+     * @param  string $learning_outcomes
+     * @param  string $video_link
+     * @param  string $video_token
+     * @param  array  $material_document
      * @throws \Exception
      * @return \Application\Model\Course
      */
@@ -43,8 +43,10 @@ class Course extends AbstractService
     {
         $m_course = $this->getModel()
             ->setTitle($title)
-            ->setCreatorId($this->getServiceUser()
-            ->getIdentity()['id'])
+            ->setCreatorId(
+                $this->getServiceUser()
+                    ->getIdentity()['id']
+            )
             ->setAbstract($abstract)
             ->setPicture($picture)
             ->setDescription($description)
@@ -77,24 +79,24 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $title
-     * @param string $picture
-     * @param string $abstract
-     * @param string $description
-     * @param string $objectives
-     * @param string $teaching
-     * @param string $attendance
-     * @param int $duration
-     * @param string $notes
-     * @param string $learning_outcomes
-     * @param string $video_link
-     * @param string $video_token
+     * @param  int    $id
+     * @param  string $title
+     * @param  string $picture
+     * @param  string $abstract
+     * @param  string $description
+     * @param  string $objectives
+     * @param  string $teaching
+     * @param  string $attendance
+     * @param  int    $duration
+     * @param  string $notes
+     * @param  string $learning_outcomes
+     * @param  string $video_link
+     * @param  string $video_token
      * @return int
      */
     public function update($id, $title = null, $picture = null, $abstract = null, $description = null, $objectives = null, $teaching = null,
-        $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = null)
-    {
+        $attendance = null, $duration = null, $notes = null, $learning_outcomes = null, $video_link = null, $video_token = null, $is_published = null
+    ) {
         $is_published_old = $this->getLite($id)->getIsPublished();
         $m_course = $this->getModel()
             ->setId($id)
@@ -122,10 +124,12 @@ class Course extends AbstractService
         }
         
         if ($is_published_old == 0 && $is_published == 1) {
-            $this->getServicePost()->addSys('CC'.$id, '', [
+            $this->getServicePost()->addSys(
+                'CC'.$id, '', [
                 'state' => 'published',
                 'course' => $id,
-            ], 'published', null, null, null, null, null, $id, 'course');
+                ], 'published', null, null, null, null, null, $id, 'course'
+            );
         } elseif ($is_published_old == 1 && $is_published == 0) {
             $this->getServicePost()->hardDelete('CC'.$id);
         }
@@ -138,7 +142,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param array|int $id
+     * @param  array|int $id
      * @return array
      */
     public function delete($id)
@@ -150,8 +154,10 @@ class Course extends AbstractService
         }
         
         foreach ($id as $idc) {
-            $ret[$idc] = $this->getMapper()->delete($this->getModel()
-                ->setId($idc));
+            $ret[$idc] = $this->getMapper()->delete(
+                $this->getModel()
+                    ->setId($idc)
+            );
         }
         
         return $ret;
@@ -162,7 +168,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @throws \Exception
      * @return \Application\Model\Course
      */
@@ -179,12 +185,18 @@ class Course extends AbstractService
         }
         
         $m_course = $res_couse->current();
-        $m_course->setGrading($this->getServiceGrading()
-            ->getByCourse($id));
-        $m_course->setGradingPolicy($this->getServiceGradingPolicy()
-            ->get($id));
-        $m_course->setInstructor($this->getServiceUser()
-            ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+        $m_course->setGrading(
+            $this->getServiceGrading()
+                ->getByCourse($id)
+        );
+        $m_course->setGradingPolicy(
+            $this->getServiceGradingPolicy()
+                ->get($id)
+        );
+        $m_course->setInstructor(
+            $this->getServiceUser()
+                ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId())
+        );
         
         return $m_course;
     }
@@ -194,7 +206,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return \Dal\Db\ResultSet\ResultSet|\Application\Model\Course
      */
     public function getLite($id)
@@ -205,8 +217,10 @@ class Course extends AbstractService
             $m_program = $this->getServiceProgram()->getLite($m_course->getProgramId());
             $m_course->setProgram($m_program);
             $m_course->setSchoolId($m_program->getSchoolId());
-            $m_course->setInstructor($this->getServiceUser()
-              ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+            $m_course->setInstructor(
+                $this->getServiceUser()
+                    ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId())
+            );
         }
 
         $res_course->rewind();
@@ -221,7 +235,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $item_id
+     * @param  int $item_id
      * @return \Application\Model\Course
      */
     public function getByItem($item_id)
@@ -234,13 +248,13 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $program
-     * @param string $search
-     * @param array $filter
-     * @param int $user
-     * @param int $school
-     * @param array $exclude
-     * @param bool $self
+     * @param  int    $program
+     * @param  string $search
+     * @param  array  $filter
+     * @param  int    $user
+     * @param  int    $school
+     * @param  array  $exclude
+     * @param  bool   $self
      * @return array
      */
     public function getList($program = null, $search = null, $filter = null, $user = null, $school = null, $exclude = null, $self = null)
@@ -261,10 +275,14 @@ class Course extends AbstractService
         $res_course = $mapper->usePaginator($filter)->getList($program, $search, $filter, $user, $school, $exclude, $is_admin_academic, $self, $is_student);
         
         foreach ($res_course as $m_course) {
-            $m_course->setStudent($this->getServiceUser()
-                ->getListOnly(ModelRole::ROLE_STUDENT_STR, $m_course->getId()));
-            $m_course->setInstructor($this->getServiceUser()
-                ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId()));
+            $m_course->setStudent(
+                $this->getServiceUser()
+                    ->getListOnly(ModelRole::ROLE_STUDENT_STR, $m_course->getId())
+            );
+            $m_course->setInstructor(
+                $this->getServiceUser()
+                    ->getListOnly(ModelRole::ROLE_INSTRUCTOR_STR, $m_course->getId())
+            );
         }
         
         return ['count' => $mapper->count(),'list' => $res_course];
@@ -275,7 +293,7 @@ class Course extends AbstractService
      *
      * @invokable
      *
-     * @param int $program_id
+     * @param  int $program_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListLite($program_id)

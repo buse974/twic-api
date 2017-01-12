@@ -33,14 +33,14 @@ class SubmissionPg extends AbstractMapper
 
         $select = new Select('pg_user_grade');
         $select->columns(['has_graded' => new Expression('COUNT(DISTINCT pg_user_grade.user_id) = COUNT(DISTINCT submission_user.user_id)')])
-               ->join('submission_user', 'submission_user.submission_id = pg_user_grade.submission_id', [])
-               ->where(['submission_user.submission_id' => $submission])
-               ->where(['pg_user_grade.pg_id' => $user]);
+            ->join('submission_user', 'submission_user.submission_id = pg_user_grade.submission_id', [])
+            ->where(['submission_user.submission_id' => $submission])
+            ->where(['pg_user_grade.pg_id' => $user]);
 
         $update = $this->tableGateway->getSql()->update();
         $update->set(['has_graded' => $select])
-               ->where(['user_id' => $user])
-               ->where(['submission_id' => $submission]);
+            ->where(['user_id' => $user])
+            ->where(['submission_id' => $submission]);
 
         return $this->updateWith($update);
     }

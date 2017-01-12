@@ -28,8 +28,10 @@ class UserLanguage extends AbstractService
     public function add($language, $language_level)
     {
         $m_user_language = $this->getModel();
-        $m_user_language->setUserId($this->getServiceUser()
-            ->getIdentity()['id'])
+        $m_user_language->setUserId(
+            $this->getServiceUser()
+                ->getIdentity()['id']
+        )
             ->setLanguageId($language)
             ->setLanguageLevelId($language_level);
 
@@ -54,8 +56,10 @@ class UserLanguage extends AbstractService
     {
         $m_user_language = $this->getModel()->setLanguageLevelId($language_level);
 
-        return $this->getMapper()->update($m_user_language, ['id' => $id, 'user_id' => $this->getServiceUser()
-            ->getIdentity()['id'], ]);
+        return $this->getMapper()->update(
+            $m_user_language, ['id' => $id, 'user_id' => $this->getServiceUser()
+                ->getIdentity()['id'], ]
+        );
     }
 
     /**
@@ -78,14 +82,18 @@ class UserLanguage extends AbstractService
             $m_language->setId($language->getLanguageId());
             $m_level = $this->getServiceLanguageLevel()->getModel();
             $m_level->setId($language->getLanguageLevelId());
-            $language->setLanguage($this->getServiceLanguage()
-                ->getMapper()
-                ->select($m_language)
-                ->current());
-            $language->setLevel($this->getServiceLanguageLevel()
-                ->getMapper()
-                ->select($m_level)
-                ->current());
+            $language->setLanguage(
+                $this->getServiceLanguage()
+                    ->getMapper()
+                    ->select($m_language)
+                    ->current()
+            );
+            $language->setLevel(
+                $this->getServiceLanguageLevel()
+                    ->getMapper()
+                    ->select($m_level)
+                    ->current()
+            );
         }
 
         return $res_user_language;
@@ -102,10 +110,14 @@ class UserLanguage extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id)
-            ->setUserId($this->getServiceUser()
-            ->getIdentity()['id']));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+                ->setUserId(
+                    $this->getServiceUser()
+                        ->getIdentity()['id']
+            )
+        );
     }
 
     /**

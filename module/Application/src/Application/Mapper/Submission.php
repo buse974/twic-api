@@ -20,12 +20,12 @@ class Submission extends AbstractMapper
     {
         $select = new Select('submission_user');
         $select->columns(['has_graded' => new Expression('SUM(IF(submission_user.grade IS NULL,1,0)) = 0')])
-               ->where(['submission_user.submission_id' => $id])
-               ->group('submission_user.submission_id');
+            ->where(['submission_user.submission_id' => $id])
+            ->group('submission_user.submission_id');
 
         $update = $this->tableGateway->getSql()->update();
         $update->set(['is_graded' => $select])
-               ->where(['id' => $id]);
+            ->where(['id' => $id]);
 
         return $this->updateWith($update);
     }
@@ -78,18 +78,20 @@ class Submission extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'item_id', 'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")')))
-            ->join('submission_user', 'submission_user.submission_id=submission.id',
-                ['user_id', 'grade', 'submit_date', 'overwritten', 'start_date', 'end_date']);
+            ->join(
+                'submission_user', 'submission_user.submission_id=submission.id',
+                ['user_id', 'grade', 'submit_date', 'overwritten', 'start_date', 'end_date']
+            );
 
         if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
         } else {
             if (null !== $group_id && null !== $item_id) {
                 $select->where(array('submission.group_id' => $group_id))
-                ->where(array('submission.item_id' => $item_id));
+                    ->where(array('submission.item_id' => $item_id));
             } elseif (null !== $user_id && null !== $item_id) {
                 $select->where(array('submission_user.user_id' => $user_id))
-                ->where(array('submission.item_id' => $item_id));
+                    ->where(array('submission.item_id' => $item_id));
             } elseif (null !== $item_id) {
                 $select->where(array('submission.item_id' => $item_id));
             }
@@ -108,7 +110,8 @@ class Submission extends AbstractMapper
     public function get($item_id = null, $user_id = null, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns([
+        $select->columns(
+            [
             'submission$id' => new Expression('submission.id'),
             'item_id',
             'group_name',
@@ -117,7 +120,8 @@ class Submission extends AbstractMapper
             'is_graded',
             'post_id',
             'submission$nbr_comments' => $this->getSelectNbrComments(),
-        ])
+            ]
+        )
             ->join('submission_user', 'submission_user.submission_id=submission.id', [])
             ->quantifier('DISTINCT');
 
@@ -136,7 +140,8 @@ class Submission extends AbstractMapper
     public function getWithItem($submission_id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns([
+        $select->columns(
+            [
             'submission$id' => new Expression('submission.id'),
             'item_id',
             'group_name',
@@ -144,10 +149,11 @@ class Submission extends AbstractMapper
             'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
             'is_graded',
             'submission$nbr_comments' => $this->getSelectNbrComments(),
-        ])
-        ->join('submission_user', 'submission_user.submission_id=submission.id', [])
-        ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type', 'course_id', 'start', 'end', 'cut_off'])
-        ->quantifier('DISTINCT');
+            ]
+        )
+            ->join('submission_user', 'submission_user.submission_id=submission.id', [])
+            ->join('item', 'item.id=submission.item_id', ['id', 'title', 'type', 'course_id', 'start', 'end', 'cut_off'])
+            ->quantifier('DISTINCT');
 
         if (null !== $submission_id) {
             $select->where(array('submission.id' => $submission_id));
@@ -163,8 +169,8 @@ class Submission extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('submission$nbr_comments' => new Expression('COUNT(true)')))
-                 ->join('submission_comments', 'submission.id = submission_comments.submission_id', [])
-                 ->where(array('submission.id=`submission$id`'));
+            ->join('submission_comments', 'submission.id = submission_comments.submission_id', [])
+            ->where(array('submission.id=`submission$id`'));
 
         return $select;
     }
@@ -204,7 +210,7 @@ class Submission extends AbstractMapper
 
         if (null !== $search) {
             $select->where(array('( submission_item_course.title LIKE ?' => '%'.$search.'%'))
-                   ->where(array('submission_item_program.name LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
+                ->where(array('submission_item_program.name LIKE ? )' => '%'.$search.'%'), Predicate::OP_OR);
         }
         if (!empty($type)) {
             if (in_array('A', $type)) {
@@ -235,7 +241,7 @@ class Submission extends AbstractMapper
         }
         if (true === $tograde) {
             $select->join('opt_grading', 'opt_grading.item_id = item.id')
-                   ->where(array('opt_grading.mode <> "none"'));
+                ->where(array('opt_grading.mode <> "none"'));
         }
         
         return $this->selectWith($select);
@@ -300,13 +306,16 @@ class Submission extends AbstractMapper
     private function getSelectContactState($user)
     {
         $select = new Select('user');
-        $select->columns(array('user$contact_state' => new Expression(
-            'IF(contact.accepted_date IS NOT NULL, 3,
+        $select->columns(
+            array('user$contact_state' => new Expression(
+                'IF(contact.accepted_date IS NOT NULL, 3,
 	         IF(contact.request_date IS NOT  NULL AND contact.requested <> 1, 2,
-		     IF(contact.request_date IS NOT  NULL AND contact.requested = 1, 1,0)))')))
-                 ->join('contact', 'contact.contact_id = user.id', array())
-                 ->where(array('user.id=`user$id`'))
-                 ->where(['contact.user_id' => $user]);
+		     IF(contact.request_date IS NOT  NULL AND contact.requested = 1, 1,0)))'
+            ))
+        )
+            ->join('contact', 'contact.contact_id = user.id', array())
+            ->where(array('user.id=`user$id`'))
+            ->where(['contact.user_id' => $user]);
 
         return $select;
     }

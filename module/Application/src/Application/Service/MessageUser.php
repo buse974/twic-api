@@ -102,7 +102,8 @@ class MessageUser extends AbstractService
                 ];
             }
             //////////////////////// NODEJS //////////////////////////////:
-            $this->sendMessage([
+            $this->sendMessage(
+                [
                 'content' => $message_text,
                 'cid' => (int)$conversation_id,
                 'document' => $docs,
@@ -111,7 +112,8 @@ class MessageUser extends AbstractService
                 'users' => $to,
                 'created_date' => date('c'),
                 'type' => 2,
-            ]);
+                ]
+            );
 
             if ($m_message->getType() == 2) {
                 ///////////////////////// FCM /////////////////////////////////
@@ -126,7 +128,8 @@ class MessageUser extends AbstractService
                             ->setTag("CONV".$conversation_id)
                             ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".count($docs)." items.":$message_text));
 
-                        $this->getServiceFcm()->send($user, ['data' => [
+                        $this->getServiceFcm()->send(
+                            $user, ['data' => [
                                 'type' => 'message',
                                 'data' => ['users' => $to,
                                     'from' => $me,
@@ -134,7 +137,8 @@ class MessageUser extends AbstractService
                                     'text' => $message_text,
                                     'doc' => count($docs)
                                 ],
-                            ]], $gcm_notification);
+                            ]], $gcm_notification
+                        );
                     }
                 }
             }
@@ -143,7 +147,7 @@ class MessageUser extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
 
-   /**
+    /**
     * Send Message Node message.publish
     *
     * @param string $data
@@ -233,8 +237,10 @@ class MessageUser extends AbstractService
      */
     public function getMessage($message_id)
     {
-        return $this->getList($this->getServiceUser()
-            ->getIdentity()['id'], $message_id)['list']->current();
+        return $this->getList(
+            $this->getServiceUser()
+                ->getIdentity()['id'], $message_id
+        )['list']->current();
     }
 
     /**
@@ -248,8 +254,10 @@ class MessageUser extends AbstractService
     public function countTag($tag, $type)
     {
         return $this->getMapper()
-            ->countTag($this->getServiceUser()
-            ->getIdentity()['id'], $tag, $type)
+            ->countTag(
+                $this->getServiceUser()
+                    ->getIdentity()['id'], $tag, $type
+            )
             ->count();
     }
 
@@ -302,8 +310,10 @@ class MessageUser extends AbstractService
      */
     public function hardDeleteByMessage($message_id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setMessageId($message_id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setMessageId($message_id)
+        );
     }
 
     /**

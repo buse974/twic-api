@@ -41,7 +41,9 @@ class SubWhiteboard extends AbstractService
      */
     public function getList($submission_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setSubmissionId($submission_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setSubmissionId($submission_id)
+        );
     }
 }

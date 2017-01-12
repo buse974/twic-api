@@ -11,14 +11,16 @@ class Report extends AbstractMapper
     {
         $sub_select = $this->tableGateway->getSql()->select();
         $sub_select->columns(['sub$user_id' => 'user_id','sub$post_id' => 'post_id','sub$page_id' => 'page_id',  'weight' => new Expression('SUM(IF(validate = 0,0,1))')])
-                   ->group(['user_id', 'post_id', 'page_id']);
+            ->group(['user_id', 'post_id', 'page_id']);
         
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'reason', 'description', 'user_id', 'post_id', 'page_id', 'validate', 'treatment_date', 'treated'])
-               ->join(['reporter' => 'user'], 'report.reporter_id = reporter.id', ['id', 'avatar', 'firstname', 'lastname', 'nickname'])
-               ->join(['sub' =>$sub_select],
-                      'report.user_id = sub$user_id  OR report.post_id = sub$post_id OR report.page_id = sub$page_id',
-                      ['report$weight' => 'weight']);
+            ->join(['reporter' => 'user'], 'report.reporter_id = reporter.id', ['id', 'avatar', 'firstname', 'lastname', 'nickname'])
+            ->join(
+                ['sub' =>$sub_select],
+                'report.user_id = sub$user_id  OR report.post_id = sub$post_id OR report.page_id = sub$page_id',
+                ['report$weight' => 'weight']
+            );
         
         if (true === $treated) {
             $select->where('report.treatment_date IS NOT NULL');

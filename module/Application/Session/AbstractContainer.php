@@ -526,15 +526,19 @@ abstract class AbstractContainer extends ArrayObject
             $container = $this;
 
             // Filter out any items not in our container
-            $expires = array_filter($vars, function ($value) use ($container) {
-                return $container->offsetExists($value);
-            });
+            $expires = array_filter(
+                $vars, function ($value) use ($container) {
+                    return $container->offsetExists($value);
+                }
+            );
 
             // Map item keys => timestamp
             $expires = array_flip($expires);
-            $expires = array_map(function ($value) use ($ts) {
-                return $ts;
-            }, $expires);
+            $expires = array_map(
+                function ($value) use ($ts) {
+                    return $ts;
+                }, $expires
+            );
 
             // Create metadata array to merge in
             $data = array('EXPIRE_KEYS' => $expires);
@@ -579,15 +583,19 @@ abstract class AbstractContainer extends ArrayObject
             $container = $this;
 
             // FilterInterface out any items not in our container
-            $expires = array_filter($vars, function ($value) use ($container) {
-                return $container->offsetExists($value);
-            });
+            $expires = array_filter(
+                $vars, function ($value) use ($container) {
+                    return $container->offsetExists($value);
+                }
+            );
 
             // Map item keys => timestamp
             $expires = array_flip($expires);
-            $expires = array_map(function ($value) use ($hops, $ts) {
-                return array('hops' => $hops, 'ts' => $ts);
-            }, $expires);
+            $expires = array_map(
+                function ($value) use ($hops, $ts) {
+                    return array('hops' => $hops, 'ts' => $ts);
+                }, $expires
+            );
 
             // Create metadata array to merge in
             $data = array('EXPIRE_HOPS_KEYS' => $expires);

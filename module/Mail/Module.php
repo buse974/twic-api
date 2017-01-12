@@ -25,14 +25,14 @@ class Module implements ConfigProviderInterface
                     $bj_storage = null;
                     
                     switch ($conf_storage['name']) {
-                        case 'fs':
-                            $bj_storage = new \Mail\Template\Storage\FsStorage();
-                            $bj_storage->init($conf_storage);
-                            break;
-                        case 's3':
-                            $bj_storage = new \Mail\Template\Storage\FsS3Storage();
-                            $bj_storage->init($conf_storage);
-                            break;
+                    case 'fs':
+                        $bj_storage = new \Mail\Template\Storage\FsStorage();
+                        $bj_storage->init($conf_storage);
+                        break;
+                    case 's3':
+                        $bj_storage = new \Mail\Template\Storage\FsS3Storage();
+                        $bj_storage->init($conf_storage);
+                        break;
                     }
                     
                     $mail =  new Mail();

@@ -9,7 +9,7 @@ class GcmGroup extends AbstractService
     /**
      *
      * @param string $notification_key_name
-     * @param array $registration_id
+     * @param array  $registration_id
      * @param string $uuid
      * @return bool
      */
@@ -36,8 +36,8 @@ class GcmGroup extends AbstractService
     /**
      * Add GcmGroup In Bdd
      *
-     * @param string $notification_key_name
-     * @param string $notification_key
+     * @param  string $notification_key_name
+     * @param  string $notification_key
      * @throws \Exception
      * @return int
      */
@@ -69,8 +69,10 @@ class GcmGroup extends AbstractService
      */
     public function get($notification_key_name)
     {
-        $res_gcm_group = $this->getMapper()->select($this->getModel()
-            ->setNotificationKeyName($notification_key_name));
+        $res_gcm_group = $this->getMapper()->select(
+            $this->getModel()
+                ->setNotificationKeyName($notification_key_name)
+        );
         
         return ($res_gcm_group->count() > 0) ? $res_gcm_group->current() : false;
     }

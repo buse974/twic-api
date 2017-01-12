@@ -150,8 +150,10 @@ class Resume extends AbstractService
     {
         $m_education = $this->getModel();
 
-        $m_education->setId($id)->setUserId($this->getServiceUser()
-            ->getIdentity()['id']);
+        $m_education->setId($id)->setUserId(
+            $this->getServiceUser()
+                ->getIdentity()['id']
+        );
 
         return $this->getMapper()->delete($m_education);
     }
@@ -208,7 +210,7 @@ class Resume extends AbstractService
      *
      * @invokable
      *
-     * @param int|array $id
+     * @param  int|array $id
      * @return array
      */
     public function m_get($id = null)

@@ -10,9 +10,9 @@ class Grading extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id', 'letter', 'min', 'max', 'grade', 'description', 'tpl', 'school_id', 'program_id'))
-               ->join('program', 'program.id=grading.program_id')
-               ->join('course', 'course.program_id=program.id')
-               ->where(array('course.id' => $course));
+            ->join('program', 'program.id=grading.program_id')
+            ->join('course', 'course.program_id=program.id')
+            ->where(array('course.id' => $course));
 
         return $this->selectWith($select);
     }

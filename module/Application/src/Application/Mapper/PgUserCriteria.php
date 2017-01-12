@@ -14,13 +14,13 @@ class PgUserCriteria extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['pg_id', 'user_id', 'pg_user_criteria$grade' => new Expression('ROUND(SUM(pg_user_criteria.points) * 100 / SUM(criteria.points))')])
-           ->join('submission', 'pg_user_criteria.submission_id = submission.id', [])
-           ->join('item', 'submission.item_id = item.id', [])
-           ->join('grading_policy', 'item.grading_policy_id = grading_policy.id', [])
-           ->join('criteria', 'grading_policy.id = criteria.grading_policy_id', [])
-           ->where(['pg_user_criteria.submission_id' => $submission])
-           ->group(['pg_user_criteria.pg_id', 'pg_user_criteria.user_id'])
-           ->having($having);
+            ->join('submission', 'pg_user_criteria.submission_id = submission.id', [])
+            ->join('item', 'submission.item_id = item.id', [])
+            ->join('grading_policy', 'item.grading_policy_id = grading_policy.id', [])
+            ->join('criteria', 'grading_policy.id = criteria.grading_policy_id', [])
+            ->where(['pg_user_criteria.submission_id' => $submission])
+            ->group(['pg_user_criteria.pg_id', 'pg_user_criteria.user_id'])
+            ->having($having);
 
         if (null !== $user) {
             $select->where(['pg_user_criteria.pg_id' => $user]);

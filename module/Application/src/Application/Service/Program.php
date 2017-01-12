@@ -23,7 +23,7 @@ class Program extends AbstractService
      * @invokable
      *
      * @param string $name
-     * @param int $school_id
+     * @param int    $school_id
      * @param string $level
      * @param string $sis
      * @param string $year
@@ -57,12 +57,12 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param string $name
-     * @param string $school_id
-     * @param string $level
-     * @param string $sis
-     * @param string $year
+     * @param  int    $id
+     * @param  string $name
+     * @param  string $school_id
+     * @param  string $level
+     * @param  string $sis
+     * @param  string $year
      * @return int
      */
     public function update($id, $name = null, $school_id = null, $level = null, $sis = null, $year = null)
@@ -87,10 +87,10 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
-     * @param string $search
-     * @param int $school
-     * @param bool $self
+     * @param  array  $filter
+     * @param  string $search
+     * @param  int    $school
+     * @param  bool   $self
      * @param
      *            array exclude
      * @return \Dal\Db\ResultSet\ResultSet
@@ -101,12 +101,18 @@ class Program extends AbstractService
         // @TODO Faire un vrai count
         $res_program = $this->getListByUser($filter, $user['id'], $search, $school, $self, $exclude);
         foreach ($res_program['list'] as $m_program) {
-            $m_program->setStudent($this->getServiceUser()
-                ->getList(array('n' => 1,'p' => 1), 'student', null, null, $m_program->getId(), null, null, null, false)['count']);
-            $m_program->setInstructor($this->getServiceUser()
-                ->getList(array('n' => 1,'p' => 1), 'instructor', null, null, $m_program->getId(), null, null, null, false)['count']);
-            $m_program->setCourse($this->getServiceCourse()
-                ->count($m_program->getId()));
+            $m_program->setStudent(
+                $this->getServiceUser()
+                    ->getList(array('n' => 1,'p' => 1), 'student', null, null, $m_program->getId(), null, null, null, false)['count']
+            );
+            $m_program->setInstructor(
+                $this->getServiceUser()
+                    ->getList(array('n' => 1,'p' => 1), 'instructor', null, null, $m_program->getId(), null, null, null, false)['count']
+            );
+            $m_program->setCourse(
+                $this->getServiceCourse()
+                    ->count($m_program->getId())
+            );
         }
 
         return $res_program;
@@ -127,12 +133,12 @@ class Program extends AbstractService
     /**
      * Get List By User.
      *
-     * @param array $filter
-     * @param int $user_id
-     * @param string $search
-     * @param int $school_id
-     * @param bool $self
-     * @param array $exclude
+     * @param  array  $filter
+     * @param  int    $user_id
+     * @param  string $search
+     * @param  int    $school_id
+     * @param  bool   $self
+     * @param  array  $exclude
      * @return array
      */
     public function getListByUser($filter = null, $user_id = null, $search = null, $school_id = null, $self = true, $exclude = null)
@@ -156,14 +162,16 @@ class Program extends AbstractService
     /**
      * Get List By User
      *
-     * @param inr $school_id
+     * @param  inr $school_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListBySchool($school_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setSchoolId($school_id)
-            ->setDeletedDate(new IsNull()));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setSchoolId($school_id)
+                ->setDeletedDate(new IsNull())
+        );
     }
 
     /**
@@ -171,7 +179,7 @@ class Program extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param  int $id
      * @return \Application\Model\Program
      */
     public function get($id)
@@ -183,17 +191,23 @@ class Program extends AbstractService
         }
 
         $m_program = $res_program->current();
-        $m_program->setStudent($this->getServiceUser()
-            ->getList(null, 'student', null, null, $m_program->getId()));
-        $m_program->setInstructor($this->getServiceUser()
-            ->getList(null, 'instructor', null, null, $m_program->getId()));
-        $m_program->setCourse($this->getServiceCourse()
-            ->getList($m_program->getId()));
+        $m_program->setStudent(
+            $this->getServiceUser()
+                ->getList(null, 'student', null, null, $m_program->getId())
+        );
+        $m_program->setInstructor(
+            $this->getServiceUser()
+                ->getList(null, 'instructor', null, null, $m_program->getId())
+        );
+        $m_program->setCourse(
+            $this->getServiceCourse()
+                ->getList($m_program->getId())
+        );
 
         return $m_program;
     }
 
-   /**
+    /**
     * Get List Program
     *
     * @param int $id
@@ -226,8 +240,10 @@ class Program extends AbstractService
         }
 
         foreach ($id as $p) {
-            $ret[$p] = $this->getMapper()->delete($this->getModel()
-                ->setId($p));
+            $ret[$p] = $this->getMapper()->delete(
+                $this->getModel()
+                    ->setId($p)
+            );
         }
 
         return $ret;

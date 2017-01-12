@@ -366,7 +366,6 @@ class PostTest extends AbstractService
         $this->assertEquals($data['result'][0]['type'] , "post");
         $this->assertEquals($data['result'][0]['data'] , null);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-
     }
 
     public function testPostGetListId()

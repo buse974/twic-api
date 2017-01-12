@@ -40,9 +40,9 @@ class Fcm extends AbstractService
     
     /**
      *
-     * @param \Application\Service\Session $session
+     * @param \Application\Service\Session   $session
      * @param \ZendService\Google\Gcm\Client $fcm_client
-     * @param unknown $token
+     * @param unknown                        $token
      */
     public function __construct($session, $fcm_client, $token)
     {
@@ -102,7 +102,7 @@ class Fcm extends AbstractService
     /**
      * Set Client Fcm
      *
-     * @param \ZendService\Google\Gcm\Client $fcm_client
+     * @param  \ZendService\Google\Gcm\Client $fcm_client
      * @return \Application\Service\Fcm
      */
     private function setServiceFcmClient($fcm_client)
@@ -115,7 +115,7 @@ class Fcm extends AbstractService
     /**
      * Set Service Session
      *
-     * @param \Application\Service\Session $session
+     * @param  \Application\Service\Session $session
      * @return \Application\Service\Fcm
      */
     private function setServiceSession($session)
@@ -128,7 +128,7 @@ class Fcm extends AbstractService
     /**
      * Set Token User
      *
-     * @param string $token
+     * @param  string $token
      * @return \Application\Service\Fcm
      */
     private function setToken($token)

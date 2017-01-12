@@ -67,8 +67,10 @@ class CtGroup extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -80,7 +82,9 @@ class CtGroup extends AbstractService
      */
     public function get($item_id)
     {
-        return $this->getMapper()->select($this->getModel()
-            ->setItemId($item_id));
+        return $this->getMapper()->select(
+            $this->getModel()
+                ->setItemId($item_id)
+        );
     }
 }

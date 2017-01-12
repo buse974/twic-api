@@ -68,29 +68,29 @@ class MessageUser extends AbstractMapper
             }
 
             switch ($tag) {
-                case 'INBOX':
-                    $subselect->where(['message.is_draft IS FALSE'])
-                        ->where([' (message_user.type = ? ' => 'R'])
-                        ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
-                    break;
-                case 'SENT':
-                    $subselect->where(['message.is_draft IS FALSE'])
-                        ->where([' ( message_user.type = ? ' => 'S'])
-                        ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
-                    break;
-                case 'DRAFT':
-                    $subselect->where(['message.is_draft IS TRUE'])
-                        ->where(['message_user.user_id=message_user.from_id']);
-                    break;
-                case 'NOREAD':
-                    $subselect->where(['message_user.read_date IS NULL'])
-                        ->where(['message.is_draft IS FALSE'])
-                        ->where([' (message_user.type = ? ' => 'R'])
-                        ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
-                    break;
-                default:
-                    $subselect->where([' ( message.is_draft IS FALSE OR ( message.is_draft IS TRUE AND message_user.from_id = ? )) ' => $user_id]);
-                    break;
+            case 'INBOX':
+                $subselect->where(['message.is_draft IS FALSE'])
+                    ->where([' (message_user.type = ? ' => 'R'])
+                    ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
+                break;
+            case 'SENT':
+                $subselect->where(['message.is_draft IS FALSE'])
+                    ->where([' ( message_user.type = ? ' => 'S'])
+                    ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
+                break;
+            case 'DRAFT':
+                $subselect->where(['message.is_draft IS TRUE'])
+                    ->where(['message_user.user_id=message_user.from_id']);
+                break;
+            case 'NOREAD':
+                $subselect->where(['message_user.read_date IS NULL'])
+                    ->where(['message.is_draft IS FALSE'])
+                    ->where([' (message_user.type = ? ' => 'R'])
+                    ->where(['message_user.type = ?) ' => 'RS'], Predicate::OP_OR);
+                break;
+            default:
+                $subselect->where([' ( message.is_draft IS FALSE OR ( message.is_draft IS TRUE AND message_user.from_id = ? )) ' => $user_id]);
+                break;
             }
 
             $select->where([new In('message_user.id', $subselect)]);
@@ -109,8 +109,10 @@ class MessageUser extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'user_id', 'from_id', 'read_date', 'message_id', 'conversation_id', 'created_date'])
-            ->join(['message_user_message' => 'message'], 'message_user_message.id=message_user.message_id',
-                ['id', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")])
+            ->join(
+                ['message_user_message' => 'message'], 'message_user_message.id=message_user.message_id',
+                ['id', 'text', 'token', 'title', 'message$created_date' => new Expression("DATE_FORMAT(message_user_message.created_date, '%Y-%m-%dT%TZ') ")]
+            )
             ->where(['message_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
             ->order(['message_user.id' => 'DESC']);
@@ -143,26 +145,26 @@ class MessageUser extends AbstractMapper
             ->group(['message_user.conversation_id']);
 
         switch ($tag) {
-            case 'INBOX':
-                $select->where(['message.is_draft IS FALSE'])
-                    ->where([' ( message_user.type = "R" OR message_user.type = "RS" )']);
+        case 'INBOX':
+            $select->where(['message.is_draft IS FALSE'])
+                ->where([' ( message_user.type = "R" OR message_user.type = "RS" )']);
                 break;
-            case 'SENT':
-                $select->where(['message.is_draft IS FALSE'])
-                    ->where([' ( message_user.type = "S" OR message_user.type = "RS" )']);
+        case 'SENT':
+            $select->where(['message.is_draft IS FALSE'])
+                ->where([' ( message_user.type = "S" OR message_user.type = "RS" )']);
                 break;
-            case 'DRAFT':
-                $select->where(['message.is_draft IS TRUE'])
-                    ->where(['message_user.user_id=message_user.from_id']);
+        case 'DRAFT':
+            $select->where(['message.is_draft IS TRUE'])
+                ->where(['message_user.user_id=message_user.from_id']);
                 break;
-            case 'NOREAD':
-                $select->where(['message_user.read_date IS NULL'])
-                    ->where(['message.is_draft IS FALSE'])
-                    ->where([' ( message_user.type = "R" OR message_user.type = "RS" )']);
+        case 'NOREAD':
+            $select->where(['message_user.read_date IS NULL'])
+                ->where(['message.is_draft IS FALSE'])
+                ->where([' ( message_user.type = "R" OR message_user.type = "RS" )']);
                 break;
-            default:
-                ;
-                break;
+        default:
+            ;
+            break;
         }
 
         return $this->selectWith($select);

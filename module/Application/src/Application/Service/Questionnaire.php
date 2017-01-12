@@ -95,7 +95,8 @@ class Questionnaire extends AbstractService
             $m_questionnaire_user->getId(),
             $m_questionnaire_question->getId(),
             $user,
-            $scale);
+        $scale
+        );
 
         $nbrq = $this->getNbrQuestionNoCompleted($item);
         if ($nbrq === 0) {
@@ -155,8 +156,10 @@ class Questionnaire extends AbstractService
         $m_questionnaire = $this->getMapper()->getByItem($item)->current();
         $m_questionnaire_user = $this->getServiceQuestionnaireUser()->get($m_questionnaire->getId(), $item);
 
-        $m_questionnaire_user->setAnswers($this->getServiceAnswer()
-            ->getByQuestionnaireUser($m_questionnaire_user->getId()));
+        $m_questionnaire_user->setAnswers(
+            $this->getServiceAnswer()
+                ->getByQuestionnaireUser($m_questionnaire_user->getId())
+        );
 
         return $m_questionnaire_user;
     }

@@ -25,9 +25,11 @@ class Guidelines extends AbstractService
      */
     public function add($state, $data)
     {
-        if ($this->getMapper()->insert($this->getModel()
-            ->setState($state)
-            ->setData(json_encode($data))) <= 0) {
+        if ($this->getMapper()->insert(
+            $this->getModel()
+                ->setState($state)
+                ->setData(json_encode($data))
+        ) <= 0) {
             throw new \Exception('error insert guidelines');
         }
 
@@ -51,10 +53,12 @@ class Guidelines extends AbstractService
             $data = json_encode($data);
         }
 
-        return $this->getMapper()->update($this->getModel()
-            ->setState($state)
-            ->setId($id)
-            ->setData($data));
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setState($state)
+                ->setId($id)
+                ->setData($data)
+        );
     }
 
     /**
@@ -68,8 +72,10 @@ class Guidelines extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**
@@ -83,8 +89,10 @@ class Guidelines extends AbstractService
      */
     public function getList($state)
     {
-        $res_guidelines = $this->getMapper()->select($this->getModel()
-            ->setState($state));
+        $res_guidelines = $this->getMapper()->select(
+            $this->getModel()
+                ->setState($state)
+        );
 
         $ret = [];
         foreach ($res_guidelines as $m_guidelines) {

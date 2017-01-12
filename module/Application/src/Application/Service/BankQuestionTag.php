@@ -43,8 +43,10 @@ class BankQuestionTag extends AbstractService
      */
     public function replace($bank_question_id, $data)
     {
-        $this->getMapper()->delete($this->getModel()
-            ->setBankQuestionId($bank_question_id));
+        $this->getMapper()->delete(
+            $this->getModel()
+                ->setBankQuestionId($bank_question_id)
+        );
 
         return $this->add($bank_question_id, $data);
     }
@@ -59,8 +61,10 @@ class BankQuestionTag extends AbstractService
      */
     public function copy($bank_question_id_new, $bank_question_id_old)
     {
-        $res_bank_question_tag = $this->getMapper()->select($this->getModel()
-            ->setBankQuestionId($bank_question_id_old));
+        $res_bank_question_tag = $this->getMapper()->select(
+            $this->getModel()
+                ->setBankQuestionId($bank_question_id_old)
+        );
 
         foreach ($res_bank_question_tag as $m_bank_question_tag) {
             $this->getMapper()->insert($m_bank_question_tag->setBankQuestionId($bank_question_id_new));

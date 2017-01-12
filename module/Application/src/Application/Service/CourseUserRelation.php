@@ -47,8 +47,8 @@ class CourseUserRelation extends AbstractService
     /**
      * Add relation user and course
      *
-     * @param int $user_id
-     * @param int $course_id
+     * @param  int $user_id
+     * @param  int $course_id
      * @return int
      */
     public function _add($user_id, $course_id)
@@ -77,9 +77,11 @@ class CourseUserRelation extends AbstractService
 
         foreach ($user_id as $u) {
             foreach ($course_id as $c) {
-                $ret[$u][$c] = $this->getMapper()->delete($this->getModel()
-                    ->setCourseId($c)
-                    ->setUserId($u));
+                $ret[$u][$c] = $this->getMapper()->delete(
+                    $this->getModel()
+                        ->setCourseId($c)
+                        ->setUserId($u)
+                );
                 
                 $this->getServiceSubscription()->delete('PC'.$c, $u);
             }
@@ -91,13 +93,15 @@ class CourseUserRelation extends AbstractService
     /**
      * Delete relation by user.
      *
-     * @param int $user_id
+     * @param  int $user_id
      * @return int
      */
     public function deleteByUser($user_id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setUserId($user_id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setUserId($user_id)
+        );
     }
     
     /**

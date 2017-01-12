@@ -126,8 +126,10 @@ class PollItem extends AbstractService
      */
     public function getList($poll_id)
     {
-        $res_poll_item = $this->getMapper()->select($this->getModel()
-            ->setPollId($poll_id));
+        $res_poll_item = $this->getMapper()->select(
+            $this->getModel()
+                ->setPollId($poll_id)
+        );
 
         if ($res_poll_item->count() <= 0) {
             return;

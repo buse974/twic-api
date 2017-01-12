@@ -166,8 +166,10 @@ class Submission extends AbstractService
         }
         
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-            ->getListBySubmissionId($m_submission->getId()));
+        $m_submission->setSubmissionUser(
+            $this->getServiceSubmissionUser()
+                ->getListBySubmissionId($m_submission->getId())
+        );
         
         return $m_submission;
     }
@@ -216,8 +218,10 @@ class Submission extends AbstractService
         }
         $res_submission->rewind();
         $m_submission = $res_submission->current();
-        $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-            ->getListBySubmissionId($m_submission->getId()));
+        $m_submission->setSubmissionUser(
+            $this->getServiceSubmissionUser()
+                ->getListBySubmissionId($m_submission->getId())
+        );
         
         return $m_submission;
     }
@@ -250,13 +254,15 @@ class Submission extends AbstractService
      * Add Submission.
      *
      * @param array $data
-     * @param int $item_id
+     * @param int   $item_id
      */
     public function add($data, $item_id)
     {
         $has_modif = false;
-        $res_submission = $this->getMapper()->select($this->getModel()
-            ->setItemId($item_id));
+        $res_submission = $this->getMapper()->select(
+            $this->getModel()
+                ->setItemId($item_id)
+        );
         foreach ($res_submission as $m_submission) {
             $is_present = false;
             foreach ($data as $su) {
@@ -267,8 +273,10 @@ class Submission extends AbstractService
             }
             if ($is_present === false) {
                 $has_modif = true;
-                $this->getMapper()->delete($this->getModel()
-                    ->setId($m_submission->getId()));
+                $this->getMapper()->delete(
+                    $this->getModel()
+                        ->setId($m_submission->getId())
+                );
             }
         }
         
@@ -276,10 +284,12 @@ class Submission extends AbstractService
             if (isset($su['submission_id']) && is_numeric($su['submission_id'])) {
                 $s_id = $su['submission_id'];
             } else {
-                $this->getMapper()->insert($this->getModel()
-                    ->setItemId($item_id)
-                    ->setGroupName((isset($su['group_name']) ? $su['group_name'] : null))
-                    ->setGroupId((isset($su['group_id']) ? $su['group_id'] : null)));
+                $this->getMapper()->insert(
+                    $this->getModel()
+                        ->setItemId($item_id)
+                        ->setGroupName((isset($su['group_name']) ? $su['group_name'] : null))
+                        ->setGroupId((isset($su['group_id']) ? $su['group_id'] : null))
+                );
                 $s_id = $this->getMapper()->getLastInsertValue();
             }
             // si il y a eu une modification des submission_user je has_modif a true
@@ -308,8 +318,10 @@ class Submission extends AbstractService
         
         $res_submission = $this->getMapper()->getListToGrade($user_id, $item_id);
         foreach ($res_submission as $m_submission) {
-            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-                ->getListBySubmissionId($m_submission->getId()));
+            $m_submission->setSubmissionUser(
+                $this->getServiceSubmissionUser()
+                    ->getListBySubmissionId($m_submission->getId())
+            );
         }
         
         return $res_submission;
@@ -327,10 +339,14 @@ class Submission extends AbstractService
     {
         $res_submission = $this->getMapper()->get($item_id, $user_id);
         if ($res_submission->count() <= 0) {
-            $this->getMapper()->insert($this->getModel()
-                ->setItemId($item_id));
-            $this->getServiceSubmissionUser()->add($this->getMapper()
-                ->getLastInsertValue(), $user_id);
+            $this->getMapper()->insert(
+                $this->getModel()
+                    ->setItemId($item_id)
+            );
+            $this->getServiceSubmissionUser()->add(
+                $this->getMapper()
+                    ->getLastInsertValue(), $user_id
+            );
         }
         
         return true;
@@ -350,8 +366,10 @@ class Submission extends AbstractService
         $res_submission = $this->getMapper()->get($item_id);
         $m_item = $this->getServiceItem()->get($item_id);
         foreach ($res_submission as $m_submission) {
-            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-                ->getListBySubmissionId($m_submission->getId()));
+            $m_submission->setSubmissionUser(
+                $this->getServiceSubmissionUser()
+                    ->getListBySubmissionId($m_submission->getId())
+            );
         }
         
         return $res_submission;
@@ -362,16 +380,16 @@ class Submission extends AbstractService
      *
      * @invokable
      *
-     * @param array $filter
-     * @param array $type
-     * @param array $course
-     * @param bool $started
-     * @param bool $submitted
-     * @param bool $graded
-     * @param bool $late
+     * @param array  $filter
+     * @param array  $type
+     * @param array  $course
+     * @param bool   $started
+     * @param bool   $submitted
+     * @param bool   $graded
+     * @param bool   $late
      * @param string $search
-     * @param int $user_id
-     * @param bool $tograde
+     * @param int    $user_id
+     * @param bool   $tograde
      *
      * @return array
      */
@@ -392,8 +410,10 @@ class Submission extends AbstractService
         $mapper = $this->getMapper();
         $res_submission = $mapper->usePaginator($filter)->getListStudent($user_id, $type, $course, $started, $submitted, $graded, $late, $search, $tograde);
         foreach ($res_submission as $m_submission) {
-            $m_submission->setSubmissionUser($this->getServiceSubmissionUser()
-                ->getListBySubmissionId($m_submission->getId()));
+            $m_submission->setSubmissionUser(
+                $this->getServiceSubmissionUser()
+                    ->getListBySubmissionId($m_submission->getId())
+            );
             
             if ($is_student === true) {
                 $m_submission->getItem()->setChecked($this->getServiceItem()->checkVisibility($m_submission->getItem()->getId(), $user_id));
@@ -422,9 +442,11 @@ class Submission extends AbstractService
         
         $this->getServiceSubmissionUser()->OverwrittenGrade($m_submission->getId(), $grade);
         
-        $this->getMapper()->update($this->getModel()
-            ->setIsGraded(true)
-            ->setId($m_submission->getId()));
+        $this->getMapper()->update(
+            $this->getModel()
+                ->setIsGraded(true)
+                ->setId($m_submission->getId())
+        );
         
         return $m_submission->getId();
     }
@@ -561,8 +583,10 @@ class Submission extends AbstractService
      */
     public function forceSubmitByItem($item_id)
     {
-        return $this->forceSubmitBySubmission($this->getByItem($item_id)
-            ->getId());
+        return $this->forceSubmitBySubmission(
+            $this->getByItem($item_id)
+                ->getId()
+        );
     }
 
     /**
@@ -674,19 +698,21 @@ class Submission extends AbstractService
                         $miid[] = 'M'.$u;
                     }
                     
-                    $m_post = $this->getServicePost()->addSys('SS'.$submission_id, '', [
+                    $m_post = $this->getServicePost()->addSys(
+                        'SS'.$submission_id, '', [
                         'state' => 'request',
                         'submission' => $submission_id,
                         'user' => $user_id,
                         'course' => $m_item->getCourseId(),
                         'item' => $m_item->getId()
-                    ], 'request', $miid/*sub*/,
+                        ], 'request', $miid/*sub*/,
                         null/*parent*/,
                         null/*page*/,
                         null/*org*/,
                         null/*user*/,
                         $m_item->getCourseId()/*course*/,
-                        'submission');
+                        'submission'
+                    );
                     
                     $post_id = $m_post->getId();
                     $this->getMapper()->update($this->getModel()->setId($submission_id)->setPostId($post_id));
@@ -702,18 +728,20 @@ class Submission extends AbstractService
                 $miid[] = 'M'.$instructor_id;
             }
             
-            $m_post = $this->getServicePost()->addSys('SS'.$submission_id, '', [
-               'state' => 'submit',
-               'submission' => $submission_id,
-               'course' => $m_item->getCourseId(),
-               'item' => $m_item->getId(),
-            ], 'submit', $miid/*sub*/,
+            $m_post = $this->getServicePost()->addSys(
+                'SS'.$submission_id, '', [
+                'state' => 'submit',
+                'submission' => $submission_id,
+                'course' => $m_item->getCourseId(),
+                'item' => $m_item->getId(),
+                ], 'submit', $miid/*sub*/,
                 null/*parent*/,
                 null/*page*/,
                 null/*org*/,
                 null/*user*/,
                 $m_item->getCourseId()/*course*/,
-                'submission');
+                'submission'
+            );
 
             $post_id = $m_post->getId();
             $this->getMapper()->update($this->getModel()->setId($submission_id)->setPostId($post_id));
@@ -755,8 +783,10 @@ class Submission extends AbstractService
      */
     public function submitByItem($item_id)
     {
-        return $this->submitBySubmission($this->getByItem($item_id)
-            ->getId());
+        return $this->submitBySubmission(
+            $this->getByItem($item_id)
+                ->getId()
+        );
     }
 
     /**
@@ -794,8 +824,10 @@ class Submission extends AbstractService
             return;
         }
         
-        return $this->getServiceSubmissionUser()->cancelsubmit($submission_id, $this->getServiceUser()
-            ->getIdentity()['id']);
+        return $this->getServiceSubmissionUser()->cancelsubmit(
+            $submission_id, $this->getServiceUser()
+                ->getIdentity()['id']
+        );
     }
 
     /**
@@ -809,8 +841,10 @@ class Submission extends AbstractService
      */
     public function cancelsubmitByItem($item_id)
     {
-        return $this->cancelsubmitBySubmission($this->getByItem($item_id)
-            ->getId());
+        return $this->cancelsubmitBySubmission(
+            $this->getByItem($item_id)
+                ->getId()
+        );
     }
 
     /**
@@ -818,7 +852,7 @@ class Submission extends AbstractService
      *
      * @invokable
      *
-     * @param int $submission_id
+     * @param int    $submission_id
      * @param string $name
      * @param string $type
      * @param string $link
@@ -852,7 +886,7 @@ class Submission extends AbstractService
      * @invokable
      *
      * @param array $users
-     * @param int $id
+     * @param int   $id
      *
      * @return int
      */
@@ -922,7 +956,7 @@ class Submission extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int   $id
      * @param array $grades
      * @param array $criterias
      *
@@ -958,11 +992,11 @@ class Submission extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
-     * @param int $user_id
-     * @param int $item
+     * @param int   $id
+     * @param int   $user_id
+     * @param int   $item
      * @param array $grades
-     * @param int $criterias
+     * @param int   $criterias
      *
      * @return int
      */
@@ -1002,7 +1036,7 @@ class Submission extends AbstractService
      *
      * @invokable
      *
-     * @param int $id
+     * @param int    $id
      * @param string $file_name
      * @param string $file_token
      * @param string $audio
@@ -1024,19 +1058,21 @@ class Submission extends AbstractService
                 $miid[] = 'M'.$instructor_id;
             }
             
-            $m_post = $this->getServicePost()->addSys('SS'.$id, '', [
+            $m_post = $this->getServicePost()->addSys(
+                'SS'.$id, '', [
                 'state' => 'com',
                 'submission' => $id,
                 'user' => $me,
                 'course' => $m_item->getCourseId(),
                 'item' => $m_item->getId()
-            ], 'create', $miid/*sub*/,
+                ], 'create', $miid/*sub*/,
                 null/*parent*/,
                 null/*page*/,
                 null/*org*/,
                 null/*user*/,
                 $m_item->getCourseId()/*course*/,
-                'submission');
+                'submission'
+            );
             
             $post_id = $m_post->getId();
             $this->getMapper()->update($this->getModel()->setId($id)->setPostId($post_id));

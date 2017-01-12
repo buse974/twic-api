@@ -1,10 +1,8 @@
 <?php
 /**
- *
  * TheStudnet (http://thestudnet.com)
  *
  * Submission User
- *
  */
 namespace Application\Mapper;
 
@@ -22,11 +20,11 @@ class SubmissionUser extends AbstractMapper
     /**
      * Request get List SubmissionUser Grade
      *
-     * @param int $user_id
-     * @param array $avg
-     * @param array $filter
-     * @param string $search
-     * @param bool $is_academic
+     * @param  int    $user_id
+     * @param  array  $avg
+     * @param  array  $filter
+     * @param  string $search
+     * @param  bool   $is_academic
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getListGrade($user_id, $avg = [], $filter = [], $search = null, $is_academic = false)

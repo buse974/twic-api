@@ -110,19 +110,21 @@ class SubmissionUser extends AbstractService
                 $miid[] = 'M'.$instructor_id;
             }
             
-            $this->getServicePost()->addSys('SS'.$submission_id, '', [
+            $this->getServicePost()->addSys(
+                'SS'.$submission_id, '', [
                 'state' => 'grade',
                 'submission' => $submission_id,
                 'course' => $m_item->getCourseId(),
                 'item' => $m_item->getId(),
                 'grade' => $grade
-            ], 'grade', $miid/*sub*/,
+                ], 'grade', $miid/*sub*/,
                 null/*parent*/,
                 null/*page*/,
                 null/*org*/,
                 null/*user*/,
                 $m_item->getCourseId()/*course*/,
-                'submission');
+                'submission'
+            );
         }
 
         return $ret_grade;
@@ -261,11 +263,13 @@ class SubmissionUser extends AbstractService
      */
     public function start($submission)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setStartDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
                 'user_id' => $this->getServiceUser()->getIdentity()['id'],
                 'submission_id' => $submission, 'start_date IS NULL',
-            ]);
+                ]
+        );
     }
 
     /**
@@ -279,11 +283,13 @@ class SubmissionUser extends AbstractService
      */
     public function end($submission)
     {
-        return $this->getMapper()->update($this->getModel()
-            ->setEndDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setEndDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')), [
                 'user_id' => $this->getServiceUser()->getIdentity()['id'],
                 'submission_id' => $submission,
-            ]);
+                ]
+        );
     }
 
     /**

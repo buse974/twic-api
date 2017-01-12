@@ -10,8 +10,8 @@ class PageDoc extends AbstractService
      *
      * @invokable
      *
-     * @param int $page_id
-     * @param int|array $library
+     * @param  int       $page_id
+     * @param  int|array $library
      * @return int
      */
     public function add($page_id, $library)
@@ -35,7 +35,7 @@ class PageDoc extends AbstractService
      * Delete Doc
 
      * @invokable
-     * @param int $library_id
+     * @param     int $library_id
      **/
     public function delete($library_id)
     {
@@ -47,8 +47,8 @@ class PageDoc extends AbstractService
     /**
      * Add Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function _add($page_id, $data)
@@ -64,8 +64,8 @@ class PageDoc extends AbstractService
     /**
      * Replace Array
      *
-     * @param int $page_id
-     * @param array $data
+     * @param  int   $page_id
+     * @param  array $data
      * @return array
      */
     public function replace($page_id, $data)

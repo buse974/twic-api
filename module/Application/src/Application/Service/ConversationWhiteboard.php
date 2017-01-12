@@ -23,9 +23,11 @@ class ConversationWhiteboard extends AbstractService
      */
     public function add($conversation_id, $whiteboard_id)
     {
-        return $this->getMapper()->insert($this->getModel()
-            ->setConversationId($conversation_id)
-            ->setWhiteboardId($whiteboard_id));
+        return $this->getMapper()->insert(
+            $this->getModel()
+                ->setConversationId($conversation_id)
+                ->setWhiteboardId($whiteboard_id)
+        );
     }
 
     /**
@@ -35,12 +37,16 @@ class ConversationWhiteboard extends AbstractService
      */
     public function delete($whiteboard_id)
     {
-        $res_conversation_whiteboard = $this->getMapper()->select($this->getModel()
-            ->setWhiteboardId($whiteboard_id));
+        $res_conversation_whiteboard = $this->getMapper()->select(
+            $this->getModel()
+                ->setWhiteboardId($whiteboard_id)
+        );
 
         foreach ($res_conversation_whiteboard as $m_conversation_whiteboard) {
-            $this->getMapper()->delete($this->getModel()
-                ->setWhiteboardId($m_conversation_whiteboard->getWhiteboardId()));
+            $this->getMapper()->delete(
+                $this->getModel()
+                    ->setWhiteboardId($m_conversation_whiteboard->getWhiteboardId())
+            );
 
             $this->getServiceWhiteboard()->delete($m_conversation_whiteboard->getWhiteboardId());
         }

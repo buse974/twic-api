@@ -110,16 +110,20 @@ class Poll extends AbstractService
      */
     public function get($id)
     {
-        $res_poll = $this->getMapper()->select($this->getModel()
-            ->setId($id));
+        $res_poll = $this->getMapper()->select(
+            $this->getModel()
+                ->setId($id)
+        );
 
         if ($res_poll->count() !== 1) {
             throw new \Exception('poll not exist');
         }
 
         $m_poll = $res_poll->current();
-        $m_poll->setPollItem($this->getServicePollItem()
-            ->getList($m_poll->getId()));
+        $m_poll->setPollItem(
+            $this->getServicePollItem()
+                ->getList($m_poll->getId())
+        );
 
         return $m_poll;
     }
@@ -133,8 +137,10 @@ class Poll extends AbstractService
      */
     public function getLite($id)
     {
-        $res_poll = $this->getMapper()->select($this->getModel()
-            ->setId($id));
+        $res_poll = $this->getMapper()->select(
+            $this->getModel()
+                ->setId($id)
+        );
         if ($res_poll->count() !== 1) {
             throw new \Exception('poll not exist');
         }
@@ -151,16 +157,20 @@ class Poll extends AbstractService
      */
     public function getByItem($item_id)
     {
-        $res_poll = $this->getMapper()->select($this->getModel()
-            ->setItemId($item_id));
+        $res_poll = $this->getMapper()->select(
+            $this->getModel()
+                ->setItemId($item_id)
+        );
 
         if ($res_poll->count() <= 0) {
             return;
         }
 
         $m_poll = $res_poll->current();
-        $m_poll->setPollItem($this->getServicePollItem()
-            ->getList($m_poll->getId()));
+        $m_poll->setPollItem(
+            $this->getServicePollItem()
+                ->getList($m_poll->getId())
+        );
 
         return $m_poll;
     }
@@ -175,8 +185,10 @@ class Poll extends AbstractService
     public function getLiteByItem($item_id)
     {
         return $this->getMapper()
-            ->select($this->getModel()
-            ->setItemId($item_id))
+            ->select(
+                $this->getModel()
+                    ->setItemId($item_id)
+            )
             ->current();
     }
 
@@ -191,8 +203,10 @@ class Poll extends AbstractService
      */
     public function delete($id)
     {
-        return $this->getMapper()->delete($this->getModel()
-            ->setId($id));
+        return $this->getMapper()->delete(
+            $this->getModel()
+                ->setId($id)
+        );
     }
 
     /**

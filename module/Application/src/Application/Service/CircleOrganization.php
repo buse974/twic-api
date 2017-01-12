@@ -16,8 +16,8 @@ class CircleOrganization extends AbstractService
     /**
      * Add Relation schools circle
      *
-     * @param int $circle_id
-     * @param int|array $organization_id
+     * @param  int       $circle_id
+     * @param  int|array $organization_id
      * @return array
      */
     public function add($circle_id, $organization_id)
@@ -37,8 +37,8 @@ class CircleOrganization extends AbstractService
     /**
      * Remove Relation schools circle
      *
-     * @param int $circle_id
-     * @param int|array $organization_id
+     * @param  int       $circle_id
+     * @param  int|array $organization_id
      * @return array
      */
     public function delete($circle_id, $organization_id)
@@ -58,8 +58,8 @@ class CircleOrganization extends AbstractService
     /**
      * Get List Organization Circle
      *
-     * @param int $circle_id
-     * @param int $organization_id
+     * @param  int $circle_id
+     * @param  int $organization_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($circle_id = null, $organization_id = null)

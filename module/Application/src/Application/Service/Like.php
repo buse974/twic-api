@@ -31,9 +31,8 @@ class Like extends AbstractService
             ->setEventId($event)
             ->setUserId($me);
 
-        if ($this->getMapper()
-            ->select($m_like)
-            ->count() > 0) {
+        if ($this->getMapper()->select($m_like)->count() > 0
+        ) {
             $m_like->setIsLike(true);
             $res = $this->getMapper()->update($m_like, ['event_id' => $event, 'user_id' => $me]);
         } else {
@@ -64,8 +63,10 @@ class Like extends AbstractService
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
 
-        return $this->getMapper()->update($this->getModel()
-            ->setIsLike(false), ['event_id' => $event, 'user_id' => $me]);
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setIsLike(false), ['event_id' => $event, 'user_id' => $me]
+        );
     }
 
     /**

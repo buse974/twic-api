@@ -25,8 +25,10 @@ class GradingPolicy extends AbstractService
      */
     public function replace($datas, $course)
     {
-        $this->getMapper()->delete($this->getModel()
-            ->setCourseId($course));
+        $this->getMapper()->delete(
+            $this->getModel()
+                ->setCourseId($course)
+        );
         foreach ($datas as $gp) {
             $this->_add($gp['name'], $gp['grade'], $course);
         }
@@ -103,8 +105,10 @@ class GradingPolicy extends AbstractService
         }
         $ret = 0;
         foreach ($id as $i) {
-            $ret += $this->getMapper()->delete($this->getModel()
-                ->setId($i));
+            $ret += $this->getMapper()->delete(
+                $this->getModel()
+                    ->setId($i)
+            );
         }
 
         return $ret;
@@ -113,7 +117,7 @@ class GradingPolicy extends AbstractService
     /**
      * Get Grading Policy By course Id.
      *
-     * @todo vérifier coté ui course_id ou course
+     * @todo      vérifier coté ui course_id ou course
      * @invokable
      *
      * @param int $course_id
@@ -122,12 +126,16 @@ class GradingPolicy extends AbstractService
      */
     public function get($course)
     {
-        $res_grading_policy = $this->getMapper()->select($this->getModel()
-            ->setCourseId($course));
+        $res_grading_policy = $this->getMapper()->select(
+            $this->getModel()
+                ->setCourseId($course)
+        );
 
         foreach ($res_grading_policy as $m_grading_policy) {
-            $m_grading_policy->setCriterias($this->getServiceCriteria()
-                ->getList($m_grading_policy->getId()));
+            $m_grading_policy->setCriterias(
+                $this->getServiceCriteria()
+                    ->getList($m_grading_policy->getId())
+            );
         }
 
         return $res_grading_policy;
@@ -145,8 +153,10 @@ class GradingPolicy extends AbstractService
     public function getBySubmission($submission_id)
     {
         $m_grading_policy = $this->getMapper()->getBySubmission($submission_id)->current();
-        $m_grading_policy->setCriterias($this->getServiceCriteria()
-            ->getList($m_grading_policy->getId()));
+        $m_grading_policy->setCriterias(
+            $this->getServiceCriteria()
+                ->getList($m_grading_policy->getId())
+        );
 
         return $m_grading_policy;
     }
@@ -160,8 +170,10 @@ class GradingPolicy extends AbstractService
      */
     public function initTpl($course_id)
     {
-        $res_grading_policy = $this->getMapper()->select($this->getModel()
-            ->setTpl(true));
+        $res_grading_policy = $this->getMapper()->select(
+            $this->getModel()
+                ->setTpl(true)
+        );
 
         foreach ($res_grading_policy as $m_grading_policy) {
             $m_grading_policy->setId(null)
@@ -188,8 +200,10 @@ class GradingPolicy extends AbstractService
     {
         $res_grading_policy = $this->getMapper()->getListByCourse($course, $user);
         foreach ($res_grading_policy as $m_grading_policy) {
-            $m_grading_policy->setCriterias($this->getServiceCriteria()
-                ->getList($m_grading_policy->getId()));
+            $m_grading_policy->setCriterias(
+                $this->getServiceCriteria()
+                    ->getList($m_grading_policy->getId())
+            );
         }
 
         return $res_grading_policy;
