@@ -84,9 +84,9 @@ class Post extends AbstractMapper
         $columns = ['post$id' => new Expression('post.id')];
         if ($organization_id === null && $user_id === null && $course_id === null && $parent_id === null && $page_id === null) {
             $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
-            $select->order(['post$last_date' => 'DESC', 'post.id' => 'ASC']);
+            $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
         } else {
-            $select->order([ 'post.id' => 'ASC' ]);
+            $select->order([ 'post.id' => 'DESC' ]);
         }
 
         $select->columns($columns);
