@@ -126,6 +126,12 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method__getListByUser" title="_getListByUser :: Get List pageId by User and state">
+            <span class="description">Get List pageId by User and state</span><pre>_getListByUser</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_add" title="add :: Add Page User Relation">
             <span class="description">Add Page User Relation</span><pre>add</pre>
         </a>
@@ -143,7 +149,25 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                <li class="method public">
+                                                                                                                                                                                                                                                                                                                                        <li class="method public">
+        <a href="#method_m_getApplicationListByUser" title="m_getApplicationListByUser :: Get List PENDING pageId by User">
+            <span class="description">Get List PENDING pageId by User</span><pre>m_getApplicationListByUser</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_m_getInvitationListByUser" title="m_getInvitationListByUser :: Get List INVITED pageId by User">
+            <span class="description">Get List INVITED pageId by User</span><pre>m_getInvitationListByUser</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_m_getListByUser" title="m_getListByUser :: Get List MEMBER pageId by User">
+            <span class="description">Get List MEMBER pageId by User</span><pre>m_getListByUser</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_replace" title="replace :: Add Array">
             <span class="description">Add Array</span><pre>replace</pre>
         </a>
@@ -159,11 +183,16 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                            <li class="method private">
+                                                                                                                                                                                                                                                                <li class="method private">
+                            <a href="#method_getServiceFcm" title="getServiceFcm :: Get Service Service Conversation User">
+                                <span class="description">Get Service Service Conversation User</span><pre>getServiceFcm</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
                             <a href="#method_getServicePage" title="getServicePage :: Get Service Post">
                                 <span class="description">Get Service Post</span><pre>getServicePage</pre>
                             </a>
@@ -178,7 +207,7 @@
                                 <span class="description">Get Service Subscription</span><pre>getServiceSubscription</pre>
                             </a>
                         </li>
-                                                                                                                        </ul>
+                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -199,7 +228,7 @@
                 <p class="short_description">Class PageUser</p>
                 <div class="details">
                     <div class="long_description">
-                        
+                        <p>@TODO Check vérification sécuriter des user page + parmas par default role use + exposer méthode spécifique pour l'acceptation</p>
                     </div>
                     <table class="table table-bordered">
                                                                                     <tr>
@@ -241,6 +270,51 @@
                                                                             
                                                                             <h3>Response</h3>
                                         <code>array</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method__getListByUser"></a>
+                        <div class="element clickable method public  method__getListByUser" data-toggle="collapse" data-target=".method__getListByUser .collapse">
+                            <h2>Get List pageId by User and state</h2>
+                            <pre>_getListByUser(array $users, string $state) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$users</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$state</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -336,7 +410,7 @@
                                             <a id="method_getList"></a>
                         <div class="element clickable method public  method_getList" data-toggle="collapse" data-target=".method_getList .collapse">
                             <h2>Get List Page User Relation</h2>
-                            <pre>getList(integer $page_id, array $filter = null, string $state = null) : \Dal\Db\ResultSet\ResultSet</pre>
+                            <pre>getList(integer $page_id, array $filter = null,  $role = null) : \Dal\Db\ResultSet\ResultSet</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -367,12 +441,41 @@
                                                 <code>array</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
-                                                <h4>$state</h4>
-                                                <code>string</code><p></p>
+                                                <h4>$role</h4>
+                                                <code></code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
                                         <code>\Dal\Db\ResultSet\ResultSet</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getServiceFcm"></a>
+                        <div class="element clickable method private  method_getServiceFcm" data-toggle="collapse" data-target=".method_getServiceFcm .collapse">
+                            <h2>Get Service Service Conversation User</h2>
+                            <pre>getServiceFcm() : \Application\Service\Fcm</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/Application.Service.Fcm.html">\Application\Service\Fcm</a></code><p></p>
                                                                     </div>
                             </div>
 
@@ -460,6 +563,129 @@
                                     
                                                                             <h3>Response</h3>
                                         <code><a href="../classes/Application.Service.Subscription.html">\Application\Service\Subscription</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getApplicationListByUser"></a>
+                        <div class="element clickable method public  method_m_getApplicationListByUser" data-toggle="collapse" data-target=".method_m_getApplicationListByUser .collapse">
+                            <h2>Get List PENDING pageId by User</h2>
+                            <pre>m_getApplicationListByUser(array $users) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$users</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getInvitationListByUser"></a>
+                        <div class="element clickable method public  method_m_getInvitationListByUser" data-toggle="collapse" data-target=".method_m_getInvitationListByUser .collapse">
+                            <h2>Get List INVITED pageId by User</h2>
+                            <pre>m_getInvitationListByUser(array $users) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$users</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_m_getListByUser"></a>
+                        <div class="element clickable method public  method_m_getListByUser" data-toggle="collapse" data-target=".method_m_getListByUser .collapse">
+                            <h2>Get List MEMBER pageId by User</h2>
+                            <pre>m_getListByUser(array $users) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    invokable
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$users</h4>
+                                                <code>array</code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -565,7 +791,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 09 Jan 2017 10:31:18 +0100.<br/>
+            generated on Fri, 13 Jan 2017 09:30:59 +0100.<br/>
     </footer>
     </body>
 </html>
