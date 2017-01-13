@@ -57,6 +57,7 @@ class Page extends AbstractService
             ->setLocation($location)
             ->setType($type)
             ->setUserId($user_id)
+            ->setOwnerId($user_id)
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
         $this->getMapper()->insert($m_page);
@@ -134,15 +135,16 @@ class Page extends AbstractService
      * @param string $start_date
      * @param string $end_date
      * @param string $location
-     * @param int    $organization_id
-     * @param int    $page_id
-     * @param array  $users
-     * @param array  $tags
-     * @param array  $docs
+     * @param int $organization_id
+     * @param int $page_id
+     * @param array $users
+     * @param array $tags
+     * @param array $docs
+     * @TODO Seuls admins de la page peuvent l'éditer (ou un studnet admin)
      *
      * @return int
      */
-    public function update($id, $title=null, $logo=null, $background=null, $description=null, $confidentiality=null, $type=null, $admission=null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = null, $tags = null, $docs = null)
+    public function update($id, $title=null, $logo=null, $background=null, $description=null, $confidentiality=null, $type=null, $admission=null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = null, $tags = null, $docs = null, $owner_id = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_page = $this->getModel()
@@ -158,7 +160,8 @@ class Page extends AbstractService
             ->setLocation($location)
             ->setType($type)
             ->setOrganizationId($organization_id)
-            ->setPageId($page_id);
+            ->setPageId($page_id)
+            ->setOwnerId($owner_id);
 
         if (null !== $users) {
             $is_present = false;
@@ -209,6 +212,8 @@ class Page extends AbstractService
         $this->getMapper()->update($this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
         return $this->getMapper()->update($m_page);
     }
+    
+
 
     /**
      * Delete Page
@@ -350,33 +355,34 @@ class Page extends AbstractService
     {
         $owner = [];
         switch (true) {
-        case is_numeric($m_page->getPageId()):
-            $ar_page = $m_page->getPage()->toArray();
-            $owner = [
-                'id' => $ar_page['id'],
-                'text' => $ar_page['title'],
-                'img' => $ar_page['logo'],
-                'type' => 'page',
-            ];
-            break;
-        case is_numeric($m_page->getOrganizationId()):
-            $ar_organization = $m_page->getOrganization()->toArray();
-            $owner = [
-                'id' => $ar_organization['id'],
-                'text' => $ar_organization['name'],
-                'img' => $ar_organization['logo'],
-                'type' => 'organization',
-            ];
-            break;
-        case is_numeric($m_page->getUserId()):
-            $ar_user = $m_page->getUser()->toArray();
-            $owner = [
-                'id' => $ar_user['id'],
-                'text' => $ar_user['firstname'] . ' ' . $ar_user['lastname'],
-                'img' => $ar_user['avatar'],
-                'type' => 'user',
-            ];
-            break;
+            case is_numeric($m_page->getPageId()):
+                $ar_page = $m_page->getPage()->toArray();
+                $owner = [
+                    'id' => $ar_page['id'],
+                    'text' => $ar_page['title'],
+                    'img' => $ar_page['logo'],
+                    'type' => 'page',
+                ];
+                break;
+            case is_numeric($m_page->getOrganizationId()):
+                $ar_organization = $m_page->getOrganization()->toArray();
+                $owner = [
+                    'id' => $ar_organization['id'],
+                    'text' => $ar_organization['name'],
+                    'img' => $ar_organization['logo'],
+                    'type' => 'organization',
+                ];
+                break;
+            case is_numeric($m_page->getOwnerId()):
+                $ar_user = $m_page->getUser()->toArray();
+                $owner = [
+                    'id' => $ar_user['id'],
+                    'text' => $ar_user['firstname'] . ' ' . $ar_user['lastname'],
+                    'img' => $ar_user['avatar'],
+                    'type' => 'user',
+                ];
+                break;
+            
         }
 
         $m_page->setOwner($owner);
