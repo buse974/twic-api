@@ -85,7 +85,7 @@ class PageUser extends AbstractService
                             'user' => $uid,
                             'page' => $page_id,
                             'type' => $m_page->getType(),
-                            ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                          ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
                         );
                     } else {
                         $this->getServicePost()->addSys(
@@ -94,7 +94,7 @@ class PageUser extends AbstractService
                             'user' => $uid,
                             'page' => $page_id,
                             'type' => $m_page->getType(),
-                            ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                          ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
                         );
                     }
 

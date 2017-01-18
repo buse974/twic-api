@@ -174,10 +174,6 @@ class Page extends AbstractService
                     break;
                 }
             }
-
-            if (! $is_present) {
-                $users[] = ['user_id' => $user_id,'role' => ModelPageUser::ROLE_ADMIN,'state' => ModelPageUser::STATE_MEMBER];
-            }
             $this->getServicePageUser()->replace($id, $users);
         }
         if (null !== $tags) {
@@ -212,7 +208,7 @@ class Page extends AbstractService
         $this->getMapper()->update($this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
         return $this->getMapper()->update($m_page);
     }
-    
+
 
 
     /**
@@ -382,7 +378,7 @@ class Page extends AbstractService
                     'type' => 'user',
                 ];
                 break;
-            
+
         }
 
         $m_page->setOwner($owner);
