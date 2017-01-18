@@ -58,7 +58,7 @@ class PageTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 24);
+        $this->assertEquals(count($data['result']) , 25);
         $this->assertEquals(count($data['result']['owner']) , 4);
         $this->assertEquals($data['result']['owner']['id'] , 1);
         $this->assertEquals($data['result']['owner']['text'] , "Morbi Corporation");
@@ -136,6 +136,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['user_id'] , 1);
         $this->assertEquals($data['result']['organization_id'] , 1);
         $this->assertEquals($data['result']['page_id'] , null);
+        $this->assertEquals($data['result']['owner_id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
 
     }
@@ -189,7 +190,7 @@ class PageTest extends AbstractService
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals($data['result']['count'] , 1);
         $this->assertEquals(count($data['result']['list']) , 1);
-        $this->assertEquals(count($data['result']['list'][0]) , 23);
+        $this->assertEquals(count($data['result']['list'][0]) , 24);
         $this->assertEquals(count($data['result']['list'][0]['owner']) , 4);
         $this->assertEquals($data['result']['list'][0]['owner']['id'] , 1);
         $this->assertEquals($data['result']['list'][0]['owner']['text'] , "Morbi Corporation");
@@ -262,6 +263,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['user_id'] , 1);
         $this->assertEquals($data['result']['list'][0]['organization_id'] , 1);
         $this->assertEquals($data['result']['list'][0]['page_id'] , null);
+        $this->assertEquals($data['result']['list'][0]['owner_id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
@@ -353,7 +355,7 @@ class PageTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('pageuser.m_getListByUser', ['users' => [3]]);
 
-        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][3]) , 1);
