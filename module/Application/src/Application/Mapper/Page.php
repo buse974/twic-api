@@ -65,7 +65,7 @@ class Page extends AbstractMapper
             ->join(['page_page' => 'page'], 'page_page.id = page.page_id', ['id', 'title', 'logo'], $select::JOIN_LEFT)
             ->where(['page.deleted_date IS NULL']);
 
-     
+
 
         $select->where($where);
 
@@ -113,7 +113,7 @@ class Page extends AbstractMapper
                     ->where(["( page.confidentiality = 0 "])
                     ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
             }
-            $select->join('user', 'page.user_id=user.id', [])
+            $select->join('user', 'page.owner_id=user.id', [])
                 ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                 ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
@@ -164,7 +164,7 @@ class Page extends AbstractMapper
         if (null !== $id) {
             $select->where(array('page.id' => $id));
         }
-       
+
         if (null !== $type) {
             $select->where(array('page.type' => $type));
         }
@@ -181,8 +181,8 @@ class Page extends AbstractMapper
                     ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
                 ;
             }
-            
-            $select->join('user', 'page.user_id=user.id', [])
+
+            $select->join('user', 'page.owner_id=user.id', [])
                 ->join(['co' => 'circle_organization'], 'co.organization_id=user.school_id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                 ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
