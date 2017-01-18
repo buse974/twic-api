@@ -1187,12 +1187,16 @@ class User extends AbstractService
      */
     public function get($id = null)
     {
-        $user_id = $this->getIdentity()['id'];
+        $identity = $this->getIdentity();
+        $user_id = $identity['id'];
         if ($id === null) {
             $id = $user_id;
         }
 
-        $res_user = $this->getMapper()->get($id, $user_id);
+        $identity = $this->getIdentity();
+
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $res_user = $this->getMapper()->get($id, $user_id, $is_sadmin_admin);
 
         if ($res_user->count() <= 0) {
             throw new \Exception('error get user: ' . $id);

@@ -18,7 +18,7 @@ use Zend\Db\Sql\Where;
  */
 class User extends AbstractMapper
 {
-    
+
     /**
      * Request Get List Users Group By Item And User
      *
@@ -149,7 +149,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function get($user, $me)
+    public function get($user_id, $me, $is_sadmin_admin = false)
     {
         $columns = array(
             'user$id' => new Expression('user.id'),
@@ -174,9 +174,15 @@ class User extends AbstractMapper
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'short_name'), $select::JOIN_LEFT)
-            ->where(['user.id' => $user])
+            ->where(['user.id' => $user_id])
             ->quantifier('DISTINCT');
 
+        if ($is_sadmin_admin === false && $user_id !== $me) {
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
+                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+                ->where(['organization_user.user_id' => $user_id]);
+        }
         return $this->selectWith($select);
     }
 
@@ -215,7 +221,7 @@ class User extends AbstractMapper
         $select->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
             ->group('user.id')
             ->quantifier('DISTINCT');
-        
+
         if ($is_sadmin_admin === false) {
             $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
@@ -299,7 +305,7 @@ class User extends AbstractMapper
                 ->where(array(' ( message_user.type = ? ' => $message[0]))
                 ->where(array(' message_user.type = ? ) ' => 'RS'), Predicate::OP_OR);
         }
-        
+
         if (null !== $contact_state) {
             if (!is_array($contact_state)) {
                 $contact_state = [$contact_state];
@@ -321,13 +327,13 @@ class User extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'firstname', 'lastname', 'nickname', 'avatar', 'sis'])
             ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
-           
+
             ->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(['user.id' => 'DESC'])
             ->quantifier('DISTINCT');
-            
-        
+
+
         if (null !== $roles) {
             $select->join('user_role', 'user_role.user_id=user.id', [])
                 ->where(['user_role.role_id' => $roles]);
@@ -338,7 +344,7 @@ class User extends AbstractMapper
                 ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
                 ->where(['organization_user.user_id' => $user_id]);
         }
-            
+
         if (!empty($course) || !empty($exclude_course)) {
             $select->join('course_user_relation', 'course_user_relation.user_id=user.id', [], $select::JOIN_LEFT);
         }
@@ -377,7 +383,7 @@ class User extends AbstractMapper
             $select_ex_program->columns(['id'])
                 ->join('program_user_relation', 'program_user_relation.user_id=user.id', [])
                 ->where(['program_user_relation.program_id' => $exclude_program]);
-                
+
             $select->where(new NotIn('user.id', $select_ex_program));
         }
         if (!empty($exclude_user)) {
@@ -385,7 +391,7 @@ class User extends AbstractMapper
         }
         return $this->selectWith($select);
     }
-    
+
     public function getListContact($me, $type = null, $date = null)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -443,7 +449,7 @@ class User extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    
+
     public function getListByItem($item_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -481,7 +487,7 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     public function getListInstructorAndAcademicByItem($item_id)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -492,7 +498,7 @@ class User extends AbstractMapper
             ->where(['item.id' => $item_id])
             ->where([' ( user_role.role_id  = ? ' => \Application\Model\Role::ROLE_ACADEMIC_ID])
             ->where(['  user_role.role_id = ? ) ' => \Application\Model\Role::ROLE_INSTRUCTOR_ID], Predicate::OP_OR);
-        
+
         return $this->selectWith($select);
     }
 
