@@ -191,7 +191,7 @@ class Page extends AbstractService
                     $this->getServicePost()->addSys(
                         'PP'.$id, '', [
                         'state' => 'create',
-                        'user' => $tmp_m_post->getUserId(),
+                        'user' => $tmp_m_post->getOwnerId(),
                         'org' => $tmp_m_post->getOrganizationId(),
                         'parent' => $tmp_m_post->getPageId(),
                         'page' => $id,
@@ -199,7 +199,7 @@ class Page extends AbstractService
                         ], 'create', null/*sub*/, null/*parent*/,
                         $tmp_m_post->getPageId()/*page*/,
                         $tmp_m_post->getOrganizationId()/*org*/,
-                        $tmp_m_post->getUserId()/*user*/, null/*course*/, 'page'
+                        $tmp_m_post->getOwnerId()/*user*/, null/*course*/, 'page'
                     );
                 }
             }
