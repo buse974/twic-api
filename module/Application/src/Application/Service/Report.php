@@ -67,6 +67,35 @@ class Report extends AbstractService
         return ['list' => $res,'count' => $mapper->count()];
     }
     
+    /**
+     * delete Reports.
+     *
+     * @invokable
+     *
+     * @param int|array $id
+     *
+     * @return int
+     */
+    public function delete($id)
+    {
+        if(!is_array($id)){
+            $id = [$id];
+        }
+        
+        $ret = [];
+        foreach ($id as $idr) {
+            $ret[$idr] = $this->getMapper()->delete(
+                $this->getModel()
+                    ->setId($idr)
+            );
+        }
+       
+        return $ret;
+    }
+    
+    
+      
+    
 
     /**
      * Get List of Reports.

@@ -41,7 +41,7 @@ class Page extends AbstractService
      * @return int
      */
     public function add($title, $description, $confidentiality, $type, $logo = null, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null,
-        $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = []
+        $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [], $owner_id = null
     ) {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
@@ -57,9 +57,15 @@ class Page extends AbstractService
             ->setLocation($location)
             ->setType($type)
             ->setUserId($user_id)
-            ->setOwnerId($user_id)
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
+        
+        if(null !== $owner_id){
+            $m_page->setOwnerId($owner_id);
+        }
+        else{
+            $m_page->setOwnerId($user_id);
+        }
         $this->getMapper()->insert($m_page);
         $id = (int)$this->getMapper()->getLastInsertValue();
 
@@ -69,6 +75,7 @@ class Page extends AbstractService
         if (! is_array($docs)) {
             $docs = [];
         }
+       
 
         $is_present = false;
         foreach ($users as $ar_u) {
