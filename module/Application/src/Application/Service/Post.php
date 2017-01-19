@@ -466,15 +466,16 @@ class Post extends AbstractService
      */
     public function getList($filter = null, $user_id = null, $page_id = null, $organization_id = null, $course_id = null, $parent_id = null, $id = null)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
+        $identity = $this->getServiceUser()->getIdentity();
         $mapper = (null !== $filter) ?
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
 
-        $res_posts = $mapper->getList($me, $page_id, $organization_id, $user_id, $course_id, $parent_id, $id);
+        $is_sadmin = in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']);
+        $res_posts = $mapper->getList($identity['id'], $page_id, $organization_id, $user_id, $course_id, $parent_id, $id, $is_sadmin);
         if (null === $parent_id) {
             foreach ($res_posts as $m_post) {
-                $m_post->setComments($this->getMapper()->getList($me, null, null, null, null, $m_post->getId()));
+                $m_post->setComments($this->getMapper()->getList($identity['id'], null, null, null, null, $m_post->getId()));
                 $m_post->setDocs($this->getServicePostDoc()->getList($m_post->getId()));
                 $m_post->setSubscription($this->getServicePostSubscription()->getLast($m_post->getId()));
                 if (is_string($m_post->getData())) {
@@ -482,6 +483,28 @@ class Post extends AbstractService
                 }
             }
         }
+
+        return (null !== $filter) ?
+            ['count' => $mapper->count(), 'list' => $res_posts]:
+            $res_posts;
+    }
+    
+    
+    /**
+     * Get List Post
+     *
+     * @invokable
+     *
+     * @param array $filter
+     */
+    public function getListAdmin($filter = null)
+    {
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        $mapper = (null !== $filter) ?
+            $this->getMapper()->usePaginator($filter) :
+            $this->getMapper();
+
+        $res_posts = $mapper->getListAdmin($me);
 
         return (null !== $filter) ?
             ['count' => $mapper->count(), 'list' => $res_posts]:
