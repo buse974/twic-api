@@ -59,7 +59,7 @@ class Page extends AbstractService
             ->setUserId($user_id)
             ->setOrganizationId($organization_id)
             ->setPageId($page_id);
-        
+
         if(null !== $owner_id){
             $m_page->setOwnerId($owner_id);
         }
@@ -75,11 +75,11 @@ class Page extends AbstractService
         if (! is_array($docs)) {
             $docs = [];
         }
-       
+
 
         $is_present = false;
         foreach ($users as $ar_u) {
-            if ($ar_u['user_id'] === $user_id) {
+            if ($ar_u['user_id'] === $m_page->getOwnerId()) {
                 $is_present = true;
                 $ar_u['role'] = ModelPageUser::ROLE_ADMIN;
                 $ar_u['state'] = ModelPageUser::STATE_MEMBER;
@@ -115,12 +115,12 @@ class Page extends AbstractService
             $this->getServicePost()->addSys(
                 'PP'.$id, '', [
                 'state' => 'create',
-                'user' => $user_id,
+                'user' => $owner_id,
                 'org' => $organization_id,
                 'parent' => $page_id,
                 'page' => $id,
                 'type' => $type,
-                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $organization_id/*org*/, $user_id/*user*/, null/*course*/, 'page'
+                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $organization_id/*org*/, $owner_id/*user*/, null/*course*/, 'page'
             );
         }
         return $id;
@@ -173,7 +173,7 @@ class Page extends AbstractService
         if (null !== $users) {
             $is_present = false;
             foreach ($users as $ar_u) {
-                if ($ar_u['user_id'] === $user_id) {
+                if ($ar_u['user_id'] === $m_page->getOwnerId()) {
                     $is_present = true;
                     $ar_u['role'] = ModelPageUser::ROLE_ADMIN;
                     $ar_u['state'] = ModelPageUser::STATE_MEMBER;
