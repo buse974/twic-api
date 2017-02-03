@@ -318,8 +318,8 @@ class User extends AbstractMapper
         $select->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(array('user.id' => 'DESC'));
-        syslog(1, $this->printSql($select));
-        return $this->selectWith($select);
+        
+	return $this->selectWith($select);
     }
 
     public function getListAttendees($user_id, $is_sadmin_admin, $course = null, $program = null, $school = null, $page = null, $exclude_course = null, $exclude_program = null, $exclude_user = null, $exclude_page = null, $roles = null)
