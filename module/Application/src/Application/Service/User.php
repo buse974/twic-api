@@ -46,6 +46,10 @@ class User extends AbstractService
                 break;
             case -5: $code = -32031;
                 break;
+            case -6: $code = -32032;
+                break;
+            case -7: $code = -32033;
+                break;
             default: $code = -32000;
                 break;
             }

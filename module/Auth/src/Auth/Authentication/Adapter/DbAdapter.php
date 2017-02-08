@@ -15,6 +15,8 @@ use Zend\Db\Sql\Predicate\IsNotNull;
 class DbAdapter extends AbstractAdapter
 {
     const FAILURE_ACCOUNT_SUSPENDED = -5;
+    const FAILURE_ACCOUNT_BAD_MDP = -6;
+    const FAILURE_ACCOUNT_BAD_LOGIN = -7;
     /**
      * Bdd Adapter.
      *
@@ -86,7 +88,21 @@ class DbAdapter extends AbstractAdapter
         $results = $statement->execute();
 
         if ($results->count() < 1) {
-            $code = Result::FAILURE_CREDENTIAL_INVALID;
+            $select = $sql->select();
+            $select->from($this->table)
+                ->columns(['*'])
+                ->where(['user.'.$this->identity_column.'' => $this->identity])
+                ->where(array('user.deleted_date IS NULL'));
+            $statement = $sql->prepareStatementForSqlObject($select);
+            $results = $statement->execute();
+            if($results->count() < 1) {
+              $code = self::FAILURE_ACCOUNT_BAD_LOGIN;
+            } else if($results->count() > 0) {
+              $code = self::FAILURE_ACCOUNT_BAD_MDP;
+            } else {
+              $code = Result::FAILURE_CREDENTIAL_INVALID;
+            }
+            
             $message[] = 'A record with the supplied identity could not be found.';
         } elseif ($results->count() > 1) {
             $code = Result::FAILURE_IDENTITY_AMBIGUOUS;
