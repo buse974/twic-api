@@ -1084,7 +1084,6 @@ class User extends AbstractService
         }
 
         $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password)), ['email' => $email]);
-
         if ($ret > 0) {
             $m_user = $this->getModel()
                 ->setEmail($email)
@@ -1097,6 +1096,8 @@ class User extends AbstractService
             } catch (\Exception $e) {
                 syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
             }
+        } else {
+          throw new JrpcException('bad email', -32033);
         }
 
         return $ret;
