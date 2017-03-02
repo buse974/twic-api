@@ -1237,6 +1237,7 @@ class User extends AbstractService
             $id = [$id];
         }
 
+        $identity = $this->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $res_user = $this->getMapper()->get($id, $user_id, $is_sadmin_admin);
 
