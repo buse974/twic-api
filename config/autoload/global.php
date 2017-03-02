@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.5",
-    'build-commit' => 344,
+    'build-commit' => 345,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -153,9 +153,9 @@ return [
             ],
         ],
         'headers' => [
-           'Access-Control-Allow-Origin' => '*',
+           /*'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Credentials' => 'true',
-            'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+            'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',*/
         ],
     ],
     'zopentok-conf' => [
@@ -167,9 +167,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS344',
+                    'namespace' => 'LMS345',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS344'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS345'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
