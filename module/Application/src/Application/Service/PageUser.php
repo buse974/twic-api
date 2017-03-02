@@ -253,6 +253,32 @@ class PageUser extends AbstractService
 
       return $ret;
     }
+    
+     /**
+     * Get List pageId by User and state
+     *
+     * @invokable
+     *
+     * @param array $pages
+     * @param string $state
+     **/
+    public function m_getListByPage($pages, $role = null, $state = null)
+    {
+        $result = $this->getMapper()->m_getList($pages, $role, null, $state);
+        $ret = [];
+        foreach ($result as $m_page_user) {
+           $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
+        }
+
+        foreach ($pages as $page_id) {
+            if(!isset($ret[$page_id])) {
+                $ret[$page_id] = [];
+            }
+        }
+
+        return $ret;
+    }
+    
 
    /**
     * Get List MEMBER pageId by User
