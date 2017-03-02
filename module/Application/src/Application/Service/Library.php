@@ -239,6 +239,28 @@ class Library extends AbstractService
     {
         return $this->getMapper()->getListByPage($page_id);
     }
+    
+     /**
+     * Get List Library By Page id
+     *
+     * @invokable
+     *
+     * @param  int|array $page_id
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function m_getListByPage($page_id)
+    {
+        $ids = is_array($page_id) ? $page_id : [page_id];
+        $library = [];
+        foreach($ids as $id){
+            $library[$id] = [];
+            $res_library = $this->getMapper()->getListByPage($page_id);
+            foreach($res_library as $m_library){
+                $library[$id][] = $m_library->getId();
+            }
+        }
+        return $library;
+    }
 
     /**
      * Get List Library By Post id
