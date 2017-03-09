@@ -1239,7 +1239,7 @@ class User extends AbstractService
 
         $identity = $this->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_user = $this->getMapper()->get($id, $user_id, $is_sadmin_admin);
+        $res_user = $this->getMapper()->m_get($id, $user_id, $is_sadmin_admin);
 
         if ($res_user->count() <= 0) {
             throw new \Exception('error get user: ' . json_encode($id));
@@ -1284,6 +1284,37 @@ class User extends AbstractService
         }
 
         return ['list' => $users,'count' => $mapper->count()];
+    }
+    
+        /**
+     * Get User by organization
+     *
+     * @invokable
+     *
+     * @param  int|array $organization_id
+     * @param  string $type
+     * @return array
+     */
+    public function m_getListByOrganization($organization_id, $type = null )
+    {
+        
+        $organization_id = is_array($organization_id) ? $organization_id : [$organization_id];
+        $identity = $this->getIdentity();       
+
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+
+        $res = $this->getMapper()->getList($identity['id'], $is_sadmin_admin, null, null, $type, null, null, null, null, null, null, $organization_id, null, null, null, null)->toArray();
+       
+        $orgs = [];
+        foreach($organization_id as $org){
+            $orgs[$org] = [];
+        }
+        $users = [];
+        foreach ($res as &$user) {
+            $orgs[$user['school']['id']][] = $user['id'];
+        }
+
+        return $orgs;
     }
 
     /**

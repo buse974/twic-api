@@ -349,38 +349,24 @@ class Page extends AbstractService
     }
     
       /**
-     * Get Page
+     * Get children pages for a given page(s)
      *
      * @invokable
      *
-     * @param int    $id
-     * @param int    $parent_id
-     * @param int    $user_id
-     * @param int    $organization_id
-     * @param string $type
-     * @param string $start_date
-     * @param string $end_date
-     * @param int    $member_id
-     * @param array  $filter
-     * @param bool   $strict_dates
-     * @param string $search
-     * @param array  $tags
+     * @param int|array $page_id
      *
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function m_getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null, $strict_dates = false, $search = null, $tags = null)
+    public function m_getListByParent($page_id)
     {
-        $ids = !is_array($id) ? [$id] : $id;
-        if (empty($tags)) {
-            $tags = null;
-        }
+        $ids = !is_array($page_id) ? [$page_id] : $page_id;
+      
         $identity = $this->getServiceUser()->getIdentity();
         $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
-        $res_page = $this->getMapper()->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_sadmin_admin, $search, $tags);
-        
-        
+        $res_page = $this->getMapper()->getList($identity['id'], null, $page_id, null, null, null, null, null, null, null, $is_sadmin_admin, null, null);
+         
         $pages = [];
         foreach ($ids as &$id) {
             $pages[$id] = [];
@@ -391,6 +377,38 @@ class Page extends AbstractService
         return $pages;
 
     }
+
+    
+      /**
+     * Get children pages linked to given organization(s)
+     *
+     * @invokable
+     *
+     * @param int|array $organization_id
+     *
+     * @throws \Exception
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function m_getListByOrganization($organization_id)
+    {
+        $ids = !is_array($organization_id) ? [$organization_id] : $organization_id;
+      
+        $identity = $this->getServiceUser()->getIdentity();
+        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+
+        $res_page = $this->getMapper()->getList($identity['id'], null, null, null, $organization_id, null, null, null, null, null, $is_sadmin_admin, null, null);
+         
+        $pages = [];
+        foreach ($ids as &$id) {
+            $pages[$id] = [];
+        }
+        foreach ($res_page->toArray() as &$page) {
+            $pages[$page['organization_id']][] = $page['id'];
+        }
+        return $pages;
+
+    }
+
 
 
     /**

@@ -148,6 +148,43 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+     public function m_get($user_id, $me, $is_sadmin_admin = false)
+    {
+        $columns = array(
+            'user$id' => new Expression('user.id'),
+            'firstname',
+            'gender',
+            'lastname',
+            'nickname',
+            'email',
+            'background',
+            'has_email_notifier',
+            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
+            'position',
+            'interest',
+            'avatar',
+            'school_id',
+            'ambassador',
+            'user$contacts_count' => $this->getSelectContactCount(),
+            'user$contact_state' => $this->getSelectContactState($me), );
+
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns($columns)
+            ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
+            ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'short_name'), $select::JOIN_LEFT)
+            ->where(['user.id' => $user_id])
+            ->quantifier('DISTINCT');
+
+        if ($is_sadmin_admin === false && $user_id !== $me) {
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=school_id', [])
+                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
+                ->where(['organization_user.user_id' => $user_id]);
+        }
+        return $this->selectWith($select);
+    }
+
 
     public function get($user_id, $me, $is_sadmin_admin = false)
     {

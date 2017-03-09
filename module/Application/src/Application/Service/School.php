@@ -196,7 +196,7 @@ class School extends AbstractService
             $id = [$id];
         }
 
-        return $this->getMapper()->select($this->getModel()->setId($id))->toArray(['id']);
+        return $this->getMapper()->get($id)->toArray(['id']);
     }
 
     /**
