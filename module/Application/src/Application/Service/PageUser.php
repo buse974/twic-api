@@ -237,12 +237,12 @@ class PageUser extends AbstractService
      * @param array $users
      * @param string $state
      **/
-    public function _getListByUser($users, $state = ModelPageUser::STATE_MEMBER, $role = null)
+    public function _getListByUser($users, $state = ModelPageUser::STATE_MEMBER, $role = null, $type = null)
     {
-      $result = $this->getMapper()->m_getList(null, $role, $users, $state);
+      $result = $this->getMapper()->m_getList(null, $role, $users, $state, $type);
       $ret = [];
       foreach ($result as $m_page_user) {
-         $ret[$m_page_user->getUserId()][$m_page_user->getPageId()] = $m_page_user->getType();
+         $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
       }
 
       foreach ($users as $user_id) {
@@ -288,9 +288,9 @@ class PageUser extends AbstractService
     * @param string $state
     * @param string $role
     */
-    public function m_getListByUser($users, $state = ModelPageUser::STATE_MEMBER, $role = null)
+    public function m_getListByUser($users, $state = ModelPageUser::STATE_MEMBER, $role = null, $type = null)
     {
-        return $this->_getListByUser($users, $state, $role);
+        return $this->_getListByUser($users, $state, $role, $type);
     }
 
     /**
@@ -300,9 +300,9 @@ class PageUser extends AbstractService
      *
      * @param array $users
      */
-     public function m_getInvitationListByUser($users)
+     public function m_getInvitationListByUser($users, $type = null)
      {
-       return $this->_getListByUser($users, ModelPageUser::STATE_INVITED);
+       return $this->_getListByUser($users, ModelPageUser::STATE_INVITED, null, $type);
      }
 
      /**
@@ -312,9 +312,9 @@ class PageUser extends AbstractService
       *
       * @param array $users
       */
-      public function m_getApplicationListByUser($users)
+      public function m_getApplicationListByUser($users, $type = null)
       {
-        return $this->_getListByUser($users, ModelPageUser::STATE_PENDING);
+        return $this->_getListByUser($users, ModelPageUser::STATE_PENDING, null, $type);
       }
 
 
