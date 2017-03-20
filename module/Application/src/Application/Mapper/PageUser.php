@@ -54,7 +54,7 @@ class PageUser extends AbstractMapper
           $select->where(['role' => $role]);
         }
         if(null!==$type) {
-          $select->where(['role' => $type]);
+          $select->where(['type' => $type]);
         }
 
         return $this->selectWith($select);
