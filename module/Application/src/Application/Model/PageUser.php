@@ -13,4 +13,19 @@ class PageUser extends BasePageUser
     const STATE_MEMBER='member';
     const STATE_INVITED='invited';
     const STATE_REJECTED='rejected';
+    
+    protected $type;
+
+   
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
 }

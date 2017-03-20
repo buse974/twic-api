@@ -242,7 +242,7 @@ class PageUser extends AbstractService
       $result = $this->getMapper()->m_getList(null, $role, $users, $state);
       $ret = [];
       foreach ($result as $m_page_user) {
-         $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
+         $ret[$m_page_user->getUserId()][] = [ "id" => $m_page_user->getPageId(), "type" => $m_page_user->getType()];
       }
 
       foreach ($users as $user_id) {

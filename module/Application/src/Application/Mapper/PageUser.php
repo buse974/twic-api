@@ -37,14 +37,15 @@ class PageUser extends AbstractMapper
       public function m_getList($page_id = null, $role = null, $user_id = null, $state = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['page_id','user_id']);
+        $select->columns(['page_id','user_id',  'page_user$type' => new Expression('page.type')])
+               ->join('page','page.id = page_user.page_id',[]);
 
        
         if(null!==$page_id) {
           $select->where(['page_id' => $page_id]);
         }
         if(null!==$user_id) {
-          $select->where(['user_id' => $user_id]);
+          $select->where(['page_user.user_id' => $user_id]);
         }
         if(null!==$state) {
           $select->where(['state' => $state]);
