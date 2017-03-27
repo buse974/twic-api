@@ -10,7 +10,6 @@ class Language extends AbstractService
      * Get List.
      *
      * @invokable
-     *
      * @param string $search
      * @param array $filter
      *
@@ -20,7 +19,6 @@ class Language extends AbstractService
     {
         $mapper = $this->getMapper();
         $res =  $mapper->usePaginator($filter)->getList($search);
-
         return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
 

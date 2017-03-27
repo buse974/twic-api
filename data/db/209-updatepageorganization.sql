@@ -210,8 +210,8 @@ VIEW `research` AS
         `u`.`nickname` AS `nickname`,
         `u`.`avatar` AS `avatar`,
         'user' AS `category`,
-        `apilms`.`role`.`name` AS `role`,
-        IF((`apilms`.`role`.`id` = 4), 10, 20) AS `facette`,
+        `role`.`name` AS `role`,
+        IF((`role`.`id` = 4), 10, 20) AS `facette`,
         `u`.`id` AS `user_id`,
         NULL AS `course_id`,
         NULL AS `school_id`
@@ -221,7 +221,7 @@ VIEW `research` AS
         JOIN `role`)
     WHERE
         ((`us`.`user_id` = `u`.`id`)
-            AND (`us`.`role_id` = `apilms`.`role`.`id`)
+            AND (`us`.`role_id` = `role`.`id`)
             AND (`us`.`role_id` IN (4 , 5))
             AND ISNULL(`u`.`deleted_date`)) 
     UNION SELECT
@@ -255,7 +255,7 @@ VIEW `research` AS
     FROM
         `page` `s`
     WHERE
-        ISNULL(`s`.`deleted_date`) AND `s`.`type` = 'organization';;
+        ISNULL(`s`.`deleted_date`) AND `s`.`type` = 'organization';
 
 
 DROP TABLE `organization_relation`;
@@ -263,12 +263,15 @@ DROP TABLE `organization_user`;
 DROP TABLE `school`;
 
 
-UPDATE `apilms`.`user_role`
+UPDATE IGNORE `user_role`
 SET `role_id` = 1 WHERE `role_id` = 2;
-UPDATE `apilms`.`user_role`
+UPDATE IGNORE `user_role`
 SET `role_id` = 2 WHERE `role_id` <> 2;
 
-TRUNCATE `apilms`.`role_permission`;
+DELETE FROM `user_role`
+WHERE `role_id` NOT IN (1, 2);
+
+TRUNCATE `role_permission`;
 
 UPDATE `role_relation` SET `parent_id`='2' WHERE `role_id`='0' and`parent_id`='4';
 DELETE FROM `role_relation` WHERE `role_id`='3' and`parent_id`='2';
