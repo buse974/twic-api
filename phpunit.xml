@@ -13,15 +13,16 @@
         <whitelist>
             <directory suffix=".php">./module</directory>
             <exclude>
-		      <directory suffix=".php">./vendor</directory>
-		      <directory suffix=".php">./tests</directory>
-		    </exclude>
+		<directory suffix=".php">./vendor</directory>
+		<directory suffix=".php">./tests</directory>
+		<directory suffix=".php">./module/Application.bak</directory>
+	    </exclude>
     	</whitelist>
     </filter>
     <php>
         <ini name="memory_limit" value="-1" />
     </php>
-    <!-- logging>
+    <logging>
         <log type="coverage-html"
              target="./build"
              charset="UTF-8"
@@ -30,6 +31,6 @@
         <log type="coverage-text"
              target="php://stdout"
              showUncoveredFiles="true"
-        />
-    </logging -->
+	     />
+    </logging>
 </phpunit>

@@ -23,6 +23,15 @@ use Auth\Authentication\Adapter\Model\Identity;
 class User extends AbstractService
 {
 
+
+    /*'user.login'
+    'user.logout'
+    'user.lostPassword'
+    'user.m_getList'
+    'user.update'*/
+
+
+
     /**
      * Log user
      *
@@ -187,10 +196,6 @@ class User extends AbstractService
             }
 
             $res_user = $this->getMapper()->get($id, $id);
-            $user['school'] = ($res_user->count() > 0) ? $res_user->current()->toArray()['school'] : null;
-            $user['organizations'] = $this->getServiceOrganization()->_getList($id)->toArray();
-            $user['organization_id'] = $user['school']['id'];
-
             $secret_key = $this->container->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
 
@@ -207,27 +212,6 @@ class User extends AbstractService
         }
 
         return $user;
-    }
-
-    /**
-     * Check Organization
-     *
-     * @param  int $organization
-     * @return bool
-     */
-    public function checkOrg($organization)
-    {
-        $is_present = false;
-        $organizations = $this->getIdentity()['organizations'];
-
-        foreach ($organizations as $org) {
-            if ($org['id'] === $organization) {
-                $is_present = true;
-                break;
-            }
-        }
-
-        return $is_present;
     }
 
     /**
@@ -265,8 +249,6 @@ class User extends AbstractService
             foreach ($this->getServiceRole()->getRoleByUser() as $role) {
                 $user['roles'][$role->getId()] = $role->getName();
             }
-            $res_user = $this->getMapper()->get($id, $id);
-            $user['school'] = ($res_user->count() > 0) ? $res_user->current()->toArray()['school'] : null;
             $this->getCache()->setItem('identity_' . $id, $user);
         }
 
@@ -355,7 +337,7 @@ class User extends AbstractService
      * @param string $password
      * @param string $birth_date
      * @param string $position
-     * @param int    $school_id
+     * @param int    $organization_id
      * @param string $interest
      * @param string $avatar
      * @param array  $roles
@@ -367,7 +349,7 @@ class User extends AbstractService
      * @return int
      */
     public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null,
-        $password = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null,
+        $password = null, $birth_date = null, $position = null, $organization_id = null, $interest = null, $avatar = null, $roles = null,
         $timezone = null, $background = null, $nickname = null, $ambassador = null
     ) {
         if ($this->getNbrEmailUnique($email) > 0) {
@@ -398,22 +380,6 @@ class User extends AbstractService
             ->setAmbassador($ambassador)
             ->setEmailSent(0)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
-        /*
-         * schoolid vérifier que si il n'est pas admin le school id est
-         * automatiquement celui de la personne qui add le user.
-         */
-
-
-           // print_r($this->getIdentity());
-        if (in_array(ModelRole::ROLE_ACADEMIC_STR, $this->getIdentity()['roles']) && $school_id !== null) {
-            if ($this->checkOrg($school_id) !== true) {
-                $user = $this->get();
-                $school_id = $user['school_id'];
-            }
-        } elseif (!in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
-            $user = $this->get();
-            $school_id = $user['school_id'];
-        }
 
         if (empty($password)) {
             //$cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
@@ -430,47 +396,19 @@ class User extends AbstractService
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
+
         $id = (int) $this->getMapper()->getLastInsertValue();
 
-        if ($school_id !== null) {
-            $this->addSchool($school_id, $id, true);
-
-
-            //$this->getListBySchool($school_id);
-        }
-        /*try {
-            $this->getServiceMail()->sendTpl('tpl_createuser', $email, array('password' => $password,'email' => $email,'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()));
-        } catch (\Exception $e) {
-            syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
-        }*/
-
-        /*
-         *
-         * @todo check double role (instructor academic) autorisation
-         */
-        if ($roles === null) {
-            $roles = [ModelRole::ROLE_STUDENT_STR];
-        }
-        if (! is_array($roles)) {
-            $roles = array($roles);
+        if ($organization_id !== null) {
+            $this->addOrganization($organization_id, $id, true);
         }
 
-        if (! in_array(ModelRole::ROLE_SADMIN_STR, $this->getIdentity()['roles'])) {
-            foreach ($roles as $r) {
-                if ($r !== ModelRole::ROLE_STUDENT_STR && $r !== ModelRole::ROLE_ACADEMIC_STR && $r !== ModelRole::ROLE_INSTRUCTOR_STR) {
-                    unset($r);
-                }
-            }
-            if (empty($roles)) {
-                $roles = [ModelRole::ROLE_STUDENT_STR];
-            }
+        // Si il n'y a pas de role ou que ce n'est pas un admin c'est un user
+        if (empty($roles) || !in_array(ModelRole::ROLE_ADMIN_STR, $this->getIdentity()['roles'])) {
+            $roles = [ModelRole::ROLE_USER_STR];
         }
-
         foreach ($roles as $r) {
-            $this->getServiceUserRole()->add(
-                $this->getServiceRole()
-                    ->getIdByName($r), $id
-            );
+            $this->getServiceUserRole()->add($this->getServiceRole()->getIdByName($r), $id);
         }
 
         $this->getServiceSubscription()->add('SU'.$id, $id);
@@ -548,7 +486,7 @@ class User extends AbstractService
      * @param  int $school_id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getListBySchool($school_id)
+    public function getListByOrganization($school_id)
     {
         return $this->getMapper()->getListBySchool($school_id);
     }
@@ -590,11 +528,9 @@ class User extends AbstractService
         $res = $res->toArray();
         foreach ($res as &$user) {
             $user['roles'] = [];
-            $user['program'] = [];
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
                 $user['roles'][] = $role->getName();
             }
-            $user['program'] = $this->getServiceProgram()->getListUser($user['id']);
         }
 
         return ['list' => $res,'count' => $mapper->count()];
@@ -642,9 +578,9 @@ class User extends AbstractService
     public function getListOnly($type, $course_id)
     {
         $identity = $this->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
-        return $this->getMapper()->getList($identity['id'], $is_sadmin_admin, null, null, $type, null, $course_id, null, null, null, null, false);
+        return $this->getMapper()->getList($identity['id'], $is_admin, null, null, $type, null, $course_id, null, null, null, null, false);
     }
 
     /**
@@ -757,66 +693,6 @@ class User extends AbstractService
     }
 
     /**
-     * Add user to Program.
-     *
-     * @invokable
-     *
-     * @param array $user
-     * @param array $program
-     *
-     * @return array
-     */
-    public function addProgram($user, $program)
-    {
-        if (! is_array($user)) {
-            $user = array($user);
-        }
-        if (! is_array($program)) {
-            $program = array($program);
-        }
-
-        return $this->getServiceProgramUserRelation()->add($user, $program);
-    }
-
-    /**
-     * Add User to Course.
-     *
-     * @invokable
-     *
-     * @param array $user
-     * @param array $course
-     *
-     * @return array
-     */
-    public function addCourse($user, $course)
-    {
-        if (! is_array($user)) {
-            $user = array($user);
-        }
-        if (! is_array($course)) {
-            $course = array($course);
-        }
-
-        foreach ($user as $u) {
-            foreach ($course as $c) {
-                $r = $this->getRoleIds($u);
-                if (in_array(ModelRole::ROLE_STUDENT_ID, $r)) {
-                    $res_item = $this->getServiceItem()->getListByCourse($c);
-                    foreach ($res_item as $m_item) {
-                        // Si item est différent de Txt Document et Module
-                        if ($m_item->getType() !== ModelItem::TYPE_TXT && $m_item->getType() !== ModelItem::TYPE_DOCUMENT && $m_item->getType() !== ModelItem::TYPE_MODULE && $m_item->getHasAllStudent() === 1) {
-                            $this->getServiceSubmission()->addSubmissionUser($u, $m_item->getId());
-                        }
-                    }
-                }
-                $this->getServiceSubscription()->add('PC'.$c, $u);
-            }
-        }
-
-        return $this->getServiceCourseUserRelation()->add($user, $course);
-    }
-
-    /**
      * Delete user to Course.
      *
      * @invokable
@@ -861,7 +737,7 @@ class User extends AbstractService
      * @param string $email
      * @param string $birth_date
      * @param string $position
-     * @param int    $school_id
+     * @param int    $organization_id
      * @param string $interest
      * @param string $avatar
      * @param array  $roles
@@ -877,7 +753,7 @@ class User extends AbstractService
      * @return int
      */
     public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null,
-        $email = null, $birth_date = null, $position = null, $school_id = null, $interest = null, $avatar = null, $roles = null,
+        $email = null, $birth_date = null, $position = null, $organization_id = null, $interest = null, $avatar = null, $roles = null,
         $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null,
         $suspension_reason = null, $ambassador = null, $password = null
     ) {
@@ -919,11 +795,11 @@ class User extends AbstractService
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         //@TODO secu school_id
-        if ($school_id !== null) {
-            if ($school_id === 'null') {
-                $school_id = new IsNull('school_id');
+        if ($organization_id !== null) {
+            if ($organization_id === 'null') {
+                $organization_id = new IsNull('school_id');
             }
-            $this->addSchool($school_id, $id, true);
+            $this->addOrganization($organization_id, $id, true);
         }
 
         if ($roles !== null) {
@@ -970,7 +846,6 @@ class User extends AbstractService
                 null/*sub*/,
                 null/*parent*/,
                 null/*page*/,
-                null/*org*/,
                 $id/*user*/,
                 null/*course*/, 'user'
             );
@@ -984,12 +859,12 @@ class User extends AbstractService
      *
      * @invokable
      *
-     * @param  int  $school_id
+     * @param  int  $organization_id
      * @param  int  $user_id
      * @param  bool $default
      * @return NULL|int
      */
-    public function addSchool($school_id, $user_id, $default = false)
+    public function addOrganization($organization_id, $user_id, $default = false)
     {
         $ret = null;
         $this->getServiceOrganizationUser()->add($school_id, $user_id);
@@ -1210,8 +1085,6 @@ class User extends AbstractService
         $users = $res_user->toArray();
         foreach ($users as &$user) {
             $user['roles'] = [];
-            $user['program'] = [];
-            $user['program'] = $this->getServiceProgram()->getListByUser(null, $user['id'])['list'];
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
                 $user['roles'][] = $role->getName();
             }
@@ -1220,7 +1093,7 @@ class User extends AbstractService
         return (is_array($id)) ? $users : reset($users);
     }
 
-       /**
+    /**
      * Get User for mobile
      *
      * @invokable

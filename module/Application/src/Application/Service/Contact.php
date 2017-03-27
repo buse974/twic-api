@@ -115,7 +115,7 @@ class Contact extends AbstractService
             'state' => 'request',
             'user' => $user_id,
             'contact' => $user,
-            ], 'request', ['M'.$user], null, null, null, null, null, 'connection'
+            ], 'request', ['M'.$user], null, null, null, null, 'connection'
         );
 
         return $ret;
@@ -261,20 +261,6 @@ class Contact extends AbstractService
     }
 
     /**
-     * Add Contact all school.
-     *
-     * @invokable
-     *
-     * @param int $school
-     *
-     * @return int
-     */
-    public function addBySchool($school)
-    {
-        return $this->getMapper()->addBySchool($school) / 2;
-    }
-
-    /**
      * Get List Request Contact.
      *
      * @invokable
@@ -339,10 +325,10 @@ class Contact extends AbstractService
             $exclude = [$exclude];
         }
 
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getServiceUser()->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, null, null, null, null, null, $search, null, null, false, null, $exclude, null, 3);
+        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_admin, $filter, null, null, null, null, null, $search, null, null, false, null, $exclude, null, 3);
 
         $res = $res->toArray();
         $users = [];

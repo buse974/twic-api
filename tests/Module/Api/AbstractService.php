@@ -214,23 +214,11 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
             $tr = [];
             foreach ($role as $rr) {
                 switch ($rr) {
-                    case ModelRole::ROLE_ACADEMIC_ID:
-                        $tr[ModelRole::ROLE_ACADEMIC_ID] = ModelRole::ROLE_ACADEMIC_STR;
-                        break;
                     case ModelRole::ROLE_ADMIN_ID:
                         $tr[ModelRole::ROLE_ADMIN_ID] = ModelRole::ROLE_ADMIN_STR;
                         break;
-                    case ModelRole::ROLE_INSTRUCTOR_ID:
-                        $tr[ModelRole::ROLE_INSTRUCTOR_ID] = ModelRole::ROLE_INSTRUCTOR_STR;
-                        break;
-                    case ModelRole::ROLE_RECRUTER_ID:
-                        $tr[ModelRole::ROLE_RECRUTER_ID] = ModelRole::ROLE_RECRUTER_STR;
-                        break;
-                    case ModelRole::ROLE_SADMIN_ID:
-                        $tr[ModelRole::ROLE_SADMIN_ID] = ModelRole::ROLE_SADMIN_STR;
-                        break;
-                    case ModelRole::ROLE_STUDENT_ID:
-                        $tr[ModelRole::ROLE_STUDENT_ID] = ModelRole::ROLE_STUDENT_STR;
+                    case ModelRole::ROLE_USER_ID:
+                        $tr[ModelRole::ROLE_USER_ID] = ModelRole::ROLE_USER_STR;
                         break;
                 }
             }
@@ -238,7 +226,17 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
             $userMock = $this->getMockBuilder('\Application\Service\User')->getMock();
             $userMock->expects($this->any())
                 ->method('getIdentity')
-                ->willReturn(['id' => $id,'token' => $id . '-token','firstname' => 'toto','avatar' => 'avatar','lastname' => 'tata','roles' => $tr,'school' => ['id' => 1,'name' => 'Morbi Corporation','short_name' => 'turpis','logo' => '','background' => ''],'organizations' => [['id' => 1],['id' => 3]],'organization_id' => 1,'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5','fbtoken' => 'eyJ0eXAiOiJKV1QiL']);
+                ->willReturn([
+                  'id' => $id,
+                  'token' => $id . '-token',
+                  'firstname' => 'toto',
+                  'avatar' => 'avatar',
+                  'lastname' => 'tata',
+                  'roles' => $tr,
+                  'organization_id' => 1,
+                  'wstoken' => '2437e141f8ed03a110e3292ce54c741eff6164d5',
+                  'fbtoken' => 'eyJ0eXAiOiJKV1QiL'
+                ]);
 
             $serviceManager->setService('app_service_user', $userMock);
         }

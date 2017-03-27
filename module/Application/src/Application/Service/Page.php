@@ -8,6 +8,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
+use Application\Model\PageRelation as ModelPageRelation;
 use Application\Model\Page as ModelPage;
 use Application\Model\Role as ModelRole;
 
@@ -16,6 +17,25 @@ use Application\Model\Role as ModelRole;
  */
 class Page extends AbstractService
 {
+
+    /**
+     * Get custom Field
+     *
+     * @invokable
+     *
+     * @param  string $libelle
+     * @return \Application\Model\School
+     */
+    public function getCustom($libelle)
+    {
+        $res_school = $this->getMapper()->getCustom($libelle);
+
+        if ($res_school->count() <= 0) {
+            throw new JrpcException('No custom fields for ' . $libelle);
+        }
+
+        return $res_page->current();
+    }
 
     /**
      * Add Page
@@ -32,50 +52,111 @@ class Page extends AbstractService
      * @param string $start_date
      * @param string $end_date
      * @param string $location
-     * @param int    $organization_id
      * @param int    $page_id
      * @param array  $users
      * @param array  $tags
      * @param array  $docs
-     *
+     * @param int    $owner_id
+     * @param array  $address,
+     * @param string $short_title,
+     * @param string $website,
+     * @param string $phone,
+     * @param string $libelle,
+     * @param string $custom,
+     * @param string $subtype,
+     * @param int    $circle_id
+
      * @return int
      */
-    public function add($title, $description, $confidentiality, $type, $logo = null, $admission = 'invite', $background = null, $start_date = null, $end_date = null, $location = null,
-        $organization_id = null, $page_id = null, $users = [], $tags = [], $docs = [], $owner_id = null
+    public function add(
+      $title,
+      $description,
+      $type,
+      $confidentiality = null,
+      $logo = null,
+      $admission = 'invite',
+      $background = null,
+      $start_date = null,
+      $end_date = null,
+      $location = null,
+      $page_id = null,
+      $users = [],
+      $tags = [],
+      $docs = [],
+      $owner_id = null,
+      $address = null ,
+      $short_title = null,
+      $website = null,
+      $phone = null,
+      $libelle = null,
+      $custom = null,
+      $subtype = null,
+      $circle_id = null
     ) {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
+
+        $identity = $this->getServiceUser()->getIdentity();
+
+        //Si un non admin esaye de créer une organization
+        if($type === ModelPage::TYPE_ORGANIZATION && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
+          throw new \Exception("Error, you are not admin for create organization", 1);
+        }
+
+        $user_id = $identity['id'];
+        $formattedWebsite = $this->getFormattedWebsite($website);
+
+        if(null === $confidentiality) {
+          $confidentiality = ModelPage::CONFIDENTIALITY_PRIVATE;
+        }
 
         $m_page = $this->getModel()
-            ->setTitle($title)
-            ->setLogo($logo)
-            ->setBackground($background)
-            ->setDescription($description)
-            ->setConfidentiality($confidentiality)
-            ->setAdmission($admission)
-            ->setStartDate($start_date)
-            ->setEndDate($end_date)
-            ->setLocation($location)
-            ->setType($type)
-            ->setUserId($user_id)
-            ->setOrganizationId($organization_id)
-            ->setPageId($page_id);
+          ->setTitle($title)
+          ->setLogo($logo)
+          ->setBackground($background)
+          ->setDescription($description)
+          ->setConfidentiality($confidentiality)
+          ->setAdmission($admission)
+          ->setStartDate($start_date)
+          ->setEndDate($end_date)
+          ->setLocation($location)
+          ->setType($type)
+          ->setUserId($user_id)
+          ->setCustom($custom)
+          ->setLibelle($libelle)
+          ->setWebsite($formattedWebsite)
+          ->setPhone($phone)
+          ->setSubtype($subtype)
+          ->setShortTitle($short_title);
+
+        if ($address !== null) {
+            $address = $this->getServiceAddress()->getAddress($address);
+            if ($address && null !== ($address_id = $address->getId())) {
+                $m_page->setAddressId($address_id);
+            }
+        }
 
         if(null !== $owner_id){
-            $m_page->setOwnerId($owner_id);
+          $m_page->setOwnerId($owner_id);
+        } else{
+          $m_page->setOwnerId($user_id);
         }
-        else{
-            $m_page->setOwnerId($user_id);
-        }
+
         $this->getMapper()->insert($m_page);
         $id = (int)$this->getMapper()->getLastInsertValue();
 
-        if (! is_array($users)) {
-            $users = [];
-        }
-        if (! is_array($docs)) {
-            $docs = [];
+        if (null !== $page_id) {
+          $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
         }
 
+        if (null !== $circle_id) {
+          $this->getServiceCircle()->addOrganizations($circle_id, $id);
+        }
+
+        if (!is_array($users)) {
+          $users = [];
+        }
+        if (!is_array($docs)) {
+          $docs = [];
+        }
 
         $is_present = false;
         foreach ($users as $ar_u) {
@@ -89,7 +170,11 @@ class Page extends AbstractService
         }
 
         if (! $is_present) {
-            $users[] = ['user_id' => $user_id,'role' => ModelPageUser::ROLE_ADMIN,'state' => ModelPageUser::STATE_MEMBER];
+            $users[] = [
+              'user_id' => $user_id,
+              'role' => ModelPageUser::ROLE_ADMIN,
+              'state' => ModelPageUser::STATE_MEMBER
+            ];
         }
         if (null !== $users) {
             $this->getServicePageUser()->_add($id, $users);
@@ -116,14 +201,14 @@ class Page extends AbstractService
                 'PP'.$id, '', [
                 'state' => 'create',
                 'user' => $owner_id,
-                'org' => $organization_id,
                 'parent' => $page_id,
                 'page' => $id,
                 'type' => $type,
-                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $organization_id/*org*/, $owner_id/*user*/, null/*course*/, 'page'
+                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $owner_id/*user*/, null/*course*/, 'page'
             );
         }
-        return $id;
+
+        return $this->get($id);
     }
 
     /**
@@ -199,7 +284,6 @@ class Page extends AbstractService
                         'PP'.$id, '', [
                         'state' => 'create',
                         'user' => $tmp_m_post->getOwnerId(),
-                        'org' => $tmp_m_post->getOrganizationId(),
                         'parent' => $tmp_m_post->getPageId(),
                         'page' => $id,
                         'type' => $tmp_m_post->getType(),
@@ -243,7 +327,7 @@ class Page extends AbstractService
         return false;
     }
 
-      /**
+    /**
      * Reactivate Page
      *
      * @invokable
@@ -273,17 +357,16 @@ class Page extends AbstractService
             throw new \Exception('Error: params is null');
         }
         $identity = $this->getServiceUser()->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_sadmin_admin);
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+
+        $res_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_admin);
         if ($res_page->count() <= 0) {
-            throw new \Exception('This page does not exist');
+          throw new \Exception('This page does not exist');
         }
 
         foreach ($res_page as $m_page) {
-            $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
             $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
             $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), null, $m_page->getRole()));
-            $m_page->setEvents($this->getList(null, $m_page->getId(), null, null, ModelPage::TYPE_EVENT, null, null, null, null));
             $this->getOwner($m_page);
         }
 
@@ -333,10 +416,10 @@ class Page extends AbstractService
             $tags = null;
         }
         $identity = $this->getServiceUser()->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_sadmin_admin, $search, $tags);
+        $res_page = $mapper->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_admin, $search, $tags);
 
         foreach ($res_page as $m_page) {
             $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
@@ -348,6 +431,18 @@ class Page extends AbstractService
         return ['count' => $mapper->count(), 'list' => $res_page];
     }
 
+    /**
+     * Generate a formatted website url for the school.
+     *
+     * @param string $website
+     *
+     * @return string
+     */
+    private function getFormattedWebsite($website)
+    {
+        $hasProtocol = strpos($website, 'http://') === 0 || strpos($website, 'https://') === 0 || strlen($website) === 0;
+        return $hasProtocol ? $website : 'http://' . $website;
+    }
 
     /**
     * Get owner string by Page Model
@@ -357,23 +452,15 @@ class Page extends AbstractService
     private function getOwner(\Application\Model\Page $m_page)
     {
         $owner = [];
+        $res_page = $this->getServicePageRelation()->getOwner($m_page->getId());
         switch (true) {
-            case is_numeric($m_page->getPageId()):
-                $ar_page = $m_page->getPage()->toArray();
+            case $res_page->count() > 0:
+                $ar_page = $this->getLite($res_page->current()->getParentId())->toArray();
                 $owner = [
                     'id' => $ar_page['id'],
                     'text' => $ar_page['title'],
                     'img' => $ar_page['logo'],
-                    'type' => 'page',
-                ];
-                break;
-            case is_numeric($m_page->getOrganizationId()):
-                $ar_organization = $m_page->getOrganization()->toArray();
-                $owner = [
-                    'id' => $ar_organization['id'],
-                    'text' => $ar_organization['name'],
-                    'img' => $ar_organization['logo'],
-                    'type' => 'organization',
+                    'type' => $ar_page['type'],
                 ];
                 break;
             case is_numeric($m_page->getOwnerId()):
@@ -439,6 +526,36 @@ class Page extends AbstractService
     private function getServiceEvent()
     {
         return $this->container->get('app_service_event');
+    }
+
+    /**
+     * Get Service Address
+     *
+     * @return \Address\Service\Address
+     */
+    private function getServiceAddress()
+    {
+        return $this->container->get('addr_service_address');
+    }
+
+    /**
+     * Get Service Cicle
+     *
+     * @return \Application\Service\Circle
+     */
+    private function getServiceCircle()
+    {
+        return $this->container->get('app_service_circle');
+    }
+
+    /**
+     * Get Service Cicle
+     *
+     * @return \Application\Service\PageRelation
+     */
+    private function getServicePageRelation()
+    {
+        return $this->container->get('app_service_page_relation');
     }
 
     /**

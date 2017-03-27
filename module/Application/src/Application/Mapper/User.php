@@ -49,7 +49,7 @@ class User extends AbstractMapper
             'interest',
             'nickname',
             'avatar',
-            'school_id',
+            'organization_id',
             'user$contact_state' => $this->getSelectContactState($user_id),
             ]
         )
@@ -114,7 +114,7 @@ class User extends AbstractMapper
             'position',
             'interest',
             'avatar',
-            'school_id',
+            'organization_id',
             ]
         )
             ->join('group_user', 'group_user.user_id=user.id', array())
@@ -139,7 +139,7 @@ class User extends AbstractMapper
             'position',
             'interest',
             'avatar',
-            'school_id',
+            'organization_id',
             ]
         )
             ->join('group_user', 'group_user.user_id=user.id', array())
@@ -164,24 +164,23 @@ class User extends AbstractMapper
             'position',
             'interest',
             'avatar',
-            'school_id',
+            'organization_id',
             'ambassador',
             'user$contacts_count' => $this->getSelectContactCount(),
             'user$contact_state' => $this->getSelectContactState($me), );
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
-            ->join('school', 'school.id=user.school_id', array('id', 'name', 'short_name', 'logo', 'background'), $select::JOIN_LEFT)
             ->join(array('nationality' => 'country'), 'nationality.id=user.nationality', array('id', 'short_name'), $select::JOIN_LEFT)
             ->join(array('origin' => 'country'), 'origin.id=user.origin', array('id', 'short_name'), $select::JOIN_LEFT)
             ->where(['user.id' => $user_id])
             ->quantifier('DISTINCT');
 
         if ($is_sadmin_admin === false && $user_id !== $me) {
-            $select->join(['co' => 'circle_organization'], 'co.organization_id=school.id', [])
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
-                ->join('organization_user', 'organization_user.organization_id=circle_organization.organization_id', [])
-                ->where(['organization_user.user_id' => $user_id]);
+                ->join(['circle_page_user' => 'page_user'], 'circle_page_user.page_id=circle_organization.organization_id', [])
+                ->where(['circle_page_user.user_id' => $user_id]);
         }
         return $this->selectWith($select);
     }
@@ -318,7 +317,7 @@ class User extends AbstractMapper
         $select->where('user.deleted_date IS NULL')
             ->where('school.deleted_date IS NULL')
             ->order(array('user.id' => 'DESC'));
-        
+
 	return $this->selectWith($select);
     }
 

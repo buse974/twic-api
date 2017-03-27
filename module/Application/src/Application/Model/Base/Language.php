@@ -6,32 +6,33 @@ use Dal\Model\AbstractModel;
 
 class Language extends AbstractModel
 {
-    protected $id;
-    protected $libelle;
+ 	protected $id;
+	protected $libelle;
 
-    protected $prefix = 'language';
+	protected $prefix = 'language';
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
+	public function setId($id)
+	{
+		$this->id = $id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLibelle()
-    {
-        return $this->libelle;
-    }
+	public function getLibelle()
+	{
+		return $this->libelle;
+	}
 
-    public function setLibelle($libelle)
-    {
-        $this->libelle = $libelle;
+	public function setLibelle($libelle)
+	{
+		$this->libelle = $libelle;
 
-        return $this;
-    }
+		return $this;
+	}
+
 }

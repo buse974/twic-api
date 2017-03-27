@@ -123,28 +123,6 @@ class ActivityTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
-    public function testCanAggregate()
-    {
-        $this->setIdentity(1);
-
-
-        $data = $this->jsonRpc('activity.aggregate', array(
-            'event' => 'event',
-            'user' => 4,
-            'object_id' => 3,
-            'object_name' => 'submission'
-        ));
-
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result']['event']), 3);
-        $this->assertEquals($data['result']['event']['value_total'], 12);
-        $this->assertEquals($data['result']['event']['value_user'], 12);
-        $this->assertEquals($data['result']['event']['event'], "event");
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-    }
-
     public function testCanGetList()
     {
         $this->setIdentity(1);

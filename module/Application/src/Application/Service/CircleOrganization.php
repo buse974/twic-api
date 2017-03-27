@@ -25,15 +25,15 @@ class CircleOrganization extends AbstractService
         if (!is_array($organization_id)) {
             $organization_id = [$organization_id];
         }
-        
+
         $ret = [];
         foreach ($organization_id as $o) {
             $ret[$o] = $this->getMapper()->insert($this->getModel()->setCircleId($circle_id)->setOrganizationId($o));
         }
-        
+
         return $ret;
     }
-    
+
     /**
      * Remove Relation schools circle
      *
@@ -46,15 +46,15 @@ class CircleOrganization extends AbstractService
         if (!is_array($organization_id)) {
             $organization_id = [$organization_id];
         }
-    
+
         $ret = [];
         foreach ($organization_id as $o) {
             $ret[$o] = $this->getMapper()->delete($this->getModel()->setCircleId($circle_id)->setOrganizationId($o));
         }
-    
+
         return $ret;
     }
-    
+
     /**
      * Get List Organization Circle
      *
@@ -67,7 +67,7 @@ class CircleOrganization extends AbstractService
         if (null === $circle_id && null === $organization_id) {
             throw new \Exception('Error params');
         }
-       
+
         return $this->getMapper()->select($this->getModel()->setCircleId($circle_id)->setOrganizationId($organization_id));
     }
 }

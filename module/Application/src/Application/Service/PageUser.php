@@ -52,7 +52,7 @@ class PageUser extends AbstractService
                     'user' => $uid,
                     'page' => $page_id,
                     'type' => $m_page->getType(),
-                    ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, null/*user*/, null/*course*/, 'page'
+                    ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*user*/, null/*course*/, 'page'
                 );
 
                 //$gcm_notification = new GcmNotification();
@@ -85,7 +85,7 @@ class PageUser extends AbstractService
                             'user' => $uid,
                             'page' => $page_id,
                             'type' => $m_page->getType(),
-                          ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                          ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, $uid/*user*/, null/*course*/, 'page'
                         );
                     } else {
                         $this->getServicePost()->addSys(
@@ -94,7 +94,7 @@ class PageUser extends AbstractService
                             'user' => $uid,
                             'page' => $page_id,
                             'type' => $m_page->getType(),
-                          ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*org*/, $uid/*user*/, null/*course*/, 'page'
+                          ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, $uid/*user*/, null/*course*/, 'page'
                         );
                     }
 
@@ -158,7 +158,7 @@ class PageUser extends AbstractService
                         'user' => $user_id,
                         'page' => $page_id,
                         'type' => $m_page->getType(),
-                        ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, null/*org*/, $user_id/*user*/, null/*course*/, 'page'
+                        ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, $user_id/*user*/, null/*course*/, 'page'
                     );
                 }
             }
@@ -253,7 +253,7 @@ class PageUser extends AbstractService
 
       return $ret;
     }
-    
+
      /**
      * Get List pageId by User and state
      *
@@ -278,7 +278,7 @@ class PageUser extends AbstractService
 
         return $ret;
     }
-    
+
 
    /**
     * Get List MEMBER pageId by User
