@@ -44,7 +44,6 @@ class UserTest extends AbstractService
     {
         $this->mockRbac();
         $data = $this->jsonRpc('user.login', ['user' => 'crobertr@thestudnet.com','password' => 'studnet']);
-
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 14);
@@ -68,7 +67,17 @@ class UserTest extends AbstractService
         return $data['result']['token'];
     }
 
-    public function testAddContact()
+    public function testUserGet()
+    {
+        $this->setIdentity(1,1);
+        $data = $this->jsonRpc('user.get', [
+          'id' => [5]
+        ]);
+
+        //$this->printCreateTest($data);
+    }
+
+    /*public function testAddContact()
     {
         $this->setIdentity(1);
 

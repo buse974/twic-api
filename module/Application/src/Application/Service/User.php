@@ -1062,7 +1062,7 @@ class User extends AbstractService
      *
      * @invokable
      *
-     * @param  int $id
+     * @param  int|array $id
      * @return array
      */
     public function get($id = null)
@@ -1073,53 +1073,15 @@ class User extends AbstractService
             $id = $user_id;
         }
 
-        $identity = $this->getIdentity();
-
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_user = $this->getMapper()->get($id, $user_id, $is_sadmin_admin);
-
-        if ($res_user->count() <= 0) {
-            throw new \Exception('error get user: ' . $id);
-        }
-
-        $users = $res_user->toArray();
-        foreach ($users as &$user) {
-            $user['roles'] = [];
-            foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
-                $user['roles'][] = $role->getName();
-            }
-        }
-
-        return (is_array($id)) ? $users : reset($users);
-    }
-
-    /**
-     * Get User for mobile
-     *
-     * @invokable
-     *
-     * @param  int|array $id
-     * @return array
-     */
-    public function m_get($id = null)
-    {
-        $user_id = $this->getIdentity()['id'];
-        if ($id === null) {
-            $id = [$user_id];
-        } elseif (!is_array($id)) {
-            $id = [$id];
-        }
-
-        $identity = $this->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_user = $this->getMapper()->get($id, $user_id, $is_sadmin_admin);
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $res_user = $this->getMapper()->get($id, $user_id, $is_admin);
 
         if ($res_user->count() <= 0) {
             throw new \Exception('error get user: ' . json_encode($id));
         }
 
         $users = [];
-        foreach ($res_user->toArray() as &$user) {
+        foreach ($res_user->toArray() as $user) {
             $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
                 $user['roles'][] = $role->getName();
@@ -1127,7 +1089,7 @@ class User extends AbstractService
             $users[$user['id']] = $user;
         }
 
-        return $users;
+        return (is_array($id)) ? $users : reset($users);
     }
 
       /**
