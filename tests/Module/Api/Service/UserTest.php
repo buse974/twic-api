@@ -167,8 +167,6 @@ class UserTest extends AbstractService
         //$this->printCreateTest($data);
     }
 
-
-
 /*
     public function testGetListRequest()
     {

@@ -559,7 +559,7 @@ class User extends AbstractService
                 null/*parent*/,
                 null/*page*/,
                 $id/*user*/,
-                null/*course*/, 'user'
+                'user'
             );
         }
 

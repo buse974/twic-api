@@ -204,11 +204,11 @@ class Page extends AbstractService
                 'parent' => $page_id,
                 'page' => $id,
                 'type' => $type,
-                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $owner_id/*user*/, null/*course*/, 'page'
+                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $owner_id/*user*/, 'page'
             );
         }
 
-        return $this->get($id);
+        return $id;
     }
 
     /**
@@ -227,16 +227,14 @@ class Page extends AbstractService
      * @param string $start_date
      * @param string $end_date
      * @param string $location
-     * @param int $organization_id
-     * @param int $page_id
-     * @param array $users
-     * @param array $tags
-     * @param array $docs
+     * @param array  $users
+     * @param array  $tags
+     * @param array  $docs
      * @TODO Seuls admins de la page peuvent l'éditer (ou un studnet admin)
      *
      * @return int
      */
-    public function update($id, $title=null, $logo=null, $background=null, $description=null, $confidentiality=null, $type=null, $admission=null, $start_date = null, $end_date = null, $location = null, $organization_id = null, $page_id = null, $users = null, $tags = null, $docs = null, $owner_id = null)
+    public function update($id, $title=null, $logo=null, $background=null, $description=null, $confidentiality=null, $type=null, $admission=null, $start_date = null, $end_date = null, $location = null, $users = null, $tags = null, $docs = null, $owner_id = null)
     {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_page = $this->getModel()
@@ -251,8 +249,6 @@ class Page extends AbstractService
             ->setEndDate($end_date)
             ->setLocation($location)
             ->setType($type)
-            ->setOrganizationId($organization_id)
-            ->setPageId($page_id)
             ->setOwnerId($owner_id);
 
         if (null !== $users) {
@@ -287,16 +283,18 @@ class Page extends AbstractService
                         'parent' => $tmp_m_post->getPageId(),
                         'page' => $id,
                         'type' => $tmp_m_post->getType(),
-                        ], 'create', null/*sub*/, null/*parent*/,
+                        ],
+                        'create',
+                        null/*sub*/,
+                        null/*parent*/,
                         $tmp_m_post->getPageId()/*page*/,
-                        $tmp_m_post->getOrganizationId()/*org*/,
-                        $tmp_m_post->getOwnerId()/*user*/, null/*course*/, 'page'
+                        $tmp_m_post->getOwnerId()/*user*/,
+                        'page'
                     );
                 }
             }
         }
 
-        $this->getMapper()->update($this->getModel()->setConfidentiality($confidentiality), ['page_id' => $id]);
         return $this->getMapper()->update($m_page);
     }
 

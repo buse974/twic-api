@@ -34,7 +34,6 @@ class Post extends AbstractService
      * @param int    $parent_id
      * @param int    $t_page_id
      * @param int    $t_user_id
-     * @param int    $t_course_id
      * @param int    $page_id
      * @param int    $lat
      * @param int    $lng
@@ -57,7 +56,6 @@ class Post extends AbstractService
       $parent_id = null,
       $t_page_id = null,
       $t_user_id = null,
-      $t_course_id = null,
       $page_id = null,
       $lat =null,
       $lng = null,
@@ -85,7 +83,7 @@ class Post extends AbstractService
         $is_notif = !!$uid;
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-        if (!$is_notif && null === $parent_id && null === $t_course_id && null === $t_page_id && null === $t_user_id) {
+        if (!$is_notif && null === $parent_id && null === $t_page_id && null === $t_user_id) {
             $t_user_id = $user_id;
         }
 
@@ -114,7 +112,6 @@ class Post extends AbstractService
             ->setOriginId($origin_id)
             ->setTPageId($t_page_id)
             ->setTUserId($t_user_id)
-            ->setTCourseId($t_course_id)
             ->setUid($uid)
             ->setType($type)
             ->setData($data);
@@ -208,13 +205,10 @@ class Post extends AbstractService
      * @param int    $parent_id
      * @param int    $t_page_id
      * @param int    $t_user_id
-     * @param int    $t_course_id
      *
      * @return \Application\Model\Post
      */
-    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null,
-        $t_user_id = null, $t_course_id = null, $type = null
-    ) {
+    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null, $t_user_id = null, $type = null) {
         if ($sub !== null && !is_array($sub)) {
             $sub = [$sub];
         }
@@ -224,7 +218,7 @@ class Post extends AbstractService
         return ($res_post->count() > 0) ?
             $this->update(null, $content, null, null, null, null, null, null, null, null, $data, $event, $uid, $sub) :
             $this->add(
-                $content, null, null, null, null, null, $parent_id, $t_page_id, $t_user_id, $t_course_id, null, null, null, null,
+                $content, null, null, null, null, null, $parent_id, $t_page_id, $t_user_id, null, null, null, null,
                 $data, $event, $uid, $sub, $type
             );
     }
@@ -471,11 +465,10 @@ class Post extends AbstractService
      * @param array $filter
      * @param int   $user_id
      * @param int   $page_id
-     * @param int   $course_id
      * @param int   $parent_id
      * @param int   $id
      */
-    public function getList($filter = null, $user_id = null, $page_id = null, $course_id = null, $parent_id = null, $id = null)
+    public function getList($filter = null, $user_id = null, $page_id = null, $parent_id = null, $id = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
         $mapper = (null !== $filter) ?
@@ -483,7 +476,7 @@ class Post extends AbstractService
             $this->getMapper();
 
         $is_sadmin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_posts = $mapper->getList($identity['id'], $page_id, $user_id, $course_id, $parent_id, $id, $is_sadmin);
+        $res_posts = $mapper->getList($identity['id'], $page_id, $user_id, $parent_id, $id, $is_sadmin);
         if (null === $parent_id) {
             foreach ($res_posts as $m_post) {
                 $m_post->setComments($this->getMapper()->getList($identity['id'], null, null, null, null, $m_post->getId()));
@@ -530,17 +523,16 @@ class Post extends AbstractService
      * @param array $filter
      * @param int   $user_id
      * @param int   $page_id
-     * @param int   $course_id
      * @param int   $parent_id
      */
-    public function getListId($filter = null, $user_id = null, $page_id = null, $course_id = null, $parent_id = null)
+    public function getListId($filter = null, $user_id = null, $page_id = null, $parent_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $mapper = (null !== $filter) ?
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
 
-        $res_posts = $mapper->getListId($me, $page_id, $user_id, $course_id, $parent_id);
+        $res_posts = $mapper->getListId($me, $page_id, $user_id, $parent_id);
 
         return (null !== $filter) ?
             ['count' => $mapper->count(), 'list' => $res_posts]:

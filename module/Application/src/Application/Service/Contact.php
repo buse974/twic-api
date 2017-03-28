@@ -111,13 +111,16 @@ class Contact extends AbstractService
 
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->addSys(
-            $l, 'Sent you a connection request', [
-            'state' => 'request',
-            'user' => $user_id,
-            'contact' => $user,
-            ], 'request', ['M'.$user], null, null, null, null, 'connection'
+            $l,
+            'Sent you a connection request',
+            ['state' => 'request','user' => $user_id,'contact' => $user],
+            'request',
+            ['M'.$user],
+            null,
+            null,
+            null,
+            'connection'
         );
-
         return $ret;
     }
 
