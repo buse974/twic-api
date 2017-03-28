@@ -77,13 +77,80 @@ class UserTest extends AbstractService
         //$this->printCreateTest($data);
     }
 
-    /*public function testAddContact()
+    public function testAddContact()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('contact.add', array('user' => 3));
+
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+
+    public function testGetListRequest()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('contact.getListRequestId', [
+          'user_id' => [3],
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][3]) , 1);
+        $this->assertEquals($data['result'][3][0] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testGetListRequestContatc()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('contact.getListRequestId', [
+          'contact_id' => [1],
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals($data['result'][1][0] , 3);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testAcceptContact()
+    {
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('contact.accept', array('user' => 1));
+        $this->assertEquals(count($data), 3);
+        $this->assertEquals($data['result'], 1);
+        $this->assertEquals($data['id'], 1);
+        $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+
+    public function testGetListContact()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('contact.getListId', [
+          'user_id' => [1],
+          'exclude' => 2,
+          'search' => 'robert',
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals($data['result'][1][0] , 3);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testDeleteContact()
     {
         $this->setIdentity(1);
 
-        $data = $this->jsonRpc('contact.add', array('user' => 3));
+        $data = $this->jsonRpc('contact.remove', array('user' => 3));
 
-        print_r($data);
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
@@ -139,62 +206,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
-    public function testAcceptContact()
-    {
-        $this->setIdentity(3);
-        $data = $this->jsonRpc('contact.accept', array('user' => 1));
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals($data['result'], 1);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-    }
 
-    public function testGetListContact()
-    {
-        $this->setIdentity(2);
-        $data = $this->jsonRpc('contact.getList', []);
-
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals(count($data['result']), 1);
-        $this->assertEquals(count($data['result'][0]), 4);
-        $this->assertEquals(count($data['result'][0]['contact']), 21);
-        $this->assertEquals(count($data['result'][0]['contact']['origin']), 2);
-        $this->assertEquals($data['result'][0]['contact']['origin']['id'], null);
-        $this->assertEquals($data['result'][0]['contact']['origin']['short_name'], null);
-        $this->assertEquals(count($data['result'][0]['contact']['nationality']), 2);
-        $this->assertEquals($data['result'][0]['contact']['nationality']['id'], null);
-        $this->assertEquals($data['result'][0]['contact']['nationality']['short_name'], null);
-        $this->assertEquals($data['result'][0]['contact']['gender'], null);
-        $this->assertEquals($data['result'][0]['contact']['contact_state'], 3);
-        $this->assertEquals($data['result'][0]['contact']['contacts_count'], 2);
-        $this->assertEquals(count($data['result'][0]['contact']['school']), 5);
-        $this->assertEquals($data['result'][0]['contact']['school']['id'], 1);
-        $this->assertEquals($data['result'][0]['contact']['school']['name'], "Morbi Corporation");
-        $this->assertEquals($data['result'][0]['contact']['school']['short_name'], "turpis");
-        $this->assertEquals($data['result'][0]['contact']['school']['logo'], null);
-        $this->assertEquals($data['result'][0]['contact']['school']['background'], null);
-        $this->assertEquals($data['result'][0]['contact']['id'], 1);
-        $this->assertEquals($data['result'][0]['contact']['firstname'], "Paul");
-        $this->assertEquals($data['result'][0]['contact']['lastname'], "Boussekey");
-        $this->assertEquals($data['result'][0]['contact']['nickname'], null);
-        $this->assertEquals($data['result'][0]['contact']['email'], "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result'][0]['contact']['birth_date'], null);
-        $this->assertEquals($data['result'][0]['contact']['position'], null);
-        $this->assertEquals($data['result'][0]['contact']['school_id'], 1);
-        $this->assertEquals($data['result'][0]['contact']['interest'], null);
-        $this->assertEquals($data['result'][0]['contact']['avatar'], null);
-        $this->assertEquals($data['result'][0]['contact']['has_email_notifier'], 1);
-        $this->assertEquals($data['result'][0]['contact']['background'], null);
-        $this->assertEquals($data['result'][0]['contact']['ambassador'], null);
-        $this->assertEquals(count($data['result'][0]['contact']['roles']), 1);
-        $this->assertEquals($data['result'][0]['contact']['roles'][0], "super_admin");
-        $this->assertEquals(count($data['result'][0]['contact']['program']), 0);
-        $this->assertEquals($data['result'][0]['user_id'], 2);
-        $this->assertEquals($data['result'][0]['contact_id'], 1);
-        $this->assertEquals(!empty($data['result'][0]['accepted_date']), true);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-    }
 
     public function testGetListConcactByUser()
     {
@@ -898,15 +910,5 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
-    public function testDeleteContact()
-    {
-        $this->setIdentity(1);
-
-        $data = $this->jsonRpc('contact.remove', array('user' => 3));
-
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals($data['result'], 1);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-    }*/
+*/
 }

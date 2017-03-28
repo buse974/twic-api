@@ -251,52 +251,11 @@ class User extends AbstractMapper
             $sub_select->columns(array('school_id'))->where(array('user.id' => $user_id));
             $select->where(array('school.id' => $sub_select));
         }
-        if (!empty($type)) {
-            $select->join('user_role', 'user_role.user_id=user.id', array())
-                ->join('role', 'user_role.role_id=role.id', array())
-                ->where(array('role.name' => $type));
+        if (null !== $search) {
+            $select->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'))
+                ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+                ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
-        if (!empty($program) || $level !== null || $course !== null || $search !== null) {
-            $select->join('program_user_relation', 'program_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
-            if ($level !== null || $course !== null || $search !== null) {
-                $select->join('program', 'program_user_relation.program_id=program.id', array(), $select::JOIN_LEFT);
-                if ($course !== null) {
-                    $select->join('course_user_relation', 'course_user_relation.user_id=user.id', array(), $select::JOIN_LEFT);
-                    $select->where(array('course_user_relation.course_id' => $course));
-                }
-                if (null !== $level) {
-                    $select->where(array('program.level' => $level));
-                }
-                if (null !== $search) {
-                    $select->where(array('(program.deleted_date IS NULL && program.name LIKE ? ' => ''.$search.'%'))
-                        ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-                        ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-                        ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
-                }
-            }
-            if (!empty($program)) {
-                $select->where(array('program_user_relation.program_id' => $program));
-            }
-        }
-
-        if (null !== $noprogram) {
-            $selectUser = $this->tableGateway->getSql()->select();
-            $selectUser->columns(array('id'))
-                ->join('program_user_relation', 'program_user_relation.user_id = user.id', array())
-                ->where(array('program_user_relation.program_id' => $noprogram))
-                ->where(array('user.deleted_date IS NULL'));
-            $select->where(array('user.id NOT IN ? ' => $selectUser));
-        }
-
-        if (null !== $nocourse) {
-            $selectUser = $this->tableGateway->getSql()->select();
-            $selectUser->columns(array('id'))
-                ->join('course_user_relation', 'course_user_relation.user_id = user.id', array())
-                ->where(array('course_user_relation.course_id' => $nocourse))
-                ->where(array('user.deleted_date IS NULL'));
-            $select->where(array('user.id NOT IN ? ' => $selectUser));
-        }
-
         if (null !== $message) {
             $select->join('message_user', 'message_user.user_id=user.id', array(), $select::JOIN_LEFT)
                 ->join('message', 'message_user.message_id=message.id', array(), $select::JOIN_LEFT)

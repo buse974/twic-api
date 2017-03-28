@@ -261,6 +261,49 @@ class Contact extends AbstractService
     }
 
     /**
+     * Get List Id of contact.
+     *
+     * @invokable
+     *
+     * @param int $user_id
+     * @param int $search
+     * @param int $exclude
+     * @param int $filter
+     *
+     * @return array
+     */
+    public function getListId($user_id = null, $search = null, $exclude = null, $filter = null)
+    {
+        $identity = $this->getServiceUser()->getIdentity();
+        if (null === $user_id) {
+            $user_id = $identity['id'];
+        }
+        if (null !== $exclude && !is_array($exclude)) {
+            $exclude = [$exclude];
+        }
+
+        $mapper = $this->getMapper();
+        $res_contact = $mapper->usePaginator($filter)->getList($user_id, $exclude, $search);
+        $ret = [];
+
+        if(is_array($user_id)) {
+          foreach ($res_contact as $m_contact) {
+              $ret[$m_contact->getUserId()][] = $m_contact->getContactId();
+          }
+        } else {
+          foreach ($res_contact as $m_contact) {
+              $ret[] = $m_contact->getContactId();
+          }
+        }
+
+        return (null === $filter) ?
+          $ret : [
+          'list' => $ret,
+          'count' => $mapper->count()
+        ];
+    }
+
+    /**
      * Get List Request Contact.
      *
      * @invokable
@@ -284,166 +327,51 @@ class Contact extends AbstractService
     }
 
     /**
-     * Get List Contact.
-     *
-     * @invokable
-     *
-     * @param int   $user
-     * @param array $exclude
-     *
-     * @return \Application\Model\Contact[]
-     */
-    public function getList($user_id = null, $exclude = null)
-    {
-        if (null === $user_id) {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
-        }
-
-        $listRequest = $this->getMapper()->getList($user_id, $exclude);
-        foreach ($listRequest as $request) {
-            $request->setContact(
-                $this->getServiceUser()
-                    ->get($request->getContactId())
-            );
-        }
-
-        return $listRequest;
-    }
-
-      /**
-     * Get User for mobile
-     *
-     * @invokable
-     *
-     * @param  int|array $id
-     * @return array
-     */
-    public function m_getList($search = null, $exclude = null, $filter = null)
-    {
-        $identity = $this->getServiceUser()->getIdentity();
-        if (null !== $exclude && !is_array($exclude)) {
-            $exclude = [$exclude];
-        }
-
-        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-        $mapper = $this->getServiceUser()->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_admin, $filter, null, null, null, null, null, $search, null, null, false, null, $exclude, null, 3);
-
-        $res = $res->toArray();
-        $users = [];
-        foreach ($res as &$user) {
-            $users[] = $user['id'];
-        }
-
-        return ['list' => $users,'count' => $mapper->count()];
-    }
-
-    /**
-     * Get List Id of contact.
-     *
-     * @param int $user
-     *
-     * @return array
-     */
-    public function getListId($user = null)
-    {
-        if (null === $user) {
-            $user = $this->getServiceUser()->getIdentity()['id'];
-        }
-
-        $listRequest = $this->getMapper()->getList($user);
-        $ret = [];
-
-        foreach ($listRequest as $request) {
-            $ret[] = $request->getContactId();
-        }
-
-        return $ret;
-    }
-
-    /**
      * Get list contact id by users.
      *
      * @invokable
      *
-     * @param int|array $id
+     * @param int|array $user_id
+     * @param int|array $contact_id
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function m_getListIdByUser($id)
+    public function getListRequestId($user_id = null, $contact_id = null)
     {
-        if (!is_array($id)) {
-            $users = [$id];
+        if( (null === $user_id && null === $contact_id) ||  (null !== $user_id && null !== $contact_id)) {
+          throw new \Exception("Error Params user and contact", 1);
+        }
+        $res_contact = $this->getMapper()->getListRequest($user_id, $contact_id);
+
+        $cu_id = (null !== $user_id) ? $user_id:$contact_id;
+
+        $request = [];
+        if(is_array($cu_id)) {
+            foreach ($cu_id as $cu) {
+                $request[$cu] = [];
+            }
+            if(null === $user_id) {
+              foreach ($res_contact as $m_contact) {
+                  $request[$m_contact->getContactId()][] = $m_contact->getUserId();
+              }
+            } else {
+              foreach ($res_contact as $m_contact) {
+                  $request[$m_contact->getUserId()][] = $m_contact->getContactId();
+              }
+            }
         } else {
-            $users = $id;
-        }
-        $contacts = [];
-        foreach ($users as &$user) {
-            $contacts[$user] = [];
-        }
-        $res_contact = $this->getMapper()->getList($id);
-        foreach ($res_contact->toArray() as &$contact) {
-            $contacts[$contact['user_id']][] = $contact['contact_id'];
-        }
-
-        return $contacts;
-    }
-
-    /**
-     * Get list contact id by users.
-     *
-     * @invokable
-     *
-     * @param int|array $id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function m_getListRequestByUser($id)
-    {
-        if (!is_array($id)) {
-            $users = [$id];
-        } else {
-            $users = $id;
-        }
-        $contacts = [];
-        foreach ($users as &$user) {
-            $contacts[$user] = [];
-        }
-        $res_contact = $this->getMapper()->getListRequest(null, $id);
-        foreach ($res_contact->toArray() as &$contact) {
-            $contacts[$contact['contact_id']][] = $contact['user_id'];
+          if(null === $user_id) {
+            foreach ($res_contact as $m_contact) {
+                $request[] = $m_contact->getUserId();
+            }
+          } else {
+            foreach ($res_contact as $m_contact) {
+                $request[] = $m_contact->getContactId();
+            }
+          }
         }
 
-        return $contacts;
-    }
-
-    /**
-     * Get list contact id by users.
-     *
-     * @invokable
-     *
-     * @param int|array $id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function m_getListRequestByContact($id)
-    {
-        if (!is_array($id)) {
-            $users = [$id];
-        } else {
-            $users = $id;
-        }
-        $contacts = [];
-        foreach ($users as &$user) {
-            $contacts[$user] = [];
-        }
-        $res_contact = $this->getMapper()->getListRequest($id);
-        foreach ($res_contact->toArray() as &$contact) {
-            $contacts[$contact['user_id']][] = $contact['contact_id'];
-        }
-
-        return $contacts;
+        return $request;
     }
 
 
