@@ -193,43 +193,6 @@ class Library extends AbstractService
     }
 
     /**
-     * Get List Library By item id
-     *
-     * @invokable
-     *
-     * @param  int $item
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByItem($item)
-    {
-        return $this->getMapper()->getListByItem($item);
-    }
-
-    /**
-     * Get List Library By item parent id
-     *
-     * @invokable
-     *
-     * @param  int $item
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByParentItem($item)
-    {
-        return $this->getMapper()->getListByParentItem($item);
-    }
-
-    /**
-     * Get List Library By bank question id
-     *
-     * @param  int $bank_question_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByBankQuestion($bank_question_id)
-    {
-        return $this->getMapper()->getListByBankQuestion($bank_question_id);
-    }
-
-    /**
      * Get List Library By Page id
      *
      * @param  int $page_id
@@ -260,56 +223,6 @@ class Library extends AbstractService
     public function getListMaterials($course_id)
     {
         return $this->getMapper()->getListMaterials($course_id);
-    }
-
-    /**
-     * Get List Library By Submission id
-     *
-     * @invokable
-     *
-     * @param  int $submission_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListBySubmission($submission_id)
-    {
-        return $this->getMapper()->getListBySubmission($submission_id);
-    }
-
-    /**
-     * Get List Library By conversation id
-     *
-     * @param  int $conversation_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByConversation($conversation_id)
-    {
-        return $this->getMapper()->getListByConversation($conversation_id);
-    }
-
-    /**
-     * Get Library By item id
-     *
-     * @param  int $item_id
-     * @return \Application\Model\Library
-     */
-    public function getByItem($item_id)
-    {
-        $res_library = $this->getMapper()->getListByItem($item);
-
-        return ($res_library->count() > 0) ? $res_library->current() : null;
-    }
-
-    /**
-     * Get List By Constrainte
-     *
-     * @invokable
-     *
-     * @param  int $item
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByCt($item)
-    {
-        return $this->getMapper()->getListByCt($item);
     }
 
     /**
@@ -390,7 +303,7 @@ class Library extends AbstractService
     }
 
     /**
-     * Get Service User
+     * Get Service User.
      *
      * @return \Application\Service\User
      */

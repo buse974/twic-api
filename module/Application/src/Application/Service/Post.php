@@ -13,6 +13,7 @@ use Application\Model\PostSubscription as ModelPostSubscription;
 use Dal\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\PostSubscription;
+use Zend\Http\Client;
 
 /**
  * Class Post
@@ -533,6 +534,39 @@ class Post extends AbstractService
     }
 
     /**
+     * Get preview Crawler.
+     *
+     * @invokable
+     *
+     * @param string $url
+     *
+     * @return array
+     */
+    public function linkPreview($url)
+    {
+        $client = new Client();
+        $client->setOptions($this->container->get('Config')['http-adapter']);
+
+        $pc = $this->getServiceSimplePageCrawler();
+        $page = $pc->setHttpClient($client)->get($url);
+
+        $return = $page->getMeta()->toArray();
+        $return['images'] = $page->getImages()->getImages();
+        if (isset($return['meta'])) {
+            foreach ($return['meta'] as &$v) {
+                $v = html_entity_decode(html_entity_decode($v));
+            }
+        }
+        if (isset($return['open_graph'])) {
+            foreach ($return['open_graph'] as &$v) {
+                $v = html_entity_decode(html_entity_decode($v));
+            }
+        }
+
+        return $return;
+    }
+
+    /**
      * Get Service User
      *
      * @return \Application\Service\User
@@ -590,5 +624,15 @@ class Post extends AbstractService
     private function getServiceHashtag()
     {
         return $this->container->get('app_service_hashtag');
+    }
+
+    /**
+     * Get Service PageCrawler.
+     *
+     * @return \SimplePageCrawler\PageCrawler
+     */
+    private function getServiceSimplePageCrawler()
+    {
+        return $this->container->get('SimplePageCrawler');
     }
 }

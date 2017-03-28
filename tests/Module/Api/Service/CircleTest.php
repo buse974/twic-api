@@ -83,7 +83,7 @@ class CircleTest extends AbstractService
               "country" => ["name" => "Monaco"]
             ]]);
 
-        return $data['result']['id'];
+        return $data['result'];
     }
 
     /**
