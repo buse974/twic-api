@@ -138,7 +138,7 @@ class UserTest extends AbstractService
         ]);
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][1]) , 1);
         $this->assertEquals($data['result'][1][0] , 3);
@@ -149,13 +149,25 @@ class UserTest extends AbstractService
     {
         $this->setIdentity(1);
 
-        $data = $this->jsonRpc('contact.remove', array('user' => 3));
+        $data = $this->jsonRpc('contact.remove', ['user' => 3]);
 
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
+
+    public function testCanGetListId()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.getListId', [
+          //$search, $exclude, $filter, $contact_state
+        ]);
+
+        //$this->printCreateTest($data);
+    }
+
+
 
 /*
     public function testGetListRequest()

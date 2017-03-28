@@ -22,16 +22,6 @@ use Auth\Authentication\Adapter\Model\Identity;
  */
 class User extends AbstractService
 {
-
-
-    /*'user.login'
-    'user.logout'
-    'user.lostPassword'
-    'user.m_getList'
-    'user.update'*/
-
-
-
     /**
      * Log user
      *
@@ -75,33 +65,6 @@ class User extends AbstractService
         }
 
         return $identity;
-    }
-
-
-    /**
-     * delete language to user.
-     *
-     * @invokable
-     *
-     * @param int $id
-     *
-     * @return int
-     */
-    public function deleteLanguage($id)
-    {
-        return $this->getServiceUserLanguage()->delete($id);
-    }
-
-    /**
-     * Get Number users by school.
-     *
-     * @param int $school_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function nbrBySchool($school_id)
-    {
-        return $this->getMapper()->nbrBySchool($school_id);
     }
 
     ////////////////// EXTERNAL METHODE ///////////////////
@@ -162,6 +125,7 @@ class User extends AbstractService
     }
 
     /**
+     * unregisterGcm
      *
      * @param unknown $uuid
      * @param unknown $token
@@ -440,103 +404,6 @@ class User extends AbstractService
     }
 
     /**
-     * Get List User By Item And User.
-     *
-     * @param  int $item_id
-     * @param  int $user_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUsersGroupByItemAndUser($item_id, $user_id = null)
-    {
-        if (null === $user_id) {
-            $user_id = $this->getIdentity()['id'];
-        }
-
-        return $this->getMapper()->getListUsersGroupByItemAndUser($item_id, $user_id);
-    }
-
-    /**
-     * Get List User By Item.
-     *
-     * @invokable
-     *
-     * @param  int $item_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByItem($item_id)
-    {
-        return $this->getMapper()->getListByItem($item_id);
-    }
-
-    /**
-     * if User Belong item.
-     *
-     * @param  int $item_id
-     * @param  int $user_id
-     * @return bool
-     */
-    public function doBelongs($item_id, $user_id)
-    {
-        return $this->getMapper()->doBelongsByItemOfCourseUser($item_id, $user_id) && $this->getMapper()->doBelongsByItemHaveSubmission($item_id, $user_id);
-    }
-
-    /**
-     * Get List By School.
-     *
-     * @param  int $school_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByOrganization($school_id)
-    {
-        return $this->getMapper()->getListBySchool($school_id);
-    }
-
-    /**
-     * Get List User.
-     *
-     * @invokable
-     *
-     * @param string $filter
-     * @param string $type
-     * @param string $level
-     * @param string $course
-     * @param string $program
-     * @param string $search
-     * @param string $noprogram
-     * @param string $nocourse
-     * @param string $schools
-     * @param string $order
-     * @param array  $exclude
-     * @param string $event
-     * @param string $message
-     *
-     * @return array
-     */
-    public function getList($filter = null, $type = null, $level = null, $course = null, $program = null, $search = null, $noprogram = null, $nocourse = null, $schools = null, $order = null, array $exclude = null, $post = null, $message = null, $contact_state = null)
-    {
-        $identity = $this->getIdentity();
-
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-        if ($is_sadmin_admin && $schools === null) {
-            $schools = false;
-        }
-
-        $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, $filter, $post, $type, $level, $course, $program, $search, $noprogram, $nocourse, $schools, $order, $exclude, $message, $contact_state);
-
-        $res = $res->toArray();
-        foreach ($res as &$user) {
-            $user['roles'] = [];
-            foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
-                $user['roles'][] = $role->getName();
-            }
-        }
-
-        return ['list' => $res,'count' => $mapper->count()];
-    }
-
-    /**
      * Get List user For Attendees
      *
      * @invokable
@@ -568,161 +435,6 @@ class User extends AbstractService
     }
 
     /**
-     * Get List By Type and Course.
-     *
-     * @param stirng $type
-     * @param int    $course_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListOnly($type, $course_id)
-    {
-        $identity = $this->getIdentity();
-        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-        return $this->getMapper()->getList($identity['id'], $is_admin, null, null, $type, null, $course_id, null, null, null, null, false);
-    }
-
-    /**
-     * Get List Intructor By Item.
-     *
-     * @param int $item_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getInstructorByItem($item_id)
-    {
-        return $this->getMapper()->getListInstructorByItem($item_id);
-    }
-
-    /**
-     * Get List Id Intructor By Item.
-     *
-     * @param int $item_id
-     *
-     * @return int[]
-     */
-    public function getListIdInstructorByItem($item_id)
-    {
-        $res_user =  $this->getMapper()->getListInstructorByItem($item_id);
-
-        $ret = [];
-        foreach ($res_user as $m_user) {
-            $ret[] = $m_user->getId();
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Get List Id Intructor By Item.
-     *
-     * @param int $item_id
-     *
-     * @return int[]
-     */
-    public function getListIdInstructorAndAcademicByItem($item_id)
-    {
-        $res_user =  $this->getMapper()->getListInstructorAndAcademicByItem($item_id);
-
-        $ret = [];
-        foreach ($res_user as $m_user) {
-            $ret[] = $m_user->getId();
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Get List Contact.
-     *
-     * @invokable
-     *
-     * @param int    $type
-     * @param string $date
-     * @param int    $user
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListContact($type = 5, $date = null, $user = null)
-    {
-        if (null === $user) {
-            $user = $this->getIdentity()['id'];
-        }
-
-        return $this->getMapper()->getListContact($user, $type, $date);
-    }
-
-    /**
-     * Get List User By course.
-     *
-     * @param int $course_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUserBycourse($course_id)
-    {
-        $identity = $this->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-        return $this->getMapper()->getList($identity['id'], $is_sadmin_admin, null, null, null, null, $course_id, null, null, null, null, false);
-    }
-
-    /**
-     * Get List User By course With Student And Instructor And Academic.
-     *
-     * @param int $course
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUserBycourseWithStudentAndInstructorAndAcademic($course_id)
-    {
-        return $this->getMapper()->getListUserBycourseWithStudentAndInstructorAndAcademic($course_id);
-    }
-
-    /**
-     * Get List User By course With Instructor And Academic.
-     *
-     * @param int $course_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUserBycourseWithInstructorAndAcademic($course_id)
-    {
-        return $this->getMapper()->getListUserBycourseWithInstructorAndAcademic($course_id);
-    }
-
-    /**
-     * Delete user to Course.
-     *
-     * @invokable
-     *
-     * @param int|array $user
-     * @param int|array $course
-     *
-     * @return array
-     */
-    public function deleteCourse($user, $course)
-    {
-        return $this->getServiceCourseUserRelation()->deleteCourse($user, $course);
-    }
-
-    /**
-     * Delete user to program.v
-     *
-     * @invokable
-     *
-     * @param int|array $user
-     * @param int|array $program
-     *
-     * @return array
-     */
-    public function deleteProgram($user, $program)
-    {
-        return $this->getServiceProgramUserRelation()->deleteProgram($user, $program);
-    }
-
-    /**
      * Update User
      *
      * @invokable
@@ -748,7 +460,7 @@ class User extends AbstractService
      * @param string $background
      * @param string $nickname
      * @param bool   $ambassador
-       @param string $password
+     * @param string $password
      *
      * @return int
      */
@@ -852,63 +564,6 @@ class User extends AbstractService
         }
 
         return $ret;
-    }
-
-    /**
-     * Add School relation
-     *
-     * @invokable
-     *
-     * @param  int  $organization_id
-     * @param  int  $user_id
-     * @param  bool $default
-     * @return NULL|int
-     */
-    public function addOrganization($organization_id, $user_id, $default = false)
-    {
-        $ret = null;
-        $this->getServiceOrganizationUser()->add($school_id, $user_id);
-        if ($default === true) {
-            $ret = $this->getMapper()->update(
-                $this->getModel()
-                    ->setId($user_id)
-                    ->setSchoolId($school_id)
-            );
-
-            $this->getServiceContact()->addBySchool($school_id);
-            $res_contact = $this->getServiceContact()->getList($user_id);
-            foreach ($res_contact as $m_contact) {
-                $this->getServiceSubscription()->add('PU'.$m_contact->getContactId(), $user_id);
-                $this->getServiceSubscription()->add('PU'.$user_id, $m_contact->getContactId());
-            }
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Delete School relation
-     *
-     * @invokable
-     *
-     * @param  int $school_id
-     * @param  int $user_id
-     * @return NULL|int
-     */
-    public function removeSchool($school_id, $user_id)
-    {
-        $m_user = $this->getMapper()
-            ->select(
-                $this->getModel()
-                    ->getId($user_id)
-            )
-            ->current();
-
-        if ($m_user->getSchoolId() === $school_id) {
-            throw new \JrpcException("Error, Cannot delete school by default");
-        }
-
-        return $this->getServiceOrganizationUser()->remove($school_id, $user_id);
     }
 
     /**
@@ -1047,7 +702,7 @@ class User extends AbstractService
 
     /**
      *
-     * @param unknown $id
+     * @param int $id
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getLite($id)
@@ -1092,74 +747,38 @@ class User extends AbstractService
         return (is_array($id)) ? $users : reset($users);
     }
 
-      /**
-     * Get User for mobile
+    /**
+     * Get User Id
      *
      * @invokable
      *
-     * @param  int|array $id
+     * @param string $search
+     * @param array  $exclude
+     * @param array  $filter
+     * @param int    $contact_state
+     *
      * @return array
      */
-    public function m_getList($search = null, $exclude = null, $filter = null, $contact_state = null)
+    public function getListId($search = null, $exclude = null, $filter = null, $contact_state = null)
     {
         $identity = $this->getIdentity();
         if (null !== $exclude && !is_array($exclude)) {
             $exclude = [$exclude];
         }
 
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $mapper = $this->getMapper();
-        $res = $mapper->usePaginator($filter)->getList($identity['id'], $is_sadmin_admin, null, null, null, null, null, null, $search, null, null, false, null, $exclude, null, $contact_state);
+        $res_user = $mapper->usePaginator($filter)->getList($identity['id'], $is_admin, null, null, null, $search, null, $exclude, $contact_state);
 
-        $res = $res->toArray();
         $users = [];
-        foreach ($res as &$user) {
-            $users[] = $user['id'];
+        foreach ($res_user as $m_user) {
+            $users[] = $m_user->getId();
         }
 
-        return ['list' => $users,'count' => $mapper->count()];
-    }
-
-    /**
-     * Get User
-     *
-     * @param  int $id
-     * @return array
-     */
-    public function _get($id)
-    {
-        $res_user = $this->getMapper()->get($id, $id);
-        if ($res_user->count() <= 0) {
-            throw new \Exception('error get user: ' . $id);
-        }
-
-        $users = $res_user->toArray();
-        foreach ($users as &$user) {
-            $user['roles'] = [];
-            foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {
-                $user['roles'][] = $role->getName();
-            }
-        }
-
-        return reset($users);
-    }
-
-    /**
-     * Get Id Role of User.
-     *
-     * @param int $id
-     *
-     * @return array
-     */
-    public function getRoleIds($id)
-    {
-        $ids = [];
-        foreach ($this->getServiceRole()->getRoleByUser($id) as $m_role) {
-            $ids[] = $m_role->getId();
-        }
-
-        return $ids;
+        return (null === $filter) ? $users : [
+          'list' => $users,
+          'count' => $mapper->count()
+        ];
     }
 
     /**
@@ -1203,197 +822,6 @@ class User extends AbstractService
     }
 
     /**
-     * Add language to user.
-     *
-     * @invokable
-     *
-     * @param array $language
-     * @param int   $language_level
-     *
-     * @return int
-     */
-    public function addLanguage($language, $language_level)
-    {
-        $language_id = $this->getServiceLanguage()->add($language);
-
-        return $this->getServiceUserLanguage()->add($language_id, $language_level);
-    }
-
-    /**
-     * Get List Pair Graders.
-     *
-     * @invokable
-     *
-     * @param int $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListPairGraders($submission_id)
-    {
-        return $this->getMapper()->getListPairGraders($submission_id);
-    }
-
-    /**
-     * Get List User Submission, Instrutor And Academic.
-     *
-     * @param int $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListBySubmissionWithInstrutorAndAcademic($submission_id)
-    {
-        return $this->getMapper()->getListBySubmissionWithInstrutorAndAcademic($submission_id);
-    }
-
-    /**
-     * Get List.
-     *
-     * @param int $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListBySubmission($submission_id)
-    {
-        return $this->getMapper()->getListBySubmission($submission_id);
-    }
-
-    /**
-     * Get List.
-     *
-     * @param int $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListIdBySubmission($submission_id)
-    {
-        $res_user = $this->getMapper()->getListBySubmission($submission_id);
-        $ret = [];
-        foreach ($res_user as $m_user) {
-            $ret[] = $m_user->getId();
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Get List User By Submission
-     *
-     * @param  int $submission_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUsersBySubmission($submission_id)
-    {
-        return $this->getMapper()->getListBySubmission($submission_id);
-    }
-
-    /**
-     * Get user list for submission and those available.
-     *
-     * @param int $submission_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListForSubmission($submission_id)
-    {
-        return $this->getMapper()->getListForSubmission($submission_id);
-    }
-
-    /**
-     * Get all students for the instructor.
-     *
-     * @invokable
-     *
-     * @return array
-     */
-    public function getStudentList()
-    {
-        $ret = [];
-        $instructor = $this->getIdentity();
-        if (in_array(ModelRole::ROLE_INSTRUCTOR_STR, $instructor['roles'])) {
-            $ret = $this->getMapper()->getStudentList($instructor['id']);
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Get List user By conversation
-     *
-     * @invokable
-     *
-     * @param  int $conversation_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByConversation($conversation_id)
-    {
-        $res_user = $this->getMapper()->getListByConversation($conversation_id);
-        foreach ($res_user as $m_user) {
-            $roles = [];
-            foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {
-                $roles[] = $role->getName();
-            }
-            $m_user->setRoles($roles);
-        }
-
-        return $res_user;
-    }
-
-    /**
-     * Get List Id user By conversation
-     *
-     * @invokable
-     *
-     * @param  int $conversation_id
-     * @return int[]
-     */
-    public function getListIdByConversation($conversation_id)
-    {
-        $res_user = $this->getMapper()->getListByConversation($conversation_id);
-        $ret = [];
-        foreach ($res_user as $m_user) {
-            $ret[] = $m_user->getId();
-        }
-
-        return $ret;
-    }
-
-    /**
-     * Get List user By item assignment.
-     *
-     * @invokable
-     *
-     * @param int $item_assignment
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByItemAssignment($item_assignment)
-    {
-        $res_user = $this->getMapper()->getListByItemAssignment($item_assignment);
-
-        foreach ($res_user as $m_user) {
-            $roles = [];
-            foreach ($this->getServiceRole()->getRoleByUser($m_user->getId()) as $role) {
-                $roles[] = $role->getName();
-            }
-            $m_user->setRoles($roles);
-        }
-
-        return $res_user;
-    }
-
-    /**
-     * Get List User By Group.
-     *
-     * @param int $group_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListUsersByGroup($group_id)
-    {
-        return $this->getMapper()->getListUsersByGroup($group_id);
-    }
-
-    /**
      * Get Service Post
      *
      * @return \Application\Service\Post
@@ -1401,68 +829,6 @@ class User extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
-    }
-
-    /**
-     * Get Service Language
-     *
-     * @return \Application\Service\Language
-     */
-    private function getServiceLanguage()
-    {
-        return $this->container->get('app_service_language');
-    }
-
-    /**
-     * Get List User.
-     *
-     * @invokable
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function listing()
-    {
-        return $this->getList();
-    }
-
-    /**
-     * Get Service Program.
-     *
-     * @return \Application\Service\Program
-     */
-    private function getServiceProgram()
-    {
-        return $this->container->get('app_service_program');
-    }
-
-    /**
-     * Get Service ProgramUserRelation.
-     *
-     * @return \Application\Service\ProgramUserRelation
-     */
-    private function getServiceProgramUserRelation()
-    {
-        return $this->container->get('app_service_program_user_relation');
-    }
-
-    /**
-     * Get Service CourseUserRelation.
-     *
-     * @return \Application\Service\CourseUserRelation
-     */
-    private function getServiceCourseUserRelation()
-    {
-        return $this->container->get('app_service_course_user_relation');
-    }
-
-    /**
-     * Get Service UserLanguage.
-     *
-     * @return \Application\Service\UserLanguage
-     */
-    private function getServiceUserLanguage()
-    {
-        return $this->container->get('app_service_user_language');
     }
 
     /**
@@ -1518,36 +884,6 @@ class User extends AbstractService
     }
 
     /**
-     * Get Service Item.
-     *
-     * @return \Application\Service\Item
-     */
-    private function getServiceItem()
-    {
-        return $this->container->get('app_service_item');
-    }
-
-    /**
-     * Get Service Submission.
-     *
-     * @return \Application\Service\Submission
-     */
-    private function getServiceSubmission()
-    {
-        return $this->container->get('app_service_submission');
-    }
-
-    /**
-     * Get Service Contact.
-     *
-     * @return \Application\Service\Contact
-     */
-    private function getServiceContact()
-    {
-        return $this->container->get('app_service_contact');
-    }
-
-    /**
      * Get Service Mail.
      *
      * @return \Mail\Service\Mail
@@ -1565,16 +901,6 @@ class User extends AbstractService
     private function getServiceSubscription()
     {
         return $this->container->get('app_service_subscription');
-    }
-
-    /**
-     * Get Service OrganizationUser
-     *
-     * @return \Application\Service\OrganizationUser
-     */
-    private function getServiceOrganizationUser()
-    {
-        return $this->container->get('app_service_organization_user');
     }
 
     /**
@@ -1597,13 +923,4 @@ class User extends AbstractService
         return $this->container->get('app_service_gcm_group');
     }
 
-    /**
-     * Get Service Organization
-     *
-     * @return \Application\Service\School
-     */
-    private function getServiceOrganization()
-    {
-        return $this->container->get('app_service_school');
-    }
 }
