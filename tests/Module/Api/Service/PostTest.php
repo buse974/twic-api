@@ -23,9 +23,7 @@ class PostTest extends AbstractService
             'link_title' => 'link_title',
             'link_desc' => 'link_desc',
             //'t_page_id' => 1,
-            //'t_organization_id' => 1,
             //'t_user_id' => 1,
-            //'t_course_id' => 1,
             'docs' => [
                 ['name' => 'name', 'link' => 'link', 'type' => 'type'],
                 ['name' => 'name2', 'link' => 'link2', 'type' => 'type2'],

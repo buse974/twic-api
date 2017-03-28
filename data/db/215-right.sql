@@ -34,5 +34,5 @@ SET SQL_SAFE_UPDATES=0;
 UPDATE `role_permission`, `permission`
 SET
 `role_permission`.`role_id` = 2
-WHERE role_permission.permission_id=permission.id AND role_permission.role_id=0 AND permission.libelle <> "user.login"
+WHERE role_permission.permission_id=permission.id AND role_permission.role_id=0 AND permission.libelle <> "user.login";
 
