@@ -21,12 +21,12 @@ class Activity extends AbstractMapper
         }
 
         $select->join('user_role', 'user_role.user_id=activity.user_id')
-            ->where(['user_role.role_id='.ModelRole::ROLE_STUDENT_ID.'']);
+            ->where(['user_role.role_id='.ModelRole::ROLE_USER_ID.'']);
 
         return $this->selectWith($select);
     }
-    
-    
+
+
     public function getListWithFilters($me, $event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, $course_id = null, $item_id = null, $user_id = null, $is_academic = false)
     {
         $select = $this->tableGateway->getSql()->select();
@@ -65,7 +65,7 @@ class Activity extends AbstractMapper
             $select->join('course_user_relation', 'course.id = course_user_relation.course_id')
                 ->where(['course_user_relation.user_id' => $me ]);
         }
-        
+
         return $this->selectWith($select);
     }
 

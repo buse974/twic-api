@@ -31,7 +31,7 @@ class Circle extends AbstractService
         ) <= 0) {
             throw new \Exception('error insert circle');
         }
-        
+
         return $this->getMapper()->getLastInsertValue();
     }
 
@@ -68,7 +68,7 @@ class Circle extends AbstractService
                 ->setId($id)
         );
     }
-    
+
     /**
      * Get Circle
      *
@@ -83,13 +83,13 @@ class Circle extends AbstractService
             $this->getModel()
                 ->setId($id)
         )->current();
-        
+
         $res_circle_organiszation = $this->getServiceCircleOrganization()->getList($id);
         $m_organization->setOrganizations(($res_circle_organiszation->count() > 0)?$res_circle_organiszation:[]);
-        
+
         return $m_organization;
     }
-    
+
     /**
      * Get List Circle
      *
@@ -101,8 +101,8 @@ class Circle extends AbstractService
     {
         return $this->getMapper()->fetchAll();
     }
-    
-    
+
+
     /**
      * Add relation Circle Organizations
      *
@@ -115,7 +115,7 @@ class Circle extends AbstractService
     {
         return $this->getServiceCircleOrganization()->add($id, $organizations);
     }
-    
+
     /**
      * Remove relation Circle Organizations
      *
@@ -128,7 +128,7 @@ class Circle extends AbstractService
     {
         return $this->getServiceCircleOrganization()->delete($id, $organizations);
     }
-    
+
     /**
      * Get Service CircleOrganization
      *

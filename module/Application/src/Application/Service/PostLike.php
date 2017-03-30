@@ -29,8 +29,8 @@ class PostLike extends AbstractService
         if ($m && $m->count() > 0) {
             $res = $this->getMapper()->update(
                 $this->getModel()->setIsLike(true), [
-                'post_id' => $post_id,
-                'user_id' => $user_id
+                  'post_id' => $post_id,
+                  'user_id' => $user_id
                 ]
             );
         } else {
@@ -113,15 +113,12 @@ class PostLike extends AbstractService
     public function getUserLike(\Application\Model\PostLike $m_post_like)
     {
         switch (true) {
-        case (is_numeric($m_post_like->getOrganizationId())):
-            $u = 'O'.$m_post_like->getOrganizationId();
-            break;
-        case (is_numeric($m_post_like->getPageId())):
-            $u = 'P'.$m_post_like->getPageId();
-            break;
-        default:
-            $u ='U'.$m_post_like->getUserId();
-            break;
+          case (is_numeric($m_post_like->getPostId())):
+              $u = 'P'.$m_post_like->getPostId();
+              break;
+          default:
+              $u ='U'.$m_post_like->getUserId();
+              break;
         }
 
         return $u;
@@ -135,16 +132,6 @@ class PostLike extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
-    }
-
-    /**
-     * Get Service Event.
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**

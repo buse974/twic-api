@@ -25,10 +25,10 @@ class PageTag extends AbstractService
         $m_page_tag = $this->getModel()
             ->setPageId($page_id)
             ->setTagId($this->getServiceTag()->add($tag));
-        
+
         return $this->getMapper()->insert($m_page_tag);
     }
-    
+
     /**
      * Add Array
      *
@@ -42,10 +42,10 @@ class PageTag extends AbstractService
         foreach ($data as $tag) {
             $ret = $this->add($page_id, $tag);
         }
-    
+
         return $ret;
     }
-    
+
     /**
      * Replacec Array
      *
@@ -56,10 +56,10 @@ class PageTag extends AbstractService
     public function replace($page_id, $data)
     {
         $this->getMapper()->delete($this->getModel()->setPageId($page_id));
-        
+
         return  $this->_add($page_id, $data);
     }
-    
+
     /**
      * Get List
      *
@@ -69,7 +69,7 @@ class PageTag extends AbstractService
     {
         return $this->getServiceTag()->getListByPage($page_id);
     }
-    
+
     /**
      *
      * @return \Application\Service\Tag

@@ -22,14 +22,14 @@ class PostDoc extends AbstractService
         } elseif (!is_numeric($library)) {
             throw new \Exception('error add document');
         }
-    
+
         $m_post_doc = $this->getModel()
             ->setPostId($post_id)
             ->setLibraryId($library);
-    
+
         return $this->getMapper()->insert($m_post_doc);
     }
-    
+
     /**
      * Add Array
      *
@@ -43,10 +43,10 @@ class PostDoc extends AbstractService
         foreach ($data as $d) {
             $ret[] = $this->add($post_id, $d);
         }
-    
+
         return $ret;
     }
-    
+
     /**
      * Replace Array
      *
@@ -57,10 +57,10 @@ class PostDoc extends AbstractService
     public function replace($post_id, $data)
     {
         $this->getMapper()->delete($this->getModel()->setPostId($post_id));
-    
+
         return $this->_add($post_id, $data);
     }
-    
+
     /**
      *Get List Post Doc
      *
@@ -71,7 +71,7 @@ class PostDoc extends AbstractService
     {
         return $this->getServiceLibrary()->getListByPost($post_id);
     }
-    
+
       /**
      *Get  Post Doc
      *
@@ -82,8 +82,8 @@ class PostDoc extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setId($id));
     }
-    
-    
+
+
     /**
      *
      * @return \Application\Service\Library
@@ -92,7 +92,7 @@ class PostDoc extends AbstractService
     {
         return $this->container->get('app_service_library');
     }
-    
+
     /**
      * Get Service Page User
      *

@@ -6,32 +6,33 @@ use Dal\Model\AbstractModel;
 
 class LanguageLevel extends AbstractModel
 {
-    protected $id;
-    protected $level;
+ 	protected $id;
+	protected $level;
 
-    protected $prefix = 'language_level';
+	protected $prefix = 'language_level';
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
+	public function setId($id)
+	{
+		$this->id = $id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getLevel()
-    {
-        return $this->level;
-    }
+	public function getLevel()
+	{
+		return $this->level;
+	}
 
-    public function setLevel($level)
-    {
-        $this->level = $level;
+	public function setLevel($level)
+	{
+		$this->level = $level;
 
-        return $this;
-    }
+		return $this;
+	}
+
 }

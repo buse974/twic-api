@@ -34,12 +34,12 @@ class PageUser extends AbstractMapper
         return $this->selectWith($select);
     }
     
-      public function m_getList($page_id = null, $role = null, $user_id = null, $state = null, $type = null)
+    public function m_getList($page_id = null, $role = null, $user_id = null, $state = null, $type = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['page_id','user_id']);
 
-       
+
         if(null!==$page_id) {
           $select->where(['page_id' => $page_id]);
         }

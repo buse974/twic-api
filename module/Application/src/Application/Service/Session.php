@@ -17,7 +17,7 @@ class Session extends AbstractService
         if (null === $uuid && null === $uid) {
             throw new \Exception('error get session: all params is null');
         }
-        
+
         return $this->getMapper()->select(
             $this->getModel()
                 ->setUuid($uuid)->setUid($uid)->setRegistrationId(new IsNotNull())
@@ -54,7 +54,7 @@ class Session extends AbstractService
         if (null === $uuid && null === $token && null === $registration_id) {
             throw new \Exception('error delete session: all params is null');
         }
-        
+
         return $this->getMapper()->delete(
             $this->getModel()
                 ->setUuid($uuid)

@@ -352,19 +352,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Event task.shared.
-     *
-     * @param int   $task_id
-     * @param array $users
-     *
-     * @return int
-     */
-    public function taskshared($task_id, $users)
-    {
-        //return $this->create('task.shared', $this->getDataUser(), $this->getDataTask($task_id), 'T'.$task_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
-    }
-
-    /**
      * Event user.comment.
      *
      * @param \Application\Model\EventComment $task_id
@@ -402,87 +389,6 @@ class Event extends AbstractService
         //return $this->create('user.deleteconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id),  ['U'.$contact_id, 'U'.$user_id], self::TARGET_TYPE_USER);
     }
 
-
-    /**
-     * Event submission.graded.
-     *
-     * @param int $submission_id
-     * @param int $user_id
-     *
-     * @return int
-     */
-    public function submissionGraded($submission_id, $user_id)
-    {
-        /*
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        $u_id = $this->getServiceUser()->getIdentity()['id'];
-        $src = $this->getDataUser();
-        $ret = false;
-        if (! empty($src) && $u_id !== $user_id) {
-            $ret = $this->create('submission.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), 'UU'.$user_id, self::TARGET_TYPE_USER, $u_id);
-        }
-
-        return $ret;
-        */
-    }
-
-    /**
-     * Event submission.commented.
-     *
-     * @param int $submission_id
-     * @param int $submission_comments_id
-     *
-     * @return int
-     */
-    public function submissionCommented($submission_id, $submission_comments_id)
-    {
-        /*
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-        $m_comment = $this->getServiceSubmissionComments()->get($submission_comments_id);
-
-        return $this->create('submission.commented', $this->getDataUser(), $this->getDataSubmissionComment($m_submission, $m_comment), 'C'.$m_submission->getItem()
-            ->getCourseId(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-        */
-    }
-
-    /**
-     * Event thread.new.
-     *
-     * @param int $thread_id
-     *
-     * @return int
-     */
-    public function threadNew($thread_id)
-    {
-        /*
-        $m_thread = $this->getServiceThread()->get($thread_id);
-
-        return $this->create('thread.new', $this->getDataUser(), $this->getDataThread($m_thread), 'C'.$m_thread->getCourse()
-            ->getId(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-        */
-    }
-
-    /**
-     * Event thread.message.
-     *
-     * @param int $thread_message_id
-     *
-     * @return int
-     */
-    public function threadMessage($thread_message_id)
-    {
-        /*
-        $m_thread_message = $this->getServiceThreadMessage()->get($thread_message_id);
-
-        return $this->create('thread.message', $this->getDataUser(), $this->getDataThreadMessage($m_thread_message), 'C'.$m_thread_message->getThread()
-            ->getCourseId(), self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);
-        */
-    }
-
     /**
      * Event record.available
      *
@@ -497,108 +403,6 @@ class Event extends AbstractService
 
         return $this->create('record.available', $this->getDataVideoArchive($m_video_archive), (null !== $item_id) ? $this->getDataItem($item_id) : null, 'I'.$item_id, self::TARGET_TYPE_USER);
         */
-    }
-
-    /**
-     * Event eqcq.available.
-     *
-     * @param int $submission_id
-     *
-     * @return int
-     */
-    public function eqcqAvailable($submission_id)
-    {
-        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        return $this->create('eqcq.available', [], $this->getDataSubmissionWihtUser($m_submission), 'S'.$m_submission->getId(), self::TARGET_TYPE_USER);
-        */
-    }
-
-    /**
-     * Event pg.graded.
-     *
-     * @param int $submission_id
-     *
-     * @return int
-     */
-    public function pgAssigned($submission_id)
-    {
-        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        return $this->create('pg.graded', $this->getDataUser(), $this->getDataSubmissionWihtUser($m_submission), $user, self::TARGET_TYPE_USER);*/
-    }
-
-    /**
-     * Event submit.request.
-     *
-     * @param int $submission_id
-     * @param int $user_id
-     *
-     * @return int
-     */
-    public function requestSubmit($submission_id, $user_id)
-    {
-        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        return $this->create('submit.request', $this->getDataUser(), $this->getDataSubmission($m_submission), $user_id, self::TARGET_TYPE_USER);*/
-    }
-
-    /**
-     * Event submission.submit.
-     *
-     * @param int $submission_id
-     *
-     * @return int
-     */
-    public function endSubmit($submission_id)
-    {
-        /*$m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        $src = $this->getDataUser();
-
-        $ret = false;
-        if (! empty($src)) {
-            $ret = $this->create('submission.submit', $src, $this->getDataSubmission($m_submission), 'I'.$m_submission->getItemId(), self::TARGET_TYPE_USER);
-        }
-
-        return $ret;*/
-    }
-
-    /**
-     * Event course.updated.
-     *
-     * @param int   $course_id
-     * @param array $dataupdated
-     *
-     * @return int
-     */
-    public function courseUpdated($course_id, $dataupdated)
-    {
-        //return $this->create('course.updated', $this->getDataUser(), $this->getDataCourseUpdate($course_id, $dataupdated), 'C'.$course_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
-    }
-
-    /**
-     * Event submission.new.
-     *
-     * @param int $submission_id
-     *
-     * @return int
-     */
-    public function programmationNew($submission_id)
-    {
-        //return $this->create('submission.new', $this->getDataUser(), $this->getDataProgrammation($submission_id), 'S'.$submission_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
-    }
-
-    /**
-     * Event submission.updated.
-     *
-     * @param int $submission_id
-     *
-     * @return int
-     */
-    public function programmationUpdated($submission_id)
-    {
-        //return $this->create('submission.updated', $this->getDataUser(), $this->getDataProgrammation($submission_id), $this->getDataUserBySubmission($submission_id), self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
     }
 
     /**
@@ -621,18 +425,6 @@ class Event extends AbstractService
 
         return $this->create('user.requestconnection', $u, $uu, 'U'.$user_id, self::TARGET_TYPE_USER, $this->getServiceUser()
             ->getIdentity()['id']);*/
-    }
-
-    /**
-     * Event school.new.
-     *
-     * @param int $school_id
-     *
-     * @return int
-     */
-    public function schoolNew($school_id)
-    {
-        return $this->create('school.new', [], $this->getDataSchool($school_id), [], self::TARGET_TYPE_GLOBAL);
     }
 
 
@@ -673,10 +465,8 @@ class Event extends AbstractService
                 'picture' => $ar_post['picture'],
                 'name_picture' => $ar_post['name_picture'],
                 'link' => $ar_post['link'],
-                't_organization_id' => $ar_post['t_organization_id'],
                 't_page_id' => $ar_post['t_page_id'],
                 't_user_id' => $ar_post['t_user_id'],
-                't_course_id' => $ar_post['t_course_id'],
                 'parent_id' => $ar_post['parent_id'],
                 'origin_id' => $ar_post['origin_id'],
                 'type' => $ar_post['type'],
@@ -693,35 +483,6 @@ class Event extends AbstractService
 
 
 
-
-    /**
-     * Get Data School.
-     *
-     * @param int $school_id
-     *
-     * @return array
-     */
-    public function getDataSchool($school_id)
-    {
-        $m_school = $this->getServiceSchool()->get($school_id);
-
-        return ['id' => $m_school->getId(),'name' => 'school','data' => ['id' => $m_school->getId(),'name' => $m_school->getName(),'short_name' => $m_school->getShortName(),'logo' => $m_school->getLogo()]];
-    }
-
-    /**
-     * Get Data Task.
-     *
-     * @param int $task_id
-     *
-     * @return array
-     */
-    private function getDataTask($task_id)
-    {
-        $m_task = $this->getServiceTask()->get($task_id);
-
-        return ['id' => $m_task->getId(),'name' => 'task','data' => $m_task->toArray()];
-    }
-
     /**
      * Get Data resume.
      *
@@ -731,7 +492,7 @@ class Event extends AbstractService
      */
     private function getDataResume($resume_id)
     {
-        $m_resume = $this->getServiceResume()->getById($resume_id);
+        $m_resume = $this->getServiceResume()->get($resume_id);
 
         return ['id' => $resume_id,'name' => 'resume','data' => ['start_date' => $m_resume->getStartDate(),'end_date' => $m_resume->getEndDate(),'address' => $m_resume->getAddress(),'title' => $m_resume->getTitle(),'subtitle' => $m_resume->getSubtitle(),'logo' => $m_resume->getLogo(),'description' => $m_resume->getDescription(),'type' => $m_resume->getType()]];
     }
@@ -769,39 +530,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Data submission.
-     *
-     * @param int $submission_id
-     *
-     * @return array
-     */
-    private function getDataProgrammation($submission_id)
-    {
-        $m_submission = $this->getServiceSubmission()->getWithItem($submission_id);
-
-        return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType(),'duration' => $m_submission->getItem()->getDuration(),'start' => $m_submission->getItem()->getStart(),'cut_off' => $m_submission->getItem()->getCutOff()]]];
-    }
-
-    /**
-     * Get Data Course for update.
-     *
-     * @param int   $course_id
-     * @param array $dataupdated
-     *
-     * @return array
-     */
-    private function getDataCourseUpdate($course_id, $dataupdated)
-    {
-        $m_course = $this->getServiceCourse()->get($course_id);
-
-        if (isset($dataupdated['id'])) {
-            unset($dataupdated['id']);
-        }
-
-        return ['id' => $course_id,'name' => 'course','data' => ['title' => $m_course->getTitle(),'picture' => $m_course->getPicture(),'program' => $m_course->getProgram()->getId(),'updated' => array_keys($dataupdated)]];
-    }
-
-    /**
      * Get Data Vide Archive.
      *
      * @param \Application\Model\VideoArchive $m_video_archive
@@ -813,24 +541,6 @@ class Event extends AbstractService
         return ['id' => $m_video_archive->getId(),'name' => 'archive','data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
     }
 
-    /**
-     * Get Data Submission With User.
-     *
-     * @param \Application\Model\Submission $m_submission
-     *
-     * @return array
-     */
-    private function getDataSubmissionWihtUser(\Application\Model\Submission $m_submission)
-    {
-        $res_user = $this->getServiceUser()->getListUsersBySubmission($m_submission->getId());
-
-        $users = [];
-        foreach ($res_user as $m_user) {
-            $users[] = ['firstname' => $m_user->getFirstname(),'lastname' => $m_user->getLastname(),'avatar' => $m_user->getAvatar()];
-        }
-
-        return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItemId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()],'users' => $users]];
-    }
 
     /**
      * Get DataSubmission.
@@ -842,23 +552,6 @@ class Event extends AbstractService
     private function getDataSubmission(\Application\Model\Submission $m_submission)
     {
         return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()]]];
-    }
-
-    /**
-     * Get Data THread Message.
-     *
-     * @param \Application\Model\ThreadMessage $m_thread_message
-     *
-     * @return array
-     */
-    private function getDataThreadMessage(\Application\Model\ThreadMessage $m_thread_message)
-    {
-        $m_thread = $this->getServiceThread()->get(
-            $m_thread_message->getThread()
-                ->getId()
-        );
-
-        return ['id' => $m_thread_message->getId(),'name' => 'thread.message','data' => ['message' => $m_thread_message->getMessage(),'thread' => $this->getDataThread($m_thread)['data']]];
     }
 
     /**
@@ -898,19 +591,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Data Submission Comment.
-     *
-     * @param \Application\Model\Submission         $m_submisssion
-     * @param \Application\Model\SubmissionComments $m_comment
-     *
-     * @return array
-     */
-    private function getDataSubmissionComment(\Application\Model\Submission $m_submisssion, \Application\Model\SubmissionComments $m_comment)
-    {
-        return ['id' => $m_submisssion->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submisssion->getItem()->getId(),'title' => $m_submisssion->getItem()->getTitle(),'type' => $m_submisssion->getItem()->getType()],'comment' => ['id' => $m_comment->getId(),'text' => $m_comment->getText()]]];
-    }
-
-    /**
      * Get Data User.
      *
      * @param int $user_id
@@ -932,9 +612,10 @@ class Event extends AbstractService
         return ['id' => $user_id,
             'name' => 'user','data' =>
             ['firstname' => $m_user['firstname'],'email' => $m_user['email'],'lastname' => $m_user['lastname'],'nickname' => $m_user['nickname'],'gender' =>
-                $m_user['gender'],'has_email_notifier' => $m_user['has_email_notifier'],'avatar' => $m_user['avatar'],'school' =>
-                ['id' => $m_user['school']['id'],'short_name' => $m_user['school']['short_name'],'logo' =>
-                    $m_user['school']['logo'],'background' => $m_user['school']['background'],'name' => $m_user['school']['name']],
+                $m_user['gender'],
+                'has_email_notifier' => $m_user['has_email_notifier'],
+                'avatar' => $m_user['avatar'],
+                'organization' => $m_user['organization_id'],
                 'user_roles' => $m_user['roles']]];
     }
 
@@ -952,32 +633,6 @@ class Event extends AbstractService
             ->getMessage();
 
         return ['id' => $m_message->getId(),'name' => 'message','data' => $m_message];
-    }
-
-
-
-
-
-
-
-    /**
-     * Get Service Thread Message.
-     *
-     * @return \Application\Service\ThreadMessage
-     */
-    private function getServiceThreadMessage()
-    {
-        return $this->container->get('app_service_thread_message');
-    }
-
-    /**
-     * Get Service Thread.
-     *
-     * @return \Application\Service\Thread
-     */
-    private function getServiceThread()
-    {
-        return $this->container->get('app_service_thread');
     }
 
     /**
@@ -1011,36 +666,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Service Video Archive.
-     *
-     * @return \Application\Service\VideoArchive
-     */
-    private function getServiceVideoArchive()
-    {
-        return $this->container->get('app_service_video_archive');
-    }
-
-    /**
-     * Get Service Submission Comments.
-     *
-     * @return \Application\Service\SubmissionComments
-     */
-    private function getServiceSubmissionComments()
-    {
-        return $this->container->get('app_service_submission_comments');
-    }
-
-    /**
-     * Get Service Submission.
-     *
-     * @return \Application\Service\Submission
-     */
-    private function getServiceSubmission()
-    {
-        return $this->container->get('app_service_submission');
-    }
-
-    /**
      * Get Service Subscription
      *
      * @return \Application\Service\Subscription
@@ -1048,17 +673,6 @@ class Event extends AbstractService
     private function getServiceSubscription()
     {
         return $this->container->get('app_service_subscription');
-    }
-
-
-    /**
-     * Get Service Course.
-     *
-     * @return \Application\Service\Course
-     */
-    private function getServiceCourse()
-    {
-        return $this->container->get('app_service_course');
     }
 
     /**
@@ -1069,26 +683,6 @@ class Event extends AbstractService
     private function getServiceResume()
     {
         return $this->container->get('app_service_resume');
-    }
-
-    /**
-     * Get Service School.
-     *
-     * @return \Application\Service\School
-     */
-    private function getServiceSchool()
-    {
-        return $this->container->get('app_service_school');
-    }
-
-    /**
-     * Get Service Contact.
-     *
-     * @return \Application\Service\Contact
-     */
-    private function getServiceContact()
-    {
-        return $this->container->get('app_service_contact');
     }
 
     /**
@@ -1112,16 +706,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Service Submission Pg.
-     *
-     * @return \Application\Service\SubmissionPg
-     */
-    private function getServiceSubmissionPg()
-    {
-        return $this->container->get('app_service_submission_pg');
-    }
-
-    /**
      * Get Service Message.
      *
      * @return \Application\Service\Page
@@ -1141,23 +725,4 @@ class Event extends AbstractService
         return $this->container->get('app_service_message');
     }
 
-    /**
-     * Get Service Task.
-     *
-     * @return \Application\Service\Task
-     */
-    private function getServiceTask()
-    {
-        return $this->container->get('app_service_task');
-    }
-
-    /**
-     * Get Service Item
-     *
-     * @return \Application\Service\Item
-     */
-    private function getServiceItem()
-    {
-        return $this->container->get('app_service_item');
-    }
 }

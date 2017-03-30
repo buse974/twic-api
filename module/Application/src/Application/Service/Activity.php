@@ -93,7 +93,7 @@ class Activity extends AbstractService
 
         return $this->getMapper()->getLastInsertValue();
     }
-    
+
      /**
      * Get List activity.
      *
@@ -114,7 +114,7 @@ class Activity extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $is_academic = in_array(ModelRole::ROLE_ACADEMIC_STR, $identity['roles']);
-     
+
         if ($is_academic) {
             if (null !== $school_id) {
                 if (!is_array($school_id)) {
@@ -148,7 +148,7 @@ class Activity extends AbstractService
 
         return $res_activity;
     }
-    
+
 
     /**
      * Get List activity.

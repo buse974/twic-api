@@ -18,7 +18,6 @@ class Library extends AbstractModel
 	protected $owner_id;
 	protected $box_id;
 	protected $global;
-	protected $data;
 
 	protected $prefix = 'library';
 
@@ -162,18 +161,6 @@ class Library extends AbstractModel
 	public function setGlobal($global)
 	{
 		$this->global = $global;
-
-		return $this;
-	}
-
-	public function getData()
-	{
-		return $this->data;
-	}
-
-	public function setData($data)
-	{
-		$this->data = $data;
 
 		return $this;
 	}

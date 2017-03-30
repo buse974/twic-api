@@ -15,119 +15,29 @@ class MessageTest extends AbstractService
     public function testCanSendMessage()
     {
         $this->setIdentity(1);
-
         $data = $this->jsonRpc('message.send', ['to' =>[2,3],'text' => 'super message qwerty']);
 
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals(count($data['result']), 9);
-        $this->assertEquals(count($data['result']['message']), 10);
-        $this->assertEquals(count($data['result']['message']['from']), 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]), 18);
-        $this->assertEquals($data['result']['message']['from'][0]['contact_state'], 0);
-        $this->assertEquals($data['result']['message']['from'][0]['contacts_count'], 1);
-        $this->assertEquals(count($data['result']['message']['from'][0]['school']), 5);
-        $this->assertEquals($data['result']['message']['from'][0]['school']['id'], 1);
-        $this->assertEquals($data['result']['message']['from'][0]['school']['name'], "Morbi Corporation");
-        $this->assertEquals($data['result']['message']['from'][0]['school']['short_name'], "turpis");
-        $this->assertEquals($data['result']['message']['from'][0]['school']['logo'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['school']['background'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['id'], 1);
-        $this->assertEquals($data['result']['message']['from'][0]['firstname'], "Paul");
-        $this->assertEquals($data['result']['message']['from'][0]['lastname'], "Boussekey");
-        $this->assertEquals($data['result']['message']['from'][0]['nickname'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['email'], "pboussekey@thestudnet.com");
-        $this->assertEquals($data['result']['message']['from'][0]['birth_date'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['position'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['interest'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['avatar'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['email_sent'], 1);
-        $this->assertEquals($data['result']['message']['from'][0]['ambassador'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['suspension_date'], null);
-        $this->assertEquals($data['result']['message']['from'][0]['suspension_reason'], null);
-        $this->assertEquals(count($data['result']['message']['from'][0]['roles']), 1);
-        $this->assertEquals($data['result']['message']['from'][0]['roles'][0], "super_admin");
-        $this->assertEquals(count($data['result']['message']['from'][0]['program']), 0);
-        $this->assertEquals(count($data['result']['message']['document']), 0);
-        $this->assertEquals(count($data['result']['message']['to']), 2);
-        $this->assertEquals(count($data['result']['message']['to'][0]), 18);
-        $this->assertEquals($data['result']['message']['to'][0]['contact_state'], 0);
-        $this->assertEquals($data['result']['message']['to'][0]['contacts_count'], 0);
-        $this->assertEquals(count($data['result']['message']['to'][0]['school']), 5);
-        $this->assertEquals($data['result']['message']['to'][0]['school']['id'], 1);
-        $this->assertEquals($data['result']['message']['to'][0]['school']['name'], "Morbi Corporation");
-        $this->assertEquals($data['result']['message']['to'][0]['school']['short_name'], "turpis");
-        $this->assertEquals($data['result']['message']['to'][0]['school']['logo'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['school']['background'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['id'], 3);
-        $this->assertEquals($data['result']['message']['to'][0]['firstname'], "Christophe");
-        $this->assertEquals($data['result']['message']['to'][0]['lastname'], "Robert");
-        $this->assertEquals($data['result']['message']['to'][0]['nickname'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['email'], "crobert@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][0]['birth_date'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['email_sent'], 1);
-        $this->assertEquals($data['result']['message']['to'][0]['position'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['interest'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['avatar'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['ambassador'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['suspension_date'], null);
-        $this->assertEquals($data['result']['message']['to'][0]['suspension_reason'], null);
-        $this->assertEquals(count($data['result']['message']['to'][0]['roles']), 1);
-        $this->assertEquals($data['result']['message']['to'][0]['roles'][0], "academic");
-        $this->assertEquals(count($data['result']['message']['to'][0]['program']), 0);
-        $this->assertEquals(count($data['result']['message']['to'][1]), 18);
-        $this->assertEquals($data['result']['message']['to'][1]['contact_state'], 3);
-        $this->assertEquals($data['result']['message']['to'][1]['contacts_count'], 1);
-        $this->assertEquals(count($data['result']['message']['to'][1]['school']), 5);
-        $this->assertEquals($data['result']['message']['to'][1]['school']['id'], 1);
-        $this->assertEquals($data['result']['message']['to'][1]['school']['name'], "Morbi Corporation");
-        $this->assertEquals($data['result']['message']['to'][1]['school']['short_name'], "turpis");
-        $this->assertEquals($data['result']['message']['to'][1]['school']['logo'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['school']['background'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['id'], 2);
-        $this->assertEquals($data['result']['message']['to'][1]['firstname'], "Xuan-Anh");
-        $this->assertEquals($data['result']['message']['to'][1]['lastname'], "Hoang");
-        $this->assertEquals($data['result']['message']['to'][1]['nickname'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['email'], "xhoang@thestudnet.com");
-        $this->assertEquals($data['result']['message']['to'][1]['birth_date'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['position'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['interest'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['email_sent'], 1);
-        $this->assertEquals($data['result']['message']['to'][1]['avatar'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['ambassador'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['suspension_date'], null);
-        $this->assertEquals($data['result']['message']['to'][1]['suspension_reason'], null);
-        $this->assertEquals(count($data['result']['message']['to'][1]['roles']), 1);
-        $this->assertEquals($data['result']['message']['to'][1]['roles'][0], "admin");
-        $this->assertEquals(count($data['result']['message']['to'][1]['program']), 0);
-        $this->assertEquals($data['result']['message']['id'], 1);
-        $this->assertEquals($data['result']['message']['title'], null);
-        $this->assertEquals($data['result']['message']['text'], "super message qwerty");
-        $this->assertEquals($data['result']['message']['token'], null);
-        $this->assertEquals($data['result']['message']['is_draft'], 0);
-        $this->assertEquals($data['result']['message']['type'], 2);
-        $this->assertEquals(!empty($data['result']['message']['created_date']), true);
-        $this->assertEquals(count($data['result']['user']), 5);
-        $this->assertEquals($data['result']['user']['id'], 1);
-        $this->assertEquals($data['result']['user']['firstname'], "Paul");
-        $this->assertEquals($data['result']['user']['lastname'], "Boussekey");
-        $this->assertEquals($data['result']['user']['nickname'], null);
-        $this->assertEquals($data['result']['user']['avatar'], null);
-        $this->assertEquals($data['result']['id'], 1);
-        $this->assertEquals($data['result']['message_id'], 1);
-        $this->assertEquals($data['result']['conversation_id'], 1);
-        $this->assertEquals($data['result']['from_id'], 1);
-        $this->assertEquals($data['result']['user_id'], 1);
-        $this->assertEquals(!empty($data['result']['read_date']), true);
-        $this->assertEquals(!empty($data['result']['created_date']), true);
-        $this->assertEquals($data['jsonrpc'], 2.0);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['message_id'] , 1);
+        $this->assertEquals($data['result']['conversation_id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        return $data['result'];
     }
 
     public function testCanSendMessageTwo()
     {
         $this->setIdentity(2);
+        $data = $this->jsonRpc('message.send', ['to' => 3,'text' => 'super message deux qwerty 1']);
 
-        $data = $this->jsonRpc('message.send', array('to' => 3,'text' => 'super message deux qwerty 1'));
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['message_id'] , 2);
+        $this->assertEquals($data['result']['conversation_id'] , 2);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
 
         return $data['result'];
     }
@@ -135,8 +45,16 @@ class MessageTest extends AbstractService
     public function testCanSendMessagethree()
     {
         $this->setIdentity(3);
+        $data = $this->jsonRpc('message.send', ['to' => 2,'text' => 'super message un azerty 2']);
 
-        $data = $this->jsonRpc('message.send', array('to' => 2,'text' => 'super message un azerty 2'));
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['message_id'] , 3);
+        $this->assertEquals($data['result']['conversation_id'] , 2);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        return $data['result'];
     }
 
     /**
@@ -145,20 +63,150 @@ class MessageTest extends AbstractService
     public function testCanSendMessagethreebis($conv)
     {
         $this->setIdentity(2);
-        $data = $this->jsonRpc('message.send', array('conversation' => $conv['conversation_id'],'text' => 'dernier message'));
-    }
+        $data = $this->jsonRpc('message.send', [
+          'conversation_id' => $conv['conversation_id'], 'text' => 'dernier message']);
 
-    public function testCanSendMessageFoor()
-    {
-        $this->setIdentity(4);
-
-        $data = $this->jsonRpc('message.send', array('to' => 5,'text' => 'super message un azerty 2'));
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals($data['result']['message_id'] , 4);
+        $this->assertEquals($data['result']['conversation_id'] , 2);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
      * @depends testCanSendMessageTwo
      */
-    public function testGetFullList($conv)
+    public function testCanGetIdConv($conv)
+    {
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('conversation.getIdByUser', [
+          'user' => [3]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , $conv['conversation_id']);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanSendMessageTwo
+     */
+    public function testCanGet($conv)
+    {
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('conversation.get', [
+          'id' => $conv
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][2]) , 5);
+        $this->assertEquals(count($data['result'][2]['message']) , 4);
+        $this->assertEquals($data['result'][2]['message']['id'] , 4);
+        $this->assertEquals($data['result'][2]['message']['text'] , "dernier message");
+        $this->assertEquals($data['result'][2]['message']['token'] , null);
+        $this->assertEquals(!empty($data['result'][2]['message']['created_date']) , true);
+        $this->assertEquals(count($data['result'][2]['users']) , 2);
+        $this->assertEquals($data['result'][2]['users'][0] , 2);
+        $this->assertEquals($data['result'][2]['users'][1] , 3);
+        $this->assertEquals($data['result'][2]['id'] , 2);
+        $this->assertEquals($data['result'][2]['type'] , 2);
+        $this->assertEquals(!empty($data['result'][2]['created_date']) , true);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanSendMessageTwo
+     */
+    public function testCanGetUnread($conv)
+    {
+      $this->setIdentity(2);
+      $data = $this->jsonRpc('conversation.getListId', [
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals(count($data['result']) , 2);
+      $this->assertEquals(count($data['result'][2]) , 3);
+      $this->assertEquals(count($data['result'][2]['users']) , 2);
+      $this->assertEquals($data['result'][2]['users'][0] , 2);
+      $this->assertEquals($data['result'][2]['users'][1] , 3);
+      $this->assertEquals($data['result'][2]['id'] , 2);
+      $this->assertEquals($data['result'][2]['type'] , 2);
+      $this->assertEquals(count($data['result'][1]) , 3);
+      $this->assertEquals(count($data['result'][1]['users']) , 3);
+      $this->assertEquals($data['result'][1]['users'][0] , 1);
+      $this->assertEquals($data['result'][1]['users'][1] , 2);
+      $this->assertEquals($data['result'][1]['users'][2] , 3);
+      $this->assertEquals($data['result'][1]['id'] , 1);
+      $this->assertEquals($data['result'][1]['type'] , 2);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testCanSendMessageunadeux()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('message.send', ['to' => 2,'text' => 'super message un azerty 2']);
+    }
+
+    /**
+     * @depends testCanSendMessageunadeux
+     */
+    public function testCanGetUnreadContact()
+    {
+      $this->setIdentity(2);
+      $data = $this->jsonRpc('conversation.getListId', [
+        'contact' => true
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals(count($data['result']) , 1);
+      $this->assertEquals(count($data['result'][3]) , 3);
+      $this->assertEquals(count($data['result'][3]['users']) , 2);
+      $this->assertEquals($data['result'][3]['users'][0] , 1);
+      $this->assertEquals($data['result'][3]['users'][1] , 2);
+      $this->assertEquals($data['result'][3]['id'] , 3);
+      $this->assertEquals($data['result'][3]['type'] , 2);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanSendMessageunadeux
+     */
+    public function testCanGetUnreadContactFalse()
+    {
+      $this->setIdentity(2);
+      $data = $this->jsonRpc('conversation.getListId', [
+        'contact' => false,
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals(count($data['result']) , 2);
+      $this->assertEquals(count($data['result'][2]) , 3);
+      $this->assertEquals(count($data['result'][2]['users']) , 2);
+      $this->assertEquals($data['result'][2]['users'][0] , 2);
+      $this->assertEquals($data['result'][2]['users'][1] , 3);
+      $this->assertEquals($data['result'][2]['id'] , 2);
+      $this->assertEquals($data['result'][2]['type'] , 2);
+      $this->assertEquals(count($data['result'][1]) , 3);
+      $this->assertEquals(count($data['result'][1]['users']) , 3);
+      $this->assertEquals($data['result'][1]['users'][0] , 1);
+      $this->assertEquals($data['result'][1]['users'][1] , 2);
+      $this->assertEquals($data['result'][1]['users'][2] , 3);
+      $this->assertEquals($data['result'][1]['id'] , 1);
+      $this->assertEquals($data['result'][1]['type'] , 2);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanSendMessageTwo
+     */
+    /*public function testGetFullList($conv)
     {
         $this->setIdentity(2);
 
@@ -206,7 +254,7 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageTwo
      */
-    public function testCanGetList($conv)
+    /*public function testCanGetList($conv)
     {
         $this->setIdentity(2);
 
@@ -931,7 +979,7 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanAddSendMail
      */
-    public function testCanAddSendMailUpdate($message_id)
+    /*public function testCanAddSendMailUpdate($message_id)
     {
         $this->setIdentity(3);
 
@@ -1616,5 +1664,5 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
-    }
+    }*/
 }

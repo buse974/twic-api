@@ -6,71 +6,72 @@ use Dal\Model\AbstractModel;
 
 class Like extends AbstractModel
 {
-    protected $id;
-    protected $is_like;
-    protected $user_id;
-    protected $event_id;
-    protected $created_date;
+ 	protected $id;
+	protected $is_like;
+	protected $user_id;
+	protected $event_id;
+	protected $created_date;
 
-    protected $prefix = 'like';
+	protected $prefix = 'like';
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
+	public function setId($id)
+	{
+		$this->id = $id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getIsLike()
-    {
-        return $this->is_like;
-    }
+	public function getIsLike()
+	{
+		return $this->is_like;
+	}
 
-    public function setIsLike($is_like)
-    {
-        $this->is_like = $is_like;
+	public function setIsLike($is_like)
+	{
+		$this->is_like = $is_like;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getUserId()
-    {
-        return $this->user_id;
-    }
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
 
-    public function setUserId($user_id)
-    {
-        $this->user_id = $user_id;
+	public function setUserId($user_id)
+	{
+		$this->user_id = $user_id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getEventId()
-    {
-        return $this->event_id;
-    }
+	public function getEventId()
+	{
+		return $this->event_id;
+	}
 
-    public function setEventId($event_id)
-    {
-        $this->event_id = $event_id;
+	public function setEventId($event_id)
+	{
+		$this->event_id = $event_id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getCreatedDate()
-    {
-        return $this->created_date;
-    }
+	public function getCreatedDate()
+	{
+		return $this->created_date;
+	}
 
-    public function setCreatedDate($created_date)
-    {
-        $this->created_date = $created_date;
+	public function setCreatedDate($created_date)
+	{
+		$this->created_date = $created_date;
 
-        return $this;
-    }
+		return $this;
+	}
+
 }

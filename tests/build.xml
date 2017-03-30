@@ -19,8 +19,8 @@
 			</then>
 		</if>
 		<echo message="Database undo file ${build.dbdeploy.undofile}" />
-		<echo message="Parse ${project.basedir}/data/dbtest/" />
-		<dbdeploy url="mysql:host=${dbdeploy.host};dbname=${dbdeploy.database}" userid="${dbdeploy.user}" password="${dbdeploy.password}" dir="${project.basedir}/../data/dbtest/" outputfile="${build.dbdeploy.deployfile}" undooutputfile="${build.dbdeploy.undofile}" />
+		<echo message="Parse ${project.basedir}/data/db/" />
+		<dbdeploy url="mysql:host=${dbdeploy.host};dbname=${dbdeploy.database}" userid="${dbdeploy.user}" password="${dbdeploy.password}" dir="${project.basedir}/../data/db/" outputfile="${build.dbdeploy.deployfile}" undooutputfile="${build.dbdeploy.undofile}" />
 
 		<exec command="mysql --default-character-set=utf8 -h${dbdeploy.host} -u${dbdeploy.user} ${dbdeploy.passwordParam} ${dbdeploy.database} &lt; ${build.dbdeploy.deployfile}" dir="${project.basedir}" checkreturn="true" />
 		<delete file="${build.dbdeploy.deployfile}" />
@@ -58,7 +58,7 @@
 				<property name="dbdeploy.passwordParam" value="" override="yes" />
 			</then>
 		</if>
-		<exec command="echo 'INSERT INTO `videoconf` (`duration`, `submission_id`,`created_date`) VALUES ('500', 1, '2016-01-01')' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />	
+		<exec command="echo 'INSERT INTO `videoconf` (`duration`, `submission_id`,`created_date`) VALUES ('500', 1, '2016-01-01')' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />
 		<exec command="echo 'INSERT INTO `videoconf_archive` (`id`, `videoconf_id`) VALUES (1, 1)' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />
 		<exec command="echo 'INSERT INTO `videoconf_archive` (`id`, `videoconf_id`) VALUES (2, 1)' | mysql -h ${dbdeploy.host} -u'${dbdeploy.user}' ${dbdeploy.passwordParam} ${dbdeploy.database}" dir="${project.basedir}" checkreturn="true" />
 	</target>

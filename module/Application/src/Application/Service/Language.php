@@ -1,28 +1,25 @@
 <?php
-/**
- * TheStudnet (http://thestudnet.com).
- *
- * Language
- */
+
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
 
-/**
- * Class Language.
- */
 class Language extends AbstractService
 {
     /**
      * Get List.
      *
      * @invokable
+     * @param string $search
+     * @param array $filter
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList()
+    public function getList($search = null, $filter = null)
     {
-        return $this->getMapper()->fetchAll();
+        $mapper = $this->getMapper();
+        $res =  $mapper->usePaginator($filter)->getList($search);
+        return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
     }
 
     /**

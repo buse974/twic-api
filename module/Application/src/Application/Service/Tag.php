@@ -23,10 +23,10 @@ class Tag extends AbstractService
             $this->getMapper()->update($this->getModel()->setId($m_tag->getId())->setWeight($m_tag->getWeight()+1));
             $id = $m_tag->getId();
         }
-        
+
         return $id;
     }
-    
+
     /**
      *
      * @param int $page_id

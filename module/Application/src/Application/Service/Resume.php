@@ -16,7 +16,7 @@ use Zend\Db\Sql\Predicate\IsNull;
 class Resume extends AbstractService
 {
     /**
-     * Add experience.
+     * Add experience
      *
      * @invokable
      *
@@ -29,7 +29,7 @@ class Resume extends AbstractService
      * @param string $description
      * @param int    $type
      * @param string $publisher
-     * @param v      $url
+     * @param string $url
      * @param string $cause
      * @param string $study
      * @param int    $grade
@@ -39,7 +39,8 @@ class Resume extends AbstractService
      *
      * @return int
      */
-    public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null, $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
+    public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null,
+    $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
     {
         $m_education = $this->getModel();
 
@@ -128,7 +129,7 @@ class Resume extends AbstractService
             ->setNote($note)
             ->setUserId($user_id);
 
-        $ret = $this->getMapper()->update($m_education, array('id' => $id, 'user_id' => $user_id));
+        $ret = $this->getMapper()->update($m_education, ['id' => $id, 'user_id' => $user_id]);
 
         if ($ret > 0) {
             $this->getServiceEvent()->profileNewresume(['EU'.$user_id], $id);
@@ -148,33 +149,34 @@ class Resume extends AbstractService
      */
     public function delete($id)
     {
-        $m_education = $this->getModel();
-
-        $m_education->setId($id)->setUserId(
-            $this->getServiceUser()
-                ->getIdentity()['id']
-        );
+        $m_education  = $this->getModel()
+          ->setId($id)
+          ->setUserId($this->getServiceUser()->getIdentity()['id']);
 
         return $this->getMapper()->delete($m_education);
     }
 
-    /**
-     * Get Resume.
-     *
-     * @param int $id
-     *
-     * @return \Application\Model\Resume
-     */
-    public function getById($id)
+   /**
+    * Get Resume
+    *
+    * @invokable
+    *
+    * @param  int|array $id
+    * @return array
+    */
+    public function get($id)
     {
-        $m_education = $this->getModel();
+        $res_resume = $this->getMapper()->select(
+          $this->getModel()->setId($id),
+          [new Expression('ISNULL(end_date) DESC'), 'end_date DESC']);
 
-        $m_education->setId($id);
-
-        return $this->getMapper()
-            ->select($m_education)
-            ->current();
+       return (is_array($id)) ?
+        $res_resume->toArray(['id']) :
+        $res_resume->current();
     }
+
+
+
 
     /**
      * Get list resume id by users.
@@ -185,60 +187,23 @@ class Resume extends AbstractService
      *
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function m_getListIdByUser($id)
+    public function getListId($user_id)
     {
-        if (!is_array($id)) {
-            $users = [$id];
-        } else {
-            $users = $id;
+        if (!is_array($user_id)) {
+            $user_id = [$user_id];
         }
+
         $resumes = [];
-        foreach ($users as &$user) {
+        foreach ($user_id as $user) {
             $resumes[$user] = [];
         }
-        $res_resume = $this->getMapper()->m_getListIdByUser($user);
-        foreach ($res_resume->toArray() as &$resume) {
-            $resumes[$resume['user_id']][] = $resume['id'];
+
+        $res_resume = $this->getMapper()->getListId($user_id);
+        foreach ($res_resume as $m_resume) {
+            $resumes[$m_resume->getUserId()][] = $m_resume->getId();
         }
 
         return $resumes;
-    }
-    
-        
-         /**
-     * Get Resume for mobile
-     *
-     * @invokable
-     *
-     * @param  int|array $id
-     * @return array
-     */
-    public function m_get($id = null)
-    {
-        if (!is_array($id)) {
-            $id = [$id];
-        }
-        
-        return $this->getMapper()->select($this->getModel()->setId($id))->toArray(['id']);
-    }
-
-    
-    /**
-     * Get Resume.
-     *
-     * @invokable
-     *
-     * @param int $user
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function get($user)
-    {
-        $m_education = $this->getModel();
-
-        $m_education->setUserId($user);
-
-        return $this->getMapper()->select($m_education, array(new Expression('ISNULL(end_date) DESC'), 'end_date DESC'));
     }
 
     /**

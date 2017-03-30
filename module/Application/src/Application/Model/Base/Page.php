@@ -18,11 +18,16 @@ class Page extends AbstractModel
 	protected $location;
 	protected $type;
 	protected $user_id;
-	protected $organization_id;
-	protected $page_id;
 	protected $address_id;
 	protected $deleted_date;
 	protected $owner_id;
+	protected $uid;
+	protected $short_title;
+	protected $website;
+	protected $phone;
+	protected $libelle;
+	protected $custom;
+	protected $subtype;
 
 	protected $prefix = 'page';
 
@@ -170,30 +175,6 @@ class Page extends AbstractModel
 		return $this;
 	}
 
-	public function getOrganizationId()
-	{
-		return $this->organization_id;
-	}
-
-	public function setOrganizationId($organization_id)
-	{
-		$this->organization_id = $organization_id;
-
-		return $this;
-	}
-
-	public function getPageId()
-	{
-		return $this->page_id;
-	}
-
-	public function setPageId($page_id)
-	{
-		$this->page_id = $page_id;
-
-		return $this;
-	}
-
 	public function getAddressId()
 	{
 		return $this->address_id;
@@ -226,6 +207,90 @@ class Page extends AbstractModel
 	public function setOwnerId($owner_id)
 	{
 		$this->owner_id = $owner_id;
+
+		return $this;
+	}
+
+	public function getUid()
+	{
+		return $this->uid;
+	}
+
+	public function setUid($uid)
+	{
+		$this->uid = $uid;
+
+		return $this;
+	}
+
+	public function getShortTitle()
+	{
+		return $this->short_title;
+	}
+
+	public function setShortTitle($short_title)
+	{
+		$this->short_title = $short_title;
+
+		return $this;
+	}
+
+	public function getWebsite()
+	{
+		return $this->website;
+	}
+
+	public function setWebsite($website)
+	{
+		$this->website = $website;
+
+		return $this;
+	}
+
+	public function getPhone()
+	{
+		return $this->phone;
+	}
+
+	public function setPhone($phone)
+	{
+		$this->phone = $phone;
+
+		return $this;
+	}
+
+	public function getLibelle()
+	{
+		return $this->libelle;
+	}
+
+	public function setLibelle($libelle)
+	{
+		$this->libelle = $libelle;
+
+		return $this;
+	}
+
+	public function getCustom()
+	{
+		return $this->custom;
+	}
+
+	public function setCustom($custom)
+	{
+		$this->custom = $custom;
+
+		return $this;
+	}
+
+	public function getSubtype()
+	{
+		return $this->subtype;
+	}
+
+	public function setSubtype($subtype)
+	{
+		$this->subtype = $subtype;
 
 		return $this;
 	}

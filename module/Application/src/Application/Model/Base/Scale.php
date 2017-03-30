@@ -6,45 +6,46 @@ use Dal\Model\AbstractModel;
 
 class Scale extends AbstractModel
 {
-    protected $id;
-    protected $name;
-    protected $value;
+ 	protected $id;
+	protected $name;
+	protected $value;
 
-    protected $prefix = 'scale';
+	protected $prefix = 'scale';
 
-    public function getId()
-    {
-        return $this->id;
-    }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    public function setId($id)
-    {
-        $this->id = $id;
+	public function setId($id)
+	{
+		$this->id = $id;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getName()
-    {
-        return $this->name;
-    }
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    public function setName($name)
-    {
-        $this->name = $name;
+	public function setName($name)
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    public function getValue()
-    {
-        return $this->value;
-    }
+	public function getValue()
+	{
+		return $this->value;
+	}
 
-    public function setValue($value)
-    {
-        $this->value = $value;
+	public function setValue($value)
+	{
+		$this->value = $value;
 
-        return $this;
-    }
+		return $this;
+	}
+
 }

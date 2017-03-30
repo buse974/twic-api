@@ -6,11 +6,8 @@ use Application\Model\Base\Conversation as BaseConversation;
 
 class Conversation extends BaseConversation
 {
-    const TYPE_EMAIL = 1;
+    const TYPE_CHANNEL = 1;
     const TYPE_CHAT = 2;
-    const TYPE_VIDEOCONF = 3;
-    const TYPE_ITEM_CHAT = 4;
-    const TYPE_ITEM_GROUP_ASSIGNMENT = 5;
 
     const DEFAULT_NAME = 'Chat';
 
@@ -18,6 +15,26 @@ class Conversation extends BaseConversation
     protected $users;
     protected $message_user;
     protected $nb_unread;
+    protected $message;
+
+    public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
+
+        $this->message = $this->requireModel('app_model_message', $data);
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
 
     public function getMessages()
     {
@@ -30,16 +47,16 @@ class Conversation extends BaseConversation
 
         return $this;
     }
-    
+
     public function getMessageUser()
     {
         return $this->message_user;
     }
-    
+
     public function setMessageUser($message_user)
     {
         $this->message_user = $message_user;
-    
+
         return $this;
     }
 

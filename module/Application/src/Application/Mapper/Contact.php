@@ -4,6 +4,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Predicate\Predicate;
 use Dal\Db\Sql\Select;
 
 class Contact extends AbstractMapper
@@ -11,18 +12,24 @@ class Contact extends AbstractMapper
     /**
      * @return \Zend\Db\ResultSet\ResultSet
      */
-    public function getList($user_id, $exclude = null)
+    public function getList($user_id, $exclude = null, $search = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('accepted_date', 'contact_id', 'user_id'))
-            ->join('user', 'user.id=contact.contact_id', [])
-            ->where(array('contact.user_id' => $user_id))
-            ->where(array('contact.accepted_date IS NOT NULL'))
-            ->where(array('contact.deleted_date IS NULL'))
-            ->where(array('user.deleted_date IS NULL'));
+        $select->columns(['accepted_date', 'contact_id', 'user_id'])
+          ->join('user', 'user.id=contact.contact_id', [])
+          ->where(array('contact.user_id' => $user_id))
+          ->where(array('contact.accepted_date IS NOT NULL'))
+          ->where(array('contact.deleted_date IS NULL'))
+          ->where(array('user.deleted_date IS NULL'));
 
-        if ($exclude) {
-            $select->where->notIn('contact.contact_id', $exclude);
+        if (!empty($exclude)) {
+          $select->where->notIn('contact.contact_id', $exclude);
+        }
+
+        if (null !== $search) {
+          $select->where(array('( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'))
+            ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+            ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }
 
         return $this->selectWith($select);
@@ -37,15 +44,15 @@ class Contact extends AbstractMapper
             throw new \Exception('Invalid params');
         }
         $select = $this->tableGateway->getSql()->select();
-        
+
         $select->columns(array('request_date', 'user_id', 'contact_id'))
             ->where(
                 array('
-                contact.request_date IS NOT NULL AND 
-                contact.accepted_date IS NULL AND 
-                contact.deleted_date IS NULL AND 
-                requested IS false AND 
-                accepted IS false AND 
+                contact.request_date IS NOT NULL AND
+                contact.accepted_date IS NULL AND
+                contact.deleted_date IS NULL AND
+                requested IS false AND
+                accepted IS false AND
                 deleted IS false')
             );
         if (null !== $user) {
