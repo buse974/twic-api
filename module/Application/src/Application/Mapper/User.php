@@ -46,12 +46,12 @@ class User extends AbstractMapper
             ->where(['user.id' => $user_id])
             ->quantifier('DISTINCT');
 
-        if ($is_sadmin_admin === false && $user_id !== $me) {
+        /*if ($is_sadmin_admin === false && $user_id !== $me) {
             $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                 ->join(['circle_page_user' => 'page_user'], 'circle_page_user.page_id=circle_organization.organization_id', [])
                 ->where(['circle_page_user.user_id' => $user_id]);
-        }
+        }*/
         return $this->selectWith($select);
     }
 

@@ -90,11 +90,11 @@ class Page extends AbstractMapper
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
 
-            $select->join('user', 'page.owner_id=user.id', [])
+            /*$select->join('user', 'page.owner_id=user.id', [])
                 ->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
                 ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
                 ->join(['circle_page_user' => 'page_user'], 'circle_page_user.page_id=circle_organization.organization_id', [])
-                ->where(['circle_page_user.user_id' => $me]);
+                ->where(['circle_page_user.user_id' => $me]);*/
         }
         $select->order(['page.start_date' => 'DESC'])
             ->group('page.id');
