@@ -53,7 +53,7 @@ class PageTest extends AbstractService
      */
     public function testPageGet($page_id)
     {
-        $this->setIdentity(1,1);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('page.get', ['id' => $page_id]);
 
         $this->assertEquals(count($data) , 3);
