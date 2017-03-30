@@ -93,10 +93,10 @@ class User extends AbstractMapper
               'position', 'interest', 'avatar',
               'user$contact_state' => $this->getSelectContactState($user_id),
               'user$contacts_count' => $this->getSelectContactCount()
-            ])->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
+            ]);/*->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
              ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
              ->join('page_user', 'page_user.page_id=circle_organization.organization_id', [])
-             ->where(['page_user.user_id' => $user_id]);
+             ->where(['page_user.user_id' => $user_id]);*/
         }
         $select->where('user.deleted_date IS NULL')
             ->order(['user.id' => 'DESC'])
@@ -123,9 +123,9 @@ class User extends AbstractMapper
             $select->where(array('user.organization_id' => $organization_id));
         }
         if (null !== $search) {
-            $select->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'))
-                ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-                ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
+            $select->where(['( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'])
+                ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                ->where(['user.nickname LIKE ? )' => ''.$search.'%'], Predicate::OP_OR);
         }
         if (null !== $contact_state) {
             if (!is_array($contact_state)) {

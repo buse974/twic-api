@@ -90,7 +90,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
-    
+
     public function testUserGet()
     {
         $this->setIdentity(1,1);
@@ -185,11 +185,20 @@ class UserTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.getListId', [
-          //$search, $exclude, $filter, $contact_state
+          'exclude' => [2],
+          'search' => 'robert',
+          'filter' => ['p' => 1, 'n' => 10]
         ]);
 
-        //$this->printCreateTest($data);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['list']) , 1);
+        $this->assertEquals($data['result']['list'][0] , 3);
+        $this->assertEquals($data['result']['count'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
     }
+
 
 /*
 
