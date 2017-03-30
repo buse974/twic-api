@@ -45,13 +45,13 @@ class Conversation extends AbstractMapper
       $subselect = $this->tableGateway->getSql()->select();
       $select = $this->tableGateway->getSql()->select();
       $select->columns(['id', 'type'])
-        ->join(['conversation_message' => 'message'], 'conversation.id=conversation_message.conversation_id', [])
-        ->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT)
+        ->join(['conversation_message' => 'message'], 'conversation.id=conversation_message.conversation_id', ['id'])
         ->where([new In('conversation_message.id', $subselect)])
         ->order(['conversation_message.id DESC']);
 
       // READ OR NOT READ
       if(true === $noread || false === $noread) {
+        $select->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT);
         if($noread) {
           $select->where(['conversation_message_message_user.read_date IS NOT NULL']);
         } else {

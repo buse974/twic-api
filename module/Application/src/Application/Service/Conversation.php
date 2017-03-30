@@ -73,18 +73,22 @@ class Conversation extends AbstractService
    * @invokable
    *
    */
-  public function getListId($contact = null, $noread = null, $type = null)
+  public function getListId($contact = null, $noread = null, $type = null, $filter = null)
   {
       $user_id = $this->getServiceUser()->getIdentity()['id'];
 
-      $res_conversation = $this->getMapper()->getId($user_id, $contact, $noread, $type);
+      $mapper = $this->getMapper();
+      $res_conversation = $mapper->usePaginator($filter)->getId($user_id, $contact, $noread, $type);
       foreach ($res_conversation as $m_conversation) {
         $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
       }
 
       $res_conversation->rewind();
 
-      return $res_conversation->toArray(['id']);
+      return (null === $filter) ? $res_conversation : [
+        'list' => $res_conversation,
+        'count' => $mapper->count()
+      ];
   }
 
   /**

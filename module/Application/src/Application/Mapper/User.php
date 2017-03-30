@@ -66,9 +66,7 @@ class User extends AbstractMapper
     public function getList(
       $user_id,
       $is_admin,
-      $filter = null,
       $post = null,
-      $type = null,
       $search = null,
       $organization_id = null,
       $order = null,
@@ -138,50 +136,6 @@ class User extends AbstractMapper
         }
 
 	       return $this->selectWith($select);
-    }
-
-    public function getListContact($me, $type = null, $date = null)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(
-            array('id',
-            'firstname',
-            'lastname',
-            'organization_id', 'email', 'nickname',
-            'user$birth_date' => new Expression('DATE_FORMAT(user.birth_date, "%Y-%m-%dT%TZ")'),
-            'position',
-            'interest',
-            'avatar', )
-        )
-            ->join('contact', 'contact.contact_id=user.id', array('request_date', 'accepted_date', 'deleted_date', 'requested', 'accepted', 'deleted'))
-            ->where('user.deleted_date IS NULL')
-            ->where(array('contact.user_id' => $me))
-            ->order(array('user.id' => 'DESC'))
-            ->quantifier('DISTINCT');
-
-        switch ($type) {
-        case 1: // on me demande en contact
-            $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS false AND accepted IS false AND deleted IS false'));
-            break;
-        case 2: // j'ai demander en contact
-            $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NULL AND requested IS true AND accepted IS false AND deleted IS false'));
-            break;
-        case 3: // on ma refuser en contact
-            $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NULL AND contact.deleted_date IS NOT NULL AND requested IS true AND accepted IS false AND deleted IS false'));
-            break;
-        case 4: // on ma suprimé alors que je suis en contact
-            $select->where(array('contact.request_date IS NOT NULL AND contact.accepted_date IS NOT NULL AND contact.deleted_date IS NOT NULL AND deleted IS false'));
-            break;
-        case 5: // contact ok
-            $select->where(array('contact.accepted_date IS NOT NULL AND contact.deleted_date IS NULL'));
-            break;
-        }
-
-        if ($date) {
-            $select->where(array('( contact.request_date < ? ' => $date, ' contact.accepted_date < ? ' => $date, ' contact.deleted_date < ? ) ' => $date));
-        }
-
-        return $this->selectWith($select);
     }
 
     public function getEmailUnique($email, $user)
