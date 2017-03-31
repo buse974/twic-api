@@ -167,7 +167,7 @@ class MessageTest extends AbstractService
       ]);
 
       $this->assertEquals(count($data) , 3);
-      $this->assertEquals($data['id'] , 1); 
+      $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
       $this->assertEquals(count($data['result'][0]) , 4);
       $this->assertEquals(count($data['result'][0]['message']) , 1);
@@ -211,6 +211,18 @@ class MessageTest extends AbstractService
       $this->assertEquals($data['result'][1]['id'] , 1);
       $this->assertEquals($data['result'][1]['type'] , 2);
       $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanSendMessageTwo
+     */
+    public function testCanGetList($conv)
+    {
+        $this->setIdentity(2);
+
+        $data = $this->jsonRpc('message.getList', ['conversation_id' => $conv['conversation_id']]);
+
+        print_r($data);
     }
 
     /**

@@ -68,6 +68,25 @@ class Message extends AbstractService
   }
 
   /**
+   * Get List By user Conversation
+   *
+   * @invokable
+   *
+   * @param int   $conversation_id
+   * @param array $filter
+   */
+  public function getList($conversation_id, $filter = [])
+  {
+      $mapper = $this->getMapper();
+      $res_message = $mapper->usePaginator($filter)->getList($conversation_id);
+
+      return [
+        'list' => $res_message,
+        'count' => $mapper->count()
+      ];
+  }
+
+  /**
    * Get Message Doc.
    *
    * @return \Application\Service\MessageDoc
