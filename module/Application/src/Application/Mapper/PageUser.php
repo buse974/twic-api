@@ -8,7 +8,7 @@ use Zend\Db\Sql\Predicate\Expression;
 
 class PageUser extends AbstractMapper
 {
-    public function getList($page_id = null, $role = null, $user_id = null, $state = null)
+    public function getList($page_id = null, $user_id = null, $role = null, $state = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['page_id','user_id','state','role']);
@@ -33,31 +33,5 @@ class PageUser extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-    public function m_getList($page_id = null, $role = null, $user_id = null, $state = null, $type = null)
-    {
-        $select = $this->tableGateway->getSql()->select();
-        $select->columns(['page_id','user_id']);
 
-
-        if(null!==$page_id) {
-          $select->where(['page_id' => $page_id]);
-        }
-        if(null!==$user_id) {
-          $select->where(['page_user.user_id' => $user_id]);
-        }
-        if(null!==$state) {
-          $select->where(['state' => $state]);
-        }
-        if(null!==$role) {
-          $select->where(['role' => $role]);
-        }
-        if(null!==$type) {
-          $select
-            ->join('page','page.id = page_user.page_id',[])
-            ->where(['type' => $type]);
-        }
-
-        return $this->selectWith($select);
-    }
 }

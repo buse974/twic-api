@@ -196,7 +196,7 @@ class UserTest extends AbstractService
         $this->assertEquals(count($data['result']['list']) , 1);
         $this->assertEquals($data['result']['list'][0] , 3);
         $this->assertEquals($data['result']['count'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
 

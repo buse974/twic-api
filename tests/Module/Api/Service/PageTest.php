@@ -123,7 +123,8 @@ class PageTest extends AbstractService
     public function testPageUpdate($page_id)
     {
         $this->setIdentity(1);
-        $data = $this->jsonRpc('page.update', ['id' => $page_id,
+        $data = $this->jsonRpc('page.update', [
+            'id' => $page_id,
             'title' => 'super title upt',
             'logo' => 'logo upt',
             'background' => 'background upt',
@@ -150,6 +151,93 @@ class PageTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageUserAdd($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.add', [
+          'page_id' => $id,
+          'user_id' => 4,
+          'role' => 'admin',
+          'state' => 'member'
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageUserUpdate($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.update', [
+          'page_id' => $id,
+          'user_id' => 4,
+          'role' => 'student',
+          'state' => 'member'
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testPageUsergetListByUser()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.getListByUser', [
+          'user_id' => 4,
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][4]) , 1);
+        $this->assertEquals($data['result'][4][0] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testPageUsergetListByPage()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.getListByPage', [
+          'page_id' => 1,
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 3);
+        $this->assertEquals($data['result'][1][0] , 1);
+        $this->assertEquals($data['result'][1][1] , 2);
+        $this->assertEquals($data['result'][1][2] , 4);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageUserDelete($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.delete', [
+          'page_id' => $id,
+          'user_id' => 4,
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**

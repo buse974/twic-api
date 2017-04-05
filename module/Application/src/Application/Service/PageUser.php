@@ -27,7 +27,7 @@ class PageUser extends AbstractService
      * @param  int       $page_id
      * @param  int|array $user_id
      * @param  string    $role
-     * @param  strung    $state
+     * @param  string    $state
      * @return int
      */
     public function add($page_id, $user_id, $role, $state)
@@ -209,12 +209,10 @@ class PageUser extends AbstractService
     /**
      * Get List Page User Relation
      *
-     * @invokable
-     *
      * @param int    $page_id
      * @param array  $filter
      * @param string $state
-
+     *
      * @return \Dal\Db\ResultSet\ResultSet
      */
     public function getList($page_id, $filter = null, $role = null)
@@ -224,99 +222,68 @@ class PageUser extends AbstractService
         $role = 'norole';
       }
       $mapper = $this->getMapper();
-      $res = $mapper->usePaginator($filter)->getList($page_id, $role);
+      $res = $mapper->usePaginator($filter)->getList($page_id, null, $role);
 
-      return null !== $filter ? ['list' => $res,'count' => $mapper->count()] : $res;
+      return null !== $filter ?
+        ['list' => $res,'count' => $mapper->count()] :
+        $res;
     }
 
-   /**
-     * Get List pageId by User and state
+    /**
+     * Get List userId by Page
      *
      * @invokable
      *
-     * @param array $users
+     * @param int|array $page_id
+     * @param string $role
      * @param string $state
-     **/
-    public function _getListByUser($users, $state = ModelPageUser::STATE_MEMBER, $role = null, $type = null)
+     */
+    public function getListByPage($page_id, $role = null, $state = null)
     {
-      $result = $this->getMapper()->m_getList(null, $role, $users, $state, $type);
-      $ret = [];
-      foreach ($result as $m_page_user) {
-         $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
+      if(!is_array($page_id)) {
+        $page_id = [$page_id];
       }
 
-      foreach ($users as $user_id) {
-        if(!isset($ret[$user_id])) {
-          $ret[$user_id] = [];
-        }
+      $ret = [];
+      foreach ($page_id as $page) {
+        $ret[$page] = [];
       }
+
+      $res_page_user = $this->getMapper()->getList($page_id, null, $role, $state);
+      foreach ($res_page_user as $m_page_user) {
+         $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
+      }
+
       return $ret;
     }
 
-     /**
-     * Get List pageId by User and state
-     *
-     * @invokable
-     *
-     * @param array $pages
-     * @param string $state
-     **/
-    public function m_getListByPage($pages, $role = null, $state = null)
+   /**
+    * Get List pageId by User
+    *
+    * @invokable
+    *
+    * @param int|array $user_id
+    * @param string $role
+    * @param string $state
+    */
+    public function getListByUser($user_id, $role = null, $state = null)
     {
-        $result = $this->getMapper()->m_getList($pages, $role, null, $state);
-        $ret = [];
-        foreach ($result as $m_page_user) {
-           $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
+        if(!is_array($user_id)) {
+          $user_id = [$user_id];
         }
 
-        foreach ($pages as $page_id) {
-            if(!isset($ret[$page_id])) {
-                $ret[$page_id] = [];
-            }
+        $ret = [];
+        foreach ($user_id as $user) {
+          $ret[$user] = [];
+        }
+
+        $res_page_user = $this->getMapper()->getList(null, $user_id, $role, $state);
+        foreach ($res_page_user as $m_page_user) {
+           $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
         }
 
         return $ret;
     }
-
-
-   /**
-    * Get List MEMBER pageId by User
-    *
-    * @invokable
-    *
-    * @param array $users
-    * @param string $state
-    * @param string $role
-    */
-    public function m_getListByUser($users, $state = ModelPageUser::STATE_MEMBER, $role = null, $type = null)
-    {
-        return $this->_getListByUser($users, $state, $role, $type);
-    }
-
-    /**
-     * Get List INVITED pageId by User
-     *
-     * @invokable
-     *
-     * @param array $users
-     */
-     public function m_getInvitationListByUser($users, $type = null)
-     {
-       return $this->_getListByUser($users, ModelPageUser::STATE_INVITED, null, $type);
-     }
-
-     /**
-      * Get List PENDING pageId by User
-      *
-      * @invokable
-      *
-      * @param array $users
-      */
-      public function m_getApplicationListByUser($users, $type = null)
-      {
-        return $this->_getListByUser($users, ModelPageUser::STATE_PENDING, null, $type);
-      }
-
 
     /**
      * Add Array

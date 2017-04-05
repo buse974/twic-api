@@ -216,14 +216,14 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageTwo
      */
-    public function testCanGetList($conv)
+    /*public function testCanGetList($conv)
     {
         $this->setIdentity(2);
 
         $data = $this->jsonRpc('message.getList', ['conversation_id' => $conv['conversation_id']]);
 
         print_r($data);
-    }
+    }*/
 
     /**
      * @depends testCanSendMessageTwo
