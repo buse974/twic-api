@@ -362,7 +362,6 @@ class Page extends AbstractService
 
         foreach ($res_page as $m_page) {
             $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
-            $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), null, $m_page->getRole()));
             $this->getOwner($m_page);
         }
 
