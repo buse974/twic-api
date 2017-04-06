@@ -190,8 +190,6 @@ class Page extends AbstractService
             $sub=[];
             if (null !== $page_id) {
                 $sub[] = 'EP'.$page_id;
-            } elseif (null !== $organization_id) {
-                $sub[] = 'EO'.$organization_id;
             } else {
                 $sub[] = 'EU'.$user_id;
             }
@@ -428,68 +426,6 @@ class Page extends AbstractService
 
         return ['count' => $mapper->count(), 'list' => $res_page];
     }
-    
-      /**
-     * Get children pages for a given page(s)
-     *
-     * @invokable
-     *
-     * @param int|array $page_id
-     *
-     * @throws \Exception
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function m_getListByParent($page_id)
-    {
-        $ids = !is_array($page_id) ? [$page_id] : $page_id;
-      
-        $identity = $this->getServiceUser()->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-        $res_page = $this->getMapper()->getList($identity['id'], null, $page_id, null, null, null, null, null, null, null, $is_sadmin_admin, null, null);
-         
-        $pages = [];
-        foreach ($ids as &$id) {
-            $pages[$id] = [];
-        }
-        foreach ($res_page->toArray() as &$page) {
-            $pages[$page['page_id']][] = $page['id'];
-        }
-        return $pages;
-
-    }
-
-    
-      /**
-     * Get children pages linked to given organization(s)
-     *
-     * @invokable
-     *
-     * @param int|array $organization_id
-     *
-     * @throws \Exception
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function m_getListByOrganization($organization_id)
-    {
-        $ids = !is_array($organization_id) ? [$organization_id] : $organization_id;
-      
-        $identity = $this->getServiceUser()->getIdentity();
-        $is_sadmin_admin = (in_array(ModelRole::ROLE_SADMIN_STR, $identity['roles']) || in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-        $res_page = $this->getMapper()->getList($identity['id'], null, null, null, $organization_id, null, null, null, null, null, $is_sadmin_admin, null, null);
-         
-        $pages = [];
-        foreach ($ids as &$id) {
-            $pages[$id] = [];
-        }
-        foreach ($res_page->toArray() as &$page) {
-            $pages[$page['organization_id']][] = $page['id'];
-        }
-        return $pages;
-
-    }
-
 
     /**
      * Generate a formatted website url for the school.

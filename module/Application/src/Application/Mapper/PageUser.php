@@ -13,13 +13,14 @@ class PageUser extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['page_id','user_id','state','role']);
 
-        if(null !== $role) {
+        if(null!==$role) {
           if ($role !== ModelPageUser::ROLE_ADMIN) {
             $select->where(['state' => ModelPageUser::STATE_MEMBER]);
           } else {
             $select->where(['state <> ?' => ModelPageUser::STATE_REJECTED])
               ->order(new Expression('IF(state = "'.ModelPageUser::STATE_PENDING.'", 0, 1)'));
           }
+          $select->where(['role' => $role]);
         }
         if(null!==$page_id) {
           $select->where(['page_id' => $page_id]);
