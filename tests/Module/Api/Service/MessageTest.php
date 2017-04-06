@@ -216,14 +216,40 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageTwo
      */
-    /*public function testCanGetList($conv)
+    public function testCanGetList($conv)
     {
         $this->setIdentity(2);
 
         $data = $this->jsonRpc('message.getList', ['conversation_id' => $conv['conversation_id']]);
 
-        print_r($data);
-    }*/
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['list']) , 3);
+        $this->assertEquals(count($data['result']['list'][4]) , 5);
+        $this->assertEquals(count($data['result']['list'][4]['message_user']) , 1);
+        $this->assertEquals(!empty($data['result']['list'][4]['message_user']['read_date']) , true);
+        $this->assertEquals($data['result']['list'][4]['id'] , 4);
+        $this->assertEquals($data['result']['list'][4]['text'] , "dernier message");
+        $this->assertEquals($data['result']['list'][4]['token'] , null);
+        $this->assertEquals(!empty($data['result']['list'][4]['created_date']) , true);
+        $this->assertEquals(count($data['result']['list'][3]) , 5);
+        $this->assertEquals(count($data['result']['list'][3]['message_user']) , 1);
+        $this->assertEquals($data['result']['list'][3]['message_user']['read_date'] , null);
+        $this->assertEquals($data['result']['list'][3]['id'] , 3);
+        $this->assertEquals($data['result']['list'][3]['text'] , "super message un azerty 2");
+        $this->assertEquals($data['result']['list'][3]['token'] , null);
+        $this->assertEquals(!empty($data['result']['list'][3]['created_date']) , true);
+        $this->assertEquals(count($data['result']['list'][2]) , 5);
+        $this->assertEquals(count($data['result']['list'][2]['message_user']) , 1);
+        $this->assertEquals(!empty($data['result']['list'][2]['message_user']['read_date']) , true);
+        $this->assertEquals($data['result']['list'][2]['id'] , 2);
+        $this->assertEquals($data['result']['list'][2]['text'] , "super message deux qwerty 1");
+        $this->assertEquals($data['result']['list'][2]['token'] , null);
+        $this->assertEquals(!empty($data['result']['list'][2]['created_date']) , true);
+        $this->assertEquals($data['result']['count'] , 3);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
 
     /**
      * @depends testCanSendMessageTwo

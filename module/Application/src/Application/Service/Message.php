@@ -77,11 +77,12 @@ class Message extends AbstractService
    */
   public function getList($conversation_id, $filter = [])
   {
+      $user_id = $this->getServiceUser()->getIdentity()['id'];
       $mapper = $this->getMapper();
-      $res_message = $mapper->usePaginator($filter)->getList($conversation_id);
+      $res_message = $mapper->usePaginator($filter)->getList($user_id, $conversation_id);
 
       return [
-        'list' => $res_message,
+        'list' => $res_message->toArray(['id']),
         'count' => $mapper->count()
       ];
   }
