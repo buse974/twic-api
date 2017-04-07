@@ -50,13 +50,9 @@ class Conversation extends AbstractMapper
         ->order(['conversation_message.id DESC']);
 
       // READ OR NOT READ
-      if(true === $noread || false === $noread) {
+      if(true === $noread) {
         $select->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT);
-        if($noread) {
-          $select->where(['conversation_message_message_user.read_date IS NOT NULL']);
-        } else {
-          $select->where(['conversation_message_message_user.read_date IS NULL']);
-        }
+        $select->where(['conversation_message_message_user.read_date IS NULL']);
       }
 
       // ONLY ONE CONTACT OR NOT
