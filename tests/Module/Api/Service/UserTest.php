@@ -199,6 +199,31 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    public function testCanLanguageGetList()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('language.getList', [
+          'search' => 'fr',
+          'filter' => [
+            'n' => 2,
+            'p' => 1
+          ]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']['list']) , 2);
+        $this->assertEquals(count($data['result']['list'][0]) , 2);
+        $this->assertEquals($data['result']['list'][0]['id'] , 144);
+        $this->assertEquals($data['result']['list'][0]['libelle'] , "French");
+        $this->assertEquals(count($data['result']['list'][1]) , 2);
+        $this->assertEquals($data['result']['list'][1]['id'] , 151);
+        $this->assertEquals($data['result']['list'][1]['libelle'] , "Friulian");
+        $this->assertEquals($data['result']['count'] , 2);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
 
 /*
 

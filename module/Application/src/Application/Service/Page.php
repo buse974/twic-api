@@ -232,9 +232,33 @@ class Page extends AbstractService
      *
      * @return int
      */
-    public function update($id, $title=null, $logo=null, $background=null, $description=null, $confidentiality=null, $type=null, $admission=null, $start_date = null, $end_date = null, $location = null, $users = null, $tags = null, $docs = null, $owner_id = null)
+    public function update(
+      $id,
+      $title=null,
+      $logo=null,
+      $background=null,
+      $description=null,
+      $confidentiality=null,
+      $admission=null,
+      $start_date = null,
+      $end_date = null,
+      $location = null,
+      $users = null,
+      $tags = null,
+      $docs = null,
+      $owner_id = null,
+      $page_id = null,
+      $address = null ,
+      $short_title = null,
+      $website = null,
+      $phone = null,
+      $libelle = null,
+      $custom = null,
+      $circle_id = null)
     {
+
         $user_id = $this->getServiceUser()->getIdentity()['id'];
+        $formattedWebsite = $this->getFormattedWebsite($website);
         $m_page = $this->getModel()
             ->setId($id)
             ->setTitle($title)
@@ -246,8 +270,19 @@ class Page extends AbstractService
             ->setStartDate($start_date)
             ->setEndDate($end_date)
             ->setLocation($location)
-            ->setType($type)
-            ->setOwnerId($owner_id);
+            ->setUserId($user_id)
+            ->setCustom($custom)
+            ->setLibelle($libelle)
+            ->setWebsite($formattedWebsite)
+            ->setPhone($phone)
+            ->setShortTitle($short_title);
+
+            if ($address !== null) {
+                $address = $this->getServiceAddress()->getAddress($address);
+                if ($address && null !== ($address_id = $address->getId())) {
+                    $m_page->setAddressId($address_id);
+                }
+            }
 
         if (null !== $users) {
             $is_present = false;
@@ -261,6 +296,12 @@ class Page extends AbstractService
                 }
             }
             $this->getServicePageUser()->replace($id, $users);
+        }
+        if (null !== $page_id) {
+          $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
+        }
+        if (null !== $circle_id) {
+          $this->getServiceCircle()->addOrganizations($circle_id, $id);
         }
         if (null !== $tags) {
             $this->getServicePageTag()->replace($id, $tags);

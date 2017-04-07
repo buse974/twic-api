@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.5",
-    'build-commit' => 372,
+    'build-commit' => 373,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -66,6 +66,7 @@ return [
             'app_service_resume',
             'app_service_message',
             'app_service_library',
+            'app_service_language',
             'app_service_page',
             'app_service_page_relation',
             'app_service_page_user',
@@ -115,9 +116,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS372',
+                    'namespace' => 'LMS373',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS372'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS373'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

@@ -4,6 +4,9 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use OpenTok\MediaMode;
+use OpenTok\Role as OpenTokRole;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class Conversation extends AbstractService
 {
@@ -94,25 +97,46 @@ class Conversation extends AbstractService
   /**
    * Add video Token in conversaton if not exist.
    *
+   * @invokable
+   *
+   * @param int $id
+   *
+   * @return string
+   */
+  public function addVideo($id)
+  {
+      $m_conversation = $this->getMapper()->select($this->getModel()->setId($id))->current();
+      $token = $m_conversation->getToken();
+      $media_mode = ($m_conversation->getType() === ModelConversation::TYPE_CHAT) ?
+        MediaMode::RELAYED :
+        MediaMode::ROUTED;
+
+      if ($token === null || $token instanceof IsNull) {
+        $token = $this->getServiceZOpenTok()->getSessionId($media_mode);
+        $this->getMapper()->update($this->getModel()->setToken($token), ['id' => $id, new IsNull('token')]);
+      }
+
+      return $token;
+  }
+
+  /**
+   * Get Token video Token User in conversaton if not exist.
+   *
+   * @invokable
+   *
    * @param int $id
    *
    * @return int
    */
-  public function addVideo($id)
+  public function getToken($id)
   {
-      $m_conversation = $this->getMapper()->select(
-        $this->getModel()->setId($id))->current();
+      $user_id = $this->getServiceUser()->getIdentity()['id'];
+      $token = $this->addVideo($id);
 
-      $token = $m_conversation->getToken();
-      $media_mode = $m_conversation->getType() === ModelConversation::TYPE_CHAT ? MediaMode::RELAYED : MediaMode::ROUTED;
-
-      return ($token === null || $token instanceof IsNull) ?
-          $this->getMapper()->update(
-              $this->getModel()->setToken(
-                  $this->getServiceZOpenTok()
-                      ->getSessionId($media_mode)
-              ), ['id' => $id, new IsNull('token')]
-          ) : 0;
+      return [
+        'token' => $this->getServiceZOpenTok()->createToken($token,'{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
+        'session' => $token
+      ];
   }
 
   /**
@@ -165,5 +189,15 @@ class Conversation extends AbstractService
   private function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Service OpenTok.
+   *
+   * @return \ZOpenTok\Service\OpenTok
+   */
+  private function getServiceZOpenTok()
+  {
+      return $this->container->get('opentok.service');
   }
 }

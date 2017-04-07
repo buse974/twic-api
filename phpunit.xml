@@ -22,7 +22,7 @@
     <php>
         <ini name="memory_limit" value="-1" />
     </php>
-    <logging>
+    <!--logging>
         <log type="coverage-html"
              target="./build"
              charset="UTF-8"
@@ -32,5 +32,5 @@
              target="php://stdout"
              showUncoveredFiles="true"
 	     />
-    </logging>
+    </logging-->
 </phpunit>

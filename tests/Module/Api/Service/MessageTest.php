@@ -81,7 +81,7 @@ class MessageTest extends AbstractService
     {
         $this->setIdentity(2);
         $data = $this->jsonRpc('conversation.getIdByUser', [
-          'user' => [3]
+          'user_id' => [3]
         ]);
 
         $this->assertEquals(count($data) , 3);
@@ -89,6 +89,41 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result'] , $conv['conversation_id']);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+
+    /**
+     * @depends testCanSendMessageTwo
+     */
+    public function testCanGetIdConvAddVideo($conv)
+    {
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('conversation.addVideo', [
+          'id' => $conv['conversation_id']
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(!empty($data['result']) , true);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanSendMessageTwo
+     */
+    public function testCanGetIdConvGetToken($conv)
+    {
+        $this->setIdentity(2);
+        $data = $this->jsonRpc('conversation.getToken', [
+          'id' => $conv['conversation_id']
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(!empty($data['result']['token']) , true);
+        $this->assertEquals(!empty($data['result']['session']) , true);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
 
     /**
      * @depends testCanSendMessageTwo
