@@ -159,7 +159,7 @@ class MessageTest extends AbstractService
     public function testCanGetUnread($conv)
     {
       $this->setIdentity(2);
-      $data = $this->jsonRpc('conversation.getListId', [
+      $data = $this->jsonRpc('conversation.getList', [
       ]);
 
       $this->assertEquals(count($data) , 3);
@@ -197,7 +197,7 @@ class MessageTest extends AbstractService
     public function testCanGetUnreadContact()
     {
       $this->setIdentity(2);
-      $data = $this->jsonRpc('conversation.getListId', [
+      $data = $this->jsonRpc('conversation.getList', [
         'contact' => true
       ]);
 
@@ -221,7 +221,7 @@ class MessageTest extends AbstractService
     public function testCanGetUnreadContactFalse()
     {
       $this->setIdentity(2);
-      $data = $this->jsonRpc('conversation.getListId', [
+      $data = $this->jsonRpc('conversation.getList', [
         'contact' => false,
       ]);
 

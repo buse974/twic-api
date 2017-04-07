@@ -76,7 +76,7 @@ class Conversation extends AbstractService
    * @invokable
    *
    */
-  public function getListId($contact = null, $noread = null, $type = null, $filter = null)
+  public function getList($contact = null, $noread = null, $type = null, $filter = null)
   {
       $user_id = $this->getServiceUser()->getIdentity()['id'];
 

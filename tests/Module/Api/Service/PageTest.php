@@ -37,7 +37,16 @@ class PageTest extends AbstractService
             ],
             'docs' => [
                 ['name' => 'name', 'link' => 'link', 'type' => 'type']
-            ]
+            ],
+            'address' => [
+              "street_no"   => "11",
+              "street_name" => "Allée des Chênes",
+              "city"        => ["name" => "Villefontaine", "libelle" => "VILLEFONTAINE"],
+              "division"    => ["name" => "Auvergne-Rhône-Alpes"],
+              "country"     => ["short_name" => "France"],
+              "latitude"    => 45.601569,
+              "longitude"   => 5.178744499999993,
+            ],
         ]);
 
         $this->assertEquals(count($data), 3);
@@ -57,13 +66,37 @@ class PageTest extends AbstractService
         $data = $this->jsonRpc('page.get', ['id' => $page_id]);
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 18);
+        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals(count($data['result']) , 19);
+        $this->assertEquals(count($data['result']['address']) , 14);
+        $this->assertEquals(count($data['result']['address']['city']) , 1);
+        $this->assertEquals($data['result']['address']['city']['name'] , "Villefontaine");
+        $this->assertEquals(count($data['result']['address']['division']) , 2);
+        $this->assertEquals($data['result']['address']['division']['id'] , 54);
+        $this->assertEquals($data['result']['address']['division']['name'] , "Auvergne-Rhône-Alpes");
+        $this->assertEquals($data['result']['address']['country'] , null);
+        $this->assertEquals($data['result']['address']['id'] , 1);
+        $this->assertEquals($data['result']['address']['street_no'] , 11);
+        $this->assertEquals($data['result']['address']['street_type'] , null);
+        $this->assertEquals($data['result']['address']['street_name'] , "Allée des Chênes");
+        $this->assertEquals($data['result']['address']['longitude'] , 5.1787445);
+        $this->assertEquals($data['result']['address']['latitude'] , 45.601569);
+        $this->assertEquals($data['result']['address']['door'] , null);
+        $this->assertEquals($data['result']['address']['building'] , null);
+        $this->assertEquals($data['result']['address']['apartment'] , null);
+        $this->assertEquals($data['result']['address']['floor'] , null);
+        $this->assertEquals($data['result']['address']['timezone'] , "Europe/Paris");
         $this->assertEquals(count($data['result']['owner']) , 4);
         $this->assertEquals($data['result']['owner']['id'] , 1);
         $this->assertEquals($data['result']['owner']['text'] , "Paul Boussekey");
         $this->assertEquals($data['result']['owner']['img'] , null);
         $this->assertEquals($data['result']['owner']['type'] , "user");
+        $this->assertEquals(count($data['result']['user']) , 5);
+        $this->assertEquals($data['result']['user']['id'] , 1);
+        $this->assertEquals($data['result']['user']['firstname'] , "Paul");
+        $this->assertEquals($data['result']['user']['lastname'] , "Boussekey");
+        $this->assertEquals($data['result']['user']['avatar'] , null);
+        $this->assertEquals($data['result']['user']['ambassador'] , null);
         $this->assertEquals(count($data['result']['docs']) , 1);
         $this->assertEquals(count($data['result']['docs'][0]) , 11);
         $this->assertEquals($data['result']['docs'][0]['id'] , 4);
