@@ -290,6 +290,9 @@ class Contact extends AbstractService
         $ret = [];
 
         if(is_array($user_id)) {
+          foreach ($user_id as $id) {
+            $ret[$id] = [];
+          }
           foreach ($res_contact as $m_contact) {
               $ret[$m_contact->getUserId()][] = $m_contact->getContactId();
           }

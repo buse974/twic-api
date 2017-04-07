@@ -722,12 +722,13 @@ class User extends AbstractService
      */
     public function get($id = null)
     {
+        $users = [];
         $identity = $this->getIdentity();
         $user_id = $identity['id'];
         if ($id === null) {
             $id = $user_id;
         }
-
+        
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $res_user = $this->getMapper()->get($id, $user_id, $is_admin);
 
@@ -735,7 +736,7 @@ class User extends AbstractService
             throw new \Exception('error get user: ' . json_encode($id));
         }
 
-        $users = [];
+
         foreach ($res_user->toArray() as $user) {
             $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {

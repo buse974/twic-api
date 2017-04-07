@@ -166,9 +166,7 @@ class Resume extends AbstractService
     */
     public function get($id)
     {
-        $res_resume = $this->getMapper()->select(
-          $this->getModel()->setId($id),
-          [new Expression('ISNULL(end_date) DESC'), 'end_date DESC']);
+        $res_resume = $this->getMapper()->select($this->getModel()->setId($id),[new Expression('ISNULL(end_date) DESC'), 'end_date DESC']);
 
        return (is_array($id)) ?
         $res_resume->toArray(['id']) :

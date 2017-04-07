@@ -124,13 +124,13 @@ class Conversation extends AbstractService
    *
    * @return int
    */
-  public function getIdByUser($user)
+  public function getIdByUser($user_id)
   {
-      if(!is_array($user)) {
-        $user = [$user];
+      if(!is_array($user_id)) {
+        $user_id = [$user_id];
       }
 
-      return $this->getServiceConversationUser()->getConversationIDByUser($user);
+      return $this->getServiceConversationUser()->getConversationIDByUser($user_id);
   }
 
   /**
