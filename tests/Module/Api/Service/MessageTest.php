@@ -288,6 +288,38 @@ class MessageTest extends AbstractService
     }
 
     /**
+     * @depends testCanSendMessageunadeux
+     */
+    public function testCanGetListSearch()
+    {
+      $this->setIdentity(2);
+      $data = $this->jsonRpc('conversation.getList', [
+        'search' => 'paul',
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals(count($data['result']) , 2);
+      $this->assertEquals(count($data['result'][0]) , 4);
+      $this->assertEquals(count($data['result'][0]['message']) , 1);
+      $this->assertEquals($data['result'][0]['message']['id'] , 5);
+      $this->assertEquals(count($data['result'][0]['users']) , 2);
+      $this->assertEquals($data['result'][0]['users'][0] , 1);
+      $this->assertEquals($data['result'][0]['users'][1] , 2);
+      $this->assertEquals($data['result'][0]['id'] , 3);
+      $this->assertEquals($data['result'][0]['type'] , 2);
+      $this->assertEquals(count($data['result'][1]) , 4);
+      $this->assertEquals(count($data['result'][1]['message']) , 1);
+      $this->assertEquals($data['result'][1]['message']['id'] , 1);
+      $this->assertEquals(count($data['result'][1]['users']) , 3);
+      $this->assertEquals($data['result'][1]['users'][0] , 1);
+      $this->assertEquals($data['result'][1]['users'][1] , 2);
+      $this->assertEquals($data['result'][1]['users'][2] , 3);
+      $this->assertEquals($data['result'][1]['id'] , 1);
+      $this->assertEquals($data['result'][1]['type'] , 2);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+    /**
      * @depends testCanSendMessageTwo
      */
     /*public function testGetFullList($conv)
@@ -1204,29 +1236,6 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
-    public function testCanGetListTag()
-    {
-        $this->setIdentity(2);
-
-        $data = $this->jsonRpc('message.getListTag', array());
-
-        $this->assertEquals(count($data), 3);
-        $this->assertEquals(count($data['result']), 4);
-        $this->assertEquals(count($data['result'][0]), 2);
-        $this->assertEquals($data['result'][0]['tag'], "INBOX");
-        $this->assertEquals($data['result'][0]['count'], 0);
-        $this->assertEquals(count($data['result'][1]), 2);
-        $this->assertEquals($data['result'][1]['tag'], "SENT");
-        $this->assertEquals($data['result'][1]['count'], 0);
-        $this->assertEquals(count($data['result'][2]), 2);
-        $this->assertEquals($data['result'][2]['tag'], "DRAFT");
-        $this->assertEquals($data['result'][2]['count'], 0);
-        $this->assertEquals(count($data['result'][3]), 2);
-        $this->assertEquals($data['result'][3]['tag'], "CHAT");
-        $this->assertEquals($data['result'][3]['count'], 1);
-        $this->assertEquals($data['id'], 1);
-        $this->assertEquals($data['jsonrpc'], 2.0);
-    }
 
     public function testGetNbrMessageBySchool()
     {

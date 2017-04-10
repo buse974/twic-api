@@ -66,7 +66,7 @@ class PageTest extends AbstractService
         $data = $this->jsonRpc('page.get', ['id' => $page_id]);
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 19);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 1);
@@ -208,6 +208,22 @@ class PageTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('pageuser.getListByUser', [
           'user_id' => 4,
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][4]) , 1);
+        $this->assertEquals($data['result'][4][0] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testPageUsergetListByUserType()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('pageuser.getListByUser', [
+          'user_id' => 4,
+          'type' => 'group'
         ]);
 
         $this->assertEquals(count($data) , 3);

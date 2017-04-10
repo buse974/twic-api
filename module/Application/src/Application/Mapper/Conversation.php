@@ -32,16 +32,16 @@ class Conversation extends AbstractMapper
         $subselect->where(['conversation.type' => $type]);
       }
 
-      $select->where([new In('conversation_message.id', $subselect)]);
-
       if (null !== $conversation_id) {
         $subselect->where(['conversation.id' => $conversation_id]);
       }
 
+      $select->where([new In('conversation_message.id', $subselect)]);
+
       return $this->selectWith($select);
   }
 
-  public function getId($user_id, $contact = null, $noread = null, $type = null)
+  public function getId($user_id, $contact = null, $noread = null, $type = null, $search = null)
   {
       $subselect = $this->tableGateway->getSql()->select();
       $select = $this->tableGateway->getSql()->select();
@@ -54,6 +54,15 @@ class Conversation extends AbstractMapper
       if(true === $noread) {
         $select->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT);
         $select->where(['conversation_message_message_user.read_date IS NULL']);
+      }
+
+      if(null !== $search) {
+        $select->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[], $select::JOIN_LEFT)
+          ->join('user', 'user.id=conversation_user.user_id',[], $select::JOIN_LEFT)
+          ->where(array('(conversation.name LIKE ? ' => ''.$search.'%'))
+          ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+          ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+          ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
       }
 
       // ONLY ONE CONTACT OR NOT

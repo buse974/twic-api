@@ -265,8 +265,9 @@ class PageUser extends AbstractService
     * @param int|array $user_id
     * @param string $role
     * @param string $state
+    * @param string $type
     */
-    public function getListByUser($user_id, $role = null, $state = null)
+    public function getListByUser($user_id, $role = null, $state = null, $type = null)
     {
         if(!is_array($user_id)) {
           $user_id = [$user_id];
@@ -277,7 +278,7 @@ class PageUser extends AbstractService
           $ret[$user] = [];
         }
 
-        $res_page_user = $this->getMapper()->getList(null, $user_id, $role, $state);
+        $res_page_user = $this->getMapper()->getList(null, $user_id, $role, $state, $type);
         foreach ($res_page_user as $m_page_user) {
            $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
         }
