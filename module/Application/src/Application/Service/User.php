@@ -115,27 +115,6 @@ class User extends AbstractService
     ////////////////// EXTERNAL METHODE ///////////////////
 
     /**
-     * @invokable
-     *
-     * @param string $token
-     */
-    public function registerFcm($token, $uuid)
-    {
-        return $this->getServiceFcm()->register($uuid, $token);
-    }
-
-    /**
-     * unregisterGcm
-     *
-     * @param unknown $uuid
-     * @param unknown $token
-     */
-    public function unregisterGcm($token = null, $uuid = null)
-    {
-        $this->getServiceGcmGroup()->delete($uuid, $token);
-    }
-
-    /**
      * Get/Create Identity in cache.
      *
      * @param bool $init
@@ -728,7 +707,7 @@ class User extends AbstractService
         if ($id === null) {
             $id = $user_id;
         }
-        
+
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $res_user = $this->getMapper()->get($id, $user_id, $is_admin);
 

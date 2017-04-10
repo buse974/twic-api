@@ -225,6 +225,20 @@ class UserTest extends AbstractService
     }
 
 
+    /**
+     * @depends testCanAddUser
+     */
+    public function testLogout()
+    {
+        $this->mockRbac();
+
+        $data = $this->jsonRpc('user.logout', []);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , true);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
 /*
 
     /**

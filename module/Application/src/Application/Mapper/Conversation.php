@@ -13,8 +13,9 @@ class Conversation extends AbstractMapper
   public function getList($user_id, $conversation_id = null, $type = null)
   {
       $select = $this->tableGateway->getSql()->select();
-      $select->columns(['conversation$id' => new Expression('conversation.id'), 'created_date', 'type'])
-        ->join(['conversation_message' => 'message'], 'conversation.id=conversation_message.conversation_id', ['id', 'text', 'token', 'conversation_message$created_date' => new Expression('DATE_FORMAT(conversation_message.created_date, "%Y-%m-%dT%TZ")')])
+      $select->columns(['conversation$id' => new Expression('conversation.id'), 'created_date', 'name','type'])
+        ->join(['conversation_message' => 'message'], 'conversation.id=conversation_message.conversation_id',
+        ['id', 'text', 'token', 'conversation_message$created_date' => new Expression('DATE_FORMAT(conversation_message.created_date, "%Y-%m-%dT%TZ")')])
         ->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT)
         ->order(['conversation_message.id DESC']);
 
