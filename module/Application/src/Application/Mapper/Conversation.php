@@ -56,9 +56,12 @@ class Conversation extends AbstractMapper
         $select->where(['conversation_message_message_user.read_date IS NULL']);
       }
 
+      if(true === $contact || false === $contact || null !== $search) {
+        $select->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[], $select::JOIN_LEFT);
+      }
+
       if(null !== $search) {
-        $select->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[], $select::JOIN_LEFT)
-          ->join('user', 'user.id=conversation_user.user_id',[], $select::JOIN_LEFT)
+        $select->join('user', 'user.id=conversation_user.user_id',[], $select::JOIN_LEFT)
           ->where(array('(conversation.name LIKE ? ' => ''.$search.'%'))
           ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
           ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
@@ -67,8 +70,7 @@ class Conversation extends AbstractMapper
 
       // ONLY ONE CONTACT OR NOT
       if(true === $contact || false === $contact) {
-        $select->join('conversation_user', 'conversation_user.conversation_id=conversation.id', [])
-          ->join('contact', new Expression('contact.contact_id=conversation_user.user_id AND contact.user_id = ?', [$user_id]), ['is_contact' => new Expression('IF(contact.deleted_date IS NULL AND contact.accepted_date IS NOT NULL, TRUE, FALSE)')], $select::JOIN_LEFT)
+        $select->join('contact', new Expression('contact.contact_id=conversation_user.user_id AND contact.user_id = ?', [$user_id]), ['is_contact' => new Expression('IF(contact.deleted_date IS NULL AND contact.accepted_date IS NOT NULL, TRUE, FALSE)')], $select::JOIN_LEFT)
           ->where(['conversation_user.user_id <> ?' => $user_id])
           ->group(['conversation.id']);
 
