@@ -64,7 +64,7 @@ class MessageTest extends AbstractService
     {
         $this->setIdentity(2);
         $data = $this->jsonRpc('message.send', [
-          'conversation_id' => $conv['conversation_id'], 'text' => 'dernier message']);
+          'conversation_id' => $conv['conversation_id'], 'text' => 'dernier message', 'library' => ['token' => '123456789', 'name' => 'super doc  ']]);
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
@@ -140,9 +140,15 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals(count($data['result'][2]) , 6);
         $this->assertEquals(count($data['result'][2]['message']) , 4);
+        $this->assertEquals(count($data['result'][2]['message']['library']) , 6);
+        $this->assertEquals($data['result'][2]['message']['library']['id'] , 4);
+        $this->assertEquals($data['result'][2]['message']['library']['name'] , "super doc  ");
+        $this->assertEquals($data['result'][2]['message']['library']['link'] , null);
+        $this->assertEquals($data['result'][2]['message']['library']['token'] , 123456789);
+        $this->assertEquals($data['result'][2]['message']['library']['type'] , null);
+        $this->assertEquals($data['result'][2]['message']['library']['box_id'] , null);
         $this->assertEquals($data['result'][2]['message']['id'] , 4);
         $this->assertEquals($data['result'][2]['message']['text'] , "dernier message");
-        $this->assertEquals($data['result'][2]['message']['token'] , null);
         $this->assertEquals(!empty($data['result'][2]['message']['created_date']) , true);
         $this->assertEquals(count($data['result'][2]['users']) , 2);
         $this->assertEquals($data['result'][2]['users'][0] , 2);
@@ -265,23 +271,41 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result']['list'][4]) , 5);
         $this->assertEquals(count($data['result']['list'][4]['message_user']) , 1);
         $this->assertEquals(!empty($data['result']['list'][4]['message_user']['read_date']) , true);
+        $this->assertEquals(count($data['result']['list'][4]['library']) , 6);
+        $this->assertEquals($data['result']['list'][4]['library']['id'] , 4);
+        $this->assertEquals($data['result']['list'][4]['library']['name'] , "super doc  ");
+        $this->assertEquals($data['result']['list'][4]['library']['link'] , null);
+        $this->assertEquals($data['result']['list'][4]['library']['token'] , 123456789);
+        $this->assertEquals($data['result']['list'][4]['library']['type'] , null);
+        $this->assertEquals($data['result']['list'][4]['library']['box_id'] , null);
         $this->assertEquals($data['result']['list'][4]['id'] , 4);
         $this->assertEquals($data['result']['list'][4]['text'] , "dernier message");
-        $this->assertEquals($data['result']['list'][4]['token'] , null);
         $this->assertEquals(!empty($data['result']['list'][4]['created_date']) , true);
         $this->assertEquals(count($data['result']['list'][3]) , 5);
         $this->assertEquals(count($data['result']['list'][3]['message_user']) , 1);
         $this->assertEquals($data['result']['list'][3]['message_user']['read_date'] , null);
+        $this->assertEquals(count($data['result']['list'][3]['library']) , 6);
+        $this->assertEquals($data['result']['list'][3]['library']['id'] , null);
+        $this->assertEquals($data['result']['list'][3]['library']['name'] , null);
+        $this->assertEquals($data['result']['list'][3]['library']['link'] , null);
+        $this->assertEquals($data['result']['list'][3]['library']['token'] , null);
+        $this->assertEquals($data['result']['list'][3]['library']['type'] , null);
+        $this->assertEquals($data['result']['list'][3]['library']['box_id'] , null);
         $this->assertEquals($data['result']['list'][3]['id'] , 3);
         $this->assertEquals($data['result']['list'][3]['text'] , "super message un azerty 2");
-        $this->assertEquals($data['result']['list'][3]['token'] , null);
         $this->assertEquals(!empty($data['result']['list'][3]['created_date']) , true);
         $this->assertEquals(count($data['result']['list'][2]) , 5);
         $this->assertEquals(count($data['result']['list'][2]['message_user']) , 1);
         $this->assertEquals(!empty($data['result']['list'][2]['message_user']['read_date']) , true);
+        $this->assertEquals(count($data['result']['list'][2]['library']) , 6);
+        $this->assertEquals($data['result']['list'][2]['library']['id'] , null);
+        $this->assertEquals($data['result']['list'][2]['library']['name'] , null);
+        $this->assertEquals($data['result']['list'][2]['library']['link'] , null);
+        $this->assertEquals($data['result']['list'][2]['library']['token'] , null);
+        $this->assertEquals($data['result']['list'][2]['library']['type'] , null);
+        $this->assertEquals($data['result']['list'][2]['library']['box_id'] , null);
         $this->assertEquals($data['result']['list'][2]['id'] , 2);
         $this->assertEquals($data['result']['list'][2]['text'] , "super message deux qwerty 1");
-        $this->assertEquals($data['result']['list'][2]['token'] , null);
         $this->assertEquals(!empty($data['result']['list'][2]['created_date']) , true);
         $this->assertEquals($data['result']['count'] , 3);
         $this->assertEquals($data['jsonrpc'] , 2.0);
@@ -295,29 +319,25 @@ class MessageTest extends AbstractService
       $this->setIdentity(2);
       $data = $this->jsonRpc('conversation.getList', [
         'search' => 'paul',
+        'filter' => ['n' => 1],
+        'contact' => false
       ]);
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 2);
-      $this->assertEquals(count($data['result'][0]) , 4);
-      $this->assertEquals(count($data['result'][0]['message']) , 1);
-      $this->assertEquals($data['result'][0]['message']['id'] , 5);
-      $this->assertEquals(count($data['result'][0]['users']) , 2);
-      $this->assertEquals($data['result'][0]['users'][0] , 1);
-      $this->assertEquals($data['result'][0]['users'][1] , 2);
-      $this->assertEquals($data['result'][0]['id'] , 3);
-      $this->assertEquals($data['result'][0]['type'] , 2);
-      $this->assertEquals(count($data['result'][1]) , 4);
-      $this->assertEquals(count($data['result'][1]['message']) , 1);
-      $this->assertEquals($data['result'][1]['message']['id'] , 1);
-      $this->assertEquals(count($data['result'][1]['users']) , 3);
-      $this->assertEquals($data['result'][1]['users'][0] , 1);
-      $this->assertEquals($data['result'][1]['users'][1] , 2);
-      $this->assertEquals($data['result'][1]['users'][2] , 3);
-      $this->assertEquals($data['result'][1]['id'] , 1);
-      $this->assertEquals($data['result'][1]['type'] , 2);
-      $this->assertEquals($data['jsonrpc'] , 2.0);
+      $this->assertEquals(count($data['result']['list']) , 1);
+      $this->assertEquals(count($data['result']['list'][0]) , 4);
+      $this->assertEquals(count($data['result']['list'][0]['message']) , 1);
+      $this->assertEquals($data['result']['list'][0]['message']['id'] , 1);
+      $this->assertEquals(count($data['result']['list'][0]['users']) , 3);
+      $this->assertEquals($data['result']['list'][0]['users'][0] , 1);
+      $this->assertEquals($data['result']['list'][0]['users'][1] , 2);
+      $this->assertEquals($data['result']['list'][0]['users'][2] , 3);
+      $this->assertEquals($data['result']['list'][0]['id'] , 1);
+      $this->assertEquals($data['result']['list'][0]['type'] , 2);
+      $this->assertEquals($data['result']['count'] , 1);
+      $this->assertEquals($data['jsonrpc'] , 2.0); 
     }
     /**
      * @depends testCanSendMessageTwo

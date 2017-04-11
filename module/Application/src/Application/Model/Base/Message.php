@@ -9,11 +9,12 @@ class Message extends AbstractModel
  	protected $id;
 	protected $title;
 	protected $text;
-	protected $token;
+	protected $library_id;
 	protected $is_draft;
 	protected $type;
 	protected $conversation_id;
 	protected $created_date;
+	protected $user_id;
 
 	protected $prefix = 'message';
 
@@ -53,14 +54,14 @@ class Message extends AbstractModel
 		return $this;
 	}
 
-	public function getToken()
+	public function getLibraryId()
 	{
-		return $this->token;
+		return $this->library_id;
 	}
 
-	public function setToken($token)
+	public function setLibraryId($library_id)
 	{
-		$this->token = $token;
+		$this->library_id = $library_id;
 
 		return $this;
 	}
@@ -109,6 +110,18 @@ class Message extends AbstractModel
 	public function setCreatedDate($created_date)
 	{
 		$this->created_date = $created_date;
+
+		return $this;
+	}
+
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
+
+	public function setUserId($user_id)
+	{
+		$this->user_id = $user_id;
 
 		return $this;
 	}

@@ -13,7 +13,7 @@ class Message extends AbstractService
    * @invokable
    *
    * @param string    $text
-   * @param string    $token
+   * @param string    $library
    * @param int|array $to
    * @param int       $conversation_id
    *
@@ -21,7 +21,7 @@ class Message extends AbstractService
    *
    * @return \Application\Model\MessageUser
    */
-  public function send($text = null, $token = null, $to = null, $conversation_id = null)
+  public function send($text = null, $library = null, $to = null, $conversation_id = null)
   {
       $user_id = $this->getServiceUser()->getIdentity()['id'];
 
@@ -46,9 +46,11 @@ class Message extends AbstractService
           throw new \Exception('error content && document are empty');
       }
 
+      $library_id = (is_array($library)) ? $this->getServiceLibrary()->_add($library)->getId() : null;
+
       $m_message = $this->getModel()
           ->setText($text)
-          ->setToken($token)
+          ->setLibraryId($library_id)
           ->setConversationId($conversation_id)
           ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
@@ -58,7 +60,7 @@ class Message extends AbstractService
 
       $id = $this->getMapper()->getLastInsertValue();
       if($this->getServiceConversation()->getLite($conversation_id)->getType() === ModelConversation::TYPE_CHAT) {
-        $message_user_id = $this->getServiceMessageUser()->send($id, $conversation_id, $text, $token);
+        $message_user_id = $this->getServiceMessageUser()->send($id, $conversation_id, $text, $library);
       }
 
       return [
@@ -135,5 +137,15 @@ class Message extends AbstractService
   private function getServiceConversation()
   {
       return $this->container->get('app_service_conversation');
+  }
+
+  /**
+   * Get Service Library
+   *
+   * @return \Application\Service\Library
+   */
+  private function getServiceLibrary()
+  {
+      return $this->container->get('app_service_library');
   }
 }

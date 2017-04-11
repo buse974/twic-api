@@ -73,7 +73,7 @@ class MessageUser extends AbstractService
           [
           'content' => $message_text,
           'cid' => (int)$conversation_id,
-          'token' => $message_token,
+          'token' => json_encode($message_token),
           'mid' => (int)$message_id,
           'from' => (int)$me,
           'users' => $to,
