@@ -84,7 +84,7 @@ class Message extends AbstractService
       $res_message = $mapper->usePaginator($filter)->getList($user_id, $conversation_id);
 
       return [
-        'list' => $res_message->toArray(['id']),
+        'list' => $res_message,
         'count' => $mapper->count()
       ];
   }
