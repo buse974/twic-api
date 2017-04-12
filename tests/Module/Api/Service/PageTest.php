@@ -158,7 +158,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.addDocument', [
-          'page_id' => $id,
+          'id' => $id,
           'library' => [
             'name' => 'azerty',
             'token' => '1234567890',
@@ -178,7 +178,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.getListDocument', [
-          'page_id' => $id,
+          'id' => $id,
           'filter' => [
             'n' => 5,
             'p' => 1,
@@ -186,7 +186,7 @@ class PageTest extends AbstractService
         ]);
 
         $this->assertEquals(count($data) , 3);
-          $this->assertEquals($data['id'] , 1); 
+          $this->assertEquals($data['id'] , 1);
           $this->assertEquals(count($data['result']) , 4);
           $this->assertEquals($data['result']['count'] , 2);
           $this->assertEquals(count($data['result']['documents']) , 2);

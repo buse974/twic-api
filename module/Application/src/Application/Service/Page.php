@@ -217,9 +217,9 @@ class Page extends AbstractService
      * @param $page_id
      * @param $library
      **/
-    public function addDocument($page_id, $library)
+    public function addDocument($id, $library)
     {
-      return $this->getServicePageDoc()->add($page_id, $library);
+      return $this->getServicePageDoc()->add($id, $library);
     }
 
     /**
@@ -241,7 +241,7 @@ class Page extends AbstractService
      *
      * @param $library_id
      **/
-    public function getListDocument($page_id, $filter = null)
+    public function getListDocument($id, $filter = null)
     {
       return $this->getServiceLibrary()->getList($filter, null, null, null, null, $page_id);
     }
