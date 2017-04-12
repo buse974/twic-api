@@ -67,7 +67,7 @@ class PageTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 19);
+        $this->assertEquals(count($data['result']) , 18);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 1);
         $this->assertEquals($data['result']['address']['city']['name'] , "Villefontaine");
@@ -97,19 +97,6 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['user']['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['user']['avatar'] , null);
         $this->assertEquals($data['result']['user']['ambassador'] , null);
-        $this->assertEquals(count($data['result']['docs']) , 1);
-        $this->assertEquals(count($data['result']['docs'][0]) , 11);
-        $this->assertEquals($data['result']['docs'][0]['id'] , 4);
-        $this->assertEquals($data['result']['docs'][0]['name'] , "name");
-        $this->assertEquals($data['result']['docs'][0]['link'] , "link");
-        $this->assertEquals($data['result']['docs'][0]['token'] , null);
-        $this->assertEquals($data['result']['docs'][0]['type'] , "type");
-        $this->assertEquals(!empty($data['result']['docs'][0]['created_date']) , true);
-        $this->assertEquals($data['result']['docs'][0]['deleted_date'] , null);
-        $this->assertEquals($data['result']['docs'][0]['updated_date'] , null);
-        $this->assertEquals($data['result']['docs'][0]['folder_id'] , null);
-        $this->assertEquals($data['result']['docs'][0]['owner_id'] , 1);
-        $this->assertEquals($data['result']['docs'][0]['box_id'] , null);
         $this->assertEquals($data['result']['role'] , "admin");
         $this->assertEquals($data['result']['state'] , "member");
         $this->assertEquals($data['result']['id'] , 1);
@@ -162,6 +149,91 @@ class PageTest extends AbstractService
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageAddDocument($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.addDocument', [
+          'page_id' => $id,
+          'library' => [
+            'name' => 'azerty',
+            'token' => '1234567890',
+          ]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 6);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageGetListDocument($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.getListDocument', [
+          'page_id' => $id,
+          'filter' => [
+            'n' => 5,
+            'p' => 1,
+          ]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+          $this->assertEquals($data['id'] , 1); 
+          $this->assertEquals(count($data['result']) , 4);
+          $this->assertEquals($data['result']['count'] , 2);
+          $this->assertEquals(count($data['result']['documents']) , 2);
+          $this->assertEquals(count($data['result']['documents'][0]) , 11);
+          $this->assertEquals($data['result']['documents'][0]['id'] , 6);
+          $this->assertEquals($data['result']['documents'][0]['name'] , "azerty");
+          $this->assertEquals($data['result']['documents'][0]['link'] , null);
+          $this->assertEquals($data['result']['documents'][0]['token'] , 1234567890);
+          $this->assertEquals($data['result']['documents'][0]['type'] , null);
+          $this->assertEquals(!empty($data['result']['documents'][0]['created_date']) , true);
+          $this->assertEquals($data['result']['documents'][0]['deleted_date'] , null);
+          $this->assertEquals($data['result']['documents'][0]['updated_date'] , null);
+          $this->assertEquals($data['result']['documents'][0]['folder_id'] , null);
+          $this->assertEquals($data['result']['documents'][0]['owner_id'] , 1);
+          $this->assertEquals($data['result']['documents'][0]['box_id'] , null);
+          $this->assertEquals(count($data['result']['documents'][1]) , 11);
+          $this->assertEquals($data['result']['documents'][1]['id'] , 5);
+          $this->assertEquals($data['result']['documents'][1]['name'] , "name");
+          $this->assertEquals($data['result']['documents'][1]['link'] , "link");
+          $this->assertEquals($data['result']['documents'][1]['token'] , null);
+          $this->assertEquals($data['result']['documents'][1]['type'] , "type");
+          $this->assertEquals(!empty($data['result']['documents'][1]['created_date']) , true);
+          $this->assertEquals($data['result']['documents'][1]['deleted_date'] , null);
+          $this->assertEquals($data['result']['documents'][1]['updated_date'] , null);
+          $this->assertEquals($data['result']['documents'][1]['folder_id'] , null);
+          $this->assertEquals($data['result']['documents'][1]['owner_id'] , 1);
+          $this->assertEquals($data['result']['documents'][1]['box_id'] , null);
+          $this->assertEquals($data['result']['folder'] , null);
+          $this->assertEquals($data['result']['parent'] , null);
+          $this->assertEquals($data['jsonrpc'] , 2.0);
+
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageDeleteDocument($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.deleteDocument', [
+          'library_id' => 6,
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**

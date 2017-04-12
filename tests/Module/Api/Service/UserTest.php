@@ -97,7 +97,7 @@ class UserTest extends AbstractService
         $data = $this->jsonRpc('user.get', [
           'id' => [5]
         ]);
-        
+
         //$this->printCreateTest($data);
     }
 

@@ -8,8 +8,6 @@ class PageDoc extends AbstractService
     /**
      * Add Page Document Relation
      *
-     * @invokable
-     *
      * @param  int       $page_id
      * @param  int|array $library
      * @return int
@@ -27,15 +25,15 @@ class PageDoc extends AbstractService
             ->setLibraryId($library);
 
         $this->getMapper()->insert($m_page_doc);
+
         return $library;
     }
 
 
     /**
      * Delete Doc
-
-     * @invokable
-     * @param     int $library_id
+     *
+     * @param int $library_id
      **/
     public function delete($library_id)
     {
@@ -73,18 +71,6 @@ class PageDoc extends AbstractService
         $this->getMapper()->delete($this->getModel()->setPageId($page_id));
 
         return $this->_add($page_id, $data);
-    }
-
-    /**
-     * List Document of Page
-     *
-     * @param int $page_id
-     *
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getList($page_id)
-    {
-        return $this->getServiceLibrary()->getListByPage($page_id);
     }
 
     /**

@@ -74,7 +74,9 @@ class Library extends AbstractService
             throw new \Exception('Error insert file');
         }
 
-        return $this->get($this->getMapper()->getLastInsertValue());
+        $id = (int)$this->getMapper()->getLastInsertValue();
+
+        return $this->get($id);
     }
 
     /**
@@ -92,6 +94,72 @@ class Library extends AbstractService
         $folder_id = ((isset($data['folder_id'])) ? $data['folder_id'] : null);
 
         return $this->add($name, $link, $token, $type, $folder_id);
+    }
+
+    /**
+     * Get List Library
+     *
+     * @invokable
+     *
+     * @param  array   $filter
+     * @param  int     $folder_id
+     * @param  bool    $global
+     * @param  string  $folder_name
+     * @param  int     $user_id
+     * @param  int     $page_id
+     *
+     * @return array
+     */
+    public function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null, $page_id = null)
+    {
+        if (null !== $user_id) {
+            $global = true;
+        } else {
+            $user_id = $this->getServiceUser()->getIdentity()['id'];
+        }
+
+        // on récupere le folder selectionné
+        if (null !== $folder_name && null === $folder_id) {
+            $m_library = $this->getModel()
+                ->setDeletedDate(new IsNull())
+                ->setName($folder_name);
+
+            if (null === $global || false === $global) {
+                $m_library->setOwnerId($user_id);
+            } else {
+                $m_library->setGlobal(true);
+            }
+            $res_library = $this->getMapper()->select($m_library);
+            if ($res_library->count() > 0) {
+                $folder_id = $res_library->current()->getId();
+            }
+        }
+
+        $mapper = (null !== $filter) ?
+            $this->getMapper()->usePaginator($filter) :
+            $this->getMapper();
+
+        $res_library = $mapper->getList($folder_id, $user_id, $page_id);
+
+        $ar = [
+            'count' => $mapper->count(),
+            'documents' => $res_library,
+            'folder' => null,
+            'parent' => null
+        ];
+        // If root folder: returns only documents
+        if ($folder_id) {
+            // Requested document / folder
+            $folder = $this->getMapper()->select($this->getModel()->setId($folder_id))->current();
+            // Parent folder
+            $parent = ($folder && is_numeric($folder->getFolderId())) ?
+                $this->getMapper()->select($this->getModel()->setId($folder->getFolderId()))->current() : null;
+
+            $ar['folder'] = $folder;
+            $ar['parent'] = $parent;
+        }
+
+        return $ar;
     }
 
     /**
@@ -126,107 +194,8 @@ class Library extends AbstractService
     }
 
     /**
-     * Get List Library
-     *
-     * @invokable
-     *
-     * @param  array   $filter
-     * @param  int     $folder_id
-     * @param  bool    $global
-     * @param  string  $folder_name
-     * @param  unknown $user_id
-     * @return array
-     */
-    public function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null)
-    {
-        if (null !== $user_id) {
-            $global = true;
-        } else {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
-        }
-
-        if (null !== $folder_name && null === $folder_id) {
-            $m_library = $this->getModel()
-                ->setDeletedDate(new IsNull())
-                ->setName($folder_name);
-
-            if (null === $global || false === $global) {
-                $m_library->setOwnerId($user_id);
-            } else {
-                $m_library->setGlobal(true);
-            }
-            $res_library = $this->getMapper()->select($m_library);
-            if ($res_library->count() > 0) {
-                $folder_id = $res_library->current()->getId();
-            }
-        }
-
-        $m_library = $this->getModel()
-            ->setFolderId(null !== $folder_id ? $folder_id : new IsNull())
-            ->setDeletedDate(new IsNull())
-            ->setOwnerId($user_id);
-
-        $mapper = (null !== $filter) ?
-            $this->getMapper()->usePaginator($filter) :
-            $this->getMapper();
-
-        $res_library = $mapper->select($m_library);
-        $ar = [
-            'count' => $mapper->count(),
-            'documents' => $res_library,
-            'folder' => null,
-            'parent' => null
-        ];
-        // If root folder: returns only documents
-        if ($folder_id) {
-            // Requested document / folder
-            $folder = $this->getMapper()->select($this->getModel()->setId($folder_id))->current();
-            // Parent folder
-            $parent = ($folder && is_numeric($folder->getFolderId())) ?
-                $this->getMapper()->select($this->getModel()->setId($folder->getFolderId()))->current() : null;
-
-            $ar['folder'] = $folder;
-            $ar['parent'] = $parent;
-        }
-
-        return $ar;
-    }
-
-    /**
-     * Get List Library By Page id
-     *
-     * @param  int $page_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListByPage($page_id)
-    {
-        return $this->getMapper()->getListByPage($page_id);
-    }
-    
-     /**
-     * Get List Library By Page id
-     *
-     * @invokable
-     *
-     * @param  int|array $page_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function m_getListByPage($page_id)
-    {
-        $ids = is_array($page_id) ? $page_id : [page_id];
-        $library = [];
-        foreach($ids as $id){
-            $library[$id] = [];
-            $res_library = $this->getMapper()->getListByPage($page_id);
-            foreach($res_library as $m_library){
-                $library[$id][] = $m_library->getId();
-            }
-        }
-        return $library;
-    }
-
-    /**
      * Get List Library By Post id
+     * Appeler par pos.get
      *
      * @param  int $post_id
      * @return \Dal\Db\ResultSet\ResultSet
@@ -234,17 +203,6 @@ class Library extends AbstractService
     public function getListByPost($post_id)
     {
         return $this->getMapper()->getListByPost($post_id);
-    }
-
-    /**
-     * Get List Library Material
-     *
-     * @param  int $course_id
-     * @return \Dal\Db\ResultSet\ResultSet
-     */
-    public function getListMaterials($course_id)
-    {
-        return $this->getMapper()->getListMaterials($course_id);
     }
 
     /**
@@ -273,10 +231,7 @@ class Library extends AbstractService
      */
     public function get($id)
     {
-        $res_library = $this->getMapper()->select(
-            $this->getModel()
-                ->setId($id)
-        );
+        $res_library = $this->getMapper()->select($this->getModel()->setId($id));
 
         return (is_array($id)) ? $res_library : $res_library->current();
     }

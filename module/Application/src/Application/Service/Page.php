@@ -210,6 +210,43 @@ class Page extends AbstractService
     }
 
     /**
+     * Add Document
+     *
+     * @invokable
+     *
+     * @param $page_id
+     * @param $library
+     **/
+    public function addDocument($page_id, $library)
+    {
+      return $this->getServicePageDoc()->add($page_id, $library);
+    }
+
+    /**
+     * Delete Document
+     *
+     * @invokable
+     *
+     * @param $library_id
+     **/
+    public function deleteDocument($library_id)
+    {
+      return $this->getServicePageDoc()->delete($library_id);
+    }
+
+    /**
+     * Delete Document
+     *
+     * @invokable
+     *
+     * @param $library_id
+     **/
+    public function getListDocument($page_id, $filter = null)
+    {
+      return $this->getServiceLibrary()->getList($filter, null, null, null, null, $page_id);
+    }
+
+    /**
      * Update Page
      *
      * @invokable
@@ -402,7 +439,6 @@ class Page extends AbstractService
         }
 
         foreach ($res_page as $m_page) {
-            $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
             $this->getOwner($m_page);
         }
 
@@ -459,7 +495,6 @@ class Page extends AbstractService
 
         foreach ($res_page as $m_page) {
             $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
-            $m_page->setDocs($this->getServicePageDoc()->getList($m_page->getId()));
             $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), null, $m_page->getRole()));
             $this->getOwner($m_page);
         }
@@ -592,6 +627,16 @@ class Page extends AbstractService
     private function getServicePageRelation()
     {
         return $this->container->get('app_service_page_relation');
+    }
+
+    /**
+     * Get Service Library
+     *
+     * @return \Application\Service\Library
+     */
+    private function getServiceLibrary()
+    {
+        return $this->container->get('app_service_library');
     }
 
     /**
