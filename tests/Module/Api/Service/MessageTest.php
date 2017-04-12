@@ -267,10 +267,10 @@ class MessageTest extends AbstractService
         $data = $this->jsonRpc('message.getList', ['conversation_id' => $conv['conversation_id']]);
 
         $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1); 
+        $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
         $this->assertEquals(count($data['result']['list']) , 3);
-        $this->assertEquals(count($data['result']['list'][0]) , 5);
+        $this->assertEquals(count($data['result']['list'][0]) , 6);
         $this->assertEquals(count($data['result']['list'][0]['message_user']) , 1);
         $this->assertEquals(!empty($data['result']['list'][0]['message_user']['read_date']) , true);
         $this->assertEquals(count($data['result']['list'][0]['library']) , 6);
@@ -283,20 +283,23 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['id'] , 4);
         $this->assertEquals($data['result']['list'][0]['text'] , "dernier message");
         $this->assertEquals(!empty($data['result']['list'][0]['created_date']) , true);
-        $this->assertEquals(count($data['result']['list'][1]) , 5);
+        $this->assertEquals($data['result']['list'][0]['user_id'] , 2);
+        $this->assertEquals(count($data['result']['list'][1]) , 6);
         $this->assertEquals(count($data['result']['list'][1]['message_user']) , 1);
         $this->assertEquals($data['result']['list'][1]['message_user']['read_date'] , null);
         $this->assertEquals($data['result']['list'][1]['library'] , null);
         $this->assertEquals($data['result']['list'][1]['id'] , 3);
         $this->assertEquals($data['result']['list'][1]['text'] , "super message un azerty 2");
         $this->assertEquals(!empty($data['result']['list'][1]['created_date']) , true);
-        $this->assertEquals(count($data['result']['list'][2]) , 5);
+        $this->assertEquals($data['result']['list'][1]['user_id'] , 3);
+        $this->assertEquals(count($data['result']['list'][2]) , 6);
         $this->assertEquals(count($data['result']['list'][2]['message_user']) , 1);
         $this->assertEquals(!empty($data['result']['list'][2]['message_user']['read_date']) , true);
         $this->assertEquals($data['result']['list'][2]['library'] , null);
         $this->assertEquals($data['result']['list'][2]['id'] , 2);
         $this->assertEquals($data['result']['list'][2]['text'] , "super message deux qwerty 1");
         $this->assertEquals(!empty($data['result']['list'][2]['created_date']) , true);
+        $this->assertEquals($data['result']['list'][2]['user_id'] , 2);
         $this->assertEquals($data['result']['count'] , 3);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
