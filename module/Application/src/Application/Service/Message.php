@@ -42,7 +42,7 @@ class Message extends AbstractService
           }
       }
 
-      if (empty($text) && empty($document)) {
+      if (empty($text) && empty($library)) {
           throw new \Exception('error content && document are empty');
       }
 
