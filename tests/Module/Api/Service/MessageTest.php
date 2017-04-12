@@ -165,7 +165,7 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageTwo
      */
-    public function testCanGetUnread($conv)
+    public function testCanGetList($conv)
     {
       $this->setIdentity(2);
       $data = $this->jsonRpc('conversation.getList', [
@@ -201,9 +201,23 @@ class MessageTest extends AbstractService
     }
 
     /**
+     * @depends testCanSendMessageTwo
+     */
+    public function testCanGetread($conv)
+    {
+      $this->setIdentity(2);
+      $data = $this->jsonRpc('conversation.read', ['conversation_id' => $conv['conversation_id']]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals($data['result'] , 1);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
      * @depends testCanSendMessageunadeux
      */
-    public function testCanGetUnreadContact()
+    public function testCanGetListConv()
     {
       $this->setIdentity(2);
       $data = $this->jsonRpc('conversation.getList', [
@@ -227,7 +241,7 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageunadeux
      */
-    public function testCanGetUnreadContactFalse()
+    public function testCanGetListContact()
     {
       $this->setIdentity(2);
       $data = $this->jsonRpc('conversation.getList', [
@@ -260,7 +274,7 @@ class MessageTest extends AbstractService
     /**
      * @depends testCanSendMessageTwo
      */
-    public function testCanGetList($conv)
+    public function testCanMessageGetList($conv)
     {
         $this->setIdentity(2);
 
@@ -286,7 +300,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result']['list'][0]['user_id'] , 2);
         $this->assertEquals(count($data['result']['list'][1]) , 6);
         $this->assertEquals(count($data['result']['list'][1]['message_user']) , 1);
-        $this->assertEquals($data['result']['list'][1]['message_user']['read_date'] , null);
+        $this->assertEquals(!empty($data['result']['list'][1]['message_user']['read_date']) , true);
         $this->assertEquals($data['result']['list'][1]['library'] , null);
         $this->assertEquals($data['result']['list'][1]['id'] , 3);
         $this->assertEquals($data['result']['list'][1]['text'] , "super message un azerty 2");

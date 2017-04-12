@@ -178,6 +178,20 @@ class Conversation extends AbstractService
   }
 
   /**
+   * Mark Read Message(s).
+   *
+   * @invokable
+   *
+   * @param int|array $conversation
+   *
+   * @return int
+   */
+  public function read($conversation_id)
+  {
+      return $this->getServiceMessageUser()->readByConversation($conversation_id);
+  }
+
+  /**
    * Get Service ConversationUser.
    *
    * @return \Application\Service\ConversationUser
@@ -195,6 +209,16 @@ class Conversation extends AbstractService
   private function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service User.
+   *
+   * @return \Application\Service\MessageUser
+   */
+  private function getServiceMessageUser()
+  {
+      return $this->container->get('app_service_message_user');
   }
 
   /**

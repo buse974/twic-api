@@ -5,6 +5,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
 use Zend\Json\Server\Request;
+use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Http\Client;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 
@@ -111,6 +112,26 @@ class MessageUser extends AbstractService
 
 
       return $this->getMapper()->getLastInsertValue();
+  }
+
+  /**
+   * Mark read Message User by conversation.
+   *
+   * @param int|array $conversation_id
+   *
+   * @return int
+   */
+  public function readByConversation($conversation_id)
+  {
+      $user_id = $this->getServiceUser()->getIdentity()['id'];
+
+      if (!is_array($conversation_id)) {
+          $conversation_id = [$conversation_id];
+      }
+
+      $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+
+      return $this->getMapper()->update($m_message_user, ['conversation_id' => $conversation_id, 'user_id' => $user_id, new IsNull('read_date')]);
   }
 
   /**
