@@ -51,6 +51,7 @@ class Message extends AbstractService
       $m_message = $this->getModel()
           ->setText($text)
           ->setLibraryId($library_id)
+          ->setUserId($user_id)
           ->setConversationId($conversation_id)
           ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 

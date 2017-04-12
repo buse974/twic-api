@@ -93,11 +93,11 @@ class UserTest extends AbstractService
 
     public function testUserGet()
     {
-        $this->setIdentity(1,1);
+        $this->setIdentity(1);
         $data = $this->jsonRpc('user.get', [
           'id' => [5]
         ]);
-
+        
         //$this->printCreateTest($data);
     }
 
