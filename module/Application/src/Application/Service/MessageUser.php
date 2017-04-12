@@ -84,7 +84,7 @@ class MessageUser extends AbstractService
       );
 
       ///////////////////////// FCM /////////////////////////////////
-      foreach ($to as $user) {
+      /*foreach ($to as $user) {
           if ($me != $user) {
               $gcm_notification = new GcmNotification();
               $tmp_ar_name = $ar_name;
@@ -107,7 +107,7 @@ class MessageUser extends AbstractService
                   ]], $gcm_notification
               );
           }
-      }
+      }*/
 
 
 
