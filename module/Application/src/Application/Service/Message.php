@@ -4,9 +4,13 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use Zend\Json\Server\Request;
+use Zend\Http\Client;
 
 class Message extends AbstractService
 {
+  private static $id = 0;
+  
   /**
    * Send message generique.
    *
@@ -60,14 +64,57 @@ class Message extends AbstractService
       }
 
       $id = $this->getMapper()->getLastInsertValue();
-      if($this->getServiceConversation()->getLite($conversation_id)->getType() === ModelConversation::TYPE_CHAT) {
+
+      $type = $this->getServiceConversation()->getLite($conversation_id)->getType();
+      if($type === ModelConversation::TYPE_CHAT) {
         $message_user_id = $this->getServiceMessageUser()->send($id, $conversation_id, $text, $library);
       }
+
+      $to = $this->getServiceConversationUser()->getListUserIdByConversation($conversation_id);
+      //////////////////////// NODEJS //////////////////////////////:
+      $this->sendMessage([
+          'conversation_id' => (int)$conversation_id,
+          'id' => (int)$id,
+          'users' => $to,
+          'type' => $type,
+        ]
+      );
 
       return [
         'message_id' => $id,
         'conversation_id' => $conversation_id
       ];
+  }
+
+  /**
+  * Send Message Node message.publish
+  *
+  * @param string $data
+  */
+  public function sendMessage($data)
+  {
+      $rep = false;
+      $request = new Request();
+      $request->setMethod('message.publish')
+          ->setParams($data)
+          ->setId(++ self::$id)
+          ->setVersion('2.0');
+
+      $client = new Client();
+      $client->setOptions($this->container->get('config')['http-adapter']);
+
+      $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
+      try {
+          $rep = $client->doRequest($request);
+          if ($rep->isError()) {
+              throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+          }
+      } catch (\Exception $e) {
+          syslog(1, 'Request: ' . $request->toJson());
+          syslog(1, $e->getMessage());
+      }
+
+      return $rep;
   }
 
   /**

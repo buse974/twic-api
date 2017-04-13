@@ -11,7 +11,6 @@ use ZendService\Google\Gcm\Notification as GcmNotification;
 
 class MessageUser extends AbstractService
 {
-  private static $id = 0;
 
   /**
    * Send message.
@@ -52,7 +51,7 @@ class MessageUser extends AbstractService
       }
 
       //////////////////// USER //////////////////////////////////
-      $res_user = $this->getServiceUser()->getLite($to);
+      /*$res_user = $this->getServiceUser()->getLite($to);
       $ar_name = [];
       foreach ($res_user as $m_user) {
           $name = "";
@@ -67,21 +66,8 @@ class MessageUser extends AbstractService
               }
           }
           $ar_name[$m_user->getId()] = $name;
-      }
+      }*/
 
-      //////////////////////// NODEJS //////////////////////////////:
-      $this->sendMessage(
-          [
-          'content' => $message_text,
-          'cid' => (int)$conversation_id,
-          'token' => json_encode($message_token),
-          'mid' => (int)$message_id,
-          'from' => (int)$me,
-          'users' => $to,
-          'created_date' => date('c'),
-          'type' => 2,
-          ]
-      );
 
       ///////////////////////// FCM /////////////////////////////////
       /*foreach ($to as $user) {
@@ -132,37 +118,6 @@ class MessageUser extends AbstractService
       $m_message_user = $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
       return $this->getMapper()->update($m_message_user, ['conversation_id' => $conversation_id, 'user_id' => $user_id, new IsNull('read_date')]);
-  }
-
-  /**
-  * Send Message Node message.publish
-  *
-  * @param string $data
-  */
-  public function sendMessage($data)
-  {
-      $rep = false;
-      $request = new Request();
-      $request->setMethod('message.publish')
-          ->setParams($data)
-          ->setId(++ self::$id)
-          ->setVersion('2.0');
-
-      $client = new Client();
-      $client->setOptions($this->container->get('config')['http-adapter']);
-
-      $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
-      try {
-          $rep = $client->doRequest($request);
-          if ($rep->isError()) {
-              throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
-          }
-      } catch (\Exception $e) {
-          syslog(1, 'Request: ' . $request->toJson());
-          syslog(1, $e->getMessage());
-      }
-
-      return $rep;
   }
 
   /**
