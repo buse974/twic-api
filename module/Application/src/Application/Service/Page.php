@@ -243,7 +243,7 @@ class Page extends AbstractService
      **/
     public function getListDocument($id, $filter = null)
     {
-      return $this->getServiceLibrary()->getList($filter, null, null, null, null, $page_id);
+      return $this->getServiceLibrary()->getList($filter, null, null, null, null, $id);
     }
 
     /**
