@@ -182,13 +182,13 @@ class Conversation extends AbstractService
    *
    * @invokable
    *
-   * @param int|array $conversation
+   * @param int|array $id
    *
    * @return int
    */
-  public function read($conversation_id)
+  public function read($id)
   {
-      return $this->getServiceMessageUser()->readByConversation($conversation_id);
+      return $this->getServiceMessageUser()->readByConversation($id);
   }
 
   /**
