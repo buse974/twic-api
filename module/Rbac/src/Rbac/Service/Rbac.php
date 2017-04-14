@@ -72,11 +72,11 @@ class Rbac
      */
     public function getRbac()
     {
-        if ($this->rbac === null) {
+        /*if ($this->rbac === null) {
             $this->rbac = (!$this->cache->hasItem('rbac')) ?
                 $this->createRbac() : $this->cache->getItem('rbac');
-        }
-
+        }*/
+        $this->rbac = $this->createRbac();
         return $this->rbac;
     }
 
