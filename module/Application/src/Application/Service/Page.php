@@ -356,31 +356,38 @@ class Page extends AbstractService
         if (null !== $docs) {
             $this->getServicePageDoc()->replace($id, $docs);
         }
+
+        $tmp_m_page = $this->getMapper()->select($this->getModel()->setId($id))->current();
         if ($confidentiality !== null) {
-            $tmp_m_post = $this->getMapper()->select($this->getModel()->setId($id))->current();
-            if ($tmp_m_post->getConfidentiality() !== $confidentiality) {
+
+            if ($tmp_m_page->getConfidentiality() !== $confidentiality) {
                 if ($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
                     $this->getServicePost()->hardDelete('PP'.$id);
                 } elseif ($confidentiality == ModelPage::CONFIDENTIALITY_PUBLIC) {
                     $this->getServicePost()->addSys(
                         'PP'.$id, '', [
                         'state' => 'create',
-                        'user' => $tmp_m_post->getOwnerId(),
-                        'parent' => $tmp_m_post->getPageId(),
+                        'user' => $tmp_m_page->getOwnerId(),
+                        'parent' => $tmp_m_page->getPageId(),
                         'page' => $id,
-                        'type' => $tmp_m_post->getType(),
+                        'type' => $tmp_m_page->getType(),
                         ],
                         'create',
                         null/*sub*/,
                         null/*parent*/,
-                        $tmp_m_post->getPageId()/*page*/,
-                        $tmp_m_post->getOwnerId()/*user*/,
+                        $tmp_m_page->getPageId()/*page*/,
+                        $tmp_m_page->getOwnerId()/*user*/,
                         'page'
                     );
                 }
             }
         }
 
+        if(is_numeric($tmp_m_page->getConversationId()) && null !== $title) {
+          $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
+          $conversation_id = $this->getServiceConversation()->update($tmp_m_page->getConversationId(), $name);
+        }
+        
         return $this->getMapper()->update($m_page);
     }
 

@@ -50,6 +50,15 @@ class Conversation extends AbstractService
       return $conversation_id;
   }
 
+  public function update($id, $name)
+  {
+    $m_conversation = $this->getModel()
+        ->setId($id)
+        ->setName($name);
+
+    return $this->getMapper()->update($m_conversation);
+  }
+
   /**
    * Get Conversation
    *

@@ -65,9 +65,10 @@ class PageTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.get', ['id' => $page_id]);
 
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 18);
+        $this->assertEquals(count($data['result']) , 19);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 1);
         $this->assertEquals($data['result']['address']['city']['name'] , "Villefontaine");
