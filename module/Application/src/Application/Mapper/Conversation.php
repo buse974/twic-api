@@ -47,7 +47,7 @@ class Conversation extends AbstractMapper
 
     $subselect = new Select('message');
     $select = $this->tableGateway->getSql()->select();
-    $select->columns(['conversation$id' => 'id', 'type', 'conversation_message$id' => $subselect])
+    $select->columns(['conversation$id' => 'id', 'type', 'name', 'conversation_message$id' => $subselect])
       ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
       ->where(['conversation_user.user_id' => $user_id])
       ->order(['conversation_message$id DESC'])
