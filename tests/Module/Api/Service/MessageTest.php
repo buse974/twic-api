@@ -174,15 +174,16 @@ class MessageTest extends AbstractService
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 2);
-      $this->assertEquals(count($data['result'][0]) , 4);
+      $this->assertEquals(count($data['result'][0]) , 5);
       $this->assertEquals(count($data['result'][0]['message']) , 1);
       $this->assertEquals($data['result'][0]['message']['id'] , 4);
       $this->assertEquals(count($data['result'][0]['users']) , 2);
       $this->assertEquals($data['result'][0]['users'][0] , 2);
       $this->assertEquals($data['result'][0]['users'][1] , 3);
       $this->assertEquals($data['result'][0]['id'] , 2);
+      $this->assertEquals($data['result'][0]['name'] , "Chat");
       $this->assertEquals($data['result'][0]['type'] , 2);
-      $this->assertEquals(count($data['result'][1]) , 4);
+      $this->assertEquals(count($data['result'][1]) , 5);
       $this->assertEquals(count($data['result'][1]['message']) , 1);
       $this->assertEquals($data['result'][1]['message']['id'] , 1);
       $this->assertEquals(count($data['result'][1]['users']) , 3);
@@ -190,6 +191,7 @@ class MessageTest extends AbstractService
       $this->assertEquals($data['result'][1]['users'][1] , 2);
       $this->assertEquals($data['result'][1]['users'][2] , 3);
       $this->assertEquals($data['result'][1]['id'] , 1);
+      $this->assertEquals($data['result'][1]['name'] , "Chat");
       $this->assertEquals($data['result'][1]['type'] , 2);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -224,16 +226,18 @@ class MessageTest extends AbstractService
         'contact' => true
       ]);
 
+
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
-      $this->assertEquals(count($data['result'][0]) , 4);
+      $this->assertEquals(count($data['result'][0]) , 5);
       $this->assertEquals(count($data['result'][0]['message']) , 1);
       $this->assertEquals($data['result'][0]['message']['id'] , 5);
       $this->assertEquals(count($data['result'][0]['users']) , 2);
       $this->assertEquals($data['result'][0]['users'][0] , 1);
       $this->assertEquals($data['result'][0]['users'][1] , 2);
       $this->assertEquals($data['result'][0]['id'] , 3);
+      $this->assertEquals($data['result'][0]['name'] , "Chat");
       $this->assertEquals($data['result'][0]['type'] , 2);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -251,15 +255,16 @@ class MessageTest extends AbstractService
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 2);
-      $this->assertEquals(count($data['result'][0]) , 4);
+      $this->assertEquals(count($data['result'][0]) , 5);
       $this->assertEquals(count($data['result'][0]['message']) , 1);
       $this->assertEquals($data['result'][0]['message']['id'] , 4);
       $this->assertEquals(count($data['result'][0]['users']) , 2);
       $this->assertEquals($data['result'][0]['users'][0] , 2);
       $this->assertEquals($data['result'][0]['users'][1] , 3);
       $this->assertEquals($data['result'][0]['id'] , 2);
+      $this->assertEquals($data['result'][0]['name'] , "Chat");
       $this->assertEquals($data['result'][0]['type'] , 2);
-      $this->assertEquals(count($data['result'][1]) , 4);
+      $this->assertEquals(count($data['result'][1]) , 5);
       $this->assertEquals(count($data['result'][1]['message']) , 1);
       $this->assertEquals($data['result'][1]['message']['id'] , 1);
       $this->assertEquals(count($data['result'][1]['users']) , 3);
@@ -267,6 +272,7 @@ class MessageTest extends AbstractService
       $this->assertEquals($data['result'][1]['users'][1] , 2);
       $this->assertEquals($data['result'][1]['users'][2] , 3);
       $this->assertEquals($data['result'][1]['id'] , 1);
+      $this->assertEquals($data['result'][1]['name'] , "Chat");
       $this->assertEquals($data['result'][1]['type'] , 2);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
@@ -334,7 +340,7 @@ class MessageTest extends AbstractService
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 2);
       $this->assertEquals(count($data['result']['list']) , 1);
-      $this->assertEquals(count($data['result']['list'][0]) , 4);
+      $this->assertEquals(count($data['result']['list'][0]) , 5);
       $this->assertEquals(count($data['result']['list'][0]['message']) , 1);
       $this->assertEquals($data['result']['list'][0]['message']['id'] , 1);
       $this->assertEquals(count($data['result']['list'][0]['users']) , 3);
@@ -342,6 +348,7 @@ class MessageTest extends AbstractService
       $this->assertEquals($data['result']['list'][0]['users'][1] , 2);
       $this->assertEquals($data['result']['list'][0]['users'][2] , 3);
       $this->assertEquals($data['result']['list'][0]['id'] , 1);
+      $this->assertEquals($data['result']['list'][0]['name'] , "Chat");
       $this->assertEquals($data['result']['list'][0]['type'] , 2);
       $this->assertEquals($data['result']['count'] , 1);
       $this->assertEquals($data['jsonrpc'] , 2.0);

@@ -90,7 +90,9 @@ class Conversation extends AbstractService
       $mapper = $this->getMapper();
       $res_conversation = $mapper->usePaginator($filter)->getId($user_id, $contact, $noread, $type, $search);
       foreach ($res_conversation as $m_conversation) {
-        $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+        if($m_conversation->getType() !==  ModelConversation::TYPE_CHANNEL) {
+          $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+        }
       }
 
       $res_conversation->rewind();
