@@ -10,7 +10,7 @@ use Zend\Http\Client;
 class Message extends AbstractService
 {
   private static $id = 0;
-  
+
   /**
    * Send message generique.
    *
@@ -135,6 +135,19 @@ class Message extends AbstractService
         'list' => $res_message,
         'count' => $mapper->count()
       ];
+  }
+
+  /**
+   * Get By user Message
+   *
+   *
+   * @param int   $id
+   */
+  public function get($id)
+  {
+      $user_id = $this->getServiceUser()->getIdentity()['id'];
+
+      return  $this->getMapper()->getList($user_id, null, $id)->current();
   }
 
   /**

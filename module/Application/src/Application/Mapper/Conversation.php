@@ -42,15 +42,14 @@ class Conversation extends AbstractMapper
       return $this->selectWith($select);
   }
 
-  public function getId($user_id, $contact = null, $noread = null, $type = null, $search = null)
+  public function getId($user_id, $contact = null, $noread = null, $type = null, $search = null, $conversation_id = null)
   {
-
     $select_nb_users = new Select('conversation_user');
     $select_nb_users->columns(['nbr_users' => new Expression('COUNT(true)')])->where(['conversation_user.conversation_id=conversation.id']);
 
     $subselect = new Select('message');
     $colums  = array_merge(['conversation$id' => 'id','type','name','conversation_message$id' => $subselect], ($type===ModelConversation::TYPE_CHANNEL) ? ['conversation$nb_users' => $select_nb_users]:[]);
-  
+
     $select = $this->tableGateway->getSql()->select();
     $select->columns($colums)
       ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
@@ -76,6 +75,10 @@ class Conversation extends AbstractMapper
         ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
 
       $select->where(['conversation.id IN (?)' => $searchselect]);
+    }
+
+    if (null !== $conversation_id) {
+      $select->where(['conversation.id' => $conversation_id]);
     }
 
     // READ OR NOT READ

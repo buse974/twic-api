@@ -61,8 +61,12 @@ class Conversation extends AbstractService
   {
       $user_id = $this->getServiceUser()->getIdentity()['id'];
 
-      $res_conversation = $this->getMapper()->getList($user_id, $id);
+      $res_conversation = $this->getMapper()->getId($user_id, null, null, null, null, $id);
       foreach ($res_conversation as $m_conversation) {
+        $message_id = $m_conversation->getMessage()->getId();
+        if(is_numeric($message_id)) {
+        $m_conversation->setMessage($this->getServiceMessage()->get($message_id));
+        }
         $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
       }
       $res_conversation->rewind();
@@ -212,6 +216,16 @@ class Conversation extends AbstractService
   private function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Messsage.
+   *
+   * @return \Application\Service\Message
+   */
+  private function getServiceMessage()
+  {
+      return $this->container->get('app_service_message');
   }
 
   /**

@@ -140,8 +140,10 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][2]) , 6);
-        $this->assertEquals(count($data['result'][2]['message']) , 4);
+        $this->assertEquals(count($data['result'][2]) , 5);
+        $this->assertEquals(count($data['result'][2]['message']) , 6);
+        $this->assertEquals(count($data['result'][2]['message']['message_user']) , 1);
+        $this->assertEquals(!empty($data['result'][2]['message']['message_user']['read_date']) , true);
         $this->assertEquals(count($data['result'][2]['message']['library']) , 6);
         $this->assertEquals($data['result'][2]['message']['library']['id'] , 4);
         $this->assertEquals($data['result'][2]['message']['library']['name'] , "super doc  ");
@@ -152,13 +154,13 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result'][2]['message']['id'] , 4);
         $this->assertEquals($data['result'][2]['message']['text'] , "dernier message");
         $this->assertEquals(!empty($data['result'][2]['message']['created_date']) , true);
+        $this->assertEquals($data['result'][2]['message']['user_id'] , 2);
         $this->assertEquals(count($data['result'][2]['users']) , 2);
         $this->assertEquals($data['result'][2]['users'][0] , 2);
         $this->assertEquals($data['result'][2]['users'][1] , 3);
         $this->assertEquals($data['result'][2]['id'] , 2);
         $this->assertEquals($data['result'][2]['name'] , "Chat");
         $this->assertEquals($data['result'][2]['type'] , 2);
-        $this->assertEquals(!empty($data['result'][2]['created_date']) , true);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
