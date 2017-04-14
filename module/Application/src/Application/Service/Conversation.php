@@ -27,10 +27,11 @@ class Conversation extends AbstractService
       return $this->_create(ModelConversation::TYPE_CHAT, $users);
     }
 
-    public function _create($type = ModelConversation::TYPE_CHAT, $users = null, $has_video = null)
+    public function _create($type = ModelConversation::TYPE_CHAT, $users = null, $has_video = null, $name = null)
     {
       $m_conversation = $this->getModel()
           ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+          ->setName($name)
           ->setType($type);
 
       if ($this->getMapper()->insert($m_conversation) <= 0) {

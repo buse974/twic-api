@@ -49,6 +49,29 @@ class ConversationUser extends AbstractService
       return $ret;
   }
 
+  /**
+   * DELETE User in the Conversation.
+   *
+   * @param int       $conversation_id
+   * @param int|array $users
+   *
+   * @return array
+   */
+  public function delete($conversation_id, $users)
+  {
+      if (!is_array($users)) {
+          $users = [$users];
+      }
+
+      $m_conversation_user = $this->getModel()->setConversationId($conversation_id);
+      $ret = [];
+      foreach ($users as $user_id) {
+          $ret[$user_id] = $this->getMapper()->delete($m_conversation_user->setUserId($user_id));
+      }
+
+      return $ret;
+  }
+
 
     /**
      * Get User By Conversation.

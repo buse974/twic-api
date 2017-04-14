@@ -41,6 +41,15 @@ class PageUser extends AbstractService
             ->setRole($role)
             ->setState($state);
         $ret = 0;
+
+        // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
+        if ($state === ModelPageUser::STATE_MEMBER) {
+          $m_page = $this->getServicePage()->getLite($page_id);
+          if(is_numeric($m_page->getConversationId())) {
+            $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
+          }
+        }
+
         foreach ($user_id as $uid) {
             $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
             // inviter only event
@@ -146,22 +155,27 @@ class PageUser extends AbstractService
     {
         // si on doit labonner
         if (ModelPageUser::STATE_MEMBER === $state) {
-            $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
-            if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
-                $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
 
-                $m_page = $this->getServicePage()->getLite($page_id);
-                if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                    $this->getServicePost()->addSys(
-                        'PPM'.$page_id.'_'.$user_id, '', [
-                        'state' => 'member',
-                        'user' => $user_id,
-                        'page' => $page_id,
-                        'type' => $m_page->getType(),
-                        ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, $user_id/*user*/, 'page'
-                    );
-                }
-            }
+          // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
+          $m_page = $this->getServicePage()->getLite($page_id);
+          if(is_numeric($m_page->getConversationId())) {
+            $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
+          }
+
+          $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
+          if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
+              $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
+              if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                  $this->getServicePost()->addSys(
+                      'PPM'.$page_id.'_'.$user_id, '', [
+                      'state' => 'member',
+                      'user' => $user_id,
+                      'page' => $page_id,
+                      'type' => $m_page->getType(),
+                      ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, $user_id/*user*/, 'page'
+                  );
+              }
+          }
         }
 
         $this->getServiceFcm()->send(
@@ -201,6 +215,12 @@ class PageUser extends AbstractService
         $ret =  $this->getMapper()->delete($m_page_user);
         if ($ret) {
             $this->getServicePost()->hardDelete('PPM'.$page_id.'_'.$user_id);
+
+            // ON DELETE LES USER DANS LA CONVERSATION SI ELLE EXISTE
+            $m_page = $this->getServicePage()->getLite($page_id);
+            if(is_numeric($m_page->getConversationId())) {
+              $this->getServiceConversationUser()->delete($m_page->getConversationId(), $user_id);
+            }
         }
 
         return $ret;
@@ -349,6 +369,16 @@ class PageUser extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+
+    /**
+     * Get Service Conversation User
+     *
+     * @return \Application\Service\ConversationUser
+     */
+    private function getServiceConversationUser()
+    {
+        return $this->container->get('app_service_conversation_user');
     }
 
     /**

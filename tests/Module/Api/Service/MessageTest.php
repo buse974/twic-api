@@ -206,7 +206,7 @@ class MessageTest extends AbstractService
     public function testCanGetread($conv)
     {
       $this->setIdentity(2);
-      $data = $this->jsonRpc('conversation.read', ['conversation_id' => $conv['conversation_id']]);
+      $data = $this->jsonRpc('conversation.read', ['id' => $conv['conversation_id']]);
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);

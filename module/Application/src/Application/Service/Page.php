@@ -11,6 +11,7 @@ use Application\Model\PageUser as ModelPageUser;
 use Application\Model\PageRelation as ModelPageRelation;
 use Application\Model\Page as ModelPage;
 use Application\Model\Role as ModelRole;
+use Application\Model\Conversation as ModelConversation;
 
 /**
  * Class Page
@@ -108,6 +109,12 @@ class Page extends AbstractService
           $confidentiality = ModelPage::CONFIDENTIALITY_PRIVATE;
         }
 
+        $conversation_id = null;
+        if($type !== ModelPage::TYPE_ORGANIZATION) {
+          $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
+          $conversation_id = $this->getServiceConversation()->_create($type = ModelConversation::TYPE_CHANNEL, null, null, $name);
+        }
+
         $m_page = $this->getModel()
           ->setTitle($title)
           ->setLogo($logo)
@@ -125,6 +132,7 @@ class Page extends AbstractService
           ->setWebsite($formattedWebsite)
           ->setPhone($phone)
           ->setSubtype($subtype)
+          ->setConversationId($conversation_id)
           ->setShortTitle($short_title);
 
         if ($address !== null) {
@@ -205,6 +213,8 @@ class Page extends AbstractService
                 ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $owner_id/*user*/, 'page'
             );
         }
+
+
 
         return $id;
     }
@@ -627,6 +637,16 @@ class Page extends AbstractService
     private function getServicePageRelation()
     {
         return $this->container->get('app_service_page_relation');
+    }
+
+    /**
+     * Get Service Conversation
+     *
+     * @return \Application\Service\Conversation
+     */
+    private function getServiceConversation()
+    {
+        return $this->container->get('app_service_conversation');
     }
 
     /**

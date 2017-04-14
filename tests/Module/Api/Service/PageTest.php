@@ -322,6 +322,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result'][1][2] , 4);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+
     /**
      * @depends testPageAdd
      */

@@ -28,6 +28,7 @@ class Page extends AbstractModel
 	protected $libelle;
 	protected $custom;
 	protected $subtype;
+	protected $conversation_id;
 
 	protected $prefix = 'page';
 
@@ -291,6 +292,18 @@ class Page extends AbstractModel
 	public function setSubtype($subtype)
 	{
 		$this->subtype = $subtype;
+
+		return $this;
+	}
+
+	public function getConversationId()
+	{
+		return $this->conversation_id;
+	}
+
+	public function setConversationId($conversation_id)
+	{
+		$this->conversation_id = $conversation_id;
 
 		return $this;
 	}
