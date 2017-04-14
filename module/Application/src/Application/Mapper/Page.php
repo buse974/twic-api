@@ -43,7 +43,7 @@ class Page extends AbstractMapper
     public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false, $search = null, $tags = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'title', 'logo', 'background', 'description', 'confidentiality', 'admission', 'location', 'type', 'user_id', 'owner_id', 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')]);
+        $select->columns(['id', 'title', 'logo', 'background', 'description', 'confidentiality', 'conversation_id', 'admission', 'location', 'type', 'user_id', 'owner_id', 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')]);
         $select->join(['state' => $this->getPageStatus($me)], 'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
           ->join(['p_user' => 'user'], 'p_user.id = page.owner_id', ['id', 'firstname', 'lastname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
           ->where(['page.deleted_date IS NULL']);
@@ -117,6 +117,7 @@ class Page extends AbstractMapper
                 'type',
                 'user_id',
                 'owner_id',
+                'conversation_id',
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]

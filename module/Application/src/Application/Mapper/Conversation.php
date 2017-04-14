@@ -6,6 +6,7 @@ use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\In;
+use Zend\Db\Sql\Select;
 use Application\Model\Conversation as ModelConversation;
 
 class Conversation extends AbstractMapper
@@ -43,66 +44,59 @@ class Conversation extends AbstractMapper
 
   public function getId($user_id, $contact = null, $noread = null, $type = null, $search = null)
   {
-      $subsubselect = $this->tableGateway->getSql()->select();
-      $subselect = $this->tableGateway->getSql()->select();
-      $select = $this->tableGateway->getSql()->select();
-      $select->columns(['id', 'type'])
-        ->join(['conversation_message' => 'message'], 'conversation.id=conversation_message.conversation_id', ['id'])
-        ->where([new In('conversation_message.id', $subsubselect)])
-        ->order(['conversation_message.id DESC']);
 
-      // READ OR NOT READ
-      if(true === $noread) {
-        $select->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT);
-        $select->where(['conversation_message_message_user.read_date IS NULL']);
-      }
+    $subselect = new Select('message');
+    $select = $this->tableGateway->getSql()->select();
+    $select->columns(['conversation$id' => 'id', 'type', 'conversation_message$id' => $subselect])
+      ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
+      ->where(['conversation_user.user_id' => $user_id])
+      ->order(['conversation_message$id DESC'])
+      ->group(['conversation.id']);
 
-      // ONLY ONE CONTACT OR NOT
-      if(true === $contact || false === $contact) {
-        $select->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[], $select::JOIN_LEFT);
-        $select->join('contact', new Expression('contact.contact_id=conversation_user.user_id AND contact.user_id = ?', [$user_id]), ['is_contact' => new Expression('IF(contact.deleted_date IS NULL AND contact.accepted_date IS NOT NULL, TRUE, FALSE)')], $select::JOIN_LEFT)
-          ->where(['conversation_user.user_id <> ?' => $user_id])
-          ->group(['conversation.id']);
+        $subselect->columns(['conversation_message$id' => new Expression('MAX(message.id)')])
+          ->join('conversation_user', 'conversation_user.conversation_id=message.conversation_id', [])
+          ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]),[], $select::JOIN_LEFT)
+          ->where(['conversation_user.user_id' => $user_id])
+          ->where(['message_user.deleted_date IS NULL'])
+          ->where(['message.conversation_id = conversation.id']);
 
-          if($contact) {
-            $select->having('COUNT(true) = 1 AND is_contact IS TRUE');
-          } else {
-            $select->having('!(COUNT(true) = 1 AND is_contact IS TRUE)');
-          }
-      }
+    if(null !== $search) {
+      $searchselect = $this->tableGateway->getSql()->select();
+      $searchselect->columns(['id'])
+        ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
+        ->join('user', 'user.id=conversation_user.user_id',[], $select::JOIN_LEFT)
+        ->where(array('(conversation.name LIKE ? ' => ''.$search.'%'))
+        ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+        ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
+        ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
 
-        $subsubselect->columns([])
-          ->join(['conversation_message' => 'message'], 'conversation.id=conversation_message.conversation_id', ['id'])
-          ->where([new In('conversation_message.id', $subselect)]);
+      $select->where(['conversation.id IN (?)' => $searchselect]);
+    }
 
-      if(null !== $search) {
-        $subsubselect->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[], $select::JOIN_LEFT)
-            ->join('user', 'user.id=conversation_user.user_id',[], $select::JOIN_LEFT)
-            ->where(array('(conversation.name LIKE ? ' => ''.$search.'%'))
-            ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-            ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-            ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
-        }
+    // READ OR NOT READ
+    if(true === $noread) {
+      $select->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message.id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT);
+      $select->where(['conversation_message_message_user.read_date IS NULL']);
+    }
 
-      $subselect->columns([])
-        ->join('conversation_user', 'conversation_user.conversation_id=conversation.id', [])
-        ->join('message', 'conversation.id=message.conversation_id', ['message.id' => new Expression('MAX(message.id)')])
-        ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]),[], $select::JOIN_LEFT)
-        ->where(['conversation_user.user_id' => $user_id])
-        ->where(['message_user.deleted_date IS NULL'])
+    // ONLY ONE CONTACT OR NOT
+    if(true === $contact || false === $contact) {
+      $select->join(['cu' => 'conversation_user'], 'conversation.id=cu.conversation_id',[])
+        ->join('contact', new Expression('contact.contact_id=cu.user_id AND contact.user_id = ?', [$user_id]), ['is_contact' => new Expression('IF(contact.deleted_date IS NULL AND contact.accepted_date IS NOT NULL, TRUE, FALSE)')], $select::JOIN_LEFT)
+        ->where(['cu.user_id <> ?' => $user_id])
         ->group(['conversation.id']);
+        if($contact) {
+          $select->having('COUNT(true) = 1 AND is_contact IS TRUE');
+        } else {
+          $select->having('!(COUNT(true) = 1 AND is_contact IS TRUE)');
+        }
+    }
 
-      // TYPE
-      if(null !== $type) {
-        $subselect->where(['conversation.type' => $type]);
-      }
+    // TYPE
+    if(null !== $type) {
+      $select->where(['conversation.type' => $type]);
+    }
 
-      // SI S-S-REQUETE
-    /*  if(null !== $search) {
-        $sselect
-      }*/
-
-
-      return $this->selectWith($select);
+    return $this->selectWith($select);
   }
 }
