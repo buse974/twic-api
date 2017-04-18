@@ -47,11 +47,10 @@ class UserTest extends AbstractService
 
         $data = $this->jsonRpc('user.login', ['user' => 'crobertr@thestudnet.com','password' => 'studnet']);
 
-        print_r($data);
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 14);
+        $this->assertEquals(count($data['result']) , 15);
         $this->assertEquals($data['result']['id'] , 8);
         $this->assertEquals(!empty($data['result']['token']), true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
@@ -62,6 +61,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['suspension_reason'] , null);
         $this->assertEquals($data['result']['email'] , "crobertr@thestudnet.com");
         $this->assertEquals($data['result']['avatar'] , "un_token");
+        $this->assertEquals($data['result']['organization_id'] , null);
         $this->assertEquals($data['result']['expiration_date'] , null);
         $this->assertEquals(count($data['result']['roles']) , 1);
         $this->assertEquals($data['result']['roles'][2] , "user");

@@ -195,69 +195,6 @@ DROP INDEX `fk_course_2_idx` ;
 
 DROP TABLE `program`;
 
-/*
-- update research school
-*/
-CREATE 
-     OR REPLACE ALGORITHM = UNDEFINED 
-    DEFINER = `root`@`localhost` 
-    SQL SECURITY DEFINER
-VIEW `research` AS
-    SELECT 
-        `u`.`id` AS `id`,
-        CONCAT(`u`.`firstname`, ' ', `u`.`lastname`) AS `firstname`,
-        CONCAT(`u`.`lastname`, ' ', `u`.`firstname`) AS `lastname`,
-        `u`.`nickname` AS `nickname`,
-        `u`.`avatar` AS `avatar`,
-        'user' AS `category`,
-        `role`.`name` AS `role`,
-        IF((`role`.`id` = 4), 10, 20) AS `facette`,
-        `u`.`id` AS `user_id`,
-        NULL AS `course_id`,
-        NULL AS `school_id`
-    FROM
-        ((`user` `u`
-        JOIN `user_role` `us`)
-        JOIN `role`)
-    WHERE
-        ((`us`.`user_id` = `u`.`id`)
-            AND (`us`.`role_id` = `role`.`id`)
-            AND (`us`.`role_id` IN (4 , 5))
-            AND ISNULL(`u`.`deleted_date`)) 
-    UNION SELECT
-        `s`.`id` AS `id`,
-        `s`.`title` AS `name`,
-        `s`.`short_title` AS `short_name`,
-        NULL AS `nickname`,
-        `s`.`logo` AS `logo`,
-        `s`.`type` AS `category`,
-        '' AS `role`,
-        '40' AS `facette`,
-        NULL AS `user_id`,
-        NULL AS `course_id`,
-        `s`.`id` AS `course_id`
-    FROM
-        `page` `s`
-    WHERE
-        ISNULL(`s`.`deleted_date`) AND `s`.`type` = 'course'
-    UNION SELECT
-        `s`.`id` AS `id`,
-        `s`.`title` AS `name`,
-        `s`.`short_title` AS `short_name`,
-        NULL AS `nickname`,
-        `s`.`logo` AS `logo`,
-        `s`.`type` AS `category`,
-        '' AS `role`,
-        '40' AS `facette`,
-        NULL AS `user_id`,
-        NULL AS `course_id`,
-        `s`.`id` AS `organization_id`
-    FROM
-        `page` `s`
-    WHERE
-        ISNULL(`s`.`deleted_date`) AND `s`.`type` = 'organization';
-
-
 DROP TABLE `organization_relation`;
 DROP TABLE `organization_user`;
 DROP TABLE `school`;
