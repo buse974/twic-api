@@ -98,9 +98,9 @@ class Page extends AbstractService
         $identity = $this->getServiceUser()->getIdentity();
 
         //Si un non admin esaye de créer une organization
-        if($type === ModelPage::TYPE_ORGANIZATION && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
-          throw new \Exception("Error, you are not admin for create organization", 1);
-        }
+      //  if($type === ModelPage::TYPE_ORGANIZATION && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
+      //    throw new \Exception("Error, you are not admin for create organization", 1);
+      //  }
 
         $user_id = $identity['id'];
         $formattedWebsite = $this->getFormattedWebsite($website);
@@ -387,7 +387,7 @@ class Page extends AbstractService
           $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
           $conversation_id = $this->getServiceConversation()->update($tmp_m_page->getConversationId(), $name);
         }
-        
+
         return $this->getMapper()->update($m_page);
     }
 
