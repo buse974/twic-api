@@ -112,7 +112,7 @@ class Page extends AbstractService
         $conversation_id = null;
         if($type !== ModelPage::TYPE_ORGANIZATION) {
           $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
-          $conversation_id = $this->getServiceConversation()->_create($type = ModelConversation::TYPE_CHANNEL, null, null, $name);
+          $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
         }
 
         $m_page = $this->getModel()
