@@ -42,9 +42,10 @@ class PageUser extends AbstractService
             ->setState($state);
         $ret = 0;
 
+        $m_page = $this->getServicePage()->getLite($page_id);
         // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
         if ($state === ModelPageUser::STATE_MEMBER) {
-          $m_page = $this->getServicePage()->getLite($page_id);
+
           if(is_numeric($m_page->getConversationId())) {
             $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
           }
@@ -53,7 +54,6 @@ class PageUser extends AbstractService
         foreach ($user_id as $uid) {
             $ret +=  $this->getMapper()->insert($m_page_user->setUserId($uid));
             // inviter only event
-            $m_page = $this->getServicePage()->getLite($page_id);
             if ($state === ModelPageUser::STATE_INVITED) {
                 $this->getServicePost()->addSys(
                     'PPM'.$page_id.'_'.$uid, '', [
@@ -84,6 +84,11 @@ class PageUser extends AbstractService
 
                 // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
+
+              if(ModelPage::TYPE_ORGANIZATION === $m_page->getType()) {
+                $this->getServiceUser()->update($uid ,null ,null ,null ,null ,null ,null ,null, null, null, $page_id);
+              }
+
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 // Si il n'est pas le propriétaire on lui envoie une notification
                 if ($m_page->getUserId() !== $uid) {
@@ -379,6 +384,16 @@ class PageUser extends AbstractService
     private function getServiceConversationUser()
     {
         return $this->container->get('app_service_conversation_user');
+    }
+
+    /**
+     * Get Service User
+     *
+     * @return \Application\Service\User
+     */
+    private function getServiceUser()
+    {
+        return $this->container->get('app_service_user');
     }
 
     /**

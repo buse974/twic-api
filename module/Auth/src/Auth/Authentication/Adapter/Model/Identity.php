@@ -13,6 +13,7 @@ class Identity implements IdentityInterface
     protected $expiration_date;
     protected $avatar;
     protected $email;
+    protected $organization_id;
     protected $suspension_date;
     protected $suspension_reason;
 
@@ -160,7 +161,31 @@ class Identity implements IdentityInterface
 
         return $this;
     }
-    
+
+    /**
+     * Get the value of Organization Id
+     *
+     * @return mixed
+     */
+    public function getOrganizationId()
+    {
+        return $this->organization_id;
+    }
+
+    /**
+     * Set the value of Organization Id
+     *
+     * @param mixed organization_id
+     *
+     * @return self
+     */
+    public function setOrganizationId($organization_id)
+    {
+        $this->organization_id = $organization_id;
+
+        return $this;
+    }
+
     public function jsonSerialize()
     {
         return $this->toArray();
@@ -168,7 +193,7 @@ class Identity implements IdentityInterface
 
     public function toArray()
     {
-        return array(
+        return [
             'id' => $this->getId(),
             'token' => $this->token,
             'created_date' => $this->created_date,
@@ -177,9 +202,13 @@ class Identity implements IdentityInterface
             'nickname' => $this->nickname,
             'suspension_date' => $this->suspension_date,
             'suspension_reason' => $this->suspension_reason,
+            'organization_id' => $this->organization_id,
             'email' => $this->email,
             'avatar' => $this->avatar,
             'expiration_date' => $this->expiration_date,
-        );
+        ];
     }
+
+
+
 }

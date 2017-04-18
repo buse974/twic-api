@@ -138,7 +138,6 @@ class User extends AbstractService
                 $user['roles'][$role->getId()] = $role->getName();
             }
 
-            $res_user = $this->getMapper()->get($id, $id);
             $secret_key = $this->container->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
 
