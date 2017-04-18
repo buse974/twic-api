@@ -11,7 +11,7 @@ class Rbac
      * @var \Zend\Permissions\Rbac\Rbac
      */
     protected $rbac;
-    
+
     /**
      * @var \Rbac\Db\Service\Role
      */
@@ -33,7 +33,7 @@ class Rbac
         $this->service_role = $service_role;
         $this->cache = $cache;
     }
-    
+
     /**
      * @param array $options
      */
@@ -72,11 +72,12 @@ class Rbac
      */
     public function getRbac()
     {
-        if ($this->rbac === null) {
+        /*if ($this->rbac === null) {
             $this->rbac = (!$this->cache->hasItem('rbac')) ?
                 $this->createRbac() : $this->cache->getItem('rbac');
-	}
-
+	      }*/
+        $this->rbac = $this->createRbac();
+        
         return $this->rbac;
     }
 
