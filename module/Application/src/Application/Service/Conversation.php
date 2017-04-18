@@ -3,7 +3,6 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Library;
 use Application\Model\Conversation as ModelConversation;
 use OpenTok\MediaMode;
 use OpenTok\Role as OpenTokRole;
