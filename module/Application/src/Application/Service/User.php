@@ -801,6 +801,30 @@ class User extends AbstractService
     }
 
     /**
+     * Add School relation
+     *
+     * @invokable
+     *
+     * @param  int  $organization_id
+     * @param  int  $user_id
+     * @param  bool $default
+     * @return NULL|int
+     */
+    public function addOrganization($organization_id, $user_id, $default = false)
+    {
+        $ret = null;
+        if ($default === true) {
+            $ret = $this->getMapper()->update(
+                $this->getModel()
+                    ->setId($user_id)
+                    ->setOrganizationId($organization_id)
+            );
+        }
+
+        return $ret;
+    }
+
+    /**
      * Get Service Post
      *
      * @return \Application\Service\Post
