@@ -40,29 +40,35 @@ class Page extends AbstractMapper
         return $select;
     }
 
-    public function getList($me, $id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $strict_dates = false, $is_sadmin_admin = false, $search = null, $tags = null)
+    public function getListId(
+      $me,
+      $parent_id = null,
+      $type = null,
+      $start_date = null,
+      $end_date = null,
+      $member_id = null,
+      $strict_dates = false,
+      $is_admin = false,
+      $search = null,
+      $tags = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'title', 'logo', 'background', 'description', 'confidentiality', 'conversation_id', 'admission', 'location', 'type', 'user_id', 'owner_id', 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')]);
-        $select->join(['state' => $this->getPageStatus($me)], 'state.page_id = page.id', ['page$state' => 'state', 'page$role' => 'role'], $select::JOIN_LEFT)
-          ->join(['p_user' => 'user'], 'p_user.id = page.owner_id', ['id', 'firstname', 'lastname', 'avatar', 'ambassador'], $select::JOIN_LEFT)
+        $select->columns(['id'])
           ->where(['page.deleted_date IS NULL']);
 
-        if (null !== $id) {
-            $select->where(['page.id' => $id]);
-        }
-        if (null !== $user_id) {
-            $select->where(['page.user_id' => $user_id]);
+        if(null !== $parent_id) {
+          $select->join('page_relation', 'page_relation.page_id = page.id', [])
+            ->where(['page_relation.parent_id' => $parent_id]);
         }
         if (null !== $type) {
-            $select->where(['page.type' => $type]);
+          $select->where(['page.type' => $type]);
         }
         if (null !== $member_id) {
-            $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
-                ->where(['member.user_id' => $member_id]);
+          $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
+              ->where(['member.user_id' => $member_id]);
         }
         if (null !== $search) {
-            $select->where(array('page.title LIKE ? ' => '%' . $search . '%'));
+          $select->where(['page.title LIKE ? ' => '%' . $search . '%']);
         }
         if (null !== $tags) {
             $select->join('page_tag', 'page_tag.page_id = page.id')
@@ -84,8 +90,7 @@ class Page extends AbstractMapper
                 $select->where([$paramValue => $end_date]);
             }
         }
-
-        if ($is_sadmin_admin === false) {
+        if ($is_admin === false) {
             $select->join('page_user', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);

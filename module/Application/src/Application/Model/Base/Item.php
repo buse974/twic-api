@@ -7,25 +7,19 @@ use Dal\Model\AbstractModel;
 class Item extends AbstractModel
 {
  	protected $id;
-	protected $course_id;
-	protected $grading_policy_id;
 	protected $title;
-	protected $describe;
-	protected $duration;
+	protected $description;
 	protected $type;
-	protected $set_id;
-	protected $parent_id;
-	protected $order_id;
-	protected $has_submission;
-	protected $start;
-	protected $end;
-	protected $cut_off;
-	protected $is_graded;
-	protected $is_grouped;
-	protected $is_complete;
-	protected $has_all_student;
+	protected $is_available;
+	protected $is_published;
+	protected $order;
+	protected $start_date;
+	protected $end_date;
 	protected $updated_date;
-	protected $coefficient;
+	protected $created_date;
+	protected $parent_id;
+	protected $page_id;
+	protected $user_id;
 
 	protected $prefix = 'item';
 
@@ -37,30 +31,6 @@ class Item extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
-
-		return $this;
-	}
-
-	public function getCourseId()
-	{
-		return $this->course_id;
-	}
-
-	public function setCourseId($course_id)
-	{
-		$this->course_id = $course_id;
-
-		return $this;
-	}
-
-	public function getGradingPolicyId()
-	{
-		return $this->grading_policy_id;
-	}
-
-	public function setGradingPolicyId($grading_policy_id)
-	{
-		$this->grading_policy_id = $grading_policy_id;
 
 		return $this;
 	}
@@ -77,26 +47,14 @@ class Item extends AbstractModel
 		return $this;
 	}
 
-	public function getDescribe()
+	public function getDescription()
 	{
-		return $this->describe;
+		return $this->description;
 	}
 
-	public function setDescribe($describe)
+	public function setDescription($description)
 	{
-		$this->describe = $describe;
-
-		return $this;
-	}
-
-	public function getDuration()
-	{
-		return $this->duration;
-	}
-
-	public function setDuration($duration)
-	{
-		$this->duration = $duration;
+		$this->description = $description;
 
 		return $this;
 	}
@@ -113,134 +71,62 @@ class Item extends AbstractModel
 		return $this;
 	}
 
-	public function getSetId()
+	public function getIsAvailable()
 	{
-		return $this->set_id;
+		return $this->is_available;
 	}
 
-	public function setSetId($set_id)
+	public function setIsAvailable($is_available)
 	{
-		$this->set_id = $set_id;
+		$this->is_available = $is_available;
 
 		return $this;
 	}
 
-	public function getParentId()
+	public function getIsPublished()
 	{
-		return $this->parent_id;
+		return $this->is_published;
 	}
 
-	public function setParentId($parent_id)
+	public function setIsPublished($is_published)
 	{
-		$this->parent_id = $parent_id;
+		$this->is_published = $is_published;
 
 		return $this;
 	}
 
-	public function getOrderId()
+	public function getOrder()
 	{
-		return $this->order_id;
+		return $this->order;
 	}
 
-	public function setOrderId($order_id)
+	public function setOrder($order)
 	{
-		$this->order_id = $order_id;
+		$this->order = $order;
 
 		return $this;
 	}
 
-	public function getHasSubmission()
+	public function getStartDate()
 	{
-		return $this->has_submission;
+		return $this->start_date;
 	}
 
-	public function setHasSubmission($has_submission)
+	public function setStartDate($start_date)
 	{
-		$this->has_submission = $has_submission;
+		$this->start_date = $start_date;
 
 		return $this;
 	}
 
-	public function getStart()
+	public function getEndDate()
 	{
-		return $this->start;
+		return $this->end_date;
 	}
 
-	public function setStart($start)
+	public function setEndDate($end_date)
 	{
-		$this->start = $start;
-
-		return $this;
-	}
-
-	public function getEnd()
-	{
-		return $this->end;
-	}
-
-	public function setEnd($end)
-	{
-		$this->end = $end;
-
-		return $this;
-	}
-
-	public function getCutOff()
-	{
-		return $this->cut_off;
-	}
-
-	public function setCutOff($cut_off)
-	{
-		$this->cut_off = $cut_off;
-
-		return $this;
-	}
-
-	public function getIsGraded()
-	{
-		return $this->is_graded;
-	}
-
-	public function setIsGraded($is_graded)
-	{
-		$this->is_graded = $is_graded;
-
-		return $this;
-	}
-
-	public function getIsGrouped()
-	{
-		return $this->is_grouped;
-	}
-
-	public function setIsGrouped($is_grouped)
-	{
-		$this->is_grouped = $is_grouped;
-
-		return $this;
-	}
-
-	public function getIsComplete()
-	{
-		return $this->is_complete;
-	}
-
-	public function setIsComplete($is_complete)
-	{
-		$this->is_complete = $is_complete;
-
-		return $this;
-	}
-
-	public function getHasAllStudent()
-	{
-		return $this->has_all_student;
-	}
-
-	public function setHasAllStudent($has_all_student)
-	{
-		$this->has_all_student = $has_all_student;
+		$this->end_date = $end_date;
 
 		return $this;
 	}
@@ -257,14 +143,50 @@ class Item extends AbstractModel
 		return $this;
 	}
 
-	public function getCoefficient()
+	public function getCreatedDate()
 	{
-		return $this->coefficient;
+		return $this->created_date;
 	}
 
-	public function setCoefficient($coefficient)
+	public function setCreatedDate($created_date)
 	{
-		$this->coefficient = $coefficient;
+		$this->created_date = $created_date;
+
+		return $this;
+	}
+
+	public function getParentId()
+	{
+		return $this->parent_id;
+	}
+
+	public function setParentId($parent_id)
+	{
+		$this->parent_id = $parent_id;
+
+		return $this;
+	}
+
+	public function getPageId()
+	{
+		return $this->page_id;
+	}
+
+	public function setPageId($page_id)
+	{
+		$this->page_id = $page_id;
+
+		return $this;
+	}
+
+	public function getUserId()
+	{
+		return $this->user_id;
+	}
+
+	public function setUserId($user_id)
+	{
+		$this->user_id = $user_id;
 
 		return $this;
 	}

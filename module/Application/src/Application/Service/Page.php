@@ -483,10 +483,7 @@ class Page extends AbstractService
      *
      * @invokable
      *
-     * @param int    $id
      * @param int    $parent_id
-     * @param int    $user_id
-     * @param int    $organization_id
      * @param string $type
      * @param string $start_date
      * @param string $end_date
@@ -499,7 +496,16 @@ class Page extends AbstractService
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getList($id = null, $parent_id = null, $user_id = null, $organization_id = null, $type = null, $start_date = null, $end_date = null, $member_id = null, $filter = null, $strict_dates = false, $search = null, $tags = null)
+    public function getListId(
+      $parent_id = null,
+      $type = null,
+      $start_date = null,
+      $end_date = null,
+      $member_id = null,
+      $filter = null,
+      $strict_dates = false,
+      $search = null,
+      $tags = null)
     {
         if (empty($tags)) {
             $tags = null;
@@ -508,15 +514,18 @@ class Page extends AbstractService
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getList($identity['id'], $id, $parent_id, $user_id, $organization_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_admin, $search, $tags);
+        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags);
 
+
+        $ar_page = [];
         foreach ($res_page as $m_page) {
-            $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
-            $m_page->setUsers($this->getServicePageUser()->getList($m_page->getId(), null, $m_page->getRole()));
-            $this->getOwner($m_page);
+            $ar_page[] = $m_page->getId();
         }
 
-        return ['count' => $mapper->count(), 'list' => $res_page];
+        return [
+          'list' => $ar_page,
+          'count' => $mapper->count()
+        ];
     }
 
     /**
