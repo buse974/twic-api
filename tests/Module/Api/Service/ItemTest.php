@@ -54,6 +54,7 @@ class ItemTest extends AbstractService
         $data = $this->jsonRpc('item.add', [
           'page_id' => $id,
           'title' => 'Ma Section 1',
+          'points' => 5,
           'description' => 'une description de section',
           'type' => 'FOLDER',
           'is_available' => false,
@@ -76,6 +77,7 @@ class ItemTest extends AbstractService
           'title' => 'Ma Section 2',
           'description' => 'une description de section 2',
           'type' => 'FOLDER',
+          'points' => 6,
           'is_available' => false,
           'is_published' => false,
           'order' => 1,
@@ -91,6 +93,7 @@ class ItemTest extends AbstractService
           'title' => 'Ma Section 3',
           'description' => 'une description de section 3',
           'type' => 'FOLDER',
+          'points' => 7,
           'is_available' => false,
           'is_published' => false,
           'order' => 1,
@@ -106,6 +109,7 @@ class ItemTest extends AbstractService
           'title' => 'Ma Section 3',
           'description' => 'une description de section 3',
           'type' => 'PG',
+          'points' => 10,
           'is_available' => false,
           'is_published' => false,
           'order' => 1,
@@ -133,6 +137,7 @@ class ItemTest extends AbstractService
           'description' => 'une description de section',
           'is_available' => true,
           'is_published' => true,
+          'points' => 11,
           'order' => 3,
           //'start_date',
           //'end_date',
@@ -195,7 +200,7 @@ class ItemTest extends AbstractService
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 4);
-      $this->assertEquals(count($data['result'][1]) , 14);
+      $this->assertEquals(count($data['result'][1]) , 15);
       $this->assertEquals($data['result'][1]['id'] , 1);
       $this->assertEquals($data['result'][1]['title'] , "Ma Section 1");
       $this->assertEquals($data['result'][1]['description'] , "une description de section");
@@ -210,7 +215,8 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][1]['parent_id'] , null);
       $this->assertEquals($data['result'][1]['page_id'] , 1);
       $this->assertEquals($data['result'][1]['user_id'] , 1);
-      $this->assertEquals(count($data['result'][2]) , 14);
+      $this->assertEquals($data['result'][1]['points'] , 11);
+      $this->assertEquals(count($data['result'][2]) , 15);
       $this->assertEquals($data['result'][2]['id'] , 2);
       $this->assertEquals($data['result'][2]['title'] , "Ma Section 2");
       $this->assertEquals($data['result'][2]['description'] , "une description de section 2");
@@ -225,7 +231,8 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][2]['parent_id'] , null);
       $this->assertEquals($data['result'][2]['page_id'] , 1);
       $this->assertEquals($data['result'][2]['user_id'] , 1);
-      $this->assertEquals(count($data['result'][3]) , 14);
+      $this->assertEquals($data['result'][2]['points'] , 6);
+      $this->assertEquals(count($data['result'][3]) , 15);
       $this->assertEquals($data['result'][3]['id'] , 3);
       $this->assertEquals($data['result'][3]['title'] , "Ma Section 3");
       $this->assertEquals($data['result'][3]['description'] , "une description de section 3");
@@ -240,7 +247,8 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][3]['parent_id'] , null);
       $this->assertEquals($data['result'][3]['page_id'] , 1);
       $this->assertEquals($data['result'][3]['user_id'] , 1);
-      $this->assertEquals(count($data['result'][4]) , 14);
+      $this->assertEquals($data['result'][3]['points'] , 7);
+      $this->assertEquals(count($data['result'][4]) , 15);
       $this->assertEquals($data['result'][4]['id'] , 4);
       $this->assertEquals($data['result'][4]['title'] , "Ma Section 3");
       $this->assertEquals($data['result'][4]['description'] , "une description de section 3");
@@ -255,6 +263,7 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][4]['parent_id'] , 1);
       $this->assertEquals($data['result'][4]['page_id'] , 1);
       $this->assertEquals($data['result'][4]['user_id'] , 1);
+      $this->assertEquals($data['result'][4]['points'] , 10);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 

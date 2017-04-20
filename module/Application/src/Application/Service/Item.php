@@ -13,6 +13,7 @@ class Item extends AbstractService
   *
   * @param int page_id
   * @param string title
+  * @param int $points
   * @param string description
   * @param string type
   * @param bool is_available
@@ -23,7 +24,7 @@ class Item extends AbstractService
   * @param int parent_id
   *
   **/
-  public function add($page_id, $title, $description = null, $type = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function add($page_id, $title, $points, $description = null, $type = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -36,6 +37,7 @@ class Item extends AbstractService
     $m_item = $this->getModel()
       ->setPageId($page_id)
       ->setTitle($title)
+      ->setPoints($points)
       ->setDescription($description)
       ->setType($type)
       ->setIsAvailable($is_available)
@@ -103,6 +105,7 @@ class Item extends AbstractService
   *
   * @param int id
   * @param string title
+  * @param int $points
   * @param string description
   * @param bool is_available
   * @param bool is_published
@@ -112,7 +115,7 @@ class Item extends AbstractService
   * @param int parent_id
   *
   **/
-  public function update($id, $title, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function update($id, $title, $points, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -127,6 +130,7 @@ class Item extends AbstractService
       ->setTitle($title)
       ->setDescription($description)
       ->setIsAvailable($is_available)
+      ->setPoints($points)
       ->setIsPublished($is_published)
       ->setOrder($order)
       ->setStartDate($start_date)

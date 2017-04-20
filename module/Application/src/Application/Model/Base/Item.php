@@ -20,6 +20,7 @@ class Item extends AbstractModel
 	protected $parent_id;
 	protected $page_id;
 	protected $user_id;
+	protected $points;
 
 	protected $prefix = 'item';
 
@@ -187,6 +188,18 @@ class Item extends AbstractModel
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
+
+		return $this;
+	}
+
+	public function getPoints()
+	{
+		return $this->points;
+	}
+
+	public function setPoints($points)
+	{
+		$this->points = $points;
 
 		return $this;
 	}
