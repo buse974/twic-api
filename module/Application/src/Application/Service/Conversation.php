@@ -73,10 +73,55 @@ class Conversation extends AbstractService
       foreach ($res_conversation as $m_conversation) {
         $message_id = $m_conversation->getMessage()->getId();
         if(is_numeric($message_id)) {
-        $m_conversation->setMessage($this->getServiceMessage()->get($message_id));
+          $m_conversation->setMessage($this->getServiceMessage()->get($message_id));
         }
         $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+
+
+
+        // @TODO a optimiser
+        $m_conversation->setNbUsers(count($m_conversation->getUsers()));
+        $m_page = $this->getServicePage()->getByConversationId($id);
+        if($m_page) {
+          $role = $this->getServicePageUser()->getRole($m_page->getId());
+          if($role) {
+            $m_conversation->setRole($role->getRole());
+          }
+        }
+        if($m_conversation->getType() === ModelConversation::TYPE_CHAT) {
+          $m_conversation->setOptions([
+            "record"                => false,
+            "autoPublishCamera"     => true,
+            "autoPublishMicrophone" => false,
+            "archive"               => false,
+            "raiseHand"             => false,
+            "publish"               => true,
+            "askDevice"             => false,
+            "askScreen"             => false,
+            "forceMute"             => false,
+            "forceUnpublish"        => false,
+            "kick"                  => false
+          ]);
+        } else if($m_conversation->getType() === ModelConversation::TYPE_CHANNEL) {
+          $m_conversation->setOptions([
+            "record"                  => true,
+            "record_treshold"         => 2,
+            "autoPublishCamera"       => [["roles" => ["admin"]]],
+            "autoPublishMicrophone"   => false,
+            "archive"                 => [["roles" => ["admin"]]],
+            "raiseHand"               => [["roles" => ["user"]]],
+            "publish"                 => [["roles" => ["admin"]]],
+            "askDevice"               => [["roles" => ["admin"]]],
+            "askScreen"               => [["roles" => ["admin"]]],
+            "forceMute"               => [["roles" => ["admin"]]],
+            "forceUnpublish"          => [["roles" => ["admin"]]],
+            "kick"                    => [["roles" => ["admin"]]],
+          ]);
+        }
+
       }
+
+
       $res_conversation->rewind();
 
       return (is_array($id)) ?
@@ -156,7 +201,7 @@ class Conversation extends AbstractService
 
       return [
         'token' => $this->getServiceZOpenTok()->createToken($token,'{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
-        'session' => $token
+        'session' => $token,
       ];
   }
 
@@ -254,5 +299,25 @@ class Conversation extends AbstractService
   private function getServiceZOpenTok()
   {
       return $this->container->get('opentok.service');
+  }
+
+  /**
+   * Get Service Page User
+   *
+   * @return \Application\Service\PageUser
+   */
+  private function getServicePageUser()
+  {
+      return $this->container->get('app_service_page_user');
+  }
+
+  /**
+   * Get Service Page
+   *
+   * @return \Application\Service\Page
+   */
+  private function getServicePage()
+  {
+      return $this->container->get('app_service_page');
   }
 }

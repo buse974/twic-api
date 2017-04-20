@@ -311,6 +311,13 @@ class PageUser extends AbstractService
         return $ret;
     }
 
+    public function getRole($page_id)
+    {
+      $identity = $this->getServiceUser()->getIdentity();
+
+      return $this->getMapper()->getList($page_id, $identity['id'])->current();
+    }
+
     /**
      * Add Array
      *

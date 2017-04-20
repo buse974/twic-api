@@ -17,6 +17,7 @@ class Conversation extends BaseConversation
     protected $nb_unread;
     protected $nb_users;
     protected $message;
+    protected $role;
 
     public function exchangeArray(array &$data)
     {
@@ -105,6 +106,30 @@ class Conversation extends BaseConversation
     public function setNbUsers($nb_users)
     {
         $this->nb_users = $nb_users;
+
+        return $this;
+    }
+    
+    /**
+     * Get the value of Role
+     *
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set the value of Role
+     *
+     * @param mixed role
+     *
+     * @return self
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
 
         return $this;
     }

@@ -10,8 +10,8 @@ class Conversation extends AbstractModel
 	protected $name;
 	protected $type;
 	protected $token;
-	protected $conversation_opt_id;
 	protected $created_date;
+	protected $options;
 
 	protected $prefix = 'conversation';
 
@@ -63,18 +63,6 @@ class Conversation extends AbstractModel
 		return $this;
 	}
 
-	public function getConversationOptId()
-	{
-		return $this->conversation_opt_id;
-	}
-
-	public function setConversationOptId($conversation_opt_id)
-	{
-		$this->conversation_opt_id = $conversation_opt_id;
-
-		return $this;
-	}
-
 	public function getCreatedDate()
 	{
 		return $this->created_date;
@@ -83,6 +71,18 @@ class Conversation extends AbstractModel
 	public function setCreatedDate($created_date)
 	{
 		$this->created_date = $created_date;
+
+		return $this;
+	}
+
+	public function getOptions()
+	{
+		return $this->options;
+	}
+
+	public function setOptions($options)
+	{
+		$this->options = $options;
 
 		return $this;
 	}

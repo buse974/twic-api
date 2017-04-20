@@ -575,6 +575,13 @@ class Page extends AbstractService
         $m_page->setOwner($owner);
     }
 
+
+
+    public function getByConversationId($conversation_id)
+    {
+        return $this->getMapper()->select($this->getModel()->setConversationId($conversation_id))->current();
+    }
+    
     /**
      * Get Service User
      *

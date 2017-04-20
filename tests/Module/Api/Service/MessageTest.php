@@ -140,7 +140,7 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][2]) , 5);
+        $this->assertEquals(count($data['result'][2]) , 7);
         $this->assertEquals(count($data['result'][2]['message']) , 6);
         $this->assertEquals(count($data['result'][2]['message']['message_user']) , 1);
         $this->assertEquals(!empty($data['result'][2]['message']['message_user']['read_date']) , true);
@@ -158,9 +158,22 @@ class MessageTest extends AbstractService
         $this->assertEquals(count($data['result'][2]['users']) , 2);
         $this->assertEquals($data['result'][2]['users'][0] , 2);
         $this->assertEquals($data['result'][2]['users'][1] , 3);
+        $this->assertEquals($data['result'][2]['nb_users'] , 2);
         $this->assertEquals($data['result'][2]['id'] , 2);
         $this->assertEquals($data['result'][2]['name'] , "Chat");
         $this->assertEquals($data['result'][2]['type'] , 2);
+        $this->assertEquals(count($data['result'][2]['options']) , 11);
+        $this->assertEquals($data['result'][2]['options']['record'] , false);
+        $this->assertEquals($data['result'][2]['options']['autoPublishCamera'] , true);
+        $this->assertEquals($data['result'][2]['options']['autoPublishMicrophone'] , false);
+        $this->assertEquals($data['result'][2]['options']['archive'] , false);
+        $this->assertEquals($data['result'][2]['options']['raiseHand'] , false);
+        $this->assertEquals($data['result'][2]['options']['publish'] , true);
+        $this->assertEquals($data['result'][2]['options']['askDevice'] , false);
+        $this->assertEquals($data['result'][2]['options']['askScreen'] , false);
+        $this->assertEquals($data['result'][2]['options']['forceMute'] , false);
+        $this->assertEquals($data['result'][2]['options']['forceUnpublish'] , false);
+        $this->assertEquals($data['result'][2]['options']['kick'] , false);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
