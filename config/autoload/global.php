@@ -14,7 +14,7 @@
 
 return [
     'version' => "v1.5b411",
-    'build-commit' => 427,
+    'build-commit' => 428,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -63,6 +63,7 @@ return [
             'app_service_activity',
             'app_service_circle',
             'app_service_report',
+            'app_service_item',
             'app_service_resume',
             'app_service_message',
             'app_service_library',
@@ -117,9 +118,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS427',
+                    'namespace' => 'LMS428',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS427'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS428'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
