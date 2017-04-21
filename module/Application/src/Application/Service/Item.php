@@ -24,7 +24,7 @@ class Item extends AbstractService
   * @param int parent_id
   *
   **/
-  public function add($page_id, $title, $points, $description = null, $type = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function add($page_id, $title, $points = null, $description = null, $type = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -115,7 +115,7 @@ class Item extends AbstractService
   * @param int parent_id
   *
   **/
-  public function update($id, $title, $points, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function update($id, $title = null, $points = null, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
