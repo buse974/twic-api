@@ -113,12 +113,15 @@ class User extends AbstractMapper
             $select->where->notIn('user.id', $exclude);
         }
         if (null !== $post) {
-            $select->join('post_like', 'post_like.user_id=user.id', array())
+            $select->join('post_like', 'post_like.user_id=user.id', [])
                 ->where(array('post_like.post_id' => $post))
                 ->where(array('post_like.is_like IS TRUE'));
         }
         if (null !== $organization_id) {
-            $select->where(array('user.organization_id' => $organization_id));
+          $select->join('page_user', 'page_user.user_id=user.id', [])
+            ->join('page', 'page_user.page_id=page.id', [])
+            ->where(['page_user.page_id' => $organization_id])
+            ->where(['page.type' => 'organization']);
         }
         if (null !== $search) {
             $select->where(['( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'])
