@@ -162,10 +162,8 @@ class ItemTest extends AbstractService
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
-      $this->assertEquals(count($data['result']) , 3);
-      $this->assertEquals($data['result'][0] , 1);
-      $this->assertEquals($data['result'][1] , 2);
-      $this->assertEquals($data['result'][2] , 3);
+      $this->assertEquals(count($data['result']) , 1);
+      $this->assertEquals($data['result'][1] , 3);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
@@ -176,15 +174,14 @@ class ItemTest extends AbstractService
     {
       $this->setIdentity(1);
       $data = $this->jsonRpc('item.getListId', [
-        'page_id' => $id,
         'parent_id' => 1
       ]);
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
-      $this->assertEquals($data['result'][0] , 4);
-      $this->assertEquals($data['jsonrpc'] , 2.0);
+      $this->assertEquals($data['result'][1] , 4);
+      $this->assertEquals($data['jsonrpc'] , 2.0); 
     }
 
     /**
