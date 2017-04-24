@@ -68,6 +68,13 @@ class Item extends AbstractService
   {
     $identity = $this->getServiceUser()->getIdentity();
 
+    if(is_array($page_id)) {
+      $page_id = reset($page_id);
+    }
+    if(null === $page_id) {
+      $page_id = $this->getServicePage()->getIdByItem($parent_id);
+    }
+
     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
     $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id]));
 
@@ -153,6 +160,16 @@ class Item extends AbstractService
   private function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Page
+   *
+   * @return \Application\Service\Page
+   */
+  private function getServicePage()
+  {
+      return $this->container->get('app_service_page');
   }
 
   /**

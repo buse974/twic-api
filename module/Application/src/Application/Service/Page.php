@@ -477,6 +477,18 @@ class Page extends AbstractService
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
+    /**
+     * Get Page
+     *
+     * @invokable
+     *
+     * @param  int $item_id
+     * @return int
+     */
+    public function getIdByItem($item_id)
+    {
+        return $this->getMapper()->getIdByItem($item_id)->current()->getId();
+    }
 
     /**
      * Get Page
@@ -581,7 +593,7 @@ class Page extends AbstractService
     {
         return $this->getMapper()->select($this->getModel()->setConversationId($conversation_id))->current();
     }
-    
+
     /**
      * Get Service User
      *

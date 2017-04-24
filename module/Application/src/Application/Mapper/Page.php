@@ -158,4 +158,15 @@ class Page extends AbstractMapper
 
         return $this->selectWith($select);
     }
+
+    public function getIdByItem($item_id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id'])
+          ->join('item', 'page.id=item.page_id', [])
+          ->where(['item.id' => $item_id]);
+
+        return $this->selectWith($select);
+    }
+
 }
