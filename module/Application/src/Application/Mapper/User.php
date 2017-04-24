@@ -117,7 +117,7 @@ class User extends AbstractMapper
                 ->where(array('post_like.post_id' => $post))
                 ->where(array('post_like.is_like IS TRUE'));
         }
-        if (null !== $page_id) {
+        if (!empty($page_id)) {
           $select->join('page_user', 'page_user.user_id=user.id', [])
             ->join('page', 'page_user.page_id=page.id', [])
             ->where(['page_user.page_id' => $page_id])
