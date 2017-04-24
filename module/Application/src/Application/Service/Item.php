@@ -81,7 +81,7 @@ class Item extends AbstractService
     $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id);
 
     $index = ($parent_id === null) ? $page_id : $parent_id;
-    $ar_item = [];
+    $ar_item[$index] = [];
     foreach ($res_item as $m_item) {
       $ar_item[$index][] = $m_item->getId();
     }
