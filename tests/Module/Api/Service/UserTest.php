@@ -163,7 +163,7 @@ class UserTest extends AbstractService
           'user_id' => [1],
           'exclude' => 2,
           'search' => 'robert',
-          'organization_id' => 1
+          'page_id' => 1
         ]);
 
         $this->assertEquals(count($data) , 3);

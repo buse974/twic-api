@@ -735,11 +735,11 @@ class User extends AbstractService
      * @param array  $exclude
      * @param array  $filter
      * @param int    $contact_state
-     * @param int    $organization_id
+     * @param int    $page_id
      *
      * @return array
      */
-    public function getListId($search = null, $exclude = null, $filter = null, $contact_state = null, $organization_id = null)
+    public function getListId($search = null, $exclude = null, $filter = null, $contact_state = null, $page_id = null)
     {
         $identity = $this->getIdentity();
         if (null !== $exclude && !is_array($exclude)) {
@@ -748,7 +748,7 @@ class User extends AbstractService
 
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $mapper = $this->getMapper();
-        $res_user = $mapper->usePaginator($filter)->getList($identity['id'], $is_admin, null, $search, $organization_id, null, $exclude, $contact_state);
+        $res_user = $mapper->usePaginator($filter)->getList($identity['id'], $is_admin, null, $search, $page_id, null, $exclude, $contact_state);
 
         $users = [];
         foreach ($res_user as $m_user) {

@@ -68,7 +68,7 @@ class User extends AbstractMapper
       $is_admin,
       $post = null,
       $search = null,
-      $organization_id = null,
+      $page_id = null,
       $order = null,
       array $exclude = null,
       $contact_state = null)
@@ -117,10 +117,10 @@ class User extends AbstractMapper
                 ->where(array('post_like.post_id' => $post))
                 ->where(array('post_like.is_like IS TRUE'));
         }
-        if (null !== $organization_id) {
+        if (null !== $page_id) {
           $select->join('page_user', 'page_user.user_id=user.id', [])
             ->join('page', 'page_user.page_id=page.id', [])
-            ->where(['page_user.page_id' => $organization_id])
+            ->where(['page_user.page_id' => $page_id])
             ->where(['page.type' => 'organization']);
         }
         if (null !== $search) {
