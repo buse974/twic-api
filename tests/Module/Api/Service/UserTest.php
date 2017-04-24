@@ -162,8 +162,7 @@ class UserTest extends AbstractService
         $data = $this->jsonRpc('contact.getListId', [
           'user_id' => [1],
           'exclude' => 2,
-          'search' => 'robert',
-          'page_id' => 1
+          'search' => 'robert'
         ]);
 
         $this->assertEquals(count($data) , 3);
@@ -192,7 +191,8 @@ class UserTest extends AbstractService
         $data = $this->jsonRpc('user.getListId', [
           'exclude' => [2],
           'search' => 'robert',
-          'filter' => ['p' => 1, 'n' => 10]
+          'filter' => ['p' => 1, 'n' => 10],
+        //  'page_id' => 1
         ]);
 
         $this->assertEquals(count($data) , 3);

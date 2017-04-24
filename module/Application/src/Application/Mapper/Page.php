@@ -56,7 +56,7 @@ class Page extends AbstractMapper
         $select->columns(['id'])
           ->where(['page.deleted_date IS NULL']);
 
-        if(null !== $parent_id) {
+        if(!empty($parent_id)) {
           $select->join('page_relation', 'page_relation.page_id = page.id', [])
             ->where(['page_relation.parent_id' => $parent_id]);
         }

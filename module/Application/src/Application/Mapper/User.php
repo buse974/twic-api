@@ -120,8 +120,7 @@ class User extends AbstractMapper
         if (!empty($page_id)) {
           $select->join('page_user', 'page_user.user_id=user.id', [])
             ->join('page', 'page_user.page_id=page.id', [])
-            ->where(['page_user.page_id' => $page_id])
-            ->where(['page.type' => 'organization']);
+            ->where(['page_user.page_id' => $page_id]);
         }
         if (null !== $search) {
             $select->where(['( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'])
