@@ -64,7 +64,7 @@ class Item extends AbstractService
   * @param int $page_id
   * @param int $parent_id
   */
-  public function getListId($page_id, $parent_id = null)
+  public function getListId($page_id = null, $parent_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -73,9 +73,10 @@ class Item extends AbstractService
 
     $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id);
 
+    $index = ($parent_id === null) ? $page_id : $parent_id;
     $ar_item = [];
     foreach ($res_item as $m_item) {
-        $ar_item[] = $m_item->getId();
+      $ar_item[$index] = $m_item->getId();
     }
 
     return $ar_item;
