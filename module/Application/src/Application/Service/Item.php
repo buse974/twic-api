@@ -91,7 +91,8 @@ class Item extends AbstractService
     }
 
     foreach ($res_item as $m_item) {
-      $ar_item[$index][] = $m_item->getId();
+      $ii = (!is_numeric($m_item->getParentId())) ? $m_item->getPageId() : $m_item->getParentId();
+      $ar_item[$ii][] = $m_item->getId();
     }
 
     return $ar_item;
