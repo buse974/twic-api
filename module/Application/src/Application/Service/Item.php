@@ -83,7 +83,7 @@ class Item extends AbstractService
     $index = ($parent_id === null) ? $page_id : $parent_id;
     $ar_item = [];
     foreach ($res_item as $m_item) {
-      $ar_item[$index] = $m_item->getId();
+      $ar_item[$index][] = $m_item->getId();
     }
 
     return $ar_item;
@@ -148,9 +148,6 @@ class Item extends AbstractService
 
       return $this->getMapper()->update($m_item);
   }
-
-
-
 
   /**
    * Get Service User
