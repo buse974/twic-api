@@ -287,12 +287,13 @@ class User extends AbstractService
      * @param string $background
      * @param string $nickname
      * @param string $ambassador
+     * @param array $address
      *
      * @return int
      */
     public function add($firstname, $lastname, $email, $gender = null, $origin = null, $nationality = null, $sis = null,
         $password = null, $birth_date = null, $position = null, $organization_id = null, $interest = null, $avatar = null, $roles = null,
-        $timezone = null, $background = null, $nickname = null, $ambassador = null
+        $timezone = null, $background = null, $nickname = null, $ambassador = null, $address = null
     ) {
         if ($this->getNbrEmailUnique($email) > 0) {
             throw new JrpcException('duplicate email', - 38001);
@@ -305,6 +306,15 @@ class User extends AbstractService
         }
 
         $m_user = $this->getModel();
+
+        if ($address !== null) {
+            $address = $this->getServiceAddress()->getAddress($address);
+            if ($address && null !== ($address_id = $address->getId())) {
+                $m_user->setAddressId($address_id);
+            }
+        }
+
+
         $m_user->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
@@ -431,7 +441,6 @@ class User extends AbstractService
      * @param string $interest
      * @param string $avatar
      * @param array  $roles
-     * @param array  $programs
      * @param string $resetpassword
      * @param bool   $has_email_notifier
      * @param string $timezone
@@ -439,13 +448,14 @@ class User extends AbstractService
      * @param string $nickname
      * @param bool   $ambassador
      * @param string $password
+     * @param array $address
      *
      * @return int
      */
     public function update($id = null, $gender = null, $origin = null, $nationality = null, $firstname = null, $lastname = null, $sis = null,
         $email = null, $birth_date = null, $position = null, $organization_id = null, $interest = null, $avatar = null, $roles = null,
-        $programs = null, $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null,
-        $suspension_reason = null, $ambassador = null, $password = null
+        $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null,
+        $suspension_reason = null, $ambassador = null, $password = null, $address = null
     ) {
         if ($birth_date !== null && \DateTime::createFromFormat('Y-m-d', $birth_date) === false && \DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $birth_date) === false) {
             $birth_date = null;
@@ -460,9 +470,14 @@ class User extends AbstractService
         if ($id === null) {
             $id = $this->getIdentity()['id'];
         }
-
         if (!empty($password)) {
             $m_user->setPassword(md5($password));
+        }
+        if ($address !== null) {
+            $address = $this->getServiceAddress()->getAddress($address);
+            if ($address && null !== ($address_id = $address->getId())) {
+                $m_user->setAddressId($address_id);
+            }
         }
 
         $m_user->setId($id)
@@ -482,7 +497,6 @@ class User extends AbstractService
             ->setBackground($background)
             ->setNickname($nickname)
             ->setAmbassador($ambassador);
-          //  ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         //@TODO secu school_id
         if ($organization_id !== null) {
@@ -503,11 +517,6 @@ class User extends AbstractService
                         ->getIdByName($r), $id
                 );
             }
-        }
-
-        if ($programs !== null) {
-            $this->getServiceProgramUserRelation()->deleteByUser($id);
-            $this->addProgram($id, $programs);
         }
 
         $ret = $this->getMapper()->update($m_user);
@@ -916,6 +925,16 @@ class User extends AbstractService
     private function getServiceFcm()
     {
         return $this->container->get('fcm');
+    }
+
+    /**
+     * Get Service Address
+     *
+     * @return \Address\Service\Address
+     */
+    private function getServiceAddress()
+    {
+        return $this->container->get('addr_service_address');
     }
 
     /**

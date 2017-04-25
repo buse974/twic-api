@@ -17,6 +17,7 @@ class User extends BaseUser
   protected $role;
   protected $nb_user;
   protected $role_id;
+  protected $address;
 
   public function exchangeArray(array &$data)
   {
@@ -29,6 +30,7 @@ class User extends BaseUser
       $this->role = $this->requireModel('app_model_role', $data);
       $this->nationality = $this->requireModel('addr_model_country', $data, 'nationality');
       $this->origin = $this->requireModel('addr_model_country', $data, 'origin');
+      $this->address = $this->requireModel('addr_model_address', $data);
   }
 
   public function getRoleId()
@@ -160,4 +162,29 @@ class User extends BaseUser
   {
       return $this->selected;
   }
+
+    /**
+     * Get the value of Address
+     *
+     * @return mixed
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set the value of Address
+     *
+     * @param mixed address
+     *
+     * @return self
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
 }

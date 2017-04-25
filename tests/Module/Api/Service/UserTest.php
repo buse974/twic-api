@@ -87,7 +87,16 @@ class UserTest extends AbstractService
           'password' => 'studnetnew',
           'position' => 'une position new',
           'interest' => 'un interet new',
-          'avatar' => 'un_token_new']);
+          'avatar' => 'un_token_new',
+          'address' => [
+            "street_no"   => "11",
+            "street_name" => "Allée des Chênes",
+            "city"        => ["name" => "Villefontaine", "libelle" => "VILLEFONTAINE"],
+            "division"    => ["name" => "Auvergne-Rhône-Alpes"],
+            "country"     => ["short_name" => "France"],
+            "latitude"    => 45.601569,
+            "longitude"   => 5.178744499999993,
+          ]]);
 
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['result'], 1);
@@ -95,14 +104,63 @@ class UserTest extends AbstractService
         $this->assertEquals($data['jsonrpc'], 2.0);
     }
 
-    public function testUserGet()
+    /**
+     * @depends testCanAddUser
+     */
+    public function testUserGet($id)
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('user.get', [
-          'id' => [5]
+          'id' => [$id]
         ]);
 
-        //$this->printCreateTest($data);
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][8]) , 20);
+        $this->assertEquals(count($data['result'][8]['origin']) , 2);
+        $this->assertEquals($data['result'][8]['origin']['id'] , 1);
+        $this->assertEquals($data['result'][8]['origin']['short_name'] , "Afghanistan");
+        $this->assertEquals(count($data['result'][8]['nationality']) , 2);
+        $this->assertEquals($data['result'][8]['nationality']['id'] , 1);
+        $this->assertEquals($data['result'][8]['nationality']['short_name'] , "Afghanistan");
+        $this->assertEquals($data['result'][8]['gender'] , "m");
+        $this->assertEquals($data['result'][8]['contact_state'] , null);
+        $this->assertEquals($data['result'][8]['contacts_count'] , 0);
+        $this->assertEquals(count($data['result'][8]['address']) , 14);
+        $this->assertEquals(count($data['result'][8]['address']['city']) , 1);
+        $this->assertEquals($data['result'][8]['address']['city']['name'] , "Villefontaine");
+        $this->assertEquals(count($data['result'][8]['address']['division']) , 2);
+        $this->assertEquals($data['result'][8]['address']['division']['id'] , 54);
+        $this->assertEquals($data['result'][8]['address']['division']['name'] , "Auvergne-Rhône-Alpes");
+        $this->assertEquals($data['result'][8]['address']['country'] , null);
+        $this->assertEquals($data['result'][8]['address']['id'] , 1);
+        $this->assertEquals($data['result'][8]['address']['street_no'] , 11);
+        $this->assertEquals($data['result'][8]['address']['street_type'] , null);
+        $this->assertEquals($data['result'][8]['address']['street_name'] , "Allée des Chênes");
+        $this->assertEquals($data['result'][8]['address']['longitude'] , 5.1787445);
+        $this->assertEquals($data['result'][8]['address']['latitude'] , 45.601569);
+        $this->assertEquals($data['result'][8]['address']['door'] , null);
+        $this->assertEquals($data['result'][8]['address']['building'] , null);
+        $this->assertEquals($data['result'][8]['address']['apartment'] , null);
+        $this->assertEquals($data['result'][8]['address']['floor'] , null);
+        $this->assertEquals($data['result'][8]['address']['timezone'] , "Europe/Paris");
+        $this->assertEquals($data['result'][8]['id'] , 8);
+        $this->assertEquals($data['result'][8]['firstname'] , "Jean");
+        $this->assertEquals($data['result'][8]['lastname'] , "Paul");
+        $this->assertEquals($data['result'][8]['nickname'] , null);
+        $this->assertEquals($data['result'][8]['email'] , "jpaul@thestudnet.com");
+        $this->assertEquals($data['result'][8]['birth_date'] , null);
+        $this->assertEquals($data['result'][8]['position'] , "une position new");
+        $this->assertEquals($data['result'][8]['organization_id'] , null);
+        $this->assertEquals($data['result'][8]['interest'] , "un interet new");
+        $this->assertEquals($data['result'][8]['avatar'] , "un_token_new");
+        $this->assertEquals($data['result'][8]['has_email_notifier'] , 1);
+        $this->assertEquals($data['result'][8]['background'] , null);
+        $this->assertEquals($data['result'][8]['ambassador'] , null);
+        $this->assertEquals(count($data['result'][8]['roles']) , 1);
+        $this->assertEquals($data['result'][8]['roles'][0] , "user");
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     public function testAddContact()

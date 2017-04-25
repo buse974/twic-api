@@ -32,6 +32,7 @@ class User extends AbstractModel
 	protected $suspension_date;
 	protected $suspension_reason;
 	protected $email_sent;
+	protected $address_id;
 
 	protected $prefix = 'user';
 
@@ -343,6 +344,18 @@ class User extends AbstractModel
 	public function setEmailSent($email_sent)
 	{
 		$this->email_sent = $email_sent;
+
+		return $this;
+	}
+
+	public function getAddressId()
+	{
+		return $this->address_id;
+	}
+
+	public function setAddressId($address_id)
+	{
+		$this->address_id = $address_id;
 
 		return $this;
 	}

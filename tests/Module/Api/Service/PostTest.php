@@ -18,7 +18,7 @@ class PostTest extends AbstractService
         $data = $this->jsonRpc('post.linkPreview', [
             'url' => 'http://thestudnet.com/',
         ]);
-        
+
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 3);
@@ -31,7 +31,7 @@ class PostTest extends AbstractService
         $this->assertEquals($data['result']['meta']['twitter:site'] , "@thestudnet");
         $this->assertEquals($data['result']['meta']['twitter:image'] , "http://thestudnet.com/wp-content/uploads/2015/09/aacsb-e1443519385344.png");
         $this->assertEquals($data['result']['meta']['twitter:creator'] , "@thestudnet");
-        $this->assertEquals($data['result']['meta']['generator'] , "WordPress 4.7.3");
+        $this->assertEquals($data['result']['meta']['generator'] , "WordPress 4.7.4");
         $this->assertEquals(count($data['result']['open_graph']) , 7);
         $this->assertEquals($data['result']['open_graph']['locale'] , "en_US");
         $this->assertEquals($data['result']['open_graph']['type'] , "article");

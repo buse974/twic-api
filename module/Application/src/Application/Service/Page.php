@@ -528,7 +528,6 @@ class Page extends AbstractService
         $mapper = $this->getMapper()->usePaginator($filter);
         $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags);
 
-
         $ar_page = [];
         foreach ($res_page as $m_page) {
             $ar_page[] = $m_page->getId();
