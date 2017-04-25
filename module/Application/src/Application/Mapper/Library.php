@@ -24,7 +24,7 @@ class Library extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
           ->where(['library.deleted_date IS NULL'])
-          ->where(['library.owner_id', $user_id])
+          ->where(['library.owner_id' => $user_id])
           ->order(['library.id' => 'DESC']);
 
         if(null !== $page_id) {
