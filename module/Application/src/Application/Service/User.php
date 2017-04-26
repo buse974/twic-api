@@ -474,21 +474,28 @@ class User extends AbstractService
             $m_user->setPassword(md5($password));
         }
         if ($address !== null) {
+          if ($address === 'null') {
+              $address_id = new IsNull('address_id');
+          } else {
             $address = $this->getServiceAddress()->getAddress($address);
-            if ($address && null !== ($address_id = $address->getId())) {
-                $m_user->setAddressId($address_id);
+            if ($address) {
+              $address_id = $address->getId();
             }
+          }
+          if($address_id !== null) {
+              $m_user->setAddressId($address_id);
+          }
         }
 
         $m_user->setId($id)
             ->setFirstname($firstname)
             ->setLastname($lastname)
             ->setEmail($email)
-            ->setOrigin($origin)
+            ->setOrigin(('null'===$origin) ? new IsNull('origin') : $origin)
             ->setGender($gender)
-            ->setNationality($nationality)
+            ->setNationality(('null'===$nationality) ? new IsNull('nationality') : $nationality)
             ->setSis($sis)
-            ->setBirthDate($birth_date)
+            ->setBirthDate(('null'===$birth_date) ? new IsNull('birth_date') : $birth_date)
             ->setPosition($position)
             ->setInterest($interest)
             ->setAvatar($avatar)
@@ -501,7 +508,7 @@ class User extends AbstractService
         //@TODO secu school_id
         if ($organization_id !== null) {
             if ($organization_id === 'null') {
-                $organization_id = new IsNull('school_id');
+                $organization_id = new IsNull('organization_id');
             }
             $this->addOrganization($organization_id, $id, true);
         }
