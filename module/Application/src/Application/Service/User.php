@@ -457,9 +457,6 @@ class User extends AbstractService
         $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null,
         $suspension_reason = null, $ambassador = null, $password = null, $address = null
     ) {
-        if ($birth_date !== null && \DateTime::createFromFormat('Y-m-d', $birth_date) === false && \DateTime::createFromFormat('Y-m-d\TH:i:s.u\Z', $birth_date) === false) {
-            $birth_date = null;
-        }
 
         if ($this->getNbrEmailUnique($email, $id) > 0) {
             throw new JrpcException('duplicate email', - 38001);
