@@ -474,6 +474,7 @@ class User extends AbstractService
             $m_user->setPassword(md5($password));
         }
         if ($address !== null) {
+          $address_id = null;
           if ($address === 'null') {
               $address_id = new IsNull('address_id');
           } else {
