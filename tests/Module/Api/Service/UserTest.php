@@ -302,6 +302,41 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'] , true);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+
+    public function testCanImport()
+    {
+      $this->setIdentity(1, 1);
+      $data = $this->jsonRpc('page.add', [
+          'title' => 'super title',
+          'logo' => 'logo',
+          'background' => 'background',
+          'description' => 'description',
+          'confidentiality' => 1,
+          'type' => 'school',
+          'admission' => 'free',
+          'location' => 'location'
+      ]);
+
+      $this->reset();
+
+      $this->setIdentity(5);
+      $data = $this->jsonRpc('user.import', [
+        'data' => [[
+          'firstname' => 'Christopher',
+          'lastname' => 'Robert',
+          'nickname' => 'mnickname',
+          'email' => 'crobertr@thestudnet.com',
+          'uid' => 'uid',
+          'role' => 'user'
+        ]],
+        'page_id' => $data['id'],
+      ]);
+
+      print_r($data);
+      $this->printCreatedTest($data);
+
+      return $data['result'];
+    }
 /*
 
     /**

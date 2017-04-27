@@ -397,7 +397,7 @@ class User extends AbstractService
                   $page_id, /*organization_id*/
                   null, /*interest*/
                   null, /*avatar*/
-                  [$u['role']], /*roles*/
+                  null, /*roles*/
                   null, /*timezone*/
                   null, /*background*/
                   array_key_exists('nickname', $u) ? $u['nickname'] : null, /*$nickname*/
