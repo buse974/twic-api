@@ -374,15 +374,37 @@ class User extends AbstractService
      * @invokable
      *
      * @param array $data
+     * @param int $page_id
      *
      * @return array
      */
-    public function import($data)
+    public function import($data, $page_id = null)
     {
         $error = [];
         foreach ($data as $u) {
             try {
-                $id = $this->add($u['firstname'], $u['lastname'], $u['email'], null, null, null, array_key_exists('uid', $u) ? $u['uid'] : null, null, null, null, array_key_exists('school', $u) ? $u['school'] : null, null, null, [$u['role']], null, null, array_key_exists('nickname', $u) ? $u['nickname'] : null);
+                $id = $this->add(
+                  $u['firstname'], /*firstname*/
+                  $u['lastname'], /*lastname*/
+                  $u['email'], /*email*/
+                  null, /*gender*/
+                  null, /*origin*/
+                  null, /$nationality*/
+                  array_key_exists('uid', $u) ? $u['uid'] : null, /*$sis*/
+                  null, /*password*/
+                  null, /*birth_date*/
+                  null, /*position*/
+                  $page_id, /*organization_id*/
+                  null, /*interest*/
+                  null, /*avatar*/
+                  [$u['role']], /*roles*/
+                  null, /*timezone*/
+                  null, /*background*/
+                  array_key_exists('nickname', $u) ? $u['nickname'] : null, /*$nickname*/
+                  null, /*ambassador*/
+                  null /*address*/
+                );
+
             } catch (JrpcException $e) {
                 $error[] = ['field' => $u,'code' => $e->getCode(),'message' => $e->getMessage()];
             }
