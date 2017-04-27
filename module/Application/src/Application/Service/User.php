@@ -389,7 +389,7 @@ class User extends AbstractService
                   $u['email'], /*email*/
                   null, /*gender*/
                   null, /*origin*/
-                  null, /$nationality*/
+                  null, /*$nationality*/
                   array_key_exists('uid', $u) ? $u['uid'] : null, /*$sis*/
                   null, /*password*/
                   null, /*birth_date*/
