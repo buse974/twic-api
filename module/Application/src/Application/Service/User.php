@@ -16,6 +16,7 @@ use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
 use Application\Model\Item as ModelItem;
 use Auth\Authentication\Adapter\Model\Identity;
+use Application\Model\PageUser as ModelPageUser;
 
 /**
  * Class User.
@@ -405,6 +406,7 @@ class User extends AbstractService
                   null /*address*/
                 );
 
+                $this->getServicePageUser()->add($page_id, $id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
             } catch (JrpcException $e) {
                 $error[] = ['field' => $u,'code' => $e->getCode(),'message' => $e->getMessage()];
             }
@@ -972,6 +974,16 @@ class User extends AbstractService
     private function getServiceGcmGroup()
     {
         return $this->container->get('app_service_gcm_group');
+    }
+
+    /**
+     * Get Service GcmGroup
+     *
+     * @return \Application\Service\PageUser
+     */
+    private function getServicePageUser()
+    {
+        return $this->container->get('app_service_page_user');
     }
 
 }

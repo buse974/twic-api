@@ -332,10 +332,10 @@ class UserTest extends AbstractService
         'page_id' => $data['id'],
       ]);
 
-      print_r($data);
-      $this->printCreatedTest($data);
-
-      return $data['result'];
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1); 
+      $this->assertEquals(count($data['result']) , 0);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 /*
 
