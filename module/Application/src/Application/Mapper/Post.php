@@ -28,9 +28,10 @@ class Post extends AbstractMapper
             ->where(['page.deleted_date IS NULL'])
             ->group('post.id');
 
-        if (null === $parent_id && null === $user_id && null === $page_id) {
+        if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])
+                ->where(['subscription.user_id IS NULL '], Predicate::OP_OR)
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
         }
