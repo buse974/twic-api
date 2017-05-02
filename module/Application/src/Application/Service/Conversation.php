@@ -89,19 +89,35 @@ class Conversation extends AbstractService
           }
         }
         if($m_conversation->getType() === ModelConversation::TYPE_CHAT) {
-          $m_conversation->setOptions([
-            "record"                => false,
-            "autoPublishCamera"     => true,
-            "autoPublishMicrophone" => false,
-            "archive"               => false,
-            "raiseHand"             => false,
-            "publish"               => true,
-            "askDevice"             => false,
-            "askScreen"             => false,
-            "forceMute"             => false,
-            "forceUnpublish"        => false,
-            "kick"                  => false
-          ]);
+          if($user_id === 7) {
+            $m_conversation->setOptions([
+              "record"                => true,
+              "autoPublishCamera"     => true,
+              "autoPublishMicrophone" => true,
+              "archive"               => true,
+              "raiseHand"             => false,
+              "publish"               => true,
+              "askDevice"             => true,
+              "askScreen"             => true,
+              "forceMute"             => true,
+              "forceUnpublish"        => true,
+              "kick"                  => true
+            ]);
+          } else {
+            $m_conversation->setOptions([
+              "record"                => false,
+              "autoPublishCamera"     => true,
+              "autoPublishMicrophone" => false,
+              "archive"               => false,
+              "raiseHand"             => false,
+              "publish"               => true,
+              "askDevice"             => false,
+              "askScreen"             => false,
+              "forceMute"             => false,
+              "forceUnpublish"        => false,
+              "kick"                  => false
+            ]);
+          }
         } else if($m_conversation->getType() === ModelConversation::TYPE_CHANNEL) {
           $m_conversation->setOptions([
             "record"                  => true,
