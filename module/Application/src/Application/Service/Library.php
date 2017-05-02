@@ -52,7 +52,11 @@ class Library extends AbstractService
         }
 
         $box_id = null;
-        $u = (null !== $link) ? $link : $urldms . $token;
+        $u = (null !== $link) ? $link : $urldms . '/' . $token;
+
+        throw new JrpcException($u);
+
+        
         $m_box = $this->getServiceBox()->addFile($u, $type);
 
         if ($m_box instanceof ModelDocument) {
