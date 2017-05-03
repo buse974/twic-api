@@ -59,6 +59,7 @@ class PostDoc extends AbstractService
       foreach ($this->getMapper()->select($this->getModel()->setPostId($post_id)) as $m_post_doc) {
         $this->getServiceLibrary()->delete($m_post_doc->getLibraryId());
       }
+      
       $this->getMapper()->delete($this->getModel()->setPostId($post_id));
 
       return $this->_add($post_id, $data);
