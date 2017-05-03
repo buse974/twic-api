@@ -34,7 +34,7 @@ class Post extends AbstractMapper
                 ->where(['subscription.user_id IS NULL '], Predicate::OP_OR)
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
-        }     
+        }
         if (null !== $user_id) {
             $select->where(['post.t_user_id' => $user_id]);
         }

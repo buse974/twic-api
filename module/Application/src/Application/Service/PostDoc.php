@@ -56,9 +56,13 @@ class PostDoc extends AbstractService
      */
     public function replace($post_id, $data)
     {
-        $this->getMapper()->delete($this->getModel()->setPostId($post_id));
+      foreach ($this->getMapper()->select($this->getModel()->setPostId($post_id)) as $m_post_doc) {
+        $this->getServiceLibrary()->delete($m_post_doc->getLibraryId());
+      }
 
-        return $this->_add($post_id, $data);
+      $this->getMapper()->delete($this->getModel()->setPostId($post_id));
+
+      return $this->_add($post_id, $data);
     }
 
     /**
