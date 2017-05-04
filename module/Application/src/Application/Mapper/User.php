@@ -129,6 +129,7 @@ class User extends AbstractMapper
         if (null !== $search) {
             $select->where(['( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'])
                 ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                ->where(['user.email LIKE ? ' => '%'.$search.'%'], Predicate::OP_OR)
                 ->where(['user.nickname LIKE ? )' => ''.$search.'%'], Predicate::OP_OR);
         }
         if (null !== $contact_state) {
