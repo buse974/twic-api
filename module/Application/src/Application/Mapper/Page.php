@@ -67,6 +67,7 @@ class Page extends AbstractMapper
           $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
               ->where(['member.user_id' => $member_id]);
         }
+
         if (null !== $search) {
           $tags = explode(' ',$search);
           $select->join('page_tag', 'page_tag.page_id = page.id', [], $select::JOIN_LEFT)
@@ -76,10 +77,10 @@ class Page extends AbstractMapper
             ->having(['(COUNT(DISTINCT tag.id) = ? || COUNT(DISTINCT tag.id) = 0 )' => count($tags)]);
         }
         if (null !== $tags) {
-            $select->join('page_tag', 'page_tag.page_id = page.id')
+        /*    $select->join('page_tag', 'page_tag.page_id = page.id')
                 ->join('tag', 'tag.id = page_tag.tag_id')
                 ->where(['tag.name' => $tags])
-                ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);
+                ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);*/
         }
         if (null !== $start_date && null !== $end_date) {
             $select->where(['( page.start_date BETWEEN ? AND ? ' => [$start_date,$end_date]])
