@@ -68,11 +68,12 @@ class Page extends AbstractMapper
               ->where(['member.user_id' => $member_id]);
         }
         if (null !== $search) {
+          $tags = explode(' ',$search);
           $select->join('page_tag', 'page_tag.page_id = page.id', [], $select::JOIN_LEFT)
             ->join('tag', 'page_tag.tag_id = tag.id', [], $select::JOIN_LEFT)
             ->where(['( page.title LIKE ? ' => '%' . $search . '%'])
-            ->where(['tag.name LIKE ? )'   => '' . $search . ''], Predicate::OP_OR)
-            ->having(['COUNT(DISTINCT tag.id) = ?' => count($search)]);
+            ->where(['tag.name IN (?) )'   => '"'.implode('","', $tags).'"'], Predicate::OP_OR)
+            ->having(['(COUNT(DISTINCT tag.id) = ? || COUNT(DISTINCT tag.id) = 0 )' => count($tags)]);
         }
         if (null !== $tags) {
             $select->join('page_tag', 'page_tag.page_id = page.id')
