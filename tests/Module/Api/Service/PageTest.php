@@ -60,6 +60,43 @@ class PageTest extends AbstractService
     /**
      * @depends testPageAdd
      */
+    public function testPageAddTag($page_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.addTag', [
+          'id' => $page_id,
+          'tag' => 'superTag'
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 4);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        return $data['result'];
+    }
+
+    /**
+     * @depends testPageAdd
+     * @depends testPageAddTag
+     */
+    public function testPageremoveTag($page_id, $tag_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.removeTag', [
+          'id' => $page_id,
+          'tag_id' => $tag_id
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
     public function testPageGet($page_id)
     {
         $this->setIdentity(1);
@@ -67,7 +104,7 @@ class PageTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 19);
+        $this->assertEquals(count($data['result']) , 20);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 1);
         $this->assertEquals($data['result']['address']['city']['name'] , "Villefontaine");
@@ -97,6 +134,16 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['user']['lastname'] , "Boussekey");
         $this->assertEquals($data['result']['user']['avatar'] , null);
         $this->assertEquals($data['result']['user']['ambassador'] , null);
+        $this->assertEquals(count($data['result']['tags']) , 3);
+        $this->assertEquals(count($data['result']['tags'][0]) , 2);
+        $this->assertEquals($data['result']['tags'][0]['name'] , "toto");
+        $this->assertEquals($data['result']['tags'][0]['weight'] , 1);
+        $this->assertEquals(count($data['result']['tags'][1]) , 2);
+        $this->assertEquals($data['result']['tags'][1]['name'] , "tata");
+        $this->assertEquals($data['result']['tags'][1]['weight'] , 1);
+        $this->assertEquals(count($data['result']['tags'][2]) , 2);
+        $this->assertEquals($data['result']['tags'][2]['name'] , "tutu");
+        $this->assertEquals($data['result']['tags'][2]['weight'] , 1);
         $this->assertEquals($data['result']['role'] , "admin");
         $this->assertEquals($data['result']['state'] , "member");
         $this->assertEquals($data['result']['id'] , 1);
@@ -112,6 +159,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['type'] , "group");
         $this->assertEquals($data['result']['user_id'] , 1);
         $this->assertEquals($data['result']['owner_id'] , 1);
+        $this->assertEquals($data['result']['conversation_id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 

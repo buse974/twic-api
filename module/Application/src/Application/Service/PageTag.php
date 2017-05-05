@@ -26,7 +26,9 @@ class PageTag extends AbstractService
             ->setPageId($page_id)
             ->setTagId($this->getServiceTag()->add($tag));
 
-        return $this->getMapper()->insert($m_page_tag);
+        $this->getMapper()->insert($m_page_tag);
+
+        return $m_page_tag->getTagId();
     }
 
     /**
@@ -58,6 +60,19 @@ class PageTag extends AbstractService
         $this->getMapper()->delete($this->getModel()->setPageId($page_id));
 
         return  $this->_add($page_id, $data);
+    }
+
+    /**
+     * Remove Tag
+     *
+     * @param  int $page_id
+     * @param  int $tag_id
+     * @return bool
+     */
+    public function remove($page_id, $tag_id)
+    {
+      return $this->getMapper()->delete(
+        $this->getModel()->setPageId($page_id)->setTagId($tag_id));
     }
 
     /**

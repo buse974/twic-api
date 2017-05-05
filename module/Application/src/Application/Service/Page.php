@@ -220,6 +220,36 @@ class Page extends AbstractService
     }
 
     /**
+     * Add Tags
+     *
+     * @invokable
+     *
+     * @param int   $id
+     * @param string $tag
+     *
+     * @return int
+     */
+    function addTag($id, $tag)
+    {
+      return $this->getServicePageTag()->add($id, $tag);
+    }
+
+    /**
+     * Remove Tags
+     *
+     * @invokable
+     *
+     * @param int   $id
+     * @param int $tag_id
+     *
+     * @return int
+     */
+    function removeTag($id, $tag_id)
+    {
+      return $this->getServicePageTag()->remove($id, $tag_id);
+    }
+
+    /**
      * Add Document
      *
      * @invokable
@@ -456,7 +486,8 @@ class Page extends AbstractService
         }
 
         foreach ($res_page as $m_page) {
-            $this->getOwner($m_page);
+          $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
+          $this->getOwner($m_page);
         }
 
         $res_page->rewind();
