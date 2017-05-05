@@ -135,13 +135,13 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['user']['avatar'] , null);
         $this->assertEquals($data['result']['user']['ambassador'] , null);
         $this->assertEquals(count($data['result']['tags']) , 3);
-        $this->assertEquals(count($data['result']['tags'][0]) , 2);
+        $this->assertEquals(count($data['result']['tags'][0]) , 3);
         $this->assertEquals($data['result']['tags'][0]['name'] , "toto");
         $this->assertEquals($data['result']['tags'][0]['weight'] , 1);
-        $this->assertEquals(count($data['result']['tags'][1]) , 2);
+        $this->assertEquals(count($data['result']['tags'][1]) , 3);
         $this->assertEquals($data['result']['tags'][1]['name'] , "tata");
         $this->assertEquals($data['result']['tags'][1]['weight'] , 1);
-        $this->assertEquals(count($data['result']['tags'][2]) , 2);
+        $this->assertEquals(count($data['result']['tags'][2]) , 3);
         $this->assertEquals($data['result']['tags'][2]['name'] , "tutu");
         $this->assertEquals($data['result']['tags'][2]['weight'] , 1);
         $this->assertEquals($data['result']['role'] , "admin");
