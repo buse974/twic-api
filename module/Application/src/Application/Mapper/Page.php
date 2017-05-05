@@ -76,8 +76,8 @@ class Page extends AbstractMapper
             ->where(['tag.name IN (?) )'   => '"'.implode('","', $tags).'"'], Predicate::OP_OR)
             ->having(['(COUNT(DISTINCT tag.id) = ? || COUNT(DISTINCT tag.id) = 0 )' => count($tags)]);
         }
-        if (null !== $tags) {
-        /*    $select->join('page_tag', 'page_tag.page_id = page.id')
+        if (!empty($tags)) {
+          /*  $select->join('page_tag', 'page_tag.page_id = page.id')
                 ->join('tag', 'tag.id = page_tag.tag_id')
                 ->where(['tag.name' => $tags])
                 ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);*/
