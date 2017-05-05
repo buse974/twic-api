@@ -71,9 +71,8 @@ class Page extends AbstractMapper
           $select->join('page_tag', 'page_tag.page_id = page.id', [], $select::JOIN_LEFT)
             ->join('tag', 'page_tag.tag_id = tag.id', [], $select::JOIN_LEFT)
             ->where(['( page.title LIKE ? ' => '%' . $search . '%'])
-            ->where(['tag.name LIKE ? )'   => '' . $search . ''], Predicate::OP_OR);
-
-          $select->where(['page.title LIKE ? ' => '%' . $search . '%']);
+            ->where(['tag.name LIKE ? )'   => '' . $search . ''], Predicate::OP_OR)
+            ->having(['COUNT(DISTINCT tag.id) = ?' => count($search)]);
         }
         if (null !== $tags) {
             $select->join('page_tag', 'page_tag.page_id = page.id')
