@@ -535,6 +535,7 @@ class Page extends AbstractService
      * @param bool   $strict_dates
      * @param string $search
      * @param array  $tags
+     * @param int    $children_id
      *
      * @throws \Exception
      * @return \Dal\Db\ResultSet\ResultSet
@@ -548,7 +549,8 @@ class Page extends AbstractService
       $filter = null,
       $strict_dates = false,
       $search = null,
-      $tags = null)
+      $tags = null,
+      $children_id = null)
     {
         if (empty($tags)) {
             $tags = null;
@@ -557,7 +559,7 @@ class Page extends AbstractService
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags);
+        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags, $children_id);
 
         $ar_page = [];
         foreach ($res_page as $m_page) {

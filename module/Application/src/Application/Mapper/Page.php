@@ -50,7 +50,8 @@ class Page extends AbstractMapper
       $strict_dates = false,
       $is_admin = false,
       $search = null,
-      $tags = null)
+      $tags = null,
+      $children_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id'])
@@ -59,6 +60,10 @@ class Page extends AbstractMapper
         if(!empty($parent_id)) {
           $select->join('page_relation', 'page_relation.page_id = page.id', [])
             ->where(['page_relation.parent_id' => $parent_id]);
+        }
+        if(!empty($children_id)) {
+          $select->join('page_relation', 'page_relation.parent_id = page.id', [])
+            ->where(['page_relation.page_id' => $children_id]);
         }
         if (null !== $type) {
           $select->where(['page.type' => $type]);
