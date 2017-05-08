@@ -481,7 +481,6 @@ class User extends AbstractService
         $resetpassword = null, $has_email_notifier = null, $timezone = null, $background = null, $nickname = null, $suspend = null,
         $suspension_reason = null, $ambassador = null, $password = null, $address = null
     ) {
-
         if ($this->getNbrEmailUnique($email, $id) > 0) {
             throw new JrpcException('duplicate email', - 38001);
         }

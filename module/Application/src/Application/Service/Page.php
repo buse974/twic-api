@@ -593,6 +593,18 @@ class Page extends AbstractService
         $res_page = $this->getMapper()->getListId($identity['id'], $parent_id, null, null, null,null, null, $is_admin, null, null, $children_id);
 
         $ar_page = [];
+
+        if(null !== $parent_id) {
+          foreach ($parent_id as $pi) {
+            $ar_page[$pi] = [];
+          }
+        }
+        if(null !== $children_id) {
+          foreach ($children_id as $ci) {
+            $ar_page[$ci] = [];
+          }
+        }
+
         foreach ($res_page as $m_page) {
           if(is_numeric($m_page->getPageRelation()->getParentId())) {
             $ar_page[$m_page->getPageRelation()->getParentId()][] = $m_page->getId();
