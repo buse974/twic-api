@@ -573,6 +573,39 @@ class Page extends AbstractService
     }
 
     /**
+     * Get Page
+     *
+     * @invokable
+     *
+     * @param int    $parent_id
+     * @param int    $children_id
+     *
+     * @throws \Exception
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getListRelationId($parent_id = null, $children_id = null)
+    {
+        if (empty($tags)) {
+            $tags = null;
+        }
+        $identity = $this->getServiceUser()->getIdentity();
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $res_page = $this->getMapper()->getListId($identity['id'], $parent_id, null, null, null,null, null, $is_admin, null, null, $children_id);
+
+        $ar_page = [];
+        foreach ($res_page as $m_page) {
+          if(is_numeric($m_page->getPageRelation()->getParentId())) {
+            $ar_page[$m_page->getPageRelation()->getParentId()][] = $m_page->getId();
+          }
+          if(is_numeric($m_page->getPageRelation()->getPageId())) {
+            $ar_page[$m_page->getPageRelation()->getPageId()][] = $m_page->getId();
+          }
+        }
+
+        return $ar_page;
+    }
+
+    /**
      * Generate a formatted website url for the school.
      *
      * @param string $website

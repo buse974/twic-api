@@ -26,6 +26,7 @@ class Page extends BasePage
     protected $page;
     protected $owner;
     protected $address;
+    protected $page_relation;
 
     public function exchangeArray(array &$data)
     {
@@ -33,8 +34,9 @@ class Page extends BasePage
 
         $this->user = $this->requireModel('app_model_user', $data, 'p_user');
         $this->organization = $this->requireModel('app_model_school', $data);
-        $this->page = $this->requireModel('app_model_page', $data);
+        //$this->page = $this->requireModel('app_model_page', $data);
         $this->address = $this->requireModel('addr_model_address', $data);
+        $this->page_relation = $this->requireModel('app_model_page_relation', $data);
     }
 
     public function setAddress($address)
@@ -182,4 +184,29 @@ class Page extends BasePage
     {
         return $this->state;
     }
+
+    /**
+     * Get the value of Page Relation
+     *
+     * @return mixed
+     */
+    public function getPageRelation()
+    {
+        return $this->page_relation;
+    }
+
+    /**
+     * Set the value of Page Relation
+     *
+     * @param mixed page_relation
+     *
+     * @return self
+     */
+    public function setPageRelation($page_relation)
+    {
+        $this->page_relation = $page_relation;
+
+        return $this;
+    }
+
 }

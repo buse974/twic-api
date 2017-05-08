@@ -57,6 +57,54 @@ class PageTest extends AbstractService
         return $data['id'];
     }
 
+    public function testPageAddParent()
+    {
+        $this->setIdentity(1, 1);
+        $data = $this->jsonRpc('page.add', [
+            'title' => 'super title patrent',
+            'logo' => 'logo',
+            'background' => 'background',
+            'description' => 'description',
+            'type' => 'organization',
+            'page_id' => 1
+          ]);
+
+          $this->assertEquals(count($data) , 3);
+          $this->assertEquals($data['id'] , 1);
+          $this->assertEquals($data['result'] , 2);
+          $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testgetListRelationId()
+    {
+        $this->setIdentity(1, 1);
+        $data = $this->jsonRpc('page.getListRelationId', [
+            'parent_id' => 1
+          ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals($data['result'][1][0] , 2);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testgetListRelationIdChild()
+    {
+        $this->setIdentity(1, 1);
+        $data = $this->jsonRpc('page.getListRelationId', [
+            'children_id' => 2
+          ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals(count($data['result']) , 1);
+      $this->assertEquals(count($data['result'][2]) , 1);
+      $this->assertEquals($data['result'][2][0] , 1);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
     /**
      * @depends testPageAdd
      */
@@ -174,8 +222,8 @@ class PageTest extends AbstractService
           'search' => 'super',
           'member_id' => [1],
           'filter' => ['n' => 5,'p' => 1],
-          'start_date' => '2015-00-00 00:00:00',
-          'end_date' => '2016-00-00 00:00:00',
+          //'start_date' => '2015-00-00 00:00:00',
+          //'end_date' => '2016-00-00 00:00:00',
           'strict_dates' => true,
           /*
           $parent_id = null,

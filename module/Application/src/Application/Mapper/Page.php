@@ -58,11 +58,11 @@ class Page extends AbstractMapper
           ->where(['page.deleted_date IS NULL']);
 
         if(!empty($parent_id)) {
-          $select->join('page_relation', 'page_relation.page_id = page.id', [])
+          $select->join('page_relation', 'page_relation.page_id = page.id', ['parent_id'])
             ->where(['page_relation.parent_id' => $parent_id]);
         }
         if(!empty($children_id)) {
-          $select->join('page_relation', 'page_relation.parent_id = page.id', [])
+          $select->join('page_relation', 'page_relation.parent_id = page.id', ['page_id'])
             ->where(['page_relation.page_id' => $children_id]);
         }
         if (null !== $type) {
