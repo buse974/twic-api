@@ -89,7 +89,7 @@ class Conversation extends AbstractService
           }
         }
         if($m_conversation->getType() === ModelConversation::TYPE_CHAT) {
-          if($user_id === 7) {
+          if($user_id === 7 || $user_id === 3) {
             $m_conversation->setOptions([
               "record"                => true,
               "autoPublishCamera"     => true,
