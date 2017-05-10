@@ -53,7 +53,7 @@ class Rbac
     public function isGranted($role, $permission)
     {
         if (!is_array($role)) {
-            $role = array($role);
+            $role = [$role];
         }
 
         foreach ($role as $r) {
@@ -76,7 +76,7 @@ class Rbac
             $this->rbac = (!$this->cache->hasItem('rbac')) ?
                 $this->createRbac() : $this->cache->getItem('rbac');
 	      }
-      
+
         return $this->rbac;
     }
 
