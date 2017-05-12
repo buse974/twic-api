@@ -863,6 +863,12 @@ class User extends AbstractService
         return $ret;
     }
 
+    public function removeOrganizationId($organization_id)
+    {
+        return $this->getMapper()->update(
+                $this->getModel()->setOrganizationId(new IsNull('organization_id')), ['organization_id' => $organization_id]);
+    }
+
     /**
      * Get Service Post
      *

@@ -437,10 +437,14 @@ class Page extends AbstractService
             $id = [$id];
         }
         $m_page = $this->getModel()->setId($id)
-            ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+          ->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         if ($this->getMapper()->update($m_page)) {
             foreach ($id as $i) {
                 $this->getServicePost()->hardDelete('PP'.$i);
+                $m_tmp_page = $this->getLite($i);
+                if($m_tmp_page->getType() === ModelPage::TYPE_ORGANIZATION) {
+                  $this->getServiceUser()->removeOrganizationId($i);
+                }
             }
             return true;
         }
@@ -595,11 +599,18 @@ class Page extends AbstractService
         $ar_page = [];
 
         if(null !== $parent_id) {
+          if(!is_array($parent_id)) {
+            $parent_id = [$parent_id];
+          }
           foreach ($parent_id as $pi) {
             $ar_page[$pi] = [];
           }
         }
+
         if(null !== $children_id) {
+          if(!is_array($children_id)) {
+            $children_id = [$children_id];
+          }
           foreach ($children_id as $ci) {
             $ar_page[$ci] = [];
           }
