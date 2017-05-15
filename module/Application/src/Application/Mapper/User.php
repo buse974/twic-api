@@ -21,7 +21,7 @@ class User extends AbstractMapper
 
     public function get($user_id, $me, $is_sadmin_admin = false)
     {
-        $columns = array(
+        $columns = [
             'user$id' => new Expression('user.id'),
             'firstname',
             'gender',
@@ -37,7 +37,8 @@ class User extends AbstractMapper
             'organization_id',
             'ambassador',
             'user$contacts_count' => $this->getSelectContactCount(),
-            'user$contact_state' => $this->getSelectContactState($me), );
+            'user$contact_state' => $this->getSelectContactState($me)
+        ];
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
@@ -70,7 +71,7 @@ class User extends AbstractMapper
     public function getList(
       $user_id,
       $is_admin,
-      $post = null,
+      $post_id = null,
       $search = null,
       $page_id = null,
       $order = null,
@@ -116,10 +117,10 @@ class User extends AbstractMapper
         if ($exclude) {
             $select->where->notIn('user.id', $exclude);
         }
-        if (null !== $post) {
-            $select->join('post_like', 'post_like.user_id=user.id', [])
-                ->where(array('post_like.post_id' => $post))
-                ->where(array('post_like.is_like IS TRUE'));
+        if (!empty($post_id)) {
+          $select->join('post_like', 'post_like.user_id=user.id', [])
+            ->where(['post_like.post_id' => $post_id])
+            ->where(['post_like.is_like IS TRUE']);
         }
         if (!empty($page_id)) {
           $select->join('page_user', 'page_user.user_id=user.id', [])
