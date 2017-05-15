@@ -15,7 +15,6 @@ use Zend\Http\Client;
  */
 class Event extends AbstractService
 {
-
     /**
      * Identification request.
      *
@@ -82,7 +81,7 @@ class Event extends AbstractService
      * @return \Zend\Json\Server\Response
      */
     public function sendRequest($users, $notification, $target)
-    {
+    { 
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.publish')
@@ -224,85 +223,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Event user.like
-     *
-     * @param array $sub
-     * @param int   $post_id
-     */
-    public function userLike($sub, $post_id)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-
-        return $this->create('user.like', $this->getDataUser(), $this->getDataPost($post_id), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
-     * Event profile.updated
-     *
-     * @param  array $sub
-     * @param  int   $user_id
-     * @param  array $dataprofile
-     * @return int
-     */
-    public function profileUpdated($sub, $user_id, $dataprofile)
-    {
-        return $this->create('profile.updated', $this->getDataUser(), $this->getDataUpdateProfile($user_id, $dataprofile), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
-     * Event profile.newresume.
-     *
-     * @param  inr $sub
-     * @param  inr $resume
-     * @return int
-     */
-    public function profileNewresume($sub, $resume)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-
-        return $this->create('profile.newresume', $this->getDataUser(), $this->getDataResume($resume), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
-     * Event page.new
-     *
-     * @param array $sub
-     * @param int   $page
-     */
-    public function pageNew($sub, $page)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-
-        return $this->create('page.new', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
-     * Event pageuser.invited
-     *
-     * @param array $sub
-     * @param int   $page
-     */
-    public function pageUserInvited($sub, $page)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-
-        return $this->create('pageuser.invited', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
-     * Event pageuser.member
-     *
-     * @param array $sub
-     * @param int   $page
-     */
-    public function pageUserMember($sub, $page)
-    {
-        $user_id = $this->getServiceUser()->getIdentity()['id'];
-
-        return $this->create('pageuser.member', $this->getDataUser(), $this->getDataPage($page), $sub, self::TARGET_TYPE_USER, $user_id);
-    }
-
-    /**
      * Event message.new
      *
      * @param int   $message_id
@@ -336,96 +256,6 @@ class Event extends AbstractService
         return $ret;
     }
 
-    /**
-     * Event user.announcement
-     *
-     * @param int $feed_id
-     *
-     * @return int
-     */
-    public function userAnnouncement($feed_id)
-    {
-        /*$user_id = $this->getServiceUser()->getIdentity()['id'];
-
-        return $this->create('user.announcement', $this->getDataUser(), $this->getDataFeed($feed_id), 'U'.$user_id, self::TARGET_TYPE_USER, $user_id);
-        */
-    }
-
-    /**
-     * Event user.comment.
-     *
-     * @param \Application\Model\EventComment $task_id
-     *
-     * @return int
-     */
-    public function userComment($m_comment)
-    {
-        //return $this->create('user.comment', $this->getDataUser(), $this->getDataEvent($m_comment->getEventId()), 'U'.$user_id, self::TARGET_TYPE_USER, $this->getServiceUser()->getIdentity()['id']);
-    }
-
-    /**
-     * Event user.addconnection.
-     *
-     * @param int $user_id
-     * @param int $contact_id
-     *
-     * @return int
-     */
-    public function userAddConnection($user_id, $contact_id)
-    {
-        //return $this->create('user.addconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id),  ['U'.$contact_id, 'U'.$user_id] , self::TARGET_TYPE_USER);
-    }
-
-    /**
-     * Event user.deleteconnection.
-     *
-     * @param int $user_id
-     * @param int $contact_id
-     *
-     * @return int
-     */
-    public function userDeleteConnection($user_id, $contact_id)
-    {
-        //return $this->create('user.deleteconnection', $this->getDataUser($user_id), $this->getDataUser($contact_id),  ['U'.$contact_id, 'U'.$user_id], self::TARGET_TYPE_USER);
-    }
-
-    /**
-     * Event record.available
-     *
-     * @param \Application\Model\VideoArchive $m_video_archive
-     * @param int                             $item_id
-     *
-     * @return int
-     */
-    public function recordAvailable($m_video_archive, $item_id = null)
-    {
-        /*$user = $this->getDataUserByConversation($m_video_archive->getConversationId());
-
-        return $this->create('record.available', $this->getDataVideoArchive($m_video_archive), (null !== $item_id) ? $this->getDataItem($item_id) : null, 'I'.$item_id, self::TARGET_TYPE_USER);
-        */
-    }
-
-    /**
-     * Event user.requestconnection.
-     *
-     * @param int $user_id
-     *
-     * @return int
-     */
-    public function userRequestconnection($user_id)
-    {
-        /*$u = $this->getDataUser();
-        $uu = $this->getDataUser($user_id);
-
-        try {
-            $this->getServiceMail()->sendTpl('tpl_newrequest', $uu['data']['email'], array('to_firstname' => $uu['data']['firstname'],'to_lastname' => $uu['data']['lastname'],'firstname' => $u['data']['firstname'],'lastname' => $u['data']['lastname'],'avatar' => $u['data']['avatar'],'school_name' => $u['data']['school']['short_name'],'school_logo' => $u['data']['school']['logo']));
-        } catch (\Exception $e) {
-            syslog(1, 'Model tpl_newrequest does not exist');
-        }
-
-        return $this->create('user.requestconnection', $u, $uu, 'U'.$user_id, self::TARGET_TYPE_USER, $this->getServiceUser()
-            ->getIdentity()['id']);*/
-    }
 
 
 
@@ -474,122 +304,6 @@ class Event extends AbstractService
         ];
     }
 
-
-
-
-
-
-
-
-
-
-    /**
-     * Get Data resume.
-     *
-     * @param int $resume_id
-     *
-     * @return array
-     */
-    private function getDataResume($resume_id)
-    {
-        $m_resume = $this->getServiceResume()->get($resume_id);
-
-        return ['id' => $resume_id,'name' => 'resume','data' => ['start_date' => $m_resume->getStartDate(),'end_date' => $m_resume->getEndDate(),'address' => $m_resume->getAddress(),'title' => $m_resume->getTitle(),'subtitle' => $m_resume->getSubtitle(),'logo' => $m_resume->getLogo(),'description' => $m_resume->getDescription(),'type' => $m_resume->getType()]];
-    }
-
-    /**
-     * Get Data Page
-     *
-     * @param int $page_id
-     *
-     * @return array
-     */
-    private function getDataPage($page_id)
-    {
-        $m_page = $this->getServicePage()->getLite($page_id);
-
-        return ['id' => $page_id,'name' => 'page','data' => $m_page->toArray()];
-    }
-
-
-    /**
-     * Get Data User for update profile.
-     *
-     * @param int   $user_id
-     * @param array $dataupdated
-     *
-     * @return array
-     */
-    private function getDataUpdateProfile($user_id, $dataupdated)
-    {
-        if (isset($dataupdated['id'])) {
-            unset($dataupdated['id']);
-        }
-
-        return ['id' => $user_id,'name' => 'user','data' => ['updated' => array_keys($dataupdated)]];
-    }
-
-    /**
-     * Get Data Vide Archive.
-     *
-     * @param \Application\Model\VideoArchive $m_video_archive
-     *
-     * @return array
-     */
-    private function getDataVideoArchive(\Application\Model\VideoArchive $m_video_archive)
-    {
-        return ['id' => $m_video_archive->getId(),'name' => 'archive','data' => ['archive_link' => $m_video_archive->getArchiveLink()]];
-    }
-
-
-    /**
-     * Get DataSubmission.
-     *
-     * @param \Application\Model\Submission $m_submission
-     *
-     * @return array
-     */
-    private function getDataSubmission(\Application\Model\Submission $m_submission)
-    {
-        return ['id' => $m_submission->getId(),'name' => 'submission','data' => ['item' => ['id' => $m_submission->getItem()->getId(),'title' => $m_submission->getItem()->getTitle(),'type' => $m_submission->getItem()->getType()]]];
-    }
-
-    /**
-     * Get Data Thread.
-     *
-     * @param \Application\Model\Thread $m_thread
-     *
-     * @return array
-     */
-    private function getDataThread(\Application\Model\Thread $m_thread)
-    {
-        return ['id' => $m_thread->getId(),'name' => 'thread','data' => ['id' => $m_thread->getId(),'title' => $m_thread->getTitle(),'course' => ['id' => $m_thread->getCourse()->getId(),'title' => $m_thread->getCourse()->getTitle()]]];
-    }
-
-    /**
-     *
-     * @param int $item_id
-     * @return array
-     */
-    private function getDataItem($item_id)
-    {
-        return ['id' => $item_id,'name' => 'item','data' => []];
-    }
-
-    /**
-     * Get Data Event.
-     *
-     * @param int $event
-     *
-     * @return array
-     */
-    private function getDataEvent($event)
-    {
-        $m_event = $this->get($event);
-
-        return ['id' => $event,'name' => 'event','data' => $m_event->toArray()];
-    }
-
     /**
      * Get Data User.
      *
@@ -635,6 +349,10 @@ class Event extends AbstractService
         return ['id' => $m_message->getId(),'name' => 'message','data' => $m_message];
     }
 
+
+
+
+// ----------------------------- Service
     /**
      * Get Service Event Comment.
      *
@@ -676,16 +394,6 @@ class Event extends AbstractService
     }
 
     /**
-     * Get Service Resume.
-     *
-     * @return \Application\Service\Resume
-     */
-    private function getServiceResume()
-    {
-        return $this->container->get('app_service_resume');
-    }
-
-    /**
      * Get Service Mail.
      *
      * @return \Mail\Service\Mail
@@ -703,26 +411,6 @@ class Event extends AbstractService
     private function getServiceMessageUser()
     {
         return $this->container->get('app_service_message_user');
-    }
-
-    /**
-     * Get Service Message.
-     *
-     * @return \Application\Service\Page
-     */
-    private function getServicePage()
-    {
-        return $this->container->get('app_service_page');
-    }
-
-    /**
-     * Get Service Message.
-     *
-     * @return \Application\Service\Message
-     */
-    private function getServiceMessage()
-    {
-        return $this->container->get('app_service_message');
     }
 
 }

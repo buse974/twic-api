@@ -76,7 +76,6 @@ class Contact extends AbstractService
             );
         }
 
-        $this->getServiceEvent()->userRequestconnection($user);
         $m_user = $this->getServiceUser()->getLite($user_id);
         $name = "";
         if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
@@ -194,11 +193,14 @@ class Contact extends AbstractService
 
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->updateSys(
-            $l, 'Accepted your request', [
-            'state' => 'accept',
-            'user' => $user_id,
-            'contact' => $user,
-            ], 'accept', ['M'.$user_id, 'M'.$user]
+            $l,
+            'Accepted your request', [
+              'state' => 'accept',
+              'user' => $user_id,
+              'contact' => $user,
+            ],
+            'accept',
+            ['M'.$user_id, 'M'.$user]
         );
 
         return true;
@@ -245,7 +247,6 @@ class Contact extends AbstractService
         $this->getServiceSubscription()->delete('PU'.$user_id, $user);
         $this->getServiceSubscription()->delete('EU'.$user_id, $user);
 
-        $this->getServiceEvent()->userDeleteConnection($user_id, $user);
         $this->getServiceFcm()->send(
             $user, ['data' => [
             'type' => 'connection',
@@ -378,17 +379,6 @@ class Contact extends AbstractService
         }
 
         return $request;
-    }
-
-
-    /**
-     * Get Service Event
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**

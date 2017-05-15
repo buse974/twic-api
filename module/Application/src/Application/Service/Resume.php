@@ -72,10 +72,7 @@ class Resume extends AbstractService
             throw new \Exception('error insert experience');
         }
 
-        $id = $this->getMapper()->getLastInsertValue();
-        $this->getServiceEvent()->profileNewresume(['EU'.$user_id], $id);
-
-        return $id;
+        return (int)$this->getMapper()->getLastInsertValue();
     }
 
     /**
@@ -129,13 +126,7 @@ class Resume extends AbstractService
             ->setNote($note)
             ->setUserId($user_id);
 
-        $ret = $this->getMapper()->update($m_education, ['id' => $id, 'user_id' => $user_id]);
-
-        if ($ret > 0) {
-            $this->getServiceEvent()->profileNewresume(['EU'.$user_id], $id);
-        }
-
-        return $ret;
+        return $this->getMapper()->update($m_education, ['id' => $id, 'user_id' => $user_id]);
     }
 
     /**
@@ -202,16 +193,6 @@ class Resume extends AbstractService
         }
 
         return $resumes;
-    }
-
-    /**
-     * Get Service Event.
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**

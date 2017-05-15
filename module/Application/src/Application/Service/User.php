@@ -548,11 +548,6 @@ class User extends AbstractService
         }
 
         $ret = $this->getMapper()->update($m_user);
-
-        if ($ret > 0 && $id === $this->getIdentity()['id']) {
-            $this->getServiceEvent()->profileUpdated(['EU'.$id], $id, $m_user->toArray());
-        }
-
         if ($resetpassword) {
             $this->lostPassword($this->get($id)['email']);
         }
@@ -919,16 +914,6 @@ class User extends AbstractService
         $config = $this->container->get('config')['app-conf'];
 
         return $this->container->get($config['cache']);
-    }
-
-    /**
-     * Get Service Event
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**

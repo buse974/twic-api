@@ -202,7 +202,6 @@ class Page extends AbstractService
                 $sub[] = 'EU'.$user_id;
             }
 
-            $this->getServiceEvent()->pageNew($sub, $id);
             $this->getServicePost()->addSys(
                 'PP'.$id, '', [
                 'state' => 'create',
@@ -720,16 +719,6 @@ class Page extends AbstractService
     private function getServicePageTag()
     {
         return $this->container->get('app_service_page_tag');
-    }
-
-    /**
-     * Get Service Event.
-     *
-     * @return \Application\Service\Event
-     */
-    private function getServiceEvent()
-    {
-        return $this->container->get('app_service_event');
     }
 
     /**
