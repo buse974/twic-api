@@ -326,7 +326,16 @@ class Post extends AbstractService
 
         $res_post->rewind();
 
-        return (is_array($id) ? $res_post->toArray(['id']): $res_post->current());
+        if(is_array($id)) {
+          $ar_post = $res_post->toArray(['id']);
+          foreach ($id as $i) {
+            if(!isset($ar_post[$i])) {
+              $ar_post[$i] = null;
+            }
+          }
+        }
+
+        return (is_array($id) ? $ar_post: $res_post->current());
     }
 
     /**
