@@ -1,4 +1,6 @@
-
+SET foreign_key_checks = 0;
+TRUNCATE `item`;
+SET foreign_key_checks = 1;
 ALTER TABLE `item` 
 ADD COLUMN `type` VARCHAR(45) NOT NULL AFTER `description`,
 ADD COLUMN `is_published` TINYINT NULL,
