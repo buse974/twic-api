@@ -1,4 +1,3 @@
-SET SQL_SAFE_UPDATES = 0;
 UPDATE `page`
 SET
 `confidentiality` = 0
@@ -11,5 +10,3 @@ WHERE `admission` IS NULL;
 ALTER TABLE `page` 
 CHANGE COLUMN `confidentiality` `confidentiality` INT(11) NULL DEFAULT 0 ,
 CHANGE COLUMN `admission` `admission` ENUM('free', 'open', 'invitation') NULL DEFAULT 'open' ;
-SET SQL_SAFE_UPDATES = 1;
-
