@@ -114,7 +114,7 @@ class User extends AbstractMapper
                 $select->order(new Expression('RAND(?)', $order['seed']));
                 break;
             default :
-              $select->order(['user.id' => 'DESC'])
+              $select->order(['user.id' => 'DESC']);
           }
         } else {
           $select->order(['user.id' => 'DESC']);
