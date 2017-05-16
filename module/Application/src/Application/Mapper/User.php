@@ -106,13 +106,15 @@ class User extends AbstractMapper
             ->group('user.id')
             ->quantifier('DISTINCT');
 
-        switch ($order) {
-          case 'firstname':
-              $select->order('user.firstname ASC');
-              break;
-          case 'random':
-              $select->order(new Expression('RAND()'));
-              break;
+        if(null !== $order) {
+          switch ($order['type']) {
+            case 'firstname':
+                $select->order('user.firstname ASC');
+                break;
+            case 'random':
+                $select->order(new Expression('RAND(?)', $order['seed']));
+                break;
+          }
         }
         if ($exclude) {
             $select->where->notIn('user.id', $exclude);
