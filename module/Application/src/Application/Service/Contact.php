@@ -240,13 +240,9 @@ class Contact extends AbstractService
             'contact_id' => $user,
             )
         );
-
+        
         $this->getServiceSubscription()->delete('PU'.$user, $user_id);
-        $this->getServiceSubscription()->delete('EU'.$user, $user_id);
-
         $this->getServiceSubscription()->delete('PU'.$user_id, $user);
-        $this->getServiceSubscription()->delete('EU'.$user_id, $user);
-
         $this->getServiceFcm()->send(
             $user, ['data' => [
             'type' => 'connection',
