@@ -102,7 +102,6 @@ class User extends AbstractMapper
              ->where(['page_user.user_id' => $user_id]);*/
         }
         $select->where('user.deleted_date IS NULL')
-            ->order(['user.id' => 'DESC'])
             ->group('user.id')
             ->quantifier('DISTINCT');
 
@@ -114,8 +113,13 @@ class User extends AbstractMapper
             case 'random':
                 $select->order(new Expression('RAND(?)', $order['seed']));
                 break;
+            default :
+              $select->order(['user.id' => 'DESC'])
           }
+        } else {
+          $select->order(['user.id' => 'DESC']);
         }
+
         if ($exclude) {
             $select->where->notIn('user.id', $exclude);
         }
