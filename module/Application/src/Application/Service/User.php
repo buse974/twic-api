@@ -755,6 +755,14 @@ class User extends AbstractService
             $users[$user['id']] = $user;
         }
 
+        if(is_array($id)) {
+          foreach ($id as $i) {
+            if(!isset($users[$i])) {
+              $users[$i] = null;
+            }
+          }
+        }
+
         return (is_array($id)) ? $users : reset($users);
     }
 
