@@ -557,21 +557,21 @@ class User extends AbstractService
         }
         // on supprime son cache identity pour qu'a ca prochaine cannection il el recré.
         $this->deleteCachedIdentityOfUser($id);
-
-        if (null !== $avatar && $id === $this->getIdentity()['id']) {
+        $this->getServiceEvent()->sendData($id, 'user.update', ['PU'.$id]);
+        /*if (null !== $avatar && $id === $this->getIdentity()['id']) {
             $this->getServicePost()->addSys(
                 'UU'.$id. 'A'.$avatar, 'Avatar update', [
                 'state' => 'update',
                 'user' => $id,
                 'avatar' => $avatar,
                 ], 'update',
-                null/*sub*/,
-                null/*parent*/,
-                null/*page*/,
-                $id/*user*/,
+                null/*sub/,
+                null/*parent/,
+                null/*page/,
+                $id/*user/,
                 'user'
             );
-        }
+        }*/
 
         return $ret;
     }
@@ -882,6 +882,16 @@ class User extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
+    }
+
+    /**
+     * Get Service Event
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
 
     /**

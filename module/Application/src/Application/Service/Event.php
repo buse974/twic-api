@@ -57,16 +57,41 @@ class Event extends AbstractService
         $user = $this->getServiceSubscription()->getListUserId($libelle);
         if (count($user) > 0) {
             $this->sendRequest(
-                array_values($user), [
+                array_values($user),
+                [
                 'id' => $event_id,
                 'event' => $event,
                 'source' => $source,
                 'date' => (new \DateTime($date))->format('Y-m-d\TH:i:s\Z'),
-                'object' => $object], $target
+                'object' => $object],
+                $target
             );
         }
 
         return $event_id;
+    }
+
+    /**
+     * create notif
+     *
+     * @param  mixed  $data
+     * @param  string $type
+     * @param  array  $libelle
+     *
+     * @return bool
+     */
+    public function sendData($data, $type, $libelle)
+    {
+        $users = $this->getServiceSubscription()->getListUserId($libelle);
+        if (count($users) > 0) {
+          $this->sendRequest(
+            array_values($users),
+            ['data' => $data,'type' => $type],
+            self::TARGET_TYPE_USER
+          );
+        }
+
+        return true;
     }
 
     /**
@@ -81,11 +106,11 @@ class Event extends AbstractService
      * @return \Zend\Json\Server\Response
      */
     public function sendRequest($users, $notification, $target)
-    { 
+    {
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.publish')
-            ->setParams(array('notification' => $notification,'users' => $users,'type' => $target))
+            ->setParams(['notification' => $notification,'users' => $users,'type' => $target])
             ->setId(++ self::$id)
             ->setVersion('2.0');
 
@@ -115,7 +140,7 @@ class Event extends AbstractService
         $rep = false;
         $request = new Request();
         $request->setMethod('user.isConnected')
-            ->setParams(array('user' => (int) $user))
+            ->setParams(['user' => (int) $user])
             ->setId(++ self::$id)
             ->setVersion('2.0');
 
@@ -246,7 +271,10 @@ class Event extends AbstractService
             //if (!$this->isConnected($t)  $u['data']['has_email_notifier'] == true) {
             if ($u['data']['has_email_notifier'] == true) {
                 try {
-                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'], array('to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],'from_avatar' => $from['data']['avatar']));
+                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'],
+                      ['to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],
+                    'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],
+                    'from_avatar' => $from['data']['avatar']]);
                 } catch (\Exception $e) {
                     syslog(1, 'Model tpl_newmessage does not exist');
                 }
