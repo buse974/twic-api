@@ -484,9 +484,6 @@ class Page extends AbstractService
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $res_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_admin);
-        if ($res_page->count() <= 0) {
-          throw new \Exception('This page does not exist');
-        }
 
         foreach ($res_page as $m_page) {
           $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
@@ -495,7 +492,16 @@ class Page extends AbstractService
 
         $res_page->rewind();
 
-        return (is_array($id)) ? $res_page->toArray(['id']) : $res_page->current();
+        if(is_array($id)) {
+          $ar_page = $res_page->toArray(['id']);
+          foreach ($id as $i) {
+            if(!isset($ar_page[$i])) {
+              $ar_page[$i] = null;
+            }
+          }
+        }
+
+        return (is_array($id)) ? $ar_page : $res_page->current();
     }
 
     /**
