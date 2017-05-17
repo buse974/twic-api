@@ -240,7 +240,7 @@ class Contact extends AbstractService
             'contact_id' => $user,
             )
         );
-        
+
         $this->getServiceSubscription()->delete('PU'.$user, $user_id);
         $this->getServiceSubscription()->delete('PU'.$user_id, $user);
         $this->getServiceFcm()->send(
@@ -253,7 +253,7 @@ class Contact extends AbstractService
             ]
             ]
         );
-
+        $this->getServiceEvent()->sendData($user_id, 'contact.remove', ['SU'.$user]);
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->hardDelete($l);
 
@@ -405,6 +405,16 @@ class Contact extends AbstractService
     private function getServiceFcm()
     {
         return $this->container->get('fcm');
+    }
+
+    /**
+     * Get Service Event
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
 
     /**
