@@ -253,7 +253,7 @@ class Contact extends AbstractService
             ]
             ]
         );
-        $this->getServiceEvent()->sendData($user_id, 'contact.remove', ['SU'.$user]);
+        $this->getServiceEvent()->sendData($user_id, 'connection.remove', ['SU'.$user]);
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->hardDelete($l);
 
