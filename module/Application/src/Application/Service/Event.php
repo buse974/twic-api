@@ -86,7 +86,7 @@ class Event extends AbstractService
         if (count($users) > 0) {
           $this->sendRequest(
             array_values($users),
-            ['data' => $data,'type' => $type],
+            ['data' => $data,'event' => $type],
             self::TARGET_TYPE_USER
           );
         }
