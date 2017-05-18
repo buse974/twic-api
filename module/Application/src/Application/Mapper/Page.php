@@ -54,7 +54,7 @@ class Page extends AbstractMapper
       $children_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id'])
+        $select->columns(['id', 'title'])
           ->where(['page.deleted_date IS NULL']);
 
         if(!empty($parent_id)) {
@@ -80,7 +80,8 @@ class Page extends AbstractMapper
             ->where(['( page.title LIKE ? ' => '%' . $search . '%'])
             ->where(['tag.name'   => $tags], Predicate::OP_OR)
             ->where(['1)'])
-            ->having(['(COUNT(DISTINCT tag.id) = ? || COUNT(DISTINCT tag.id) = 0 )' => count($tags)]);
+            ->having(['( (COUNT(DISTINCT tag.id) = ? AND COUNT(DISTINCT tag.id) = 0 )' => count($tags)])
+            ->having([' page.title LIKE ? ) ' => '%' . $search . '%'], Predicate::OP_OR);
         }
         if (!empty($tags)) {
           /*  $select->join('page_tag', 'page_tag.page_id = page.id')
@@ -115,6 +116,7 @@ class Page extends AbstractMapper
         }
         $select->order(['page.start_date' => 'DESC'])
             ->group('page.id');
+
         return $this->selectWith($select);
     }
 
