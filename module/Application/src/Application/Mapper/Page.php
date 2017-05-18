@@ -80,7 +80,7 @@ class Page extends AbstractMapper
             ->where(['( page.title LIKE ? ' => '%' . $search . '%'])
             ->where(['tag.name'   => $tags], Predicate::OP_OR)
             ->where(['1)'])
-            ->having(['( (COUNT(DISTINCT tag.id) = ? AND COUNT(DISTINCT tag.id) = 0 )' => count($tags)])
+            ->having(['( COUNT(DISTINCT tag.id) = ? OR COUNT(DISTINCT tag.id) = 0 ' => count($tags)])
             ->having([' page.title LIKE ? ) ' => '%' . $search . '%'], Predicate::OP_OR);
         }
         if (!empty($tags)) {

@@ -34,8 +34,7 @@ class PageUser extends AbstractMapper
           $select->where(['page_user.state' => $state]);
         }
         if(null!==$type) {
-          $select->join('page', 'page.id=page_user.page_id', [])
-            ->where(['page.type' => $type]);
+          $select->where(['page.type' => $type]);
         }
 
         return $this->selectWith($select);

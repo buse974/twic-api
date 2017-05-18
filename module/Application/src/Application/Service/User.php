@@ -615,7 +615,7 @@ class User extends AbstractService
      */
     public function lostPassword($email)
     {
-        $cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
+        $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $long = strlen($cars);
         srand((double) microtime() * 1000000);
         $password = '';
@@ -656,7 +656,6 @@ class User extends AbstractService
             $id = [$id];
         }
 
-        //$cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
         $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $long = strlen($cars);
 
