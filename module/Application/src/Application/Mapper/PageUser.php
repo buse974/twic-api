@@ -11,7 +11,9 @@ class PageUser extends AbstractMapper
     public function getList($page_id = null, $user_id = null, $role = null, $state = null, $type = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['page_id','user_id','state','role']);
+        $select->columns(['page_id','user_id','state','role'])
+          ->join('page', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
+          ->where(['page.deleted_date IS NULL']);
 
         if(null!==$role) {
           if ($role !== ModelPageUser::ROLE_ADMIN) {
