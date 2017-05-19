@@ -298,7 +298,7 @@ class PageUser extends AbstractService
         if(!is_array($user_id)) {
           $user_id = [$user_id];
         }
-1
+
         $ret = [];
         foreach ($user_id as $user) {
           $ret[$user] = [];
