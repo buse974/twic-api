@@ -13,7 +13,8 @@ class PageUser extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['page_id','user_id','state','role'])
           ->join('page', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
-          ->where(['page.deleted_date IS NULL']);
+          ->where(['page.deleted_date IS NULL'])
+          ->quantifier('DISTINCT');
 
         if(null!==$role) {
           if ($role !== ModelPageUser::ROLE_ADMIN) {
@@ -38,7 +39,7 @@ class PageUser extends AbstractMapper
         }
         if(null !== $me && $me !== $user_id) {
           $select->join(['pu' => 'page_user'], 'pu.page_id = page.id', [], $select::JOIN_LEFT)
-            ->where([' ( pu.user_id = ? OR page.confidentiality=1 ) ' => $me]);
+            ->where([' ( pu.user_id = ? OR page.confidentiality=0 ) ' => $me]);
         }
 
         return $this->selectWith($select);
