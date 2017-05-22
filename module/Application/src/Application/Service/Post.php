@@ -400,9 +400,17 @@ class Post extends AbstractService
         $is_sadmin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $m_post = $this->getModel()->setDeletedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-        return (!$is_sadmin) ?
+
+
+        $ret =  (!$is_sadmin) ?
           $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $identity['id']]) :
           $this->getMapper()->update($m_post, ['id' => $id]);
+
+        if($ret) {
+          $this->getServiceEvent()->sendData($id, 'post.delete', ['PU'.$this->getLite($id)->getUserId()]);
+        }
+
+        return $ret;
     }
 
     /**
@@ -633,6 +641,16 @@ class Post extends AbstractService
     private function getServiceHashtag()
     {
         return $this->container->get('app_service_hashtag');
+    }
+
+    /**
+     * Get Service Event
+     *
+     * @return \Application\Service\Event
+     */
+    private function getServiceEvent()
+    {
+        return $this->container->get('app_service_event');
     }
 
     /**
