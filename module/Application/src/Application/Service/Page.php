@@ -111,8 +111,8 @@ class Page extends AbstractService
 
         $conversation_id = null;
         if($type !== ModelPage::TYPE_ORGANIZATION) {
-          $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
-          $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
+        //  $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
+        //  $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
         } else {
           $confidentiality = 0;
         }
@@ -230,6 +230,9 @@ class Page extends AbstractService
           $this->getModel()
             ->setId($m_page->getId())
             ->setConversationId($conversation_id));
+
+        $ar_user = $this->getServicePageUser()->getListByPage($m_page->getId())[$m_page->getId()];
+        $this->getServiceConversationUser()->add($conversation_id, $ar_user);
       }
     }
     /**
@@ -784,6 +787,16 @@ class Page extends AbstractService
     private function getServiceConversation()
     {
         return $this->container->get('app_service_conversation');
+    }
+
+    /**
+     * Get Service Conversation User
+     *
+     * @return \Application\Service\ConversationUser
+     */
+    private function getServiceConversationUser()
+    {
+        return $this->container->get('app_service_conversation_user');
     }
 
     /**
