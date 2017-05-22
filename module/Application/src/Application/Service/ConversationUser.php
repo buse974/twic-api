@@ -50,6 +50,27 @@ class ConversationUser extends AbstractService
   }
 
   /**
+   * Mark Read Message(s).
+   *
+   * @invokable
+   *
+   * @param $conversation_id
+   *
+   * @return int
+   */
+  public function read($conversation_id)
+  {
+    $user_id = $this->getServiceUser()->getIdentity()['id'];
+
+    $m_conversation_user = $this->getModel()
+      ->setConversationId($conversation_id)
+      ->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+      ->setUserId($user_id);
+
+      return $this->getMapper()->update($m_conversation_user);
+  }
+
+  /**
    * DELETE User in the Conversation.
    *
    * @param int       $conversation_id

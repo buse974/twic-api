@@ -264,7 +264,7 @@ class Conversation extends AbstractService
    */
   public function read($id)
   {
-      return $this->getServiceMessageUser()->readByConversation($id);
+      return $this->getServiceConversationUser()->read($id);
   }
 
   /**

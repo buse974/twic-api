@@ -8,6 +8,7 @@ class ConversationUser extends AbstractModel
 {
  	protected $conversation_id;
 	protected $user_id;
+	protected $read_date;
 
 	protected $prefix = 'conversation_user';
 
@@ -31,6 +32,18 @@ class ConversationUser extends AbstractModel
 	public function setUserId($user_id)
 	{
 		$this->user_id = $user_id;
+
+		return $this;
+	}
+
+	public function getReadDate()
+	{
+		return $this->read_date;
+	}
+
+	public function setReadDate($read_date)
+	{
+		$this->read_date = $read_date;
 
 		return $this;
 	}
