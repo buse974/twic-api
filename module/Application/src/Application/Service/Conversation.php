@@ -158,6 +158,8 @@ class Conversation extends AbstractService
    */
   public function getList($contact = null, $noread = null, $type = null, $filter = null, $search = null)
   {
+    $this->getServicePage()->addChannel();
+
       $user_id = $this->getServiceUser()->getIdentity()['id'];
 
       $mapper = $this->getMapper();

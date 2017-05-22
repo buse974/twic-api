@@ -220,6 +220,18 @@ class Page extends AbstractService
         return $id;
     }
 
+    public function addChannel()
+    {
+      $res_page = $this->getMapper()->getListNoChannel();
+      foreach ($res_page as $m_page) {
+        $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $m_page->getTitle() )))))));
+        $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
+        $this->getMapper()->update(
+          $this->getModel()
+            ->setId($m_page->getId())
+            ->setConversationId($conversation_id));
+      }
+    }
     /**
      * Add Tags
      *
@@ -479,6 +491,7 @@ class Page extends AbstractService
      */
     public function get($id = null, $parent_id = null, $type = null)
     {
+      $this->addChannel();
         if (null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
@@ -516,7 +529,9 @@ class Page extends AbstractService
      */
     public function getLite($id)
     {
-        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+      $this->addChannel();
+
+      return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
     /**
@@ -529,7 +544,8 @@ class Page extends AbstractService
      */
     public function getIdByItem($item_id)
     {
-        return $this->getMapper()->getIdByItem($item_id)->current()->getId();
+      $this->addChannel();
+      return $this->getMapper()->getIdByItem($item_id)->current()->getId();
     }
 
     /**
@@ -563,6 +579,7 @@ class Page extends AbstractService
       $tags = null,
       $children_id = null)
     {
+      $this->addChannel();
         if (empty($tags)) {
             $tags = null;
         }
