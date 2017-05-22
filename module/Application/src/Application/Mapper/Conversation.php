@@ -104,8 +104,6 @@ class Conversation extends AbstractMapper
       $select->where(['conversation.type' => $type]);
     }
 
-    echo $this->printSql($select);
-    
     return $this->selectWith($select);
   }
 }
