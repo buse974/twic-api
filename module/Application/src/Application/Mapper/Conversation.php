@@ -52,11 +52,16 @@ class Conversation extends AbstractMapper
 
     $select = $this->tableGateway->getSql()->select();
     $select->columns($colums)
-      ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
-      ->where(['conversation_user.user_id' => $user_id])
       ->order(['conversation_message$id DESC'])
       ->group(['conversation.id']);
 
+    if (null !== $conversation_id) {
+      $select->where(['conversation.id' => $conversation_id]);
+    } else {
+      $select->columns($colums)
+        ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
+        ->where(['conversation_user.user_id' => $user_id]);
+    }
         $subselect->columns(['conversation_message$id' => new Expression('MAX(message.id)')])
           ->join('conversation_user', 'conversation_user.conversation_id=message.conversation_id', [])
           ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]),[], $select::JOIN_LEFT)
@@ -75,10 +80,6 @@ class Conversation extends AbstractMapper
         ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
 
       $select->where(['conversation.id IN (?)' => $searchselect]);
-    }
-
-    if (null !== $conversation_id) {
-      $select->where(['conversation.id' => $conversation_id]);
     }
 
     // READ OR NOT READ
