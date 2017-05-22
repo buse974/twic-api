@@ -83,8 +83,7 @@ class Conversation extends AbstractMapper
 
     // READ OR NOT READ
     if(true === $noread) {
-      $select->join(['conversation_message_message_user' => 'message_user'], new Expression('conversation_message$id=conversation_message_message_user.message_id AND conversation_message_message_user.user_id = ?', [$user_id]) ,  [], $select::JOIN_LEFT);
-      $select->where(['conversation_message_message_user.read_date IS NULL']);
+      $select->where(['conversation_user.read_date IS NULL']);
     }
 
     // ONLY ONE CONTACT OR NOT
@@ -105,6 +104,8 @@ class Conversation extends AbstractMapper
       $select->where(['conversation.type' => $type]);
     }
 
+    echo $this->printSql($select);
+    
     return $this->selectWith($select);
   }
 }
