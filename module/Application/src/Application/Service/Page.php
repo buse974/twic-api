@@ -25,11 +25,12 @@ class Page extends AbstractService
      * @invokable
      *
      * @param  string $libelle
+     * @param  int  $id
      * @return \Application\Model\School
      */
-    public function getCustom($libelle)
+    public function getCustom($libelle = null, $id = null)
     {
-        $res_page = $this->getMapper()->getCustom($libelle);
+        $res_page = $this->getMapper()->getCustom($libelle, $id);
 
         if ($res_page->count() <= 0) {
             throw new JrpcException('No custom fields for ' . $libelle);

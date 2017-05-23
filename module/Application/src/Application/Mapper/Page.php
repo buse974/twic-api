@@ -14,13 +14,20 @@ class Page extends AbstractMapper
      * Execute Request Get Custom
      *
      * @param  string $libelle
+     * @param  int $id
      * @return \Dal\Db\ResultSet\ResultSet
      */
-    public function getCustom($libelle)
+    public function getCustom($libelle, $id)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(array('id','libelle','custom'))
-            ->where(array('page.libelle' => $libelle));
+        $select->columns(array('id','libelle','custom'));
+
+        if(null !== $libelle) {
+          $select->where(array('page.libelle' => $libelle));
+        }
+        if(null !== $id) {
+          $select->where(array('page.id' => $id));
+        }
 
         return $this->selectWith($select);
     }

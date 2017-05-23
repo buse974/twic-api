@@ -350,7 +350,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.getCustom', [
-          'libelle' => 'gnam',]);
+          'libelle' => 'gnam']);
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
@@ -358,7 +358,25 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['libelle'] , "gnam");
         $this->assertEquals($data['result']['custom'] , "{obj}");
-        $this->assertEquals($data['jsonrpc'] , 2.0); 
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageGetCustomById($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.getCustom', [
+          'id' => $id]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['libelle'] , "gnam");
+        $this->assertEquals($data['result']['custom'] , "{obj}");
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
     /**
