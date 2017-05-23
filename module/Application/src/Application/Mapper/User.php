@@ -41,7 +41,7 @@ class User extends AbstractMapper
         ];
 
         if(true === $is_admin) {
-          $columns[] = 'emailsent';
+          $columns[] = 'email_sent';
         }
 
         $select = $this->tableGateway->getSql()->select();
