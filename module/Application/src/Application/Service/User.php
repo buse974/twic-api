@@ -649,42 +649,56 @@ class User extends AbstractService
      * @invokable
      *
      * @param array|int $id
+     * @param int $page_id
      */
-    public function sendPassword($id)
+    public function sendPassword($id = null, $page_id = null)
     {
-        if (!is_array($id)) {
-            $id = [$id];
+
+      if(null !== $page_id) {
+        $identity = $this->getIdentity();
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $res_user = $this->getMapper()->getList($identity['id'], $is_admin, null, null, $page_id, null, null, null, true);
+        $id = [];
+        foreach ($res_user as $m_user) {
+            $id[] = $m_user->getId();
         }
+      }
 
-        $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
-        $long = strlen($cars);
+      if (!is_array($id)) {
+          $id = [$id];
+      }
 
-        foreach ($id as $uid) {
-            $res_user = $this->getMapper()->select($this->getModel()->setId($uid));
-            if ($res_user->count() <= 0) {
-                continue;
-            }
+      $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
+      $long = strlen($cars);
 
-            srand((double) microtime() * 1000000);
-            $password = '';
-            for ($i = 0; $i < 8; ++ $i) {
-                $password .= substr($cars, rand(0, $long - 1), 1);
-            }
-            $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password))->setEmailSent(1), ['id' => $uid]);
-            if ($ret > 0) {
-                $m_user = $res_user->current();
-                try {
-                    $this->getServiceMail()->sendTpl(
-                        'tpl_sendpasswd', $m_user->getEmail(),
-                        ['password' => $password,'email' => $m_user->getEmail(),'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()]
-                    );
-                } catch (\Exception $e) {
-                    syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
-                }
-            }
-        }
+      $nb = 0;
+      foreach ($id as $uid) {
+          $res_user = $this->getMapper()->select($this->getModel()->setId($uid));
+          if ($res_user->count() <= 0) {
+              continue;
+          }
 
-        return $ret;
+          srand((double) microtime() * 1000000);
+          $password = '';
+          for ($i = 0; $i < 8; ++ $i) {
+              $password .= substr($cars, rand(0, $long - 1), 1);
+          }
+          $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password))->setEmailSent(1), ['id' => $uid]);
+          if ($ret > 0) {
+              $m_user = $res_user->current();
+              try {
+                  $this->getServiceMail()->sendTpl(
+                      'tpl_sendpasswd', $m_user->getEmail(),
+                      ['password' => $password,'email' => $m_user->getEmail(),'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()]
+                  );
+              } catch (\Exception $e) {
+                  syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
+              }
+              $nb++;
+          }
+      }
+
+      return $nb;
     }
 
 

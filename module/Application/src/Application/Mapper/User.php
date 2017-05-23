@@ -80,7 +80,8 @@ class User extends AbstractMapper
       $page_id = null,
       $order = null,
       array $exclude = null,
-      $contact_state = null)
+      $contact_state = null,
+      $only_nosend_email = null)
     {
         $select = $this->tableGateway->getSql()->select();
         if ($is_admin) {
@@ -124,8 +125,11 @@ class User extends AbstractMapper
           $select->order(['user.id' => 'DESC']);
         }
 
+        if($only_nosend_email === true) {
+          $select->where(['user.email_sent IS FALSE']);
+        }
         if ($exclude) {
-            $select->where->notIn('user.id', $exclude);
+          $select->where->notIn('user.id', $exclude);
         }
         if (!empty($post_id)) {
           $select->join('post_like', 'post_like.user_id=user.id', [])
