@@ -4,6 +4,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
+use Zend\Db\Sql\Predicate\IsNull;
 
 class ConversationUser extends AbstractService
 {
@@ -68,6 +69,26 @@ class ConversationUser extends AbstractService
       ->setUserId($user_id);
 
       return $this->getMapper()->update($m_conversation_user);
+  }
+
+  /**
+   * Mark No Read Message(s).
+   *
+   * @invokable
+   *
+   * @param $conversation_id
+   *
+   * @return int
+   */
+  public function noread($conversation_id)
+  {
+    $ret = $this->getMapper()->update(
+      $this->getModel()->setReadDate(new IsNull('read_date')),
+      ['conversation_id' => $conversation_id]);
+
+    $this->read($conversation_id);
+
+    return $ret;
   }
 
   /**

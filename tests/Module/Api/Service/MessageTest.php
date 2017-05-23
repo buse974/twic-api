@@ -266,6 +266,7 @@ class MessageTest extends AbstractService
         'contact' => false,
       ]);
 
+
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 2);
@@ -299,44 +300,34 @@ class MessageTest extends AbstractService
     public function testCanGetListConvBeforeRead()
     {
       // 2 => 3
-      $this->setIdentity(2);
+      $this->setIdentity(3);
       $data = $this->jsonRpc('conversation.getList', [
         'noread' => true
       ]);
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
-      $this->assertEquals(count($data['result']) , 3);
+      $this->assertEquals(count($data['result']) , 2);
       $this->assertEquals(count($data['result'][0]) , 5);
       $this->assertEquals(count($data['result'][0]['message']) , 1);
-      $this->assertEquals($data['result'][0]['message']['id'] , 5);
+      $this->assertEquals($data['result'][0]['message']['id'] , 4);
       $this->assertEquals(count($data['result'][0]['users']) , 2);
-      $this->assertEquals($data['result'][0]['users'][0] , 1);
-      $this->assertEquals($data['result'][0]['users'][1] , 2);
-      $this->assertEquals($data['result'][0]['id'] , 3);
+      $this->assertEquals($data['result'][0]['users'][0] , 2);
+      $this->assertEquals($data['result'][0]['users'][1] , 3);
+      $this->assertEquals($data['result'][0]['id'] , 2);
       $this->assertEquals($data['result'][0]['name'] , "Chat");
       $this->assertEquals($data['result'][0]['type'] , 2);
       $this->assertEquals(count($data['result'][1]) , 5);
       $this->assertEquals(count($data['result'][1]['message']) , 1);
-      $this->assertEquals($data['result'][1]['message']['id'] , 4);
-      $this->assertEquals(count($data['result'][1]['users']) , 2);
-      $this->assertEquals($data['result'][1]['users'][0] , 2);
-      $this->assertEquals($data['result'][1]['users'][1] , 3);
-      $this->assertEquals($data['result'][1]['id'] , 2);
+      $this->assertEquals($data['result'][1]['message']['id'] , 1);
+      $this->assertEquals(count($data['result'][1]['users']) , 3);
+      $this->assertEquals($data['result'][1]['users'][0] , 1);
+      $this->assertEquals($data['result'][1]['users'][1] , 2);
+      $this->assertEquals($data['result'][1]['users'][2] , 3);
+      $this->assertEquals($data['result'][1]['id'] , 1);
       $this->assertEquals($data['result'][1]['name'] , "Chat");
       $this->assertEquals($data['result'][1]['type'] , 2);
-      $this->assertEquals(count($data['result'][2]) , 5);
-      $this->assertEquals(count($data['result'][2]['message']) , 1);
-      $this->assertEquals($data['result'][2]['message']['id'] , 1);
-      $this->assertEquals(count($data['result'][2]['users']) , 3);
-      $this->assertEquals($data['result'][2]['users'][0] , 1);
-      $this->assertEquals($data['result'][2]['users'][1] , 2);
-      $this->assertEquals($data['result'][2]['users'][2] , 3);
-      $this->assertEquals($data['result'][2]['id'] , 1);
-      $this->assertEquals($data['result'][2]['name'] , "Chat");
-      $this->assertEquals($data['result'][2]['type'] , 2);
       $this->assertEquals($data['jsonrpc'] , 2.0);
-
     }
 
     /**
@@ -344,7 +335,7 @@ class MessageTest extends AbstractService
      */
     public function testCanGetread($conv)
     {
-      $this->setIdentity(2);
+      $this->setIdentity(3);
       $data = $this->jsonRpc('conversation.read', ['id' => $conv['conversation_id']]);
 
       $this->assertEquals(count($data) , 3);
@@ -361,33 +352,24 @@ class MessageTest extends AbstractService
     public function testCanGetListConvAfterRead()
     {
       // 2 => 3
-      $this->setIdentity(2);
+      $this->setIdentity(3);
       $data = $this->jsonRpc('conversation.getList', [
         'noread' => true
       ]);
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
-      $this->assertEquals(count($data['result']) , 2);
+      $this->assertEquals(count($data['result']) , 1);
       $this->assertEquals(count($data['result'][0]) , 5);
       $this->assertEquals(count($data['result'][0]['message']) , 1);
-      $this->assertEquals($data['result'][0]['message']['id'] , 5);
-      $this->assertEquals(count($data['result'][0]['users']) , 2);
+      $this->assertEquals($data['result'][0]['message']['id'] , 1);
+      $this->assertEquals(count($data['result'][0]['users']) , 3);
       $this->assertEquals($data['result'][0]['users'][0] , 1);
       $this->assertEquals($data['result'][0]['users'][1] , 2);
-      $this->assertEquals($data['result'][0]['id'] , 3);
+      $this->assertEquals($data['result'][0]['users'][2] , 3);
+      $this->assertEquals($data['result'][0]['id'] , 1);
       $this->assertEquals($data['result'][0]['name'] , "Chat");
       $this->assertEquals($data['result'][0]['type'] , 2);
-      $this->assertEquals(count($data['result'][1]) , 5);
-      $this->assertEquals(count($data['result'][1]['message']) , 1);
-      $this->assertEquals($data['result'][1]['message']['id'] , 1);
-      $this->assertEquals(count($data['result'][1]['users']) , 3);
-      $this->assertEquals($data['result'][1]['users'][0] , 1);
-      $this->assertEquals($data['result'][1]['users'][1] , 2);
-      $this->assertEquals($data['result'][1]['users'][2] , 3);
-      $this->assertEquals($data['result'][1]['id'] , 1);
-      $this->assertEquals($data['result'][1]['name'] , "Chat");
-      $this->assertEquals($data['result'][1]['type'] , 2);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 

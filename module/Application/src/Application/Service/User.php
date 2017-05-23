@@ -660,7 +660,7 @@ class User extends AbstractService
         $res_user = $this->getMapper()->getList($identity['id'], $is_admin, null, null, $page_id, null, null, null, true);
         $id = [];
         foreach ($res_user as $m_user) {
-            $id[] = $m_user->getId();
+          $id[] = $m_user->getId();
         }
       }
 

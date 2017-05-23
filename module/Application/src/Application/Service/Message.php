@@ -60,17 +60,18 @@ class Message extends AbstractService
           ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
       if ($this->getMapper()->insert($m_message) <= 0) {
-          throw new \Exception('error insert message');
+        throw new \Exception('error insert message');
       }
 
       $id = $this->getMapper()->getLastInsertValue();
-
       $type = $this->getServiceConversation()->getLite($conversation_id)->getType();
       if($type === ModelConversation::TYPE_CHAT) {
         $message_user_id = $this->getServiceMessageUser()->send($id, $conversation_id, $text, $library);
       }
 
       $to = $this->getServiceConversationUser()->getListUserIdByConversation($conversation_id);
+
+      $this->getServiceConversationUser()->noread($conversation_id);
       //////////////////////// NODEJS //////////////////////////////:
       $this->sendMessage([
           'conversation_id' => (int)$conversation_id,

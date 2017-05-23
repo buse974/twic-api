@@ -74,10 +74,10 @@ class Conversation extends AbstractMapper
       $searchselect->columns(['id'])
         ->join('conversation_user', 'conversation.id=conversation_user.conversation_id',[])
         ->join('user', 'user.id=conversation_user.user_id',[], $select::JOIN_LEFT)
-        ->where(array('(conversation.name LIKE ? ' => ''.$search.'%'))
-        ->where(array('CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-        ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
-        ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
+        ->where(['(conversation.name LIKE ? ' => ''.$search.'%'])
+        ->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+        ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+        ->where(['user.nickname LIKE ? )' => ''.$search.'%'], Predicate::OP_OR);
 
       $select->where(['conversation.id IN (?)' => $searchselect]);
     }
