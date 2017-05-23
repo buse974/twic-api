@@ -19,7 +19,7 @@ use Zend\Db\Sql\Where;
 class User extends AbstractMapper
 {
 
-    public function get($user_id, $me, $is_sadmin_admin = false)
+    public function get($user_id, $me, $is_admin = false)
     {
         $columns = [
             'user$id' => new Expression('user.id'),
@@ -39,6 +39,10 @@ class User extends AbstractMapper
             'user$contacts_count' => $this->getSelectContactCount(),
             'user$contact_state' => $this->getSelectContactState($me)
         ];
+
+        if(true === $is_admin) {
+          $columns[] = 'emailsent';
+        }
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)

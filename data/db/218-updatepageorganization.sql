@@ -14,7 +14,7 @@ ADD COLUMN `website` VARCHAR(45) NULL AFTER `short_title`,
 ADD COLUMN `phone` VARCHAR(45) NULL AFTER `website`,
 ADD COLUMN `libelle` VARCHAR(45) NULL AFTER `phone`,
 ADD COLUMN `custom` VARCHAR(45) NULL AFTER `libelle`,
-ADD COLUMN `subtype` VARCHAR(45) NULL AFTER `custom`;
+ADD COLUMN `subtype` TEXT NULL AFTER `custom`;
 
 INSERT INTO `page`
 (`logo`,`description`,`background`,`deleted_date`,`title`,`uid`,`type`,`short_title`,`website`,`phone`,`address_id`,`libelle`,`custom`,`subtype`)
