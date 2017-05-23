@@ -12,6 +12,7 @@ use Application\Model\PageRelation as ModelPageRelation;
 use Application\Model\Page as ModelPage;
 use Application\Model\Role as ModelRole;
 use Application\Model\Conversation as ModelConversation;
+use JRpc\Json\Server\Exception\JrpcException;
 
 /**
  * Class Page
