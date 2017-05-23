@@ -484,6 +484,20 @@ class PageTest extends AbstractService
 
     }
 
+   /**
+    * @depends testPageAdd
+    */
+    public function testSendPassword($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.sendPassword', ['page_id' => $id]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 0);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
     /**
      * @depends testPageAdd
      */

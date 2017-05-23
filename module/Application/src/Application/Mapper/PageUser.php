@@ -12,8 +12,10 @@ class PageUser extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['page_id','user_id','state','role'])
-          ->join('page', 'page_user.page_id = page.id', [], $select::JOIN_LEFT)
+          ->join('page', 'page_user.page_id = page.id', [])
+          ->join('user', 'page_user.user_id = user.id', [])
           ->where(['page.deleted_date IS NULL'])
+          ->where(['user.deleted_date IS NULL'])
           ->quantifier('DISTINCT');
 
         if(null!==$role) {
