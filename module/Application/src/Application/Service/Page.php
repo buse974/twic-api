@@ -29,9 +29,9 @@ class Page extends AbstractService
      */
     public function getCustom($libelle)
     {
-        $res_school = $this->getMapper()->getCustom($libelle);
+        $res_page = $this->getMapper()->getCustom($libelle);
 
-        if ($res_school->count() <= 0) {
+        if ($res_page->count() <= 0) {
             throw new JrpcException('No custom fields for ' . $libelle);
         }
 
@@ -111,8 +111,8 @@ class Page extends AbstractService
 
         $conversation_id = null;
         if($type !== ModelPage::TYPE_ORGANIZATION) {
-        //  $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
-        //  $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
+          $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
+          $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
         } else {
           $confidentiality = 0;
         }
@@ -364,6 +364,7 @@ class Page extends AbstractService
             ->setEndDate($end_date)
             ->setLocation($location)
             ->setUserId($user_id)
+            ->setOwnerId($owner_id)
             ->setCustom($custom)
             ->setLibelle($libelle)
             ->setWebsite($formattedWebsite)

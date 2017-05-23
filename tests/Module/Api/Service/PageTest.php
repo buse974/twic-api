@@ -332,13 +332,33 @@ class PageTest extends AbstractService
             ],
             'docs' => [
                 ['name' => 'name', 'link' => 'link', 'type' => 'type']
-            ]
+            ],
+            'libelle' => 'gnam',
+            'custom' => '{obj}',
         ]);
 
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
+    public function testPageGetCustom()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('page.getCustom', [
+          'libelle' => 'gnam',]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 3);
+        $this->assertEquals($data['result']['id'] , 1);
+        $this->assertEquals($data['result']['libelle'] , "gnam");
+        $this->assertEquals($data['result']['custom'] , "{obj}");
+        $this->assertEquals($data['jsonrpc'] , 2.0); 
     }
 
     /**
