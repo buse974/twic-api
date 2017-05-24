@@ -84,8 +84,8 @@ class Conversation extends AbstractMapper
 
     // READ OR NOT READ
     if(true === $noread) {
-      $select->where(['conversation_user.read_date IS NULL']);
-    }
+      $select->where(['conversation_user.read_date IS NOT NULL']);
+    } 
 
     // ONLY ONE CONTACT OR NOT
     if(true === $contact || false === $contact) {

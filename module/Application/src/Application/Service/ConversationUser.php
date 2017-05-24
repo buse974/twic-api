@@ -65,7 +65,7 @@ class ConversationUser extends AbstractService
 
     $m_conversation_user = $this->getModel()
       ->setConversationId($conversation_id)
-      ->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
+      ->setReadDate(new IsNull('read_date'))
       ->setUserId($user_id);
 
       return $this->getMapper()->update($m_conversation_user);
@@ -83,7 +83,7 @@ class ConversationUser extends AbstractService
   public function noread($conversation_id)
   {
     $ret = $this->getMapper()->update(
-      $this->getModel()->setReadDate(new IsNull('read_date')),
+      $this->getModel()->setReadDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')),
       ['conversation_id' => $conversation_id]);
 
     $this->read($conversation_id);
@@ -156,5 +156,15 @@ class ConversationUser extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+
+    /**
+     * Get Service Message.
+     *
+     * @return \Application\Service\Message
+     */
+    private function getServiceMessage()
+    {
+        return $this->container->get('app_service_message');
     }
 }

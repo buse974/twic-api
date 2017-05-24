@@ -71,7 +71,9 @@ class Message extends AbstractService
 
       $to = $this->getServiceConversationUser()->getListUserIdByConversation($conversation_id);
 
+      //marque la conversation no read
       $this->getServiceConversationUser()->noread($conversation_id);
+
       //////////////////////// NODEJS //////////////////////////////:
       $this->sendMessage([
           'conversation_id' => (int)$conversation_id,
