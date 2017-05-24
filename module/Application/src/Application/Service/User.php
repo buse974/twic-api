@@ -794,7 +794,7 @@ class User extends AbstractService
      *
      * @return array
      */
-    public function getListId($search = null, $exclude = null, $filter = null, $contact_state = null, $page_id = null, $post_id = null, $order = null)
+    public function getListId($search = null, $exclude = null, $filter = null, $contact_state = null, $page_id = null, $post_id = null, $order = null, $role = null)
     {
         $identity = $this->getIdentity();
         if (null !== $exclude && !is_array($exclude)) {

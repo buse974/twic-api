@@ -68,7 +68,8 @@ class Page extends AbstractMapper
       $is_admin = false,
       $search = null,
       $tags = null,
-      $children_id = null)
+      $children_id = null,
+      $is_member_admin = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'title'])
@@ -87,7 +88,11 @@ class Page extends AbstractMapper
         }
         if (null !== $member_id) {
           $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
-              ->where(['member.user_id' => $member_id]);
+              ->where(['member.user_id' => $member_id])
+              ->where(['member.state' => 'member']);
+          if($is_member_admin === true) {
+            $select->where(['member.role' => 'admin']);
+          }
         }
 
         if (null !== $search) {

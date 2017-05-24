@@ -81,7 +81,8 @@ class User extends AbstractMapper
       $order = null,
       array $exclude = null,
       $contact_state = null,
-      $only_nosend_email = null)
+      $only_nosend_email = null,
+      $role = null)
     {
         $select = $this->tableGateway->getSql()->select();
         if ($is_admin) {
@@ -157,7 +158,14 @@ class User extends AbstractMapper
             }
         }
 
-	       return $this->selectWith($select);
+        if(!empty($role)) {
+          $select->join(['page_user' => 'pu'], 'pu.user_id=user.id', [])
+            ->join(['page' => 'p'], 'pu.page_id=p.id', [])
+            ->where(['pu.role' => $role]);
+            ->where(['p.type' => 'course']);
+        }
+
+        return $this->selectWith($select);
     }
 
     public function getEmailUnique($email, $user)

@@ -26,7 +26,8 @@ class Post extends AbstractMapper
             ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
             ->where(['post.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
-            ->group('post.id');
+            ->group('post.id')
+            ->quantifier('DISTINCT');
 
         if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
