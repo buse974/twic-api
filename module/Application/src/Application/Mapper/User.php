@@ -159,12 +159,11 @@ class User extends AbstractMapper
         }
 
         if(!empty($role)) {
-          $select->join(['page_user' => 'pu'], 'pu.user_id=user.id', [])
-            ->join(['page' => 'p'], 'pu.page_id=p.id', [])
+          $select->join(['pu' => 'page_user'], 'pu.user_id=user.id', [])
+            ->join(['p' => 'page'], 'pu.page_id=p.id', [])
             ->where(['pu.role' => $role])
             ->where(['p.type' => 'course']);
         }
-
         return $this->selectWith($select);
     }
 
