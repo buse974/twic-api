@@ -81,6 +81,25 @@ class PostTest extends AbstractService
     /**
      * @depends testPostAdd
      */
+    public function testPostReport($post_id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('report.add', [
+            'reason' => 'plein',
+            'description' => 'desxcriptiovb',
+            'post_id' => $post_id
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+
+    /**
+     * @depends testPostAdd
+     */
     public function testPostUpdate($post_id)
     {
         $this->setIdentity(1);
