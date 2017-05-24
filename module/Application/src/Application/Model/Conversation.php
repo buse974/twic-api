@@ -18,6 +18,7 @@ class Conversation extends BaseConversation
     protected $nb_users;
     protected $message;
     protected $role;
+    protected $page_id;
 
     public function exchangeArray(array &$data)
     {
@@ -109,7 +110,7 @@ class Conversation extends BaseConversation
 
         return $this;
     }
-    
+
     /**
      * Get the value of Role
      *
@@ -130,6 +131,31 @@ class Conversation extends BaseConversation
     public function setRole($role)
     {
         $this->role = $role;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Page Id
+     *
+     * @return mixed
+     */
+    public function getPageId()
+    {
+        return $this->page_id;
+    }
+
+    /**
+     * Set the value of Page Id
+     *
+     * @param mixed page_id
+     *
+     * @return self
+     */
+    public function setPageId($page_id)
+    {
+        $this->page_id = $page_id;
 
         return $this;
     }

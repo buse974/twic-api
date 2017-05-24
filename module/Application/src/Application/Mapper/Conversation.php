@@ -52,6 +52,7 @@ class Conversation extends AbstractMapper
 
     $select = $this->tableGateway->getSql()->select();
     $select->columns($colums)
+      ->join('page', 'page.conversation_id=conversation.id', ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
       ->order(['conversation_message$id DESC'])
       ->group(['conversation.id']);
 
@@ -85,7 +86,7 @@ class Conversation extends AbstractMapper
     // READ OR NOT READ
     if(true === $noread) {
       $select->where(['conversation_user.read_date IS NOT NULL']);
-    } 
+    }
 
     // ONLY ONE CONTACT OR NOT
     if(true === $contact || false === $contact) {
