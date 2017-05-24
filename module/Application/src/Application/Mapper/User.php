@@ -161,7 +161,7 @@ class User extends AbstractMapper
         if(!empty($role)) {
           $select->join(['page_user' => 'pu'], 'pu.user_id=user.id', [])
             ->join(['page' => 'p'], 'pu.page_id=p.id', [])
-            ->where(['pu.role' => $role]);
+            ->where(['pu.role' => $role])
             ->where(['p.type' => 'course']);
         }
 
