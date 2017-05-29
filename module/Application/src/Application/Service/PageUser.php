@@ -63,7 +63,6 @@ class PageUser extends AbstractService
                     'type' => $m_page->getType(),
                     ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*user*/, 'page'
                 );
-
                 //$gcm_notification = new GcmNotification();
                 /*$gcm_notification->setTitle($name)
                     ->setSound("default")
@@ -92,7 +91,7 @@ class PageUser extends AbstractService
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 // Si il n'est pas le propriétaire on lui envoie une notification
                 if ($m_page->getUserId() !== $uid) {
-                    if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                    if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC && ModelPage::TYPE_ORGANIZATION !== $m_page->getType()) {
                         $this->getServicePost()->addSys(
                             'PPM'.$page_id.'_'.$uid, '', [
                             'state' => 'member',
