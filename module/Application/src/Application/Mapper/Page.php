@@ -170,8 +170,9 @@ class Page extends AbstractMapper
          ->join(['page_address' => 'address'], 'page.address_id = page_address.id', ['page_address!id' => 'id','street_no','street_type','street_name','floor','door','apartment','building','longitude','latitude','timezone'], $select::JOIN_LEFT)
          ->join(['page_address_division' => 'division'], 'page_address_division.id=page_address.division_id', ['page_address_division!id' => 'id','name'], $select::JOIN_LEFT)
          ->join(['page_address_city' => 'city'], 'page_address_city.id=page_address.city_id', ['school_address_city!id' => 'id','name'], $select::JOIN_LEFT)
-         ->join(['page_address_country' => 'country'], 'page_address_country.id=page_address.country_id', ['page_address_country!id' => 'id','short_name','name'], $select::JOIN_LEFT);
-
+         ->join(['page_address_country' => 'country'], 'page_address_country.id=page_address.country_id', ['page_address_country!id' => 'id','short_name','name'], $select::JOIN_LEFT)
+         ->where(['page.deleted_date IS NULL']);
+         
         if (null !== $id) {
             $select->where(['page.id' => $id]);
         }
