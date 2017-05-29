@@ -17,7 +17,7 @@
         "buse974/jrpc":"dev-master",
 	"buse974/ZOpenTok":"dev-master",
 	"buse974/sge":"dev-master",
-	"zendframework/zendservice-google-gcm": "dev-deviceGroup",
+	"zendframework/zendservice-google-gcm": "*",
         "aws/aws-sdk-php": "^3.19"
     },
     "require-dev": {
@@ -29,10 +29,6 @@
         {
             "type": "vcs",
             "url":  "git@github.com:buse974/SimplePageCrawler.git"
-        },
-        {
-            "type": "vcs",
-	    "url": "git@github.com:BabbleCar/ZendService_Google_Gcm.git"
         }
     ],
     "autoload": {
