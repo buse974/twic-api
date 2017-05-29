@@ -69,7 +69,8 @@ class Page extends AbstractMapper
       $search = null,
       $tags = null,
       $children_id = null,
-      $is_member_admin = null)
+      $is_member_admin = null,
+      $relation_type = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'title'])
@@ -78,10 +79,16 @@ class Page extends AbstractMapper
         if(!empty($parent_id)) {
           $select->join('page_relation', 'page_relation.page_id = page.id', ['parent_id'])
             ->where(['page_relation.parent_id' => $parent_id]);
+            if(!empty($relation_type)) {
+              $select->where(['page_relation.type' => $relation_type]);
+            }
         }
         if(!empty($children_id)) {
           $select->join('page_relation', 'page_relation.parent_id = page.id', ['page_id'])
             ->where(['page_relation.page_id' => $children_id]);
+            if(!empty($relation_type)) {
+              $select->where(['page_relation.type' => $relation_type]);
+            }
         }
         if (null !== $type) {
           $select->where(['page.type' => $type]);
@@ -172,7 +179,7 @@ class Page extends AbstractMapper
          ->join(['page_address_city' => 'city'], 'page_address_city.id=page_address.city_id', ['school_address_city!id' => 'id','name'], $select::JOIN_LEFT)
          ->join(['page_address_country' => 'country'], 'page_address_country.id=page_address.country_id', ['page_address_country!id' => 'id','short_name','name'], $select::JOIN_LEFT)
          ->where(['page.deleted_date IS NULL']);
-         
+
         if (null !== $id) {
             $select->where(['page.id' => $id]);
         }

@@ -625,7 +625,7 @@ class Page extends AbstractService
         }
         $identity = $this->getServiceUser()->getIdentity();
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_page = $this->getMapper()->getListId($identity['id'], $parent_id, null, null, null,null, null, $is_admin, null, null, $children_id);
+        $res_page = $this->getMapper()->getListId($identity['id'], $parent_id, ModelPage::TYPE_ORGANIZATION, null, null,null, null, $is_admin, null, null, $children_id, null, ModelPageRelation::TYPE_MEMBER);
 
         $ar_page = [];
 
