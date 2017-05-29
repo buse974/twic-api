@@ -123,6 +123,7 @@ class Post extends AbstractMapper
             ->where(['post.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
             ->order([ 'post.id' => 'DESC']);
+            
 
         if (!$is_sadmin) {
             $select->where(['post.deleted_date IS NULL']);
