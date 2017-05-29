@@ -42,7 +42,7 @@ class Module
                 $rbacService = $event->getApplication()
                     ->getServiceManager()
                     ->get('rbac.service');
-            
+
                 if (! $rbacService->isGranted($identity['roles'], $permission)) {
                     if ($e->getTarget()->getServiceMap()->getService($permission) === false
                     ) {
@@ -55,7 +55,7 @@ class Module
                 }
             }
         );
-        
+
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
     }
@@ -77,9 +77,9 @@ class Module
                     $config = $container->get('config');
                     $client = new \ZendService\Google\Gcm\Client();
                     $client->setApiKey($config['gcm']['api_key'])
-                        ->setSenderId($config['gcm']['sender_id'])
+                        //->setSenderId($config['gcm']['sender_id'])
                         ->setHttpClient(new \Zend\Http\Client(null, $config[$config['gcm']['adapter']]));
-                    
+
                     return $client;
                 },
                 \Application\Service\Fcm::class => function ($container) {
