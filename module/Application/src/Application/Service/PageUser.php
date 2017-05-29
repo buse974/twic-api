@@ -9,7 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
-use ZendService\Google\Gcm\Notification as GcmNotification;
+//use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class PageUser
@@ -68,7 +68,7 @@ class PageUser extends AbstractService
                     ->setSound("default")
                     ->setColor("#00A38B")
                     ->setBody('Sent you a connection request');*/
-                $this->getServiceFcm()->send(
+            /*    $this->getServiceFcm()->send(
                     $uid, [
                     'data' => [
                         'type' => 'userpage',
@@ -80,7 +80,7 @@ class PageUser extends AbstractService
                   ] //, $gcm_notification
                 );
 
-
+*/
                 // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
 
@@ -110,7 +110,7 @@ class PageUser extends AbstractService
                           ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, $uid/*user*/, 'page'
                         );
                     }
-
+/*
                     $this->getServiceFcm()->send(
                         $uid, [
                         'data' => [
@@ -122,9 +122,10 @@ class PageUser extends AbstractService
                         ],
                       ]
                     );
+                    */
                 }
             } else {
-              $this->getServiceFcm()->send(
+          /*    $this->getServiceFcm()->send(
                   $uid, [
                   'data' => [
                       'type' => 'userpage',
@@ -135,6 +136,7 @@ class PageUser extends AbstractService
                   ],
                 ]
               );
+              */
             }
 
 
@@ -181,7 +183,7 @@ class PageUser extends AbstractService
               }
           }
         }
-
+/*
         $this->getServiceFcm()->send(
             $user_id, [
             'data' => [
@@ -193,7 +195,7 @@ class PageUser extends AbstractService
             ],
           ]
         );
-
+*/
         $m_page_user = $this->getModel()
             ->setRole($role)
             ->setState($state);
@@ -408,8 +410,8 @@ class PageUser extends AbstractService
      *
      * @return \Application\Service\Fcm
      */
-    private function getServiceFcm()
+  /*  private function getServiceFcm()
     {
         return $this->container->get('fcm');
-    }
+    }*/
 }

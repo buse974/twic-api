@@ -974,10 +974,10 @@ class User extends AbstractService
      *
      * @return \Application\Service\Fcm
      */
-    private function getServiceFcm()
+    /*private function getServiceFcm()
     {
         return $this->container->get('fcm');
-    }
+    }*/
 
     /**
      * Get Service Address

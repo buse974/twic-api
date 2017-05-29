@@ -9,7 +9,7 @@ namespace Application\Service;
 use Application\Model\Role as ModelRole;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
-use ZendService\Google\Gcm\Notification as GcmNotification;
+//use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class Contact.
@@ -89,7 +89,8 @@ class Contact extends AbstractService
             }
         }
 
-        $gcm_notification = new GcmNotification();
+    /*
+     $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
             ->setColor("#00A38B")
@@ -107,7 +108,7 @@ class Contact extends AbstractService
 
             ], $gcm_notification
         );
-
+*/
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->addSys(
             $l,
@@ -173,7 +174,7 @@ class Contact extends AbstractService
                 $name .= ' '.$m_user->getLastname();
             }
         }
-
+/*
         $gcm_notification = new GcmNotification();
         $gcm_notification->setTitle($name)
             ->setSound("default")
@@ -190,7 +191,7 @@ class Contact extends AbstractService
             ]
             ], $gcm_notification
         );
-
+*/
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->updateSys(
             $l,
@@ -243,7 +244,7 @@ class Contact extends AbstractService
 
         $this->getServiceSubscription()->delete('PU'.$user, $user_id);
         $this->getServiceSubscription()->delete('PU'.$user_id, $user);
-        $this->getServiceFcm()->send(
+      /*  $this->getServiceFcm()->send(
             $user, ['data' => [
             'type' => 'connection',
             'data' => [
@@ -252,7 +253,7 @@ class Contact extends AbstractService
                 ]
             ]
             ]
-        );
+        );*/
         $this->getServiceEvent()->sendData($user_id, 'connection.remove', ['SU'.$user]);
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->hardDelete($l);
@@ -402,10 +403,10 @@ class Contact extends AbstractService
      *
      * @return \Application\Service\Fcm
      */
-    private function getServiceFcm()
+    /*private function getServiceFcm()
     {
         return $this->container->get('fcm');
-    }
+    }*/
 
     /**
      * Get Service Event
