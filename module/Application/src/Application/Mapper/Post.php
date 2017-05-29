@@ -119,6 +119,10 @@ class Post extends AbstractMapper
             'post$nbr_likes' => $nbr_likes,
         ]);
         $select->where(['post.id' => $id])
+
+        $select->join('page', 'page.id = post.t_page_id', [], $select::JOIN_LEFT)
+            ->where(['post.deleted_date IS NULL'])
+            ->where(['page.deleted_date IS NULL'])
             ->order([ 'post.id' => 'DESC']);
 
         if (!$is_sadmin) {
