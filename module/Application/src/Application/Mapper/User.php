@@ -82,7 +82,8 @@ class User extends AbstractMapper
       array $exclude = null,
       $contact_state = null,
       $only_nosend_email = null,
-      $role = null)
+      $role = null,
+      $conversation_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
         if ($is_admin) {
@@ -141,6 +142,10 @@ class User extends AbstractMapper
           $select->join('page_user', 'page_user.user_id=user.id', [])
             ->join('page', 'page_user.page_id=page.id', [])
             ->where(['page_user.page_id' => $page_id]);
+        }
+        if (!empty($conversation_id)) {
+          $select->join('conversation_user', 'conversation_user.user_id=user.id', [])
+            ->where(['conversation_user.conversation_id' => $conversation_id]);
         }
         if (null !== $search) {
             $select->where(['( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'])
