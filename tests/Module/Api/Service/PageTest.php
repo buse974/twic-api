@@ -21,7 +21,7 @@ class PageTest extends AbstractService
             'background' => 'background',
             'description' => 'description',
             'confidentiality' => 1,
-            'type' => 'group',
+            'type' => 'organization',
             'admission' => 'free',
             'start_date' => '2015-00-00 00:00:00',
             'end_date' => '2016-00-00 00:00:00',
@@ -61,7 +61,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1, 1);
         $data = $this->jsonRpc('page.add', [
-            'title' => 'super title patrent',
+            'title' => 'super title parent',
             'logo' => 'logo',
             'background' => 'background',
             'description' => 'description',
@@ -199,15 +199,15 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['logo'] , "logo");
         $this->assertEquals($data['result']['background'] , "background");
         $this->assertEquals($data['result']['description'] , "description");
-        $this->assertEquals($data['result']['confidentiality'] , 1);
+        $this->assertEquals($data['result']['confidentiality'] , 0);
         $this->assertEquals($data['result']['admission'] , "free");
         $this->assertEquals($data['result']['start_date'] , "2015-00-00T00:00:00Z");
         $this->assertEquals($data['result']['end_date'] , "2016-00-00T00:00:00Z");
         $this->assertEquals($data['result']['location'] , "location");
-        $this->assertEquals($data['result']['type'] , "group");
+        $this->assertEquals($data['result']['type'] , "organization");
         $this->assertEquals($data['result']['user_id'] , 1);
         $this->assertEquals($data['result']['owner_id'] , 1);
-        $this->assertEquals($data['result']['conversation_id'] , 1);
+        $this->assertEquals($data['result']['conversation_id'] , null);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
@@ -218,7 +218,7 @@ class PageTest extends AbstractService
     {
         $this->setIdentity(1);
         $data = $this->jsonRpc('page.getListId', [
-          'type' => 'group',
+          'type' => 'organization',
           'search' => 'super',
           'member_id' => [1],
           'filter' => ['n' => 5,'p' => 1],
@@ -234,75 +234,11 @@ class PageTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 2);
-        $this->assertEquals(count($data['result']['list']) , 1);
+        $this->assertEquals(count($data['result']['list']) , 2);
         $this->assertEquals($data['result']['list'][0] , 1);
-        $this->assertEquals($data['result']['count'] , 1);
+        $this->assertEquals($data['result']['list'][1] , 2);
+        $this->assertEquals($data['result']['count'] , 2);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-
-    public function testCanGet()
-    {
-        $this->setIdentity(1);
-        $data = $this->jsonRpc('conversation.get', [
-          'id' => 1
-        ]);
-
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 8);
-        $this->assertEquals(count($data['result']['message']) , 1);
-        $this->assertEquals($data['result']['message']['id'] , null);
-        $this->assertEquals(count($data['result']['users']) , 3);
-        $this->assertEquals($data['result']['users'][0] , 1);
-        $this->assertEquals($data['result']['users'][1] , 2);
-        $this->assertEquals($data['result']['users'][2] , 3);
-        $this->assertEquals($data['result']['nb_users'] , 3);
-        $this->assertEquals($data['result']['role'] , "admin");
-        $this->assertEquals($data['result']['id'] , 1);
-        $this->assertEquals($data['result']['name'] , "superTitle");
-        $this->assertEquals($data['result']['type'] , 1);
-        $this->assertEquals(count($data['result']['options']) , 12);
-        $this->assertEquals($data['result']['options']['record'] , true);
-        $this->assertEquals($data['result']['options']['record_treshold'] , 2);
-        $this->assertEquals(count($data['result']['options']['autoPublishCamera']) , 1);
-        $this->assertEquals(count($data['result']['options']['autoPublishCamera'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['autoPublishCamera'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['autoPublishCamera'][0]['roles'][0] , "admin");
-        $this->assertEquals($data['result']['options']['autoPublishMicrophone'] , false);
-        $this->assertEquals(count($data['result']['options']['archive']) , 1);
-        $this->assertEquals(count($data['result']['options']['archive'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['archive'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['archive'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['options']['raiseHand']) , 1);
-        $this->assertEquals(count($data['result']['options']['raiseHand'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['raiseHand'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['raiseHand'][0]['roles'][0] , "user");
-        $this->assertEquals(count($data['result']['options']['publish']) , 1);
-        $this->assertEquals(count($data['result']['options']['publish'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['publish'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['publish'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['options']['askDevice']) , 1);
-        $this->assertEquals(count($data['result']['options']['askDevice'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['askDevice'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['askDevice'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['options']['askScreen']) , 1);
-        $this->assertEquals(count($data['result']['options']['askScreen'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['askScreen'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['askScreen'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['options']['forceMute']) , 1);
-        $this->assertEquals(count($data['result']['options']['forceMute'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['forceMute'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['forceMute'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['options']['forceUnpublish']) , 1);
-        $this->assertEquals(count($data['result']['options']['forceUnpublish'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['forceUnpublish'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['forceUnpublish'][0]['roles'][0] , "admin");
-        $this->assertEquals(count($data['result']['options']['kick']) , 1);
-        $this->assertEquals(count($data['result']['options']['kick'][0]) , 1);
-        $this->assertEquals(count($data['result']['options']['kick'][0]['roles']) , 1);
-        $this->assertEquals($data['result']['options']['kick'][0]['roles'][0] , "admin");
-        $this->assertEquals($data['jsonrpc'] , 2.0);
-
     }
 
     /**
@@ -537,7 +473,7 @@ class PageTest extends AbstractService
         $this->setIdentity(1);
         $data = $this->jsonRpc('pageuser.getListByUser', [
           'user_id' => 4,
-          'type' => 'group'
+          'type' => 'organization'
         ]);
 
         $this->assertEquals(count($data) , 3);

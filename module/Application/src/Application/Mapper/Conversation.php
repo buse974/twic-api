@@ -48,7 +48,7 @@ class Conversation extends AbstractMapper
     $select_nb_users->columns(['nbr_users' => new Expression('COUNT(true)')])->where(['conversation_user.conversation_id=conversation.id']);
 
     $subselect = new Select('message');
-    $colums  = array_merge(['conversation$id' => 'id','type','name','conversation_message$id' => $subselect], ($type===ModelConversation::TYPE_CHANNEL) ? ['conversation$nb_users' => $select_nb_users]:[]);
+    $colums  = ['conversation$id' => 'id','type','name','conversation_message$id' => $subselect, 'conversation$nb_users' => $select_nb_users];
 
     $select = $this->tableGateway->getSql()->select();
     $select->columns($colums)

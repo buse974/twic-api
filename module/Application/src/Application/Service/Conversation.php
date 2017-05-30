@@ -75,12 +75,11 @@ class Conversation extends AbstractService
         if(is_numeric($message_id)) {
           $m_conversation->setMessage($this->getServiceMessage()->get($message_id));
         }
-        $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
 
+        if($m_conversation->getType() !== ModelConversation::TYPE_CHANNEL) {
+          $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+        }
 
-
-        // @TODO a optimiser
-        $m_conversation->setNbUsers(count($m_conversation->getUsers()));
         $m_page = $this->getServicePage()->getByConversationId($id);
         if($m_page) {
           $role = $this->getServicePageUser()->getRole($m_page->getId());

@@ -156,7 +156,12 @@ class Page extends AbstractService
         $id = (int)$this->getMapper()->getLastInsertValue();
 
         if (null !== $page_id) {
-          $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
+          $mm_page = $this->getLite($page_id);
+          if($type === ModelPage::TYPE_ORGANIZATION && $mm_page->getType() === ModelPage::TYPE_ORGANIZATION) {
+            $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_MEMBER);
+          } else {
+            $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
+          }
         }
 
         if (null !== $circle_id) {

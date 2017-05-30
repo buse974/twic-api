@@ -91,6 +91,11 @@ class ResumeTest extends AbstractService
             'description' => 'plein de chose2',
             'type' => 1
         ));
+
+        $this->assertEquals(count($data) , 3); 
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 5);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
 

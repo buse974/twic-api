@@ -83,6 +83,11 @@ class CircleTest extends AbstractService
               "country" => ["name" => "Monaco"]
             ]]);
 
+            $this->assertEquals(count($data) , 3);
+            $this->assertEquals($data['id'] , 1); 
+            $this->assertEquals($data['result'] , 1);
+            $this->assertEquals($data['jsonrpc'] , 2.0);
+
         return $data['result'];
     }
 
