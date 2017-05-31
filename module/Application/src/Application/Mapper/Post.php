@@ -15,10 +15,10 @@ class Post extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $columns = ['post$id' => new Expression('post.id')];
         if ($user_id === null && $parent_id === null && $page_id === null) {
-            $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
-            $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
+          $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
+          $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
         } else {
-            $select->order(['post.id' => 'DESC']);
+          $select->order(['post.id' => 'DESC']);
         }
 
         $select->columns($columns);
@@ -123,7 +123,7 @@ class Post extends AbstractMapper
             ->where(['post.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
             ->order([ 'post.id' => 'DESC']);
-            
+
 
         if (!$is_sadmin) {
             $select->where(['post.deleted_date IS NULL']);
