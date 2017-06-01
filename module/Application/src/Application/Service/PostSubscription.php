@@ -50,7 +50,8 @@ class PostSubscription extends AbstractService
         }
 
         $m_post = $this->getServicePost()->getLite($post_id);
-        $this->getServiceEvent()->userPublication($libelle, $m_post->getId(), $m_post->getType(), $action);
+
+        $this->getServiceEvent()->userPublication($libelle, ($sub_post_id !== null) ? $sub_post_id : $m_post->getId(), $m_post->getType(), $action);
 
         return true;
     }
