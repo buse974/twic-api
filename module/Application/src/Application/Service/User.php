@@ -36,8 +36,8 @@ class User extends AbstractService
     public function login($user, $password)
     {
         $auth = $this->getServiceAuth();
-        $auth->getAdapter()->setIdentity($user);
-        $auth->getAdapter()->setCredential($password);
+        $auth->getAdapter()->setIdentity(trim($user));
+        $auth->getAdapter()->setCredential(trim($password));
 
         $result = $auth->authenticate();
         if (! $result->isValid()) {
