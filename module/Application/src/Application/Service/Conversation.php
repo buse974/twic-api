@@ -90,7 +90,9 @@ class Conversation extends AbstractService
         if($m_conversation->getType() === ModelConversation::TYPE_CHAT) {
           if($user_id === 7 || $user_id === 3) {
             $m_conversation->setOptions([
-              "record"                => true,
+              "record" => true,
+              "nb_user_autorecord" => 2,
+              "rules" => [
               "autoPublishCamera"     => true,
               "autoPublishMicrophone" => true,
               "archive"               => true,
@@ -100,11 +102,13 @@ class Conversation extends AbstractService
               "askScreen"             => true,
               "forceMute"             => true,
               "forceUnpublish"        => true,
-              "kick"                  => true
+              "kick"                  => true ]
             ]);
           } else {
             $m_conversation->setOptions([
-              "record"                => false,
+              "record" => true,
+              "nb_user_autorecord" => 2,
+              "rules" => [
               "autoPublishCamera"     => true,
               "autoPublishMicrophone" => false,
               "archive"               => false,
@@ -114,13 +118,14 @@ class Conversation extends AbstractService
               "askScreen"             => false,
               "forceMute"             => false,
               "forceUnpublish"        => false,
-              "kick"                  => false
+              "kick"                  => false ]
             ]);
           }
         } else if($m_conversation->getType() === ModelConversation::TYPE_CHANNEL) {
           $m_conversation->setOptions([
-            "record"                  => true,
-            "record_treshold"         => 2,
+            "record" => true,
+             "nb_user_autorecord" => 2,
+             "rules" => [
             "autoPublishCamera"       => [["roles" => ["admin"]]],
             "autoPublishMicrophone"   => false,
             "archive"                 => [["roles" => ["admin"]]],
@@ -131,6 +136,7 @@ class Conversation extends AbstractService
             "forceMute"               => [["roles" => ["admin"]]],
             "forceUnpublish"          => [["roles" => ["admin"]]],
             "kick"                    => [["roles" => ["admin"]]],
+            ]
           ]);
         }
 
