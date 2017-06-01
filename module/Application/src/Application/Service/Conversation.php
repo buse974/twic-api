@@ -87,6 +87,7 @@ class Conversation extends AbstractService
             $m_conversation->setRole($role->getRole());
           }
         }
+        //TYPE 2 => CHAT   ::: TYPE 1 => CHANNEL
         if($m_conversation->getType() === ModelConversation::TYPE_CHAT) {
           if($user_id === 7 || $user_id === 3) {
             $m_conversation->setOptions([

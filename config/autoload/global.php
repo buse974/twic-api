@@ -13,8 +13,8 @@
  */
 
 return [
-    'version' => "v1.5b411",
-    'build-commit' => 549,
+    'version' => "2.0.4",
+    'build-commit' => 550,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -118,9 +118,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS549',
+                    'namespace' => 'LMS550',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS549'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS550'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
