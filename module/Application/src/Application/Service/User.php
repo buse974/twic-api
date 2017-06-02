@@ -11,7 +11,7 @@ use DateTimeZone;
 use DateTime;
 use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Role as ModelRole;
-use Firebase\Token\TokenGenerator;
+use Firebase\JWT\JWT;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Db\Sql\Predicate\IsNotNull;
 use Application\Model\Item as ModelItem;
@@ -142,19 +142,32 @@ class User extends AbstractService
             $secret_key = $this->container->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
 
-            $secret_key_fb = $this->container->get('config')['app-conf']['secret_key_fb'];
-            $secret_key_fb_debug = $this->container->get('config')['app-conf']['secret_key_fb_debug'];
-
-            $generator = new TokenGenerator($secret_key_fb);
-            $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))
-                ->setOption('debug', $secret_key_fb_debug)
-                ->setOption('expires', 1506096687)
-                ->create();
-
+            //$generator = new TokenGenerator($secret_key_fb);
+            //$user['fbtoken'] = $generator->setData(array('uid' => (string) $id))->setOption('debug', $secret_key_fb_debug)->setOption('expires', 1506096687)->create();
+            $user['fbtoken'] = $this->create_custom_token($id);
             $this->getCache()->setItem('identity_' . $id, $user);
         }
 
         return $user;
+    }
+
+    public function create_custom_token($uid, $is_premium_account = false)
+    {
+      $service_account_email = $this->container->get('config')['app-conf']['account_email'];
+      $private_key   = $this->container->get('config')['app-conf']['private_key'];
+
+      $now_seconds = time();
+      $payload = [
+        "iss" => $service_account_email,
+        "sub" => $service_account_email,
+        "aud" => "https://identitytoolkit.googleapis.com/google.identity.identitytoolkit.v1.IdentityToolkit",
+        "iat" => $now_seconds,
+        "exp" => $now_seconds+(60*60),  // Maximum expiration time is one hour
+        "uid" => $uid,
+        //"claims" => ["premium_account" => $is_premium_account]
+      ];
+
+      return JWT::encode($payload, $private_key, "RS256");
     }
 
     /**

@@ -10,34 +10,34 @@
     "require": {
         "php": ">=5.6",
         "zendframework/zendframework": "3.*",
-	"blanchonvincent/simple-page-crawler": "dev-master",
-        "firebase/token-generator":"2.*",
+	      "blanchonvincent/simple-page-crawler": "dev-master",
         "buse974/dal":"dev-master",
         "buse974/address":"dev-master",
         "buse974/jrpc":"dev-master",
-	"buse974/ZOpenTok":"dev-master",
-	"buse974/sge":"dev-master",
-	"zendframework/zendservice-google-gcm": "*",
-        "aws/aws-sdk-php": "^3.19"
+	      "buse974/ZOpenTok":"dev-master",
+	      "buse974/sge":"dev-master",
+	      "zendframework/zendservice-google-gcm": "*",
+        "aws/aws-sdk-php": "^3.19",
+        "firebase/php-jwt": "^4.0"
     },
     "require-dev": {
-            "phing/phing": "*",
-            "friendsofphp/php-cs-fixer":"*",
-            "phpunit/phpunit" : "*"
+        "phing/phing": "*",
+        "friendsofphp/php-cs-fixer":"*",
+        "phpunit/phpunit" : "*"
     },
     "repositories": [
         {
-            "type": "vcs",
-            "url":  "git@github.com:buse974/SimplePageCrawler.git"
+          "type": "vcs",
+          "url":  "git@github.com:buse974/SimplePageCrawler.git"
         }
     ],
     "autoload": {
-        "psr-4": {  
-            "Application\\": "module/Application/src/", 
+        "psr-4": {
+            "Application\\": "module/Application/src/",
             "Auth\\": "module/Auth/src/",
-            "Mail\\": "module/Mail/src/", 
-            "Rbac\\": "module/Rbac/src/", 
-            "Box\\": "module/Box/src/" 
+            "Mail\\": "module/Mail/src/",
+            "Rbac\\": "module/Rbac/src/",
+            "Box\\": "module/Box/src/"
         }
     },
     "scripts": {

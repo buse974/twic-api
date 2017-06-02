@@ -163,18 +163,7 @@ class MessageTest extends AbstractService
         $this->assertEquals($data['result'][2]['id'] , 2);
         $this->assertEquals($data['result'][2]['name'] , "Chat");
         $this->assertEquals($data['result'][2]['type'] , 2);
-        $this->assertEquals(count($data['result'][2]['options']) , 11);
-        $this->assertEquals($data['result'][2]['options']['record'] , false);
-        $this->assertEquals($data['result'][2]['options']['autoPublishCamera'] , true);
-        $this->assertEquals($data['result'][2]['options']['autoPublishMicrophone'] , false);
-        $this->assertEquals($data['result'][2]['options']['archive'] , false);
-        $this->assertEquals($data['result'][2]['options']['raiseHand'] , false);
-        $this->assertEquals($data['result'][2]['options']['publish'] , true);
-        $this->assertEquals($data['result'][2]['options']['askDevice'] , false);
-        $this->assertEquals($data['result'][2]['options']['askScreen'] , false);
-        $this->assertEquals($data['result'][2]['options']['forceMute'] , false);
-        $this->assertEquals($data['result'][2]['options']['forceUnpublish'] , false);
-        $this->assertEquals($data['result'][2]['options']['kick'] , false);
+        $this->assertEquals(!empty($data['result'][2]['options']) , true);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
