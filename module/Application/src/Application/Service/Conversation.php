@@ -226,6 +226,7 @@ class Conversation extends AbstractService
       return [
         'token' => $this->getServiceZOpenTok()->createToken($token,'{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
         'session' => $token,
+        'role' => ($user_id == 3 || $user_id == 7 ) ? 'admin':'user '
       ];
   }
 
@@ -303,16 +304,6 @@ class Conversation extends AbstractService
   private function getServiceMessage()
   {
       return $this->container->get('app_service_message');
-  }
-
-  /**
-   * Get Service User.
-   *
-   * @return \Application\Service\MessageUser
-   */
-  private function getServiceMessageUser()
-  {
-      return $this->container->get('app_service_message_user');
   }
 
   /**

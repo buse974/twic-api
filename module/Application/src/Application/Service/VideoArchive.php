@@ -106,7 +106,6 @@ class VideoArchive extends AbstractService
             if ($ret) {
                 $m_video_archive = $this->getMapper()->select($this->getModel()->setArchiveToken($json['id']))->current();
                 $m_conversation = $this->getServiceConversation()->getLite($m_video_archive->getConversationId());
-                $m_conversation_opt = $this->getServiceConversationOpt()->get($m_conversation->getConversationOptId());
 
                 $m_user = $this->getServiceUser()->getListIdByConversation($m_conversation->getId());
                 $miid = [];
@@ -162,36 +161,6 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Get Service Conversation Opt
-     *
-     * @return \Application\Service\ConversationOpt
-     */
-    private function getServiceConversationOpt()
-    {
-        return $this->container->get('app_service_conversation_opt');
-    }
-
-    /**
-     * Get Service Item
-     *
-     * @return \Application\Service\Item
-     */
-    private function getServiceItem()
-    {
-        return $this->container->get('app_service_item');
-    }
-
-    /**
-     * Get Service Conversation user.
-     *
-     * @return \Application\Service\ConversationUser
-     */
-    private function getServiceConversationUser()
-    {
-        return $this->container->get('app_service_conversation_user');
-    }
-
-    /**
      * Get Service OpenTok.
      *
      * @return \ZOpenTok\Service\OpenTok
@@ -209,16 +178,6 @@ class VideoArchive extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
-    }
-
-    /**
-     * Get Service Course
-     *
-     * @return \Application\Service\Course
-     */
-    private function getServiceCourse()
-    {
-        return $this->container->get('app_service_course');
     }
 
     /**
