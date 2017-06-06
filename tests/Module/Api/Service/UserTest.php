@@ -47,7 +47,6 @@ class UserTest extends AbstractService
 
         $data = $this->jsonRpc('user.login', ['user' => 'crobertr@thestudnet.com','password' => 'studnet']);
 
-
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 15);

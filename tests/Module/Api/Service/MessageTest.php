@@ -120,12 +120,12 @@ class MessageTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 2);
+        $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(!empty($data['result']['token']) , true);
         $this->assertEquals(!empty($data['result']['session']) , true);
+        $this->assertEquals(!empty($data['result']['role']) , true);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
-
 
     /**
      * @depends testCanSendMessageTwo
