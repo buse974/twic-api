@@ -589,7 +589,9 @@ class Page extends AbstractService
       $search = null,
       $tags = null,
       $children_id = null,
-      $is_member_admin = null)
+      $is_member_admin = null, // get only les meber admin true/false
+      $exclude = null
+      )
     {
       $this->addChannel();
         if (empty($tags)) {
@@ -599,7 +601,7 @@ class Page extends AbstractService
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags, $children_id, $is_member_admin);
+        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags, $children_id, $is_member_admin, null, $exclude);
 
         $ar_page = [];
         foreach ($res_page as $m_page) {

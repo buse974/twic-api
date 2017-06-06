@@ -70,12 +70,16 @@ class Page extends AbstractMapper
       $tags = null,
       $children_id = null,
       $is_member_admin = null,
-      $relation_type = null)
+      $relation_type = null,
+      $exclude = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'title'])
           ->where(['page.deleted_date IS NULL']);
 
+        if ($exclude) {
+          $select->where->notIn('page.id', $exclude);
+        }
         if(!empty($parent_id)) {
           $select->join('page_relation', 'page_relation.page_id = page.id', ['parent_id'])
             ->where(['page_relation.parent_id' => $parent_id]);
