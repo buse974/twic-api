@@ -159,6 +159,26 @@ class Item extends AbstractService
   }
 
   /**
+  * Delete Item
+  *
+  * @invokable
+  *
+  * @param int $id
+  **/
+  public function delete($id)
+  {
+    $identity = $this->getServiceUser()->getIdentity();
+
+    $m_item = $this->get($id);
+    $ar_pu = $this->getServicePageUser()->getListByPage($m_item->getPageId(), 'admin');
+    if(!in_array($identity['id'], $ar_pu[$m_item->getPageId()])) {
+      throw new \Exception("not admin of the page");
+    }
+
+    return $this->getMapper()->delete($this->getModel()->setId($id));
+  }
+
+  /**
    * Get Service User
    *
    * @return \Application\Service\User

@@ -268,4 +268,20 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
+    /**
+     * @depends testPageAdd
+     */
+    public function testDelete()
+    {
+      $this->setIdentity(1);
+      $data = $this->jsonRpc('item.delete', [
+        'id' => 1
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals($data['result'] , 1);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
 }
