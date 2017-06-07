@@ -137,7 +137,8 @@ class Page extends AbstractService
           ->setPhone($phone)
           ->setSubtype($subtype)
           ->setConversationId($conversation_id)
-          ->setShortTitle($short_title);
+          ->setShortTitle($short_title)
+          ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
         if ($address !== null) {
             $address = $this->getServiceAddress()->getAddress($address);

@@ -53,6 +53,7 @@ class Conversation extends AbstractMapper
     $select = $this->tableGateway->getSql()->select();
     $select->columns($colums)
       ->join('page', 'page.conversation_id=conversation.id', ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
+      ->where(['page.deleted_date IS NULL'])
       ->order(['conversation_message$id DESC'])
       ->group(['conversation.id']);
 
