@@ -85,8 +85,14 @@ class Item extends AbstractService
       $this->getMapper()->update($this->getModel()->setId($id)->setOrder($order));
     } elseif(is_numeric($order_id)) {
       //on verirfie si il existe une ordre superieur
-      $m_order = $this->getMapper()->select($this->getModel()->setId($order_id))->current();
-      $order = ($m_order->getOrder()+1);
+
+      if($order_id !== 0) {
+        $m_order = $this->getMapper()->select($this->getModel()->setId($order_id))->current();
+        $order = ($m_order->getOrder()+1);
+      } else {
+        $order = 1;
+      }
+      
       $res_order_sup = $this->getMapper()->select($this->getModel()->setOrder($order));
       if($res_order_sup->count() > 0) {
         //si oui on decaler
