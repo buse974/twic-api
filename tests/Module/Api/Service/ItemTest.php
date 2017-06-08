@@ -59,7 +59,6 @@ class ItemTest extends AbstractService
           'type' => 'FOLDER',
           'is_available' => false,
           'is_published' => false,
-          'order' => 1,
           //'start_date',
           //'end_date',
           //'parent_id'
@@ -80,7 +79,6 @@ class ItemTest extends AbstractService
           'points' => 6,
           'is_available' => false,
           'is_published' => false,
-          'order' => 1,
           //'start_date',
           //'end_date',
           //'parent_id'
@@ -96,7 +94,6 @@ class ItemTest extends AbstractService
           'points' => 7,
           'is_available' => false,
           'is_published' => false,
-          'order' => 1,
           //'start_date',
           //'end_date',
           //'parent_id'
@@ -112,7 +109,6 @@ class ItemTest extends AbstractService
           'points' => 10,
           'is_available' => false,
           'is_published' => false,
-          'order' => 1,
           //'start_date',
           //'end_date',
           'parent_id' => $data['id']
@@ -138,10 +134,6 @@ class ItemTest extends AbstractService
           'is_available' => true,
           'is_published' => true,
           'points' => 11,
-          'order' => 3,
-          //'start_date',
-          //'end_date',
-          //'parent_id'
         ]);
 
         $this->assertEquals(count($data) , 3);
@@ -149,6 +141,7 @@ class ItemTest extends AbstractService
         $this->assertEquals($data['result'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+
     /**
      * @depends testPageAdd
      */
@@ -173,11 +166,26 @@ class ItemTest extends AbstractService
     /**
      * @depends testPageAdd
      */
+    public function testMove()
+    {
+      $this->setIdentity(1);
+      $data = $this->jsonRpc('item.move', [
+        'id' => 3,
+        'order_id' => 1
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+    }
+
+    /**
+     * @depends testPageAdd
+     */
     public function testGetListIdParent($id)
     {
       $this->setIdentity(1);
       $data = $this->jsonRpc('item.getListId', [
-        'parent_id' => 1
+        'parent_id' => 1,
+        'page_id' => $id
       ]);
 
       $this->assertEquals(count($data) , 3);
@@ -187,6 +195,8 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][1][0] , 4);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
+
+
 
     /**
      * @depends testPageAdd
@@ -208,7 +218,7 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][1]['type'] , "FOLDER");
       $this->assertEquals($data['result'][1]['is_available'] , 1);
       $this->assertEquals($data['result'][1]['is_published'] , 1);
-      $this->assertEquals($data['result'][1]['order'] , 3);
+      $this->assertEquals($data['result'][1]['order'] , 1);
       $this->assertEquals($data['result'][1]['start_date'] , null);
       $this->assertEquals($data['result'][1]['end_date'] , null);
       $this->assertEquals(!empty($data['result'][1]['updated_date']) , true);
@@ -224,7 +234,7 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][2]['type'] , "FOLDER");
       $this->assertEquals($data['result'][2]['is_available'] , 0);
       $this->assertEquals($data['result'][2]['is_published'] , 0);
-      $this->assertEquals($data['result'][2]['order'] , 1);
+      $this->assertEquals($data['result'][2]['order'] , 3);
       $this->assertEquals($data['result'][2]['start_date'] , null);
       $this->assertEquals($data['result'][2]['end_date'] , null);
       $this->assertEquals($data['result'][2]['updated_date'] , null);
@@ -240,7 +250,7 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][3]['type'] , "FOLDER");
       $this->assertEquals($data['result'][3]['is_available'] , 0);
       $this->assertEquals($data['result'][3]['is_published'] , 0);
-      $this->assertEquals($data['result'][3]['order'] , 1);
+      $this->assertEquals($data['result'][3]['order'] , 2);
       $this->assertEquals($data['result'][3]['start_date'] , null);
       $this->assertEquals($data['result'][3]['end_date'] , null);
       $this->assertEquals($data['result'][3]['updated_date'] , null);
@@ -266,6 +276,7 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][4]['user_id'] , 1);
       $this->assertEquals($data['result'][4]['points'] , 10);
       $this->assertEquals($data['jsonrpc'] , 2.0);
+
     }
 
     /**

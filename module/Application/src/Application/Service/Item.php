@@ -18,13 +18,13 @@ class Item extends AbstractService
   * @param string type
   * @param bool is_available
   * @param bool is_published
-  * @param bool order
+  * @param int $order_id
   * @param string start_date
   * @param string end_date
   * @param int parent_id
   *
   **/
-  public function add($page_id, $title, $points = null, $description = null, $type = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function add($page_id, $title, $points = null, $description = null, $type = null, $is_available = null, $is_published = null, $order_id = null, $start_date = null, $end_date = null, $parent_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -42,18 +42,61 @@ class Item extends AbstractService
       ->setType($type)
       ->setIsAvailable($is_available)
       ->setIsPublished($is_published)
-      ->setOrder($order)
       ->setStartDate($start_date)
       ->setEndDate($end_date)
       ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
-      ->setParentId($parent_id)
       ->setUserId($user_id);
 
       $this->getMapper()->insert($m_item);
 
       $id = (int)$this->getMapper()->getLastInsertValue();
 
+      $this->move($id, -1, $parent_id);
+
       return $id;
+  }
+
+  /**
+  * Move Item
+  *
+  * @invokable
+  *
+  * @param int $id
+  * @param int $order_id
+  * @param int $parent_id
+  */
+  public function move($id, $order_id = null, $parent_id = null)
+  {
+    if(null !== $parent_id) {
+      $this->getMapper()->update($this->getModel()->setParentId($parent_id)->setId($id));
+    }
+
+    $m_base_order = $this->getMapper()->select($this->getModel()->setId($id))->current();
+
+    if(-1 === $order_id || (null === $order_id && null !== $parent_id) ) {
+      $order = 1;
+      //on récuper l'ordre le plus grand +1
+      $res_order_last = $this->getMapper()->getLastOrder($id, $m_base_order->getPageId(), $m_base_order->getParentId());
+      if($res_order_last->count() > 0) {
+        $order = $res_order_last->current()->getOrder()+1;
+      }
+
+      //on atribut l'ordre
+      $this->getMapper()->update($this->getModel()->setId($id)->setOrder($order));
+    } elseif(is_numeric($order_id)) {
+      //on verirfie si il existe une ordre superieur
+      $m_order = $this->getMapper()->select($this->getModel()->setId($order_id))->current();
+      $order = ($m_order->getOrder()+1);
+      $res_order_sup = $this->getMapper()->select($this->getModel()->setOrder($order));
+      if($res_order_sup->count() > 0) {
+        //si oui on decaler
+        $this->getMapper()->uptOrder($m_base_order->getPageId(), $order, $m_base_order->getParentId());
+      }
+
+      //on atribut l'ordre
+      $this->getMapper()->update($this->getModel()->setId($id)->setOrder($order));
+    }
+
   }
 
   /**
