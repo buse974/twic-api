@@ -13,7 +13,9 @@ class Item extends AbstractMapper
     $select->columns(['id', 'title', 'points', 'description', 'type', 'is_available', 'is_published', 'order', 'start_date', 'end_date', 'updated_date', 'created_date', 'parent_id', 'page_id', 'user_id'])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->where(['page_user.user_id' => $me])
-      ->where(['item.page_id' => $page_id]);
+      ->where(['item.page_id' => $page_id])
+      ->order('item.page_id ASC')
+      ->order('item.order ASC');
 
     if(null !== $parent_id) {
       $select->where(['item.parent_id' => $parent_id]);
