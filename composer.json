@@ -16,7 +16,7 @@
         "buse974/jrpc":"dev-master",
 	      "buse974/ZOpenTok":"dev-master",
 	      "buse974/sge":"dev-master",
-	      "zendframework/zendservice-google-gcm": "*",
+	      "zendframework/zendservice-google-gcm": "dev-master",
         "aws/aws-sdk-php": "^3.19",
         "firebase/php-jwt": "^4.0"
     },

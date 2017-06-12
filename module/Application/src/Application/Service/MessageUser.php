@@ -48,29 +48,37 @@ class MessageUser extends AbstractService
           if ($this->getMapper()->insert($m_message_user) <= 0) {
               throw new \Exception('error insert message to');
           }
-      }
 
-      //////////////////// USER //////////////////////////////////
-      /*$res_user = $this->getServiceUser()->getLite($to);
-      $ar_name = [];
-      foreach ($res_user as $m_user) {
-          $name = "";
-          if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
-              $name = $m_user->getNickname();
-          } else {
-              if (!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
-                  $name = $m_user->getFirstname();
+
+          //////////////////// USER //////////////////////////////////
+          $res_user = $this->getServiceUser()->getLite($to);
+          $ar_name = [];
+          foreach ($res_user as $m_user) {
+              $name = "";
+              if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+                  $name = $m_user->getNickname();
+              } else {
+                  if (!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                      $name = $m_user->getFirstname();
+                  }
+                  if (!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                      $name .= ' '.$m_user->getLastname();
+                  }
               }
-              if (!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
-                  $name .= ' '.$m_user->getLastname();
-              }
+              $ar_name[$m_user->getId()] = $name;
           }
-          $ar_name[$m_user->getId()] = $name;
-      }*/
 
+          ////////////////////// DOCUMENT /////////////////////////////
+          $docs = [];
+          /*$res_library = $this->getServiceMessageDoc()->getList($message_id);
+          foreach ($res_library as $library) {
+              $docs[] = [
+                  'name' => $library['name'],
+                  'token' => $library['token'],
+                  'type' => $library['type'],
+              ];
+          }*/
 
-      ///////////////////////// FCM /////////////////////////////////
-      /*foreach ($to as $user) {
           if ($me != $user) {
               $gcm_notification = new GcmNotification();
               $tmp_ar_name = $ar_name;
@@ -79,7 +87,7 @@ class MessageUser extends AbstractService
                   ->setSound("default")
                   ->setColor("#00A38B")
                   ->setTag("CONV".$conversation_id)
-                  ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared ".$message_token." items.":$message_text));
+                  ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared a doc.":$message_text));
 
               $this->getServiceFcm()->send(
                   $user, ['data' => [
@@ -88,14 +96,13 @@ class MessageUser extends AbstractService
                           'from' => $me,
                           'conversation' => $conversation_id,
                           'text' => $message_text,
-                          'token' => $message_token
+                          'doc' => count($docs)
                       ],
                   ]], $gcm_notification
               );
           }
-      }*/
 
-
+      }
 
       return $this->getMapper()->getLastInsertValue();
   }
@@ -145,8 +152,8 @@ class MessageUser extends AbstractService
    *
    * @return \Application\Service\Fcm
    */
-  /*private function getServiceFcm()
+  private function getServiceFcm()
   {
       return $this->container->get('fcm');
-  }*/
+  }
 }
