@@ -9,6 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use ZendService\Google\Gcm\Message as GcmMessage;
 
+
 /**
  * Class Assignment
  */
@@ -16,28 +17,28 @@ class Fcm extends AbstractService
 {
     const PREFIX='sess_';
     const ACTIVITY='FCM_PLUGIN_ACTIVITY';
-    
+
     /**
      * Fcm Client
      *
      * @var \ZendService\Google\Gcm\Client
      */
     protected $fcm_client;
-    
+
     /**
      * Service Session
      *
      * @var \Application\Service\Session
      */
     protected $session;
-    
+
     /**
      * Token user
      *
      * @var string
      */
     protected $token;
-    
+
     /**
      *
      * @param \Application\Service\Session   $session
@@ -50,7 +51,7 @@ class Fcm extends AbstractService
         $this->session = $session;
         $this->fcm_client = $fcm_client;
     }
-    
+
     public function register($uuid, $registration_id)
     {
         $res_session = $this->session->get($uuid);
@@ -60,42 +61,42 @@ class Fcm extends AbstractService
                 $this->session->delete(null, $m_session->getToken());
             }
         }
-        
+
         return $this->session->update($this->token, $uuid, $registration_id);
     }
-    
+
     public function send($to, $data, $notification = null)
     {
         if (null !== $notification && empty($notification->getClickAction())) {
             $notification->setClickAction(self::ACTIVITY);
         }
-        
+
         $register_ids = [];
         $res_session = $this->session->get(null, $to);
         foreach ($res_session as $m_session) {
             $register_ids[] = $m_session->getRegistrationId();
         }
-        
+
         $nbTo = count($register_ids);
         if ($nbTo > 0) {
             $gcm_message = new GcmMessage();
             $gcm_message->setNotification($notification)
                 ->setPriority("high")
                 ->setData($data);
-            
+
             if ($nbTo > 1) {
                 $gcm_message->setRegistrationIds($register_ids);
             } else {
                 $gcm_message->setTo(current($register_ids));
             }
-        
+
             try {
                 return $this->fcm_client->send($gcm_message);
             } catch (\Exception $e) {
                 syslog(1, "error fcm: ".$e->getMessage());
             }
         }
-        
+
         return false;
     }
 
@@ -108,7 +109,7 @@ class Fcm extends AbstractService
     private function setServiceFcmClient($fcm_client)
     {
         $this->fcm_client = $fcm_client;
-        
+
         return $this;
     }
 
@@ -121,10 +122,10 @@ class Fcm extends AbstractService
     private function setServiceSession($session)
     {
         $this->session = $session;
-        
+
         return $this;
     }
-    
+
     /**
      * Set Token User
      *
@@ -134,7 +135,7 @@ class Fcm extends AbstractService
     private function setToken($token)
     {
         $this->token = self::PREFIX.$token;
-        
+
         return $this;
     }
 }
