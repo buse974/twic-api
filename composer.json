@@ -29,6 +29,10 @@
         {
           "type": "vcs",
           "url":  "git@github.com:buse974/SimplePageCrawler.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/BabbleCar/ZendService_Google_Gcm.git"
         }
     ],
     "autoload": {

@@ -872,6 +872,27 @@ class User extends AbstractService
     }
 
     /**
+     * @invokable
+     *
+     * @param string $token
+     * @param string $uuid
+     */
+    public function registerFcm($token, $uuid)
+    {
+        return $this->getServiceFcm()->register($uuid, $token);
+    }
+
+    /**
+     *
+     * @param string $uuid
+     * @param string $token
+     */
+    public function unregisterGcm($token = null, $uuid = null)
+    {
+        $this->getServiceGcmGroup()->delete($uuid, $token);
+    }
+
+    /**
      * Add School relation
      *
      *
@@ -989,10 +1010,10 @@ class User extends AbstractService
      *
      * @return \Application\Service\Fcm
      */
-    /*private function getServiceFcm()
+    private function getServiceFcm()
     {
         return $this->container->get('fcm');
-    }*/
+    }
 
     /**
      * Get Service Address
