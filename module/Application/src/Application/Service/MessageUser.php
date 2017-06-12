@@ -70,14 +70,6 @@ class MessageUser extends AbstractService
 
           ////////////////////// DOCUMENT /////////////////////////////
           $docs = [];
-          /*$res_library = $this->getServiceMessageDoc()->getList($message_id);
-          foreach ($res_library as $library) {
-              $docs[] = [
-                  'name' => $library['name'],
-                  'token' => $library['token'],
-                  'type' => $library['type'],
-              ];
-          }*/
 
           if ($me != $user) {
               $gcm_notification = new GcmNotification();
@@ -87,7 +79,7 @@ class MessageUser extends AbstractService
                   ->setSound("default")
                   ->setColor("#00A38B")
                   ->setTag("CONV".$conversation_id)
-                  ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared a doc.":$message_text));
+                  ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared a file.":$message_text));
 
               $this->getServiceFcm()->send(
                   $user, ['data' => [
@@ -96,7 +88,7 @@ class MessageUser extends AbstractService
                           'from' => $me,
                           'conversation' => $conversation_id,
                           'text' => $message_text,
-                          'doc' => count($docs)
+                          'doc' => 'document'
                       ],
                   ]], $gcm_notification
               );
