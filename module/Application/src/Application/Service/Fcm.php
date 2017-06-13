@@ -9,7 +9,6 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use ZendService\Google\Gcm\Message as GcmMessage;
 
-
 /**
  * Class Assignment
  */
