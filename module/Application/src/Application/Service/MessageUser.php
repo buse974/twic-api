@@ -78,6 +78,7 @@ class MessageUser extends AbstractService
               $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
                   ->setSound("default")
                   ->setColor("#00A38B")
+                  ->setIcon("icon")
                   ->setTag("CONV".$conversation_id)
                   ->setBody(((count($to) > 2)? explode(' ', $ar_name[$me])[0] . ": ":"").(empty($message_text)?"shared a file.":$message_text));
 
