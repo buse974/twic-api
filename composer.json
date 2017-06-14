@@ -18,7 +18,9 @@
 	      "buse974/sge":"dev-master",
 	      "zendframework/zendservice-google-gcm": "dev-master",
         "aws/aws-sdk-php": "^3.19",
-        "firebase/php-jwt": "^4.0"
+        "firebase/php-jwt": "^4.0",
+        "buse974/dms": "dev-master",
+        "google/cloud": "^0.22.0"
     },
     "require-dev": {
         "phing/phing": "*",

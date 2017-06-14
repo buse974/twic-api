@@ -14,10 +14,40 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 571,
+    'build-commit' => 572,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
+    ],
+    'dms-conf' => [
+        'size_allowed' => [
+            ['width' => 300, 'height' => 200],
+            ['width' => 300, 'height' => 300],
+            ['width' => 150, 'height' => 100],
+            ['width' => 80, 'height' => 80],
+            ['width' => 300],
+        ],
+        'check_size_allowed' => false,
+        'default_path' => 'upload/',
+        'adapter' => 'http-adapter',
+        'convert' => [
+                'tmp' => '/tmp/',
+        ],
+        'headers'=> [
+        ],
+        'storage' => [
+                'name' => 's3',
+                'bucket' => 'prod-stdn-static',
+                'url' => 'https://s3.amazonaws.com/',
+                'options' => [
+                        'version' => 'latest',
+                'region' => 'us-east-1',
+                'credentials' => [
+                        'key'    => 'AKIAI5A2CCVNKTBXLWKA',
+                        'secret' => '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',
+                ]
+                ]
+        ]
     ],
     'dal-conf' => [
         'adapter' => 'db-adapter',
@@ -119,9 +149,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS571',
+                    'namespace' => 'LMS572',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS571'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS572'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

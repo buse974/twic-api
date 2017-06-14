@@ -1,12 +1,13 @@
 <?php
 
 return [
-    
+
     // This should be an array of module namespaces used in the application.
     'modules' => [
         'Application',
         'Box',
         'Dal',
+        'Dms',
         'JRpc',
         'Address',
         'ZOpenTok',
@@ -27,6 +28,7 @@ return [
         // Module class.
         'module_paths' => [
             'Dal' => __DIR__.'/../vendor/buse974/dal',
+            'Dms' => __DIR__.'/../vendor/buse974/dms',
             'JRpc' => __DIR__.'/../vendor/buse974/jrpc',
             'Address' => __DIR__.'/../vendor/buse974/address',
             'Application' => __DIR__.'/../module/Application',
