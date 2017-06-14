@@ -63,6 +63,15 @@
 		<echo message="TMP WORK : ${tmp.basedir}" />
 	</target>
 	<target name="all">
+		<property name="tmp.basedir" value="${tmp.basedir}/${git.rev}" override="true" />
+		<echo message="+------------------------------------------+"/>
+		<echo message="|                                          |"/>
+		<echo message="|          Building The Project            |"/>
+		<echo message="|                                          |"/>
+		<echo message="+------------------------------------------+"/>
+		<echo message="REVISION : ${git.rev}" />
+		<echo message="TMP WORK : ${tmp.basedir}" />
+
 		<delete dir="${tmp.basedir}" includeemptydirs="true" quiet="true" />
 		<mkdir dir="${tmp.basedir}" />
 		<phingcall target="configuration" />
@@ -70,7 +79,14 @@
 			<equals arg1="${deploy.init}" arg2="true" />
 			<then><phingcall target="database-reset" /></then>
 		</if>
-		<phingcall target="database" />
+		<if>
+			<equals arg1="${deploy.database}" arg2="true" />
+			<then><phingcall target="database" /></then>
+		</if>
+		<if>
+			<equals arg1="${app.targz}" arg2="true" />
+			<then><phingcall target="tar" /></then>
+		</if>
 	</target>
 	<target name="configuration">
 		<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="configuration" />
@@ -83,11 +99,5 @@
     </target>
 	<target name="tar">
 		<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="create-targz" />
-	</target>
-	<target name="restart-service">
-			<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="restart-service" />
-	</target>
-	<target name="chown">
-		<phing phingfile="${project.basedir}/Zdeploy/build/build-configuration.xml" target="chown" />
 	</target>
 </project>

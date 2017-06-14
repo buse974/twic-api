@@ -8,6 +8,9 @@
         	<fileset dir="${project.basedir}">
             	<include name="**" />
                 <exclude name="**/*Test*"/>
+                <exclude name="**/*.bak"/>
+                <exclude name="**/*docker*"/>
+                <exclude name="**/*Dockerfile*"/>
                 <exclude name="**/*.dist"/>
                 <exclude name="**/*.build"/>
                 <exclude name="tests/**"/>
@@ -29,14 +32,23 @@
                 <exclude name=".*"/>
         	</fileset>
         </copy>
-        <echo msg="Composer install" />
-        	<composer command="update" composer="/usr/bin/composer.phar">
-				<arg value="--optimize-autoloader" />
-        		<arg value="--classmap-authoritative" />
-	   			<arg value="--working-dir=${tmp.basedir}" />
-	   			<arg value="--no-dev" />
-        		<arg value="-q" />
-        	</composer>
+
+        <if>
+    			<equals arg1="${app.composer}" arg2="true" />
+    			<then>
+            <echo msg="Composer install" />
+            	<composer command="update" composer="/usr/bin/composer.phar">
+    				    <arg value="--optimize-autoloader" />
+            		<arg value="--classmap-authoritative" />
+    	   			  <arg value="--working-dir=${tmp.basedir}" />
+    	   		    <arg value="--no-dev" />
+            		<arg value="-q" />
+              </composer>
+          </then>
+    		</if>
+
+
+
 
         <echo msg="copy config" />
     	<copy todir="${tmp.basedir}/config/autoload/" overwrite="true">
@@ -46,6 +58,8 @@
 	            <expandproperties />
 	        </filterchain>
     	</copy>
+
+
 	    <delete includeemptydirs="true">
 	    	<fileset dir="${tmp.basedir}/">
 	        	<include name="composer.*" />
@@ -54,44 +68,20 @@
 	        	<include name="bin/**" />
 	        </fileset>
 	    </delete>
-
-    	<if>
-    		<not>
-    	    	<available file='${dms.uploaddir}' type='dir' />
-    		</not>
-    	    <then>
-    	    	<mkdir dir="${dms.uploaddir}" />
-    	    </then>
-    	</if>
     </target>
 
     <target name="create-targz">
 		<tar
-  			destfile="${tmp.basedir}/${phing.project.name}-${git.rev}.tar.gz"
- 			compression="gzip">
-  			<fileset dir="${tmp.basedir}/${git.rev}/">
+  			destfile="${tmp.basedir}/${git.rev}.tar.gz" compression="gzip">
+  			<fileset dir="${tmp.basedir}/">
    				<include name="*" />
   			</fileset>
  		</tar>
-		<delete
+		<!--delete
   			dir="${tmp.basedir}/${git.rev}/"
   			includeemptydirs="true"
   			verbose="false"
-  			failonerror="true" />
+  			failonerror="true" / -->
     </target>
-
-	<target name="restart-service">
-		<echo msg="restart apache" />
-		<exec command="service ${apache.servicename} restart" checkreturn="true" />
-
-		<echo msg="restart memcache" />
-		<exec command="service memcached restart" checkreturn="true" />
-	</target>
-
-	<target name="chown">
-		<echo msg="chown apache" />
-		<exec command="chown -R ${apache.username}:${apache.username} ${tmp.basedir}" checkreturn="true" />
-		<exec command="chmod -R 775 ${tmp.basedir}" checkreturn="true" />
-	</target>
 
 </project>
