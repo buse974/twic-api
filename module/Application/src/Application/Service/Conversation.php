@@ -226,7 +226,7 @@ class Conversation extends AbstractService
       return [
         'token' => $this->getServiceZOpenTok()->createToken($token,'{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
         'session' => $token,
-        'role' => ($user_id == 3 || $user_id == 7 ) ? 'admin':'user '
+        'role' => ($user_id == 3 || $user_id == 7 ) ? 'admin':'user'
       ];
   }
 
