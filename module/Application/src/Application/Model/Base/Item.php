@@ -21,6 +21,8 @@ class Item extends AbstractModel
 	protected $page_id;
 	protected $user_id;
 	protected $points;
+	protected $text;
+	protected $library_id;
 
 	protected $prefix = 'item';
 
@@ -200,6 +202,30 @@ class Item extends AbstractModel
 	public function setPoints($points)
 	{
 		$this->points = $points;
+
+		return $this;
+	}
+
+	public function getText()
+	{
+		return $this->text;
+	}
+
+	public function setText($text)
+	{
+		$this->text = $text;
+
+		return $this;
+	}
+
+	public function getLibraryId()
+	{
+		return $this->library_id;
+	}
+
+	public function setLibraryId($library_id)
+	{
+		$this->library_id = $library_id;
 
 		return $this;
 	}

@@ -28,6 +28,7 @@ class Post extends AbstractModel
 	protected $lat;
 	protected $lng;
 	protected $uid;
+	protected $item_id;
 
 	protected $prefix = 'post';
 
@@ -291,6 +292,18 @@ class Post extends AbstractModel
 	public function setUid($uid)
 	{
 		$this->uid = $uid;
+
+		return $this;
+	}
+
+	public function getItemId()
+	{
+		return $this->item_id;
+	}
+
+	public function setItemId($item_id)
+	{
+		$this->item_id = $item_id;
 
 		return $this;
 	}

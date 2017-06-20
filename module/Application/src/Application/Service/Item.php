@@ -24,7 +24,22 @@ class Item extends AbstractService
   * @param int parent_id
   *
   **/
-  public function add($page_id, $title, $points = null, $description = null, $type = null, $is_available = null, $is_published = null, $order_id = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function add(
+    $page_id,
+    $title,
+    $points = null,
+    $description = null,
+    $type = null,
+    $is_available = null,
+    $is_published = null,
+    $order_id = null,
+    $start_date = null,
+    $end_date = null,
+    $parent_id = null,
+    $library_id = null,
+    $post_id = null,
+    $text = null
+    )
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -44,12 +59,18 @@ class Item extends AbstractService
       ->setIsPublished($is_published)
       ->setStartDate($start_date)
       ->setEndDate($end_date)
+      ->setLibraryId($library_id)
+      ->setText($text)
       ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
       ->setUserId($user_id);
 
       $this->getMapper()->insert($m_item);
 
       $id = (int)$this->getMapper()->getLastInsertValue();
+
+      if(null !== $post_id) {
+        $this->getServicePost()->update($post_id,null,null,null,null,null,null,null,null,null,null,null,null,null, $id);
+      }
 
       $this->move($id, -1, $parent_id);
 
@@ -92,7 +113,7 @@ class Item extends AbstractService
       } else {
         $order = 1;
       }
-      
+
       $res_order_sup = $this->getMapper()->select($this->getModel()->setOrder($order));
       if($res_order_sup->count() > 0) {
         //si oui on decaler
@@ -112,8 +133,9 @@ class Item extends AbstractService
   *
   * @param int $page_id
   * @param int $parent_id
+  * @param bool $is_publish
   */
-  public function getListId($page_id = null, $parent_id = null)
+  public function getListId($page_id = null, $parent_id = null, $is_publish = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -126,6 +148,10 @@ class Item extends AbstractService
 
     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
     $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id]));
+
+    if($is_admin_page === true && $is_publish === true) {
+      $is_admin_page = false;
+    }
 
     $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id);
 
@@ -181,7 +207,20 @@ class Item extends AbstractService
   * @param int parent_id
   *
   **/
-  public function update($id, $title = null, $points = null, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null)
+  public function update(
+    $id,
+    $title = null,
+    $points = null,
+    $description = null,
+    $is_available = null,
+    $is_published = null,
+    $order = null,
+    $start_date = null,
+    $end_date = null,
+    $parent_id = null,
+    $library_id = null,
+    $post_id = null,
+    $text = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -189,6 +228,10 @@ class Item extends AbstractService
     $ar_pu = $this->getServicePageUser()->getListByPage($m_item->getPageId(), 'admin');
     if(!in_array($identity['id'], $ar_pu[$m_item->getPageId()])) {
       throw new \Exception("not admin of the page");
+    }
+
+    if(null !== $post_id) {
+      $this->getServicePost()->update($post_id,null,null,null,null,null,null,null,null,null,null,null,null,null, $id);
     }
 
     $m_item = $this->getModel()
@@ -199,6 +242,8 @@ class Item extends AbstractService
       ->setPoints($points)
       ->setIsPublished($is_published)
       ->setOrder($order)
+      ->setLibraryId($library_id)
+      ->setText($text)
       ->setStartDate($start_date)
       ->setEndDate($end_date)
       ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
@@ -245,6 +290,16 @@ class Item extends AbstractService
   private function getServicePage()
   {
       return $this->container->get('app_service_page');
+  }
+
+  /**
+   * Get Service Post
+   *
+   * @return \Application\Service\Post
+   */
+  private function getServicePost()
+  {
+      return $this->container->get('app_service_post');
   }
 
   /**

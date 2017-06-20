@@ -8,7 +8,10 @@
         	<fileset dir="${project.basedir}">
             	<include name="**" />
                 <exclude name="**/*Test*"/>
+                <exclude name="**/*.bak/"/>
                 <exclude name="**/*.bak"/>
+                <exclude name="data/cache/*"/>
+                <exclude name="upload/*/"/>
                 <exclude name="**/*docker*"/>
                 <exclude name="**/*Dockerfile*"/>
                 <exclude name="**/*.dist"/>

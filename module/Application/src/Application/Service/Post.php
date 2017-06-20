@@ -65,7 +65,8 @@ class Post extends AbstractService
       $event = null,
       $uid = null,
       $sub = null,
-      $type = null
+      $type = null,
+      $item_id = null
     ) {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $origin_id = null;
@@ -108,6 +109,7 @@ class Post extends AbstractService
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setPageId($page_id)
             ->setLat($lat)
+            ->setItemId($item_id)
             ->setLng($lng)
             ->setParentId($parent_id)
             ->setOriginId($origin_id)
@@ -214,11 +216,12 @@ class Post extends AbstractService
      * @param string $event
      * @param int    $uid
      * @param array  $sub
+     * @param $item_id
      *
      * @return \Application\Model\Post
      */
     public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null,
-        $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null
+        $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null, $item_id = null
     ) {
         if ($uid === null && $id === null) {
             throw new \Exception('error update: no $id and no $uid');
@@ -252,6 +255,7 @@ class Post extends AbstractService
             ->setLinkDesc(($link_desc==='')?new IsNull():$link_desc)
             ->setLat($lat)
             ->setLng($lng)
+            ->setItemId($item_id)
             ->setData($data)
             ->setUpdatedDate($date);
 

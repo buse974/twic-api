@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 573,
+    'build-commit' => 574,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -46,7 +46,7 @@ return [
                         'key'    => 'AKIAI5A2CCVNKTBXLWKA',
                         'secret' => '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',
                 ]
-                ]
+              ]
         ]
     ],
     'dal-conf' => [
@@ -149,9 +149,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS573',
+                    'namespace' => 'LMS574',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS573'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS574'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

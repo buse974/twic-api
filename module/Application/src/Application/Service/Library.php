@@ -33,8 +33,8 @@ class Library extends AbstractService
     public function add($name, $link = null, $token = null, $type = null, $folder_id = null, $global = null, $folder_name = null)
     {
         $urldms = $this->container->get('config')['app-conf']['urldms'];
-
         $user_id = $this->getServiceUser()->getIdentity()['id'];
+
         if (null !== $folder_name && null === $folder_id) {
             $m_library = $this->getModel()
                 ->setDeletedDate(new IsNull())
@@ -60,12 +60,16 @@ class Library extends AbstractService
             $box_id = $m_box->getId();
         }
 
+        if($global === true && $folder_id !== null) {
+          $global = false;
+        }
+
         $m_library = $this->getModel()
             ->setName($name)
             ->setLink($link)
             ->setToken($token)
             ->setBoxId($box_id)
-            ->setGlobal(false)
+            ->setGlobal($global)
             ->setFolderId($folder_id)
             ->setType($type)
             ->setOwnerId($user_id)
