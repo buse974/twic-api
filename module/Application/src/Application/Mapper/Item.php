@@ -33,10 +33,30 @@ class Item extends AbstractMapper
   public function get($id, $me)
   {
     $select = $this->tableGateway->getSql()->select();
-    $select->columns(['id', 'title', 'points','description', 'type', 'is_available', 'is_published', 'order', 'start_date', 'end_date', 'updated_date', 'created_date', 'parent_id', 'page_id', 'user_id'])
+      $select->columns([
+        'id',
+        'title',
+        'points',
+        'description',
+        'type',
+        'is_available',
+        'is_published',
+        'order',
+        'start_date',
+        'end_date',
+        'updated_date',
+        'created_date',
+        'parent_id',
+        'page_id',
+        'user_id',
+        'library_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`library_id`, NULL)"),
+        'post_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `post`.`id`, NULL)"),
+        'text' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`text`, NULL)")
+      ])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
+      ->join('post', 'item.id=post.item_id', [], $select::JOIN_LEFT)
       ->where(['page_user.user_id' => $me])
-      ->where(['id' => $id]);
+      ->where(['item.id' => $id]);
 
     return $this->selectWith($select);
   }
