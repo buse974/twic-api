@@ -177,9 +177,10 @@ class Library extends AbstractService
      * @param  string $link
      * @param  string $token
      * @param  int    $folder_id
+     * @param  string $type
      * @return \Application\Model\Library
      */
-    public function update($id, $name = null, $link = null, $token = null, $folder_id = null)
+    public function update($id, $name = null, $link = null, $token = null, $folder_id = null, $type = null)
     {
         if ($folder_id === $id) {
             return 0;
@@ -190,6 +191,7 @@ class Library extends AbstractService
             ->setName($name)
             ->setLink($link)
             ->setToken($token)
+            ->setType($type)
             ->setFolderId(($folder_id === 0) ? new IsNull() : $folder_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
