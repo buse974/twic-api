@@ -238,7 +238,7 @@ class Library extends AbstractService
     {
         $res_library = $this->getMapper()->select($this->getModel()->setId($id));
 
-        return (is_array($id)) ? $res_library->toArray('id') : $res_library->current();
+        return (is_array($id)) ? $res_library->toArray(['id']) : $res_library->current();
     }
 
     /**
