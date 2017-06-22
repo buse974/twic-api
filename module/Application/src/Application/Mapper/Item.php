@@ -49,9 +49,9 @@ class Item extends AbstractMapper
         'parent_id',
         'page_id',
         'user_id',
-        'library_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`library_id`, NULL)"),
-        'post_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `post`.`id`, NULL)"),
-        'text' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`text`, NULL)")
+        'item$library_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`library_id`, NULL)"),
+        'item$post_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `post`.`id`, NULL)"),
+        'item$text' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`text`, NULL)")
       ])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->join('post', 'item.id=post.item_id', [], $select::JOIN_LEFT)
