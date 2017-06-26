@@ -72,8 +72,8 @@ return array(
 				'name' => 'memcached',
 				'options' => array(
 					'servers' => array(
-						array('host' => 'localhost' , 'port' => '${memcached.port}', 'weight' => 66),
-						array('host' => 'localhost' , 'port' => '${memcached.port}', 'weight' => 33)
+						array('host' => '${memcached.host}' , 'port' => '${memcached.port}', 'weight' => 66),
+						array('host' => '${memcached.host}' , 'port' => '${memcached.port}', 'weight' => 33)
 					),
 					'lib_options' => array(
 						array('option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true),
@@ -102,17 +102,5 @@ return array(
                  'path' => __DIR__.'/../../../tpl/',
              ],
          ],
-     ],
-    'caches' => [
-        'storage_memcached' => [
-            'adapter' => [
-                'options' => [
-                    'servers' => [
-                        ['host' => 'localhost', 'port' => '11211', 'weight' => 66],
-                        ['host' => 'localhost', 'port' => '11211', 'weight' => 33],
-                    ],
-                ],
-            ],
-        ],
     ],
 );
