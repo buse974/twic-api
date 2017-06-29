@@ -23,6 +23,7 @@ class Item extends AbstractModel
 	protected $points;
 	protected $text;
 	protected $library_id;
+	protected $participants;
 
 	protected $prefix = 'item';
 
@@ -226,6 +227,18 @@ class Item extends AbstractModel
 	public function setLibraryId($library_id)
 	{
 		$this->library_id = $library_id;
+
+		return $this;
+	}
+
+	public function getParticipants()
+	{
+		return $this->participants;
+	}
+
+	public function setParticipants($participants)
+	{
+		$this->participants = $participants;
 
 		return $this;
 	}
