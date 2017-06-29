@@ -318,25 +318,26 @@ class ItemTest extends AbstractService
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
-      $this->assertEquals(count($data['result']) , 3);
-      $this->assertEquals(count($data['result'][0]) , 5);
-      $this->assertEquals($data['result'][0]['group'] , null);
-      $this->assertEquals($data['result'][0]['id'] , 1);
-      $this->assertEquals($data['result'][0]['user_id'] , 3);
-      $this->assertEquals($data['result'][0]['item_id'] , 1);
-      $this->assertEquals($data['result'][0]['submission_id'] , null);
-      $this->assertEquals(count($data['result'][1]) , 5);
-      $this->assertEquals($data['result'][1]['group'] , null);
-      $this->assertEquals($data['result'][1]['id'] , 2);
-      $this->assertEquals($data['result'][1]['user_id'] , 4);
-      $this->assertEquals($data['result'][1]['item_id'] , 1);
-      $this->assertEquals($data['result'][1]['submission_id'] , null);
-      $this->assertEquals(count($data['result'][2]) , 5);
-      $this->assertEquals($data['result'][2]['group'] , null);
-      $this->assertEquals($data['result'][2]['id'] , 3);
-      $this->assertEquals($data['result'][2]['user_id'] , 5);
-      $this->assertEquals($data['result'][2]['item_id'] , 1);
-      $this->assertEquals($data['result'][2]['submission_id'] , null);
+      $this->assertEquals(count($data['result']) , 1);
+      $this->assertEquals(count($data['result'][1]) , 3);
+      $this->assertEquals(count($data['result'][1][0]) , 5);
+      $this->assertEquals($data['result'][1][0]['group'] , null);
+      $this->assertEquals($data['result'][1][0]['id'] , 1);
+      $this->assertEquals($data['result'][1][0]['user_id'] , 3);
+      $this->assertEquals($data['result'][1][0]['item_id'] , 1);
+      $this->assertEquals($data['result'][1][0]['submission_id'] , null);
+      $this->assertEquals(count($data['result'][1][1]) , 5);
+      $this->assertEquals($data['result'][1][1]['group'] , null);
+      $this->assertEquals($data['result'][1][1]['id'] , 2);
+      $this->assertEquals($data['result'][1][1]['user_id'] , 4);
+      $this->assertEquals($data['result'][1][1]['item_id'] , 1);
+      $this->assertEquals($data['result'][1][1]['submission_id'] , null);
+      $this->assertEquals(count($data['result'][1][2]) , 5);
+      $this->assertEquals($data['result'][1][2]['group'] , null);
+      $this->assertEquals($data['result'][1][2]['id'] , 3);
+      $this->assertEquals($data['result'][1][2]['user_id'] , 5);
+      $this->assertEquals($data['result'][1][2]['item_id'] , 1);
+      $this->assertEquals($data['result'][1][2]['submission_id'] , null);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
@@ -364,12 +365,13 @@ class ItemTest extends AbstractService
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1); 
       $this->assertEquals(count($data['result']) , 1);
-      $this->assertEquals(count($data['result'][0]) , 5);
-      $this->assertEquals($data['result'][0]['group'] , null);
-      $this->assertEquals($data['result'][0]['id'] , 2);
-      $this->assertEquals($data['result'][0]['user_id'] , 4);
-      $this->assertEquals($data['result'][0]['item_id'] , 1);
-      $this->assertEquals($data['result'][0]['submission_id'] , null);
+      $this->assertEquals(count($data['result'][1]) , 1);
+      $this->assertEquals(count($data['result'][1][0]) , 5);
+      $this->assertEquals($data['result'][1][0]['group'] , null);
+      $this->assertEquals($data['result'][1][0]['id'] , 2);
+      $this->assertEquals($data['result'][1][0]['user_id'] , 4);
+      $this->assertEquals($data['result'][1][0]['item_id'] , 1);
+      $this->assertEquals($data['result'][1][0]['submission_id'] , null);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 

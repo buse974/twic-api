@@ -137,7 +137,20 @@ class Item extends AbstractService
   */
   public function getListItemUser($id)
   {
-    return $this->getServiceItemUser()->getList($id);
+    if(!is_array($id)) {
+      $id = [$id];
+    }
+
+    $arr_item_user = [];
+    foreach ($id as $i) {
+      $arr_item_user[$i]=[];
+    }
+    $res_item_user = $this->getServiceItemUser()->getList($id);
+    foreach ($res_item_user as $m_item_user) {
+      $arr_item_user[$m_item_user->getItemId()][] = $m_item_user->toArray();
+    }
+
+    return $arr_item_user;
   }
 
   /**
