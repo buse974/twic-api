@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 588,
+    'build-commit' => 589,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -35,19 +35,6 @@ return [
         ],
         'headers'=> [
         ],
-        'storage' => [
-                'name' => 's3',
-                'bucket' => 'prod-stdn-static',
-                'url' => 'https://s3.amazonaws.com/',
-                'options' => [
-                        'version' => 'latest',
-                'region' => 'us-east-1',
-                'credentials' => [
-                        'key'    => 'AKIAI5A2CCVNKTBXLWKA',
-                        'secret' => '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',
-                ]
-              ]
-        ]
     ],
     'dal-conf' => [
         'adapter' => 'db-adapter',
@@ -149,9 +136,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS588',
+                    'namespace' => 'LMS589',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS588'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS589'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

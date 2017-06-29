@@ -20,23 +20,23 @@ return array(
         'urldms' => '${dms.url}',
     ],
     'db' => array(
-	'adapters' => array(
-	    'db-adapter' => array(
-		'driver' => '${db.driver}',
-		'dsn' => 'mysql:dbname=${db.database};host=${db.host};charset=utf8mb4',
-		'username' =>  '${db.user}',
-		'password' =>  '${db.password}',
-		'driver_options' => array(
-		    PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
-		    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'utf8mb4\'',
-		    PDO::ATTR_PERSISTENT => true,
-		    PDO::ATTR_EMULATE_PREPARES => false
-		),
-	    ),
-        ),
+    	'adapters' => array(
+    	  'db-adapter' => array(
+        		'driver' => '${db.driver}',
+        		'dsn' => 'mysql:dbname=${db.database};host=${db.host};charset=utf8mb4',
+        		'username' =>  '${db.user}',
+        		'password' =>  '${db.password}',
+        		'driver_options' => array(
+        		    PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+        		    PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'utf8mb4\'',
+        		    PDO::ATTR_PERSISTENT => true,
+        		    PDO::ATTR_EMULATE_PREPARES => false
+        	),
+    	  ),
+      ),
     ),
     'node' => array(
-        'addr' => '${node.addr}'
+      'addr' => '${node.addr}'
     ),
     'zopentok-conf' => [
         'api_key'     =>  '${opentok.apikey}',
@@ -88,19 +88,15 @@ return array(
 		),
 	),
 	'mail-conf' => [
-         'storage' => [
-             'active' => false,
-         ],
-         'transport' => [
-             'active' => true,
-             'type' => 'sendmail',
-             'options' => [],
-         ],
-         'template' => [
-             'storage' => [
-                 'name' => 'fs',
-                 'path' => __DIR__.'/../../../tpl/',
-             ],
-         ],
-    ],
+     'storage' => [
+        'active' => false,
+     ],
+     'transport' => ${mail.transport},
+     'template' => [
+        'storage' => ${mail.template.storage},
+     ],
+  ],
+  'dms-conf' => [
+    'storage' => ${dms.storage},
+  ],
 );
