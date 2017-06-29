@@ -12,6 +12,7 @@ class ItemUser extends AbstractModel
 	protected $rate;
 	protected $group_id;
 	protected $submission_id;
+	protected $deleted_date;
 
 	protected $prefix = 'item_user';
 
@@ -83,6 +84,18 @@ class ItemUser extends AbstractModel
 	public function setSubmissionId($submission_id)
 	{
 		$this->submission_id = $submission_id;
+
+		return $this;
+	}
+
+	public function getDeletedDate()
+	{
+		return $this->deleted_date;
+	}
+
+	public function setDeletedDate($deleted_date)
+	{
+		$this->deleted_date = $deleted_date;
 
 		return $this;
 	}

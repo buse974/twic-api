@@ -38,7 +38,8 @@ class Item extends AbstractService
     $parent_id = null,
     $library_id = null,
     $post_id = null,
-    $text = null
+    $text = null,
+    $participants = null
     )
   {
     $identity = $this->getServiceUser()->getIdentity();
@@ -61,6 +62,7 @@ class Item extends AbstractService
       ->setEndDate($end_date)
       ->setLibraryId($library_id)
       ->setText($text)
+      ->setParticipants($participants)
       ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
       ->setUserId($user_id);
 
@@ -124,6 +126,46 @@ class Item extends AbstractService
       $this->getMapper()->update($this->getModel()->setId($id)->setOrder($order));
     }
 
+  }
+
+  /**
+  * GetList User of Item
+  *
+  * @invokable
+  *
+  * @param int $id
+  */
+  public function getListItemUser($id)
+  {
+    return $this->getServiceItemUser()->getList($id);
+  }
+
+  /**
+  * Add User In Item
+  *
+  * @invokable
+  *
+  * @param int $id
+  * @param int|array $user_ids
+  * @param int $group_id
+  * @param string $group_name
+  */
+  public function addUsers($id, $user_ids, $group_id = null, $group_name = null)
+  {
+    return $this->getServiceItemUser()->addUsers($id, $user_ids);
+  }
+
+  /**
+  * Delete User In Item
+  *
+  * @invokable
+  *
+  * @param int $id
+  * @param int|array $user_ids
+  */
+  public function deleteUsers($id, $user_ids)
+  {
+    return $this->getServiceItemUser()->deleteUsers($id, $user_ids);
   }
 
   /**
@@ -220,7 +262,8 @@ class Item extends AbstractService
     $parent_id = null,
     $library_id = null,
     $post_id = null,
-    $text = null)
+    $text = null,
+    $participants = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -244,6 +287,7 @@ class Item extends AbstractService
       ->setOrder($order)
       ->setLibraryId($library_id)
       ->setText($text)
+      ->setParticipants($participants)
       ->setStartDate($start_date)
       ->setEndDate($end_date)
       ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
@@ -300,6 +344,16 @@ class Item extends AbstractService
   private function getServicePost()
   {
       return $this->container->get('app_service_post');
+  }
+
+  /**
+   * Get Service Item User
+   *
+   * @return \Application\Service\ItemUser
+   */
+  private function getServiceItemUser()
+  {
+      return $this->container->get('app_service_item_user');
   }
 
   /**
