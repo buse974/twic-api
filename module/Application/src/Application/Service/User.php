@@ -151,6 +151,18 @@ class User extends AbstractService
         return $user;
     }
 
+    /**
+     * Crete token custom firebase
+     *
+     * @invokable
+     *
+     * @return string
+     */
+    public function getCustomTokenfb()
+    {
+      return $this->create_custom_token($this->getIdentity()['id']);
+    }
+
     public function create_custom_token($uid, $is_premium_account = false)
     {
       $service_account_email = $this->container->get('config')['app-conf']['account_email'];

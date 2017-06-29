@@ -74,6 +74,22 @@ class UserTest extends AbstractService
     /**
      * @depends testCanAddUser
      */
+    public function testCanGetCustomTokenfb($id)
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.getCustomTokenfb', [
+          'id' => $id
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(!empty($data['result']) , true);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+     * @depends testCanAddUser
+     */
     public function testUpdate($id)
     {
         $this->setIdentity(1);
