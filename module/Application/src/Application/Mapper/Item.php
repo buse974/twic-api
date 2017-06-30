@@ -10,7 +10,7 @@ class Item extends AbstractMapper
   public function getListId($page_id, $me, $is_admin_page, $parent_id = null)
   {
     $select = $this->tableGateway->getSql()->select();
-    $select->columns(['id'])
+    $select->columns(['id', 'title', 'points', 'description', 'type', 'is_available', 'is_published', 'order', 'start_date', 'end_date', 'updated_date', 'created_date', 'parent_id', 'page_id', 'user_id'])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->where(['page_user.user_id' => $me])
       ->where(['item.page_id' => $page_id])
