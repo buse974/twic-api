@@ -363,7 +363,7 @@ class ItemTest extends AbstractService
       ]);
 
       $this->assertEquals(count($data) , 3);
-      $this->assertEquals($data['id'] , 1); 
+      $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
       $this->assertEquals(count($data['result'][1]) , 1);
       $this->assertEquals(count($data['result'][1][0]) , 5);
@@ -373,6 +373,27 @@ class ItemTest extends AbstractService
       $this->assertEquals($data['result'][1][0]['item_id'] , 1);
       $this->assertEquals($data['result'][1][0]['submission_id'] , null);
       $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    public function testAddUsersDD()
+    {
+      $this->setIdentity(1);
+      $data = $this->jsonRpc('item.addUsers', [
+        'id' => 1,
+        'user_ids' => [3,4,6],
+        //'group_id' => 0,
+        //'group_name' => ''
+      ]);
+    }
+
+    public function testGetListItemUserDD()
+    {
+      $this->setIdentity(1);
+      $data = $this->jsonRpc('item.getListItemUser', [
+        'id' => 1
+      ]);
+
+        print_r($data);
     }
 
     /**

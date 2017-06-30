@@ -30,10 +30,12 @@ class ItemUser extends AbstractService
     }
 
     $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
-    $m_item_user = $this->getModel()->setDeletedDate(new IsNull('deleted_date'));
+
+    print_r($res_item_user->toArray());
+
     foreach ($res_item_user as $m_item_user) {
-      $this->getMapper()->update($m_item_user, ['id' => $m_item_user->getId()]);
-      unset($user_id[array_search($m_item_user->getId(), $user_id)]);
+      $this->getMapper()->update($this->getModel()->setDeletedDate(new IsNull('deleted_date')), ['id' => $m_item_user->getId()]);
+      unset($user_id[array_search($m_item_user->getUserId(), $user_id)]);
     }
 
     foreach ($user_id as $user) {
