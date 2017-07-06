@@ -237,16 +237,21 @@ class Item extends AbstractService
   */
   public function getListAssignmentId($page_id)
   {
+    if(!is_array($page_id)) {
+      $page_id = [$page_id];
+    }
+
     $identity = $this->getServiceUser()->getIdentity();
 
-    $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
-    $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id]));
-
-    $res_item = $this->getMapper()->getListAssignmentId($page_id, $identity['id'], $is_admin_page);
-
     $ar_item = [];
-    foreach ($res_item as $m_item) {
-      $ar_item[] = $m_item->getId();
+    foreach ($page_id as $page) {
+      $ar_pu = $this->getServicePageUser()->getListByPage($page, 'admin');
+      $is_admin_page = (in_array($identity['id'], $ar_pu[$page]));
+      $res_item = $this->getMapper()->getListAssignmentId($page, $identity['id'], $is_admin_page);
+
+      foreach ($res_item as $m_item) {
+        $ar_item[$page][] = $m_item->getId();
+      }
     }
 
     return $ar_item;
