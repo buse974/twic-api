@@ -6,13 +6,11 @@ use Application\Model\Base\Item as BaseItem;
 
 class Item extends BaseItem
 {
-  const TYPE_SECTION = 'SCT';
-  const TYPE_FOLDER = 'FLD';
-
   const IS_AVAILABLE_ON = 1;
   const IS_AVAILABLE_OFF = 2;
   const IS_AVAILABLE_AUTO = 3;
 
+  const TYPE_SECTION = 'SCT';
   const TYPE_LIVE_CLASS = 'LC';
   const TYPE_ASSIGNMENT = 'A';
   const TYPE_QUIZ = 'QUIZ';

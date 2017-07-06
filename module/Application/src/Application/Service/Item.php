@@ -188,7 +188,7 @@ class Item extends AbstractService
   *
   * @param int $page_id
   * @param int $parent_id
-  * @param bool $is_publish
+  * @param bool $is_publish // option pour admin
   */
   public function getListId($page_id = null, $parent_id = null, $is_publish = null)
   {
@@ -223,6 +223,30 @@ class Item extends AbstractService
     foreach ($res_item as $m_item) {
       $ii = (!is_numeric($m_item->getParentId())) ? $m_item->getPageId() : $m_item->getParentId();
       $ar_item[$ii][] = $m_item->getId();
+    }
+
+    return $ar_item;
+  }
+
+  /**
+  * GetList Assignment Id Item
+  *
+  * @invokable
+  *
+  * @param int $page_id
+  */
+  public function getListAssignmentId($page_id)
+  {
+    $identity = $this->getServiceUser()->getIdentity();
+
+    $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+    $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id]));
+
+    $res_item = $this->getMapper()->getListAssignmentId($page_id, $identity['id'], $is_admin_page);
+
+    $ar_item = [];
+    foreach ($res_item as $m_item) {
+      $ar_item[] = $m_item->getId();
     }
 
     return $ar_item;
