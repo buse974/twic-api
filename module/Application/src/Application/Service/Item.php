@@ -356,6 +356,54 @@ class Item extends AbstractService
   }
 
   /**
+  * Grade Item
+  *
+  * @invokable
+  *
+  * @param int $item_id
+  * @param int $rate
+  * @param int|array $user_id
+  * @param int|array $group_id
+  */
+  public function grade($item_id, $rate,$user_id = null, $group_id = null)
+  {
+    return $this->getServiceItemUser()->grade($item_id, $rate,$user_id, $group_id);
+  }
+
+  /**
+  * Publish Grade Item
+  *
+  * @invokable
+  *
+  * @param int $item_id
+  */
+  public function publish($id, $publish = true)
+  {
+    $page_id = $this->getLite($id)->current()->getPageId();
+    $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+    $identity = $this->getServiceUser()->getIdentity();
+    if(!in_array($identity['id'], $ar_pu[$page_id])) {
+      throw new \Exception("No admin", 1);
+    }
+
+    return $this->getMapper()->update($this->getModel()->setId($id)->setIsPublished($publish));
+  }
+
+
+
+
+  /**
+  * Get Lite Item
+  *
+  * @param int $item_id
+  *
+  * @return \Application\Model\Item
+  */
+  public function getLite($id)
+  {
+    return $this->getMapper()->select($this->getModel()->setId($id));
+  }
+  /**
   * Add item
   *
   * @invokable
