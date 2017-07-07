@@ -50,7 +50,7 @@ class Item extends AbstractMapper
 
   public function get($id, $me)
   {
-    $select = $this->tableGateway->getSql()->select();
+      $select = $this->tableGateway->getSql()->select();
       $select->columns([
         'id',
         'title',
@@ -79,6 +79,35 @@ class Item extends AbstractMapper
 
     return $this->selectWith($select);
   }
+
+  public function getInfo($id)
+  {
+    $select = $this->tableGateway->getSql()->select();
+    $select->columns([
+      'item$nb_total' => new Expression("IF(item.participants = 'ALL', COUNT(true), IF(item.participants = 'USER', COUNT(item_user.id), COUNT(DISTINCT item_user.group_id)))"),
+      'item$nb_grade' => new Expression("IF(item.participants = 'GROUP', COUNT(DISTINCT item_user.group_id , IF(item_user.rate IS NULL, NULL, true))  , COUNT(item_user.rate))"),
+      'item$nb_submission' => new Expression("IF(item.participants = 'GROUP', COUNT(DISTINCT item_user.group_id , IF(submission.submit_date IS NULL, NULL, true)) , COUNT(submission.submit_date))")
+    ])
+      ->join('page_user', 'page_user.page_id=item.page_id', [])
+      ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', [], $select::JOIN_LEFT)
+      ->join('submission', 'submission.id=item_user.submission_id', [], $select::JOIN_LEFT)
+      ->where(['item.id' => $id]);
+
+    return $this->selectWith($select);
+  }
+
+  public function getListSubmission($id)
+  {
+    $select = $this->tableGateway->getSql()->select();
+    $select->columns(['id'])
+      ->join('page_user', 'page_user.page_id=item.page_id', ['user_id'])
+      ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['rate', 'group_id'], $select::JOIN_LEFT)
+      ->join('submission', 'submission.id=item_user.submission_id', ['item_id', 'submit_date', 'post_id', 'is_graded'], $select::JOIN_LEFT)
+      ->where(['item.id' => $id]);
+
+    return $this->selectWith($select);
+  }
+
 
   public function getLastOrder($id, $page_id, $parent_id = null)
   {

@@ -258,6 +258,87 @@ class Item extends AbstractService
   }
 
   /**
+  * Get Info Item
+  *
+  * @invokable
+  *
+  * @param int|array $id
+  */
+  public function getInfo($id)
+  {
+    if(!is_array($id)) {
+      $id = [$id];
+    }
+
+    //TODO check admin page
+    $ar = [];
+    foreach ($id as $i) {
+      $ar[$i] = $this->getMapper()->getInfo($i)->current()->toArray();
+    }
+
+    return $ar;
+  }
+
+  /**
+  * Get List Assgnment By Item
+  *
+  * @invokable
+  *
+  * @param int|array $id
+  */
+  public function getListSubmission($id)
+  {
+    if(!is_array($id)) {
+      $id = [$id];
+    }
+
+    //TODO check admin page
+    $ar = [];
+    foreach ($id as $i) {
+      $paticipants = $this->getMapper()->select($this->getModel()->setId($i))->current()->getParticipants();
+      $res_item = $this->getMapper()->getListSubmission($i);
+      $ar = [];
+      switch ($paticipants) {
+        case 'all':
+          foreach ($res_item as $m_item) {
+            $ar[] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+          }
+          break;
+        case 'user':
+          foreach ($res_item as $m_item) {
+            if(is_numeric($m_item->getItemUser()->getId())) {
+              $ar[] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+            }
+          }
+          break;
+        case 'group':
+          foreach ($res_item as $m_item) {
+
+            if(is_numeric($m_item->getItemUser()->getId())) {
+              $ok = false;
+              foreach ($ar as &$arr) {
+                if($arr['group_id'] === $m_item->getItemUser()->getGroupId()) {
+                  $arr['user'][] = $m_item->getPageUser()->getUserId();
+                  $ok = true;
+                  break;
+                }
+              }
+              if(!$ok) {
+                $ar[] = ['group_id' => $m_item->getItemUser()->getGroupId(), 'users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+              }
+            }
+          }
+          break;
+        default:
+          # code...
+          break;
+      }
+    }
+
+    return $ar;
+  }
+
+  /**
   * Get Item
   *
   * @invokable

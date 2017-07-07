@@ -6,38 +6,37 @@ use Application\Model\Base\ItemUser as BaseItemUser;
 
 class ItemUser extends BaseItemUser
 {
-  protected $group;
+  protected $submission;
 
   public function exchangeArray(array &$data)
   {
       parent::exchangeArray($data);
 
-      $this->group = $this->requireModel('app_model_group', $data);
+      $this->submission = $this->requireModel('app_model_submission', $data);
   }
 
+  /**
+   * Get the value of Submission
+   *
+   * @return mixed
+   */
+  public function getSubmission()
+  {
+      return $this->submission;
+  }
 
-    /**
-     * Get the value of Group
-     *
-     * @return mixed
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
+  /**
+   * Set the value of Submission
+   *
+   * @param mixed submission
+   *
+   * @return self
+   */
+  public function setSubmission($submission)
+  {
+      $this->submission = $submission;
 
-    /**
-     * Set the value of Group
-     *
-     * @param mixed group
-     *
-     * @return self
-     */
-    public function setGroup($group)
-    {
-        $this->group = $group;
-
-        return $this;
-    }
+      return $this;
+  }
 
 }
