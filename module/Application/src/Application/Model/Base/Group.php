@@ -7,7 +7,6 @@ use Dal\Model\AbstractModel;
 class Group extends AbstractModel
 {
  	protected $id;
-	protected $uid;
 	protected $name;
 
 	protected $prefix = 'group';
@@ -20,18 +19,6 @@ class Group extends AbstractModel
 	public function setId($id)
 	{
 		$this->id = $id;
-
-		return $this;
-	}
-
-	public function getUid()
-	{
-		return $this->uid;
-	}
-
-	public function setUid($uid)
-	{
-		$this->uid = $uid;
 
 		return $this;
 	}

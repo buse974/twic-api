@@ -39,7 +39,8 @@ class Item extends AbstractService
     $library_id = null,
     $post_id = null,
     $text = null,
-    $participants = null
+    $participants = null,
+    $quiz_id = null
     )
   {
     $identity = $this->getServiceUser()->getIdentity();
@@ -72,6 +73,9 @@ class Item extends AbstractService
 
       if(null !== $post_id) {
         $this->getServicePost()->update($post_id,null,null,null,null,null,null,null,null,null,null,null,null,null, $id);
+      }
+      if(null !== $quiz_id) {
+        $this->getServiceQuiz()->update($quiz_id,$id);
       }
 
       $this->move($id, -1, $parent_id);
@@ -297,17 +301,16 @@ class Item extends AbstractService
     foreach ($id as $i) {
       $paticipants = $this->getMapper()->select($this->getModel()->setId($i))->current()->getParticipants();
       $res_item = $this->getMapper()->getListSubmission($i);
-      $ar = [];
       switch ($paticipants) {
         case 'all':
           foreach ($res_item as $m_item) {
-            $ar[] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+            $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
           }
           break;
         case 'user':
           foreach ($res_item as $m_item) {
             if(is_numeric($m_item->getItemUser()->getId())) {
-              $ar[] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+              $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
             }
           }
           break;
@@ -316,7 +319,7 @@ class Item extends AbstractService
 
             if(is_numeric($m_item->getItemUser()->getId())) {
               $ok = false;
-              foreach ($ar as &$arr) {
+              foreach ($ar[$i] as &$arr) {
                 if($arr['group_id'] === $m_item->getItemUser()->getGroupId()) {
                   $arr['user'][] = $m_item->getPageUser()->getUserId();
                   $ok = true;
@@ -324,13 +327,12 @@ class Item extends AbstractService
                 }
               }
               if(!$ok) {
-                $ar[] = ['group_id' => $m_item->getItemUser()->getGroupId(), 'users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+                $ar[$i][] = ['group_id' => $m_item->getItemUser()->getGroupId(), 'users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
               }
             }
           }
           break;
         default:
-          # code...
           break;
       }
     }
@@ -434,7 +436,8 @@ class Item extends AbstractService
     $library_id = null,
     $post_id = null,
     $text = null,
-    $participants = null)
+    $participants = null,
+    $quiz_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -446,6 +449,9 @@ class Item extends AbstractService
 
     if(null !== $post_id) {
       $this->getServicePost()->update($post_id,null,null,null,null,null,null,null,null,null,null,null,null,null, $id);
+    }
+    if(null !== $quiz_id) {
+      $this->getServiceQuiz()->update($quiz_id,$id);
     }
 
     $m_item = $this->getModel()

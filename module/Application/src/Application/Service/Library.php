@@ -27,10 +27,11 @@ class Library extends AbstractService
      * @param  string $token
      * @param  string $type
      * @param  int    $folder_id
+     * @param  string $text
      * @throws \Exception
      * @return \Application\Model\Library
      */
-    public function add($name, $link = null, $token = null, $type = null, $folder_id = null, $global = null, $folder_name = null)
+    public function add($name, $link = null, $token = null, $type = null, $folder_id = null, $global = null, $folder_name = null, $text = null)
     {
         $urldms = $this->container->get('config')['app-conf']['urldms'];
         $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -52,14 +53,15 @@ class Library extends AbstractService
         }
 
         $box_id = null;
-        $u = (null !== $link) ? $link : $urldms . $token;
-
-        $m_box = $this->getServiceBox()->addFile($u, $type);
-
-        if ($m_box instanceof ModelDocument) {
-            $box_id = $m_box->getId();
+        if($text === null) {
+          $u = (null !== $link) ? $link : $urldms . $token;
+          $m_box = $this->getServiceBox()->addFile($u, $type);
+          if ($m_box instanceof ModelDocument) {
+              $box_id = $m_box->getId();
+          }
+        } else {
+          $type = "text";
         }
-
         if($global === true && $folder_id !== null) {
           $global = false;
         }
@@ -67,6 +69,7 @@ class Library extends AbstractService
         $m_library = $this->getModel()
             ->setName($name)
             ->setLink($link)
+            ->setText($text)
             ->setToken($token)
             ->setBoxId($box_id)
             ->setGlobal($global)

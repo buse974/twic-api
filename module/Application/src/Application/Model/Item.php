@@ -19,6 +19,7 @@ class Item extends BaseItem
     const TYPE_MEDIA = 'MEDIA';
 
     protected $post_id;
+    protected $quiz_id;
     protected $nb_total;
     protected $nb_grade;
     protected $nb_submission;
@@ -176,6 +177,31 @@ class Item extends BaseItem
     public function setPageUser($page_user)
     {
         $this->page_user = $page_user;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Quiz Id
+     *
+     * @return mixed
+     */
+    public function getQuizId()
+    {
+        return $this->quiz_id;
+    }
+
+    /**
+     * Set the value of Quiz Id
+     *
+     * @param mixed quiz_id
+     *
+     * @return self
+     */
+    public function setQuizId($quiz_id)
+    {
+        $this->quiz_id = $quiz_id;
 
         return $this;
     }

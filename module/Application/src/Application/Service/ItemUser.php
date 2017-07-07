@@ -18,6 +18,48 @@ class ItemUser extends AbstractService
   }
 
   /**
+  * Get Item User
+  *
+  * @param int $id
+  * @param int $user_id
+  * @param int $submission_id
+  *
+  * @return \Application\Model\ItemUser
+  **/
+  public function getLite($id = null, $user_id = null, $submission_id = null)
+  {
+    return $this->getMapper()->select($this->getModel()->setId($id)->setSubmissionId($submission_id)->setUserId($user_id));
+  }
+
+  public function update($id, $submission_id)
+  {
+    $m_item_user = $this->getModel()
+      ->setId($id)
+      ->setSubmissionId($submission_id);
+
+    return $this->getMapper()->update($m_item_user);
+  }
+  /**
+  * GetList Item User or Create
+  *
+  * @param int $user_id
+  * @param int $item_id
+  *
+  * @return \Application\Model\ItemUser
+  */
+  public function getOrCreate($user_id, $item_id)
+  {
+    $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
+
+    if($res_item_user->count() <= 0) {
+      $this->getMapper()->insert($this->getModel()->setUserId($user)->setItemId($item_id));
+      $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
+    }
+
+    return  $res_item_user->current();
+  }
+
+  /**
   * Add User In Item
   *
   * @param int $item_id
@@ -64,8 +106,6 @@ class ItemUser extends AbstractService
 
   public function grade($item_id, $rate,$user_id = null, $group_id = null)
   {
-
-
     $page_id = $this->getServiceItem()->getLite($item_id)->current()->getPageId();
     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
     $identity = $this->getServiceUser()->getIdentity();
