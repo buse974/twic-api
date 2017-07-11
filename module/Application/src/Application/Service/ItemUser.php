@@ -55,7 +55,7 @@ class ItemUser extends AbstractService
     $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
 
     if($res_item_user->count() <= 0) {
-      $this->getMapper()->insert($this->getModel()->setUserId($user)->setItemId($item_id));
+      $this->getMapper()->insert($this->getModel()->setUserId($user_id)->setItemId($item_id));
       $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
     }
 
