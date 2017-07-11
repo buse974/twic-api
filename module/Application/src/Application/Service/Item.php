@@ -180,7 +180,7 @@ class Item extends AbstractService
     }
     
     foreach ($id as $i) {
-        if($arr_item_user[$i] === null){
+        if(!array_key_exists ($i, $arr_item_user)){
             $arr_item_user[$i] = $this->getServiceItemUser()->getOrCreate($identity['id'], $id);
         }
     }
