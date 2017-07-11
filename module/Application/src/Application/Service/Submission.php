@@ -47,15 +47,19 @@ class Submission extends AbstractService
   * @invokable
   *
   * @param int $library_id
+  * @param int $submission_id
   */
-  public function remove($library_id)
+  public function remove($library_id, $submission_id = null)
   {
-    $res_submission_library = $this->getServiceSubmissionLibrary()->getList(null, $library_id);
-    if($res_submission_library->count() <= 0) {
-      throw new \Exception("Error Processing Request", 1);
+  
+    if(null === $submission_id){
+        $res_submission_library = $this->getServiceSubmissionLibrary()->getList(null, $library_id);
+        if($res_submission_library->count() <= 0) {
+          throw new \Exception("Error Processing Request", 1);
+        }
+        $submission_id = $res_submission_library->current()->getSubmissionId();
     }
-
-    $submission_id = $res_submission_library->current()->getSubmissionId();
+    
     $identity = $this->getServiceUser()->getIdentity();
 
     $res_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'] , $submission_id);
