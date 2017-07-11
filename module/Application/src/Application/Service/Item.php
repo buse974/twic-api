@@ -139,7 +139,7 @@ class Item extends AbstractService
   *
   * @param int $id
   */
-  public function getListItemUser($id)
+  public function getListItemUsers($id)
   {
     if(!is_array($id)) {
       $id = [$id];
@@ -152,6 +152,37 @@ class Item extends AbstractService
     $res_item_user = $this->getServiceItemUser()->getList($id);
     foreach ($res_item_user as $m_item_user) {
       $arr_item_user[$m_item_user->getItemId()][] = $m_item_user->toArray();
+    }
+
+    return $arr_item_user;
+  }
+  
+   /**
+  * GetList User of Item
+  *
+  * @invokable
+  *
+  * @param int $id
+  */
+  public function getListItemUser($id)
+  {
+      
+    $identity = $this->getServiceUser()->getIdentity();
+    if(!is_array($id)) {
+      $id = [$id];
+    }
+
+    $arr_item_user = [];
+    
+    $res_item_user = $this->getServiceItemUser()->getList($id, $identity['id']);    
+    foreach ($res_item_user as $m_item_user) {
+      $arr_item_user[$m_item_user->getItemId()] = $m_item_user->toArray();
+    }
+    
+    foreach ($id as $i) {
+        if($arr_item_user[$i] === null){
+            $arr_item_user[$i] = $this->getServiceItemUser()->getOrCreate($identity['id'], $id);
+        }
     }
 
     return $arr_item_user;
@@ -304,13 +335,13 @@ class Item extends AbstractService
       switch ($paticipants) {
         case 'all':
           foreach ($res_item as $m_item) {
-            $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+            $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission(), 'item_user' => $m_item->getItemUser()];
           }
           break;
         case 'user':
           foreach ($res_item as $m_item) {
             if(is_numeric($m_item->getItemUser()->getId())) {
-              $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+              $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission(), 'item_user' => $m_item->getItemUser()];
             }
           }
           break;
@@ -327,7 +358,7 @@ class Item extends AbstractService
                 }
               }
               if(!$ok) {
-                $ar[$i][] = ['group_id' => $m_item->getItemUser()->getGroupId(), 'users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission()];
+                $ar[$i][] = ['group_id' => $m_item->getItemUser()->getGroupId(), 'users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission(), 'item_user' => $m_item->getItemUser()];
               }
             }
           }

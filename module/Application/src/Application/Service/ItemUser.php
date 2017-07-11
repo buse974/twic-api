@@ -11,10 +11,12 @@ class ItemUser extends AbstractService
   * GetList User of Item
   *
   * @param int $item_id
+  * @param int $user_id
+   * 
   */
-  public function getList($item_id)
+  public function getList($item_id, $user_id = null)
   {
-    return $this->getMapper()->getList($item_id);
+    return $this->getMapper()->getList($item_id, $user_id);
   }
 
   /**
@@ -39,6 +41,7 @@ class ItemUser extends AbstractService
 
     return $this->getMapper()->update($m_item_user);
   }
+  
   /**
   * GetList Item User or Create
   *
