@@ -12,12 +12,15 @@ class ItemUser extends AbstractService
   *
   * @param int $item_id
   * @param int $user_id
+  * @param int $submission_id
    * 
   */
-  public function getList($item_id, $user_id = null)
+  public function getList($item_id, $user_id = null, $submission_id = null)
   {
-    return $this->getMapper()->getList($item_id, $user_id);
+    return $this->getMapper()->getList($item_id, $user_id, $submission_id);
   }
+  
+   
 
   /**
   * Get Item User
@@ -47,15 +50,16 @@ class ItemUser extends AbstractService
   *
   * @param int $user_id
   * @param int $item_id
+  * @param int $submission_id
   *
   * @return \Application\Model\ItemUser
   */
-  public function getOrCreate($user_id, $item_id)
+  public function getOrCreate($user_id, $item_id, $submission_id = null)
   {
     $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
 
     if($res_item_user->count() <= 0) {
-      $this->getMapper()->insert($this->getModel()->setUserId($user_id)->setItemId($item_id));
+      $this->getMapper()->insert($this->getModel()->setUserId($user_id)->setItemId($item_id)->setSubmissionId($submission_id));
       $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
     }
 

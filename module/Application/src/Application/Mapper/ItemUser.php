@@ -6,7 +6,7 @@ use Dal\Mapper\AbstractMapper;
 
 class ItemUser extends AbstractMapper
 {
-  public function getList($item_id, $user_id = null)
+  public function getList($item_id, $user_id = null, $submission_id = null)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns(['id', 'user_id', 'item_id', 'submission_id'])
@@ -15,6 +15,9 @@ class ItemUser extends AbstractMapper
       ->where(['item_user.item_id' => $item_id]);
     if(null !== $user_id){
         $select->where(['item_user.user_id' => $user_id]);
+    } 
+    if(null !== $submission_id){
+        $select->where(['item_user.submission_id' => $submission_id]);
     }
 
     return $this->selectWith($select);

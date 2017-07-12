@@ -6,6 +6,59 @@ use Dal\Service\AbstractService;
 
 class Submission extends AbstractService
 {
+    
+  
+  /**
+  * Get Submision
+  *
+  * @invokable
+  *
+   *@param int $submission_id
+  * @param int $item_id
+  * @param int $user_id
+  */
+  public function get($id = null, $item_id = null, $user_id = null, $group_id = null)
+  {
+        $get_all = $user_id === null;
+        $me = $this->getServiceUser()->getIdentity()['id'];
+        if(null !== $id){
+            $m_submission = $this->getMapper()->select($this->getModel()->setId($id))->current();
+        }
+        else if(null !== $item_id){
+            if(null === $user_id){
+                $user_id = $me;
+            }
+            $m_item = $this->getServiceItem()->getLite($item_id)->current();
+            $page_id = $m_item->getPageId();
+            switch($m_item->getParticipants()){
+                case 'all' : 
+                    $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
+                    $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+                    if(!in_array($user_id, $ar_pu[$page_id]) || ($get_all && !in_array($me, $ar_pa[$page_id]))) {
+                        throw new \Exception("No submission", 1);
+                    }
+                    
+                    $res_submission = $this->getMapper()->get($item_id, $user_id);
+                    if($res_submission->count() <= 0){
+                        $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+                        $id = (int)$this->getMapper()->getLastInsertValue();
+                        $m_submission = $this->getMapper()->select($this->getModel()->setId($id))->current();
+                        $this->getServiceItemUser()->getOrCreate($user_id, $item_id, $id);
+                    }
+                    else{
+                        $m_submission = $res_submission->current();
+                    }
+                    
+                break;
+            }
+        }
+        $m_submission->setItemUsers($this->getServiceItemUser()->getList($item_id, null, $m_submission->getId()));
+
+     
+
+      return $m_submission;
+  }
+    
   /**
   * Add Submision
   *
