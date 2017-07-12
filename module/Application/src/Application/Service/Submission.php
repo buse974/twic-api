@@ -98,12 +98,12 @@ class Submission extends AbstractService
   {
     $res_submission_library = $this->getServiceSubmissionLibrary()->getList($id);
 
-    $ar = [];
+   $ar = [];
     foreach ($res_submission_library as $m_submission_library) {
-      $ar[] = $m_submission_library->getLibraryId();
+        $ar[ $m_submission_library->getSubmissionId() ][] = $m_submission_library->getLibraryId();
     }
 
-    return $ar;
+   return $ar;
   }
 
   /**
