@@ -97,13 +97,13 @@ class Item extends AbstractMapper
     return $this->selectWith($select);
   }
 
-  public function getListSubmission($id)
+ public function getListSubmission($id)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns(['id'])
       ->join('page_user', 'page_user.page_id=item.page_id', ['user_id'])
-      ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['rate', 'group_id'], $select::JOIN_LEFT)
-      ->join('submission', 'submission.id=item_user.submission_id', ['item_id', 'submit_date', 'post_id', 'is_graded'], $select::JOIN_LEFT)
+      ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['id', 'group_id'], $select::JOIN_LEFT)
+      ->join('submission', 'submission.id=item_user.submission_id', ['id'], $select::JOIN_LEFT)
       ->where(['page_user.role'=> 'user'])
       ->where(['item.id' => $id]);
 

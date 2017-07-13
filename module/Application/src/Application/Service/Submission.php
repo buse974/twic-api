@@ -94,10 +94,6 @@ class Submission extends AbstractService
     {
         $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
         $this->getMapper()->insert($this->getModel()->setItemId($item_id)->setPostId($post_id));
-        
-        if($this->getMapper()->insert($this->getModel()->setItemId($item_id)->setPostId($post_id)) <= 0){
-          throw new \Exception("Error Processing Request", 1);
-        }
 
         return (int)$this->getMapper()->getLastInsertValue();
     }

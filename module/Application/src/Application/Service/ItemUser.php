@@ -65,6 +65,29 @@ class ItemUser extends AbstractService
 
     return  $res_item_user->current();
   }
+  
+   /**
+  * Create Item User  
+  *
+  * @param int $item_id
+  * @param int $user_id
+  * @param int $group_id
+  * @param int $submission_id
+  *
+  * @return \Application\Model\ItemUser
+  */
+  public function create( $item_id, $user_id, $group_id=null, $submission_id=null )
+  {
+    $this->getMapper()->insert(
+        $this->getModel()
+            ->setUserId($user_id)
+            ->setItemId($item_id)
+            ->setSubmissionId($submission_id)
+            ->setGroupId($group_id)
+    );
+    
+    return (int)$this->getMapper()->getLastInsertValue();
+  }
 
   /**
   * Add User In Item
