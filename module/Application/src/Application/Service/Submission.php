@@ -40,8 +40,7 @@ class Submission extends AbstractService
                     
                     $res_submission = $this->getMapper()->get($item_id, $user_id);
                     if($res_submission->count() <= 0){
-                        $this->getMapper()->insert($this->getModel()->setItemId($item_id));
-                        $id = (int)$this->getMapper()->getLastInsertValue();
+                        $id = $this->create($item_id);
                         $m_submission = $this->getMapper()->select($this->getModel()->setId($id))->current();
                         $this->getServiceItemUser()->getOrCreate($user_id, $item_id, $id);
                     }
@@ -54,11 +53,32 @@ class Submission extends AbstractService
         }
         $m_submission->setItemUsers($this->getServiceItemUser()->getList($item_id, null, $m_submission->getId()));
 
-     
+        if(null === $m_submission->getPostId()){
+            $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
+            $m_submission->setPostId($post_id);
+            $this->getMapper()->update($m_submission);
+        }
 
       return $m_submission;
   }
-    
+  
+  /**
+   * Create Submission
+   * 
+   * @param int $item_id
+   * @param int $user_id
+   */
+    public function create($item_id)
+    {
+        $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
+        $this->getMapper()->insert($this->getModel()->setItemId($item_id)->setPostId($post_id));
+        
+        if($this->getMapper()->insert($this->getModel()->setItemId($item_id)->setPostId($post_id)) <= 0){
+          throw new \Exception("Error Processing Request", 1);
+        }
+
+        return (int)$this->getMapper()->getLastInsertValue();
+    }
   /**
   * Add Submision
   *
@@ -81,11 +101,7 @@ class Submission extends AbstractService
 
       $submission_id = $m_item_user->getSubmissionId();
       if(!is_numeric($submission_id)) {
-        if($this->getMapper()->insert($this->getModel()->setItemId($item_id)) <= 0) {
-          throw new \Exception("Error Processing Request", 1);
-        }
-
-        $submission_id = $id = (int)$this->getMapper()->getLastInsertValue();
+        $submission_id = $this->create($item_id);
         $this->getServiceItemUser()->update($m_item_user->getId(), $submission_id);
       }
 
@@ -207,5 +223,15 @@ class Submission extends AbstractService
   private function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Post
+   *
+   * @return \Application\Service\Post
+   */
+  private function getServicePost()
+  {
+      return $this->container->get('app_service_post');
   }
 }
