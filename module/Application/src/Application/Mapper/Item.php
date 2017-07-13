@@ -30,12 +30,13 @@ class Item extends AbstractMapper
     return $this->selectWith($select);
   }
 
-  public function getListAssignmentId($page_id, $me, $is_admin_page)
+  public function getListAssignmentId($page_id, $me)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns(['id', 'parent_id', 'page_id'])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->where(['page_user.user_id' => $me])
+      ->where(['page_user.state' => 'member'])
       ->where(['item.page_id' => $page_id])
       ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
       ->where(['item.is_published IS TRUE'])
