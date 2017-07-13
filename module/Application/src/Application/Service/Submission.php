@@ -66,7 +66,6 @@ class Submission extends AbstractService
    * Create Submission
    * 
    * @param int $item_id
-   * @param int $user_id
    */
     public function create($item_id)
     {
