@@ -37,14 +37,11 @@ class Item extends AbstractMapper
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->where(['page_user.user_id' => $me])
       ->where(['item.page_id' => $page_id])
-      ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR ( `item`.`type` NOT IN ('A', 'QUIZ', 'DISC') AND `item`.`points` IS NOT NULL ) )"])
+      ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
+      ->where(['item.is_published IS TRUE'])
       ->order('item.page_id ASC')
       ->order('item.order ASC');
-
-    if($is_admin_page !== true) {
-      $select->where(['item.is_published IS TRUE']);
-    }
-
+    
     return $this->selectWith($select);
   }
 
