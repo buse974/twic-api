@@ -321,7 +321,7 @@ class Item extends AbstractService
   *
   * @param int|array $id
   */
-  public function getListSubmission($id)
+  public function getListSubmissionId($id)
   {
     if(!is_array($id)) {
       $id = [$id];
