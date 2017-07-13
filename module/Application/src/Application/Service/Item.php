@@ -335,7 +335,10 @@ class Item extends AbstractService
       switch ($paticipants) {
         case 'all':
           foreach ($res_item as $m_item) {
-            $ar[$i][] = ['users'=>[$m_item->getPageUser()->getUserId()],'sub' => $m_item->getItemUser()->getSubmission(), 'item_user' => $m_item->getItemUser()];
+            $sbm = $this->getServiceSubmission()->getOrCreate(null, $m_item->getId(), $m_item->getPageUser()->getUserId());
+            if(null !== $sbm){
+                $ar[$i][] = $sbm->getId();
+            }
           }
           break;
         case 'user':
@@ -552,6 +555,16 @@ class Item extends AbstractService
   private function getServicePost()
   {
       return $this->container->get('app_service_post');
+  }
+
+  /**
+   * Get Service Submission
+   *
+   * @return \Application\Service\Submission
+   */
+  private function getServiceSubmission()
+  {
+      return $this->container->get('app_service_submission');
   }
 
   /**

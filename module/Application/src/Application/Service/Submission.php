@@ -8,16 +8,39 @@ class Submission extends AbstractService
 {
     
   
-  /**
-  * Get Submision
-  *
+    /**
+  * Get a Submision
+  *  
   * @invokable
-  *
-   *@param int $submission_id
+  * 
+  * @param int|array $id
+  */
+  public function get($id)
+  {
+        if(!is_array($id)){
+            $id = [$id];
+        }
+        $submissions = [];
+        foreach($id as $i){
+            $submissions[$i] = null;
+        }
+        $res_submissions = $this->getMapper()->get($id);
+        foreach($res_submissions as $m_submission){
+            $submissions[$m_submission->getId()] = $m_submission;
+        }
+        return $submissions;
+  }
+    
+  /**
+  * Get or Create Submision
+  *  
+  * 
+  * @param int $id
   * @param int $item_id
   * @param int $user_id
+  * @param int $group_id
   */
-  public function get($id = null, $item_id = null, $user_id = null, $group_id = null)
+  public function getOrCreate($id = null, $item_id = null, $user_id = null, $group_id = null)
   {
         $get_all = $user_id === null;
         $me = $this->getServiceUser()->getIdentity()['id'];
@@ -35,10 +58,10 @@ class Submission extends AbstractService
                     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
                     $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
                     if(!in_array($user_id, $ar_pu[$page_id]) || ($get_all && !in_array($me, $ar_pa[$page_id]))) {
-                        throw new \Exception("No submission", 1);
+                        return null;
                     }
                     
-                    $res_submission = $this->getMapper()->get($item_id, $user_id);
+                    $res_submission = $this->getMapper()->get(null, $item_id, $user_id);
                     if($res_submission->count() <= 0){
                         $id = $this->create($item_id);
                         $m_submission = $this->getMapper()->select($this->getModel()->setId($id))->current();
