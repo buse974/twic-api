@@ -106,7 +106,6 @@ class Item extends AbstractMapper
       ->join('submission', 'submission.id=item_user.submission_id', ['id'], $select::JOIN_LEFT)
       ->where(['page_user.role'=> 'user'])
       ->where(['item.id' => $id]);
-
     return $this->selectWith($select);
   }
 

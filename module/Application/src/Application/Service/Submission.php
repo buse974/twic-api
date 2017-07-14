@@ -26,6 +26,7 @@ class Submission extends AbstractService
         }
         $res_submissions = $this->getMapper()->get($id);
         foreach($res_submissions as $m_submission){
+            $m_submission->setItemUsers($this->getServiceItemUser()->getList($m_submission->getItemId(), null, $m_submission->getId()));
             $submissions[$m_submission->getId()] = $m_submission;
         }
         return $submissions;

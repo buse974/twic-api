@@ -333,10 +333,10 @@ class Item extends AbstractService
       switch ($paticipants) {
         case 'all':
           foreach ($res_item as $m_item) {
-            if( $m_item->getItemUser()->getSubmission()->getId() !== null ){                
+            if( $m_item->getItemUser()->getSubmission()->getId() instanceof \Zend\Db\Sql\Predicate\IsNull){                
                 $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );
             
-                if( $m_item->getItemUser()->getId() !== null ){
+                if( $m_item->getItemUser()->getId() instanceof \Zend\Db\Sql\Predicate\IsNull){
                     $this->getServiceItemUser()->create( $m_item->getId(), $m_item->getPageUser()->getUserId(), null, $submission_id );
                 }else{
                     $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
