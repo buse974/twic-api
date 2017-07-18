@@ -132,26 +132,6 @@ class ItemRateTest extends AbstractService
     /**
     * @depends testInit
     */
-    public function testGetListIdAdmin($id)
-    {
-      $this->setIdentity(1);
-      $data = $this->jsonRpc('item.getListAssignmentId', [
-        'page_id' => $id,
-      ]);
-
-      $this->assertEquals(count($data) , 3);
-      $this->assertEquals($data['id'] , 1);
-      $this->assertEquals(count($data['result']) , 1);
-      $this->assertEquals(count($data['result'][1]) , 3);
-      $this->assertEquals($data['result'][1][0] , 2);
-      $this->assertEquals($data['result'][1][1] , 3);
-      $this->assertEquals($data['result'][1][2] , 5);
-      $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
-
-    /**
-    * @depends testInit
-    */
     public function testGetListItem($id)
     {
       $this->setIdentity(1);
@@ -163,15 +143,15 @@ class ItemRateTest extends AbstractService
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 3);
       $this->assertEquals(count($data['result'][2]) , 3);
-      $this->assertEquals($data['result'][2]['nb_total'] , 5);
+      $this->assertEquals($data['result'][2]['nb_total'] , 3);
       $this->assertEquals($data['result'][2]['nb_grade'] , 0);
       $this->assertEquals($data['result'][2]['nb_submission'] , 0);
       $this->assertEquals(count($data['result'][3]) , 3);
-      $this->assertEquals($data['result'][3]['nb_total'] , 5);
+      $this->assertEquals($data['result'][3]['nb_total'] , 3);
       $this->assertEquals($data['result'][3]['nb_grade'] , 0);
       $this->assertEquals($data['result'][3]['nb_submission'] , 0);
       $this->assertEquals(count($data['result'][5]) , 3);
-      $this->assertEquals($data['result'][5]['nb_total'] , 5);
+      $this->assertEquals($data['result'][5]['nb_total'] , 3);
       $this->assertEquals($data['result'][5]['nb_grade'] , 0);
       $this->assertEquals($data['result'][5]['nb_submission'] , 0);
       $this->assertEquals($data['jsonrpc'] , 2.0);
@@ -190,129 +170,72 @@ class ItemRateTest extends AbstractService
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 3);
-      $this->assertEquals(count($data['result'][2]) , 5);
-      $this->assertEquals(count($data['result'][2][0]) , 2);
+      $this->assertEquals(count($data['result'][2]) , 3);
+      $this->assertEquals(count($data['result'][2][0]) , 5);
+      $this->assertEquals($data['result'][2][0]['group_id'] , null);
+      $this->assertEquals($data['result'][2][0]['rate'] , null);
       $this->assertEquals(count($data['result'][2][0]['users']) , 1);
-      $this->assertEquals($data['result'][2][0]['users'][0] , 1);
-      $this->assertEquals(count($data['result'][2][0]['sub']) , 4);
-      $this->assertEquals($data['result'][2][0]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][2][0]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][2][0]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][2][0]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][2][1]) , 2);
+      $this->assertEquals($data['result'][2][0]['users'][0] , 3);
+      $this->assertEquals($data['result'][2][0]['submit_date'] , null);
+      $this->assertEquals($data['result'][2][0]['post_id'] , null);
+      $this->assertEquals(count($data['result'][2][1]) , 5);
+      $this->assertEquals($data['result'][2][1]['group_id'] , null);
+      $this->assertEquals($data['result'][2][1]['rate'] , null);
       $this->assertEquals(count($data['result'][2][1]['users']) , 1);
-      $this->assertEquals($data['result'][2][1]['users'][0] , 2);
-      $this->assertEquals(count($data['result'][2][1]['sub']) , 4);
-      $this->assertEquals($data['result'][2][1]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][2][1]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][2][1]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][2][1]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][2][2]) , 2);
+      $this->assertEquals($data['result'][2][1]['users'][0] , 4);
+      $this->assertEquals($data['result'][2][1]['submit_date'] , null);
+      $this->assertEquals($data['result'][2][1]['post_id'] , null);
+      $this->assertEquals(count($data['result'][2][2]) , 5);
+      $this->assertEquals($data['result'][2][2]['group_id'] , null);
+      $this->assertEquals($data['result'][2][2]['rate'] , null);
       $this->assertEquals(count($data['result'][2][2]['users']) , 1);
-      $this->assertEquals($data['result'][2][2]['users'][0] , 3);
-      $this->assertEquals(count($data['result'][2][2]['sub']) , 4);
-      $this->assertEquals($data['result'][2][2]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][2][2]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][2][2]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][2][2]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][2][3]) , 2);
-      $this->assertEquals(count($data['result'][2][3]['users']) , 1);
-      $this->assertEquals($data['result'][2][3]['users'][0] , 4);
-      $this->assertEquals(count($data['result'][2][3]['sub']) , 4);
-      $this->assertEquals($data['result'][2][3]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][2][3]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][2][3]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][2][3]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][2][4]) , 2);
-      $this->assertEquals(count($data['result'][2][4]['users']) , 1);
-      $this->assertEquals($data['result'][2][4]['users'][0] , 5);
-      $this->assertEquals(count($data['result'][2][4]['sub']) , 4);
-      $this->assertEquals($data['result'][2][4]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][2][4]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][2][4]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][2][4]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][3]) , 5);
-      $this->assertEquals(count($data['result'][3][0]) , 2);
+      $this->assertEquals($data['result'][2][2]['users'][0] , 5);
+      $this->assertEquals($data['result'][2][2]['submit_date'] , null);
+      $this->assertEquals($data['result'][2][2]['post_id'] , null);
+      $this->assertEquals(count($data['result'][3]) , 3);
+      $this->assertEquals(count($data['result'][3][0]) , 5);
+      $this->assertEquals($data['result'][3][0]['group_id'] , null);
+      $this->assertEquals($data['result'][3][0]['rate'] , null);
       $this->assertEquals(count($data['result'][3][0]['users']) , 1);
-      $this->assertEquals($data['result'][3][0]['users'][0] , 1);
-      $this->assertEquals(count($data['result'][3][0]['sub']) , 4);
-      $this->assertEquals($data['result'][3][0]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][3][0]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][3][0]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][3][0]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][3][1]) , 2);
+      $this->assertEquals($data['result'][3][0]['users'][0] , 3);
+      $this->assertEquals($data['result'][3][0]['submit_date'] , null);
+      $this->assertEquals($data['result'][3][0]['post_id'] , null);
+      $this->assertEquals(count($data['result'][3][1]) , 5);
+      $this->assertEquals($data['result'][3][1]['group_id'] , null);
+      $this->assertEquals($data['result'][3][1]['rate'] , null);
       $this->assertEquals(count($data['result'][3][1]['users']) , 1);
-      $this->assertEquals($data['result'][3][1]['users'][0] , 2);
-      $this->assertEquals(count($data['result'][3][1]['sub']) , 4);
-      $this->assertEquals($data['result'][3][1]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][3][1]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][3][1]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][3][1]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][3][2]) , 2);
+      $this->assertEquals($data['result'][3][1]['users'][0] , 4);
+      $this->assertEquals($data['result'][3][1]['submit_date'] , null);
+      $this->assertEquals($data['result'][3][1]['post_id'] , null);
+      $this->assertEquals(count($data['result'][3][2]) , 5);
+      $this->assertEquals($data['result'][3][2]['group_id'] , null);
+      $this->assertEquals($data['result'][3][2]['rate'] , null);
       $this->assertEquals(count($data['result'][3][2]['users']) , 1);
-      $this->assertEquals($data['result'][3][2]['users'][0] , 3);
-      $this->assertEquals(count($data['result'][3][2]['sub']) , 4);
-      $this->assertEquals($data['result'][3][2]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][3][2]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][3][2]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][3][2]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][3][3]) , 2);
-      $this->assertEquals(count($data['result'][3][3]['users']) , 1);
-      $this->assertEquals($data['result'][3][3]['users'][0] , 4);
-      $this->assertEquals(count($data['result'][3][3]['sub']) , 4);
-      $this->assertEquals($data['result'][3][3]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][3][3]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][3][3]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][3][3]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][3][4]) , 2);
-      $this->assertEquals(count($data['result'][3][4]['users']) , 1);
-      $this->assertEquals($data['result'][3][4]['users'][0] , 5);
-      $this->assertEquals(count($data['result'][3][4]['sub']) , 4);
-      $this->assertEquals($data['result'][3][4]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][3][4]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][3][4]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][3][4]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][5]) , 5);
-      $this->assertEquals(count($data['result'][5][0]) , 2);
+      $this->assertEquals($data['result'][3][2]['users'][0] , 5);
+      $this->assertEquals($data['result'][3][2]['submit_date'] , null);
+      $this->assertEquals($data['result'][3][2]['post_id'] , null);
+      $this->assertEquals(count($data['result'][5]) , 3);
+      $this->assertEquals(count($data['result'][5][0]) , 5);
+      $this->assertEquals($data['result'][5][0]['group_id'] , null);
+      $this->assertEquals($data['result'][5][0]['rate'] , null);
       $this->assertEquals(count($data['result'][5][0]['users']) , 1);
-      $this->assertEquals($data['result'][5][0]['users'][0] , 1);
-      $this->assertEquals(count($data['result'][5][0]['sub']) , 4);
-      $this->assertEquals($data['result'][5][0]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][5][0]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][5][0]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][5][0]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][5][1]) , 2);
+      $this->assertEquals($data['result'][5][0]['users'][0] , 3);
+      $this->assertEquals($data['result'][5][0]['submit_date'] , null);
+      $this->assertEquals($data['result'][5][0]['post_id'] , null);
+      $this->assertEquals(count($data['result'][5][1]) , 5);
+      $this->assertEquals($data['result'][5][1]['group_id'] , null);
+      $this->assertEquals($data['result'][5][1]['rate'] , null);
       $this->assertEquals(count($data['result'][5][1]['users']) , 1);
-      $this->assertEquals($data['result'][5][1]['users'][0] , 2);
-      $this->assertEquals(count($data['result'][5][1]['sub']) , 4);
-      $this->assertEquals($data['result'][5][1]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][5][1]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][5][1]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][5][1]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][5][2]) , 2);
+      $this->assertEquals($data['result'][5][1]['users'][0] , 4);
+      $this->assertEquals($data['result'][5][1]['submit_date'] , null);
+      $this->assertEquals($data['result'][5][1]['post_id'] , null);
+      $this->assertEquals(count($data['result'][5][2]) , 5);
+      $this->assertEquals($data['result'][5][2]['group_id'] , null);
+      $this->assertEquals($data['result'][5][2]['rate'] , null);
       $this->assertEquals(count($data['result'][5][2]['users']) , 1);
-      $this->assertEquals($data['result'][5][2]['users'][0] , 3);
-      $this->assertEquals(count($data['result'][5][2]['sub']) , 4);
-      $this->assertEquals($data['result'][5][2]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][5][2]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][5][2]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][5][2]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][5][3]) , 2);
-      $this->assertEquals(count($data['result'][5][3]['users']) , 1);
-      $this->assertEquals($data['result'][5][3]['users'][0] , 4);
-      $this->assertEquals(count($data['result'][5][3]['sub']) , 4);
-      $this->assertEquals($data['result'][5][3]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][5][3]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][5][3]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][5][3]['sub']['post_id'] , null);
-      $this->assertEquals(count($data['result'][5][4]) , 2);
-      $this->assertEquals(count($data['result'][5][4]['users']) , 1);
-      $this->assertEquals($data['result'][5][4]['users'][0] , 5);
-      $this->assertEquals(count($data['result'][5][4]['sub']) , 4);
-      $this->assertEquals($data['result'][5][4]['sub']['item_id'] , null);
-      $this->assertEquals($data['result'][5][4]['sub']['submit_date'] , null);
-      $this->assertEquals($data['result'][5][4]['sub']['is_graded'] , null);
-      $this->assertEquals($data['result'][5][4]['sub']['post_id'] , null);
+      $this->assertEquals($data['result'][5][2]['users'][0] , 5);
+      $this->assertEquals($data['result'][5][2]['submit_date'] , null);
+      $this->assertEquals($data['result'][5][2]['post_id'] , null);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
@@ -349,15 +272,15 @@ class ItemRateTest extends AbstractService
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 3);
       $this->assertEquals(count($data['result'][2]) , 3);
-      $this->assertEquals($data['result'][2]['nb_total'] , 5);
+      $this->assertEquals($data['result'][2]['nb_total'] , 3);
       $this->assertEquals($data['result'][2]['nb_grade'] , 1);
       $this->assertEquals($data['result'][2]['nb_submission'] , 0);
       $this->assertEquals(count($data['result'][3]) , 3);
-      $this->assertEquals($data['result'][3]['nb_total'] , 5);
+      $this->assertEquals($data['result'][3]['nb_total'] , 3);
       $this->assertEquals($data['result'][3]['nb_grade'] , 0);
       $this->assertEquals($data['result'][3]['nb_submission'] , 0);
       $this->assertEquals(count($data['result'][5]) , 3);
-      $this->assertEquals($data['result'][5]['nb_total'] , 5);
+      $this->assertEquals($data['result'][5]['nb_total'] , 3);
       $this->assertEquals($data['result'][5]['nb_grade'] , 0);
       $this->assertEquals($data['result'][5]['nb_submission'] , 0);
       $this->assertEquals($data['jsonrpc'] , 2.0);
@@ -453,26 +376,29 @@ class ItemRateTest extends AbstractService
         */
        public function testGetLibrary($submission_id)
        {
-           $this->setIdentity(1);
-           $data = $this->jsonRpc('submission.getListLibrary', [
-             'id' => $submission_id
-           ]);
+          $this->setIdentity(1);
+          $data = $this->jsonRpc('submission.getListLibrary', [
+            'id' => $submission_id
+          ]);
 
           $this->assertEquals(count($data) , 3);
           $this->assertEquals($data['id'] , 1);
           $this->assertEquals(count($data['result']) , 1);
-          $this->assertEquals($data['result'][0] , 1);
+          $this->assertEquals(count($data['result'][1]) , 1);
+          $this->assertEquals($data['result'][1][0] , 1);
           $this->assertEquals($data['jsonrpc'] , 2.0);
        }
 
        /**
         * @depends testAddSubmission
+        * @depends testAddText
         */
-       public function testRemoveLibrary($submission_id)
+       public function testRemoveLibrary($submission_id, $library_id)
        {
            $this->setIdentity(5);
            $data = $this->jsonRpc('submission.remove', [
-             'library_id' => $submission_id
+             'library_id' => $library_id,
+             //'submission_id' => $submission_id
            ]);
 
            $this->assertEquals(count($data) , 3);
@@ -496,7 +422,7 @@ class ItemRateTest extends AbstractService
           $this->assertEquals(count($data['result']) , 0);
           $this->assertEquals($data['jsonrpc'] , 2.0);
        }
-       
+
        /**
        * @depends testInit
        */
@@ -511,15 +437,15 @@ class ItemRateTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result'][2]) , 3);
-        $this->assertEquals($data['result'][2]['nb_total'] , 5);
+        $this->assertEquals($data['result'][2]['nb_total'] , 3);
         $this->assertEquals($data['result'][2]['nb_grade'] , 1);
         $this->assertEquals($data['result'][2]['nb_submission'] , 1);
         $this->assertEquals(count($data['result'][3]) , 3);
-        $this->assertEquals($data['result'][3]['nb_total'] , 5);
+        $this->assertEquals($data['result'][3]['nb_total'] , 3);
         $this->assertEquals($data['result'][3]['nb_grade'] , 0);
         $this->assertEquals($data['result'][3]['nb_submission'] , 0);
         $this->assertEquals(count($data['result'][5]) , 3);
-        $this->assertEquals($data['result'][5]['nb_total'] , 5);
+        $this->assertEquals($data['result'][5]['nb_total'] , 3);
         $this->assertEquals($data['result'][5]['nb_grade'] , 0);
         $this->assertEquals($data['result'][5]['nb_submission'] , 0);
         $this->assertEquals($data['jsonrpc'] , 2.0);

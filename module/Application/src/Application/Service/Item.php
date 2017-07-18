@@ -139,7 +139,7 @@ class Item extends AbstractService
   *
   * @param int $id
   */
-  public function getListItemUsers($id)
+  public function getListItemUser($id)
   {
     if(!is_array($id)) {
       $id = [$id];
@@ -156,29 +156,28 @@ class Item extends AbstractService
 
     return $arr_item_user;
   }
-  
-   /**
-  * GetList User of Item
+
+  /**
+  * Get User of Item
   *
   * @invokable
   *
   * @param int $id
   */
-  public function getListItemUser($id)
+  public function getItemUser($id)
   {
-      
     $identity = $this->getServiceUser()->getIdentity();
     if(!is_array($id)) {
       $id = [$id];
     }
 
     $arr_item_user = [];
-    
-    $res_item_user = $this->getServiceItemUser()->getList($id, $identity['id']);    
+    $res_item_user = $this->getServiceItemUser()->getList($id, $identity['id']);
     foreach ($res_item_user as $m_item_user) {
       $arr_item_user[$m_item_user->getItemId()] = $m_item_user->toArray();
     }
-    
+
+    //pour tout ce qui n'existe pas on les crée
     foreach ($id as $i) {
         if(!array_key_exists($i, $arr_item_user)){
             $arr_item_user[$i] = $this->getServiceItemUser()->getOrCreate($identity['id'], $i);
@@ -313,6 +312,79 @@ class Item extends AbstractService
   }
 
   /**
+  * Get Info Item
+  *
+  * @invokable
+  *
+  * @param int|array $id
+  */
+  public function getListSubmission($id)
+  {
+     if(!is_array($id)) {
+       $id = [$id];
+     }
+
+     //TODO check admin page
+     $ar = [];
+     foreach ($id as $i) {
+       $paticipants = $this->getMapper()->select($this->getModel()->setId($i))->current()->getParticipants();
+       $res_item = $this->getMapper()->getListSubmission($i);
+       switch ($paticipants) {
+         case 'all':
+           foreach ($res_item as $m_item) {
+             $ar[$i][] = [
+               'group_id' => null,
+               'rate' => $m_item->getItemUser()->getRate(),
+               'users'=>[$m_item->getPageUser()->getUserId()],
+               'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
+               'post_id' => $m_item->getItemUser()->getSubmission()->getPostId()
+             ];
+           }
+           break;
+         case 'user':
+           foreach ($res_item as $m_item) {
+             if(is_numeric($m_item->getItemUser()->getId())) {
+               $ar[$i][] = [
+                 'group_id' => null,
+                 'rate' => $m_item->getItemUser()->getRate(),
+                 'users'=>[$m_item->getPageUser()->getUserId()],
+                 'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
+                 'post_id' => $m_item->getItemUser()->getSubmission()->getPostId()
+               ];
+             }
+           }
+           break;
+         case 'group':
+           foreach ($res_item as $m_item) {
+             if(is_numeric($m_item->getItemUser()->getId())) {
+               $ok = false;
+               foreach ($ar[$i] as &$arr) {
+                 if($arr['group_id'] === $m_item->getItemUser()->getGroupId()) {
+                   $arr['user'][] = $m_item->getPageUser()->getUserId();
+                   $ok = true;
+                   break;
+                 }
+               }
+               if(!$ok) {
+                 $ar[$i][] = [
+                   'group_id' => $m_item->getItemUser()->getGroupId(),
+                   'rate' => $m_item->getItemUser()->getRate(),
+                   'users'=>[$m_item->getPageUser()->getUserId()],
+                   'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
+                   'post_id' => $m_item->getItemUser()->getSubmission()->getPostId()
+                 ];
+               }
+             }
+           }
+           break;
+         default:
+           break;
+       }
+     }    return $ar;
+   }
+
+
+  /**
   * Get List Assgnment By Item
   *
   * @invokable
@@ -333,53 +405,47 @@ class Item extends AbstractService
       switch ($paticipants) {
         case 'all':
           foreach ($res_item as $m_item) {
-            if( $m_item->getItemUser()->getSubmission()->getId() instanceof \Zend\Db\Sql\Predicate\IsNull){                
-                $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );
-            
-                if( $m_item->getItemUser()->getId() instanceof \Zend\Db\Sql\Predicate\IsNull){
-                    $this->getServiceItemUser()->create( $m_item->getId(), $m_item->getPageUser()->getUserId(), null, $submission_id );
-                }else{
-                    $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
-                }
-                
-                $ar[$i][] = (int) $submission_id;
-            }
-            else{
-                $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
+            if(!is_numeric($m_item->getItemUser()->getSubmission()->getId())) {
+              $submission_id = $this->getServiceSubmission()->create($m_item->getId());
+              if(!is_numeric($m_item->getItemUser()->getId())) {
+                $this->getServiceItemUser()->create( $m_item->getId(), $m_item->getPageUser()->getUserId(), null, $submission_id );
+              } else {
+                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
+              }
+              $ar[$i][] = (int) $submission_id;
+            } else {
+              $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
             }
           }
           break;
         case 'user':
           foreach ($res_item as $m_item) {
             if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
-                $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );                
+                $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );
                 $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
                 $ar[$i][] = (int) $submission_id;
-            }else{
+            } else {
                 $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
             }
           }
           break;
         case 'group':
           foreach ($res_item as $m_item) {
-            
             $groupIds = [];
-            
             if( !isset($groupIds[$m_item->getItemUser()->getGroupId()]) ){
-                $groupIds[$m_item->getItemUser()->getGroupId()] = null;
-                
-                if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
-                    $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );                    
-                    $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );                    
-                    $ar[$i][] = (int) $submission_id;
-                    $groupIds[$m_item->getItemUser()->getGroupId()] = $submission_id;
-                }else{
-                    $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
-                }                
-            }else{
-                if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
-                    $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $groupIds[$m_item->getItemUser()->getGroupId()] );
-                }
+              $groupIds[$m_item->getItemUser()->getGroupId()] = null;
+              if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
+                $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );
+                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
+                $ar[$i][] = (int) $submission_id;
+                $groupIds[$m_item->getItemUser()->getGroupId()] = $submission_id;
+              } else {
+                $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
+              }
+            } else {
+              if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
+                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $groupIds[$m_item->getItemUser()->getGroupId()] );
+              }
             }
           }
           break;

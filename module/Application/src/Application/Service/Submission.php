@@ -6,36 +6,11 @@ use Dal\Service\AbstractService;
 
 class Submission extends AbstractService
 {
-    
-  
-    /**
-  * Get a Submision
-  *  
-  * @invokable
-  * 
-  * @param int|array $id
-  */
-  public function get($id)
-  {
-        if(!is_array($id)){
-            $id = [$id];
-        }
-        $submissions = [];
-        foreach($id as $i){
-            $submissions[$i] = null;
-        }
-        $res_submissions = $this->getMapper()->get($id);
-        foreach($res_submissions as $m_submission){
-            $m_submission->setItemUsers($this->getServiceItemUser()->getList($m_submission->getItemId(), null, $m_submission->getId()));
-            $submissions[$m_submission->getId()] = $m_submission;
-        }
-        return $submissions;
-  }
-    
+
   /**
   * Get or Create Submision
-  *  
-  * 
+  *
+  *
   * @param int $id
   * @param int $item_id
   * @param int $user_id
@@ -55,13 +30,13 @@ class Submission extends AbstractService
             $m_item = $this->getServiceItem()->getLite($item_id)->current();
             $page_id = $m_item->getPageId();
             switch($m_item->getParticipants()){
-                case 'all' : 
+                case 'all' :
                     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
                     $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
                     if(!in_array($user_id, $ar_pu[$page_id]) || ($get_all && !in_array($me, $ar_pa[$page_id]))) {
                         return null;
                     }
-                    
+
                     $res_submission = $this->getMapper()->get(null, $item_id, $user_id);
                     if($res_submission->count() <= 0){
                         $id = $this->create($item_id);
@@ -71,7 +46,7 @@ class Submission extends AbstractService
                     else{
                         $m_submission = $res_submission->current();
                     }
-                    
+
                 break;
             }
         }
@@ -85,10 +60,10 @@ class Submission extends AbstractService
 
       return $m_submission;
   }
-  
+
   /**
    * Create Submission
-   * 
+   *
    * @param int $item_id
    */
     public function create($item_id)
@@ -96,7 +71,7 @@ class Submission extends AbstractService
         $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
         $this->getMapper()->insert($this->getModel()->setItemId($item_id)->setPostId($post_id));
 
-        return (int)$this->getMapper()->getLastInsertValue();
+        return (int) $this->getMapper()->getLastInsertValue();
     }
   /**
   * Add Submision
@@ -139,7 +114,6 @@ class Submission extends AbstractService
   */
   public function remove($library_id, $submission_id = null)
   {
-  
     if(null === $submission_id){
         $res_submission_library = $this->getServiceSubmissionLibrary()->getList(null, $library_id);
         if($res_submission_library->count() <= 0) {
@@ -147,7 +121,7 @@ class Submission extends AbstractService
         }
         $submission_id = $res_submission_library->current()->getSubmissionId();
     }
-    
+
     $identity = $this->getServiceUser()->getIdentity();
 
     $res_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'] , $submission_id);
@@ -165,10 +139,18 @@ class Submission extends AbstractService
   *
   * @param int $id
   */
-  public function submit($id)
+  public function submit($id = null, $item_id = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
-    if($this->getServiceItemUser()->getLite(null,$identity['id'], $id)->count() <= 0) {
+
+    if(null === $id && $item_id !== $item_id) {
+      $res_item_user = $this->getServiceItem()->getLite($item_id, $identity['id']);
+      if($res_item_user->count() > 0) {
+        $id = $res_item_user->current()->getSubmissionId();
+      }
+    }
+
+    if(!$id && $this->getServiceItemUser()->getLite(null,$identity['id'], $id)->count() <= 0) {
       throw new \Exception("Bad User", 1);
     }
 
@@ -182,16 +164,26 @@ class Submission extends AbstractService
   *
   * @param int $id
   */
-  public function getListLibrary($id)
+  public function getListLibrary($id = null, $item_id = null)
   {
-    $res_submission_library = $this->getServiceSubmissionLibrary()->getList($id);
 
-   $ar = [];
-    foreach ($res_submission_library as $m_submission_library) {
-        $ar[ $m_submission_library->getSubmissionId() ][] = $m_submission_library->getLibraryId();
+    $ar = [];
+    if(null === $id && null !== $item_id) {
+      $identity = $this->getServiceUser()->getIdentity();
+      $res_item_user = $this->getServiceItem()->getLite($item_id, $identity['id']);
+      if($res_item_user->count() > 0) {
+        $id = $res_item_user->current()->getSubmissionId();
+      }
     }
 
-   return $ar;
+    if(is_numeric($id)) {
+      $res_submission_library = $this->getServiceSubmissionLibrary()->getList($id);
+      foreach ($res_submission_library as $m_submission_library) {
+          $ar[ $m_submission_library->getSubmissionId() ][] = $m_submission_library->getLibraryId();
+      }
+    }
+
+    return $ar;
   }
 
   /**

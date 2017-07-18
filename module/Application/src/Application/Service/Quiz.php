@@ -16,10 +16,11 @@ class Quiz extends AbstractService
    * @param  string $item_id
    * @param  string $attempt_count
    * @param  string $time_limit
+   * @param  array  $questions
    *
    * @return int
    */
-  public function add($name, $item_id = null, $attempt_count = null, $time_limit = null)
+  public function add($name, $item_id = null, $attempt_count = null, $time_limit = null, $questions = null)
   {
     $m_quiz = $this->getModel()->setName($name)->setItemId($item_id)->setAttemptCount($attempt_count)->setTimeLimit($time_limit);
 
@@ -27,7 +28,10 @@ class Quiz extends AbstractService
       throw new \Exception("Error Processing Request", 1);
     }
 
-    return (int)$this->getMapper()->getLastInsertValue();
+    $quiz_id = (int) $this->getMapper()->getLastInsertValue();
+
+
+    return $quiz_id;
   }
 
   public function update($id, $item_id = null, $name = null, $attempt_count = null, $time_limit = null)

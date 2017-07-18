@@ -13,14 +13,12 @@ class ItemUser extends AbstractService
   * @param int $item_id
   * @param int $user_id
   * @param int $submission_id
-   * 
+   *
   */
   public function getList($item_id, $user_id = null, $submission_id = null)
   {
     return $this->getMapper()->getList($item_id, $user_id, $submission_id);
   }
-  
-   
 
   /**
   * Get Item User
@@ -44,7 +42,7 @@ class ItemUser extends AbstractService
 
     return $this->getMapper()->update($m_item_user);
   }
-  
+
   /**
   * GetList Item User or Create
   *
@@ -65,9 +63,9 @@ class ItemUser extends AbstractService
 
     return  $res_item_user->current();
   }
-  
+
    /**
-  * Create Item User  
+  * Create Item User
   *
   * @param int $item_id
   * @param int $user_id
@@ -85,7 +83,7 @@ class ItemUser extends AbstractService
             ->setSubmissionId($submission_id)
             ->setGroupId($group_id)
     );
-    
+
     return (int)$this->getMapper()->getLastInsertValue();
   }
 

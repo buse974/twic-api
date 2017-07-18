@@ -18,37 +18,14 @@ class PostTest extends AbstractService
         $data = $this->jsonRpc('post.linkPreview', [
             'url' => 'http://thestudnet.com/',
         ]);
-
+        
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 3);
-        $this->assertEquals(count($data['result']['meta']) , 9);
-        $this->assertEquals($data['result']['meta']['description'] , "THE STUDNET is a global online community of MBA programs gathered around a cloud-based 21st-Century Learning Management System uses the latest digital tools");
-        $this->assertEquals($data['result']['meta']['robots'] , "noodp");
-        $this->assertEquals($data['result']['meta']['twitter:card'] , "summary");
-        $this->assertEquals($data['result']['meta']['twitter:description'] , "THE STUDNET is a global online community of MBA programs gathered around a cloud-based 21st-Century Learning Management System uses the latest digital tools");
-        $this->assertEquals($data['result']['meta']['twitter:title'] , "THE STUDNET - Social Learning Environment for MBA");
-        $this->assertEquals($data['result']['meta']['twitter:site'] , "@thestudnet");
-        $this->assertEquals($data['result']['meta']['twitter:image'] , "http://thestudnet.com/wp-content/uploads/2015/09/aacsb-e1443519385344.png");
-        $this->assertEquals($data['result']['meta']['twitter:creator'] , "@thestudnet");
-        $this->assertEquals($data['result']['meta']['generator'] , "WordPress 4.7.5");
-        $this->assertEquals(count($data['result']['open_graph']) , 7);
-        $this->assertEquals($data['result']['open_graph']['locale'] , "en_US");
-        $this->assertEquals($data['result']['open_graph']['type'] , "article");
-        $this->assertEquals($data['result']['open_graph']['title'] , "Home");
-        $this->assertEquals($data['result']['open_graph']['description'] , "");
-        $this->assertEquals($data['result']['open_graph']['url'] , "http://thestudnet.com/");
-        $this->assertEquals($data['result']['open_graph']['site_name'] , "THE STUDNET");
-        $this->assertEquals($data['result']['open_graph']['image'] , "http://thestudnet.com/wp-content/uploads/2015/01/big-logo-dark-e1422462048881.png");
-        $this->assertEquals(count($data['result']['images']) , 8);
-        $this->assertEquals($data['result']['images'][0] , "http://thestudnet.com/wp-content/uploads/2015/01/big-logo-dark-e1422462048881.png");
-        $this->assertEquals($data['result']['images'][1] , "http://thestudnet.com/wp-content/uploads/2015/03/big-logo-dark.jpg");
-        $this->assertEquals($data['result']['images'][2] , "http://thestudnet.com/wp-content/uploads/2015/09/aacsb-e1443519385344.png");
-        $this->assertEquals($data['result']['images'][3] , "http://thestudnet.com/wp-content/uploads/2015/09/amba-logo-e1443519504571.png");
-        $this->assertEquals($data['result']['images'][4] , "http://thestudnet.com/wp-content/uploads/2015/09/EQUIS-logo-e1443615701926.png");
-        $this->assertEquals($data['result']['images'][5] , "http://thestudnet.com/wp-content/uploads/2015/02/groupwork-300x200.jpg");
-        $this->assertEquals($data['result']['images'][6] , "http://thestudnet.com/wp-content/uploads/2015/02/technolo-300x200.png");
-        $this->assertEquals($data['result']['images'][7] , "http://thestudnet.com/wp-content/uploads/2014/11/Accompagnement-300x200.png");
+        $this->assertEquals(count($data['result']['meta']) , 1);
+        $this->assertEquals($data['result']['meta']['viewport'] , "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1");
+        $this->assertEquals(count($data['result']['open_graph']) , 0);
+        $this->assertEquals(count($data['result']['images']) , 0);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
