@@ -6,7 +6,15 @@ use Dal\Service\AbstractService;
 
 class QuizQuestion extends AbstractService
 {
-  public function _add($quiz_id, $questions)
+  /**
+   * Add Quiz Question
+   *
+   * @param  string $quiz_id
+   * @param  array $questions
+   *
+   * @return int
+   */
+  public function add($quiz_id, $questions)
   {
     $ret = [];
     foreach ($questions as $question) {
@@ -21,6 +29,11 @@ class QuizQuestion extends AbstractService
     return $ret;
   }
 
+  public function remove($id)
+  {
+    return $this->getMapper()->select($this->getModel()->setId($id));
+  }
+
   public function get($quiz_id)
   {
     $res_quiz_question = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id));
@@ -32,7 +45,7 @@ class QuizQuestion extends AbstractService
     return $res_quiz_question;
   }
 
-  public function add($quiz_id, $text, $type, $point = null, $order = null, $answers = null)
+  public function _add($quiz_id, $text, $type, $point = null, $order = null, $answers = null)
   {
       $m_quiz_question = $this->getModel()->setText($text)->setType($type)->setPoint($point)->setQuizId($quiz_id);
       if($this->getMapper()->insert($m_quiz_question) <= 0) {
@@ -42,7 +55,7 @@ class QuizQuestion extends AbstractService
       $quiz_question_id = (int) $this->getMapper()->getLastInsertValue();
 
       if(null !== $answers) {
-        $this->getServiceQuizAnswer()->_add($quiz_question_id, $answers);
+        $this->getServiceQuizAnswer()->add($quiz_question_id, $answers);
       }
 
       return $quiz_question_id;

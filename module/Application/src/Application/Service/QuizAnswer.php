@@ -6,7 +6,15 @@ use Dal\Service\AbstractService;
 
 class QuizAnswer extends AbstractService
 {
-  public function _add($quiz_question_id, $answers)
+  /**
+   * Add Quiz Answer
+   *
+   * @param  string $quiz_question_id
+   * @param  array $answers
+   *
+   * @return int
+   */
+  public function add($quiz_question_id, $answers)
   {
     $ret = [];
     foreach ($answers as $answer) {
@@ -19,7 +27,12 @@ class QuizAnswer extends AbstractService
     return $ret;
   }
 
-  public function add($quiz_question_id, $text, $is_correct = false, $order = null)
+  public function remove($id)
+  {
+    return $this->getMapper()->select($this->getModel()->setId($id));
+  }
+  
+  public function _add($quiz_question_id, $text, $is_correct = false, $order = null)
   {
       $m_quiz_answer = $this->getModel()->setQuizQuestionId($quiz_question_id)->setText($text)->setIsCorrect($is_correct);
       if($this->getMapper()->insert($m_quiz_answer) <= 0) {

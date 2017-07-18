@@ -185,7 +185,7 @@ class Submission extends AbstractService
     if(is_numeric($id)) {
       $res_submission_library = $this->getServiceSubmissionLibrary()->getList($id);
       foreach ($res_submission_library as $m_submission_library) {
-          $ar[ $m_submission_library->getSubmissionId() ][] = $m_submission_library->getLibraryId();
+          $ar[] = $m_submission_library->getLibraryId();
       }
     }
 

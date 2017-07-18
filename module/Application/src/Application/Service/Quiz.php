@@ -37,10 +37,60 @@ class Quiz extends AbstractService
     $quiz_id = (int) $this->getMapper()->getLastInsertValue();
 
     if(null !== $questions) {
-      $this->getServiceQuizQuestion()->_add($quiz_id, $questions);
+      $this->getServiceQuizQuestion()->add($quiz_id, $questions);
     }
 
     return $quiz_id;
+  }
+
+  /**
+   * Add Quiz Question
+   *
+   * @invokable
+   *
+   * @param  string $id
+   * @param  array $questions
+   */
+  public function addQuestions($id, $questions)
+  {
+    return $this->getServiceQuizQuestion()->add($id, $questions);
+  }
+
+  /**
+   * Add Quiz Answer
+   *
+   * @invokable
+   *
+   * @param  string $id
+   *
+   */
+  public function addAnswers($quiz_question_id, $answers)
+  {
+    return $this->getServiceQuizAnswer()->add($quiz_question_id, $answers);
+  }
+
+  /**
+   * Remove Quiz Question
+   *
+   * @invokable
+   *
+   * @param  string $quiz_question_id
+   */
+  public function removeQuestions($quiz_question_id)
+  {
+    return $this->getServiceQuizQuestion()->remove($quiz_question_id);
+  }
+
+  /**
+   * Remove Quiz Answer
+   *
+   * @invokable
+   *
+   * @param  string $quiz_answer_id
+   */
+  public function removeAnswers($quiz_answer_id)
+  {
+    return $this->getServiceQuizAnswer()->remove($quiz_answer_id);
   }
 
   /**
@@ -86,5 +136,15 @@ class Quiz extends AbstractService
   public function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Quiz Answer
+   *
+   * @return \Application\Service\QuizAnswer
+   */
+  public function getServiceQuizAnswer()
+  {
+      return $this->container->get('app_service_quiz_answer');
   }
 }
