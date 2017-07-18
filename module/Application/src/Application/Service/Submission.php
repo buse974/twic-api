@@ -110,26 +110,26 @@ class Submission extends AbstractService
   * @invokable
   *
   * @param int $library_id
-  * @param int $submission_id
+  * @param int $id
   */
-  public function remove($library_id, $submission_id = null)
+  public function remove($library_id, $id = null)
   {
-    if(null === $submission_id){
+    if(null === $id){
         $res_submission_library = $this->getServiceSubmissionLibrary()->getList(null, $library_id);
         if($res_submission_library->count() <= 0) {
           throw new \Exception("Error Processing Request", 1);
         }
-        $submission_id = $res_submission_library->current()->getSubmissionId();
+        $id = $res_submission_library->current()->getSubmissionId();
     }
 
     $identity = $this->getServiceUser()->getIdentity();
 
-    $res_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'] , $submission_id);
+    $res_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'] , $id);
     if($res_item_user->count() <= 0) {
       throw new \Exception("Bad User", 1);
     }
 
-    return $this->getServiceSubmissionLibrary()->remove($submission_id, $library_id);
+    return $this->getServiceSubmissionLibrary()->remove($id, $library_id);
   }
 
   /**
@@ -176,7 +176,7 @@ class Submission extends AbstractService
     if(null === $user_id && $group_id === null /* @TODO et que la personne n'est pas admin */) {
         $user_id = $identity['id'];
       }
-      $res_item_user = $this->getServiceItemUser()->getLite($item_id, $user_id, null, $group_id);
+      $res_item_user = $this->getServiceItemUser()->getLite(null, $user_id, null, $group_id, $item_id);
       if($res_item_user->count() > 0) {
         $id = $res_item_user->current()->getSubmissionId();
       }
