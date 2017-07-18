@@ -70,6 +70,30 @@ class Quiz extends AbstractService
   }
 
   /**
+   * Update Quiz Question
+   *
+   * @invokable
+   *
+   * @param array $questions
+   */
+  public function updateQuestion($questions)
+  {
+    return $this->getServiceQuizQuestion()->update($questions);
+  }
+
+  /**
+   * Update Quiz Answer
+   *
+   * @invokable
+   *
+   * @param array $answers
+   */
+  public function updateAnswers($answers)
+  {
+    return $this->getServiceQuizAnswer()->update($answers);
+  }
+
+  /**
    * Remove Quiz Question
    *
    * @invokable

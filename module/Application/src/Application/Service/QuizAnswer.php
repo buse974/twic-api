@@ -21,7 +21,7 @@ class QuizAnswer extends AbstractService
       $text = $answer['text'];
       $is_correct = (isset($answer['is_correct'])) ? $answer['is_correct'] : null;
       $order = (isset($answer['order'])) ? $answer['order'] : null;
-      $ret[] = $this->add($quiz_question_id, $text, $is_correct, $order);
+      $ret[] = $this->_add($quiz_question_id, $text, $is_correct, $order);
     }
 
     return $ret;
@@ -29,9 +29,30 @@ class QuizAnswer extends AbstractService
 
   public function remove($id)
   {
-    return $this->getMapper()->select($this->getModel()->setId($id));
+    return $this->getMapper()->delete($this->getModel()->setId($id));
   }
-  
+
+  /**
+   * Update Quiz Answer
+   *
+   * @invokable
+   *
+   * @param array $answers
+   */
+  public function update($answers)
+  {
+    $ret = [];
+    foreach ($answers as $answer) {
+      $id   = $answer['id'];
+      $text = (isset($answer['text'])) ? $answer['text'] : null;
+      $is_correct = (isset($answer['is_correct'])) ? $answer['is_correct'] : null;
+
+      $ret[] = $this->getMapper()->update($this->getModel()->setText($text)->setIsCorrect($is_correct)->setId($id));
+    }
+
+    return $ret;
+  }
+
   public function _add($quiz_question_id, $text, $is_correct = false, $order = null)
   {
       $m_quiz_answer = $this->getModel()->setQuizQuestionId($quiz_question_id)->setText($text)->setIsCorrect($is_correct);

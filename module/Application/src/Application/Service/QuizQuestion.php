@@ -23,7 +23,7 @@ class QuizQuestion extends AbstractService
       $point   = (isset($question['point'])) ? $question['point'] : null;
       $order   = (isset($question['order'])) ? $question['order'] : null;
       $answers = (isset($question['answers'])) ? $question['answers'] : null;
-      $ret[] = $this->add($quiz_id, $text, $type, $point, $order, $answers);
+      $ret[] = $this->_add($quiz_id, $text, $type, $point, $order, $answers);
     }
 
     return $ret;
@@ -31,7 +31,27 @@ class QuizQuestion extends AbstractService
 
   public function remove($id)
   {
-    return $this->getMapper()->select($this->getModel()->setId($id));
+    return $this->getMapper()->delete($this->getModel()->setId($id));
+  }
+
+  /**
+   * Update Quiz Question
+
+   * @param array $questions
+   */
+  public function update($questions)
+  {
+    $ret = [];
+    foreach ($questions as $question) {
+      $id      = $question['id'];
+      $text    = (isset($question['text'])) ? $question['text'] : null;
+      $type    = (isset($question['type'])) ? $question['type'] : null;
+      $point   = (isset($question['point'])) ? $question['point'] : null;
+
+      $ret[] = $this->getMapper()->update($this->getModel()->setText($text)->setType($type)->setPoint($point)->setId($id));
+    }
+
+    return $ret;
   }
 
   public function get($quiz_id)
