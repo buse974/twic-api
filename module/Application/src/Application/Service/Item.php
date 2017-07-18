@@ -337,7 +337,8 @@ class Item extends AbstractService
                'rate' => $m_item->getItemUser()->getRate(),
                'users'=>[$m_item->getPageUser()->getUserId()],
                'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
-               'post_id' => $m_item->getItemUser()->getSubmission()->getPostId()
+               'post_id' => $m_item->getItemUser()->getSubmission()->getPostId(),
+               'item_id' => $i
              ];
            }
            break;
@@ -349,7 +350,8 @@ class Item extends AbstractService
                  'rate' => $m_item->getItemUser()->getRate(),
                  'users'=>[$m_item->getPageUser()->getUserId()],
                  'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
-                 'post_id' => $m_item->getItemUser()->getSubmission()->getPostId()
+                 'post_id' => $m_item->getItemUser()->getSubmission()->getPostId(),
+                 'item_id' => $i
                ];
              }
            }
@@ -371,7 +373,8 @@ class Item extends AbstractService
                    'rate' => $m_item->getItemUser()->getRate(),
                    'users'=>[$m_item->getPageUser()->getUserId()],
                    'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
-                   'post_id' => $m_item->getItemUser()->getSubmission()->getPostId()
+                   'post_id' => $m_item->getItemUser()->getSubmission()->getPostId(),
+                   'item_id' => $i
                  ];
                }
              }

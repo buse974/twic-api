@@ -26,12 +26,13 @@ class ItemUser extends AbstractService
   * @param int $id
   * @param int $user_id
   * @param int $submission_id
+  * @param int $group_id
   *
   * @return \Application\Model\ItemUser
   **/
-  public function getLite($id = null, $user_id = null, $submission_id = null)
+  public function getLite($id = null, $user_id = null, $submission_id = null, $group_id = null)
   {
-    return $this->getMapper()->select($this->getModel()->setId($id)->setSubmissionId($submission_id)->setUserId($user_id));
+    return $this->getMapper()->select($this->getModel()->setId($id)->setSubmissionId($submission_id)->setUserId($user_id)->setGroupId($group_id));
   }
 
   public function update($id, $submission_id)

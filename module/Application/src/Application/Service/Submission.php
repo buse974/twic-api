@@ -29,7 +29,7 @@ class Submission extends AbstractService
             }
             $m_item = $this->getServiceItem()->getLite($item_id)->current();
             $page_id = $m_item->getPageId();
-            switch($m_item->getParticipants()){
+            switch($m_item->getParticipants()) {
                 case 'all' :
                     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
                     $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
@@ -163,14 +163,20 @@ class Submission extends AbstractService
   * @invokable
   *
   * @param int $id
+  * @param int $item_id
+  * @param int $user_id
+  * @param int $group_id
   */
-  public function getListLibrary($id = null, $item_id = null)
+  public function getListLibrary($id = null, $item_id = null, $user_id = null, $group_id = null)
   {
+    $identity = $this->getServiceUser()->getIdentity();
 
     $ar = [];
     if(null === $id && null !== $item_id) {
-      $identity = $this->getServiceUser()->getIdentity();
-      $res_item_user = $this->getServiceItem()->getLite($item_id, $identity['id']);
+    if(null === $user_id && $group_id === null /* @TODO et que la personne n'est pas admin */) {
+        $user_id = $identity['id'];
+      }
+      $res_item_user = $this->getServiceItemUser()->getLite($item_id, $user_id, null, $group_id);
       if($res_item_user->count() > 0) {
         $id = $res_item_user->current()->getSubmissionId();
       }

@@ -20,7 +20,7 @@ class SubmissionLibrary extends AbstractService
     $m_submission_library = $this->getModel()
       ->setSubmissionId($submission_id)
       ->setLibraryId($library_id);
-
+    
     return $this->getMapper()->select($m_submission_library);
   }
 
