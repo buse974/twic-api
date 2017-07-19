@@ -110,14 +110,12 @@ class Quiz extends AbstractService
    *
    * @invokable
    *
-   * @param  string $quiz_answer_id
+   * @param  int $quiz_answer_id
    */
   public function removeAnswers($quiz_answer_id)
   {
     return $this->getServiceQuizAnswer()->remove($quiz_answer_id);
   }
-
-
 
   /**
    * Get User Answer
