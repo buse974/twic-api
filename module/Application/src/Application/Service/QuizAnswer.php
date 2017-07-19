@@ -18,7 +18,7 @@ class QuizAnswer extends AbstractService
   {
     $ret = [];
     foreach ($answers as $answer) {
-      $text = $answer['text'];
+      $text = (isset($answer['text'])) ? $answer['text'] : null;
       $is_correct = (isset($answer['is_correct'])) ? $answer['is_correct'] : null;
       $order = (isset($answer['order'])) ? $answer['order'] : null;
       $ret[] = $this->_add($quiz_question_id, $text, $is_correct, $order);

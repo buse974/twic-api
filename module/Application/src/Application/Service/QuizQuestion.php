@@ -18,7 +18,7 @@ class QuizQuestion extends AbstractService
   {
     $ret = [];
     foreach ($questions as $question) {
-      $text    = $question['text'];
+      $text    = (isset($question['text'])) ? $question['text'] : null;
       $type    = $question['type'];
       $point   = (isset($question['point'])) ? $question['point'] : null;
       $order   = (isset($question['order'])) ? $question['order'] : null;
