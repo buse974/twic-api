@@ -118,6 +118,26 @@ class ItemRateTest extends AbstractService
       $this->setIdentity(5);
       $data = $this->jsonRpc('item.getListAssignmentId', [
         'page_id' => $id,
+      ]);
+
+      $this->assertEquals(count($data) , 3);
+      $this->assertEquals($data['id'] , 1);
+      $this->assertEquals(count($data['result']) , 1);
+      $this->assertEquals(count($data['result'][1]) , 2);
+      $this->assertEquals($data['result'][1][0] , 2);
+      $this->assertEquals($data['result'][1][1] , 3);
+      $this->assertEquals($data['jsonrpc'] , 2.0);
+    }
+
+    /**
+    * @depends testInit
+    */
+    public function testGetListIdPagination($id)
+    {
+      // 5 STUDENT USER
+      $this->setIdentity(5);
+      $data = $this->jsonRpc('item.getListAssignmentId', [
+        'page_id' => $id,
         'filter' => [
           's' => '0',
           'n' => 10,
@@ -128,10 +148,7 @@ class ItemRateTest extends AbstractService
 
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
-      $this->assertEquals(count($data['result']) , 1);
-      $this->assertEquals(count($data['result'][1]) , 2);
-      $this->assertEquals($data['result'][1][0] , 2);
-      $this->assertEquals($data['result'][1][1] , 3);
+      $this->assertEquals(count($data['result']) , 0);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
