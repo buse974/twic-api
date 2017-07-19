@@ -128,11 +128,19 @@ class Quiz extends AbstractService
    */
   public function get($id)
   {
-    $m_quiz = $this->getMapper()->select($this->getModel()->setId($id))->current();
+    if(!is_array($id)) {
+      $id = [$id];
+    }
 
-    $m_quiz->setQuizQuestion($this->getServiceQuizQuestion()->get($id));
+    $ret = [];
+    foreach ($id as $i) {
+      $m_quiz = $this->getMapper()->select($this->getModel()->setId($i))->current();
+      $m_quiz->setQuizQuestion($this->getServiceQuizQuestion()->get($i));
 
-    return $m_quiz;
+      $ret[$i] = $m_quiz->toArray();
+    }
+
+    return $ret;
   }
 
   public function update($id, $item_id = null, $name = null, $attempt_count = null, $time_limit = null)
