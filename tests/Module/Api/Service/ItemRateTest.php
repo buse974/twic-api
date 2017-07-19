@@ -836,7 +836,7 @@ class ItemRateTest extends AbstractService
         $this->reset();
         $this->setIdentity(1);
         $data = $this->jsonRpc('quiz.getUserAnswer', [
-          'quiz_id' => 1
+          'id' => 1
         ]);
 
         $this->assertEquals(count($data) , 3);

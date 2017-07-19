@@ -169,15 +169,21 @@ class Submission extends AbstractService
   public function getListLibrary($item_id, $user_id = null, $group_id = null)
   {
     $ar = [];
+    if(is_array($item_id)) {
+      $item_id = reset($item_id);
+    }
+
     $identity = $this->getServiceUser()->getIdentity();
+
     $page_id = $this->getServiceItem()->getLite($item_id)->current()->getPageId();
     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
     $is_admin = (in_array($identity['id'], $ar_pu[$page_id]));
-
+    if(!$is_admin) {
+      $ar[$item_id] = [];
+    }
     if(null === $user_id && $group_id === null && !$is_admin) {
       $user_id = $identity['id'];
     }
-
     $res_item_user = $this->getServiceItemUser()->getLite(null, $user_id, null, $group_id, $item_id);
     if($res_item_user->count() > 0) {
       $res_submission_library = $this->getServiceSubmissionLibrary()->getList($res_item_user->current()->getSubmissionId());
