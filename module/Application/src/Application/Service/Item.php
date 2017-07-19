@@ -319,20 +319,23 @@ class Item extends AbstractService
   */
   public function getListSubmission($id)
   {
+     $identity = $this->getServiceUser()->getIdentity();
      if(!is_array($id)) {
        $id = [$id];
      }
 
-     //TODO check admin page
      $ar = [];
      foreach ($id as $i) {
        $paticipants = $this->getMapper()->select($this->getModel()->setId($i))->current()->getParticipants();
-       $res_item = $this->getMapper()->getListSubmission($i);
+       $page_id = $this->getLite($i)->current()->getPageId();
+       $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+       $is_admin = (in_array($identity['id'], $ar_pu[$page_id]));
+       $res_item = $this->getMapper()->getListSubmission($i, !$is_admin ? $identity['id'] : null);
        switch ($paticipants) {
          case 'all':
            foreach ($res_item as $m_item) {
             $ar_item = $m_item->toArray();
-             $ar[$i][] = [
+             $tmpar = [
                'group_id' => null,
                'rate' => $ar_item['item_user']['rate'],
                'users'=>[$ar_item['page_user']['user_id']],
@@ -340,13 +343,18 @@ class Item extends AbstractService
                'post_id' =>     $ar_item['item_user']['submission']['post_id'],
                'item_id' => $i
              ];
+             if(!$is_admin) {
+               $ar[$i] = $tmpar;
+             } else {
+               $ar[$i][] = $tmpar;
+             }
            }
            break;
          case 'user':
            foreach ($res_item as $m_item) {
              if(is_numeric($m_item->getItemUser()->getId())) {
                $ar_item = $m_item->toArray();
-               $ar[$i][] = [
+               $tmpar = [
                  'group_id' => null,
                  'rate' => $ar_item['item_user']['rate'],
                  'users'=>[$ar_item['page_user']['user_id']],
@@ -354,6 +362,11 @@ class Item extends AbstractService
                  'post_id' => $ar_item['item_user']['submission']['post_id'],
                  'item_id' => $i
                ];
+               if(!$is_admin) {
+                 $ar[$i] = $tmpar;
+               } else {
+                 $ar[$i][] = $tmpar;
+               }
              }
            }
            break;
@@ -370,7 +383,7 @@ class Item extends AbstractService
                }
                if(!$ok) {
                  $ar_item = $m_item->toArray();
-                 $ar[$i][] = [
+                 $tmpar = [
                    'group_id' => $ar_item['item_user']['group_id'],
                    'rate' => $ar_item['item_user']['rate'],
                    'users'=>[$ar_item['page_user']['user_id']],
@@ -378,6 +391,11 @@ class Item extends AbstractService
                    'post_id' => $ar_item['item_user']['submission']['post_id'],
                    'item_id' => $i
                  ];
+                 if(!$is_admin) {
+                   $ar[$i] = $tmpar;
+                 } else {
+                   $ar[$i][] = $tmpar;
+                 }
                }
              }
            }
@@ -387,7 +405,6 @@ class Item extends AbstractService
        }
      }    return $ar;
    }
-
 
   /**
   * Get List Assgnment By Item

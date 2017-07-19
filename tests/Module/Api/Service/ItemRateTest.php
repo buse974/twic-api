@@ -615,7 +615,7 @@ class ItemRateTest extends AbstractService
        {
          $this->reset();
          $this->setIdentity(1);
-         $data = $this->jsonRpc('quiz.updateQuestion', [
+         $data = $this->jsonRpc('quiz.updateQuestions', [
           'questions' => [
              ['id' => 1, 'text' => 'nouveau text', 'type' => 'text', 'point' =>  18]
            ]

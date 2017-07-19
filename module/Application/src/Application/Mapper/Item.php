@@ -30,10 +30,13 @@ class Item extends AbstractMapper
     return $this->selectWith($select);
   }
 
-  public function getListAssignmentId($me, $page_id = null)
+  public function getListAssignmentId($me, $page_id = null, $filter = null)
   {
     $select = $this->tableGateway->getSql()->select();
-    $select->columns(['id', 'parent_id', 'page_id'])
+    $select->columns([
+      'id',
+      'parent_id',
+      'page_id'])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->where(['page_user.user_id' => $me])
       ->where(['page_user.state' => 'member'])
@@ -45,6 +48,11 @@ class Item extends AbstractMapper
       if(null !== $page_id) {
         $select->where(['item.page_id' => $page_id]);
       }
+
+      if(null !== $filter) {
+        $select->where(['item.page_id' => $page_id]);
+      }
+
 
     return $this->selectWith($select);
   }
@@ -100,7 +108,7 @@ class Item extends AbstractMapper
     return $this->selectWith($select);
   }
 
-  public function getListSubmission($id)
+  public function getListSubmission($id, $user_id = null)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns(['id'])
@@ -109,6 +117,10 @@ class Item extends AbstractMapper
       ->join('submission', 'submission.id=item_user.submission_id', ['id', 'post_id', 'submit_date'], $select::JOIN_LEFT)
       ->where(['page_user.role'=> 'user'])
       ->where(['item.id' => $id]);
+
+    if(null !== $user_id) {
+      $select->where(['page_user.user_id' => $user_id]);
+    }
 
     return $this->selectWith($select);
   }
