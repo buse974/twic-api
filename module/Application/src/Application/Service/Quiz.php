@@ -126,9 +126,9 @@ class Quiz extends AbstractService
    *
    * @param  string $quiz_id
    */
-  public function getUserAnswer($quiz_id)
+  public function getUserAnswer($id)
   {
-    return $this->getServiceQuizUser()->get($quiz_id);
+    return $this->getServiceQuizUser()->get($id);
   }
 
   /**
@@ -196,7 +196,7 @@ class Quiz extends AbstractService
 
     return $ret;
   }
-  
+
   public function update($id, $item_id = null, $name = null, $attempt_count = null, $time_limit = null)
   {
     $m_quiz = $this->getModel()->setId($id)->setItemId($item_id)->setName($name)->setAttemptCount($attempt_count)->setTimeLimit($time_limit);
