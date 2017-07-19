@@ -143,8 +143,8 @@ class Submission extends AbstractService
   {
     $identity = $this->getServiceUser()->getIdentity();
 
-    if(null === $id && $item_id !== $item_id) {
-      $res_item_user = $this->getServiceItem()->getLite($item_id, $identity['id']);
+    if(null === $id && null !== $item_id) {
+      $res_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'], null, null, $item_id);
       if($res_item_user->count() > 0) {
         $id = $res_item_user->current()->getSubmissionId();
       }

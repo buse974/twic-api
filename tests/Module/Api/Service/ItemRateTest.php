@@ -394,7 +394,7 @@ class ItemRateTest extends AbstractService
        {
          $this->setIdentity(5);
          $data = $this->jsonRpc('submission.submit', [
-           'id' => $submission_id
+            'item_id' => 2
          ]);
 
         $this->assertEquals(count($data) , 3);
