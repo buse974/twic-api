@@ -674,4 +674,14 @@ class Item extends AbstractService
   {
       return $this->container->get('app_service_page_user');
   }
+
+  /**
+   * Get Service Quiz Answer
+   *
+   * @return \Application\Service\Quiz
+   */
+  public function getServiceQuiz()
+  {
+      return $this->container->get('app_service_quiz');
+  }
 }
