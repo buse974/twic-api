@@ -162,30 +162,31 @@ class Submission extends AbstractService
   *
   * @invokable
   *
-  * @param int $id
   * @param int $item_id
   * @param int $user_id
   * @param int $group_id
   */
-  public function getListLibrary($id = null, $item_id = null, $user_id = null, $group_id = null)
+  public function getListLibrary($item_id, $user_id = null, $group_id = null)
   {
-    $identity = $this->getServiceUser()->getIdentity();
-
     $ar = [];
-    if(null === $id && null !== $item_id) {
-    if(null === $user_id && $group_id === null /* @TODO et que la personne n'est pas admin */) {
-        $user_id = $identity['id'];
-      }
-      $res_item_user = $this->getServiceItemUser()->getLite(null, $user_id, null, $group_id, $item_id);
-      if($res_item_user->count() > 0) {
-        $id = $res_item_user->current()->getSubmissionId();
-      }
+    $identity = $this->getServiceUser()->getIdentity();
+    $page_id = $this->getServiceItem()->getLite($item_id)->current()->getPageId();
+    $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+    $is_admin = (in_array($identity['id'], $ar_pu[$page_id]));
+
+    if(null === $user_id && $group_id === null && !$is_admin) {
+      $user_id = $identity['id'];
     }
 
-    if(is_numeric($id)) {
-      $res_submission_library = $this->getServiceSubmissionLibrary()->getList($id);
+    $res_item_user = $this->getServiceItemUser()->getLite(null, $user_id, null, $group_id, $item_id);
+    if($res_item_user->count() > 0) {
+      $res_submission_library = $this->getServiceSubmissionLibrary()->getList($res_item_user->current()->getSubmissionId());
       foreach ($res_submission_library as $m_submission_library) {
+        if($is_admin) {
           $ar[] = $m_submission_library->getLibraryId();
+        } else {
+          $ar[$res_item_user->current()->getItemId()] = $m_submission_library->getLibraryId();
+        }
       }
     }
 

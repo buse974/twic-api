@@ -411,7 +411,7 @@ class ItemRateTest extends AbstractService
        {
           $this->setIdentity(1);
           $data = $this->jsonRpc('submission.getListLibrary', [
-            'id' => $submission_id
+            'item_id' => 2
           ]);
 
           $this->assertEquals(count($data) , 3);
@@ -446,7 +446,7 @@ class ItemRateTest extends AbstractService
        {
            $this->setIdentity(1);
            $data = $this->jsonRpc('submission.getListLibrary', [
-             'id' => $submission_id
+             'item_id' => 2
            ]);
 
           $this->assertEquals(count($data) , 3);
@@ -765,6 +765,46 @@ class ItemRateTest extends AbstractService
 
        }
 
+///////////////
+
+      /**
+      * @depends testAddQuiz
+      */
+      /*public function testGetUserAnswer()
+      {
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.getUserAnswer', [
+          'quiz_answer_id' => 1
+        ]);
+      }*/
+
+      /**
+      * @depends testAddQuiz
+      */
+      /*public function testGetUserAnswer()
+      {
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.getUserAnswer', [
+          'quiz_answer_id' => 1
+        ]);
+      }*/
+
+      /**
+      * @depends testAddQuiz
+      */
+      /*public function testGetUserAnswer()
+      {
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.getUserAnswer', [
+          'quiz_answer_id' => 1
+        ]);
+      }*/
+
+
+///////////////
        /**
        * @depends testAddQuiz
        */
