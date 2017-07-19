@@ -20,7 +20,7 @@ class Quiz extends AbstractService
    *
    * @return int
    */
-  public function add($name, $item_id = null, $attempt_count = null, $time_limit = null, $questions = null)
+  public function add($name = null, $item_id = null, $attempt_count = null, $time_limit = null, $questions = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
     $m_quiz = $this->getModel()

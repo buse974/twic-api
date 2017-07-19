@@ -269,21 +269,20 @@ class Item extends AbstractService
   *
   * @param int $page_id
   */
-  public function getListAssignmentId($page_id)
+  public function getListAssignmentId($page_id = null)
   {
-    if(!is_array($page_id)) {
+
+
+    if(null !== $page_id && !is_array($page_id)) {
       $page_id = [$page_id];
     }
 
     $identity = $this->getServiceUser()->getIdentity();
 
     $ar_item = [];
-    foreach ($page_id as $page) {
-      $res_item = $this->getMapper()->getListAssignmentId($page, $identity['id']);
-
-      foreach ($res_item as $m_item) {
-        $ar_item[$page][] = $m_item->getId();
-      }
+    $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $page_id);
+    foreach ($res_item as $m_item) {
+      $ar_item[$m_item->getPageId()][] = $m_item->getId();
     }
 
     return $ar_item;
@@ -332,12 +331,13 @@ class Item extends AbstractService
        switch ($paticipants) {
          case 'all':
            foreach ($res_item as $m_item) {
+            $ar_item = $m_item->toArray();
              $ar[$i][] = [
                'group_id' => null,
-               'rate' => $m_item->getItemUser()->getRate(),
-               'users'=>[$m_item->getPageUser()->getUserId()],
-               'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
-               'post_id' => $m_item->getItemUser()->getSubmission()->getPostId(),
+               'rate' => $ar_item['item_user']['rate'],
+               'users'=>[$ar_item['page_user']['user_id']],
+               'submit_date' => $ar_item['item_user']['submission']['submit_date'],
+               'post_id' =>     $ar_item['item_user']['submission']['post_id'],
                'item_id' => $i
              ];
            }
@@ -345,12 +345,13 @@ class Item extends AbstractService
          case 'user':
            foreach ($res_item as $m_item) {
              if(is_numeric($m_item->getItemUser()->getId())) {
+               $ar_item = $m_item->toArray();
                $ar[$i][] = [
                  'group_id' => null,
-                 'rate' => $m_item->getItemUser()->getRate(),
-                 'users'=>[$m_item->getPageUser()->getUserId()],
-                 'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
-                 'post_id' => $m_item->getItemUser()->getSubmission()->getPostId(),
+                 'rate' => $ar_item['item_user']['rate'],
+                 'users'=>[$ar_item['page_user']['user_id']],
+                 'submit_date' => $ar_item['item_user']['submission']['submit_date'],
+                 'post_id' => $ar_item['item_user']['submission']['post_id'],
                  'item_id' => $i
                ];
              }
@@ -368,12 +369,13 @@ class Item extends AbstractService
                  }
                }
                if(!$ok) {
+                 $ar_item = $m_item->toArray();
                  $ar[$i][] = [
-                   'group_id' => $m_item->getItemUser()->getGroupId(),
-                   'rate' => $m_item->getItemUser()->getRate(),
-                   'users'=>[$m_item->getPageUser()->getUserId()],
-                   'submit_date' => $m_item->getItemUser()->getSubmission()->getSubmitDate(),
-                   'post_id' => $m_item->getItemUser()->getSubmission()->getPostId(),
+                   'group_id' => $ar_item['item_user']['group_id'],
+                   'rate' => $ar_item['item_user']['rate'],
+                   'users'=>[$ar_item['page_user']['user_id']],
+                   'submit_date' => $ar_item['item_user']['submission']['submit_date'],
+                   'post_id' => $ar_item['item_user']['submission']['post_id'],
                    'item_id' => $i
                  ];
                }

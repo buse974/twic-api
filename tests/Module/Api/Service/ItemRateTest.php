@@ -441,7 +441,7 @@ class ItemRateTest extends AbstractService
            'id' => [2,3,5],
          ]);
 
-         $this->assertEquals(count($data) , 3);
+        $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 3);
         $this->assertEquals(count($data['result'][2]) , 3);
@@ -783,7 +783,7 @@ class ItemRateTest extends AbstractService
            'id' => $quiz_id['quiz_id']
          ]);
 
-          $this->assertEquals(count($data) , 3); 
+          $this->assertEquals(count($data) , 3);
           $this->assertEquals($data['id'] , 1);
           $this->assertEquals(count($data['result']) , 8);
           $this->assertEquals(count($data['result']['quiz_question']) , 2);

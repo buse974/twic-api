@@ -30,18 +30,21 @@ class Item extends AbstractMapper
     return $this->selectWith($select);
   }
 
-  public function getListAssignmentId($page_id, $me)
+  public function getListAssignmentId($me, $page_id = null)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns(['id', 'parent_id', 'page_id'])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
       ->where(['page_user.user_id' => $me])
       ->where(['page_user.state' => 'member'])
-      ->where(['item.page_id' => $page_id])
       ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
       ->where(['item.is_published IS TRUE'])
       ->order('item.page_id ASC')
       ->order('item.order ASC');
+
+      if(null !== $page_id) {
+        $select->where(['item.page_id' => $page_id]);
+      }
 
     return $this->selectWith($select);
   }
@@ -97,15 +100,16 @@ class Item extends AbstractMapper
     return $this->selectWith($select);
   }
 
- public function getListSubmission($id)
+  public function getListSubmission($id)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns(['id'])
       ->join('page_user', 'page_user.page_id=item.page_id', ['user_id'])
       ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['id', 'group_id', 'rate'], $select::JOIN_LEFT)
-      ->join('submission', 'submission.id=item_user.submission_id', ['id'], $select::JOIN_LEFT)
+      ->join('submission', 'submission.id=item_user.submission_id', ['id', 'post_id', 'submit_date'], $select::JOIN_LEFT)
       ->where(['page_user.role'=> 'user'])
       ->where(['item.id' => $id]);
+
     return $this->selectWith($select);
   }
 
