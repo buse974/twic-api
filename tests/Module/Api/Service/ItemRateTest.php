@@ -765,46 +765,111 @@ class ItemRateTest extends AbstractService
 
        }
 
-///////////////
+      /**
+      * @depends testAddQuiz
+      */
+      public function testAddUserAnswer()
+      {
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.addUserAnswer', [
+          'quiz_question_id' => 1,
+          'quiz_answer_id' => 1,
+          'text' => 'super'
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
 
       /**
       * @depends testAddQuiz
       */
-      /*public function testGetUserAnswer()
+      public function testGetUserAnswer()
       {
         $this->reset();
         $this->setIdentity(1);
         $data = $this->jsonRpc('quiz.getUserAnswer', [
-          'quiz_answer_id' => 1
+          'quiz_id' => 1
         ]);
-      }*/
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals(count($data['result'][1][0]) , 6);
+        $this->assertEquals($data['result'][1][0]['id'] , 1);
+        $this->assertEquals($data['result'][1][0]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['quiz_answer_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['user_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['text'] , "super");
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
 
       /**
       * @depends testAddQuiz
       */
-      /*public function testGetUserAnswer()
+      public function testUpdateUserAnswer()
       {
         $this->reset();
         $this->setIdentity(1);
-        $data = $this->jsonRpc('quiz.getUserAnswer', [
-          'quiz_answer_id' => 1
+        $data = $this->jsonRpc('quiz.updateUserAnswer', [
+          'quiz_answer_id' => 2,
+          'id' => 1,
+          'text' => 'super upd'
         ]);
-      }*/
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
 
       /**
       * @depends testAddQuiz
       */
-      /*public function testGetUserAnswer()
+      public function testGetUserAnswerAfterUpt()
       {
         $this->reset();
         $this->setIdentity(1);
         $data = $this->jsonRpc('quiz.getUserAnswer', [
-          'quiz_answer_id' => 1
+          'quiz_id' => 1
         ]);
-      }*/
 
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals(count($data['result'][1][0]) , 6);
+        $this->assertEquals($data['result'][1][0]['id'] , 1);
+        $this->assertEquals($data['result'][1][0]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['quiz_answer_id'] , 2);
+        $this->assertEquals($data['result'][1][0]['user_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['text'] , "super upd");
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
 
-///////////////
+      /**
+      * @depends testAddQuiz
+      */
+      public function testRemoveUserAnswer()
+      {
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.removeUserAnswer', [
+          'id' => 1,
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
+
        /**
        * @depends testAddQuiz
        */

@@ -117,6 +117,60 @@ class Quiz extends AbstractService
     return $this->getServiceQuizAnswer()->remove($quiz_answer_id);
   }
 
+
+
+  /**
+   * Get User Answer
+   *
+   * @invokable
+   *
+   * @param  string $quiz_id
+   */
+  public function getUserAnswer($quiz_id)
+  {
+    return $this->getServiceQuizUser()->get($quiz_id);
+  }
+
+  /**
+   * Add User Answer
+   *
+   * @invokable
+   *
+   * @param  int $quiz_question_id
+   * @param  int $quiz_answer_id
+   * @param  string $text
+   */
+  public function addUserAnswer($quiz_question_id, $quiz_answer_id = null, $text = null)
+  {
+    return $this->getServiceQuizUser()->add($quiz_question_id, $quiz_answer_id, $text);
+  }
+
+  /**
+   * Update User Answer
+   *
+   * @invokable
+   *
+   * @param  int $id
+   * @param  int $quiz_answer_id
+   * @param  string $text
+   */
+  public function updateUserAnswer($id, $quiz_answer_id = null, $text = null)
+  {
+    return $this->getServiceQuizUser()->update($id, $quiz_answer_id, $text);
+  }
+
+  /**
+   * Remove User Answer
+   *
+   * @invokable
+   *
+   * @param  int $id
+   */
+  public function removeUserAnswer($id)
+  {
+    return $this->getServiceQuizUser()->remove($id);
+  }
+
   /**
    * Get Quiz
    *
@@ -142,7 +196,7 @@ class Quiz extends AbstractService
 
     return $ret;
   }
-
+  
   public function update($id, $item_id = null, $name = null, $attempt_count = null, $time_limit = null)
   {
     $m_quiz = $this->getModel()->setId($id)->setItemId($item_id)->setName($name)->setAttemptCount($attempt_count)->setTimeLimit($time_limit);
@@ -179,4 +233,16 @@ class Quiz extends AbstractService
   {
       return $this->container->get('app_service_quiz_answer');
   }
+
+  /**
+   * Get Service Quiz User
+   *
+   * @return \Application\Service\getServiceQuizUser
+   */
+  public function getServiceQuizUser()
+  {
+      return $this->container->get('app_service_quiz_user');
+  }
+
+
 }

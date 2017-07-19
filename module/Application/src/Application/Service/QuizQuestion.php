@@ -34,6 +34,11 @@ class QuizQuestion extends AbstractService
     return $ret;
   }
 
+  public function getLite($id)
+  {
+    return $this->getMapper()->select($this->getModel()->setId($id));
+  }
+  
   public function remove($id)
   {
     return $this->getMapper()->delete($this->getModel()->setId($id));
