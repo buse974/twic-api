@@ -76,7 +76,7 @@ class Quiz extends AbstractService
    *
    * @param array $questions
    */
-  public function updateQuestion($questions)
+  public function updateQuestions($questions)
   {
     return $this->getServiceQuizQuestion()->update($questions);
   }
