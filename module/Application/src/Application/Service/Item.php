@@ -281,7 +281,11 @@ class Item extends AbstractService
     $ar_item = [];
     $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $page_id, $filter);
     foreach ($res_item as $m_item) {
-      $ar_item[$m_item->getPageId()][] = $m_item->getId();
+      if(null !== $page_id) {
+        $ar_item[$m_item->getPageId()][] = $m_item->getId();
+      } else {
+        $ar_item[] = $m_item->getId();
+      }
     }
 
     return $ar_item;
