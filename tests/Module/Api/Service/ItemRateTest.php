@@ -146,6 +146,7 @@ class ItemRateTest extends AbstractService
         ]
       ]);
 
+      //@TODO p!!!!!!!! our la coverture a faire de vrai test !!!!!!!!
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 0);
