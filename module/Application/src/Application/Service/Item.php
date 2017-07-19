@@ -268,11 +268,10 @@ class Item extends AbstractService
   * @invokable
   *
   * @param int $page_id
+  * @param array $filter
   */
-  public function getListAssignmentId($page_id = null)
+  public function getListAssignmentId($page_id = null, $filter = null)
   {
-
-
     if(null !== $page_id && !is_array($page_id)) {
       $page_id = [$page_id];
     }
@@ -280,7 +279,7 @@ class Item extends AbstractService
     $identity = $this->getServiceUser()->getIdentity();
 
     $ar_item = [];
-    $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $page_id);
+    $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $page_id, $filter);
     foreach ($res_item as $m_item) {
       $ar_item[$m_item->getPageId()][] = $m_item->getId();
     }
