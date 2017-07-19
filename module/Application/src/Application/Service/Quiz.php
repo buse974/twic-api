@@ -124,7 +124,7 @@ class Quiz extends AbstractService
    *
    * @invokable
    *
-   * @param  string $quiz_id
+   * @param  int $id
    */
   public function getUserAnswer($id)
   {
