@@ -50,9 +50,15 @@ class Item extends AbstractMapper
       }
 
       if(null !== $filter) {
-        $select->where(['item.page_id' => $page_id]);
+        if($filter['d'] === '<') {
+          $select->where(['item.start_date < ? OR item.end_date < ?' => $filter['s']]);
+        } else {
+          $select->where(['item.start_date > ? OR item.end_date > ?' => $filter['s']]);
+        }
+        $select->order(['item.start_date','item.end_date']);
+        $select->offset((($filter['p'] - 1) * $filter['n']));
+        $select->limit($filter['n']);
       }
-
 
     return $this->selectWith($select);
   }
