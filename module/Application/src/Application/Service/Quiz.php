@@ -37,7 +37,7 @@ class Quiz extends AbstractService
     $quiz_id = (int) $this->getMapper()->getLastInsertValue();
 
     if(null !== $questions) {
-      $this->getServiceQuizQuestion()->add($quiz_id, $questions);
+      $this->getServiceQuizQuestion()->add($questions, $quiz_id);
     }
 
     return $quiz_id;
@@ -48,12 +48,12 @@ class Quiz extends AbstractService
    *
    * @invokable
    *
-   * @param  string $id
    * @param  array $questions
+   * @param  string $id
    */
-  public function addQuestions($id, $questions)
+  public function addQuestions($questions, $id = null)
   {
-    return $this->getServiceQuizQuestion()->add($id, $questions);
+    return $this->getServiceQuizQuestion()->add($questions, $id);
   }
 
   /**
@@ -61,12 +61,12 @@ class Quiz extends AbstractService
    *
    * @invokable
    *
-   * @param  string $id
-   *
+   * @param  array $answers
+   * @param  string $quiz_question_id
    */
-  public function addAnswers($quiz_question_id, $answers)
+  public function addAnswers($answers, $quiz_question_id = null)
   {
-    return $this->getServiceQuizAnswer()->add($quiz_question_id, $answers);
+    return $this->getServiceQuizAnswer()->add($answers, $quiz_question_id);
   }
 
   /**

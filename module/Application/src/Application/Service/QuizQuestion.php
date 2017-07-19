@@ -14,16 +14,21 @@ class QuizQuestion extends AbstractService
    *
    * @return int
    */
-  public function add($quiz_id, $questions)
+  public function add($questions, $quiz_id = null)
   {
     $ret = [];
     foreach ($questions as $question) {
-      $text    = (isset($question['text'])) ? $question['text'] : null;
-      $type    = $question['type'];
-      $point   = (isset($question['point'])) ? $question['point'] : null;
-      $order   = (isset($question['order'])) ? $question['order'] : null;
-      $answers = (isset($question['answers'])) ? $question['answers'] : null;
-      $ret[] = $this->_add($quiz_id, $text, $type, $point, $order, $answers);
+      if(isset($question['quiz_id'])) {
+        $quiz_id = $question['quiz_id'];
+      }
+      if(null !== $quiz_id) {
+        $text    = (isset($question['text'])) ? $question['text'] : null;
+        $type    = $question['type'];
+        $point   = (isset($question['point'])) ? $question['point'] : null;
+        $order   = (isset($question['order'])) ? $question['order'] : null;
+        $answers = (isset($question['answers'])) ? $question['answers'] : null;
+        $ret[] = $this->_add($quiz_id, $text, $type, $point, $order, $answers);
+      }
     }
 
     return $ret;
@@ -75,7 +80,7 @@ class QuizQuestion extends AbstractService
       $quiz_question_id = (int) $this->getMapper()->getLastInsertValue();
 
       if(null !== $answers) {
-        $this->getServiceQuizAnswer()->add($quiz_question_id, $answers);
+        $this->getServiceQuizAnswer()->add($answers, $quiz_question_id);
       }
 
       return $quiz_question_id;

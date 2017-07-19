@@ -9,19 +9,24 @@ class QuizAnswer extends AbstractService
   /**
    * Add Quiz Answer
    *
-   * @param  string $quiz_question_id
    * @param  array $answers
+   * @param  string $quiz_question_id
    *
    * @return int
    */
-  public function add($quiz_question_id, $answers)
+  public function add($answers, $quiz_question_id = null)
   {
     $ret = [];
     foreach ($answers as $answer) {
-      $text = (isset($answer['text'])) ? $answer['text'] : null;
-      $is_correct = (isset($answer['is_correct'])) ? $answer['is_correct'] : null;
-      $order = (isset($answer['order'])) ? $answer['order'] : null;
-      $ret[] = $this->_add($quiz_question_id, $text, $is_correct, $order);
+      if(isset($answer['quiz_question_id'])) {
+        $quiz_question_id = $answer['quiz_question_id'];
+      }
+      if(null !== $quiz_question_id) {
+        $text = (isset($answer['text'])) ? $answer['text'] : null;
+        $is_correct = (isset($answer['is_correct'])) ? $answer['is_correct'] : null;
+        $order = (isset($answer['order'])) ? $answer['order'] : null;
+        $ret[] = $this->_add($quiz_question_id, $text, $is_correct, $order);
+      }
     }
 
     return $ret;
