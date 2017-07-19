@@ -118,6 +118,12 @@ class ItemRateTest extends AbstractService
       $this->setIdentity(5);
       $data = $this->jsonRpc('item.getListAssignmentId', [
         'page_id' => $id,
+        'filter' => [
+          's' => '0',
+          'n' => 10,
+          'p' => 1,
+          'd' => '<',
+        ]
       ]);
 
       $this->assertEquals(count($data) , 3);
