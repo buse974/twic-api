@@ -277,14 +277,15 @@ class Item extends AbstractService
     }
 
     $identity = $this->getServiceUser()->getIdentity();
-
     $ar_item = [];
-    $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $page_id, $filter);
-    foreach ($res_item as $m_item) {
-      if(null !== $page_id) {
-        $ar_item[$m_item->getPageId()][] = $m_item->getId();
-      } else {
-        $ar_item[] = $m_item->getId();
+    foreach ($page_id as $p_id) {
+      $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $p_id, $filter);
+      foreach ($res_item as $m_item) {
+        if(null !== $p_id) {
+          $ar_item[$m_item->getPageId()][] = $m_item->getId();
+        } else {
+          $ar_item[] = $m_item->getId();
+        }
       }
     }
 

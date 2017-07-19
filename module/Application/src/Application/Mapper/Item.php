@@ -51,11 +51,11 @@ class Item extends AbstractMapper
 
       if(null !== $filter) {
         if($filter['d'] === '<') {
-          $select->where(['( item.start_date < ? ' => $filter['s']]);
-          $select->where([' item.end_date < ? )' => $filter['s']], 'OR');
+          $select->where(['( item.start_date <= ? ' => $filter['s']]);
+          $select->where([' item.end_date <= ? )' => $filter['s']], 'OR');
         } else {
-          $select->where(['( item.start_date > ? ' => $filter['s']]);
-          $select->where([' item.end_date > ? )' => $filter['s']], 'OR');
+          $select->where(['( item.start_date >= ? ' => $filter['s']]);
+          $select->where([' item.end_date >= ? )' => $filter['s']], 'OR');
         }
         $select->order(['item.start_date','item.end_date']);
         $select->offset((($filter['p'] - 1) * $filter['n']));
