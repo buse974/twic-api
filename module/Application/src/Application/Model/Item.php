@@ -25,6 +25,8 @@ class Item extends BaseItem
     protected $nb_submission;
     protected $item_user;
     protected $page_user;
+    protected $order_date;
+    protected $timeline_type;
 
     public function exchangeArray(array &$data)
     {
@@ -202,6 +204,55 @@ class Item extends BaseItem
     public function setQuizId($quiz_id)
     {
         $this->quiz_id = $quiz_id;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of Order Date
+     *
+     * @return mixed
+     */
+    public function getOrderDate()
+    {
+        return $this->order_date;
+    }
+
+    /**
+     * Set the value of Order Date
+     *
+     * @param mixed order_date
+     *
+     * @return self
+     */
+    public function setOrderDate($order_date)
+    {
+        $this->order_date = $order_date;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of Timeline Type
+     *
+     * @return mixed
+     */
+    public function getTimelineType()
+    {
+        return $this->timeline_type;
+    }
+
+    /**
+     * Set the value of Timeline Type
+     *
+     * @param mixed timeline_type
+     *
+     * @return self
+     */
+    public function setTimelineType($timeline_type)
+    {
+        $this->timeline_type = $timeline_type;
 
         return $this;
     }

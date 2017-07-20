@@ -1008,5 +1008,19 @@ class ItemRateTest extends AbstractService
            $this->assertEquals($data['jsonrpc'] , 2.0);
        }
 
+       /**
+       *
+       * @depends testAddQuiz
+       **/
+       public function testItemGetListTimeline($item_quiz)
+       {
+           $this->setIdentity(1);
+           $data = $this->jsonRpc('item.getListTimeline', [
+           ]);
+
+           print_r($data);
+      }
+
+
 
 }

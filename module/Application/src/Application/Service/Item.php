@@ -279,7 +279,7 @@ class Item extends AbstractService
       if(!is_array($page_id)) {
         $page_id = [$page_id];
       }
-      
+
       foreach ($page_id as $p_id) {
         $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $p_id, $filter);
         foreach ($res_item as $m_item) {
@@ -294,6 +294,20 @@ class Item extends AbstractService
     }
 
     return $ar_item;
+  }
+
+  /**
+  * GetList TimeLine Item
+  *
+  * @invokable
+  *
+  * @param array $filter
+  */
+  public function getListTimeline($filter = [])
+  {
+    $identity = $this->getServiceUser()->getIdentity();
+
+    return $this->getMapper()->usePaginator($filter)->getListTimeline($identity['id']);
   }
 
   /**
@@ -413,79 +427,6 @@ class Item extends AbstractService
        }
      }    return $ar;
    }
-
-  /**
-  * Get List Assgnment By Item
-  *
-  * @invokable
-  *
-  * @param int|array $id
-  */
-  public function getListSubmissionId($id)
-  {
-    if(!is_array($id)) {
-      $id = [$id];
-    }
-
-    //TODO check admin page
-    $ar = [];
-    foreach ($id as $i) {
-      $paticipants = $this->getMapper()->select($this->getModel()->setId($i))->current()->getParticipants();
-      $res_item = $this->getMapper()->getListSubmission($i);
-      switch ($paticipants) {
-        case 'all':
-          foreach ($res_item as $m_item) {
-            if(!is_numeric($m_item->getItemUser()->getSubmission()->getId())) {
-              $submission_id = $this->getServiceSubmission()->create($m_item->getId());
-              if(!is_numeric($m_item->getItemUser()->getId())) {
-                $this->getServiceItemUser()->create( $m_item->getId(), $m_item->getPageUser()->getUserId(), null, $submission_id );
-              } else {
-                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
-              }
-              $ar[$i][] = (int) $submission_id;
-            } else {
-              $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
-            }
-          }
-          break;
-        case 'user':
-          foreach ($res_item as $m_item) {
-            if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
-                $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );
-                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
-                $ar[$i][] = (int) $submission_id;
-            } else {
-                $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
-            }
-          }
-          break;
-        case 'group':
-          foreach ($res_item as $m_item) {
-            $groupIds = [];
-            if( !isset($groupIds[$m_item->getItemUser()->getGroupId()]) ){
-              $groupIds[$m_item->getItemUser()->getGroupId()] = null;
-              if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
-                $submission_id = $this->getServiceSubmission()->create( $m_item->getId() );
-                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $submission_id );
-                $ar[$i][] = (int) $submission_id;
-                $groupIds[$m_item->getItemUser()->getGroupId()] = $submission_id;
-              } else {
-                $ar[$i][] = $m_item->getItemUser()->getSubmission()->getId();
-              }
-            } else {
-              if( $m_item->getItemUser()->getSubmission()->getId() !== null ){
-                $this->getServiceItemUser()->update( $m_item->getItemUser()->getId(), $groupIds[$m_item->getItemUser()->getGroupId()] );
-              }
-            }
-          }
-          break;
-        default:
-          break;
-      }
-    }
-
-    return $ar;
-  }
 
   /**
   * Get Item

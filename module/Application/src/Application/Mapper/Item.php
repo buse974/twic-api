@@ -4,6 +4,7 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
+use Dal\Db\Sql\Select;
 
 class Item extends AbstractMapper
 {
@@ -28,6 +29,29 @@ class Item extends AbstractMapper
     }
 
     return $this->selectWith($select);
+  }
+
+  public function getListTimeline($me)
+  {
+    $select1 = $this->tableGateway->getSql()->select();
+    $select1->columns(['id', 'parent_id', 'page_id', 'item$timeline_type' => new Expression(" 'S' "), 'item$order_date' => new Expression("start_date")])
+        ->join('page_user', 'page_user.page_id=item.page_id', [])
+        ->where(['page_user.user_id' => $me])
+        ->where(['page_user.state' => 'member'])
+        ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR `item`.`points` IS NOT NULL )"])
+        ->where(['item.is_published IS TRUE AND start_date IS NOT NULL'])->order('item$order_date');
+
+    $select2 = $this->tableGateway->getSql()->select();
+    $select2->columns(['id', 'parent_id', 'page_id', 'item$timeline_type' => new Expression(" 'E' "), 'item$order_date' => new Expression("end_date")])
+        ->join('page_user', 'page_user.page_id=item.page_id', [])
+        ->where(['page_user.user_id' => $me])
+        ->where(['page_user.state' => 'member'])
+        ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR `item`.`points` IS NOT NULL )"])
+        ->where(['item.is_published IS TRUE AND end_date IS NOT NULL'])->order('item$order_date');
+
+    $select1->combine($select2);
+
+    return $this->selectWith($select1);
   }
 
   public function getListAssignmentId($me, $page_id = null, $filter = null)
