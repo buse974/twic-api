@@ -39,7 +39,7 @@ class Item extends AbstractMapper
         ->where(['page_user.user_id' => $me])
         ->where(['page_user.state' => 'member'])
         ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR `item`.`points` IS NOT NULL )"])
-        ->where(['item.is_published IS TRUE AND start_date IS NOT NULL'])->order('item$order_date');
+        ->where(['item.is_published IS TRUE AND start_date IS NOT NULL']);
 
     $select2 = $this->tableGateway->getSql()->select();
     $select2->columns(['id', 'parent_id', 'page_id', 'item$timeline_type' => new Expression(" 'E' "), 'item$order_date' => new Expression("end_date")])
@@ -47,7 +47,7 @@ class Item extends AbstractMapper
         ->where(['page_user.user_id' => $me])
         ->where(['page_user.state' => 'member'])
         ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR `item`.`points` IS NOT NULL )"])
-        ->where(['item.is_published IS TRUE AND end_date IS NOT NULL'])->order('item$order_date');
+        ->where(['item.is_published IS TRUE AND end_date IS NOT NULL']);
 
     $select1->combine($select2);
 

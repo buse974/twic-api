@@ -70,6 +70,49 @@ class ItemRateTest extends AbstractService
           'description' => 'une description d\'Assignment',
           'type' => 'A',
           'points' => 7,
+          'start_date' => '2015-10-10',
+          'is_available' => 1,
+          'is_published' => true,
+          'parent_id' => $section_id,
+        ]);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('item.add', [
+          'page_id' => $page_id,
+          'title' => 'Assignment',
+          'description' => 'une description d\'Assignment',
+          'type' => 'A',
+          'points' => 7,
+          'start_date' => '2015-10-12',
+          'is_available' => 1,
+          'is_published' => true,
+          'parent_id' => $section_id,
+        ]);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('item.add', [
+          'page_id' => $page_id,
+          'title' => 'Assignment',
+          'description' => 'une description d\'Assignment',
+          'type' => 'A',
+          'points' => 7,
+          'start_date' => '2015-10-14',
+          'is_available' => 1,
+          'is_published' => true,
+          'parent_id' => $section_id,
+        ]);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('item.add', [
+          'page_id' => $page_id,
+          'title' => 'Assignment',
+          'description' => 'une description d\'Assignment',
+          'type' => 'A',
+          'points' => 7,
+          'start_date' => '2015-10-16',
           'is_available' => 1,
           'is_published' => true,
           'parent_id' => $section_id,
@@ -103,11 +146,36 @@ class ItemRateTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['result'] , 5);
+        $this->assertEquals($data['result'] , 8);
         $this->assertEquals($data['jsonrpc'] , 2.0);
 
         return $page_id;
     }
+
+    public function testItemGetListTimeline()
+    {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('item.getListTimeline', [
+          'filter' => [
+            'n' => 1,
+            'p' => 1,
+            'c' => ['item.order_date' => '<'],
+            'o' => ['item.order_date DESC'],
+            's' => '2015-10-13'
+          ]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][0]) , 5);
+        $this->assertEquals(!empty($data['result'][0]['order_date']) , true);
+        $this->assertEquals($data['result'][0]['timeline_type'] , "S");
+        $this->assertEquals($data['result'][0]['id'] , 4);
+        $this->assertEquals($data['result'][0]['parent_id'] , 1);
+        $this->assertEquals($data['result'][0]['page_id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+   }
 
     /**
     * @depends testInit
@@ -120,6 +188,7 @@ class ItemRateTest extends AbstractService
         'page_id' => $id,
       ]);
 
+      
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
@@ -1007,20 +1076,4 @@ class ItemRateTest extends AbstractService
            $this->assertEquals($data['result'][6]['participants'] , "all");
            $this->assertEquals($data['jsonrpc'] , 2.0);
        }
-
-       /**
-       *
-       * @depends testAddQuiz
-       **/
-       public function testItemGetListTimeline($item_quiz)
-       {
-           $this->setIdentity(1);
-           $data = $this->jsonRpc('item.getListTimeline', [
-           ]);
-
-           print_r($data);
-      }
-
-
-
 }
