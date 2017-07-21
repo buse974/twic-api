@@ -1086,7 +1086,7 @@ class ItemRateTest extends AbstractService
        **/
        public function testSubmissionGetPostId($item_quiz)
        {
-         $this->setIdentity(1);
+         $this->setIdentity(5);
          $data = $this->jsonRpc('submission.getPostId', [
            'item_id' => $item_quiz['item_quiz']
          ]);

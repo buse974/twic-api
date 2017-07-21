@@ -18,14 +18,23 @@ class Submission extends AbstractService
       $me = $this->getServiceUser()->getIdentity()['id'];
       $m_item = $this->getServiceItem()->getLite($item_id)->current();
       $page_id = $m_item->getPageId();
-      $ar_pu = $this->getServicePageUser()->getListByPage($page_id);
+      $ar_p = $this->getServicePageUser()->getListByPage($page_id);
       $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
-      if(!in_array($me, $ar_pu[$page_id])) {
+      $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
+
+      //si la personne ne fait pas partie du cour
+      if(!in_array($me, $ar_p[$page_id])) {
          throw new \Exception("Error Processing Request", 1);
       }
+
       $is_admin = in_array($me, $ar_pa[$page_id]);
-      if(null === $user_id && ( null !== $user_id && !$is_admin)){
-          $user_id = $me;
+      if(null === $user_id || !$is_admin){
+        $user_id = $me;
+      }
+
+      //si le user_id final n'est pas un student du cour
+      if(!in_array($user_id, $ar_pu[$page_id])) {
+         throw new \Exception("Error Processing Request", 1);
       }
 
       switch($m_item->getParticipants()) {
