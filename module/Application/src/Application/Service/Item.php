@@ -22,7 +22,12 @@ class Item extends AbstractService
   * @param string start_date
   * @param string end_date
   * @param int parent_id
-  *
+  * @param int $library_id
+  * @param int $post_id
+  * @param string $text
+  * @param array $participants
+  * @param int $quiz_id
+  * @param bool $is_grade_published
   **/
   public function add(
     $page_id,
@@ -40,7 +45,8 @@ class Item extends AbstractService
     $post_id = null,
     $text = null,
     $participants = null,
-    $quiz_id = null
+    $quiz_id = null,
+    $is_grade_published = null
     )
   {
     $identity = $this->getServiceUser()->getIdentity();
@@ -63,6 +69,7 @@ class Item extends AbstractService
       ->setEndDate($end_date)
       ->setLibraryId($library_id)
       ->setText($text)
+      ->setIsGradePublished($is_grade_published)
       ->setParticipants($participants)
       ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
       ->setUserId($user_id);
@@ -508,7 +515,12 @@ class Item extends AbstractService
   * @param string start_date
   * @param string end_date
   * @param int parent_id
-  *
+  * @param int $library_id,
+  * @param int $post_id,
+  * @param string $text,
+  * @param array $participants,
+  * @param int $quiz_id,
+  * @param int $is_grade_published
   **/
   public function update(
     $id,
@@ -525,7 +537,8 @@ class Item extends AbstractService
     $post_id = null,
     $text = null,
     $participants = null,
-    $quiz_id = null)
+    $quiz_id = null,
+    $is_grade_published = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
 
@@ -552,6 +565,7 @@ class Item extends AbstractService
       ->setOrder($order)
       ->setLibraryId($library_id)
       ->setText($text)
+      ->setIsGradePublished($is_grade_published)
       ->setParticipants($participants)
       ->setStartDate($start_date)
       ->setEndDate($end_date)

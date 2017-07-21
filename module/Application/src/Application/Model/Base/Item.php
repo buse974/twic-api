@@ -24,6 +24,7 @@ class Item extends AbstractModel
 	protected $text;
 	protected $library_id;
 	protected $participants;
+	protected $is_grade_published;
 
 	protected $prefix = 'item';
 
@@ -239,6 +240,18 @@ class Item extends AbstractModel
 	public function setParticipants($participants)
 	{
 		$this->participants = $participants;
+
+		return $this;
+	}
+
+	public function getIsGradePublished()
+	{
+		return $this->is_grade_published;
+	}
+
+	public function setIsGradePublished($is_grade_published)
+	{
+		$this->is_grade_published = $is_grade_published;
 
 		return $this;
 	}

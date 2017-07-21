@@ -109,6 +109,7 @@ class Item extends AbstractMapper
         'page_id',
         'user_id',
         'participants',
+        'is_grade_published',
         'item$library_id' => new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `item`.`library_id`, NULL)"),
         'item$post_id' =>    new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `post`.`id`, NULL)"),
         'item$quiz_id' =>    new Expression("IF(`page_user`.`role`='admin'OR(`item`.`is_available`=1 OR (`item`.`is_available` = 3 AND (( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL )OR( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL )OR( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP())))), `quiz`.`id`, NULL)"),

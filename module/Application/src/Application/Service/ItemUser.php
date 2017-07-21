@@ -28,7 +28,7 @@ class ItemUser extends AbstractService
   * @param int $submission_id
   * @param int $group_id
   * @param int $item_id
-  * 
+  *
   * @return \Application\Model\ItemUser
   **/
   public function getLite($id = null, $user_id = null, $submission_id = null, $group_id = null, $item_id = null)
@@ -150,9 +150,9 @@ class ItemUser extends AbstractService
       foreach ($user_id as $user) {
         $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user)->setItemId($item_id));
         if($res_item_user->count() > 0) {
-          $this->getMapper()->update($this->getModel()->setId($res_item_user->current()->getId())->setRate($rate));
+          $this->getMapper()->update($this->getModel()->setId($res_item_user->current()->getId())->setRate(($rate===-1?new IsNull('grade'):$rate )));
         } else {
-          $this->getMapper()->insert($this->getModel()->setUserId($user)->setItemId($item_id)->setRate($rate));
+          $this->getMapper()->insert($this->getModel()->setUserId($user)->setItemId($item_id)->setRate(($rate===-1?new IsNull('grade'):$rate )));
         }
       }
     }
