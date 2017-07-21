@@ -10,69 +10,64 @@ class Submission extends AbstractService
   /**
   * Get or Create Submision
   *
-  *
-  * @param int $id
   * @param int $item_id
   * @param int $user_id
-  * @param int $group_id
   */
-  public function getOrCreate($id = null, $item_id = null, $user_id = null, $group_id = null)
+  public function getOrCreate($item_id, $user_id = null)
   {
-        $get_all = $user_id === null;
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        if(null !== $id){
-            $m_submission = $this->getMapper()->select($this->getModel()->setId($id))->current();
-        }
-        else if(null !== $item_id){
-            if(null === $user_id){
-                $user_id = $me;
-            }
-            $m_item = $this->getServiceItem()->getLite($item_id)->current();
-            $page_id = $m_item->getPageId();
-            switch($m_item->getParticipants()) {
-                case 'all' :
-                    $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
-                    $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
-                    if(!in_array($user_id, $ar_pu[$page_id]) || ($get_all && !in_array($me, $ar_pa[$page_id]))) {
-                        return null;
-                    }
+      $me = $this->getServiceUser()->getIdentity()['id'];
+      $m_item = $this->getServiceItem()->getLite($item_id)->current();
+      $page_id = $m_item->getPageId();
+      $ar_pu = $this->getServicePageUser()->getListByPage($page_id);
+      $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+      if(!in_array($me, $ar_pu[$page_id])) {
+         throw new \Exception("Error Processing Request", 1);
+      }
+      $is_admin = in_array($me, $ar_pa[$page_id]);
+      if(null === $user_id && ( null !== $user_id && !$is_admin)){
+          $user_id = $me;
+      }
 
-                    $res_submission = $this->getMapper()->get(null, $item_id, $user_id);
-                    if($res_submission->count() <= 0){
-                        $id = $this->create($item_id);
-                        $m_submission = $this->getMapper()->select($this->getModel()->setId($id))->current();
-                        $this->getServiceItemUser()->getOrCreate($user_id, $item_id, $id);
-                    }
-                    else{
-                        $m_submission = $res_submission->current();
-                    }
+      switch($m_item->getParticipants()) {
+          case 'all' :
+              $res_submission = $this->getMapper()->get(null, $item_id, $user_id);
+              if($res_submission->count() <= 0) {
+                $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+                $submission_id  = (int) $this->getMapper()->getLastInsertValue();
+                $m_item_user = $this->getServiceItemUser()->getOrCreate($user_id, $item_id, $submission_id);
+                $m_submission = $this->getMapper()->get(null, $item_id, $user_id)->current();
+              }
+              else{
+                $m_submission = $res_submission->current();
+              }
 
-                break;
-            }
-        }
-        $m_submission->setItemUsers($this->getServiceItemUser()->getList($item_id, null, $m_submission->getId()));
+          break;
+      }
 
-        if(null === $m_submission->getPostId()){
-            $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
-            $m_submission->setPostId($post_id);
-            $this->getMapper()->update($m_submission);
-        }
+      $m_submission->setItemUsers($this->getServiceItemUser()->getList($item_id, null, $m_submission->getId()));
+      if(!is_numeric($m_submission->getPostId())) {
+          $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
+          $m_submission->setPostId($post_id);
+          $this->getMapper()->update($m_submission);
+      }
 
       return $m_submission;
   }
 
   /**
-   * Create Submission
-   *
-   * @param int $item_id
-   */
-    public function create($item_id)
-    {
-        $post_id = $this->getServicePost()->add(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,'submission');
-        $this->getMapper()->insert($this->getModel()->setItemId($item_id)->setPostId($post_id));
+  * Get Post_id submission
+  *
+  * @invokable
+  *
+  * @param int $item_id
+  * @param int $user_id
+  *
+  **/
+  public function getPostId($item_id, $user_id = null)
+  {
+    return $this->getOrCreate($item_id, $user_id)->getPostId();
+  }
 
-        return (int) $this->getMapper()->getLastInsertValue();
-    }
   /**
   * Add Submision
   *
@@ -91,14 +86,9 @@ class Submission extends AbstractService
         throw new \Exception("No User", 1);
       }
 
-      $m_item_user = $this->getServiceItemUser()->getOrCreate($identity['id'], $item_id);
+      $m_submission = $this->getOrCreate($item_id, $identity['id']);
 
-      $submission_id = $m_item_user->getSubmissionId();
-      if(!is_numeric($submission_id)) {
-        $submission_id = $this->create($item_id);
-        $this->getServiceItemUser()->update($m_item_user->getId(), $submission_id);
-      }
-
+      $submission_id = $m_submission->getId();
       $this->getServiceSubmissionLibrary()->add($submission_id, $library_id);
 
       return $submission_id;

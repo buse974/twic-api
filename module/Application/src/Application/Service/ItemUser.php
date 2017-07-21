@@ -59,11 +59,16 @@ class ItemUser extends AbstractService
     $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
 
     if($res_item_user->count() <= 0) {
-      $this->getMapper()->insert($this->getModel()->setUserId($user_id)->setItemId($item_id)->setSubmissionId($submission_id));
-      $res_item_user = $this->getMapper()->select($this->getModel()->setUserId($user_id)->setItemId($item_id));
+      $it_id = $this->create( $item_id, $user_id, null, $submission_id);
+      $res_item_user = $this->getMapper()->select($this->getModel()->setId($it_id));
     }
 
-    return  $res_item_user->current();
+    $m_item_user = $res_item_user->current();
+    if(null !== $submission_id && $m_item_user->getSubmissionId() !== $submission_id) {
+      $this->getMapper()->update($this->getModel()->setId($m_item_user->getId())->setSubmissionId($submission_id));
+    }
+
+    return  $m_item_user;
   }
 
    /**

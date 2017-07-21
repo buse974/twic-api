@@ -188,13 +188,15 @@ class ItemRateTest extends AbstractService
         'page_id' => $id,
       ]);
 
-      
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
-      $this->assertEquals(count($data['result'][1]) , 2);
+      $this->assertEquals(count($data['result'][1]) , 5);
       $this->assertEquals($data['result'][1][0] , 2);
       $this->assertEquals($data['result'][1][1] , 3);
+      $this->assertEquals($data['result'][1][2] , 4);
+      $this->assertEquals($data['result'][1][3] , 5);
+      $this->assertEquals($data['result'][1][4] , 6);
       $this->assertEquals($data['jsonrpc'] , 2.0);
     }
 
@@ -395,7 +397,7 @@ class ItemRateTest extends AbstractService
     {
       $this->setIdentity(1);
       $data = $this->jsonRpc('item.publish', [
-        'id' => [2,3,5],
+        'id' => [2,3,8],
       ]);
 
       $this->assertEquals(count($data) , 3);
@@ -696,7 +698,7 @@ class ItemRateTest extends AbstractService
          $this->assertEquals($data['result'][1]['attempt_count'] , null);
          $this->assertEquals($data['result'][1]['time_limit'] , null);
          $this->assertEquals($data['result'][1]['created_date'] , null);
-         $this->assertEquals($data['result'][1]['item_id'] , 6);
+         $this->assertEquals($data['result'][1]['item_id'] , 9);
          $this->assertEquals($data['result'][1]['user_id'] , 1);
          $this->assertEquals($data['jsonrpc'] , 2.0);
        }
@@ -828,7 +830,7 @@ class ItemRateTest extends AbstractService
         $this->assertEquals($data['result'][1]['attempt_count'] , null);
         $this->assertEquals($data['result'][1]['time_limit'] , null);
         $this->assertEquals($data['result'][1]['created_date'] , null);
-        $this->assertEquals($data['result'][1]['item_id'] , 6);
+        $this->assertEquals($data['result'][1]['item_id'] , 9);
         $this->assertEquals($data['result'][1]['user_id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
 
@@ -1034,7 +1036,7 @@ class ItemRateTest extends AbstractService
           $this->assertEquals($data['result'][1]['attempt_count'] , null);
           $this->assertEquals($data['result'][1]['time_limit'] , null);
           $this->assertEquals($data['result'][1]['created_date'] , null);
-          $this->assertEquals($data['result'][1]['item_id'] , 6);
+          $this->assertEquals($data['result'][1]['item_id'] , 9);
           $this->assertEquals($data['result'][1]['user_id'] , 1);
           $this->assertEquals($data['jsonrpc'] , 2.0);
        }
@@ -1053,27 +1055,45 @@ class ItemRateTest extends AbstractService
            $this->assertEquals(count($data) , 3);
            $this->assertEquals($data['id'] , 1);
            $this->assertEquals(count($data['result']) , 1);
-           $this->assertEquals(count($data['result'][6]) , 20);
-           $this->assertEquals($data['result'][6]['post_id'] , null);
-           $this->assertEquals($data['result'][6]['quiz_id'] , 1);
-           $this->assertEquals($data['result'][6]['id'] , 6);
-           $this->assertEquals($data['result'][6]['title'] , "Assignment");
-           $this->assertEquals($data['result'][6]['description'] , "un super quiz");
-           $this->assertEquals($data['result'][6]['type'] , "QUIZ");
-           $this->assertEquals($data['result'][6]['is_available'] , 1);
-           $this->assertEquals($data['result'][6]['is_published'] , 0);
-           $this->assertEquals($data['result'][6]['order'] , 5);
-           $this->assertEquals($data['result'][6]['start_date'] , null);
-           $this->assertEquals($data['result'][6]['end_date'] , null);
-           $this->assertEquals($data['result'][6]['updated_date'] , null);
-           $this->assertEquals(!empty($data['result'][6]['created_date']) , true);
-           $this->assertEquals($data['result'][6]['parent_id'] , 1);
-           $this->assertEquals($data['result'][6]['page_id'] , 1);
-           $this->assertEquals($data['result'][6]['user_id'] , 1);
-           $this->assertEquals($data['result'][6]['points'] , 7);
-           $this->assertEquals($data['result'][6]['text'] , null);
-           $this->assertEquals($data['result'][6]['library_id'] , null);
-           $this->assertEquals($data['result'][6]['participants'] , "all");
+           $this->assertEquals(count($data['result'][9]) , 21);
+           $this->assertEquals($data['result'][9]['post_id'] , null);
+           $this->assertEquals($data['result'][9]['quiz_id'] , 1);
+           $this->assertEquals($data['result'][9]['id'] , 9);
+           $this->assertEquals($data['result'][9]['title'] , "Assignment");
+           $this->assertEquals($data['result'][9]['description'] , "un super quiz");
+           $this->assertEquals($data['result'][9]['type'] , "QUIZ");
+           $this->assertEquals($data['result'][9]['is_available'] , 1);
+           $this->assertEquals($data['result'][9]['is_published'] , 0);
+           $this->assertEquals($data['result'][9]['order'] , 8);
+           $this->assertEquals($data['result'][9]['start_date'] , null);
+           $this->assertEquals($data['result'][9]['end_date'] , null);
+           $this->assertEquals($data['result'][9]['is_grade_published'] , null);
+           $this->assertEquals($data['result'][9]['updated_date'] , null);
+           $this->assertEquals(!empty($data['result'][9]['created_date']) , true);
+           $this->assertEquals($data['result'][9]['parent_id'] , 1);
+           $this->assertEquals($data['result'][9]['page_id'] , 1);
+           $this->assertEquals($data['result'][9]['user_id'] , 1);
+           $this->assertEquals($data['result'][9]['points'] , 7);
+           $this->assertEquals($data['result'][9]['text'] , null);
+           $this->assertEquals($data['result'][9]['library_id'] , null);
+           $this->assertEquals($data['result'][9]['participants'] , "all");
            $this->assertEquals($data['jsonrpc'] , 2.0);
        }
+
+       /**
+       *
+       * @depends testAddQuiz
+       **/
+       public function testSubmissionGetPostId($item_quiz)
+       {
+         $this->setIdentity(1);
+         $data = $this->jsonRpc('submission.getPostId', [
+           'item_id' => $item_quiz['item_quiz']
+         ]);
+
+         $this->assertEquals(count($data) , 3);
+         $this->assertEquals($data['id'] , 1);
+         $this->assertEquals($data['result'] , 6);
+         $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
 }
