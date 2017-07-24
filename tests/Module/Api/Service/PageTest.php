@@ -54,7 +54,31 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result'], 1);
         $this->assertEquals($data['jsonrpc'], 2.0);
 
-        return $data['id'];
+        $page_id = $data['id'];
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addOrganization', [
+          'organization_id' => $page_id,
+          'user_id' => [1,2,3,4,5,6,7],
+          'default' => true
+        ]);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('circle.add', [
+            'name' => 'gnam'
+        ]);
+
+        $circle_id = $data['result'];
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('circle.addOrganizations', [
+            'id' => $circle_id,
+            'organizations' => [$page_id]
+        ]);
+
+        return $page_id;
     }
 
     public function testPageAddParent()

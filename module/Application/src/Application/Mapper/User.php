@@ -55,12 +55,13 @@ class User extends AbstractMapper
             ->where(['user.id' => $user_id])
             ->quantifier('DISTINCT');
 
-        /*if ($is_sadmin_admin === false && $user_id !== $me) {
-            $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
-                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
-                ->join(['circle_page_user' => 'page_user'], 'circle_page_user.page_id=circle_organization.organization_id', [])
-                ->where(['circle_page_user.user_id' => $user_id]);
-        }*/
+        if ($is_admin === false && $user_id !== $me) {
+          $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', []);
+          $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
+          $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
+          $select->where(['circle_organization_user.id' => $me]);
+        }
+
         return $this->selectWith($select);
     }
 
@@ -103,10 +104,13 @@ class User extends AbstractMapper
               'position', 'interest', 'avatar',
               'user$contact_state' => $this->getSelectContactState($user_id),
               'user$contacts_count' => $this->getSelectContactCount()
-            ]);/*->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
-             ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
-             ->join('page_user', 'page_user.page_id=circle_organization.organization_id', [])
-             ->where(['page_user.user_id' => $user_id]);*/
+            ]);
+
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', []);
+            $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
+            $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
+            $select->where(['circle_organization_user.id' => $user_id]);
+
         }
         $select->where('user.deleted_date IS NULL')
             ->group('user.id')

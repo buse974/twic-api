@@ -12,6 +12,61 @@ class MessageTest extends AbstractService
         parent::setUpBeforeClass();
     }
 
+    public function testInit()
+    {
+        $this->setIdentity(1, 1);
+        $data = $this->jsonRpc('page.add', [
+          'title' => 'super title',
+          'logo' => 'logo',
+          'background' => 'background',
+          'description' => 'description',
+          'confidentiality' => 1,
+          'type' => 'organization',
+          'admission' => 'free',
+          'start_date' => '2015-00-00 00:00:00',
+          'end_date' => '2016-00-00 00:00:00',
+          'location' => 'location',
+          'organization_id' => 1,
+          'users' => [
+              ['user_id' => 1,'role' => 'admin', 'state' => 'member'],
+              ['user_id' => 2,'role' => 'admin', 'state' => 'member'],
+              ['user_id' => 3,'role' => 'admin', 'state' => 'member'],
+          ],
+        ]);
+
+        $page_id = $data['id'];
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addOrganization', [
+          'organization_id' => $page_id,
+          'user_id' => [1,2,3,4,5,6,7],
+          'default' => true
+        ]);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('circle.add', [
+            'name' => 'gnam'
+        ]);
+
+        $circle_id = $data['result'];
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('circle.addOrganizations', [
+            'id' => $circle_id,
+            'organizations' => [$page_id]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][1] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        return $page_id;
+    }
+
     public function testCanSendMessage()
     {
         $this->setIdentity(1);

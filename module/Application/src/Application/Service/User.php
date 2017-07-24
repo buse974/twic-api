@@ -781,7 +781,7 @@ class User extends AbstractService
         $res_user = $this->getMapper()->get($id, $user_id, $is_admin);
 
         if ($res_user->count() <= 0) {
-            throw new \Exception('error get user: ' . json_encode($id));
+          throw new \Exception('error get user: ' . json_encode($id));
         }
 
 

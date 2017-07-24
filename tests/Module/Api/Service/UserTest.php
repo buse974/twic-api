@@ -14,13 +14,72 @@ class UserTest extends AbstractService
         parent::setUpBeforeClass();
     }
 
-    public function testCanAddUser()
+    public function testInit()
+    {
+        $this->setIdentity(1, 1);
+        $data = $this->jsonRpc('page.add', [
+          'title' => 'super title',
+          'logo' => 'logo',
+          'background' => 'background',
+          'description' => 'description',
+          'confidentiality' => 1,
+          'type' => 'organization',
+          'admission' => 'free',
+          'start_date' => '2015-00-00 00:00:00',
+          'end_date' => '2016-00-00 00:00:00',
+          'location' => 'location',
+          'organization_id' => 1,
+          'users' => [
+              ['user_id' => 1,'role' => 'admin', 'state' => 'member'],
+              ['user_id' => 2,'role' => 'admin', 'state' => 'member'],
+              ['user_id' => 3,'role' => 'admin', 'state' => 'member'],
+          ],
+        ]);
+
+        $page_id = $data['id'];
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('user.addOrganization', [
+          'organization_id' => $page_id,
+          'user_id' => [1,2,3,4,5,6,7],
+          'default' => true
+        ]);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('circle.add', [
+            'name' => 'gnam'
+        ]);
+
+        $circle_id = $data['result'];
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('circle.addOrganizations', [
+            'id' => $circle_id,
+            'organizations' => [$page_id]
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][1] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        return $page_id;
+    }
+
+    /**
+    * @depends testInit
+    **/
+    public function testCanAddUser($page_id)
     {
         $this->setIdentity(5);
         $data = $this->jsonRpc('user.add', [
           'firstname' => 'Christophe',
           'gender' => 'm',
           'origin' => 1,
+          'organization_id' => $page_id,
           'nationality' => 1,
           'lastname' => 'Robert',
           'email' => 'crobertr@thestudnet.com',
@@ -60,7 +119,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['suspension_reason'] , null);
         $this->assertEquals($data['result']['email'] , "crobertr@thestudnet.com");
         $this->assertEquals($data['result']['avatar'] , "un_token");
-        $this->assertEquals($data['result']['organization_id'] , null);
+        $this->assertEquals($data['result']['organization_id'] , 1);
         $this->assertEquals($data['result']['expiration_date'] , null);
         $this->assertEquals(count($data['result']['roles']) , 1);
         $this->assertEquals($data['result']['roles'][2] , "user");
@@ -167,7 +226,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result'][8]['email'] , "jpaul@thestudnet.com");
         $this->assertEquals($data['result'][8]['birth_date'] , null);
         $this->assertEquals($data['result'][8]['position'] , "une position new");
-        $this->assertEquals($data['result'][8]['organization_id'] , null);
+        $this->assertEquals($data['result'][8]['organization_id'] , 1);
         $this->assertEquals($data['result'][8]['interest'] , "un interet new");
         $this->assertEquals($data['result'][8]['avatar'] , "un_token_new");
         $this->assertEquals($data['result'][8]['has_email_notifier'] , 1);

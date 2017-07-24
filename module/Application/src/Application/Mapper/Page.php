@@ -75,7 +75,8 @@ class Page extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'title'])
-          ->where(['page.deleted_date IS NULL']);
+          ->where(['page.deleted_date IS NULL'])
+          ->quantifier('DISTINCT');
 
         if ($exclude) {
           $select->where->notIn('page.id', $exclude);
@@ -141,11 +142,12 @@ class Page extends AbstractMapper
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
 
-      /*      $select->join('user', 'page.owner_id=user.id', [])
-                ->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
-                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
-                ->join(['circle_page_user' => 'page_user'], 'circle_page_user.page_id=circle_organization.organization_id', [])
-                ->where(['circle_page_user.user_id' => $me]);*/
+            $select->join(['pu' => 'page_user'], new Expression("pu.page_id = page.id AND pu.role = 'admin'"), []);
+            $select->join(['pu_u' => 'user'],'pu.user_id=pu_u.id', []);
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=pu_u.organization_id', []);
+            $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
+            $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
+            $select->where(['circle_organization_user.id' => $me]);
         }
         $select->order(['page.start_date' => 'DESC'])
             ->group('page.id');
@@ -195,12 +197,12 @@ class Page extends AbstractMapper
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
 
-            /*$select->join('user', 'page.owner_id=user.id', [])
-                ->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', [])
-                ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
-                ->join(['circle_page_user' => 'page_user'], 'circle_page_user.page_id=circle_organization.organization_id', [])
-                ->where(['page.deleted_date IS NULL'])
-                ->where(['circle_page_user.user_id' => $me]);*/
+            $select->join(['pu' => 'page_user'], new Expression("pu.page_id = page.id AND pu.role = 'admin'"), []);
+            $select->join(['pu_u' => 'user'],'pu.user_id=pu_u.id', []);
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=pu_u.organization_id', []);
+            $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
+            $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
+            $select->where(['circle_organization_user.id' => $me]);
         }
         $select->group('page.id');
 
