@@ -190,7 +190,7 @@ class Submission extends AbstractService
         if($is_admin) {
           $ar[] = $m_submission_library->getLibraryId();
         } else {
-          $ar[$res_item_user->current()->getItemId()] = $m_submission_library->getLibraryId();
+          $ar[$res_item_user->current()->getItemId()][] = $m_submission_library->getLibraryId();
         }
       }
     }
