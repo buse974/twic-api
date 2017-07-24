@@ -656,8 +656,16 @@ class User extends AbstractService
                 ->setDeletedDate(new IsNull());
 
             $user = $this->getMapper()->select($m_user)->current();
+            $m_page = $this->getServicePage()->getLite($user->getOrganizationId());
             try {
-                $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, array('password' => $password,'email' => $email,'lastname' => $user->getLastname(),'firstname' => $user->getFirstname()));
+                $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email,
+                [
+                  'prefix' => (is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
+                  'password' => $password,
+                  'email' => $email,
+                  'lastname' => $user->getLastname(),
+                  'firstname' => $user->getFirstname()
+              ]);
             } catch (\Exception $e) {
                 syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
             }
@@ -711,10 +719,17 @@ class User extends AbstractService
           $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password))->setEmailSent(1), ['id' => $uid]);
           if ($ret > 0) {
               $m_user = $res_user->current();
+              $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
               try {
                   $this->getServiceMail()->sendTpl(
                       'tpl_sendpasswd', $m_user->getEmail(),
-                      ['password' => $password,'email' => $m_user->getEmail(),'lastname' => $m_user->getLastname(),'firstname' => $m_user->getFirstname()]
+                      [
+                        'prefix' => (is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
+                        'password' => $password,
+                        'email' => $m_user->getEmail(),
+                        'lastname' => $m_user->getLastname(),
+                        'firstname' => $m_user->getFirstname()
+                      ]
                   );
               } catch (\Exception $e) {
                   syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
@@ -1048,13 +1063,23 @@ class User extends AbstractService
     }
 
     /**
-     * Get Service GcmGroup
+     * Get Service PageUser
      *
      * @return \Application\Service\PageUser
      */
     private function getServicePageUser()
     {
         return $this->container->get('app_service_page_user');
+    }
+
+    /**
+     * Get Service Page
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
     }
 
 }
