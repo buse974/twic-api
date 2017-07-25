@@ -187,7 +187,7 @@ class Quiz extends AbstractService
     $ret = [];
     foreach ($id as $i) {
       $m_quiz = $this->getMapper()->select($this->getModel()->setId($i))->current();
-      $m_quiz->setQuizQuestion($this->getServiceQuizQuestion()->get($i));
+      $m_quiz->setQuizQuestion($this->getServiceQuizQuestion()->get($i, (is_numeric($m_quiz->getItemId())? $m_quiz->getItemId():null)));
 
       $ret[$i] = $m_quiz->toArray();
     }
