@@ -218,5 +218,126 @@ class Page extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    
+     /**
+     * Execute Request Get 
+     *
+     * @param  int $id
+     */
+    public function getGradesSelect($id){
+         $select = $this->tableGateway->getSql()->select();
+         $select->columns(['average' => new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100)')])
+                ->join('page_relation', 'page.id= page_relation.parent_id', ['parent_id'])
+                ->join('item','page_relation.page_id = item.page_id', ['page_id'])
+                ->join('item_user', 'item.id = item_user.item_id', ['user_id'])
+                ->where(['item.is_grade_published' => 1])
+                ->where('item_user.rate IS NOT NULL')
+                ->where(['page_relation.type' => 'owner'])
+                ->where(['page_relation.parent_id' => $id])
+                ->group(['item.page_id', 'item_user.user_id'])
+                ->order([new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100) DESC')]);
+        return $select;
+    }
+    
+    public function getRankSelect($id, $avg){
+        $rank_select->columns(['rank' => new Expression('COUNT(*) + 1')])
+            ->from(['g' => $this->getGradesSelect($id)])
+            ->group('item_user$user_id')
+            ->where(['g.average < ?' => $avg]);
+        return $rank_select;
+    }
+    
+     /**
+     * Execute Request Get organization median
+     *
+     * @param  int $id
+     */
+    public function getMedian($id)
+    {
+        $grades_select =  $this->getGradesSelect($id);
+        $sub_select = new Select();
+        $sub_select->columns(['average'])
+            ->from(['g' => $grades_select])
+            ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('@rownum:=@rownum+1')]);
+        
+        
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'page$median' => new Expression('AVG(t1.average)')])
+               ->join(['t1' => $sub_select], new Expression('1'), [])
+                ->where(['page.id' => $id])
+                ->where(new Expression('(row_number = FLOOR((@rownum+1)/2)'))
+                ->where(new Expression('row_number = FLOOR((@rownum+2)/2))'), Predicate::OP_OR);
+        
+        return $this->selectWith($select);
+    }
+    
+    /**
+     * Execute Request Get organization average
+     *
+     * @param  int $id
+     */
+    public function getAverage($id)
+    {
+        $grades_select =  $this->getGradesSelect($id);
+        $sub_select = new Select();
+        $sub_select->columns(['average' => new Expression('AVG(average)')])
+            ->from(['g' => $grades_select])
+            ->group('item_user$user_id');
+        
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'page$average' => new Expression('ROUND(AVG(average))')])
+                ->join(['t1' => $sub_select], new Expression('1'), [])
+                ->where(['page.id' => $id]);
+        
+        return $this->selectWith($select);
+    }
+    /**
+     * Execute Request Get users avgs for an organization
+     *
+     * @param  int $id
+     */
+    public function getUsersAvg($id)
+    {
+        $grades_select =  $this->getGradesSelect($id);
+        $sub_select = new Select();
+        $sub_select->columns(['average', 'user_id' => 'item_user$user_id'])
+            ->from(['g' => $grades_select])
+            ->group('item_user$user_id');
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'page$average' => new Expression('t1.average')])
+                ->join(['t1' => $sub_select], new Expression('1'), ['page$user_id' => 'user_id'])
+                ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('@rownum:=@rownum+1')])
+                ->where(['page.id' => $id]);
+        
+        return $this->selectWith($select);
+    }
+    /**
+     * Execute Request Get users percentiles for an organization
+     *
+     * @param  int $id
+     */
+    public function getUsersPrc($id)
+    {
+        $grades_select =  $this->getGradesSelect($id);
+        $sub_select = new Select();
+        $sub_select->columns(['average', 'user_id' => 'item_user$user_id'])
+            ->from(['g' => $grades_select])
+            ->group('item_user$user_id')
+            ->order('g.average DESC');
+        $sub_select2 = new Select();
+        $sub_select2->from(['avg' => $sub_select])
+             ->columns(['average', 'user_id'])
+            ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('MIN(@rownum:=@rownum+1)')])
+             ->group('avg.average');
+        
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'page$percentile' => new Expression('FLOOR(COALESCE((MIN(t1.row_number)-1)*100/(MIN(t1.row_number) + @rownum-MAX(t1.row_number)),0))')])
+                ->join(['t1' => $sub_select2], new Expression('1'), ['page$user_id' => 'user_id', 'page$average' => 'average'])
+                ->where(['page.id' => $id])
+                ->group('t1.average');
+        
+        return $this->selectWith($select);
+    }
 
 }

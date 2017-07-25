@@ -27,6 +27,10 @@ class Page extends BasePage
     protected $owner;
     protected $address;
     protected $page_relation;
+    
+    protected $average;
+    protected $median;
+    protected $percentile;
 
     public function exchangeArray(array &$data)
     {
@@ -183,6 +187,43 @@ class Page extends BasePage
     public function getState()
     {
         return $this->state;
+    }    
+    
+    public function setMedian($median)
+    {
+        $this->median = $median;
+
+        return $this;
+    }
+
+    public function getMedian()
+    {
+        return $this->median;
+    }    
+    
+    public function setAverage($average)
+    {
+        $this->average = $average;
+
+        return $this;
+    }
+
+    public function getAverage()
+    {
+        return $this->average;
+    }
+
+    
+    public function setPercentile($percentile)
+    {
+        $this->percentile = $percentile;
+
+        return $this;
+    }
+
+    public function getPercentile()
+    {
+        return $this->percentile;
     }
 
     /**
