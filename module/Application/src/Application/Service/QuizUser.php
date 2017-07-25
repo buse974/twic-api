@@ -52,7 +52,8 @@ class QuizUser extends AbstractService
       $ar[$q_id] = [];
     }
 
-    $res_quiz_user = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id));
+    $identity = $this->getServiceUser()->getIdentity();
+    $res_quiz_user = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id)->setUserId($identity['id']));
     foreach ($res_quiz_user as $m_quiz_user) {
       $ar[$m_quiz_user->getQuizId()][] = $m_quiz_user->toArray();
     }

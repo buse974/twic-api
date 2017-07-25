@@ -3,6 +3,8 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\QuizQuestion as ModelQuizQuestion;
+
 
 class QuizQuestion extends AbstractService
 {
@@ -38,7 +40,7 @@ class QuizQuestion extends AbstractService
   {
     return $this->getMapper()->select($this->getModel()->setId($id));
   }
-  
+
   public function remove($id)
   {
     return $this->getMapper()->delete($this->getModel()->setId($id));
@@ -64,12 +66,25 @@ class QuizQuestion extends AbstractService
     return $ret;
   }
 
-  public function get($quiz_id)
+  public function get($quiz_id, $item_id = null)
   {
+    $identity = $this->getServiceUser()->getIdentity();
     $res_quiz_question = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id));
 
-    foreach ($res_quiz_question as $m_quiz_question) {
-      $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId()));
+    if(null === $item_id) {
+      foreach ($res_quiz_question as $m_quiz_question) {
+        $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId()));
+      }
+    } else {
+      $m_item = $this->getServiceItem()->getLite($item_id)->current();
+      $page_id = $m_item->getPageId();
+      $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+      $has_answer = ($m_item->getIsGradePublished() === true || in_array($identity['id'], $ar_pu[$page_id]) );
+      foreach ($res_quiz_question as $m_quiz_question) {
+        if(!(!$has_answer && $m_quiz_question->getType() === ModelQuizQuestion::TYPE_TEXT)) {
+          $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId(), $has_answer));
+        }
+      }
     }
 
     return $res_quiz_question;
@@ -99,5 +114,35 @@ class QuizQuestion extends AbstractService
   public function getServiceQuizAnswer()
   {
       return $this->container->get('app_service_quiz_answer');
+  }
+
+  /**
+   * Get Service Item
+   *
+   * @return \Application\Service\Item
+   */
+  public function getServiceItem()
+  {
+      return $this->container->get('app_service_item');
+  }
+
+  /**
+   * Get Service User
+   *
+   * @return \Application\Service\User
+   */
+  public function getServiceUser()
+  {
+      return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Page User
+   *
+   * @return \Application\Service\PageUser
+   */
+  public function getServicePageUser()
+  {
+      return $this->container->get('app_service_page_user');
   }
 }

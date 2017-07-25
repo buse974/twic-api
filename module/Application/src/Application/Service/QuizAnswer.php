@@ -68,8 +68,8 @@ class QuizAnswer extends AbstractService
       return (int) $this->getMapper()->getLastInsertValue();
   }
 
-  public function get($quiz_question_id)
+  public function get($quiz_question_id, $has_answer)
   {
-    return $this->getMapper()->select($this->getModel()->setQuizQuestionId($quiz_question_id));
+    return $this->getMapper()->get($quiz_question_id, $has_answer);
   }
 }
