@@ -221,7 +221,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['title'] , "super title");
         $this->assertEquals($data['result']['logo'] , "logo");
-        $this->assertEquals($data['result']['is_published'] , "logo");
+        $this->assertEquals($data['result']['is_published'] , 0);
         $this->assertEquals($data['result']['background'] , "background");
         $this->assertEquals($data['result']['description'] , "description");
         $this->assertEquals($data['result']['confidentiality'] , 0);

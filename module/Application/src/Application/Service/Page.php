@@ -431,6 +431,7 @@ class Page extends AbstractService
 
         $tmp_m_page = $this->getMapper()->select($this->getModel()->setId($id))->current();
         if ($confidentiality !== null) {
+
             if ($tmp_m_page->getConfidentiality() !== $confidentiality) {
                 if ($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
                     $this->getServicePost()->hardDelete('PP'.$id);
@@ -658,7 +659,7 @@ class Page extends AbstractService
       $search = null,
       $tags = null,
       $children_id = null,
-      $is_member_admin = null, // get only les member admin true/false
+      $is_member_admin = null, // get only les meber admin true/false
       $exclude = null
       )
     {

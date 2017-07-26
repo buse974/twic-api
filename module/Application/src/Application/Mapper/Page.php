@@ -142,15 +142,15 @@ class Page extends AbstractMapper
                 ->where(["( page.confidentiality = 0 "])
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
 
-            $select->join(['pu' => 'page_user'], new Expression("pu.page_id = page.id AND pu.role = 'admin'"), []);
-            $select->join(['pu_u' => 'user'],'pu.user_id=pu_u.id', []);
-            $select->join(['co' => 'circle_organization'], 'co.organization_id=pu_u.organization_id', []);
-            $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
-            $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
-            $select->where(['circle_organization_user.id' => $me]);
+            $select->join(['pu' => 'page_user'], new Expression("pu.page_id = page.id AND pu.role = 'admin'"), [])
+              ->join(['pu_u' => 'user'],'pu.user_id=pu_u.id', [])
+              ->join(['co' => 'circle_organization'], 'co.organization_id=pu_u.organization_id', [])
+              ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
+              ->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', [])
+              ->where(['circle_organization_user.id' => $me]);
 
             // retourne que les couses publié ou tous le reste
-            $select->where(['( page.is_published IS TRUE OR page.type <> "course" )']);
+            $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR page_user.role = "admin" )']);
         }
         $select->order(['page.start_date' => 'DESC'])
             ->group('page.id');

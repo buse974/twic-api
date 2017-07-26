@@ -23,16 +23,16 @@ class Post extends AbstractMapper
 
         $select->columns($columns);
         $select->join('page', 'page.id = post.t_page_id', [], $select::JOIN_LEFT)
-            ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
-            ->where(['post.deleted_date IS NULL'])
-            ->where(['page.deleted_date IS NULL'])
-            ->group('post.id')
-            ->quantifier('DISTINCT');
+          ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
+          ->where(['post.deleted_date IS NULL'])
+          ->where(['page.deleted_date IS NULL'])
+          ->group('post.id')
+          ->quantifier('DISTINCT');
 
         // @TODO on part du principe que si il n'y a pas de page_id donc c pour un mur donc on récupére que les post des page publish de type course
         // sinon si on donne la page_id on considére qui a pu récupérer l'id donc c accéssible (normalement que pour les admins de la page et les admins studnet)
         if(null === $page_id) {
-          $select->where(['( page.is_published IS TRUE OR page.type <> "course" )']);
+          $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR page.type IS NULL)']);
         }
 
         if (null === $parent_id) {
