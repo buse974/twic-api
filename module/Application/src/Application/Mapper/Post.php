@@ -29,6 +29,12 @@ class Post extends AbstractMapper
             ->group('post.id')
             ->quantifier('DISTINCT');
 
+        // @TODO on part du principe que si il n'y a pas de page_id donc c pour un mur donc on récupére que les post des page publish de type course
+        // sinon si on donne la page_id on considére qui a pu récupérer l'id donc c accéssible (normalement que pour les admins de la page et les admins studnet)
+        if(null === $page_id) {
+          $select->where(['( page.is_published IS TRUE OR page.type <> "course" )']);
+        }
+
         if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])

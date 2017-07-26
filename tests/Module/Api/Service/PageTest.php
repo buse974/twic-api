@@ -176,7 +176,7 @@ class PageTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 20);
+        $this->assertEquals(count($data['result']) , 21);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 1);
         $this->assertEquals($data['result']['address']['city']['name'] , "Villefontaine");
@@ -221,6 +221,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['id'] , 1);
         $this->assertEquals($data['result']['title'] , "super title");
         $this->assertEquals($data['result']['logo'] , "logo");
+        $this->assertEquals($data['result']['is_published'] , "logo");
         $this->assertEquals($data['result']['background'] , "background");
         $this->assertEquals($data['result']['description'] , "description");
         $this->assertEquals($data['result']['confidentiality'] , 0);

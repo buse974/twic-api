@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 665,
+    'build-commit' => 666,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -138,9 +138,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS665',
+                    'namespace' => 'LMS666',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS665'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS666'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
