@@ -150,7 +150,7 @@ class Page extends AbstractMapper
               ->where(['circle_organization_user.id' => $me]);
 
             // retourne que les couses publié ou tous le reste
-            $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR page_user.role = "admin" )']);
+            $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR ( page_user.role = "admin" AND page_user.user_id = ? ) )' => $me]);
         }
         $select->order(['page.start_date' => 'DESC'])
             ->group('page.id');
