@@ -30,6 +30,7 @@ class Page extends AbstractModel
 	protected $subtype;
 	protected $conversation_id;
 	protected $created_date;
+	protected $is_published;
 
 	protected $prefix = 'page';
 
@@ -317,6 +318,18 @@ class Page extends AbstractModel
 	public function setCreatedDate($created_date)
 	{
 		$this->created_date = $created_date;
+
+		return $this;
+	}
+
+	public function getIsPublished()
+	{
+		return $this->is_published;
+	}
+
+	public function setIsPublished($is_published)
+	{
+		$this->is_published = $is_published;
 
 		return $this;
 	}

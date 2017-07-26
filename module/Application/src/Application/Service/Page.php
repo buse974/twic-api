@@ -68,7 +68,8 @@ class Page extends AbstractService
      * @param string $custom,
      * @param string $subtype,
      * @param int    $circle_id
-
+     * @param bool   $is_published
+     *
      * @return int
      */
     public function add(
@@ -94,7 +95,8 @@ class Page extends AbstractService
       $libelle = null,
       $custom = null,
       $subtype = null,
-      $circle_id = null
+      $circle_id = null,
+      $is_published = null
     ) {
 
         $identity = $this->getServiceUser()->getIdentity();
@@ -135,6 +137,7 @@ class Page extends AbstractService
           ->setLibelle($libelle)
           ->setWebsite($formattedWebsite)
           ->setPhone($phone)
+          ->setIsPublished($is_published)
           ->setSubtype($subtype)
           ->setConversationId($conversation_id)
           ->setShortTitle($short_title)
@@ -321,7 +324,6 @@ class Page extends AbstractService
      * @param string $background
      * @param string $description
      * @param int    $confidentiality
-     * @param string $type
      * @param string $admission
      * @param string $start_date
      * @param string $end_date
@@ -329,6 +331,18 @@ class Page extends AbstractService
      * @param array  $users
      * @param array  $tags
      * @param array  $docs
+     * @param int    $owner_id
+     * @param int    $page_id
+     * @param array  $address
+     * @param string $short_title
+     * @param string $website
+     * @param string $phone
+     * @param string $libelle
+     * @param string $custom
+     * @param int    $circle_id
+     * @param bool   $is_published
+     *
+     *
      * @TODO Seuls admins de la page peuvent l'éditer (ou un studnet admin)
      *
      * @return int
@@ -355,7 +369,9 @@ class Page extends AbstractService
       $phone = null,
       $libelle = null,
       $custom = null,
-      $circle_id = null)
+      $circle_id = null,
+      $is_published = null
+      )
     {
 
         $user_id = $this->getServiceUser()->getIdentity()['id'];
@@ -373,6 +389,7 @@ class Page extends AbstractService
             ->setLocation($location)
             ->setUserId($user_id)
             ->setOwnerId($owner_id)
+            ->setIsPublished($is_published)
             ->setCustom($custom)
             ->setLibelle($libelle)
             ->setWebsite($formattedWebsite)
@@ -414,7 +431,6 @@ class Page extends AbstractService
 
         $tmp_m_page = $this->getMapper()->select($this->getModel()->setId($id))->current();
         if ($confidentiality !== null) {
-
             if ($tmp_m_page->getConfidentiality() !== $confidentiality) {
                 if ($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
                     $this->getServicePost()->hardDelete('PP'.$id);
@@ -559,7 +575,7 @@ class Page extends AbstractService
       $this->addChannel();
       return $this->getMapper()->getIdByItem($item_id)->current()->getId();
     }
-    
+
      /**
      * Get Page grades
      *
@@ -569,25 +585,25 @@ class Page extends AbstractService
      */
     public function getGrades($id)
     {
-        
+
         if(!is_array($id)){
             $id = [$id];
         }
-        
+
         $grades = [];
         foreach($id as $i){
             $median = $this->getMapper()->getMedian($i)->current()->getMedian();
             $avg = $this->getMapper()->getAverage($i)->current()->getAverage();
-            $grades[$i] =  [ 
-                'id' => $i, 
-                'median' => is_numeric($median) ? $median : null, 
-                'average' => is_numeric($avg) ? $avg : null  
+            $grades[$i] =  [
+                'id' => $i,
+                'median' => is_numeric($median) ? $median : null,
+                'average' => is_numeric($avg) ? $avg : null
              ];
         }
       return $grades;
     }
-    
-     
+
+
      /**
      * Get Page grades
      *
@@ -598,7 +614,7 @@ class Page extends AbstractService
      */
     public function getUsersGrades($id, $filter)
     {
-        
+
         $res_grades = $this->getMapper()->usePaginator($filter)->getUsersAvg($id);
         $res_prcs = $this->getMapper()->getUsersPrc($id);
         $prcs = [];
@@ -606,9 +622,9 @@ class Page extends AbstractService
             $prcs[$m_prc->getAverage()] = $m_prc->getPercentile();
         }
         foreach($res_grades as $m_grade){
-            $m_grade->setPercentile($prcs[$m_grade->getAverage()]);  
+            $m_grade->setPercentile($prcs[$m_grade->getAverage()]);
         }
-        
+
         return [ 'list' => $res_grades, 'count' => $this->getMapper()->count() ];
     }
 
@@ -642,7 +658,7 @@ class Page extends AbstractService
       $search = null,
       $tags = null,
       $children_id = null,
-      $is_member_admin = null, // get only les meber admin true/false
+      $is_member_admin = null, // get only les member admin true/false
       $exclude = null
       )
     {

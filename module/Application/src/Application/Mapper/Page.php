@@ -148,6 +148,9 @@ class Page extends AbstractMapper
             $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
             $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
             $select->where(['circle_organization_user.id' => $me]);
+
+            // retourne que les couses publié ou tous le reste
+            $select->where(['( page.is_published IS TRUE OR page.type <> "course" )']);
         }
         $select->order(['page.start_date' => 'DESC'])
             ->group('page.id');
@@ -172,6 +175,7 @@ class Page extends AbstractMapper
                 'user_id',
                 'owner_id',
                 'conversation_id',
+                'is_published',
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
@@ -218,10 +222,10 @@ class Page extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
-    
+
+
      /**
-     * Execute Request Get 
+     * Execute Request Get
      *
      * @param  int $id
      */
@@ -239,7 +243,7 @@ class Page extends AbstractMapper
                 ->order([new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100) DESC')]);
         return $select;
     }
-    
+
     public function getRankSelect($id, $avg){
         $rank_select->columns(['rank' => new Expression('COUNT(*) + 1')])
             ->from(['g' => $this->getGradesSelect($id)])
@@ -247,7 +251,7 @@ class Page extends AbstractMapper
             ->where(['g.average < ?' => $avg]);
         return $rank_select;
     }
-    
+
      /**
      * Execute Request Get organization median
      *
@@ -260,18 +264,18 @@ class Page extends AbstractMapper
         $sub_select->columns(['average'])
             ->from(['g' => $grades_select])
             ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('@rownum:=@rownum+1')]);
-        
-        
+
+
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'page$median' => new Expression('AVG(t1.average)')])
                ->join(['t1' => $sub_select], new Expression('1'), [])
                 ->where(['page.id' => $id])
                 ->where(new Expression('(row_number = FLOOR((@rownum+1)/2)'))
                 ->where(new Expression('row_number = FLOOR((@rownum+2)/2))'), Predicate::OP_OR);
-        
+
         return $this->selectWith($select);
     }
-    
+
     /**
      * Execute Request Get organization average
      *
@@ -284,12 +288,12 @@ class Page extends AbstractMapper
         $sub_select->columns(['average' => new Expression('AVG(average)')])
             ->from(['g' => $grades_select])
             ->group('item_user$user_id');
-        
+
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'page$average' => new Expression('ROUND(AVG(average))')])
                 ->join(['t1' => $sub_select], new Expression('1'), [])
                 ->where(['page.id' => $id]);
-        
+
         return $this->selectWith($select);
     }
     /**
@@ -309,7 +313,7 @@ class Page extends AbstractMapper
                 ->join(['t1' => $sub_select], new Expression('1'), ['page$user_id' => 'user_id'])
                 ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('@rownum:=@rownum+1')])
                 ->where(['page.id' => $id]);
-        
+
         return $this->selectWith($select);
     }
     /**
@@ -330,13 +334,13 @@ class Page extends AbstractMapper
              ->columns(['average', 'user_id'])
             ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('MIN(@rownum:=@rownum+1)')])
              ->group('avg.average');
-        
+
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'page$percentile' => new Expression('FLOOR(COALESCE((MIN(t1.row_number)-1)*100/(MIN(t1.row_number) + @rownum-MAX(t1.row_number)),0))')])
                 ->join(['t1' => $sub_select2], new Expression('1'), ['page$user_id' => 'user_id', 'page$average' => 'average'])
                 ->where(['page.id' => $id])
                 ->group('t1.average');
-        
+
         return $this->selectWith($select);
     }
 
