@@ -36,12 +36,12 @@ class Post extends AbstractMapper
         }
 
         $select->join('item', 'post.item_id = item.id', [], $select::JOIN_LEFT)
-          ->where(['( item.id IS NULL OR
+          ->where(['( item.id IS NULL OR (item.is_published=true AND 
           (`item`.`is_available`=1 OR (`item`.`is_available`=3 AND  (
           ( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL ) OR
           ( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL ) OR
           ( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP() ) OR
-          ( UTC_TIMESTAMP() BETWEEN `item`.`start_date` AND `item`.`end_date` )))) )']);
+          ( UTC_TIMESTAMP() BETWEEN `item`.`start_date` AND `item`.`end_date` ))))) )']);
 
         if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
