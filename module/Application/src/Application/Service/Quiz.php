@@ -122,11 +122,12 @@ class Quiz extends AbstractService
    *
    * @invokable
    *
-   * @param  int $id
+   * @param int $id
+   * @param int $user_id
    */
-  public function getUserAnswer($id)
+  public function getUserAnswer($id, $user_id = null)
   {
-    return $this->getServiceQuizUser()->get($id);
+    return $this->getServiceQuizUser()->get($id, $user_id);
   }
 
   /**
@@ -186,8 +187,8 @@ class Quiz extends AbstractService
 
     $ret = [];
     foreach ($id as $i) {
-      $m_quiz = $this->getMapper()->select($this->getModel()->setId($i))->current();
-      $m_quiz->setQuizQuestion($this->getServiceQuizQuestion()->get($i, (is_numeric($m_quiz->getItemId())? $m_quiz->getItemId():null)));
+      $m_quiz = $this->getLite($id);
+      $m_quiz->setQuizQuestion($this->getServiceQuizQuestion()->get($i));
 
       $ret[$i] = $m_quiz->toArray();
     }
@@ -195,9 +196,25 @@ class Quiz extends AbstractService
     return $ret;
   }
 
+  /**
+  * Get Lite Model Quiz
+  * @param int $id
+  *
+  * @return \Application\Model\Quiz
+  **/
+  public function getLite($id)
+  {
+    return $this->getMapper()->select($this->getModel()->setId($id))->current();
+  }
+
   public function update($id, $item_id = null, $name = null, $attempt_count = null, $time_limit = null)
   {
-    $m_quiz = $this->getModel()->setId($id)->setItemId($item_id)->setName($name)->setAttemptCount($attempt_count)->setTimeLimit($time_limit);
+    $m_quiz = $this->getModel()
+      ->setId($id)
+      ->setItemId($item_id)
+      ->setName($name)
+      ->setAttemptCount($attempt_count)
+      ->setTimeLimit($time_limit);
 
     return $this->getMapper()->update($m_quiz);
   }

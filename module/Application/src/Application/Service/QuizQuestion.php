@@ -66,17 +66,14 @@ class QuizQuestion extends AbstractService
     return $ret;
   }
 
-  public function get($quiz_id, $item_id = null)
+  public function get($quiz_id)
   {
     $identity = $this->getServiceUser()->getIdentity();
     $res_quiz_question = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id));
 
-    if(null === $item_id) {
-      foreach ($res_quiz_question as $m_quiz_question) {
-        $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId()));
-      }
-    } else {
-      $m_item = $this->getServiceItem()->getLite($item_id)->current();
+    $m_quiz = $this->getServiceQuiz()->getLite($quiz_id);
+    if($m_quiz && is_numeric($m_quiz->getItemId())) {
+      $m_item = $this->getServiceItem()->getLite($m_quiz->getItemId())->current();
       $page_id = $m_item->getPageId();
       $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
       $has_answer = ($m_item->getIsGradePublished() === true || in_array($identity['id'], $ar_pu[$page_id]) );
@@ -84,6 +81,10 @@ class QuizQuestion extends AbstractService
         if(!(!$has_answer && $m_quiz_question->getType() === ModelQuizQuestion::TYPE_TEXT)) {
           $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId(), $has_answer));
         }
+      }
+    } else {
+      foreach ($res_quiz_question as $m_quiz_question) {
+        $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId()));
       }
     }
 
@@ -114,6 +115,16 @@ class QuizQuestion extends AbstractService
   public function getServiceQuizAnswer()
   {
       return $this->container->get('app_service_quiz_answer');
+  }
+
+  /**
+   * Get Service Quiz
+   *
+   * @return \Application\Service\Quiz
+   */
+  public function getServiceQuiz()
+  {
+      return $this->container->get('app_service_quiz');
   }
 
   /**

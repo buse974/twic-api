@@ -42,7 +42,7 @@ class QuizUser extends AbstractService
     return $this->getMapper()->delete($m_quiz_user);
   }
 
-  public function get($quiz_id)
+  public function get($quiz_id, $user_id = null)
   {
     $ar = [];
     if(!is_array($quiz_id)) {
@@ -53,7 +53,22 @@ class QuizUser extends AbstractService
     }
 
     $identity = $this->getServiceUser()->getIdentity();
-    $res_quiz_user = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id)->setUserId($identity['id']));
+    $is_admin = false;
+    if(null !== $user_id) {
+      $m_quiz = $this->getServiceQuiz()->getLite($quiz_id);
+      if($m_quiz && is_numeric($m_quiz->getItemId())) {
+        $m_item = $this->getServiceItem()->getLite($m_quiz->getItemId())->current();
+        $page_id = $m_item->getPageId();
+        $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+        $is_admin = in_array($identity['id'], $ar_pu[$page_id]);
+      }
+    }
+
+    if(null === $user_id || (null !== $user_id && $is_admin === false) ) {
+      $user_id = $identity['id'];
+    }
+
+    $res_quiz_user = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id)->setUserId($user_id));
     foreach ($res_quiz_user as $m_quiz_user) {
       $ar[$m_quiz_user->getQuizId()][] = $m_quiz_user->toArray();
     }
@@ -79,6 +94,36 @@ class QuizUser extends AbstractService
   public function getServiceUser()
   {
       return $this->container->get('app_service_user');
+  }
+
+  /**
+   * Get Service Item
+   *
+   * @return \Application\Service\Item
+   */
+  public function getServiceItem()
+  {
+      return $this->container->get('app_service_item');
+  }
+
+  /**
+   * Get Service Quiz
+   *
+   * @return \Application\Service\Quiz
+   */
+  public function getServiceQuiz()
+  {
+      return $this->container->get('app_service_quiz');
+  }
+
+  /**
+   * Get Service Page User
+   *
+   * @return \Application\Service\PageUser
+   */
+  public function getServicePageUser()
+  {
+      return $this->container->get('app_service_page_user');
   }
 
 }
