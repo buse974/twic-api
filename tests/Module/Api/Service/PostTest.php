@@ -119,7 +119,7 @@ class PostTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 22);
+        $this->assertEquals(count($data['result']) , 23);
         $this->assertEquals(count($data['result']['subscription']) , 5);
         $this->assertEquals(!empty($data['result']['subscription']['last_date']) , true);
         $this->assertEquals($data['result']['subscription']['action'] , "create");
@@ -161,6 +161,7 @@ class PostTest extends AbstractService
         $this->assertEquals($data['result']['content'] , "content  #toto @['U',1]");
         $this->assertEquals($data['result']['user_id'] , 1);
         $this->assertEquals($data['result']['page_id'] , null);
+        $this->assertEquals($data['result']['item_id'] , null);
         $this->assertEquals($data['result']['link'] , "linkUpt");
         $this->assertEquals($data['result']['picture'] , "pictureUpt");
         $this->assertEquals($data['result']['name_picture'] , "name_pictureUpt");

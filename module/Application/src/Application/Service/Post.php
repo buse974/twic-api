@@ -435,27 +435,6 @@ class Post extends AbstractService
     }
 
     /**
-     * Get List Post
-     *
-     * @invokable
-     *
-     * @param array $filter
-     */
-    public function getListAdmin($filter = null)
-    {
-        $me = $this->getServiceUser()->getIdentity()['id'];
-        $mapper = (null !== $filter) ?
-            $this->getMapper()->usePaginator($filter) :
-            $this->getMapper();
-
-        $res_posts = $mapper->getListAdmin($me);
-
-        return (null !== $filter) ?
-            ['count' => $mapper->count(), 'list' => $res_posts]:
-            $res_posts;
-    }
-
-    /**
      * hard Delete
      */
     public function hardDelete($uid)
