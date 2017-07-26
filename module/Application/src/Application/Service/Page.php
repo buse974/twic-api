@@ -559,6 +559,58 @@ class Page extends AbstractService
       $this->addChannel();
       return $this->getMapper()->getIdByItem($item_id)->current()->getId();
     }
+    
+     /**
+     * Get Page grades
+     *
+     * @invokable
+     *
+     * @param  int $id
+     */
+    public function getGrades($id)
+    {
+        
+        if(!is_array($id)){
+            $id = [$id];
+        }
+        
+        $grades = [];
+        foreach($id as $i){
+            $median = $this->getMapper()->getMedian($i)->current()->getMedian();
+            $avg = $this->getMapper()->getAverage($i)->current()->getAverage();
+            $grades[$i] =  [ 
+                'id' => $i, 
+                'median' => is_numeric($median) ? $median : null, 
+                'average' => is_numeric($avg) ? $avg : null  
+             ];
+        }
+      return $grades;
+    }
+    
+     
+     /**
+     * Get Page grades
+     *
+     * @invokable
+     *
+     * @param  int $id
+     * @param array $filter
+     */
+    public function getUsersGrades($id, $filter)
+    {
+        
+        $res_grades = $this->getMapper()->usePaginator($filter)->getUsersAvg($id);
+        $res_prcs = $this->getMapper()->getUsersPrc($id);
+        $prcs = [];
+        foreach($res_prcs as $m_prc){
+            $prcs[$m_prc->getAverage()] = $m_prc->getPercentile();
+        }
+        foreach($res_grades as $m_grade){
+            $m_grade->setPercentile($prcs[$m_grade->getAverage()]);  
+        }
+        
+        return [ 'list' => $res_grades, 'count' => $this->getMapper()->count() ];
+    }
 
     /**
      * Get Page
