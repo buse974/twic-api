@@ -42,6 +42,8 @@ class PageUser extends AbstractMapper
         if(null !== $me && $me !== $user_id) {
           $select->join(['pu' => 'page_user'], 'pu.page_id = page.id', [], $select::JOIN_LEFT)
             ->where([' ( pu.user_id = ? OR page.confidentiality=0 ) ' => $me]);
+
+          $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR ( page_user.role = "admin" AND page_user.user_id = ? ) )' => $me]);
         }
 
         return $this->selectWith($select);
