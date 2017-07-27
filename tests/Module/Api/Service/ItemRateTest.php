@@ -712,7 +712,7 @@ class ItemRateTest extends AbstractService
          $this->setIdentity(1);
          $data = $this->jsonRpc('quiz.updateQuestions', [
           'questions' => [
-             ['id' => 1, 'text' => 'nouveau text', 'type' => 'text', 'point' =>  18]
+             ['id' => 1, 'text' => 'nouveau text', 'type' => 'multiple', 'point' =>  18]
            ]
          ]);
 
@@ -728,13 +728,13 @@ class ItemRateTest extends AbstractService
        */
        public function testUpdateAnswers($quiz_id)
        {
-         $this->reset();
-         $this->setIdentity(1);
-         $data = $this->jsonRpc('quiz.updateAnswers', [
-           'answers' => [
-              ['id' => 1, 'text' => 'nouveau text answer', 'is_correct' => false]
+          $this->reset();
+          $this->setIdentity(1);
+          $data = $this->jsonRpc('quiz.updateAnswers', [
+            'answers' => [
+              ['id' => 3, 'text' => 'nouveau text answer', 'is_correct' => true]
             ]
-         ]);
+          ]);
 
           $this->assertEquals(count($data) , 3);
           $this->assertEquals($data['id'] , 1);
@@ -754,6 +754,7 @@ class ItemRateTest extends AbstractService
            'id' => $quiz_id['quiz_id']
          ]);
 
+        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
@@ -833,7 +834,6 @@ class ItemRateTest extends AbstractService
         $this->assertEquals($data['result'][1]['item_id'] , 9);
         $this->assertEquals($data['result'][1]['user_id'] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
-
        }
 
       /**
@@ -846,6 +846,19 @@ class ItemRateTest extends AbstractService
         $data = $this->jsonRpc('quiz.addUserAnswer', [
           'quiz_question_id' => 1,
           'quiz_answer_id' => 1,
+          'text' => 'super'
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.addUserAnswer', [
+          'quiz_question_id' => 1,
+          'quiz_answer_id' => 3,
           'text' => 'super'
         ]);
 

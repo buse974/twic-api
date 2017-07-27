@@ -401,7 +401,9 @@ class Item extends AbstractService
          default:
            break;
        }
-     }    return $ar;
+     }
+
+    return $ar;
    }
 
   /**

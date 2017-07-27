@@ -33,7 +33,6 @@ class Library extends AbstractService
      */
     public function add($name, $link = null, $token = null, $type = null, $folder_id = null, $global = null, $folder_name = null, $text = null)
     {
-        $urldms = $this->container->get('config')['app-conf']['urldms'];
         $user_id = $this->getServiceUser()->getIdentity()['id'];
 
         if (null !== $folder_name && null === $folder_id) {
@@ -54,6 +53,7 @@ class Library extends AbstractService
 
         $box_id = null;
         if( (null !== $link || null !== $token) && null !== $type) {
+          $urldms = $this->container->get('config')['app-conf']['urldms'];
           $u = (null !== $link) ? $link : $urldms . $token;
           $m_box = $this->getServiceBox()->addFile($u, $type);
           if ($m_box instanceof ModelDocument) {
@@ -190,8 +190,10 @@ class Library extends AbstractService
             return 0;
         }
 
+
         $box_id = null;
         if( (null !== $link || null !== $token) && null !== $type) {
+          $urldms = $this->container->get('config')['app-conf']['urldms'];
           $u = (null !== $link) ? $link : $urldms . $token;
           $m_box = $this->getServiceBox()->addFile($u, $type);
           if ($m_box instanceof ModelDocument) {

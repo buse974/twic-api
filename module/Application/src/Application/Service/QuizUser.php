@@ -6,6 +6,35 @@ use Dal\Service\AbstractService;
 
 class QuizUser extends AbstractService
 {
+  public function calc($quiz_id, $user_id)
+  {
+    $ar_quiz_users = $this->get($quiz_id, $user_id)[$quiz_id];
+    $res_quiz_question = $this->getServiceQuizQuestion()->get($quiz_id);
+    foreach ($res_quiz_question as $m_quiz_question) {
+      $is_true_true = false;
+      foreach ($m_quiz_question->getQuizAnswer() as $m_quiz_answer) {
+        if($m_quiz_answer->getIsCorrect() == 1) {
+          $is_true = false;
+          foreach ($ar_quiz_users as $ar_quiz_user) {
+            if($ar_quiz_user['quiz_question_id'] === $m_quiz_answer->getQuizQuestionId() && $ar_quiz_user['quiz_answer_id'] === $m_quiz_answer->getId()) {
+              $is_true = true;
+              break;
+            }
+          }
+          if($is_true===false) {
+            $is_true_true = false;
+            break;
+          } else {
+            $is_true_true = true;
+          }
+        }
+      }
+
+      $point = $m_quiz_question->getPoint();
+      print_r(($is_true_true)?"VRAIX":"FAUX");
+    }
+  }
+
   public function add($quiz_question_id, $quiz_answer_id = null, $text = null)
   {
     $quiz_id = $this->getServiceQuizQuestion()->getLite($quiz_question_id)->current()->getQuizId();
@@ -21,6 +50,7 @@ class QuizUser extends AbstractService
       throw new \Exception("Error Processing Request", 1);
     }
 
+    $this->calc($quiz_id, $identity['id']);
     return (int) $this->getMapper()->getLastInsertValue();
   }
 
@@ -31,6 +61,7 @@ class QuizUser extends AbstractService
       ->setQuizAnswerId($quiz_answer_id)
       ->setText($text);
 
+    //$this->calc($quiz_id, $identity['id']);
     return $this->getMapper()->update($m_quiz_user, ['id' => $id, 'user_id' => $identity['id']]);
   }
 
