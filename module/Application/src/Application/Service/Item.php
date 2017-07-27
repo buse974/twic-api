@@ -149,9 +149,8 @@ class Item extends AbstractService
   public function getListItemUser($id)
   {
     if(!is_array($id)) {
-      $id = [$id];
+      $id=[$id];
     }
-
     $arr_item_user = [];
     foreach ($id as $i) {
       $arr_item_user[$i]=[];
@@ -159,36 +158,6 @@ class Item extends AbstractService
     $res_item_user = $this->getServiceItemUser()->getList($id);
     foreach ($res_item_user as $m_item_user) {
       $arr_item_user[$m_item_user->getItemId()][] = $m_item_user->toArray();
-    }
-
-    return $arr_item_user;
-  }
-
-  /**
-  * Get User of Item
-  *
-  * @invokable
-  *
-  * @param int $id
-  */
-  public function getItemUser($id)
-  {
-    $identity = $this->getServiceUser()->getIdentity();
-    if(!is_array($id)) {
-      $id = [$id];
-    }
-
-    $arr_item_user = [];
-    $res_item_user = $this->getServiceItemUser()->getList($id, $identity['id']);
-    foreach ($res_item_user as $m_item_user) {
-      $arr_item_user[$m_item_user->getItemId()] = $m_item_user->toArray();
-    }
-
-    //pour tout ce qui n'existe pas on les crée
-    foreach ($id as $i) {
-        if(!array_key_exists($i, $arr_item_user)){
-            $arr_item_user[$i] = $this->getServiceItemUser()->getOrCreate($identity['id'], $i);
-        }
     }
 
     return $arr_item_user;
@@ -366,7 +335,7 @@ class Item extends AbstractService
             $ar_item = $m_item->toArray();
              $tmpar = [
                'group_id' => null,
-               'rate' => $ar_item['item_user']['rate'],
+               'rate' => ($m_item->getIsGradePublished() === true || $is_admin)?$ar_item['item_user']['rate']:null,
                'users'=>[$ar_item['page_user']['user_id']],
                'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                'post_id' =>     $ar_item['item_user']['submission']['post_id'],
@@ -385,7 +354,7 @@ class Item extends AbstractService
                $ar_item = $m_item->toArray();
                $tmpar = [
                  'group_id' => null,
-                 'rate' => $ar_item['item_user']['rate'],
+                 'rate' => ($m_item->getIsGradePublished() === true || $is_admin)?$ar_item['item_user']['rate']:null,
                  'users'=>[$ar_item['page_user']['user_id']],
                  'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                  'post_id' => $ar_item['item_user']['submission']['post_id'],
@@ -414,7 +383,7 @@ class Item extends AbstractService
                  $ar_item = $m_item->toArray();
                  $tmpar = [
                    'group_id' => $ar_item['item_user']['group_id'],
-                   'rate' => $ar_item['item_user']['rate'],
+                   'rate' => ($m_item->getIsGradePublished() === true || $is_admin)?$ar_item['item_user']['rate']:null,
                    'users'=>[$ar_item['page_user']['user_id']],
                    'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                    'post_id' => $ar_item['item_user']['submission']['post_id'],
@@ -501,9 +470,6 @@ class Item extends AbstractService
 
     return true;
   }
-
-
-
 
   /**
   * Get Lite Item
