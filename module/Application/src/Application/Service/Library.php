@@ -53,13 +53,14 @@ class Library extends AbstractService
         }
 
         $box_id = null;
-        if($text === null) {
+        if( (null !== $link || null !== $token) && null !== $type) {
           $u = (null !== $link) ? $link : $urldms . $token;
           $m_box = $this->getServiceBox()->addFile($u, $type);
           if ($m_box instanceof ModelDocument) {
               $box_id = $m_box->getId();
           }
-        } else {
+        }
+        if (null !== $text && null === $type){
           $type = "text";
         }
         if($global === true && $folder_id !== null) {
@@ -189,12 +190,22 @@ class Library extends AbstractService
             return 0;
         }
 
+        $box_id = null;
+        if( (null !== $link || null !== $token) && null !== $type) {
+          $u = (null !== $link) ? $link : $urldms . $token;
+          $m_box = $this->getServiceBox()->addFile($u, $type);
+          if ($m_box instanceof ModelDocument) {
+              $box_id = $m_box->getId();
+          }
+        }
+
        $m_library = $this->getModel()
             ->setId($id)
             ->setName($name)
             ->setLink($link)
             ->setToken($token)
             ->setType($type)
+            ->setBoxId($box_id)
             ->setText($text)
             ->setFolderId(($folder_id === 0) ? new IsNull() : $folder_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
@@ -203,7 +214,7 @@ class Library extends AbstractService
 
        return $this->get($id);
     }
-    
+
     /**
      * Get List Library By Post id
      * Appeler par pos.get

@@ -468,22 +468,38 @@ class Item extends AbstractService
   }
 
   /**
-  * Publish Grade Item
+  * Publish Item
   *
   * @invokable
   *
   * @param int $item_id
   */
-  public function publish($id, $publish = true)
+  public function publish($id = null, $publish = true, $all = false, $parent_id = null)
   {
-    $page_id = $this->getLite($id)->current()->getPageId();
+    if(null === $id && null === $parent_id) {
+      throw new \Exception("Error Processing Request", 1);
+    }
+
+    $page_id = $this->getLite((null !== $id)?$id:$parent_id)->current()->getPageId();
     $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
     $identity = $this->getServiceUser()->getIdentity();
     if(!in_array($identity['id'], $ar_pu[$page_id])) {
       throw new \Exception("No admin", 1);
     }
 
-    return $this->getMapper()->update($this->getModel()->setId($id)->setIsPublished($publish));
+    $this->getMapper()->update($this->getModel()->setId($id)->setParentId($parent_id)->setIsPublished($publish));
+    if(true === $all) {
+      if(null !== $id) {
+        $this->publish(null,true,true, $id);
+      } else {
+        $res_item = $this->getMapper()->select($this->getModel()->setParentId($parent_id));
+        foreach ($res_item as $m_item) {
+          $this->publish(null,true,true, $m_item->getId());
+        }
+      }
+    }
+
+    return true;
   }
 
 
