@@ -69,9 +69,9 @@ class Library extends AbstractService
 
         $m_library = $this->getModel()
             ->setName($name)
-            ->setLink($link)
-            ->setText($text)
-            ->setToken($token)
+            ->setLink((($link === '')?new IsNull('link'):$link))
+            ->setText((($text === '')?new IsNull('text'):$text))
+            ->setToken((($token === '')?new IsNull('token'):$token))
             ->setBoxId($box_id)
             ->setGlobal($global)
             ->setFolderId($folder_id)

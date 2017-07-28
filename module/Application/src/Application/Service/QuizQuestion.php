@@ -66,17 +66,19 @@ class QuizQuestion extends AbstractService
     return $ret;
   }
 
-  public function get($quiz_id)
+  public function get($quiz_id, $has_answer = null)
   {
     $identity = $this->getServiceUser()->getIdentity();
     $res_quiz_question = $this->getMapper()->select($this->getModel()->setQuizId($quiz_id));
 
     $m_quiz = $this->getServiceQuiz()->getLite($quiz_id);
     if($m_quiz && is_numeric($m_quiz->getItemId())) {
-      $m_item = $this->getServiceItem()->getLite($m_quiz->getItemId())->current();
-      $page_id = $m_item->getPageId();
-      $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
-      $has_answer = ($m_item->getIsGradePublished() === true || in_array($identity['id'], $ar_pu[$page_id]) );
+      if(null === $has_answer) {
+        $m_item = $this->getServiceItem()->getLite($m_quiz->getItemId())->current();
+        $page_id = $m_item->getPageId();
+        $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
+        $has_answer = ($m_item->getIsGradePublished() === true || in_array($identity['id'], $ar_pu[$page_id]) );
+      }
       foreach ($res_quiz_question as $m_quiz_question) {
         if(!(!$has_answer && $m_quiz_question->getType() === ModelQuizQuestion::TYPE_TEXT)) {
           $m_quiz_question->setQuizAnswer($this->getServiceQuizAnswer()->get($m_quiz_question->getId(), $has_answer));

@@ -9,14 +9,17 @@ class QuizUser extends AbstractService
   public function calc($quiz_id, $user_id)
   {
     $ar_quiz_users = $this->get($quiz_id, $user_id)[$quiz_id];
-    $res_quiz_question = $this->getServiceQuizQuestion()->get($quiz_id);
+    $res_quiz_question = $this->getServiceQuizQuestion()->get($quiz_id, true);
+    $point = 0;
     foreach ($res_quiz_question as $m_quiz_question) {
       $is_true_true = false;
+      $type = $m_quiz_question->getType();
       foreach ($m_quiz_question->getQuizAnswer() as $m_quiz_answer) {
-        if($m_quiz_answer->getIsCorrect() == 1) {
+        if($m_quiz_answer->getIsCorrect() == 1 || $type === 'text') {
           $is_true = false;
           foreach ($ar_quiz_users as $ar_quiz_user) {
-            if($ar_quiz_user['quiz_question_id'] === $m_quiz_answer->getQuizQuestionId() && $ar_quiz_user['quiz_answer_id'] === $m_quiz_answer->getId()) {
+            if($ar_quiz_user['quiz_question_id'] === $m_quiz_answer->getQuizQuestionId() &&
+            ($ar_quiz_user['quiz_answer_id'] === $m_quiz_answer->getId() || ($type === 'text' && trim($ar_quiz_user['text']) == trim($m_quiz_answer->getText())) ) ) {
               $is_true = true;
               break;
             }
@@ -30,8 +33,14 @@ class QuizUser extends AbstractService
         }
       }
 
-      $point = $m_quiz_question->getPoint();
-      print_r(($is_true_true)?"VRAIX":"FAUX");
+      if($is_true_true == true && is_numeric($m_quiz_question->getPoint())) {
+        $point += $m_quiz_question->getPoint();
+      }
+    }
+
+    $m_quiz = $this->getServiceQuiz()->getLite($quiz_id);
+    if($m_quiz && is_numeric($m_quiz->getItemId())) {
+      $this->getServiceItemUser()->_grade($m_quiz->getItemId(), $point, $user_id);
     }
   }
 
@@ -156,5 +165,17 @@ class QuizUser extends AbstractService
   {
       return $this->container->get('app_service_page_user');
   }
+
+  /**
+   * Get Service Item User
+   *
+   * @return \Application\Service\ItemUser
+   */
+  public function getServiceItemUser()
+  {
+      return $this->container->get('app_service_item_user');
+  }
+
+
 
 }

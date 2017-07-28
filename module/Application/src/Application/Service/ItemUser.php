@@ -148,6 +148,11 @@ class ItemUser extends AbstractService
       throw new \Exception("No admin", 1);
     }
 
+    return $this->_grade($item_id, $rate,$user_id, $group_id);
+  }
+
+  public function _grade($item_id, $rate,$user_id = null, $group_id = null)
+  {
     if($user_id !== null) {
       if(!is_array($user_id)) {
         $user_id = [$user_id];

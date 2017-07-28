@@ -721,6 +721,20 @@ class ItemRateTest extends AbstractService
         $this->assertEquals(count($data['result']) , 1);
         $this->assertEquals($data['result'][0] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        $this->reset();
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('quiz.updateQuestions', [
+         'questions' => [
+            ['id' => 2, 'text' => 'nouveau text', 'type' => 'simple', 'point' =>  18]
+          ]
+        ]);
+
+       $this->assertEquals(count($data) , 3);
+       $this->assertEquals($data['id'] , 1);
+       $this->assertEquals(count($data['result']) , 1);
+       $this->assertEquals($data['result'][0] , 1);
+       $this->assertEquals($data['jsonrpc'] , 2.0);
        }
 
        /**
@@ -733,6 +747,20 @@ class ItemRateTest extends AbstractService
           $data = $this->jsonRpc('quiz.updateAnswers', [
             'answers' => [
               ['id' => 3, 'text' => 'nouveau text answer', 'is_correct' => true]
+            ]
+          ]);
+
+          $this->assertEquals(count($data) , 3);
+          $this->assertEquals($data['id'] , 1);
+          $this->assertEquals(count($data['result']) , 1);
+          $this->assertEquals($data['result'][0] , 1);
+          $this->assertEquals($data['jsonrpc'] , 2.0);
+
+          $this->reset();
+          $this->setIdentity(1);
+          $data = $this->jsonRpc('quiz.updateAnswers', [
+            'answers' => [
+              ['id' => 4, 'text' => 'nouveau text answer', 'is_correct' => false]
             ]
           ]);
 
@@ -754,7 +782,6 @@ class ItemRateTest extends AbstractService
            'id' => $quiz_id['quiz_id']
          ]);
 
-        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
@@ -765,8 +792,8 @@ class ItemRateTest extends AbstractService
         $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][0]) , 5);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['id'] , 1);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['quiz_question_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "nouveau text answer");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 0);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "la une");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 1);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['order'] , null);
         $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][1]) , 5);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['id'] , 2);
@@ -777,22 +804,22 @@ class ItemRateTest extends AbstractService
         $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][2]) , 5);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['id'] , 3);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['quiz_question_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['text'] , "la trois");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['is_correct'] , 0);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['text'] , "nouveau text answer");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['is_correct'] , 1);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['order'] , null);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['id'] , 1);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_id'] , 1);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['point'] , 18);
         $this->assertEquals($data['result'][1]['quiz_question'][0]['text'] , "nouveau text");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "text");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "multiple");
         $this->assertEquals($data['result'][1]['quiz_question'][0]['order'] , null);
         $this->assertEquals(count($data['result'][1]['quiz_question'][1]) , 7);
         $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer']) , 3);
         $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][0]) , 5);
         $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['id'] , 4);
         $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['quiz_question_id'] , 2);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['text'] , "la une2");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['is_correct'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['text'] , "nouveau text answer");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['is_correct'] , 0);
         $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['order'] , null);
         $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][1]) , 5);
         $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['id'] , 5);
@@ -808,9 +835,9 @@ class ItemRateTest extends AbstractService
         $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['order'] , null);
         $this->assertEquals($data['result'][1]['quiz_question'][1]['id'] , 2);
         $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['point'] , null);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['text'] , "une question 2");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['type'] , "multiple");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['point'] , 18);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['text'] , "nouveau text");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['type'] , "simple");
         $this->assertEquals($data['result'][1]['quiz_question'][1]['order'] , null);
         $this->assertEquals(count($data['result'][1]['quiz_question'][2]) , 7);
         $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer']) , 1);
@@ -842,11 +869,10 @@ class ItemRateTest extends AbstractService
       public function testAddUserAnswer()
       {
         $this->reset();
-        $this->setIdentity(1);
+        $this->setIdentity(3);
         $data = $this->jsonRpc('quiz.addUserAnswer', [
           'quiz_question_id' => 1,
-          'quiz_answer_id' => 1,
-          'text' => 'super'
+          'quiz_answer_id' => 1
         ]);
 
         $this->assertEquals(count($data) , 3);
@@ -855,16 +881,39 @@ class ItemRateTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
 
         $this->reset();
-        $this->setIdentity(1);
+        $this->setIdentity(3);
         $data = $this->jsonRpc('quiz.addUserAnswer', [
           'quiz_question_id' => 1,
-          'quiz_answer_id' => 3,
-          'text' => 'super'
+          'quiz_answer_id' => 3
         ]);
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals($data['result'] , 2);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        $this->reset();
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('quiz.addUserAnswer', [
+          'quiz_question_id' => 2,
+          'quiz_answer_id' => 6
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 3);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+
+        $this->reset();
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('quiz.addUserAnswer', [
+          'quiz_question_id' => 3,
+          'text' => 'la une3'
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals($data['result'] , 4);
         $this->assertEquals($data['jsonrpc'] , 2.0);
       }
 
@@ -874,7 +923,7 @@ class ItemRateTest extends AbstractService
       public function testGetUserAnswer()
       {
         $this->reset();
-        $this->setIdentity(1);
+        $this->setIdentity(3);
         $data = $this->jsonRpc('quiz.getUserAnswer', [
           'id' => 1
         ]);
@@ -882,14 +931,35 @@ class ItemRateTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals(count($data['result'][1]) , 4);
         $this->assertEquals(count($data['result'][1][0]) , 6);
         $this->assertEquals($data['result'][1][0]['id'] , 1);
         $this->assertEquals($data['result'][1][0]['quiz_id'] , 1);
         $this->assertEquals($data['result'][1][0]['quiz_question_id'] , 1);
         $this->assertEquals($data['result'][1][0]['quiz_answer_id'] , 1);
-        $this->assertEquals($data['result'][1][0]['user_id'] , 1);
-        $this->assertEquals($data['result'][1][0]['text'] , "super");
+        $this->assertEquals($data['result'][1][0]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][0]['text'] , null);
+        $this->assertEquals(count($data['result'][1][1]) , 6);
+        $this->assertEquals($data['result'][1][1]['id'] , 2);
+        $this->assertEquals($data['result'][1][1]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][1]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1][1]['quiz_answer_id'] , 3);
+        $this->assertEquals($data['result'][1][1]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][1]['text'] , null);
+        $this->assertEquals(count($data['result'][1][2]) , 6);
+        $this->assertEquals($data['result'][1][2]['id'] , 3);
+        $this->assertEquals($data['result'][1][2]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][2]['quiz_question_id'] , 2);
+        $this->assertEquals($data['result'][1][2]['quiz_answer_id'] , 6);
+        $this->assertEquals($data['result'][1][2]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][2]['text'] , null);
+        $this->assertEquals(count($data['result'][1][3]) , 6);
+        $this->assertEquals($data['result'][1][3]['id'] , 4);
+        $this->assertEquals($data['result'][1][3]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][3]['quiz_question_id'] , 3);
+        $this->assertEquals($data['result'][1][3]['quiz_answer_id'] , null);
+        $this->assertEquals($data['result'][1][3]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][3]['text'] , "la une3");
         $this->assertEquals($data['jsonrpc'] , 2.0);
       }
 
@@ -899,7 +969,7 @@ class ItemRateTest extends AbstractService
       public function testUpdateUserAnswer()
       {
         $this->reset();
-        $this->setIdentity(1);
+        $this->setIdentity(3);
         $data = $this->jsonRpc('quiz.updateUserAnswer', [
           'quiz_answer_id' => 2,
           'id' => 1,
@@ -918,7 +988,7 @@ class ItemRateTest extends AbstractService
       public function testGetUserAnswerAfterUpt()
       {
         $this->reset();
-        $this->setIdentity(1);
+        $this->setIdentity(3);
         $data = $this->jsonRpc('quiz.getUserAnswer', [
           'id' => 1
         ]);
@@ -926,15 +996,37 @@ class ItemRateTest extends AbstractService
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][1]) , 1);
+        $this->assertEquals(count($data['result'][1]) , 4);
         $this->assertEquals(count($data['result'][1][0]) , 6);
         $this->assertEquals($data['result'][1][0]['id'] , 1);
         $this->assertEquals($data['result'][1][0]['quiz_id'] , 1);
         $this->assertEquals($data['result'][1][0]['quiz_question_id'] , 1);
         $this->assertEquals($data['result'][1][0]['quiz_answer_id'] , 2);
-        $this->assertEquals($data['result'][1][0]['user_id'] , 1);
+        $this->assertEquals($data['result'][1][0]['user_id'] , 3);
         $this->assertEquals($data['result'][1][0]['text'] , "super upd");
+        $this->assertEquals(count($data['result'][1][1]) , 6);
+        $this->assertEquals($data['result'][1][1]['id'] , 2);
+        $this->assertEquals($data['result'][1][1]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][1]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1][1]['quiz_answer_id'] , 3);
+        $this->assertEquals($data['result'][1][1]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][1]['text'] , null);
+        $this->assertEquals(count($data['result'][1][2]) , 6);
+        $this->assertEquals($data['result'][1][2]['id'] , 3);
+        $this->assertEquals($data['result'][1][2]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][2]['quiz_question_id'] , 2);
+        $this->assertEquals($data['result'][1][2]['quiz_answer_id'] , 6);
+        $this->assertEquals($data['result'][1][2]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][2]['text'] , null);
+        $this->assertEquals(count($data['result'][1][3]) , 6);
+        $this->assertEquals($data['result'][1][3]['id'] , 4);
+        $this->assertEquals($data['result'][1][3]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1][3]['quiz_question_id'] , 3);
+        $this->assertEquals($data['result'][1][3]['quiz_answer_id'] , null);
+        $this->assertEquals($data['result'][1][3]['user_id'] , 3);
+        $this->assertEquals($data['result'][1][3]['text'] , "la une3");
         $this->assertEquals($data['jsonrpc'] , 2.0);
+
       }
 
       /**
@@ -943,7 +1035,7 @@ class ItemRateTest extends AbstractService
       public function testRemoveUserAnswer()
       {
         $this->reset();
-        $this->setIdentity(1);
+        $this->setIdentity(3);
         $data = $this->jsonRpc('quiz.removeUserAnswer', [
           'id' => 1,
         ]);
@@ -983,9 +1075,9 @@ class ItemRateTest extends AbstractService
          ]);
 
          $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['result'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+         $this->assertEquals($data['id'] , 1);
+         $this->assertEquals($data['result'] , 1);
+         $this->assertEquals($data['jsonrpc'] , 2.0);
        }
 
        /**
@@ -993,11 +1085,11 @@ class ItemRateTest extends AbstractService
        */
        public function testGetQuizAfterRemove($quiz_id)
        {
-         $this->reset();
-         $this->setIdentity(1);
-         $data = $this->jsonRpc('quiz.get', [
-           'id' => $quiz_id['quiz_id']
-         ]);
+          $this->reset();
+          $this->setIdentity(1);
+          $data = $this->jsonRpc('quiz.get', [
+            'id' => $quiz_id['quiz_id']
+          ]);
 
           $this->assertEquals(count($data) , 3);
           $this->assertEquals($data['id'] , 1);
@@ -1009,8 +1101,8 @@ class ItemRateTest extends AbstractService
           $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][0]) , 5);
           $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['id'] , 4);
           $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['quiz_question_id'] , 2);
-          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "la une2");
-          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "nouveau text answer");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 0);
           $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['order'] , null);
           $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][1]) , 5);
           $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['id'] , 5);
@@ -1026,9 +1118,9 @@ class ItemRateTest extends AbstractService
           $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['order'] , null);
           $this->assertEquals($data['result'][1]['quiz_question'][0]['id'] , 2);
           $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_id'] , 1);
-          $this->assertEquals($data['result'][1]['quiz_question'][0]['point'] , null);
-          $this->assertEquals($data['result'][1]['quiz_question'][0]['text'] , "une question 2");
-          $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "multiple");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['point'] , 18);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['text'] , "nouveau text");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "simple");
           $this->assertEquals($data['result'][1]['quiz_question'][0]['order'] , null);
           $this->assertEquals(count($data['result'][1]['quiz_question'][1]) , 7);
           $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer']) , 1);
