@@ -25,6 +25,7 @@ class ItemRateTest extends AbstractService
             'admission' => 'free',
             'location' => 'location',
             'organization_id' => 1,
+            'is_published' => true,
             'users' => [
                 ['user_id' => 1,'role' => 'admin', 'state' => 'member'],
                 ['user_id' => 2,'role' => 'admin', 'state' => 'member'],

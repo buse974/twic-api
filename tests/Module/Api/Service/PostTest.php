@@ -19,22 +19,29 @@ class PostTest extends AbstractService
             'url' => 'http://thestudnet.com/',
         ]);
 
-        $this->print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 3);
-        $this->assertEquals(count($data['result']['meta']) , 2);
-        $this->assertEquals(!empty($data['result']['meta']['description']) , true);
+        $this->assertEquals(count($data['result']['meta']) , 8);
+        $this->assertEquals($data['result']['meta']['twitter:card'] , "summary");
+        $this->assertEquals($data['result']['meta']['twitter:site'] , "@TwicSLE");
+        $this->assertEquals($data['result']['meta']['twitter:title'] , "TWIC, The Social Learning Environment for B-Schools");
+        $this->assertEquals(!empty($data['result']['meta']['twitter:description']) , true);
+        $this->assertEquals($data['result']['meta']['twitter:image'] , "https://twicbythestudnet.com/assets/images/Logo.svg");
+        $this->assertEquals($data['result']['meta']['twitter:image:alt'] , "Twic logo");
         $this->assertEquals($data['result']['meta']['viewport'] , "width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1");
-        $this->assertEquals(count($data['result']['open_graph']) , 6);
-        $this->assertEquals($data['result']['open_graph']['title'] , "TWIC, The Social Learning Environmentfor B-Schools");
+        $this->assertEquals(!empty($data['result']['meta']['description']) , true);
+        $this->assertEquals(count($data['result']['open_graph']) , 7);
+        $this->assertEquals($data['result']['open_graph']['title'] , "TWIC, The Social Learning Environment for B-Schools");
         $this->assertEquals($data['result']['open_graph']['type'] , "website");
         $this->assertEquals($data['result']['open_graph']['url'] , "https://twicbythestudnet.com");
         $this->assertEquals($data['result']['open_graph']['image'] , "https://twicbythestudnet.com/assets/images/Logo.svg");
+        $this->assertEquals(!empty($data['result']['open_graph']['description']) , true); 
         $this->assertEquals($data['result']['open_graph']['locale'] , "en_US");
         $this->assertEquals($data['result']['open_graph']['site_name'] , "TWIC");
         $this->assertEquals(count($data['result']['images']) , 0);
         $this->assertEquals($data['jsonrpc'] , 2.0);
+
     }
 
     public function testPostAdd()
