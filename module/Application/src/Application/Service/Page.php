@@ -226,8 +226,6 @@ class Page extends AbstractService
             );
         }
 
-
-
         return $id;
     }
 
@@ -431,7 +429,6 @@ class Page extends AbstractService
 
         $tmp_m_page = $this->getMapper()->select($this->getModel()->setId($id))->current();
         if ($confidentiality !== null) {
-
             if ($tmp_m_page->getConfidentiality() !== $confidentiality) {
                 if ($confidentiality == ModelPage::CONFIDENTIALITY_PRIVATE) {
                     $this->getServicePost()->hardDelete('PP'.$id);
@@ -453,6 +450,19 @@ class Page extends AbstractService
                     );
                 }
             }
+        }
+
+        if($is_published === true) {
+          $res_post = $this->getServicePost()->getListId(null, null, $id, null, true);
+          foreach ($res_post as $m_post) {
+            $this->getServicePostSubscription()->add(
+                'PP'.$id,
+                $m_post->getId(),
+                null,
+                'UPDATE',
+                $user_id
+            );
+          }
         }
 
         if(is_numeric($tmp_m_page->getConversationId()) && null !== $title) {

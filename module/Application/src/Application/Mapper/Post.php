@@ -10,7 +10,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 class Post extends AbstractMapper
 {
 
-    public function getListId($me_id, $page_id = null, $user_id = null, $parent_id = null)
+    public function getListId($me_id, $page_id = null, $user_id = null, $parent_id = null, $is_item = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $columns = ['post$id' => new Expression('post.id')];
@@ -36,13 +36,16 @@ class Post extends AbstractMapper
         }
 
         $select->join('item', 'post.item_id = item.id', [], $select::JOIN_LEFT)
-          ->where(['( item.id IS NULL OR (item.is_published=true AND 
+          ->where(['( item.id IS NULL OR (item.is_published=true AND
           (`item`.`is_available`=1 OR (`item`.`is_available`=3 AND  (
           ( `item`.`start_date` IS NULL AND `item`.`end_date` IS NULL ) OR
           ( `item`.`start_date` < UTC_TIMESTAMP() AND `item`.`end_date` IS NULL ) OR
           ( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP() ) OR
           ( UTC_TIMESTAMP() BETWEEN `item`.`start_date` AND `item`.`end_date` ))))) )']);
 
+        if(true === $is_item) {
+          $select->where(['item.id IS NOT NULL']);
+        }
         if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])

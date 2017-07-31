@@ -351,15 +351,16 @@ class Post extends AbstractService
      * @param int   $user_id
      * @param int   $page_id
      * @param int   $parent_id
+     * @param bool  $is_item
      */
-    public function getListId($filter = null, $user_id = null, $page_id = null, $parent_id = null)
+    public function getListId($filter = null, $user_id = null, $page_id = null, $parent_id = null, $is_item = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
         $mapper = (null !== $filter) ?
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
 
-        $res_posts = $mapper->getListId($me, $page_id, $user_id, $parent_id);
+        $res_posts = $mapper->getListId($me, $page_id, $user_id, $parent_id, $is_item);
 
         return (null !== $filter) ?
             ['count' => $mapper->count(), 'list' => $res_posts]:
@@ -449,9 +450,9 @@ class Post extends AbstractService
      * @param  int $uid
      * @return \Application\Model\Post
      */
-    public function getLite($id = null, $uid = null)
+    public function getLite($id = null, $uid = null, $item_id = null)
     {
-        return $this->getMapper()->select($this->getModel()->setId($id)->setUid($uid))->current();
+        return $this->getMapper()->select($this->getModel()->setId($id)->setUid($uid)->setItemId($item_id))->current();
     }
 
     public function getOwner($m_post)
