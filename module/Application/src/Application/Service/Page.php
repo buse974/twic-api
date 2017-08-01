@@ -901,6 +901,16 @@ class Page extends AbstractService
     }
 
     /**
+     * Get Service Post Subscription
+     *
+     * @return \Application\Service\PostSubscription
+     */
+    private function getServicePostSubscription()
+    {
+        return $this->container->get('app_service_post_subscription');
+    }
+
+    /**
      * Get Service Post
      *
      * @return \Application\Service\Post
