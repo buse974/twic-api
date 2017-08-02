@@ -232,13 +232,12 @@ class Page extends AbstractMapper
     public function getGradesSelect($id){
          $select = $this->tableGateway->getSql()->select();
          $select->columns(['average' => new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100)')])
-                ->join('page_relation', 'page.id= page_relation.parent_id', ['parent_id'])
-                ->join('item','page_relation.page_id = item.page_id', ['page_id'])
+                ->join('item','page.id = item.page_id', ['page_id'])
                 ->join('item_user', 'item.id = item_user.item_id', ['user_id'])
+                ->join('user', 'item_user.user_id = user.id', [])
                 ->where(['item.is_grade_published' => 1])
                 ->where('item_user.rate IS NOT NULL')
-                ->where(['page_relation.type' => 'owner'])
-                ->where(['page_relation.parent_id' => $id])
+                ->where(['user.organization_id' => $id])
                 ->group(['item.page_id', 'item_user.user_id'])
                 ->order([new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100) DESC')]);
         return $select;
