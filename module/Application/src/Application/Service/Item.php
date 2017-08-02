@@ -335,7 +335,7 @@ class Item extends AbstractService
             $ar_item = $m_item->toArray();
              $tmpar = [
                'group_id' => null,
-               'rate' => ($m_item->getIsGradePublished() === true || $is_admin)?$ar_item['item_user']['rate']:null,
+               'rate' => ($m_item->getIsGradePublished() == true || $is_admin)?$ar_item['item_user']['rate']:null,
                'users'=>[$ar_item['page_user']['user_id']],
                'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                'post_id' =>     $ar_item['item_user']['submission']['post_id'],
@@ -354,7 +354,7 @@ class Item extends AbstractService
                $ar_item = $m_item->toArray();
                $tmpar = [
                  'group_id' => null,
-                 'rate' => ($m_item->getIsGradePublished() === true || $is_admin)?$ar_item['item_user']['rate']:null,
+                 'rate' => ($m_item->getIsGradePublished() == true || $is_admin)?$ar_item['item_user']['rate']:null,
                  'users'=>[$ar_item['page_user']['user_id']],
                  'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                  'post_id' => $ar_item['item_user']['submission']['post_id'],
@@ -383,7 +383,7 @@ class Item extends AbstractService
                  $ar_item = $m_item->toArray();
                  $tmpar = [
                    'group_id' => $ar_item['item_user']['group_id'],
-                   'rate' => ($m_item->getIsGradePublished() === true || $is_admin)?$ar_item['item_user']['rate']:null,
+                   'rate' => ($m_item->getIsGradePublished() == true || $is_admin)?$ar_item['item_user']['rate']:null,
                    'users'=>[$ar_item['page_user']['user_id']],
                    'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                    'post_id' => $ar_item['item_user']['submission']['post_id'],
