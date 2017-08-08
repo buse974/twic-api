@@ -77,7 +77,7 @@ class QuizQuestion extends AbstractService
         $m_item = $this->getServiceItem()->getLite($m_quiz->getItemId())->current();
         $page_id = $m_item->getPageId();
         $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
-        $has_answer = ($m_item->getIsGradePublished() === true || in_array($identity['id'], $ar_pu[$page_id]) );
+        $has_answer = ($m_item->getIsGradePublished() == true || in_array($identity['id'], $ar_pu[$page_id]) );
       }
       foreach ($res_quiz_question as $m_quiz_question) {
         if(!(!$has_answer && $m_quiz_question->getType() === ModelQuizQuestion::TYPE_TEXT)) {

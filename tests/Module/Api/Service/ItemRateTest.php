@@ -777,91 +777,91 @@ class ItemRateTest extends AbstractService
        */
        public function testGetQuizAfterUpdate($quiz_id)
        {
-         $this->reset();
-         $this->setIdentity(1);
-         $data = $this->jsonRpc('quiz.get', [
-           'id' => $quiz_id['quiz_id']
-         ]);
+           $this->reset();
+           $this->setIdentity(1);
+           $data = $this->jsonRpc('quiz.get', [
+             'id' => $quiz_id['quiz_id']
+           ]);
 
-        $this->assertEquals(count($data) , 3);
-        $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 1);
-        $this->assertEquals(count($data['result'][1]) , 8);
-        $this->assertEquals(count($data['result'][1]['quiz_question']) , 3);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][0]) , 7);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer']) , 3);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][0]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['quiz_question_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "la une");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['order'] , null);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][1]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['quiz_question_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['text'] , "la deux");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['is_correct'] , 0);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['order'] , null);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][2]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['id'] , 3);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['quiz_question_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['text'] , "nouveau text answer");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['is_correct'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['order'] , null);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['point'] , 18);
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['text'] , "nouveau text");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "multiple");
-        $this->assertEquals($data['result'][1]['quiz_question'][0]['order'] , null);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][1]) , 7);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer']) , 3);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][0]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['id'] , 4);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['quiz_question_id'] , 2);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['text'] , "nouveau text answer");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['is_correct'] , 0);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['order'] , null);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][1]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['id'] , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['quiz_question_id'] , 2);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['text'] , "la deux2");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['is_correct'] , 0);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['order'] , null);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][2]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['id'] , 6);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['quiz_question_id'] , 2);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['text'] , "la trois2");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['is_correct'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['order'] , null);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['id'] , 2);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['point'] , 18);
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['text'] , "nouveau text");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['type'] , "simple");
-        $this->assertEquals($data['result'][1]['quiz_question'][1]['order'] , null);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][2]) , 7);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer']) , 1);
-        $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer'][0]) , 5);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['id'] , 7);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['quiz_question_id'] , 3);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['text'] , "la une3");
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['is_correct'] , 0);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['order'] , null);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['id'] , 3);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_id'] , 1);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['point'] , null);
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['text'] , "une question 3");
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['type'] , "text");
-        $this->assertEquals($data['result'][1]['quiz_question'][2]['order'] , null);
-        $this->assertEquals($data['result'][1]['id'] , 1);
-        $this->assertEquals($data['result'][1]['name'] , "super quiz");
-        $this->assertEquals($data['result'][1]['attempt_count'] , null);
-        $this->assertEquals($data['result'][1]['time_limit'] , null);
-        $this->assertEquals($data['result'][1]['created_date'] , null);
-        $this->assertEquals($data['result'][1]['item_id'] , 9);
-        $this->assertEquals($data['result'][1]['user_id'] , 1);
-        $this->assertEquals($data['jsonrpc'] , 2.0);
+          $this->assertEquals(count($data) , 3);
+          $this->assertEquals($data['id'] , 1);
+          $this->assertEquals(count($data['result']) , 1);
+          $this->assertEquals(count($data['result'][1]) , 8);
+          $this->assertEquals(count($data['result'][1]['quiz_question']) , 3);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][0]) , 7);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer']) , 3);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][0]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['quiz_question_id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "la une");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['order'] , null);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][1]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['id'] , 2);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['quiz_question_id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['text'] , "la deux");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['is_correct'] , 0);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['order'] , null);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][2]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['id'] , 3);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['quiz_question_id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['text'] , "nouveau text answer");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['is_correct'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['order'] , null);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['point'] , 18);
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['text'] , "nouveau text");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "multiple");
+          $this->assertEquals($data['result'][1]['quiz_question'][0]['order'] , null);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][1]) , 7);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer']) , 3);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][0]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['id'] , 4);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['quiz_question_id'] , 2);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['text'] , "nouveau text answer");
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['is_correct'] , 0);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['order'] , null);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][1]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['id'] , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['quiz_question_id'] , 2);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['text'] , "la deux2");
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['is_correct'] , 0);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['order'] , null);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][2]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['id'] , 6);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['quiz_question_id'] , 2);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['text'] , "la trois2");
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['is_correct'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['order'] , null);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['id'] , 2);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['point'] , 18);
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['text'] , "nouveau text");
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['type'] , "simple");
+          $this->assertEquals($data['result'][1]['quiz_question'][1]['order'] , null);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][2]) , 7);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer']) , 1);
+          $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer'][0]) , 5);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['id'] , 7);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['quiz_question_id'] , 3);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['text'] , "la une3");
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['is_correct'] , 0);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['order'] , null);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['id'] , 3);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_id'] , 1);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['point'] , null);
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['text'] , "une question 3");
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['type'] , "text");
+          $this->assertEquals($data['result'][1]['quiz_question'][2]['order'] , null);
+          $this->assertEquals($data['result'][1]['id'] , 1);
+          $this->assertEquals($data['result'][1]['name'] , "super quiz");
+          $this->assertEquals($data['result'][1]['attempt_count'] , null);
+          $this->assertEquals($data['result'][1]['time_limit'] , null);
+          $this->assertEquals($data['result'][1]['created_date'] , null);
+          $this->assertEquals($data['result'][1]['item_id'] , 9);
+          $this->assertEquals($data['result'][1]['user_id'] , 1);
+          $this->assertEquals($data['jsonrpc'] , 2.0);
        }
 
       /**
@@ -1033,6 +1033,104 @@ class ItemRateTest extends AbstractService
       /**
       * @depends testAddQuiz
       */
+      public function testGetQuizStudent($quiz_id)
+      {
+        $this->setIdentity(1);
+        $data = $this->jsonRpc('item.update', [
+          'id' => $quiz_id['item_quiz'],
+          'is_grade_published' => true
+        ]);
+        $this->reset();
+
+        $this->setIdentity(3);
+        $data = $this->jsonRpc('quiz.get', [
+          'id' => $quiz_id['quiz_id']
+        ]);
+
+        $this->assertEquals(count($data) , 3);
+        $this->assertEquals($data['id'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals(count($data['result'][1]) , 8);
+        $this->assertEquals(count($data['result'][1]['quiz_question']) , 3);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][0]) , 7);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer']) , 3);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][0]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['text'] , "la une");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['is_correct'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][0]['order'] , null);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][1]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['text'] , "la deux");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['is_correct'] , 0);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][1]['order'] , null);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][0]['quiz_answer'][2]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['id'] , 3);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['quiz_question_id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['text'] , "nouveau text answer");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['is_correct'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_answer'][2]['order'] , null);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['point'] , 18);
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['text'] , "nouveau text");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['type'] , "multiple");
+        $this->assertEquals($data['result'][1]['quiz_question'][0]['order'] , null);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][1]) , 7);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer']) , 3);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][0]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['id'] , 4);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['quiz_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['text'] , "nouveau text answer");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['is_correct'] , 0);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][0]['order'] , null);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][1]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['id'] , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['quiz_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['text'] , "la deux2");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['is_correct'] , 0);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][1]['order'] , null);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][1]['quiz_answer'][2]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['id'] , 6);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['quiz_question_id'] , 2);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['text'] , "la trois2");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['is_correct'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_answer'][2]['order'] , null);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['id'] , 2);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['point'] , 18);
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['text'] , "nouveau text");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['type'] , "simple");
+        $this->assertEquals($data['result'][1]['quiz_question'][1]['order'] , null);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][2]) , 7);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer']) , 1);
+        $this->assertEquals(count($data['result'][1]['quiz_question'][2]['quiz_answer'][0]) , 5);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['id'] , 7);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['quiz_question_id'] , 3);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['text'] , "la une3");
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['is_correct'] , 0);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_answer'][0]['order'] , null);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['id'] , 3);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['quiz_id'] , 1);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['point'] , null);
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['text'] , "une question 3");
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['type'] , "text");
+        $this->assertEquals($data['result'][1]['quiz_question'][2]['order'] , null);
+        $this->assertEquals($data['result'][1]['id'] , 1);
+        $this->assertEquals($data['result'][1]['name'] , "super quiz");
+        $this->assertEquals($data['result'][1]['attempt_count'] , null);
+        $this->assertEquals($data['result'][1]['time_limit'] , null);
+        $this->assertEquals($data['result'][1]['created_date'] , null);
+        $this->assertEquals($data['result'][1]['item_id'] , 9);
+        $this->assertEquals($data['result'][1]['user_id'] , 1);
+        $this->assertEquals($data['jsonrpc'] , 2.0);
+      }
+
+      /**
+      * @depends testAddQuiz
+      */
       public function testRemoveUserAnswer()
       {
         $this->reset();
@@ -1173,8 +1271,8 @@ class ItemRateTest extends AbstractService
            $this->assertEquals($data['result'][9]['order'] , 8);
            $this->assertEquals($data['result'][9]['start_date'] , null);
            $this->assertEquals($data['result'][9]['end_date'] , null);
-           $this->assertEquals($data['result'][9]['is_grade_published'] , null);
-           $this->assertEquals($data['result'][9]['updated_date'] , null);
+           $this->assertEquals($data['result'][9]['is_grade_published'] , 1);
+           $this->assertEquals(!empty($data['result'][9]['updated_date']) , true);
            $this->assertEquals(!empty($data['result'][9]['created_date']) , true);
            $this->assertEquals($data['result'][9]['parent_id'] , 1);
            $this->assertEquals($data['result'][9]['page_id'] , 1);
