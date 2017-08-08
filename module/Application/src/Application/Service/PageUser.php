@@ -9,7 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
-//use ZendService\Google\Gcm\Notification as GcmNotification;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class PageUser
@@ -84,7 +84,10 @@ class PageUser extends AbstractService
                 // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
 
-              if(ModelPage::TYPE_ORGANIZATION === $m_page->getType()) {
+              $identity = $this->getServiceUser()->getIdentity();
+              $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+
+              if(ModelPage::TYPE_ORGANIZATION === $m_page->getType() && $is_admin === false) {
                 $this->getServiceUser()->update($uid ,null ,null ,null ,null ,null ,null ,null, null, null, $page_id);
               }
 
@@ -159,30 +162,30 @@ class PageUser extends AbstractService
      */
     public function update($page_id, $user_id, $role, $state)
     {
-        // si on doit labonner
-        if (ModelPageUser::STATE_MEMBER === $state) {
+      $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
+      // si on doit l'abonner
+      if (ModelPageUser::STATE_MEMBER === $state) {
 
-          // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
-          $m_page = $this->getServicePage()->getLite($page_id);
-          if(is_numeric($m_page->getConversationId())) {
-            $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
-          }
-
-          $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
-          if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
-              $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
-              if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                  $this->getServicePost()->addSys(
-                      'PPM'.$page_id.'_'.$user_id, '', [
-                      'state' => 'member',
-                      'user' => $user_id,
-                      'page' => $page_id,
-                      'type' => $m_page->getType(),
-                      ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, $user_id/*user*/, 'page'
-                  );
-              }
-          }
+        // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
+        $m_page = $this->getServicePage()->getLite($page_id);
+        if(is_numeric($m_page->getConversationId())) {
+          $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
         }
+
+        if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
+            $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
+            if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                $this->getServicePost()->addSys(
+                    'PPM'.$page_id.'_'.$user_id, '', [
+                    'state' => 'member',
+                    'user' => $user_id,
+                    'page' => $page_id,
+                    'type' => $m_page->getType(),
+                    ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, $user_id/*user*/, 'page'
+                );
+            }
+        }
+      }
 /*
         $this->getServiceFcm()->send(
             $user_id, [
@@ -196,11 +199,20 @@ class PageUser extends AbstractService
           ]
         );
 */
-        $m_page_user = $this->getModel()
-            ->setRole($role)
-            ->setState($state);
 
-        return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
+      //si on veux modifier le dernier administrateur
+      if($m_page_user->getRole() == 'admin' && $role !== 'admin' && $role !== null) {
+        $ar_pu = $this->getListByPage($page_id, 'admin');
+        if(count($ar_pu[$page_id]) === 1 && in_array($user_id, $ar_pu[$page_id])) {
+          throw new \Exception("On ne peut pas Modifier le dernier administrateur");
+        }
+      }
+
+      $m_page_user = $this->getModel()
+          ->setRole($role)
+          ->setState($state);
+
+      return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
     }
 
     /**
@@ -218,7 +230,14 @@ class PageUser extends AbstractService
             ->setPageId($page_id)
             ->setUserId($user_id);
 
+        //si on suprime le dernier administrateur
+        $ar_pu = $this->getListByPage($page_id, 'admin');
+        if(count($ar_pu[$page_id]) === 1 && in_array($user_id, $ar_pu[$page_id])) {
+          throw new \Exception("On ne peut pas suprimer le dernier administrateur");
+        }
+
         $ret =  $this->getMapper()->delete($m_page_user);
+
         if ($ret) {
             $this->getServicePost()->hardDelete('PPM'.$page_id.'_'.$user_id);
 

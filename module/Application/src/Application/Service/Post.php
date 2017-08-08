@@ -102,7 +102,6 @@ class Post extends AbstractService
             ->setContent($content)
             ->setPicture($picture)
             ->setNamePicture($name_picture)
-            ->setUserId($user_id)
             ->setLink($link)
             ->setLinkTitle($link_title)
             ->setLinkDesc($link_desc)
@@ -118,6 +117,10 @@ class Post extends AbstractService
             ->setUid($uid)
             ->setType($type)
             ->setData($data);
+
+        if(!$is_notif) {
+          $m_post->setUserId($user_id);
+        }
 
         if ($this->getMapper()->insert($m_post) <= 0) {
             throw new \Exception('error add post');
@@ -184,12 +187,16 @@ class Post extends AbstractService
         }
         $ev=((!empty($event))? $event:(($base_id!==$id) ? ModelPostSubscription::ACTION_COM : ModelPostSubscription ::ACTION_CREATE));
 
+        if (!$is_notif) {
+
+        }
+
         $this->getServicePostSubscription()->add(
             array_unique($pevent),
             $base_id,
             $date,
             $ev,
-            $user_id,
+            ((!$is_notif) ? $user_id:null),
             (($base_id!==$id) ? $id:null),
             $data
         );

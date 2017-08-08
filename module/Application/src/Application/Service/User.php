@@ -799,7 +799,6 @@ class User extends AbstractService
           throw new \Exception('error get user: ' . json_encode($id));
         }
 
-
         foreach ($res_user->toArray() as $user) {
             $user['roles'] = [];
             foreach ($this->getServiceRole()->getRoleByUser($user['id']) as $role) {

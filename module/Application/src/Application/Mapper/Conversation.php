@@ -22,17 +22,19 @@ class Conversation extends AbstractMapper
 
       $subselect = $this->tableGateway->getSql()->select();
       $subselect->columns([])
+        ->join('page', 'page.conversation_id=conversation.id', ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
         ->join('conversation_user', 'conversation_user.conversation_id=conversation.id', [])
         ->join('message', 'conversation.id=message.conversation_id', ['message.id' => new Expression('MAX(message.id)')])
         ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]),[], $select::JOIN_LEFT)
         ->where(['conversation_user.user_id' => $user_id])
         ->where(['message_user.deleted_date IS NULL'])
+        ->where(['page.deleted_date IS NULL'])
+        ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
         ->group(['conversation.id']);
 
       if(null !== $type) {
         $subselect->where(['conversation.type' => $type]);
       }
-
       if (null !== $conversation_id) {
         $subselect->where(['conversation.id' => $conversation_id]);
       }
@@ -54,6 +56,7 @@ class Conversation extends AbstractMapper
     $select->columns($colums)
       ->join('page', 'page.conversation_id=conversation.id', ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
       ->where(['page.deleted_date IS NULL'])
+      ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
       ->order(['conversation_message$id DESC'])
       ->group(['conversation.id']);
 
