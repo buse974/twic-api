@@ -149,8 +149,8 @@ class Item extends AbstractMapper
     $select->columns(['id', 'is_grade_published'])
       ->join('page_user', 'page_user.page_id=item.page_id', ['user_id'])
       ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['id', 'group_id', 'rate'], $select::JOIN_LEFT)
-      ->join('submission', 'submission.id=item_user.submission_id', ['id', 'post_id', 
-      'item$submit_date' => new Expression('DATE_FORMAT(item.submit_date, "%Y-%m-%dT%TZ")'),
+      ->join('submission', 'submission.id=item_user.submission_id', ['id', 'post_id',
+      'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
     ], $select::JOIN_LEFT)
       ->where(['page_user.role'=> 'user'])
       ->where(['item.id' => $id]);

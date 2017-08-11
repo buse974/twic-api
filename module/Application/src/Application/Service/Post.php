@@ -81,7 +81,7 @@ class Post extends AbstractService
         if (empty($type)) {
             $type = 'post';
         }
-        $uid = (($uid) && !empty($uid)) ? $uid:false;
+        $uid = (($uid) && is_string($uid) && !empty($uid)) ? $uid:false;
         $is_notif = !!$uid;
 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
@@ -118,7 +118,7 @@ class Post extends AbstractService
             ->setType($type)
             ->setData($data);
 
-        if(!$is_notif) {
+        if(!$is_notif || null !== $parent_id) {
           $m_post->setUserId($user_id);
         }
 
