@@ -89,7 +89,6 @@ class Post extends AbstractMapper
             'page_id',
             't_user_id',
             't_page_id',
-            't_course_id',
             'parent_id',
             'type',
             'data',
