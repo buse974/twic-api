@@ -176,6 +176,7 @@ class Page extends AbstractMapper
                 'owner_id',
                 'conversation_id',
                 'is_published',
+                'website',
                 'page$start_date' => new Expression('DATE_FORMAT(page.start_date, "%Y-%m-%dT%TZ")'),
                 'page$end_date' => new Expression('DATE_FORMAT(page.end_date, "%Y-%m-%dT%TZ")')
             ]
