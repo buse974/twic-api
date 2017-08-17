@@ -660,7 +660,7 @@ class User extends AbstractService
             try {
                 $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email,
                 [
-                  'prefix' => (is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
+                  'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
                   'password' => $password,
                   'email' => $email,
                   'lastname' => $user->getLastname(),
