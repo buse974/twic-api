@@ -36,7 +36,7 @@ class PostTest extends AbstractService
         $this->assertEquals($data['result']['open_graph']['type'] , "website");
         $this->assertEquals($data['result']['open_graph']['url'] , "https://twicbythestudnet.com");
         $this->assertEquals($data['result']['open_graph']['image'] , "https://twicbythestudnet.com/assets/images/Logo.svg");
-        $this->assertEquals(!empty($data['result']['open_graph']['description']) , true); 
+        $this->assertEquals(!empty($data['result']['open_graph']['description']) , true);
         $this->assertEquals($data['result']['open_graph']['locale'] , "en_US");
         $this->assertEquals($data['result']['open_graph']['site_name'] , "TWIC");
         $this->assertEquals(count($data['result']['images']) , 0);
@@ -127,7 +127,7 @@ class PostTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 23);
+        $this->assertEquals(count($data['result']) , 22);
         $this->assertEquals(count($data['result']['subscription']) , 5);
         $this->assertEquals(!empty($data['result']['subscription']['last_date']) , true);
         $this->assertEquals($data['result']['subscription']['action'] , "create");
@@ -180,7 +180,6 @@ class PostTest extends AbstractService
         $this->assertEquals($data['result']['parent_id'] , null);
         $this->assertEquals($data['result']['t_page_id'] , null);
         $this->assertEquals($data['result']['t_user_id'] , 1);
-        $this->assertEquals($data['result']['t_course_id'] , null);
         $this->assertEquals($data['result']['type'] , "post");
         $this->assertEquals($data['result']['data'] , null);
         $this->assertEquals($data['jsonrpc'] , 2.0);

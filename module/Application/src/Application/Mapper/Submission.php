@@ -3,14 +3,17 @@
 namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
+use Zend\Db\Sql\Expression;
 
 class Submission extends AbstractMapper
 {
     public function get($id = null, $item_id = null, $user_id = null)
     {
       $select = $this->tableGateway->getSql()->select();
-      $select->columns(['id', 'item_id', 'submit_date', 'is_graded', 'post_id']);
-
+      $select->columns(['id', 'item_id',
+      'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
+      'is_graded', 'post_id']);
+      
       if($user_id !== null) {
         $select->join('item_user', 'item_user.submission_id=submission.id', [])
           ->where(['item_user.user_id' => $user_id]);

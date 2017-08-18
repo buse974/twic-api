@@ -27,31 +27,13 @@ class FsS3Storage extends AbstractStorage
         return unserialize(file_get_contents($this->path.$name.'.obj'));
     }
 
-    public function getList()
+   public function getList()
     {
-        $ret = [];
+        $ret = array();
 
         if ($handle = opendir($this->path)) {
             while (false !== ($entry = readdir($handle))) {
-
-
-
-
-
-
                 if (preg_match('/.obj$/', $entry)) {
-
-                  if ($stream = fopen($this->path.$entry, 'r')) {
-
-                    $contents = "";
-                    while (!feof($stream)) {
-                      $contents .= fread($stream, 1024);
-                    }
-                    fclose($stream);
-                    $ret[] = unserialize($stream);
-                  }
-
-
                     $ret[] = unserialize(file_get_contents($this->path.$entry));
                 }
             }
@@ -60,6 +42,7 @@ class FsS3Storage extends AbstractStorage
 
         return $ret;
     }
+
 
     public function exist($name)
     {

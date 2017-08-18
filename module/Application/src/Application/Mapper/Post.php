@@ -26,6 +26,7 @@ class Post extends AbstractMapper
           ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
           ->where(['post.deleted_date IS NULL'])
           ->where(['page.deleted_date IS NULL'])
+          ->where(['post.type <> "submission"'])
           ->group('post.id')
           ->quantifier('DISTINCT');
 
@@ -49,7 +50,7 @@ class Post extends AbstractMapper
         if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])
-              //  ->where(['( subscription.user_id IS NULL AND post.user_id = ? )' => $me_id], Predicate::OP_OR) // on ce sait pas a koi sa sert
+              //  ->where(['( subscription.user_id IS NULL AND post.user_id = ? )' => $me_id], Predicate::OP_OR) // on ce sait pas a koi ca sert
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
         }
@@ -89,7 +90,6 @@ class Post extends AbstractMapper
             'page_id',
             't_user_id',
             't_page_id',
-            't_course_id',
             'parent_id',
             'type',
             'data',

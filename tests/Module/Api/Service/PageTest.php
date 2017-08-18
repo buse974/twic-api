@@ -176,7 +176,7 @@ class PageTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 21);
+        $this->assertEquals(count($data['result']) , 22);
         $this->assertEquals(count($data['result']['address']) , 14);
         $this->assertEquals(count($data['result']['address']['city']) , 1);
         $this->assertEquals($data['result']['address']['city']['name'] , "Villefontaine");
@@ -230,6 +230,7 @@ class PageTest extends AbstractService
         $this->assertEquals($data['result']['end_date'] , "2016-00-00T00:00:00Z");
         $this->assertEquals($data['result']['location'] , "location");
         $this->assertEquals($data['result']['type'] , "organization");
+        $this->assertEquals(empty($data['result']['website']) , true);
         $this->assertEquals($data['result']['user_id'] , 1);
         $this->assertEquals($data['result']['owner_id'] , 1);
         $this->assertEquals($data['result']['conversation_id'] , null);

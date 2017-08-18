@@ -660,7 +660,7 @@ class User extends AbstractService
             try {
                 $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email,
                 [
-                  'prefix' => (is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
+                  'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
                   'password' => $password,
                   'email' => $email,
                   'lastname' => $user->getLastname(),
@@ -798,7 +798,6 @@ class User extends AbstractService
         if ($res_user->count() <= 0) {
           throw new \Exception('error get user: ' . json_encode($id));
         }
-
 
         foreach ($res_user->toArray() as $user) {
             $user['roles'] = [];

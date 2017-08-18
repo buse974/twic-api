@@ -121,6 +121,10 @@ class Page extends AbstractService
           $confidentiality = 0;
         }
 
+        if(null === $owner_id) {
+          $owner_id = $user_id;
+        }
+
         $m_page = $this->getModel()
           ->setTitle($title)
           ->setLogo($logo)
@@ -133,6 +137,7 @@ class Page extends AbstractService
           ->setLocation($location)
           ->setType($type)
           ->setUserId($user_id)
+          ->setOwnerId($user_id)
           ->setCustom($custom)
           ->setLibelle($libelle)
           ->setWebsite($formattedWebsite)
@@ -148,12 +153,6 @@ class Page extends AbstractService
             if ($address && null !== ($address_id = $address->getId())) {
                 $m_page->setAddressId($address_id);
             }
-        }
-
-        if(null !== $owner_id){
-          $m_page->setOwnerId($owner_id);
-        } else{
-          $m_page->setOwnerId($user_id);
         }
 
         $this->getMapper()->insert($m_page);
@@ -192,7 +191,7 @@ class Page extends AbstractService
 
         if (! $is_present) {
             $users[] = [
-              'user_id' => $user_id,
+              'user_id' => $m_page->getOwnerId(),
               'role' => ModelPageUser::ROLE_ADMIN,
               'state' => ModelPageUser::STATE_MEMBER
             ];
@@ -207,12 +206,12 @@ class Page extends AbstractService
             $this->getServicePageDoc()->_add($id, $docs);
         }
 
-        if ($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC) {
+        if ($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC  && $type !== ModelPage::TYPE_ORGANIZATION ) {
             $sub=[];
             if (null !== $page_id) {
                 $sub[] = 'EP'.$page_id;
             } else {
-                $sub[] = 'EU'.$user_id;
+                $sub[] = 'EU'.$owner_id;
             }
 
             $this->getServicePost()->addSys(
@@ -460,7 +459,7 @@ class Page extends AbstractService
                 $m_post->getId(),
                 null,
                 'UPDATE',
-                $user_id
+                $owner_id
             );
           }
         }
