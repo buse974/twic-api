@@ -22,7 +22,7 @@ class Library extends AbstractMapper
     public function getList($folder_id = null, $user_id = null, $page_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id'])
+        $select->columns(['id','name','link','token','type','created_date','deleted_date','updated_date','folder_id','owner_id','box_id', 'text'])
           ->where(['library.deleted_date IS NULL'])
           ->order(['library.id' => 'DESC'])
           ->quantifier('DISTINCT');
