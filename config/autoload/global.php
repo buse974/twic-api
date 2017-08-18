@@ -140,10 +140,10 @@ return [
                 'options' => [
                     'namespace' => 'LMS684',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS684'],
-                        ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
-                        ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
-                        ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],
+                        ['option' => \Memcached::OPT_PREFIX_KEY, 'value' => 'LMS684'],
+                        ['option' => \Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
+                        ['option' => \Memcached::OPT_SERIALIZER, 'value' => \Memcached::SERIALIZER_IGBINARY],
+                        ['option' => \Memcached::OPT_DISTRIBUTION, 'value' => \Memcached::DISTRIBUTION_CONSISTENT],
                     ],
                 ],
             ],

@@ -18,3 +18,4 @@ class QuizAnswer extends AbstractMapper
       return $this->selectWith($select);
   }
 }
+

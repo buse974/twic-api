@@ -83,4 +83,13 @@ class Activity extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    public function get($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'event', 'object_name', 'object_data', 'target_name', 'target_data']);
+        $select->where(['activity.id' => $id]);
+      
+        return $this->selectWith($select);
+    }
 }

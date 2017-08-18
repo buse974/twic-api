@@ -3,10 +3,11 @@
  * TheStudnet (http://thestudnet.com).
  *
  * Activity
- */
+ **/
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use JRpc\Json\Server\Exception\JrpcException;
 use Zend\Db\Sql\Predicate\Between;
 use Application\Model\Role as ModelRole;
 
@@ -35,7 +36,6 @@ class Activity extends AbstractService
 
             $ret[] = $this->_add($date, $event, $object, $target, $user);
         }
-
         $this->getServiceConnection()->add();
 
         return $ret;
@@ -217,6 +217,16 @@ class Activity extends AbstractService
         return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_activity] : $res_activity;
     }
 
+    /**
+     * @invokable
+     * 
+     * @param int $id
+     */
+     public function get($id)
+     {
+         return $this->getMapper()->get($id);
+     }
+     
     /**
      * Get List Activity With User Model.
      *
