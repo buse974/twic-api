@@ -101,8 +101,9 @@ class Library extends AbstractService
         $token = ((isset($data['token'])) ? $data['token'] : null);
         $type = ((isset($data['type'])) ? $data['type'] : null);
         $folder_id = ((isset($data['folder_id'])) ? $data['folder_id'] : null);
+        $text = ((isset($data['text'])) ? $data['text'] : null);
 
-        return $this->add($name, $link, $token, $type, $folder_id);
+        return $this->add($name, $link, $token, $type, $folder_id, null, null, $text);
     }
 
     /**
