@@ -762,6 +762,16 @@ class User extends AbstractService
                     ->getId(),'password' => md5($oldpassword))
         );
     }
+    
+     public function _updatePassword($email, $password)
+    {
+        return $this->getMapper()->update(
+            $this->getModel()
+                ->setPassword(md5($password)), array('id' => $this->getServiceAuth()
+                    ->getIdentity()
+                    ->getId(),'email' => md5($email))
+        );
+    }
 
     /**
      *
@@ -948,7 +958,81 @@ class User extends AbstractService
         return $this->getMapper()->update(
                 $this->getModel()->setOrganizationId(new IsNull('organization_id')), ['organization_id' => $organization_id]);
     }
+    
+    /**
+     * @invokable
+     *
+     * @param string $account_token
+     * @param string $password
+     */
+    public function signIn($account_token, $password)
+    {
+        $m_registration = $this->getServicePreregistration()->get($account_token);
+        if(false !== $m_registration){
+            
+            if ($m_registration->getUserId() instanceof IsNull) {
+                
+                $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, $password);
+                $user_id = $this->getMapper()->getLastInsertValue();
+                if(!$m_registration->getOrganizationId() instanceof IsNull){
+                    $this->addOrganization($m_registration->getOrganizationId(), $user_id);
+                }
+                $m_registration->setUserId($user_id);
+                $this->getMapper()->update($m_registration);
+                
+                return $this->login($m_registration->getEmail(), $password);
+            }
+            else{
+                $this->_updatePassword($m_registration->getEmail(), $password);
+                $m_registration->setPassword($password);
+                $this->getMapper()->update($m_registration);  
+                return $this->login($m_registration->getEmail(), $password);
+            }
+        } 
+        throw new \Exception('Account token not found.');
+    }
+    
+    /**
+     * @invokable
+     *
+     * @param string $access_token
+     * @param string $account_token
+     */
+    public function lindekinSignIn($access_token, $account_token = null )
+    {
+        $client_id = $this->container->get('config')['linkedin-conf']['client_id'];
+        $client_secret = $this->container->get('config')['linkedin-conf']['client_secret'];
+        $redirect_uri = $this->container->get('config')['linkedin-conf']['redirect_uri'];
+        $fields = [
+            'grant_type' => 'authorization_code', 
+            'code' => $access_token, 
+            'redirect_uri' => $redirect_uri, 
+            'client_id' => $client_id, 
+            'client_secret' => $client_secret 
+        ];
+        $url = $this->container->get('config')['linkedin-conf']['api_url'];
+        $data_string = json_encode($fields);
 
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($curl, CURLOPT_POSTFIELDS, urlencode($data_string));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $curl_response = curl_exec($curl);
+        syslog(1, json_encode($curl_response));
+    }
+    
+    /**
+     * Get Service Preregistration
+     *
+     * @return \Application\Service\Preregistration
+     */
+    private function getServicePreregistration()
+    {
+        return $this->container->get('app_service_preregistration');
+    }
+    
     /**
      * Get Service Post
      *

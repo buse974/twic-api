@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 696,
+    'build-commit' => 697,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -133,14 +133,20 @@ return [
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
     ],
+    'linkedin-conf' => [
+        'api_url' => 'https://www.linkedin.com/oauth/v2/accessToken',
+        'client_id' => '77gpz90fnfvx72',
+        'client_secure' => '8ENuBYC0JujwDrG1',
+        'redirect_uri' => ''
+    ],
     'caches' => [
         'storage_memcached' => [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS696',
+                    'namespace' => 'LMS697',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS696'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS697'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

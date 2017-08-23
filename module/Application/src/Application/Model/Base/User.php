@@ -33,6 +33,7 @@ class User extends AbstractModel
 	protected $suspension_reason;
 	protected $email_sent;
 	protected $address_id;
+	protected $linkedin_id;
 
 	protected $prefix = 'user';
 
@@ -356,6 +357,18 @@ class User extends AbstractModel
 	public function setAddressId($address_id)
 	{
 		$this->address_id = $address_id;
+
+		return $this;
+	}
+
+	public function getLinkedinId()
+	{
+		return $this->linkedin_id;
+	}
+
+	public function setLinkedinId($linkedin_id)
+	{
+		$this->linkedin_id = $linkedin_id;
 
 		return $this;
 	}
