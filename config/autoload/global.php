@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 698,
+    'build-commit' => 699,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -75,8 +75,6 @@ return [
             'app_service_conversation',
             'app_service_conversation_user',
             'app_service_contact',
-            'rbac_service_permission',
-            'rbac_service_role_permission',
             'app_service_activity',
             'app_service_circle',
             'app_service_report',
@@ -93,8 +91,11 @@ return [
             'app_service_post_doc',
             'app_service_submission',
             'app_service_quiz',
-            'mail.service',
+            'app_service_preregistration',
             'app_service_video_archive',
+            'mail.service',
+            'rbac_service_permission',
+            'rbac_service_role_permission',
             [
                 'class' => 'addr_service_address',
                 'methods' => [
@@ -136,17 +137,17 @@ return [
     'linkedin-conf' => [
         'api_url' => 'https://www.linkedin.com/oauth/v2/accessToken',
         'client_id' => '77gpz90fnfvx72',
-        'client_secure' => '8ENuBYC0JujwDrG1',
-        'redirect_uri' => ''
+        'client_secret' => '8ENuBYC0JujwDrG1',
+        'redirect_uri' => 'https://lms-v2.com/linkedin_signin'
     ],
     'caches' => [
         'storage_memcached' => [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS698',
+                    'namespace' => 'LMS699',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS698'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS699'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

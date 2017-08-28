@@ -998,11 +998,11 @@ class User extends AbstractService
      * @param string $access_token
      * @param string $account_token
      */
-    public function lindekinSignIn($access_token, $account_token = null )
+    public function linkedinSignIn($access_token, $account_token = null )
     {
         $client_id = $this->container->get('config')['linkedin-conf']['client_id'];
         $client_secret = $this->container->get('config')['linkedin-conf']['client_secret'];
-        $redirect_uri = $this->container->get('config')['linkedin-conf']['redirect_uri'];
+        $redirect_uri = "https://lms-v2.com/linkedin_signin";
         $fields = [
             'grant_type' => 'authorization_code', 
             'code' => $access_token, 
@@ -1010,17 +1010,21 @@ class User extends AbstractService
             'client_id' => $client_id, 
             'client_secret' => $client_secret 
         ];
+        $data_string = http_build_query($fields);
         $url = $this->container->get('config')['linkedin-conf']['api_url'];
-        $data_string = json_encode($fields);
-
+        
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, urlencode($data_string));
+        curl_setopt($curl, CURLOPT_POSTFIELDS,$data_string);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+
+
+        // receive server response ...
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        $curl_response = curl_exec($curl);
-        syslog(1, json_encode($curl_response));
+        $curl_response = json_decode(curl_exec($curl));
+        curl_close($curl);
+        $this->getServicePreregistration()->get($curl_response['account_token']);
+        //return $curl_response;
     }
     
     /**
