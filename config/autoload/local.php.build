@@ -88,7 +88,8 @@ return array(
 		),
 	),
 	'mail-conf' => [
-     'storage' => [
+    'cache' => 'storage_memcached',
+    'storage' => [
         'active' => false,
      ],
      'transport' => ${mail.transport},
