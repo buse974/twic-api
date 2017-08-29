@@ -26,8 +26,7 @@ class FsStorage extends AbstractStorage
 
     public function getList()
     {
-        $ret = array();
-
+        $ret = [];
         if ($handle = opendir($this->path)) {
             while (false !== ($entry = readdir($handle))) {
                 if (preg_match('/.obj$/', $entry)) {
@@ -48,7 +47,7 @@ class FsStorage extends AbstractStorage
     public function init($conf = [])
     {
         $this->path = $conf['path'];
-        
+
         return $this;
     }
 }

@@ -23,7 +23,7 @@ class Module implements ConfigProviderInterface
                     $conf_mail = $container->get('config')['mail-conf'];
                     $conf_storage = $conf_mail['template']['storage'];
                     $bj_storage = null;
-                    
+
                     switch ($conf_storage['name']) {
                     case 'fs':
                         $bj_storage = new \Mail\Template\Storage\FsStorage();
@@ -31,10 +31,13 @@ class Module implements ConfigProviderInterface
                         break;
                     case 's3':
                         $bj_storage = new \Mail\Template\Storage\FsS3Storage();
+                        if(isset($conf_storage['cache'])) {
+                          $bj_storage->setCache($container->get($cache['name']));
+                        }
                         $bj_storage->init($conf_storage);
                         break;
                     }
-                    
+
                     $mail =  new Mail();
                     $mail->setTplStorage($bj_storage)
                         ->setOptions($conf_mail);
@@ -42,7 +45,7 @@ class Module implements ConfigProviderInterface
                     return $mail;
                 },
             ],
-            
+
         );
     }
 }

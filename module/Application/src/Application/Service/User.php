@@ -686,7 +686,6 @@ class User extends AbstractService
      */
     public function sendPassword($id = null, $page_id = null)
     {
-
       if(null !== $page_id) {
         $identity = $this->getIdentity();
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
@@ -706,36 +705,33 @@ class User extends AbstractService
 
       $nb = 0;
       foreach ($id as $uid) {
-          $res_user = $this->getMapper()->select($this->getModel()->setId($uid));
-          if ($res_user->count() <= 0) {
-              continue;
-          }
+        $res_user = $this->getMapper()->select($this->getModel()->setId($uid));
+        if ($res_user->count() <= 0) {
+            continue;
+        }
 
-          srand((double) microtime() * 1000000);
-          $password = '';
-          for ($i = 0; $i < 8; ++ $i) {
-              $password .= substr($cars, rand(0, $long - 1), 1);
-          }
-          $ret = $this->getMapper()->update($this->getModel()->setNewPassword(md5($password))->setEmailSent(1), ['id' => $uid]);
-          if ($ret > 0) {
-              $m_user = $res_user->current();
-              $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
-              try {
-                  $this->getServiceMail()->sendTpl(
-                      'tpl_sendpasswd', $m_user->getEmail(),
-                      [
-                        'prefix' => (is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
-                        'password' => $password,
-                        'email' => $m_user->getEmail(),
-                        'lastname' => $m_user->getLastname(),
-                        'firstname' => $m_user->getFirstname()
-                      ]
-                  );
-              } catch (\Exception $e) {
-                  syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
-              }
+        srand((double) microtime() * 1000000);
+        $password = '';
+        for ($i = 0; $i < 8; ++ $i) {
+            $password .= substr($cars, rand(0, $long - 1), 1);
+        }
+
+        $m_user = $res_user->current();
+        $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
+        try {
+            $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
+                  'prefix' => (is_string($m_page->getLibelle()) && !empty($m_page->getLibelle()))? $m_page->getLibelle():null,
+                  'password' => $password,
+                  'email' => $m_user->getEmail(),
+                  'lastname' => $m_user->getLastname(),
+                  'firstname' => $m_user->getFirstname()
+                ]);
+            if ($this->getMapper()->update($this->getModel()->setNewPassword(md5($password))->setEmailSent(1), ['id' => $uid]) > 0) {
               $nb++;
-          }
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Model name does not exist <> password is : ' . $password . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+        }
       }
 
       return $nb;
@@ -762,7 +758,7 @@ class User extends AbstractService
                     ->getId(),'password' => md5($oldpassword))
         );
     }
-    
+
      public function _updatePassword($email, $password)
     {
         return $this->getMapper()->update(
@@ -958,7 +954,7 @@ class User extends AbstractService
         return $this->getMapper()->update(
                 $this->getModel()->setOrganizationId(new IsNull('organization_id')), ['organization_id' => $organization_id]);
     }
-    
+
     /**
      * @invokable
      *
@@ -969,9 +965,9 @@ class User extends AbstractService
     {
         $m_registration = $this->getServicePreregistration()->get($account_token);
         if(false !== $m_registration){
-            
+
             if ($m_registration->getUserId() instanceof IsNull) {
-                
+
                 $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, $password);
                 $user_id = $this->getMapper()->getLastInsertValue();
                 if(!$m_registration->getOrganizationId() instanceof IsNull){
@@ -979,19 +975,19 @@ class User extends AbstractService
                 }
                 $m_registration->setUserId($user_id);
                 $this->getMapper()->update($m_registration);
-                
+
                 return $this->login($m_registration->getEmail(), $password);
             }
             else{
                 $this->_updatePassword($m_registration->getEmail(), $password);
                 $m_registration->setPassword($password);
-                $this->getMapper()->update($m_registration);  
+                $this->getMapper()->update($m_registration);
                 return $this->login($m_registration->getEmail(), $password);
             }
-        } 
+        }
         throw new \Exception('Account token not found.');
     }
-    
+
     /**
      * @invokable
      *
@@ -1004,15 +1000,15 @@ class User extends AbstractService
         $client_secret = $this->container->get('config')['linkedin-conf']['client_secret'];
         $redirect_uri = "https://lms-v2.com/linkedin_signin";
         $fields = [
-            'grant_type' => 'authorization_code', 
-            'code' => $access_token, 
-            'redirect_uri' => $redirect_uri, 
-            'client_id' => $client_id, 
-            'client_secret' => $client_secret 
+            'grant_type' => 'authorization_code',
+            'code' => $access_token,
+            'redirect_uri' => $redirect_uri,
+            'client_id' => $client_id,
+            'client_secret' => $client_secret
         ];
         $data_string = http_build_query($fields);
         $url = $this->container->get('config')['linkedin-conf']['api_url'];
-        
+
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS,$data_string);
@@ -1026,7 +1022,7 @@ class User extends AbstractService
         $this->getServicePreregistration()->get($curl_response['account_token']);
         //return $curl_response;
     }
-    
+
     /**
      * Get Service Preregistration
      *
@@ -1036,7 +1032,7 @@ class User extends AbstractService
     {
         return $this->container->get('app_service_preregistration');
     }
-    
+
     /**
      * Get Service Post
      *
