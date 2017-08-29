@@ -27,9 +27,9 @@ class FsS3Storage extends AbstractStorage
         fclose($fp);
 
         if ($this->cache && $this->cache->hasItem('tpl_mail_'.$model->getName())) {
-            $this->cache->replaceItem('tpl_mail_'.$model->getName()), $model);
+            $this->cache->replaceItem('tpl_mail_'.$model->getName(), $model);
         } else {
-            $this->cache->setItem('tpl_mail_'.$model->getName()), $model);
+            $this->cache->setItem('tpl_mail_'.$model->getName(), $model);
         }
 
         $this->cache_tpl[$model->getName()] = $model;
