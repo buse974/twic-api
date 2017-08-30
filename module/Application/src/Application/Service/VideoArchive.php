@@ -37,7 +37,7 @@ class VideoArchive extends AbstractService
      *
      * @invokable
      *
-     * @param interger $conversation_id
+     * @param int $conversation_id
      *
      * @return array
      */
@@ -58,7 +58,7 @@ class VideoArchive extends AbstractService
      *
      * @invokable
      *
-     * @param interger $conversation_id
+     * @param int $conversation_id
      *
      * @return mixed
      */

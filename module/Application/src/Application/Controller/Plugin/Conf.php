@@ -24,7 +24,6 @@ class Conf extends AbstractPlugin
     /**
      * Constructor
      *
-     * @param DmsService $service
      * @param array      $options
      */
     public function __construct($options)

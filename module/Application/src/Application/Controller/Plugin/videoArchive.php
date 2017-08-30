@@ -24,8 +24,7 @@ class videoArchive extends AbstractPlugin
     /**
      * Constructor
      *
-     * @param DmsService $service
-     * @param array      $options
+     * @param \Application\Service\VideoArchive $video_archive
      */
     public function __construct(\Application\Service\VideoArchive $video_archive)
     {

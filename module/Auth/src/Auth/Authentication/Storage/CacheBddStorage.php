@@ -6,7 +6,6 @@
  */
 namespace Auth\Authentication\Storage;
 
-use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql as DbSql;
 
 /**
@@ -73,7 +72,7 @@ class CacheBddStorage implements StorageInterface
      * Behavior is undefined when storage is empty
      *
      * @throws \Zend\Authentication\Exception\InvalidArgumentException
-     * @return \Auth\Authentication\Storage\Model\Identity
+     * @return \Auth\Authentication\Storage\Session
      */
     public function read()
     {

@@ -9,9 +9,6 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Expression;
-use Zend\Db\Sql\Select;
-use Zend\Db\Sql\Predicate\NotIn;
-use Zend\Db\Sql\Where;
 
 /**
  * Class  User

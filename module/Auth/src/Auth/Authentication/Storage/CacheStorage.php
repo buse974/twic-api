@@ -42,7 +42,7 @@ class CacheStorage implements StorageInterface
      *
      * @throws \Zend\Authentication\Exception\InvalidArgumentException
      *
-     * @return \Auth\Authentication\Storage\Model\Identity
+     * @return \Auth\Authentication\Adapter\Model\Identity
      */
     public function read()
     {

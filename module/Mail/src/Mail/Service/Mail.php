@@ -34,7 +34,7 @@ class Mail
         if ($this->options['transport']['active'] === true) {
             $this->transport = Factory::create($this->options['transport']);
         }
-        
+
         $this->is_init = true;
     }
 
@@ -88,7 +88,7 @@ class Mail
             ->setTo($to);
 
         $this->getTransport()->send($message);
-
+        $this->getTransport()->disconnect();
         return true;
     }
 
@@ -133,7 +133,7 @@ class Mail
 
         return $this->tpl_storage->read($name);
     }
-    
+
     /**
      * @throws \Exception
      *
@@ -144,10 +144,10 @@ class Mail
         if (!$this->is_init) {
             $this->init();
         }
-    
+
         return $this->storage;
     }
-    
+
     /**
      * @throws \Exception
      *
@@ -158,10 +158,10 @@ class Mail
         if (!$this->is_init) {
             $this->init();
         }
-    
+
         return $this->transport;
     }
-    
+
     public function setOptions($options)
     {
         $this->options = $options;

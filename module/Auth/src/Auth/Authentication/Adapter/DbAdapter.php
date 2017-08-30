@@ -30,7 +30,7 @@ class DbAdapter extends AbstractAdapter
     protected $table;
 
     /**
-     * @var \Auth\Auth\Authentication\Adapter\Model\IdentityInterface
+     * @var \Auth\Authentication\Adapter\Model\IdentityInterface
      */
     protected $result;
 
@@ -128,7 +128,7 @@ class DbAdapter extends AbstractAdapter
     }
 
     /**
-     * @return \Auth\Auth\Authentication\Adapter\Model\IdentityInterface
+     * @return \Auth\Authentication\Adapter\Model\IdentityInterface
      */
     public function getResult()
     {

@@ -10,9 +10,7 @@ use Application\Model\Page as ModelPage;
 use Dal\Service\AbstractService;
 use Application\Model\Role as ModelRole;
 use Application\Model\PostSubscription as ModelPostSubscription;
-use Dal\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Predicate\IsNull;
-use Application\Model\PostSubscription;
 use Zend\Http\Client;
 
 /**
@@ -218,7 +216,7 @@ class Post extends AbstractService
      * @param string $link_desc
      * @param int    $lat
      * @param int    $lng
-     * @param arrray $docs
+     * @param array $docs
      * @param string $data
      * @param string $event
      * @param int    $uid

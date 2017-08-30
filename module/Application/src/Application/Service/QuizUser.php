@@ -119,7 +119,7 @@ class QuizUser extends AbstractService
   /**
    * Get Service Quiz User
    *
-   * @return \Application\Service\getServiceQuizQuestion
+   * @return \Application\Service\QuizQuestion
    */
   public function getServiceQuizQuestion()
   {

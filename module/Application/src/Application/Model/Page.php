@@ -2,6 +2,7 @@
 
 namespace Application\Model;
 
+use Address\Model\Address;
 use Application\Model\Base\Page as BasePage;
 
 class Page extends BasePage
@@ -79,7 +80,7 @@ class Page extends BasePage
     }
 
     /**
-     * @return \Application\Model\School
+     * @return \Application\Model\Page
      */
     public function getOrganization()
     {

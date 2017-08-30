@@ -157,7 +157,7 @@ class PageUser extends AbstractService
      * @param  int    $page_id
      * @param  int    $user_id
      * @param  string $role
-     * @param  strung $state
+     * @param  string $state
      * @return int
      */
     public function update($page_id, $user_id, $role, $state)

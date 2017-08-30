@@ -13,9 +13,6 @@ use JRpc\Json\Server\Exception\JrpcException;
 use Application\Model\Role as ModelRole;
 use Firebase\JWT\JWT;
 use Zend\Db\Sql\Predicate\IsNull;
-use Zend\Db\Sql\Predicate\IsNotNull;
-use Application\Model\Item as ModelItem;
-use Auth\Authentication\Adapter\Model\Identity;
 use Application\Model\PageUser as ModelPageUser;
 
 /**

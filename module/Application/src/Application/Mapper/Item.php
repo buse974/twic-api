@@ -4,7 +4,6 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Expression;
-use Dal\Db\Sql\Select;
 
 class Item extends AbstractMapper
 {

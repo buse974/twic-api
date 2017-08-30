@@ -88,19 +88,20 @@ return array(
 		),
 	),
 	'mail-conf' => [
+     'cache' => 'storage_memcached',
+     'storage' => [
+         'active' => false,
+     ],
+     'transport' => [
+         'active' => true,
+         'type' => 'sendmail',
+         'options' => [],
+     ],
+     'template' => [
          'storage' => [
-             'active' => false,
+             'name' => 'fs',
+             'path' => __DIR__.'/../../../tpl/',
          ],
-         'transport' => [
-             'active' => true,
-             'type' => 'sendmail',
-             'options' => [],
-         ],
-         'template' => [
-             'storage' => [
-                 'name' => 'fs',
-                 'path' => __DIR__.'/../../../tpl/',
-             ],
-         ],
+     ],
      ],
 );

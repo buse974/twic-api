@@ -111,7 +111,7 @@ class Role extends AbstractService
      *
      * @param string $namerole
      *
-     * @return stirng
+     * @return string
      */
     public function getIdByName($namerole)
     {

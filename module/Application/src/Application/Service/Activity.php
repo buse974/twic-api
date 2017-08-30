@@ -7,6 +7,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use JRpc\Json\Server\Exception\JrpcException;
 use Zend\Db\Sql\Predicate\Between;
 use Application\Model\Role as ModelRole;
 
@@ -100,7 +101,7 @@ class Activity extends AbstractService
      * @invokable
      *
      * @param string $event
-     * @param id     $object_id
+     * @param int     $object_id
      * @param string $object_name
      * @param array  $school_id
      * @param array  $program_id

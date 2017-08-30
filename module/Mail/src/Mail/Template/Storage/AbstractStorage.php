@@ -4,6 +4,7 @@ namespace Mail\Template\Storage;
 
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
+use Zend\ServiceManager\ServiceManager;
 
 abstract class AbstractStorage implements StorageInterface
 {

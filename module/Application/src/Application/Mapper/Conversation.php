@@ -7,7 +7,6 @@ use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Predicate\In;
 use Zend\Db\Sql\Select;
-use Application\Model\Conversation as ModelConversation;
 
 class Conversation extends AbstractMapper
 {

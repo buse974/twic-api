@@ -3,10 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Application\Model\Conversation as ModelConversation;
-use Zend\Json\Server\Request;
 use Zend\Db\Sql\Predicate\IsNull;
-use Zend\Http\Client;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 
 class MessageUser extends AbstractService

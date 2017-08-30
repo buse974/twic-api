@@ -6,10 +6,8 @@
  */
 namespace Application\Service;
 
-use Application\Model\Role as ModelRole;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
-//use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class Contact.

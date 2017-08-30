@@ -2,6 +2,7 @@
 
 namespace Application\Model;
 
+use Zend\Db\Sql\Predicate\IsNull;
 use Application\Model\Base\User as BaseUser;
 
 class User extends BaseUser
