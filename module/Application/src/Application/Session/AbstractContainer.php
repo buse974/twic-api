@@ -7,9 +7,8 @@ use Iterator;
 use Traversable;
 use Zend\Session\ManagerInterface as Manager;
 use Zend\Session\Storage\StorageInterface as Storage;
-use ArrayObject;
 
-abstract class AbstractContainer extends ArrayObject
+abstract class AbstractContainer extends \ArrayObject
 {
     /**
      * Container name.
@@ -45,7 +44,7 @@ abstract class AbstractContainer extends ArrayObject
      * @param null|string $name
      * @param Manager     $manager
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws \Zend\Stdlib\Exception\InvalidArgumentException
      */
     public function __construct($name = 'Default', Manager $manager = null)
     {
@@ -58,7 +57,7 @@ abstract class AbstractContainer extends ArrayObject
         $this->setManager($manager);
 
         // Create namespace
-        parent::__construct(array(), ArrayObject::ARRAY_AS_PROPS);
+        parent::__construct(array(), \ArrayObject::ARRAY_AS_PROPS);
 
         // Start session
         $this->getManager()->start();
@@ -81,14 +80,14 @@ abstract class AbstractContainer extends ArrayObject
      *
      * @return Manager
      *
-     * @throws Exception\InvalidArgumentException if invalid manager default class provided
+     * @throws \Zend\Stdlib\Exception\InvalidArgumentException if invalid manager default class provided
      */
     public static function getDefaultManager()
     {
         if (null === static::$defaultManager) {
             $manager = new static::$managerDefaultClass();
             if (!$manager instanceof Manager) {
-                throw new Exception\InvalidArgumentException(
+                throw new \Zend\Stdlib\Exception\InvalidArgumentException(
                     'Invalid default manager type provided; must implement ManagerInterface'
                 );
             }
@@ -115,14 +114,14 @@ abstract class AbstractContainer extends ArrayObject
      *
      * @return Container
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws \Zend\Stdlib\Exception\InvalidArgumentException
      */
     protected function setManager(Manager $manager = null)
     {
         if (null === $manager) {
             $manager = static::getDefaultManager();
             if (!$manager instanceof Manager) {
-                throw new Exception\InvalidArgumentException(
+                throw new \Zend\Stdlib\Exception\InvalidArgumentException(
                     'Manager provided is invalid; must implement ManagerInterface'
                 );
             }
@@ -157,11 +156,11 @@ abstract class AbstractContainer extends ArrayObject
     /**
      * Create a new container object on which to act.
      *
-     * @return ArrayObject
+     * @return \ArrayObject
      */
     protected function createContainer()
     {
-        return new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+        return new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
     }
 
     /**
@@ -176,7 +175,7 @@ abstract class AbstractContainer extends ArrayObject
      *
      * @return Storage|null Returns null only if $createContainer is false
      *
-     * @throws Exception\RuntimeException
+     * @throws \Zend\Stdlib\Exception\RuntimeException
      */
     protected function verifyNamespace($createContainer = true)
     {
@@ -189,7 +188,7 @@ abstract class AbstractContainer extends ArrayObject
             $storage[$name] = $this->createContainer();
         }
         if (!is_array($storage[$name]) && !$storage[$name] instanceof Traversable) {
-            throw new Exception\RuntimeException('Container cannot write to storage due to type mismatch');
+            throw new \Zend\Stdlib\Exception\RuntimeException('Container cannot write to storage due to type mismatch');
         }
 
         return $storage;
@@ -449,7 +448,7 @@ abstract class AbstractContainer extends ArrayObject
      *
      * @return array Returns the old array
      *
-     * @see ArrayObject::exchangeArray()
+     * @see \ArrayObject::exchangeArray()
      */
     public function exchangeArray($input)
     {
@@ -466,7 +465,7 @@ abstract class AbstractContainer extends ArrayObject
 
         $old = $storage[$name];
         $storage[$name] = $input;
-        if ($old instanceof ArrayObject) {
+        if ($old instanceof \ArrayObject) {
             return $old->getArrayCopy();
         }
 
@@ -501,7 +500,7 @@ abstract class AbstractContainer extends ArrayObject
      *
      * @return Container
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws \Zend\Stdlib\Exception\InvalidArgumentException
      */
     public function setExpirationSeconds($ttl, $vars = null)
     {
@@ -536,7 +535,7 @@ abstract class AbstractContainer extends ArrayObject
             // Create metadata array to merge in
             $data = array('EXPIRE_KEYS' => $expires);
         } else {
-            throw new Exception\InvalidArgumentException(
+            throw new \Zend\Stdlib\Exception\InvalidArgumentException(
                 'Unknown data provided as second argument to '.__METHOD__
             );
         }
@@ -555,7 +554,7 @@ abstract class AbstractContainer extends ArrayObject
      * @param int               $hops
      * @param null|string|array $vars
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws \Zend\Stdlib\Exception\InvalidArgumentException
      *
      * @return Container
      */
@@ -593,7 +592,7 @@ abstract class AbstractContainer extends ArrayObject
             // Create metadata array to merge in
             $data = array('EXPIRE_HOPS_KEYS' => $expires);
         } else {
-            throw new Exception\InvalidArgumentException(
+            throw new \Zend\Stdlib\Exception\InvalidArgumentException(
                 'Unknown data provided as second argument to '.__METHOD__
             );
         }
@@ -616,6 +615,6 @@ abstract class AbstractContainer extends ArrayObject
         $storage = $this->verifyNamespace();
         $container = $storage[$this->getName()];
 
-        return $container instanceof ArrayObject ? $container->getArrayCopy() : $container;
+        return $container instanceof \ArrayObject ? $container->getArrayCopy() : $container;
     }
 }

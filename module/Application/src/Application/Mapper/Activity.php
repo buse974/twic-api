@@ -4,8 +4,8 @@ namespace Application\Mapper;
 
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Expression;
-use Application\Model\Role as ModelRole;
 use Zend\Db\Sql\Predicate\Predicate;
+use Application\Model\Role as ModelRole;
 
 class Activity extends AbstractMapper
 {

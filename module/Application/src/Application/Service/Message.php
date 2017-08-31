@@ -154,16 +154,6 @@ class Message extends AbstractService
   }
 
   /**
-   * Get Message Doc.
-   *
-   * @return \Application\Service\MessageDoc
-   */
-  private function getServiceMessageDoc()
-  {
-      return $this->container->get('app_service_message_doc');
-  }
-
-  /**
    * Get Service User.
    *
    * @return \Application\Service\User
