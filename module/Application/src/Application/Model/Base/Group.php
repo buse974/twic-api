@@ -8,6 +8,7 @@ class Group extends AbstractModel
 {
  	protected $id;
 	protected $name;
+	protected $item_id;
 
 	protected $prefix = 'group';
 
@@ -31,6 +32,18 @@ class Group extends AbstractModel
 	public function setName($name)
 	{
 		$this->name = $name;
+
+		return $this;
+	}
+
+	public function getItemId()
+	{
+		return $this->item_id;
+	}
+
+	public function setItemId($item_id)
+	{
+		$this->item_id = $item_id;
 
 		return $this;
 	}

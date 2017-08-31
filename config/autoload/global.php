@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 706,
+    'build-commit' => 707,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -91,6 +91,7 @@ return [
             'app_service_post_doc',
             'app_service_submission',
             'app_service_quiz',
+            'app_service_group',
             'app_service_preregistration',
             'app_service_video_archive',
             'mail.service',
@@ -145,9 +146,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS706',
+                    'namespace' => 'LMS707',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS706'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS707'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

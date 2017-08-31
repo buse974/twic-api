@@ -6,8 +6,7 @@ use Dal\Model\AbstractModel;
 
 class Preregistration extends AbstractModel
 {
- 	protected $id;
-	protected $email;
+ 	protected $email;
 	protected $firstname;
 	protected $lastname;
 	protected $organization_id;
@@ -15,18 +14,6 @@ class Preregistration extends AbstractModel
 	protected $user_id;
 
 	protected $prefix = 'preregistration';
-
-	public function getId()
-	{
-		return $this->id;
-	}
-
-	public function setId($id)
-	{
-		$this->id = $id;
-
-		return $this;
-	}
 
 	public function getEmail()
 	{
