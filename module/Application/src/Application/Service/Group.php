@@ -51,14 +51,14 @@ class Group extends AbstractService
             $name = [$name];
         }
         
-        $nbr = 0;
+        $ret = [];
         foreach ($name as $n) {
             $m_group = $this->getModel()->setName($n)->setItemId($item_id);
             $this->getMapper()->insert($m_group);
-            $nbr++;
+            $ret[] = $this->getMapper()->getLastInsertValue();
         }
         
-        return $nbr;
+        return $ret;
     }
     
     /**
@@ -83,7 +83,7 @@ class Group extends AbstractService
      *  
      * @return \Application\Model\Group
      */
-    public function getOCreate($name, $item_id)
+    public function getOrCreate($name, $item_id)
     {
         $m_group = $this->getModel()->setName($name)->setItemId($item_id);
         

@@ -173,7 +173,7 @@ class Item extends AbstractService
     public function addUsers($id, $user_ids, $group_id = null, $group_name = null)
     {
         if (null === $group_id && null !== $group_name) {
-            $m_group = $this->getServiceGroup()->getOCreate($group_name, $id);
+            $m_group = $this->getServiceGroup()->getOrCreate($group_name, $id);
             $group_id = $m_group->getId();         
         }
         

@@ -134,7 +134,8 @@ class GroupTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][0] , 1);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
@@ -148,7 +149,8 @@ class GroupTest extends AbstractService
         
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals($data['result'] , 1);
+        $this->assertEquals(count($data['result']) , 1);
+        $this->assertEquals($data['result'][0] , 2);
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
