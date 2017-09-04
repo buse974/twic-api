@@ -57,7 +57,7 @@ class Item extends AbstractMapper
     return $this->selectWith($select1);
   }
 
-  public function getListAssignmentId($me, $page_id = null, $filter = null)
+  public function getListAssignmentId($me, $page_id = null, $filter = null, $is_admin_page = null)
   {
     $select = $this->tableGateway->getSql()->select();
     $select->columns([
@@ -65,6 +65,7 @@ class Item extends AbstractMapper
       'parent_id',
       'page_id'])
       ->join('page_user', 'page_user.page_id=item.page_id', [])
+      ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
       ->where(['page_user.user_id' => $me])
       ->where(['page_user.state' => 'member'])
       ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
@@ -87,6 +88,9 @@ class Item extends AbstractMapper
         $select->order(['item.start_date','item.end_date']);
         $select->offset((($filter['p'] - 1) * $filter['n']));
         $select->limit($filter['n']);
+      }
+      if($is_admin_page !== true) {
+          $select->where(["( item.participants = 'all' || item_user.user_id = ? )" => $me]);
       }
 
     return $this->selectWith($select);
