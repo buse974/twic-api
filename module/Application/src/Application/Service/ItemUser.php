@@ -19,6 +19,23 @@ class ItemUser extends AbstractService
     {
         return $this->getMapper()->getList($item_id, $user_id, $submission_id);
     }
+    
+    /**
+     * Get List User Id By group
+     * 
+     * @param int $group_id
+     */
+    public function getListUserId($group_id)
+    {
+        $res_item_user = $this->getMapper()->getListUserId($group_id);
+        
+        $ret = [];
+        foreach ($res_item_user as $m_item_user) {
+            $ret[] = $m_item_user->getUserId();
+        }
+        
+        return $ret;
+    }
 
     /**
      * Get Item User

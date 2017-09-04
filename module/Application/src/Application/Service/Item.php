@@ -201,7 +201,6 @@ class Item extends AbstractService
      * @param int $page_id
      * @param int $parent_id
      * @param bool $is_publish
-     *            // option pour admin
      */
     public function getListId($page_id = null, $parent_id = null, $is_publish = null)
     {
@@ -256,11 +255,12 @@ class Item extends AbstractService
         
         if (null !== $page_id) {
             if (! is_array($page_id)) {
-                $page_id = [$page_id];
+                $page_id = [
+                    $page_id
+                ];
             }
             
             foreach ($page_id as $p_id) {
-                
                 $ar_pu = $this->getServicePageUser()->getListByPage($p_id, 'admin');
                 $is_admin_page = (in_array($identity['id'], $ar_pu[$p_id]));
                 
@@ -403,17 +403,18 @@ class Item extends AbstractService
                             if (isset($groups[$groupId])) {
                                 $groups[$groupId]['users'][] = $ar_item['page_user']['user_id'];
                             } else {
+                                
                                 $groups[$groupId] = [
                                     'group_id' => $ar_item['item_user']['group_id'],
+                                    'group_name' => $ar_item['item_user']['group']['name'],
                                     'rate' => ($m_item->getIsGradePublished() == true || $is_admin) ? $ar_item['item_user']['rate'] : null,
-                                    'users' => [
-                                        $ar_item['page_user']['user_id']
-                                    ],
+                                    'users' => [$ar_item['page_user']['user_id']],
                                     'submit_date' => $ar_item['item_user']['submission']['submit_date'],
                                     'post_id' => $ar_item['item_user']['submission']['post_id'],
                                     'item_id' => $i
                                 ];
                                 if (! $is_admin) {
+                                    $groups[$groupId]['users'] = $this->getServiceItemUser()->getListUserId($ar_item['item_user']['group_id']);
                                     $ar[$i] = &$groups[$groupId];
                                 } else {
                                     $ar[$i][] = &$groups[$groupId];
@@ -522,25 +523,16 @@ class Item extends AbstractService
      *
      * @invokable
      *
-     * @param
-     *            int id
-     * @param
-     *            string title
+     * @param int $id
+     * @param string $title
      * @param int $points
-     * @param
-     *            string description
-     * @param
-     *            bool is_available
-     * @param
-     *            bool is_published
-     * @param
-     *            bool order
-     * @param
-     *            string start_date
-     * @param
-     *            string end_date
-     * @param
-     *            int parent_id
+     * @param string $description
+     * @param bool $is_available
+     * @param bool $is_published
+     * @param bool $order
+     * @param string $start_date
+     * @param string $end_date
+     * @param int $parent_id
      * @param int $library_id,
      * @param int $post_id,
      * @param string $text,
