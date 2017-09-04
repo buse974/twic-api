@@ -174,7 +174,7 @@ class Item extends AbstractService
     {
         if (null === $group_id && null !== $group_name) {
             $m_group = $this->getServiceGroup()->getOrCreate($group_name, $id);
-            $group_id = $m_group->getId();         
+            $group_id = $m_group->getId();
         }
         
         return $this->getServiceItemUser()->addUsers($id, $user_ids, $group_id);
@@ -393,22 +393,15 @@ class Item extends AbstractService
                     }
                     break;
                 case 'group':
-             /*
-              * @TODO Add group name
-              */
-           foreach ($res_item as $m_item) {
+                    $groups = [];
+                    foreach ($res_item as $m_item) {
                         if (is_numeric($m_item->getItemUser()->getId())) {
-                            $ok = false;
-                            foreach ($ar[$i] as &$arr) {
-                                if ($arr['group_id'] === $m_item->getItemUser()->getGroupId()) {
-                                    $arr['user'][] = $m_item->getPageUser()->getUserId();
-                                    $ok = true;
-                                    break;
-                                }
-                            }
-                            if (! $ok) {
-                                $ar_item = $m_item->toArray();
-                                $tmpar = [
+                            $ar_item = $m_item->toArray();
+                            $groupId = $ar_item['item_user']['group_id'];
+                            if (isset($groups[$groupId])) {
+                                $groups[$groupId]['users'][] = $ar_item['page_user']['user_id'];
+                            } else {
+                                $groups[$groupId] = [
                                     'group_id' => $ar_item['item_user']['group_id'],
                                     'rate' => ($m_item->getIsGradePublished() == true || $is_admin) ? $ar_item['item_user']['rate'] : null,
                                     'users' => [
@@ -419,13 +412,14 @@ class Item extends AbstractService
                                     'item_id' => $i
                                 ];
                                 if (! $is_admin) {
-                                    $ar[$i] = $tmpar;
+                                    $ar[$i] = $groups[$groupId];
                                 } else {
-                                    $ar[$i][] = $tmpar;
+                                    $ar[$i][] = $groups[$groupId];
                                 }
                             }
                         }
                     }
+                    
                     break;
                 default:
                     break;
