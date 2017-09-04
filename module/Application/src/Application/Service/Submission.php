@@ -13,7 +13,7 @@ class Submission extends AbstractService
   * @param int $item_id
   * @param int $user_id
   */
-  public function getOrCreate($item_id, $user_id = null)
+  public function getOrCreate($item_id, $user_id = null, $group_id = null)
   {
       $me = $this->getServiceUser()->getIdentity()['id'];
       $m_item = $this->getServiceItem()->getLite($item_id)->current();
@@ -28,7 +28,8 @@ class Submission extends AbstractService
       }
 
       $is_admin = in_array($me, $ar_pa[$page_id]);
-      if(null === $user_id || !$is_admin){
+      
+      if(null === $user_id && null !== $group_id || !$is_admin){
         $user_id = $me;
       }
 
@@ -37,20 +38,15 @@ class Submission extends AbstractService
          throw new \Exception("Error Processing Request", 1);
       }
 
-      switch($m_item->getParticipants()) {
-          case 'all' :
-              $res_submission = $this->getMapper()->get(null, $item_id, $user_id);
-              if($res_submission->count() <= 0) {
-                $this->getMapper()->insert($this->getModel()->setItemId($item_id));
-                $submission_id  = (int) $this->getMapper()->getLastInsertValue();
-                $m_item_user = $this->getServiceItemUser()->getOrCreate($user_id, $item_id, $submission_id);
-                $m_submission = $this->getMapper()->get(null, $item_id, $user_id)->current();
-              }
-              else{
-                $m_submission = $res_submission->current();
-              }
-
-          break;
+      $res_submission = $this->getMapper()->get(null, $item_id, $user_id, $group_id);
+      if($res_submission->count() <= 0) {
+        $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+        $submission_id  = (int) $this->getMapper()->getLastInsertValue();
+        $this->getServiceItemUser()->getOrCreate($item_id, $user_id, $submission_id, $group_id);
+        $m_submission = $this->getMapper()->get(null, $item_id, $user_id, $group_id)->current();
+      }
+      else{
+        $m_submission = $res_submission->current();
       }
 
       $m_submission->setItemUsers($this->getServiceItemUser()->getList($item_id, null, $m_submission->getId()));

@@ -67,26 +67,30 @@ class ItemUser extends AbstractService
      *
      * @return \Application\Model\ItemUser
      */
-    public function getOrCreate($user_id, $item_id, $submission_id = null)
+    public function getOrCreate($item_id, $user_id = null, $submission_id = null, $group_id = null)
     {
         $res_item_user = $this->getMapper()->select($this->getModel()
             ->setUserId($user_id)
-            ->setItemId($item_id));
+            ->setItemId($item_id)
+            ->setGroupId($group_id));
         
         if ($res_item_user->count() <= 0) {
+            if($user_id === null) {
+                throw new \Exception("Error process: item_user is not présent");
+            }
             $it_id = $this->create($item_id, $user_id, null, $submission_id);
-            $res_item_user = $this->getMapper()->select($this->getModel()
-                ->setId($it_id));
+            $res_item_user = $this->getMapper()->select($this->getModel()->setId($it_id));
+        }
+
+        foreach ($res_item_user as $m_item_user) {
+            if (null !== $submission_id && $m_item_user->getSubmissionId() !== $submission_id) {
+                $this->getMapper()->update($this->getModel()
+                    ->setId($m_item_user->getId())
+                    ->setSubmissionId($submission_id));
+            }
         }
         
-        $m_item_user = $res_item_user->current();
-        if (null !== $submission_id && $m_item_user->getSubmissionId() !== $submission_id) {
-            $this->getMapper()->update($this->getModel()
-                ->setId($m_item_user->getId())
-                ->setSubmissionId($submission_id));
-        }
-        
-        return $m_item_user;
+        return $res_item_user->current();
     }
 
     /**
