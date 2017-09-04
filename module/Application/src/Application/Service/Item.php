@@ -412,9 +412,9 @@ class Item extends AbstractService
                                     'item_id' => $i
                                 ];
                                 if (! $is_admin) {
-                                    $ar[$i] = $groups[$groupId];
+                                    $ar[$i] = &$groups[$groupId];
                                 } else {
-                                    $ar[$i][] = $groups[$groupId];
+                                    $ar[$i][] = &$groups[$groupId];
                                 }
                             }
                         }
