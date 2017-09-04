@@ -34,7 +34,7 @@ class Submission extends AbstractService
       }
 
       //si le user_id final n'est pas un student du cour
-      if(!in_array($user_id, $ar_pu[$page_id]) || null !== $group_id && null === $user_id) {
+      if(!in_array($user_id, $ar_pu[$page_id]) || ( null !== $group_id && null === $user_id ) ) {
          throw new \Exception("Error Processing Request", 1);
       }
 
