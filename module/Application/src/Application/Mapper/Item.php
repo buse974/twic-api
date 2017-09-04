@@ -72,7 +72,8 @@ class Item extends AbstractMapper
       ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
       ->where(['item.is_published IS TRUE'])
       ->order('item.page_id ASC')
-      ->order('item.order ASC');
+      ->order('item.order ASC')
+      ->quantifier('DISTINCT');
 
       if(null !== $page_id) {
         $select->where(['item.page_id' => $page_id]);
