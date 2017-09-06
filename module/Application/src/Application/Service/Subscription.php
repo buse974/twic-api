@@ -22,7 +22,7 @@ class Subscription extends AbstractService
         if ($res_subscription->count() <= 0) {
             $ret = $this->getMapper()->insert($m_subscription->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s')));
         }
-
+        
         return $ret;
     }
 
@@ -72,5 +72,16 @@ class Subscription extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+    
+    
+    /**
+     * Get Service PageRelation
+     *
+     * @return \Application\Service\PageRelation
+     */
+    private function getServicePageRelation()
+    {
+        return $this->container->get('app_service_page_relation');
     }
 }

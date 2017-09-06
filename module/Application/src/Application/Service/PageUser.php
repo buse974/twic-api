@@ -10,6 +10,8 @@ use Dal\Service\AbstractService;
 use Application\Model\PageUser as ModelPageUser;
 use Application\Model\Page as ModelPage;
 use Application\Model\Role as ModelRole;
+use Application\Model\PageRelation as ModelPageRelation;
+
 
 /**
  * Class PageUser
@@ -98,6 +100,13 @@ class PageUser extends AbstractService
                 }
 
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
+                if(ModelPage::TYPE_ORGANIZATION == $m_page->getType()) {
+                    $res_page_relation = $this->getServicePageRelation()->getList($page_id, ModelPageRelation::TYPE_MEMBER);
+                    foreach ($res_page_relation as $m_page_relation) {
+                        $this->getServiceSubscription()->add("PP".$m_page_relation->getParentId(), $uid);
+                    }
+                }
+                
                 // Si il n'est pas le propriétaire on lui envoie une notification
                 if ($m_page->getUserId() !== $uid) {
                     if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC && ModelPage::TYPE_ORGANIZATION !== $m_page->getType()) {
@@ -194,6 +203,12 @@ class PageUser extends AbstractService
 
             if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
                 $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
+                if(ModelPage::TYPE_ORGANIZATION == $m_page->getType()) {
+                    $res_page_relation = $this->getServicePageRelation()->getList($page_id, ModelPageRelation::TYPE_MEMBER);
+                    foreach ($res_page_relation as $m_page_relation) {
+                        $this->getServiceSubscription()->add("PP".$m_page_relation->getParentId(), $user_id);
+                    }
+                }
                 if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
                     $this->getServicePost()->addSys(
                     'PPM'.$page_id.'_'.$user_id,
@@ -265,10 +280,14 @@ class PageUser extends AbstractService
         }
 
         $ret =  $this->getMapper()->delete($m_page_user);
-
         if ($ret) {
+            $this->getServiceSubscription()->delete('PP'.$page_id, $user_id);
+            $res_page_relation = $this->getServicePageRelation()->getList($page_id, ModelPageRelation::TYPE_MEMBER);
+            foreach ($res_page_relation as $m_page_relation) {
+                $this->getServiceSubscription()->delete("PP".$m_page_relation->getParentId(), $user_id);
+            }
+            
             $this->getServicePost()->hardDelete('PPM'.$page_id.'_'.$user_id);
-
             // ON DELETE LES USER DANS LA CONVERSATION SI ELLE EXISTE
             $m_page = $this->getServicePage()->getLite($page_id);
             if (is_numeric($m_page->getConversationId())) {
@@ -423,13 +442,23 @@ class PageUser extends AbstractService
     }
 
     /**
-     * Get Service Post
+     * Get Service Page
      *
      * @return \Application\Service\Page
      */
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+    
+    /**
+     * Get Service PageRelation
+     *
+     * @return \Application\Service\PageRelation
+     */
+    private function getServicePageRelation()
+    {
+        return $this->container->get('app_service_page_relation');
     }
 
     /**
