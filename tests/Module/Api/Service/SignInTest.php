@@ -155,7 +155,7 @@ class SignInTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    public function testCanAddLinkedin()
+    /*public function testCanAddLinkedin()
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('preregistration.add', [
@@ -171,9 +171,9 @@ class SignInTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['result'] , '12345678');
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }
+    }*/
     
-    public function testCanSignLinkdIn()
+    /*public function testCanSignLinkdIn()
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('user.linkedinSignIn', [
@@ -183,7 +183,7 @@ class SignInTest extends AbstractService
         
         print_r($data);
         
-    }
+    }*/
     
     /*public function testCanSignLinkdInAfter()
     {

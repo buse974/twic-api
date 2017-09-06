@@ -711,7 +711,6 @@ class User extends AbstractService
             syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
         }
 
-        
         return true;
     }
 
