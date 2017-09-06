@@ -6,46 +6,45 @@ use Dal\Model\AbstractModel;
 
 class Guidelines extends AbstractModel
 {
- 	protected $id;
-	protected $state;
-	protected $data;
+    protected $id;
+    protected $state;
+    protected $data;
 
-	protected $prefix = 'guidelines';
+    protected $prefix = 'guidelines';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getState()
-	{
-		return $this->state;
-	}
+    public function getState()
+    {
+        return $this->state;
+    }
 
-	public function setState($state)
-	{
-		$this->state = $state;
+    public function setState($state)
+    {
+        $this->state = $state;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getData()
-	{
-		return $this->data;
-	}
+    public function getData()
+    {
+        return $this->data;
+    }
 
-	public function setData($data)
-	{
-		$this->data = $data;
+    public function setData($data)
+    {
+        $this->data = $data;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

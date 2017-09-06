@@ -37,7 +37,8 @@ class Session extends AbstractService
         return $this->getMapper()->update(
             $this->getModel()
                 ->setUuid($uuid)
-                ->setRegistrationId($registration_id), ['token' => $token]
+                ->setRegistrationId($registration_id),
+            ['token' => $token]
         );
     }
     /**

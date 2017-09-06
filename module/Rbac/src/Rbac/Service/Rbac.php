@@ -75,7 +75,7 @@ class Rbac
         if ($this->rbac === null) {
             $this->rbac = (!$this->cache->hasItem('rbac')) ?
                 $this->createRbac() : $this->cache->getItem('rbac');
-	      }
+        }
 
         return $this->rbac;
     }

@@ -403,7 +403,6 @@ class Item extends AbstractService
                             if (isset($groups[$groupId])) {
                                 $groups[$groupId]['users'][] = $ar_item['page_user']['user_id'];
                             } else {
-                                
                                 $groups[$groupId] = [
                                     'group_id' => $ar_item['item_user']['group_id'],
                                     'group_name' => $ar_item['item_user']['group']['name'],

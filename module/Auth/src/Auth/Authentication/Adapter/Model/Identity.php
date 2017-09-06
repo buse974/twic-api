@@ -208,7 +208,4 @@ class Identity implements IdentityInterface
             'expiration_date' => $this->expiration_date,
         ];
     }
-
-
-
 }

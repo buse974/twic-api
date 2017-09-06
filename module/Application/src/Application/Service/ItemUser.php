@@ -22,7 +22,7 @@ class ItemUser extends AbstractService
     
     /**
      * Get List User Id By group
-     * 
+     *
      * @param int $group_id
      */
     public function getListUserId($group_id)
@@ -60,10 +60,10 @@ class ItemUser extends AbstractService
     }
 
     /**
-     * 
+     *
      * @param int $id
      * @param int $submission_id
-     * 
+     *
      * @return int
      */
     public function update($id, $submission_id)
@@ -92,7 +92,7 @@ class ItemUser extends AbstractService
             ->setGroupId($group_id));
         
         if ($res_item_user->count() <= 0) {
-            if($user_id === null) {
+            if ($user_id === null) {
                 throw new \Exception("Error process: item_user is not présent");
             }
             $it_id = $this->create($item_id, $user_id, null, $submission_id);

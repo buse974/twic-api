@@ -87,7 +87,7 @@ class Page extends AbstractService
       $tags = [],
       $docs = [],
       $owner_id = null,
-      $address = null ,
+      $address = null,
       $short_title = null,
       $website = null,
       $phone = null,
@@ -97,31 +97,30 @@ class Page extends AbstractService
       $circle_id = null,
       $is_published = null
     ) {
-
         $identity = $this->getServiceUser()->getIdentity();
 
         //Si un non admin esaye de créer une organization
-      //  if($type === ModelPage::TYPE_ORGANIZATION && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
-      //    throw new \Exception("Error, you are not admin for create organization", 1);
-      //  }
+        //  if($type === ModelPage::TYPE_ORGANIZATION && !in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])) {
+        //    throw new \Exception("Error, you are not admin for create organization", 1);
+        //  }
 
         $user_id = $identity['id'];
         $formattedWebsite = $this->getFormattedWebsite($website);
 
-        if(null === $confidentiality) {
-          $confidentiality = ModelPage::CONFIDENTIALITY_PRIVATE;
+        if (null === $confidentiality) {
+            $confidentiality = ModelPage::CONFIDENTIALITY_PRIVATE;
         }
 
         $conversation_id = null;
-        if($type !== ModelPage::TYPE_ORGANIZATION) {
-          $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
-          $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
+        if ($type !== ModelPage::TYPE_ORGANIZATION) {
+            $name = lcfirst(implode('', array_map("ucfirst", preg_split("/[\s]+/", preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
+            $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
         } else {
-          $confidentiality = 0;
+            $confidentiality = 0;
         }
 
-        if(null === $owner_id) {
-          $owner_id = $user_id;
+        if (null === $owner_id) {
+            $owner_id = $user_id;
         }
 
         $m_page = $this->getModel()
@@ -158,23 +157,23 @@ class Page extends AbstractService
         $id = (int)$this->getMapper()->getLastInsertValue();
 
         if (null !== $page_id) {
-          $mm_page = $this->getLite($page_id);
-          if($type === ModelPage::TYPE_ORGANIZATION && $mm_page->getType() === ModelPage::TYPE_ORGANIZATION) {
-            $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_MEMBER);
-          } else {
-            $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
-          }
+            $mm_page = $this->getLite($page_id);
+            if ($type === ModelPage::TYPE_ORGANIZATION && $mm_page->getType() === ModelPage::TYPE_ORGANIZATION) {
+                $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_MEMBER);
+            } else {
+                $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
+            }
         }
 
         if (null !== $circle_id) {
-          $this->getServiceCircle()->addOrganizations($circle_id, $id);
+            $this->getServiceCircle()->addOrganizations($circle_id, $id);
         }
 
         if (!is_array($users)) {
-          $users = [];
+            $users = [];
         }
         if (!is_array($docs)) {
-          $docs = [];
+            $docs = [];
         }
 
         $is_present = false;
@@ -205,7 +204,7 @@ class Page extends AbstractService
             $this->getServicePageDoc()->_add($id, $docs);
         }
 
-        if ($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC  && $type !== ModelPage::TYPE_ORGANIZATION ) {
+        if ($confidentiality === ModelPage::CONFIDENTIALITY_PUBLIC  && $type !== ModelPage::TYPE_ORGANIZATION) {
             $sub=[];
             if (null !== $page_id) {
                 $sub[] = 'EP'.$page_id;
@@ -214,13 +213,21 @@ class Page extends AbstractService
             }
 
             $this->getServicePost()->addSys(
-                'PP'.$id, '', [
+                'PP'.$id,
+                '',
+                [
                 'state' => 'create',
                 'user' => $owner_id,
                 'parent' => $page_id,
                 'page' => $id,
                 'type' => $type,
-                ], 'create', null/*sub*/, null/*parent*/, $page_id/*page*/, $owner_id/*user*/, 'page'
+                ],
+                'create',
+                null/*sub*/,
+                null/*parent*/,
+                $page_id/*page*/,
+                $owner_id/*user*/,
+                'page'
             );
         }
 
@@ -229,18 +236,19 @@ class Page extends AbstractService
 
     public function addChannel()
     {
-      $res_page = $this->getMapper()->getListNoChannel();
-      foreach ($res_page as $m_page) {
-        $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $m_page->getTitle() )))))));
-        $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
-        $this->getMapper()->update(
+        $res_page = $this->getMapper()->getListNoChannel();
+        foreach ($res_page as $m_page) {
+            $name = lcfirst(implode('', array_map("ucfirst", preg_split("/[\s]+/", preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $m_page->getTitle())))))));
+            $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHANNEL, null, null, $name);
+            $this->getMapper()->update(
           $this->getModel()
             ->setId($m_page->getId())
-            ->setConversationId($conversation_id));
+            ->setConversationId($conversation_id)
+        );
 
-        $ar_user = $this->getServicePageUser()->getListByPage($m_page->getId())[$m_page->getId()];
-        $this->getServiceConversationUser()->add($conversation_id, $ar_user);
-      }
+            $ar_user = $this->getServicePageUser()->getListByPage($m_page->getId())[$m_page->getId()];
+            $this->getServiceConversationUser()->add($conversation_id, $ar_user);
+        }
     }
     /**
      * Add Tags
@@ -252,9 +260,9 @@ class Page extends AbstractService
      *
      * @return int
      */
-    function addTag($id, $tag)
+    public function addTag($id, $tag)
     {
-      return $this->getServicePageTag()->add($id, $tag);
+        return $this->getServicePageTag()->add($id, $tag);
     }
 
     /**
@@ -267,9 +275,9 @@ class Page extends AbstractService
      *
      * @return int
      */
-    function removeTag($id, $tag_id)
+    public function removeTag($id, $tag_id)
     {
-      return $this->getServicePageTag()->remove($id, $tag_id);
+        return $this->getServicePageTag()->remove($id, $tag_id);
     }
 
     /**
@@ -282,7 +290,7 @@ class Page extends AbstractService
      **/
     public function addDocument($id, $library)
     {
-      return $this->getServicePageDoc()->add($id, $library);
+        return $this->getServicePageDoc()->add($id, $library);
     }
 
     /**
@@ -294,7 +302,7 @@ class Page extends AbstractService
      **/
     public function deleteDocument($library_id)
     {
-      return $this->getServicePageDoc()->delete($library_id);
+        return $this->getServicePageDoc()->delete($library_id);
     }
 
     /**
@@ -306,7 +314,7 @@ class Page extends AbstractService
      **/
     public function getListDocument($id, $filter = null)
     {
-      return $this->getServiceLibrary()->getList($filter, null, null, null, null, $id);
+        return $this->getServiceLibrary()->getList($filter, null, null, null, null, $id);
     }
 
     /**
@@ -359,7 +367,7 @@ class Page extends AbstractService
       $docs = null,
       $owner_id = null,
       $page_id = null,
-      $address = null ,
+      $address = null,
       $short_title = null,
       $website = null,
       $phone = null,
@@ -367,9 +375,7 @@ class Page extends AbstractService
       $custom = null,
       $circle_id = null,
       $is_published = null
-      )
-    {
-
+      ) {
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $formattedWebsite = $this->getFormattedWebsite($website);
         $m_page = $this->getModel()
@@ -392,12 +398,12 @@ class Page extends AbstractService
             ->setPhone($phone)
             ->setShortTitle($short_title);
 
-            if ($address !== null) {
-                $address = $this->getServiceAddress()->getAddress($address);
-                if ($address && null !== ($address_id = $address->getId())) {
-                    $m_page->setAddressId($address_id);
-                }
+        if ($address !== null) {
+            $address = $this->getServiceAddress()->getAddress($address);
+            if ($address && null !== ($address_id = $address->getId())) {
+                $m_page->setAddressId($address_id);
             }
+        }
 
         if (null !== $users) {
             $is_present = false;
@@ -413,10 +419,10 @@ class Page extends AbstractService
             $this->getServicePageUser()->replace($id, $users);
         }
         if (null !== $page_id) {
-          $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
+            $this->getServicePageRelation()->add($id, $page_id, ModelPageRelation::TYPE_OWNER);
         }
         if (null !== $circle_id) {
-          $this->getServiceCircle()->addOrganizations($circle_id, $id);
+            $this->getServiceCircle()->addOrganizations($circle_id, $id);
         }
         if (null !== $tags) {
             $this->getServicePageTag()->replace($id, $tags);
@@ -432,7 +438,9 @@ class Page extends AbstractService
                     $this->getServicePost()->hardDelete('PP'.$id);
                 } elseif ($confidentiality == ModelPage::CONFIDENTIALITY_PUBLIC) {
                     $this->getServicePost()->addSys(
-                        'PP'.$id, '', [
+                        'PP'.$id,
+                        '',
+                        [
                         'state' => 'create',
                         'user' => $tmp_m_page->getOwnerId(),
                         'parent' => $tmp_m_page->getPageId(),
@@ -450,22 +458,22 @@ class Page extends AbstractService
             }
         }
 
-        if($is_published === true) {
-          $res_post = $this->getServicePost()->getListId(null, null, $id, null, true);
-          foreach ($res_post as $m_post) {
-            $this->getServicePostSubscription()->add(
+        if ($is_published === true) {
+            $res_post = $this->getServicePost()->getListId(null, null, $id, null, true);
+            foreach ($res_post as $m_post) {
+                $this->getServicePostSubscription()->add(
                 'PP'.$id,
                 $m_post->getId(),
                 null,
                 'UPDATE',
                 $owner_id
             );
-          }
+            }
         }
 
-        if(is_numeric($tmp_m_page->getConversationId()) && null !== $title) {
-          $name = lcfirst(implode('', array_map("ucfirst",preg_split("/[\s]+/",preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
-          $conversation_id = $this->getServiceConversation()->update($tmp_m_page->getConversationId(), $name);
+        if (is_numeric($tmp_m_page->getConversationId()) && null !== $title) {
+            $name = lcfirst(implode('', array_map("ucfirst", preg_split("/[\s]+/", preg_replace('/[^a-z0-9\ ]/', '', strtolower(str_replace('-', ' ', $title)))))));
+            $conversation_id = $this->getServiceConversation()->update($tmp_m_page->getConversationId(), $name);
         }
 
         return $this->getMapper()->update($m_page);
@@ -492,8 +500,8 @@ class Page extends AbstractService
             foreach ($id as $i) {
                 $this->getServicePost()->hardDelete('PP'.$i);
                 $m_tmp_page = $this->getLite($i);
-                if($m_tmp_page->getType() === ModelPage::TYPE_ORGANIZATION) {
-                  $this->getServiceUser()->removeOrganizationId($i);
+                if ($m_tmp_page->getType() === ModelPage::TYPE_ORGANIZATION) {
+                    $this->getServiceUser()->removeOrganizationId($i);
                 }
             }
             return true;
@@ -528,7 +536,7 @@ class Page extends AbstractService
      */
     public function get($id = null, $parent_id = null, $type = null)
     {
-      $this->addChannel();
+        $this->addChannel();
         if (null === $id && null === $parent_id) {
             throw new \Exception('Error: params is null');
         }
@@ -538,19 +546,19 @@ class Page extends AbstractService
         $res_page = $this->getMapper()->get($identity['id'], $id, $parent_id, $type, $is_admin);
 
         foreach ($res_page as $m_page) {
-          $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
-          $this->getOwner($m_page);
+            $m_page->setTags($this->getServicePageTag()->getList($m_page->getId()));
+            $this->getOwner($m_page);
         }
 
         $res_page->rewind();
 
-        if(is_array($id)) {
-          $ar_page = $res_page->toArray(['id']);
-          foreach ($id as $i) {
-            if(!isset($ar_page[$i])) {
-              $ar_page[$i] = null;
+        if (is_array($id)) {
+            $ar_page = $res_page->toArray(['id']);
+            foreach ($id as $i) {
+                if (!isset($ar_page[$i])) {
+                    $ar_page[$i] = null;
+                }
             }
-          }
         }
 
         return (is_array($id)) ? $ar_page : $res_page->current();
@@ -566,9 +574,9 @@ class Page extends AbstractService
      */
     public function getLite($id)
     {
-      $this->addChannel();
+        $this->addChannel();
 
-      return $this->getMapper()->select($this->getModel()->setId($id))->current();
+        return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
 
     /**
@@ -581,26 +589,25 @@ class Page extends AbstractService
      */
     public function getIdByItem($item_id)
     {
-      $this->addChannel();
-      return $this->getMapper()->getIdByItem($item_id)->current()->getId();
+        $this->addChannel();
+        return $this->getMapper()->getIdByItem($item_id)->current()->getId();
     }
 
-     /**
-     * Get Page grades
-     *
-     * @invokable
-     *
-     * @param  int $id
-     */
+    /**
+    * Get Page grades
+    *
+    * @invokable
+    *
+    * @param  int $id
+    */
     public function getGrades($id)
     {
-
-        if(!is_array($id)){
+        if (!is_array($id)) {
             $id = [$id];
         }
 
         $grades = [];
-        foreach($id as $i){
+        foreach ($id as $i) {
             $median = $this->getMapper()->getMedian($i)->current()->getMedian();
             $avg = $this->getMapper()->getAverage($i)->current()->getAverage();
             $grades[$i] =  [
@@ -609,28 +616,27 @@ class Page extends AbstractService
                 'average' => is_numeric($avg) ? $avg : null
              ];
         }
-      return $grades;
+        return $grades;
     }
 
 
-     /**
-     * Get Page grades
-     *
-     * @invokable
-     *
-     * @param  int $id
-     * @param array $filter
-     */
+    /**
+    * Get Page grades
+    *
+    * @invokable
+    *
+    * @param  int $id
+    * @param array $filter
+    */
     public function getUsersGrades($id, $filter)
     {
-
         $res_grades = $this->getMapper()->usePaginator($filter)->getUsersAvg($id);
         $res_prcs = $this->getMapper()->getUsersPrc($id);
         $prcs = [];
-        foreach($res_prcs as $m_prc){
+        foreach ($res_prcs as $m_prc) {
             $prcs[$m_prc->getAverage()] = $m_prc->getPercentile();
         }
-        foreach($res_grades as $m_grade){
+        foreach ($res_grades as $m_grade) {
             $m_grade->setPercentile($prcs[$m_grade->getAverage()]);
         }
 
@@ -669,9 +675,8 @@ class Page extends AbstractService
       $children_id = null,
       $is_member_admin = null, // get only les meber admin true/false
       $exclude = null
-      )
-    {
-      $this->addChannel();
+      ) {
+        $this->addChannel();
         if (empty($tags)) {
             $tags = null;
         }
@@ -679,7 +684,7 @@ class Page extends AbstractService
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
         $mapper = $this->getMapper()->usePaginator($filter);
-        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date,$member_id, $strict_dates, $is_admin, $search, $tags, $children_id, $is_member_admin, null, $exclude);
+        $res_page = $mapper->getListId($identity['id'], $parent_id, $type, $start_date, $end_date, $member_id, $strict_dates, $is_admin, $search, $tags, $children_id, $is_member_admin, null, $exclude);
 
         $ar_page = [];
         foreach ($res_page as $m_page) {
@@ -710,35 +715,35 @@ class Page extends AbstractService
         }
         $identity = $this->getServiceUser()->getIdentity();
         $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        $res_page = $this->getMapper()->getListId($identity['id'], $parent_id, ModelPage::TYPE_ORGANIZATION, null, null,null, null, $is_admin, null, null, $children_id, null, ModelPageRelation::TYPE_MEMBER);
+        $res_page = $this->getMapper()->getListId($identity['id'], $parent_id, ModelPage::TYPE_ORGANIZATION, null, null, null, null, $is_admin, null, null, $children_id, null, ModelPageRelation::TYPE_MEMBER);
 
         $ar_page = [];
 
-        if(null !== $parent_id) {
-          if(!is_array($parent_id)) {
-            $parent_id = [$parent_id];
-          }
-          foreach ($parent_id as $pi) {
-            $ar_page[$pi] = [];
-          }
+        if (null !== $parent_id) {
+            if (!is_array($parent_id)) {
+                $parent_id = [$parent_id];
+            }
+            foreach ($parent_id as $pi) {
+                $ar_page[$pi] = [];
+            }
         }
 
-        if(null !== $children_id) {
-          if(!is_array($children_id)) {
-            $children_id = [$children_id];
-          }
-          foreach ($children_id as $ci) {
-            $ar_page[$ci] = [];
-          }
+        if (null !== $children_id) {
+            if (!is_array($children_id)) {
+                $children_id = [$children_id];
+            }
+            foreach ($children_id as $ci) {
+                $ar_page[$ci] = [];
+            }
         }
 
         foreach ($res_page as $m_page) {
-          if(is_numeric($m_page->getPageRelation()->getParentId())) {
-            $ar_page[$m_page->getPageRelation()->getParentId()][] = $m_page->getId();
-          }
-          if(is_numeric($m_page->getPageRelation()->getPageId())) {
-            $ar_page[$m_page->getPageRelation()->getPageId()][] = $m_page->getId();
-          }
+            if (is_numeric($m_page->getPageRelation()->getParentId())) {
+                $ar_page[$m_page->getPageRelation()->getParentId()][] = $m_page->getId();
+            }
+            if (is_numeric($m_page->getPageRelation()->getPageId())) {
+                $ar_page[$m_page->getPageRelation()->getPageId()][] = $m_page->getId();
+            }
         }
 
         return $ar_page;

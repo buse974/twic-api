@@ -256,5 +256,4 @@ class Item extends BaseItem
 
         return $this;
     }
-
 }

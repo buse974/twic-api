@@ -15,7 +15,6 @@ use Zend\Db\Sql\Expression;
  */
 class User extends AbstractMapper
 {
-
     public function get($user_id, $me, $is_admin = false)
     {
         $columns = [
@@ -37,8 +36,8 @@ class User extends AbstractMapper
             'user$contact_state' => $this->getSelectContactState($me)
         ];
 
-        if(true === $is_admin) {
-          $columns[] = 'email_sent';
+        if (true === $is_admin) {
+            $columns[] = 'email_sent';
         }
 
         $select = $this->tableGateway->getSql()->select();
@@ -53,10 +52,10 @@ class User extends AbstractMapper
             ->quantifier('DISTINCT');
 
         if ($is_admin === false && $user_id !== $me) {
-          $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', []);
-          $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
-          $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
-          $select->where(['circle_organization_user.id' => $me]);
+            $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', []);
+            $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
+            $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
+            $select->where(['circle_organization_user.id' => $me]);
         }
 
         return $this->selectWith($select);
@@ -81,8 +80,8 @@ class User extends AbstractMapper
       $contact_state = null,
       $only_nosend_email = null,
       $role = null,
-      $conversation_id = null)
-    {
+      $conversation_id = null
+    ) {
         $select = $this->tableGateway->getSql()->select();
         if ($is_admin) {
             $select->columns([
@@ -107,45 +106,44 @@ class User extends AbstractMapper
             $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
             $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
             $select->where(['circle_organization_user.id' => $user_id]);
-
         }
         $select->where('user.deleted_date IS NULL')
             ->group('user.id')
             ->quantifier('DISTINCT');
 
-        if(null !== $order) {
-          switch ($order['type']) {
+        if (null !== $order) {
+            switch ($order['type']) {
             case 'firstname':
                 $select->order('user.firstname ASC');
                 break;
             case 'random':
                 $select->order(new Expression('RAND(?)', $order['seed']));
                 break;
-            default :
+            default:
               $select->order(['user.id' => 'DESC']);
           }
         } else {
-          $select->order(['user.id' => 'DESC']);
+            $select->order(['user.id' => 'DESC']);
         }
 
-        if($only_nosend_email === true) {
-          $select->where(['user.email_sent IS FALSE']);
+        if ($only_nosend_email === true) {
+            $select->where(['user.email_sent IS FALSE']);
         }
         if ($exclude) {
-          $select->where->notIn('user.id', $exclude);
+            $select->where->notIn('user.id', $exclude);
         }
         if (!empty($post_id)) {
-          $select->join('post_like', 'post_like.user_id=user.id', [])
+            $select->join('post_like', 'post_like.user_id=user.id', [])
             ->where(['post_like.post_id' => $post_id])
             ->where(['post_like.is_like IS TRUE']);
         }
         if (!empty($page_id)) {
-          $select->join('page_user', 'page_user.user_id=user.id', [])
+            $select->join('page_user', 'page_user.user_id=user.id', [])
             ->join('page', 'page_user.page_id=page.id', [])
             ->where(['page_user.page_id' => $page_id]);
         }
         if (!empty($conversation_id)) {
-          $select->join('conversation_user', 'conversation_user.user_id=user.id', [])
+            $select->join('conversation_user', 'conversation_user.user_id=user.id', [])
             ->where(['conversation_user.conversation_id' => $conversation_id]);
         }
         if (null !== $search) {
@@ -164,8 +162,8 @@ class User extends AbstractMapper
             }
         }
 
-        if(!empty($role)) {
-          $select->join(['pu' => 'page_user'], 'pu.user_id=user.id', [])
+        if (!empty($role)) {
+            $select->join(['pu' => 'page_user'], 'pu.user_id=user.id', [])
             ->join(['p' => 'page'], 'pu.page_id=p.id', [])
             ->where(['pu.role' => $role])
             ->where(['p.type' => 'course']);

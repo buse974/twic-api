@@ -39,8 +39,8 @@ class FsS3Storage extends AbstractStorage
 
     public function read($name)
     {
-      $model = null;
-      switch (true) {
+        $model = null;
+        switch (true) {
         case isset($this->cache_tpl[$name]):
         syslog(1, "cachetpl");
           $model = $this->cache_tpl[$name];
@@ -60,7 +60,7 @@ class FsS3Storage extends AbstractStorage
           break;
       }
 
-      return $model;
+        return $model;
     }
 
     public function getList()
@@ -106,8 +106,8 @@ class FsS3Storage extends AbstractStorage
     **/
     public function setCache($cache)
     {
-      $this->cache = $cache;
+        $this->cache = $cache;
 
-      return $this;
+        return $this;
     }
 }

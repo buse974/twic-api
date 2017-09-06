@@ -18,35 +18,34 @@ class PageUser extends AbstractMapper
           ->where(['user.deleted_date IS NULL'])
           ->quantifier('DISTINCT');
 
-        if(null!==$role) {
-          if ($role !== ModelPageUser::ROLE_ADMIN) {
-            $select->where(['page_user.state' => ModelPageUser::STATE_MEMBER]);
-          } else {
-            $select->where(['page_user.state <> ?' => ModelPageUser::STATE_REJECTED])
+        if (null!==$role) {
+            if ($role !== ModelPageUser::ROLE_ADMIN) {
+                $select->where(['page_user.state' => ModelPageUser::STATE_MEMBER]);
+            } else {
+                $select->where(['page_user.state <> ?' => ModelPageUser::STATE_REJECTED])
               ->order(new Expression('IF(page_user.state = "'.ModelPageUser::STATE_PENDING.'", 0, 1)'));
-          }
-          $select->where(['page_user.role' => $role]);
+            }
+            $select->where(['page_user.role' => $role]);
         }
-        if(null!==$page_id) {
-          $select->where(['page_user.page_id' => $page_id]);
+        if (null!==$page_id) {
+            $select->where(['page_user.page_id' => $page_id]);
         }
-        if(null!==$user_id) {
-          $select->where(['page_user.user_id' => $user_id]);
+        if (null!==$user_id) {
+            $select->where(['page_user.user_id' => $user_id]);
         }
-        if(null!==$state) {
-          $select->where(['page_user.state' => $state]);
+        if (null!==$state) {
+            $select->where(['page_user.state' => $state]);
         }
-        if(null!==$type) {
-          $select->where(['page.type' => $type]);
+        if (null!==$type) {
+            $select->where(['page.type' => $type]);
         }
-        if(null !== $me && $me !== $user_id) {
-          $select->join(['pu' => 'page_user'], 'pu.page_id = page.id', [], $select::JOIN_LEFT)
+        if (null !== $me && $me !== $user_id) {
+            $select->join(['pu' => 'page_user'], 'pu.page_id = page.id', [], $select::JOIN_LEFT)
             ->where([' ( pu.user_id = ? OR page.confidentiality=0 ) ' => $me]);
 
-          $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR ( page_user.role = "admin" AND page_user.user_id = ? ) )' => $me]);
+            $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR ( page_user.role = "admin" AND page_user.user_id = ? ) )' => $me]);
         }
 
         return $this->selectWith($select);
     }
-
 }

@@ -188,7 +188,7 @@ class Page extends BasePage
     public function getState()
     {
         return $this->state;
-    }    
+    }
     
     public function setMedian($median)
     {
@@ -200,7 +200,7 @@ class Page extends BasePage
     public function getMedian()
     {
         return $this->median;
-    }    
+    }
     
     public function setAverage($average)
     {
@@ -250,5 +250,4 @@ class Page extends BasePage
 
         return $this;
     }
-
 }

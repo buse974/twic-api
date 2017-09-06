@@ -6,7 +6,7 @@ use Dal\Mapper\AbstractMapper;
 
 class Language extends AbstractMapper
 {
-     public function getList($search = null)
+    public function getList($search = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'libelle']);
@@ -15,8 +15,6 @@ class Language extends AbstractMapper
             $select->where(array('libelle LIKE ? ' => ''.$search.'%'));
         }
         
-	return $this->selectWith($select);
-    
+        return $this->selectWith($select);
     }
-    
 }

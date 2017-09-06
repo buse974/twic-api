@@ -27,21 +27,21 @@ class Library extends AbstractMapper
           ->order(['library.id' => 'DESC'])
           ->quantifier('DISTINCT');
 
-        if(null !== $user_id && null === $page_id) {
-          $select->where(['library.owner_id' => $user_id]);
+        if (null !== $user_id && null === $page_id) {
+            $select->where(['library.owner_id' => $user_id]);
         }
-        if(null !== $page_id) {
-          $select->join('page_doc', 'page_doc.library_id=library.id', [])
+        if (null !== $page_id) {
+            $select->join('page_doc', 'page_doc.library_id=library.id', [])
             ->where(['page_doc.page_id' => $page_id]);
-          if(null !== $user_id) {
-            $select->join('page_user', 'page_user.page_id=page_doc.page_id', [])
+            if (null !== $user_id) {
+                $select->join('page_user', 'page_user.page_id=page_doc.page_id', [])
               ->where(['page_user.user_id' => $user_id]);
-          }
+            }
         }
-        if(null !== $folder_id) {
-          $select->where(['library.folder_id' => $folder_id]);
+        if (null !== $folder_id) {
+            $select->where(['library.folder_id' => $folder_id]);
         } else {
-          $select->where(['library.folder_id IS NULL']);
+            $select->where(['library.folder_id IS NULL']);
         }
 
 
@@ -96,5 +96,4 @@ class Library extends AbstractMapper
 
         return $this->selectWith($select);
     }
-
 }

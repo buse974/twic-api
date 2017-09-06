@@ -114,10 +114,14 @@ class VideoArchive extends AbstractService
                 }
 
                 $this->getServicePost()->addSys(
-                    'VCONV'.$m_conversation->getId(), '', [
+                    'VCONV'.$m_conversation->getId(),
+                    '',
+                    [
                     'conversation' => $m_conversation->getId(),
                     'link' => $json['link']
-                    ], 'create', $miid/*sub*/,
+                    ],
+                    'create',
+                    $miid/*sub*/,
                     null/*parent*/,
                     null/*page*/,
                     null/*user*/,

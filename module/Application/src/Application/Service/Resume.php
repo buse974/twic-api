@@ -39,9 +39,22 @@ class Resume extends AbstractService
      *
      * @return int
      */
-    public function add($start_date = null, $end_date = null, $address = null, $logo = null, $title = null, $subtitle = null,
-    $description = null, $type = null, $publisher = null, $url = null, $cause = null, $study = null, $grade = null, $note = null)
-    {
+    public function add(
+        $start_date = null,
+        $end_date = null,
+        $address = null,
+        $logo = null,
+        $title = null,
+        $subtitle = null,
+    $description = null,
+        $type = null,
+        $publisher = null,
+        $url = null,
+        $cause = null,
+        $study = null,
+        $grade = null,
+        $note = null
+    ) {
         $m_education = $this->getModel();
 
         if ($end_date === 'null') {
@@ -147,19 +160,19 @@ class Resume extends AbstractService
         return $this->getMapper()->delete($m_education);
     }
 
-   /**
-    * Get Resume
-    *
-    * @invokable
-    *
-    * @param  int|array $id
-    * @return array
-    */
+    /**
+     * Get Resume
+     *
+     * @invokable
+     *
+     * @param  int|array $id
+     * @return array
+     */
     public function get($id)
     {
-        $res_resume = $this->getMapper()->select($this->getModel()->setId($id),[new Expression('ISNULL(end_date) DESC'), 'end_date DESC']);
+        $res_resume = $this->getMapper()->select($this->getModel()->setId($id), [new Expression('ISNULL(end_date) DESC'), 'end_date DESC']);
 
-       return (is_array($id)) ?
+        return (is_array($id)) ?
         $res_resume->toArray(['id']) :
         $res_resume->current();
     }

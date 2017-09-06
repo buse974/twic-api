@@ -52,19 +52,19 @@ class Library extends AbstractService
         }
 
         $box_id = null;
-        if( (null !== $link || null !== $token) && null !== $type) {
-          $urldms = $this->container->get('config')['app-conf']['urldms'];
-          $u = (null !== $link) ? $link : $urldms . $token;
-          $m_box = $this->getServiceBox()->addFile($u, $type);
-          if ($m_box instanceof ModelDocument) {
-              $box_id = $m_box->getId();
-          }
+        if ((null !== $link || null !== $token) && null !== $type) {
+            $urldms = $this->container->get('config')['app-conf']['urldms'];
+            $u = (null !== $link) ? $link : $urldms . $token;
+            $m_box = $this->getServiceBox()->addFile($u, $type);
+            if ($m_box instanceof ModelDocument) {
+                $box_id = $m_box->getId();
+            }
         }
-        if (null !== $text && null === $type){
-          $type = "text";
+        if (null !== $text && null === $type) {
+            $type = "text";
         }
-        if($global === true && $folder_id !== null) {
-          $global = false;
+        if ($global === true && $folder_id !== null) {
+            $global = false;
         }
 
         $m_library = $this->getModel()
@@ -185,7 +185,7 @@ class Library extends AbstractService
      * @param  string $type
      * @return \Application\Model\Library
      */
-    public function update($id, $name = null, $link = null, $token = null, $folder_id = null, $type = null, $text = null )
+    public function update($id, $name = null, $link = null, $token = null, $folder_id = null, $type = null, $text = null)
     {
         if ($folder_id === $id) {
             return 0;
@@ -193,16 +193,16 @@ class Library extends AbstractService
 
 
         $box_id = null;
-        if( (null !== $link || null !== $token) && null !== $type) {
-          $urldms = $this->container->get('config')['app-conf']['urldms'];
-          $u = (null !== $link) ? $link : $urldms . $token;
-          $m_box = $this->getServiceBox()->addFile($u, $type);
-          if ($m_box instanceof ModelDocument) {
-              $box_id = $m_box->getId();
-          }
+        if ((null !== $link || null !== $token) && null !== $type) {
+            $urldms = $this->container->get('config')['app-conf']['urldms'];
+            $u = (null !== $link) ? $link : $urldms . $token;
+            $m_box = $this->getServiceBox()->addFile($u, $type);
+            if ($m_box instanceof ModelDocument) {
+                $box_id = $m_box->getId();
+            }
         }
 
-       $m_library = $this->getModel()
+        $m_library = $this->getModel()
             ->setId($id)
             ->setName($name)
             ->setLink($link)
@@ -213,9 +213,9 @@ class Library extends AbstractService
             ->setFolderId(($folder_id === 0) ? new IsNull() : $folder_id)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
 
-       $this->getMapper()->update($m_library);
+        $this->getMapper()->update($m_library);
 
-       return $this->get($id);
+        return $this->get($id);
     }
 
     /**

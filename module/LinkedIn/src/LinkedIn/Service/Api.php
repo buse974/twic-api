@@ -14,13 +14,13 @@ class Api extends AbstractApi
      */
     public function init($code, $access_token = null)
     {
-        if(null === $access_token) {
-        $this->http_client->getRequest()->setUri('https://www.linkedin.com');
-        $this->http_client->getRequest()->getHeaders()->clearHeaders();
-        $this->http_client->getRequest()->getHeaders()->addHeaderLine('Content-Type', 'application/x-www-form-urlencoded');
-        $this->setMethode(Request::METHOD_POST);
-        $this->setPath('/oauth/v2/accessToken');
-        $this->setPost([
+        if (null === $access_token) {
+            $this->http_client->getRequest()->setUri('https://www.linkedin.com');
+            $this->http_client->getRequest()->getHeaders()->clearHeaders();
+            $this->http_client->getRequest()->getHeaders()->addHeaderLine('Content-Type', 'application/x-www-form-urlencoded');
+            $this->setMethode(Request::METHOD_POST);
+            $this->setPath('/oauth/v2/accessToken');
+            $this->setPost([
             'grant_type' => 'authorization_code',
             'code' => $code,
             'redirect_uri' => $this->redirect_uri,
@@ -28,9 +28,9 @@ class Api extends AbstractApi
             'client_secret' => $this->client_secret,
         ]);
 
-        $accessToken = new AccessToken($this->getBody($this->send()));
-        $this->access_token = $accessToken->getAccessToken();
-        print_r($this->access_token);
+            $accessToken = new AccessToken($this->getBody($this->send()));
+            $this->access_token = $accessToken->getAccessToken();
+            print_r($this->access_token);
         } else {
             $this->access_token = $access_token;
         }

@@ -6,17 +6,17 @@ use Application\Model\Base\Circle as BaseCircle;
 
 class Circle extends BaseCircle
 {
-  protected $organizations;
+    protected $organizations;
 
-  public function setOrganizations($organizations)
-  {
-      $this->organizations = $organizations;
+    public function setOrganizations($organizations)
+    {
+        $this->organizations = $organizations;
 
-      return $this;
-  }
+        return $this;
+    }
 
-  public function getOrganizations()
-  {
-      return $this->organizations;
-  }
+    public function getOrganizations()
+    {
+        return $this->organizations;
+    }
 }

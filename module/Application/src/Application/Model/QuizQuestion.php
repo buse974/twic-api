@@ -6,12 +6,11 @@ use Application\Model\Base\QuizQuestion as BaseQuizQuestion;
 
 class QuizQuestion extends BaseQuizQuestion
 {
+    const TYPE_SIMPLE = 'simple';
+    const TYPE_MULTIPLE = 'multiple';
+    const TYPE_TEXT = 'text';
 
-  const TYPE_SIMPLE = 'simple';
-  const TYPE_MULTIPLE = 'multiple';
-  const TYPE_TEXT = 'text';
-
-  protected $quiz_answer;
+    protected $quiz_answer;
 
     /**
      * Get the value of Quiz Answer

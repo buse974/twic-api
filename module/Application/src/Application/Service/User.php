@@ -20,7 +20,6 @@ use Application\Model\PageUser as ModelPageUser;
  */
 class User extends AbstractService
 {
-
     public function loginLinkedIn($linkedin_id)
     {
         $auth = $this->getServiceAuth();
@@ -453,7 +452,8 @@ class User extends AbstractService
         $error = [];
         foreach ($data as $u) {
             try {
-                $id = $this->add($u['firstname'], /*firstname*/
+                $id = $this->add(
+                    $u['firstname'], /*firstname*/
                   $u['lastname'], /*lastname*/
                   $u['email'], /*email*/
                   null, /*gender*/
@@ -694,7 +694,7 @@ class User extends AbstractService
                 ->setSuspensionDate(new IsNull())
                 ->setDeletedDate(new IsNull()))->current();
             
-            if($m_user !== false) {
+            if ($m_user !== false) {
                 $uniqid = uniqid();
                 $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());

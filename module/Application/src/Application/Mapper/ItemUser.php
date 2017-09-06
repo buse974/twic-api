@@ -6,7 +6,6 @@ use Zend\Db\Sql\Expression;
 
 class ItemUser extends AbstractMapper
 {
-
     public function getList($item_id, $user_id = null, $submission_id = null)
     {
         $select = $this->tableGateway->getSql()->select();

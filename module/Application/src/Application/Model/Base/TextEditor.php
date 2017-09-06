@@ -6,59 +6,58 @@ use Dal\Model\AbstractModel;
 
 class TextEditor extends AbstractModel
 {
- 	protected $id;
-	protected $name;
-	protected $text;
-	protected $submit_date;
+    protected $id;
+    protected $name;
+    protected $text;
+    protected $submit_date;
 
-	protected $prefix = 'text_editor';
+    protected $prefix = 'text_editor';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getName()
-	{
-		return $this->name;
-	}
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	public function setName($name)
-	{
-		$this->name = $name;
+    public function setName($name)
+    {
+        $this->name = $name;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getText()
-	{
-		return $this->text;
-	}
+    public function getText()
+    {
+        return $this->text;
+    }
 
-	public function setText($text)
-	{
-		$this->text = $text;
+    public function setText($text)
+    {
+        $this->text = $text;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getSubmitDate()
-	{
-		return $this->submit_date;
-	}
+    public function getSubmitDate()
+    {
+        return $this->submit_date;
+    }
 
-	public function setSubmitDate($submit_date)
-	{
-		$this->submit_date = $submit_date;
+    public function setSubmitDate($submit_date)
+    {
+        $this->submit_date = $submit_date;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

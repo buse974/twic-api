@@ -45,10 +45,9 @@ class PageUser extends AbstractService
         $m_page = $this->getServicePage()->getLite($page_id);
         // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
         if ($state === ModelPageUser::STATE_MEMBER) {
-
-          if(is_numeric($m_page->getConversationId())) {
-            $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
-          }
+            if (is_numeric($m_page->getConversationId())) {
+                $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
+            }
         }
 
         foreach ($user_id as $uid) {
@@ -56,12 +55,20 @@ class PageUser extends AbstractService
             // inviter only event
             if ($state === ModelPageUser::STATE_INVITED) {
                 $this->getServicePost()->addSys(
-                    'PPM'.$page_id.'_'.$uid, '', [
+                    'PPM'.$page_id.'_'.$uid,
+                    '',
+                    [
                     'state' => 'invited',
                     'user' => $uid,
                     'page' => $page_id,
                     'type' => $m_page->getType(),
-                    ], 'invited', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, null/*user*/, 'page'
+                    ],
+                    'invited',
+                    ['M'.$uid]/*sub*/,
+                    null/*parent*/,
+                    $page_id/*page*/,
+                    null/*user*/,
+                    'page'
                 );
                 //$gcm_notification = new GcmNotification();
                 /*$gcm_notification->setTitle($name)
@@ -83,66 +90,79 @@ class PageUser extends AbstractService
 */
                 // member only group
             } elseif ($state === ModelPageUser::STATE_MEMBER) {
+                $identity = $this->getServiceUser()->getIdentity();
+                $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
 
-              $identity = $this->getServiceUser()->getIdentity();
-              $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-
-              if(ModelPage::TYPE_ORGANIZATION === $m_page->getType() && $is_admin === false) {
-                $this->getServiceUser()->update($uid ,null ,null ,null ,null ,null ,null ,null, null, null, $page_id);
-              }
+                if (ModelPage::TYPE_ORGANIZATION === $m_page->getType() && $is_admin === false) {
+                    $this->getServiceUser()->update($uid, null, null, null, null, null, null, null, null, null, $page_id);
+                }
 
                 $this->getServiceSubscription()->add('PP'.$page_id, $uid);
                 // Si il n'est pas le propriétaire on lui envoie une notification
                 if ($m_page->getUserId() !== $uid) {
                     if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC && ModelPage::TYPE_ORGANIZATION !== $m_page->getType()) {
                         $this->getServicePost()->addSys(
-                            'PPM'.$page_id.'_'.$uid, '', [
+                            'PPM'.$page_id.'_'.$uid,
+                            '',
+                            [
                             'state' => 'member',
                             'user' => $uid,
                             'page' => $page_id,
                             'type' => $m_page->getType(),
-                          ], 'member', ['M'.$uid, 'PU'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, $uid/*user*/, 'page'
+                          ],
+                            'member',
+                            ['M'.$uid, 'PU'.$uid]/*sub*/,
+                            null/*parent*/,
+                            $page_id/*page*/,
+                            $uid/*user*/,
+                            'page'
                         );
                     } else {
                         $this->getServicePost()->addSys(
-                            'PPM'.$page_id.'_'.$uid, '', [
+                            'PPM'.$page_id.'_'.$uid,
+                            '',
+                            [
                             'state' => 'member',
                             'user' => $uid,
                             'page' => $page_id,
                             'type' => $m_page->getType(),
-                          ], 'member', ['M'.$uid]/*sub*/, null/*parent*/, $page_id/*page*/, $uid/*user*/, 'page'
+                          ],
+                            'member',
+                            ['M'.$uid]/*sub*/,
+                            null/*parent*/,
+                            $page_id/*page*/,
+                            $uid/*user*/,
+                            'page'
                         );
                     }
-/*
-                    $this->getServiceFcm()->send(
+                    /*
+                                        $this->getServiceFcm()->send(
+                                            $uid, [
+                                            'data' => [
+                                                'type' => 'userpage',
+                                                'data' => [
+                                                    'state' => 'member',
+                                                    'page' => $page_id,
+                                                ],
+                                            ],
+                                          ]
+                                        );
+                                        */
+                }
+            } else {
+                /*    $this->getServiceFcm()->send(
                         $uid, [
                         'data' => [
                             'type' => 'userpage',
                             'data' => [
-                                'state' => 'member',
+                                'state' => 'pending',
                                 'page' => $page_id,
                             ],
                         ],
                       ]
                     );
                     */
-                }
-            } else {
-          /*    $this->getServiceFcm()->send(
-                  $uid, [
-                  'data' => [
-                      'type' => 'userpage',
-                      'data' => [
-                          'state' => 'pending',
-                          'page' => $page_id,
-                      ],
-                  ],
-                ]
-              );
-              */
             }
-
-
         }
 
         return $ret;
@@ -162,57 +182,65 @@ class PageUser extends AbstractService
      */
     public function update($page_id, $user_id, $role, $state)
     {
-      $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
-      // si on doit l'abonner
-      if (ModelPageUser::STATE_MEMBER === $state) {
+        $m_page_user = $this->getMapper()->select($this->getModel()->setPageId($page_id)->setUserId($user_id))->current();
+        // si on doit l'abonner
+        if (ModelPageUser::STATE_MEMBER === $state) {
 
         // ON MET LES USER DANS LA CONVERSATION SI ELLE EXISTE
-        $m_page = $this->getServicePage()->getLite($page_id);
-        if(is_numeric($m_page->getConversationId())) {
-          $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
-        }
+            $m_page = $this->getServicePage()->getLite($page_id);
+            if (is_numeric($m_page->getConversationId())) {
+                $this->getServiceConversationUser()->add($m_page->getConversationId(), $user_id);
+            }
 
-        if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
-            $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
-            if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
-                $this->getServicePost()->addSys(
-                    'PPM'.$page_id.'_'.$user_id, '', [
+            if ($m_page_user->getState() === ModelPageUser::STATE_PENDING || $m_page_user->getState() === ModelPageUser::STATE_INVITED) {
+                $this->getServiceSubscription()->add('PP'.$page_id, $user_id);
+                if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC) {
+                    $this->getServicePost()->addSys(
+                    'PPM'.$page_id.'_'.$user_id,
+                    '',
+                    [
                     'state' => 'member',
                     'user' => $user_id,
                     'page' => $page_id,
                     'type' => $m_page->getType(),
-                    ], 'member', ['M'.$user_id, 'PU'.$user_id]/*sub*/, null/*parent*/, null/*page*/, $user_id/*user*/, 'page'
+                    ],
+                    'member',
+                    ['M'.$user_id, 'PU'.$user_id]/*sub*/,
+                    null/*parent*/,
+                    null/*page*/,
+                    $user_id/*user*/,
+                    'page'
                 );
+                }
             }
         }
-      }
-/*
-        $this->getServiceFcm()->send(
-            $user_id, [
-            'data' => [
-                'type' => 'userpage',
-                'data' => [
-                    'state' => $state,
-                    'page' => $page_id,
-                ],
-            ],
-          ]
-        );
-*/
+        /*
+                $this->getServiceFcm()->send(
+                    $user_id, [
+                    'data' => [
+                        'type' => 'userpage',
+                        'data' => [
+                            'state' => $state,
+                            'page' => $page_id,
+                        ],
+                    ],
+                  ]
+                );
+        */
 
-      //si on veux modifier le dernier administrateur
-      if($m_page_user->getRole() == 'admin' && $role !== 'admin' && $role !== null) {
-        $ar_pu = $this->getListByPage($page_id, 'admin');
-        if(count($ar_pu[$page_id]) === 1 && in_array($user_id, $ar_pu[$page_id])) {
-          throw new \Exception("On ne peut pas Modifier le dernier administrateur");
+        //si on veux modifier le dernier administrateur
+        if ($m_page_user->getRole() == 'admin' && $role !== 'admin' && $role !== null) {
+            $ar_pu = $this->getListByPage($page_id, 'admin');
+            if (count($ar_pu[$page_id]) === 1 && in_array($user_id, $ar_pu[$page_id])) {
+                throw new \Exception("On ne peut pas Modifier le dernier administrateur");
+            }
         }
-      }
 
-      $m_page_user = $this->getModel()
+        $m_page_user = $this->getModel()
           ->setRole($role)
           ->setState($state);
 
-      return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
+        return $this->getMapper()->update($m_page_user, ['page_id' => $page_id, 'user_id' => $user_id]);
     }
 
     /**
@@ -232,8 +260,8 @@ class PageUser extends AbstractService
 
         //si on suprime le dernier administrateur
         $ar_pu = $this->getListByPage($page_id, 'admin');
-        if(count($ar_pu[$page_id]) === 1 && in_array($user_id, $ar_pu[$page_id])) {
-          throw new \Exception("On ne peut pas suprimer le dernier administrateur");
+        if (count($ar_pu[$page_id]) === 1 && in_array($user_id, $ar_pu[$page_id])) {
+            throw new \Exception("On ne peut pas suprimer le dernier administrateur");
         }
 
         $ret =  $this->getMapper()->delete($m_page_user);
@@ -243,8 +271,8 @@ class PageUser extends AbstractService
 
             // ON DELETE LES USER DANS LA CONVERSATION SI ELLE EXISTE
             $m_page = $this->getServicePage()->getLite($page_id);
-            if(is_numeric($m_page->getConversationId())) {
-              $this->getServiceConversationUser()->delete($m_page->getConversationId(), $user_id);
+            if (is_numeric($m_page->getConversationId())) {
+                $this->getServiceConversationUser()->delete($m_page->getConversationId(), $user_id);
             }
         }
 
@@ -262,14 +290,14 @@ class PageUser extends AbstractService
      */
     public function getList($page_id, $filter = null, $role = null)
     {
-      //@TODO Petit hack pour le filtre getList dans le mapper a optimisé
-      if(null === $role) {
-        $role = 'norole';
-      }
-      $mapper = $this->getMapper();
-      $res = $mapper->usePaginator($filter)->getList($page_id, null, $role);
+        //@TODO Petit hack pour le filtre getList dans le mapper a optimisé
+        if (null === $role) {
+            $role = 'norole';
+        }
+        $mapper = $this->getMapper();
+        $res = $mapper->usePaginator($filter)->getList($page_id, null, $role);
 
-      return null !== $filter ?
+        return null !== $filter ?
         ['list' => $res,'count' => $mapper->count()] :
         $res;
     }
@@ -285,48 +313,48 @@ class PageUser extends AbstractService
      */
     public function getListByPage($page_id, $role = null, $state = null)
     {
-      if(!is_array($page_id)) {
-        $page_id = [$page_id];
-      }
+        if (!is_array($page_id)) {
+            $page_id = [$page_id];
+        }
 
-      $ret = [];
-      foreach ($page_id as $page) {
-        $ret[$page] = [];
-      }
+        $ret = [];
+        foreach ($page_id as $page) {
+            $ret[$page] = [];
+        }
 
-      $res_page_user = $this->getMapper()->getList($page_id, null, $role, $state);
-      foreach ($res_page_user as $m_page_user) {
-         $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
-      }
+        $res_page_user = $this->getMapper()->getList($page_id, null, $role, $state);
+        foreach ($res_page_user as $m_page_user) {
+            $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
+        }
 
-      return $ret;
+        return $ret;
     }
 
-   /**
-    * Get List pageId by User
-    *
-    * @invokable
-    *
-    * @param int|array $user_id
-    * @param string $role
-    * @param string $state
-    * @param string $type
-    */
+    /**
+     * Get List pageId by User
+     *
+     * @invokable
+     *
+     * @param int|array $user_id
+     * @param string $role
+     * @param string $state
+     * @param string $type
+     */
     public function getListByUser($user_id, $role = null, $state = null, $type = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        if(!is_array($user_id)) {
-          $user_id = [$user_id];
+        if (!is_array($user_id)) {
+            $user_id = [$user_id];
         }
 
         $ret = [];
         foreach ($user_id as $user) {
-          $ret[$user] = [];
+            $ret[$user] = [];
         }
 
         $res_page_user = $this->getMapper()->getList(null, $user_id, $role, $state, $type, $identity['id']);
         foreach ($res_page_user as $m_page_user) {
-           $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
+            $ret[$m_page_user->getUserId()][] = $m_page_user->getPageId();
         }
 
         return $ret;
@@ -334,9 +362,9 @@ class PageUser extends AbstractService
 
     public function getRole($page_id)
     {
-      $identity = $this->getServiceUser()->getIdentity();
+        $identity = $this->getServiceUser()->getIdentity();
 
-      return $this->getMapper()->getList($page_id, $identity['id'])->current();
+        return $this->getMapper()->getList($page_id, $identity['id'])->current();
     }
 
     /**

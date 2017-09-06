@@ -95,22 +95,22 @@ class Activity extends AbstractService
         return $this->getMapper()->getLastInsertValue();
     }
 
-     /**
-     * Get List activity.
-     *
-     * @invokable
-     *
-     * @param string $event
-     * @param int     $object_id
-     * @param string $object_name
-     * @param array  $school_id
-     * @param array  $program_id
-     * @param array  $course_id
-     * @param array  $item_id
-     * @param array  $user_id
-     *
-     * @return array
-     */
+    /**
+    * Get List activity.
+    *
+    * @invokable
+    *
+    * @param string $event
+    * @param int     $object_id
+    * @param string $object_name
+    * @param array  $school_id
+    * @param array  $program_id
+    * @param array  $course_id
+    * @param array  $item_id
+    * @param array  $user_id
+    *
+    * @return array
+    */
     public function getListWithFilters($event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, $course_id = null, $item_id = null, $user_id = null)
     {
         $identity = $this->getServiceUser()->getIdentity();

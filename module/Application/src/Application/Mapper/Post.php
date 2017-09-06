@@ -9,16 +9,15 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Post extends AbstractMapper
 {
-
     public function getListId($me_id, $page_id = null, $user_id = null, $parent_id = null, $is_item = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $columns = ['post$id' => new Expression('post.id')];
         if ($user_id === null && $parent_id === null && $page_id === null) {
-          $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
-          $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
+            $columns['post$last_date'] = new Expression('DATE_FORMAT(MAX(post_subscription.last_date), "%Y-%m-%dT%TZ")');
+            $select->order(['post$last_date' => 'DESC', 'post.id' => 'DESC']);
         } else {
-          $select->order(['post.id' => 'DESC']);
+            $select->order(['post.id' => 'DESC']);
         }
 
         $select->columns($columns);
@@ -32,8 +31,8 @@ class Post extends AbstractMapper
 
         // @TODO on part du principe que si il n'y a pas de page_id donc c pour un mur donc on récupére que les post des page publish de type course
         // sinon si on donne la page_id on considére qui a pu récupérer l'id donc c accéssible (normalement que pour les admins de la page et les admins studnet)
-        if(null === $page_id) {
-          $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR page.type IS NULL)']);
+        if (null === $page_id) {
+            $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR page.type IS NULL)']);
         }
 
         $select->join('item', 'post.item_id = item.id', [], $select::JOIN_LEFT)
@@ -44,8 +43,8 @@ class Post extends AbstractMapper
           ( `item`.`start_date` IS NULL AND `item`.`end_date` > UTC_TIMESTAMP() ) OR
           ( UTC_TIMESTAMP() BETWEEN `item`.`start_date` AND `item`.`end_date` ))))) )']);
 
-        if(true === $is_item) {
-          $select->where(['item.id IS NOT NULL']);
+        if (true === $is_item) {
+            $select->where(['item.id IS NOT NULL']);
         }
         if (null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)

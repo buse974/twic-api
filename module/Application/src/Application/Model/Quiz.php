@@ -6,7 +6,7 @@ use Application\Model\Base\Quiz as BaseQuiz;
 
 class Quiz extends BaseQuiz
 {
-  protected $quiz_question;
+    protected $quiz_question;
 
     /**
      * Get the value of Quiz Question
@@ -31,5 +31,4 @@ class Quiz extends BaseQuiz
 
         return $this;
     }
-
 }

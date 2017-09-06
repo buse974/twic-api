@@ -6,46 +6,45 @@ use Dal\Model\AbstractModel;
 
 class Group extends AbstractModel
 {
- 	protected $id;
-	protected $name;
-	protected $item_id;
+    protected $id;
+    protected $name;
+    protected $item_id;
 
-	protected $prefix = 'group';
+    protected $prefix = 'group';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getName()
-	{
-		return $this->name;
-	}
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	public function setName($name)
-	{
-		$this->name = $name;
+    public function setName($name)
+    {
+        $this->name = $name;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getItemId()
-	{
-		return $this->item_id;
-	}
+    public function getItemId()
+    {
+        return $this->item_id;
+    }
 
-	public function setItemId($item_id)
-	{
-		$this->item_id = $item_id;
+    public function setItemId($item_id)
+    {
+        $this->item_id = $item_id;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

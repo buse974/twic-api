@@ -23,11 +23,11 @@ class Contact extends AbstractMapper
           ->where(array('user.deleted_date IS NULL'));
 
         if (!empty($exclude)) {
-          $select->where->notIn('contact.contact_id', $exclude);
+            $select->where->notIn('contact.contact_id', $exclude);
         }
 
         if (null !== $search) {
-          $select->where(array('( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'))
+            $select->where(array('( CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'))
             ->where(array('CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'), Predicate::OP_OR)
             ->where(array('user.nickname LIKE ? )' => ''.$search.'%'), Predicate::OP_OR);
         }

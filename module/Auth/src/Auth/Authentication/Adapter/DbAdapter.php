@@ -85,10 +85,10 @@ class DbAdapter extends AbstractAdapter
         $select->from($this->table)
             ->columns(['*']);
         
-        if(null !== $this->linkedin_id ) {
+        if (null !== $this->linkedin_id) {
             $select->where(['user.linkedin_id' => $this->linkedin_id])
                 ->where(['user.deleted_date IS NULL']);
-        } elseif(null !== $this->credential && null !== $this->identity) {
+        } elseif (null !== $this->credential && null !== $this->identity) {
             $select->where([' ( user.password = MD5(?) ' => $this->credential])
                 ->where(['user.new_password = MD5(?) )' => $this->credential], Predicate::OP_OR)
                 ->where(['user.'.$this->identity_column.' = ? ' => $this->identity])
@@ -106,12 +106,12 @@ class DbAdapter extends AbstractAdapter
                 ->where(array('user.deleted_date IS NULL'));
             $statement = $sql->prepareStatementForSqlObject($select);
             $results = $statement->execute();
-            if($results->count() < 1) {
-              $code = self::FAILURE_ACCOUNT_BAD_LOGIN;
-            } else if($results->count() > 0) {
-              $code = self::FAILURE_ACCOUNT_BAD_MDP;
+            if ($results->count() < 1) {
+                $code = self::FAILURE_ACCOUNT_BAD_LOGIN;
+            } elseif ($results->count() > 0) {
+                $code = self::FAILURE_ACCOUNT_BAD_MDP;
             } else {
-              $code = Result::FAILURE_CREDENTIAL_INVALID;
+                $code = Result::FAILURE_CREDENTIAL_INVALID;
             }
             
             $message[] = 'A record with the supplied identity could not be found.';

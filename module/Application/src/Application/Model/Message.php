@@ -6,16 +6,16 @@ use Application\Model\Base\Message as BaseMessage;
 
 class Message extends BaseMessage
 {
-  protected $message_user;
-  protected $library;
+    protected $message_user;
+    protected $library;
 
-  public function exchangeArray(array &$data)
-  {
-      parent::exchangeArray($data);
+    public function exchangeArray(array &$data)
+    {
+        parent::exchangeArray($data);
 
-      $this->message_user = $this->requireModel('app_model_message_user', $data);
-      $this->library = $this->requireModel('app_model_library', $data);
-  }
+        $this->message_user = $this->requireModel('app_model_message_user', $data);
+        $this->library = $this->requireModel('app_model_library', $data);
+    }
 
     /**
      * Get the value of Message User
@@ -64,5 +64,4 @@ class Message extends BaseMessage
 
         return $this;
     }
-
 }

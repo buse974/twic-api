@@ -84,7 +84,7 @@ class Event extends AbstractService
     {
         $users = $this->getServiceSubscription()->getListUserId($libelle);
         if (count($users) > 0) {
-          $this->sendRequest(
+            $this->sendRequest(
             array_values($users),
             ['data' => $data,'event' => $type],
             self::TARGET_TYPE_USER
@@ -213,7 +213,9 @@ class Event extends AbstractService
         $m_event = $this->getMapper()
             ->getList(
                 $this->getServiceUser()
-                    ->getIdentity()['id'], null, $id
+                    ->getIdentity()['id'],
+                null,
+                $id
             )
             ->current();
 
@@ -271,10 +273,13 @@ class Event extends AbstractService
             //if (!$this->isConnected($t)  $u['data']['has_email_notifier'] == true) {
             if ($u['data']['has_email_notifier'] == true) {
                 try {
-                    $this->getServiceMail()->sendTpl('tpl_newmessage', $u['data']['email'],
+                    $this->getServiceMail()->sendTpl(
+                        'tpl_newmessage',
+                        $u['data']['email'],
                       ['to_firstname' => $u['data']['firstname'],'to_lastname' => $u['data']['lastname'],
                     'to_avatar' => $u['data']['avatar'],'from_firstname' => $from['data']['firstname'],'from_lastname' => $from['data']['lastname'],
-                    'from_avatar' => $from['data']['avatar']]);
+                    'from_avatar' => $from['data']['avatar']]
+                    );
                 } catch (\Exception $e) {
                     syslog(1, 'Model tpl_newmessage does not exist');
                 }
@@ -380,7 +385,7 @@ class Event extends AbstractService
 
 
 
-// ----------------------------- Service
+    // ----------------------------- Service
     /**
      * Get Service Event Comment.
      *
@@ -440,5 +445,4 @@ class Event extends AbstractService
     {
         return $this->container->get('app_service_message_user');
     }
-
 }

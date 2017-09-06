@@ -31,5 +31,4 @@ class Submission extends BaseSubmission
 
         return $this;
     }
-
 }

@@ -6,59 +6,58 @@ use Dal\Model\AbstractModel;
 
 class CtDone extends AbstractModel
 {
- 	protected $id;
-	protected $item_id;
-	protected $target_id;
-	protected $all;
+    protected $id;
+    protected $item_id;
+    protected $target_id;
+    protected $all;
 
-	protected $prefix = 'ct_done';
+    protected $prefix = 'ct_done';
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	public function setId($id)
-	{
-		$this->id = $id;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getItemId()
-	{
-		return $this->item_id;
-	}
+    public function getItemId()
+    {
+        return $this->item_id;
+    }
 
-	public function setItemId($item_id)
-	{
-		$this->item_id = $item_id;
+    public function setItemId($item_id)
+    {
+        $this->item_id = $item_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getTargetId()
-	{
-		return $this->target_id;
-	}
+    public function getTargetId()
+    {
+        return $this->target_id;
+    }
 
-	public function setTargetId($target_id)
-	{
-		$this->target_id = $target_id;
+    public function setTargetId($target_id)
+    {
+        $this->target_id = $target_id;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function getAll()
-	{
-		return $this->all;
-	}
+    public function getAll()
+    {
+        return $this->all;
+    }
 
-	public function setAll($all)
-	{
-		$this->all = $all;
+    public function setAll($all)
+    {
+        $this->all = $all;
 
-		return $this;
-	}
-
+        return $this;
+    }
 }

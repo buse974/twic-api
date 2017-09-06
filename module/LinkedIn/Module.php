@@ -26,9 +26,9 @@ class Module implements ConfigProviderInterface
                     $client = new Client();
                     $client->setOptions($container->get('config')[$linkedin['adapter']]);
 
-                    return new Api($client, $linkedin['client_id'], $linkedin['client_secret'], $linkedin['api_url'],  $linkedin['redirect_uri']);
+                    return new Api($client, $linkedin['client_id'], $linkedin['client_secret'], $linkedin['api_url'], $linkedin['redirect_uri']);
                 },
             ],
         ];
-    }   
+    }
 }

@@ -116,8 +116,8 @@ class Post extends AbstractService
             ->setType($type)
             ->setData($data);
 
-        if(!$is_notif || null !== $parent_id) {
-          $m_post->setUserId($user_id);
+        if (!$is_notif || null !== $parent_id) {
+            $m_post->setUserId($user_id);
         }
 
         if ($this->getMapper()->insert($m_post) <= 0) {
@@ -144,7 +144,8 @@ class Post extends AbstractService
         // si c pas une notification on gére les hastags
         if (!$is_notif) {
             $ar = array_filter(
-                explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)),
+                function ($v) {
                     return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
                 }
             );
@@ -186,7 +187,6 @@ class Post extends AbstractService
         $ev=((!empty($event))? $event:(($base_id!==$id) ? ModelPostSubscription::ACTION_COM : ModelPostSubscription ::ACTION_CREATE));
 
         if (!$is_notif) {
-
         }
 
         $this->getServicePostSubscription()->add(
@@ -225,8 +225,22 @@ class Post extends AbstractService
      *
      * @return \Application\Model\Post
      */
-    public function update($id = null, $content = null, $link = null, $picture = null, $name_picture = null, $link_title = null,
-        $link_desc = null, $lat = null, $lng = null, $docs =null, $data = null, $event = null, $uid = null, $sub = null, $item_id = null
+    public function update(
+        $id = null,
+        $content = null,
+        $link = null,
+        $picture = null,
+        $name_picture = null,
+        $link_title = null,
+        $link_desc = null,
+        $lat = null,
+        $lng = null,
+        $docs =null,
+        $data = null,
+        $event = null,
+        $uid = null,
+        $sub = null,
+        $item_id = null
     ) {
         if ($uid === null && $id === null) {
             throw new \Exception('error update: no $id and no $uid');
@@ -275,7 +289,8 @@ class Post extends AbstractService
             // si c pas une notification on gére les hastags
             if (!$is_notif) {
                 $ar = array_filter(
-                    explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)), function ($v) {
+                    explode(' ', str_replace(["\r\n","\n","\r"], ' ', $content)),
+                    function ($v) {
                         return (strpos($v, '#') !== false) || (strpos($v, '@') !== false);
                     }
                 );
@@ -335,13 +350,13 @@ class Post extends AbstractService
 
         $res_post->rewind();
 
-        if(is_array($id)) {
-          $ar_post = $res_post->toArray(['id']);
-          foreach ($id as $i) {
-            if(!isset($ar_post[$i])) {
-              $ar_post[$i] = null;
+        if (is_array($id)) {
+            $ar_post = $res_post->toArray(['id']);
+            foreach ($id as $i) {
+                if (!isset($ar_post[$i])) {
+                    $ar_post[$i] = null;
+                }
             }
-          }
         }
 
         return (is_array($id) ? $ar_post: $res_post->current());
@@ -416,8 +431,8 @@ class Post extends AbstractService
           $this->getMapper()->update($m_post, ['id' => $id, 'user_id' => $identity['id']]) :
           $this->getMapper()->update($m_post, ['id' => $id]);
 
-        if($ret) {
-          $this->getServiceEvent()->sendData($id, 'post.delete', ['PU'.$this->getLite($id)->getUserId()]);
+        if ($ret) {
+            $this->getServiceEvent()->sendData($id, 'post.delete', ['PU'.$this->getLite($id)->getUserId()]);
         }
 
         return $ret;
@@ -505,7 +520,8 @@ class Post extends AbstractService
      *
      * @return \Application\Model\Post
      */
-    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null, $t_user_id = null, $type = null) {
+    public function addSys($uid, $content, $data, $event, $sub = null, $parent_id = null, $t_page_id = null, $t_user_id = null, $type = null)
+    {
         if ($sub !== null && !is_array($sub)) {
             $sub = [$sub];
         }
@@ -515,8 +531,24 @@ class Post extends AbstractService
         return ($res_post->count() > 0) ?
             $this->update(null, $content, null, null, null, null, null, null, null, null, $data, $event, $uid, $sub) :
             $this->add(
-                $content, null, null, null, null, null, $parent_id, $t_page_id, $t_user_id, null, null, null, null,
-                $data, $event, $uid, $sub, $type
+                $content,
+                null,
+                null,
+                null,
+                null,
+                null,
+                $parent_id,
+                $t_page_id,
+                $t_user_id,
+                null,
+                null,
+                null,
+                null,
+                $data,
+                $event,
+                $uid,
+                $sub,
+                $type
             );
     }
 

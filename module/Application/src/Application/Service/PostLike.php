@@ -28,7 +28,8 @@ class PostLike extends AbstractService
 
         if ($m && $m->count() > 0) {
             $res = $this->getMapper()->update(
-                $this->getModel()->setIsLike(true), [
+                $this->getModel()->setIsLike(true),
+                [
                   'post_id' => $post_id,
                   'user_id' => $user_id
                 ]
@@ -63,7 +64,8 @@ class PostLike extends AbstractService
             // si ce n'est pas privé on notifie les personne abonné au propriétaitre du like et du poste
             if (!$is_private_page) {
                 $sub_post = array_merge(
-                    $sub_post, [
+                    $sub_post,
+                    [
                     'P'.$this->getServicePost()->getOwner($m_post),
                     'P'.$this->getUserLike($m_post_like),
                     ]
@@ -71,7 +73,12 @@ class PostLike extends AbstractService
             }
 
             $this->getServicePostSubscription()->add(
-                array_unique($sub_post), $base_id, $date, ModelPostSubscription::ACTION_LIKE, $user_id, null,
+                array_unique($sub_post),
+                $base_id,
+                $date,
+                ModelPostSubscription::ACTION_LIKE,
+                $user_id,
+                null,
                 ['id' => $post_id, 'parent_id' => $m_post->getParentId(), 'origin_id' => $m_post->getOriginId()]
             );
         }
@@ -90,7 +97,8 @@ class PostLike extends AbstractService
     public function delete($post_id)
     {
         return $this->getMapper()->update(
-            $this->getModel()->setIsLike(false), [
+            $this->getModel()->setIsLike(false),
+            [
             'post_id' => $post_id, 'user_id' => $this->getServiceUser()->getIdentity()['id']]
         );
     }

@@ -27,7 +27,7 @@ class Preregistration extends AbstractService
      * Add pregegistration
      *
      * @invokable
-     * 
+     *
      * @param string $account_token
      * @param string $firstname
      * @param string $lastname
@@ -56,18 +56,18 @@ class Preregistration extends AbstractService
      * Delete preregistration
      *
      * @invokable
-     * 
+     *
      * @param string $account_token
      * @param int $user_id
      */
     public function delete($account_token = null, $user_id = null)
     {
         $nb = 0;
-        if(null !== $account_token) {
+        if (null !== $account_token) {
             $nb += $this->getMapper()->delete($m_preregistration = $this->getModel()
                 ->setAccountToken($account_token));
         }
-        if(null !== $user_id) {
+        if (null !== $user_id) {
             $nb += $this->getMapper()->delete($m_preregistration = $this->getModel()
                 ->setUserId($user_id));
         }

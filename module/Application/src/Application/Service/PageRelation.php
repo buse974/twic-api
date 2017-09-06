@@ -17,39 +17,39 @@ class PageRelation extends AbstractService
 
    * @return int
    */
-  public function add($page_id, $parent_id, $type)
-  {
-    $m_page_relation = $this->getModel()->setParentId($parent_id)->setPageId($page_id)->setType($type);
+    public function add($page_id, $parent_id, $type)
+    {
+        $m_page_relation = $this->getModel()->setParentId($parent_id)->setPageId($page_id)->setType($type);
 
-    return $this->getMapper()->insert($m_page_relation);
-  }
+        return $this->getMapper()->insert($m_page_relation);
+    }
 
-  /**
-   * GetList relation By Type
+    /**
+     * GetList relation By Type
 
-   * @param int $page_id
-   * @param string $type
-   *
-   * @return \Dal\Db\ResultSet\ResultSet
-   */
-  public function getList($page_id, $type = null)
-  {
-    return $this->getMapper()->select(
+     * @param int $page_id
+     * @param string $type
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getList($page_id, $type = null)
+    {
+        return $this->getMapper()->select(
       $this->getModel()
         ->setPageId($page_id)
-        ->setType($type));
-  }
+        ->setType($type)
+    );
+    }
 
-  /**
-   * GetList relation Owner
+    /**
+     * GetList relation Owner
 
-   * @param int $page_id
-   *
-   * @return \Dal\Db\ResultSet\ResultSet
-   */
-  public function getOwner($page_id)
-  {
-    return $this->getList($page_id , ModelPageRelation::TYPE_OWNER);
-  }
-
+     * @param int $page_id
+     *
+     * @return \Dal\Db\ResultSet\ResultSet
+     */
+    public function getOwner($page_id)
+    {
+        return $this->getList($page_id, ModelPageRelation::TYPE_OWNER);
+    }
 }

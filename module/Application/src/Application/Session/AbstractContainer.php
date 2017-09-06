@@ -519,7 +519,8 @@ abstract class AbstractContainer extends \ArrayObject
 
             // Filter out any items not in our container
             $expires = array_filter(
-                $vars, function ($value) use ($container) {
+                $vars,
+                function ($value) use ($container) {
                     return $container->offsetExists($value);
                 }
             );
@@ -529,7 +530,8 @@ abstract class AbstractContainer extends \ArrayObject
             $expires = array_map(
                 function ($value) use ($ts) {
                     return $ts;
-                }, $expires
+                },
+                $expires
             );
 
             // Create metadata array to merge in
@@ -576,7 +578,8 @@ abstract class AbstractContainer extends \ArrayObject
 
             // FilterInterface out any items not in our container
             $expires = array_filter(
-                $vars, function ($value) use ($container) {
+                $vars,
+                function ($value) use ($container) {
                     return $container->offsetExists($value);
                 }
             );
@@ -586,7 +589,8 @@ abstract class AbstractContainer extends \ArrayObject
             $expires = array_map(
                 function ($value) use ($hops, $ts) {
                     return array('hops' => $hops, 'ts' => $ts);
-                }, $expires
+                },
+                $expires
             );
 
             // Create metadata array to merge in

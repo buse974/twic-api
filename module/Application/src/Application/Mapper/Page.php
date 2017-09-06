@@ -22,11 +22,11 @@ class Page extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(array('id','libelle','custom'));
 
-        if(null !== $libelle) {
-          $select->where(array('page.libelle' => $libelle));
+        if (null !== $libelle) {
+            $select->where(array('page.libelle' => $libelle));
         }
-        if(null !== $id) {
-          $select->where(array('page.id' => $id));
+        if (null !== $id) {
+            $select->where(array('page.id' => $id));
         }
 
         return $this->selectWith($select);
@@ -71,45 +71,45 @@ class Page extends AbstractMapper
       $children_id = null,
       $is_member_admin = null,
       $relation_type = null,
-      $exclude = null)
-    {
+      $exclude = null
+    ) {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'title'])
           ->where(['page.deleted_date IS NULL'])
           ->quantifier('DISTINCT');
 
         if ($exclude) {
-          $select->where->notIn('page.id', $exclude);
+            $select->where->notIn('page.id', $exclude);
         }
-        if(!empty($parent_id)) {
-          $select->join('page_relation', 'page_relation.page_id = page.id', ['parent_id'])
+        if (!empty($parent_id)) {
+            $select->join('page_relation', 'page_relation.page_id = page.id', ['parent_id'])
             ->where(['page_relation.parent_id' => $parent_id]);
-            if(!empty($relation_type)) {
-              $select->where(['page_relation.type' => $relation_type]);
+            if (!empty($relation_type)) {
+                $select->where(['page_relation.type' => $relation_type]);
             }
         }
-        if(!empty($children_id)) {
-          $select->join('page_relation', 'page_relation.parent_id = page.id', ['page_id'])
+        if (!empty($children_id)) {
+            $select->join('page_relation', 'page_relation.parent_id = page.id', ['page_id'])
             ->where(['page_relation.page_id' => $children_id]);
-            if(!empty($relation_type)) {
-              $select->where(['page_relation.type' => $relation_type]);
+            if (!empty($relation_type)) {
+                $select->where(['page_relation.type' => $relation_type]);
             }
         }
         if (null !== $type) {
-          $select->where(['page.type' => $type]);
+            $select->where(['page.type' => $type]);
         }
         if (null !== $member_id) {
-          $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
+            $select->join(['member' => 'page_user'], 'member.page_id = page.id', [])
               ->where(['member.user_id' => $member_id])
               ->where(['member.state' => 'member']);
-          if($is_member_admin === true) {
-            $select->where(['member.role' => 'admin']);
-          }
+            if ($is_member_admin === true) {
+                $select->where(['member.role' => 'admin']);
+            }
         }
 
         if (null !== $search) {
-          $tags = explode(' ',$search);
-          $select->join('page_tag', 'page_tag.page_id = page.id', [], $select::JOIN_LEFT)
+            $tags = explode(' ', $search);
+            $select->join('page_tag', 'page_tag.page_id = page.id', [], $select::JOIN_LEFT)
             ->join('tag', 'page_tag.tag_id = tag.id', [], $select::JOIN_LEFT)
             ->where(['( page.title LIKE ? ' => '%' . $search . '%'])
             ->where(['tag.name'   => $tags], Predicate::OP_OR)
@@ -118,10 +118,10 @@ class Page extends AbstractMapper
             ->having([' page.title LIKE ? ) ' => '%' . $search . '%'], Predicate::OP_OR);
         }
         if (!empty($tags)) {
-          /*  $select->join('page_tag', 'page_tag.page_id = page.id')
-                ->join('tag', 'tag.id = page_tag.tag_id')
-                ->where(['tag.name' => $tags])
-                ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);*/
+            /*  $select->join('page_tag', 'page_tag.page_id = page.id')
+                  ->join('tag', 'tag.id = page_tag.tag_id')
+                  ->where(['tag.name' => $tags])
+                  ->having(['COUNT(DISTINCT tag.id) = ?' => count($tags)]);*/
         }
         if (null !== $start_date && null !== $end_date) {
             $select->where(['( page.start_date BETWEEN ? AND ? ' => [$start_date,$end_date]])
@@ -143,7 +143,7 @@ class Page extends AbstractMapper
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
 
             $select->join(['pu' => 'page_user'], new Expression("pu.page_id = page.id AND pu.role = 'admin'"), [])
-              ->join(['pu_u' => 'user'],'pu.user_id=pu_u.id', [])
+              ->join(['pu_u' => 'user'], 'pu.user_id=pu_u.id', [])
               ->join(['co' => 'circle_organization'], 'co.organization_id=pu_u.organization_id', [])
               ->join('circle_organization', 'circle_organization.circle_id=co.circle_id', [])
               ->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', [])
@@ -203,7 +203,7 @@ class Page extends AbstractMapper
                 ->where([" page_user.user_id = ? )" => $me], Predicate::OP_OR);
 
             $select->join(['pu' => 'page_user'], new Expression("pu.page_id = page.id AND pu.role = 'admin'"), []);
-            $select->join(['pu_u' => 'user'],'pu.user_id=pu_u.id', []);
+            $select->join(['pu_u' => 'user'], 'pu.user_id=pu_u.id', []);
             $select->join(['co' => 'circle_organization'], 'co.organization_id=pu_u.organization_id', []);
             $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
             $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
@@ -225,15 +225,16 @@ class Page extends AbstractMapper
     }
 
 
-     /**
-     * Execute Request Get
-     *
-     * @param  int $id
-     */
-    public function getGradesSelect($id){
-         $select = $this->tableGateway->getSql()->select();
-         $select->columns(['average' => new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100)')])
-                ->join('item','page.id = item.page_id', ['page_id'])
+    /**
+    * Execute Request Get
+    *
+    * @param  int $id
+    */
+    public function getGradesSelect($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['average' => new Expression('ROUND(SUM(item_user.rate) / SUM(item.points) * 100)')])
+                ->join('item', 'page.id = item.page_id', ['page_id'])
                 ->join('item_user', 'item.id = item_user.item_id', ['user_id'])
                 ->join('user', 'item_user.user_id = user.id', [])
                 ->where(['item.is_grade_published' => 1])
@@ -244,7 +245,8 @@ class Page extends AbstractMapper
         return $select;
     }
 
-    public function getRankSelect($id, $avg){
+    public function getRankSelect($id, $avg)
+    {
         $rank_select->columns(['rank' => new Expression('COUNT(*) + 1')])
             ->from(['g' => $this->getGradesSelect($id)])
             ->group('item_user$user_id')
@@ -252,11 +254,11 @@ class Page extends AbstractMapper
         return $rank_select;
     }
 
-     /**
-     * Execute Request Get organization median
-     *
-     * @param  int $id
-     */
+    /**
+    * Execute Request Get organization median
+    *
+    * @param  int $id
+    */
     public function getMedian($id)
     {
         $grades_select =  $this->getGradesSelect($id);
@@ -343,5 +345,4 @@ class Page extends AbstractMapper
 
         return $this->selectWith($select);
     }
-
 }

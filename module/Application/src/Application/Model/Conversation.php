@@ -159,5 +159,4 @@ class Conversation extends BaseConversation
 
         return $this;
     }
-
 }

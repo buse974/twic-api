@@ -31,8 +31,8 @@ class Module implements ConfigProviderInterface
                         break;
                     case 's3':
                         $bj_storage = new \Mail\Template\Storage\FsS3Storage();
-                        if(isset($conf_mail['cache'])) {
-                          $bj_storage->setCache($container->get($conf_mail['cache']));
+                        if (isset($conf_mail['cache'])) {
+                            $bj_storage->setCache($container->get($conf_mail['cache']));
                         }
                         $bj_storage->init($conf_storage);
                         break;

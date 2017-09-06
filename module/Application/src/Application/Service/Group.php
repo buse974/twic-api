@@ -7,15 +7,15 @@ use Dal\Service\AbstractService;
 class Group extends AbstractService
 {
     /**
-     * Get List 
-     * 
+     * Get List
+     *
      * @invokable
-     * 
+     *
      * @param int $item_id
      */
     public function getList($item_id)
     {
-        if(!is_array($item_id)) {
+        if (!is_array($item_id)) {
             $item_id = [$item_id];
         }
         
@@ -37,17 +37,17 @@ class Group extends AbstractService
     
     /**
      * Add GRoup
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $name
      * @param int $item_id
-     * 
+     *
      * @return int
      */
     public function add($name, $item_id)
     {
-        if(!is_array($name)) {
+        if (!is_array($name)) {
             $name = [$name];
         }
         
@@ -63,9 +63,9 @@ class Group extends AbstractService
     
     /**
      * Delete Group
-     * 
+     *
      * @invokable
-     * 
+     *
      * @param int $id
      */
     public function delete($id)
@@ -77,10 +77,10 @@ class Group extends AbstractService
     
     /**
      * Get Or Create GRoup
-     * 
+     *
      * @param string $group_name
      * @param int $item_id
-     *  
+     *
      * @return \Application\Model\Group
      */
     public function getOrCreate($name, $item_id)
@@ -88,7 +88,7 @@ class Group extends AbstractService
         $m_group = $this->getModel()->setName($name)->setItemId($item_id);
         
         $res_group = $this->getMapper()->select($m_group);
-        if($res_group->count() <= 0) {
+        if ($res_group->count() <= 0) {
             $this->getMapper()->insert($m_group);
             $m_group->setId($this->getMapper()->getLastInsertValue());
         } else {

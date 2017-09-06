@@ -61,13 +61,15 @@ class Contact extends AbstractService
             $ret = $this->getMapper()->insert($m_contact_you);
         } else {
             $this->getMapper()->update(
-                $m_contact_me, array(
+                $m_contact_me,
+                array(
                 'user_id' => $identity['id'],
                 'contact_id' => $user,
                 )
             );
             $ret = $this->getMapper()->update(
-                $m_contact_you, array(
+                $m_contact_you,
+                array(
                 'user_id' => $user,
                 'contact_id' => $identity['id'],
                 )
@@ -87,25 +89,25 @@ class Contact extends AbstractService
             }
         }
 
-    /*
-     $gcm_notification = new GcmNotification();
-        $gcm_notification->setTitle($name)
-            ->setSound("default")
-            ->setColor("#00A38B")
-            ->setBody('Sent you a connection request');
+        /*
+         $gcm_notification = new GcmNotification();
+            $gcm_notification->setTitle($name)
+                ->setSound("default")
+                ->setColor("#00A38B")
+                ->setBody('Sent you a connection request');
 
-        $this->getServiceFcm()->send(
-            $user, [
-            'data' => [
-                'type' => 'connection',
+            $this->getServiceFcm()->send(
+                $user, [
                 'data' => [
-                    'state' => 'request',
-                    'user' => $user_id,
+                    'type' => 'connection',
+                    'data' => [
+                        'state' => 'request',
+                        'user' => $user_id,
+                    ],
                 ],
-            ],
 
-            ], $gcm_notification
-        );
+                ], $gcm_notification
+            );
 */
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->addSys(
@@ -141,7 +143,8 @@ class Contact extends AbstractService
             ->setAcceptedDate($date)
             ->setAccepted(false);
         $this->getMapper()->update(
-            $m_contact, array(
+            $m_contact,
+            array(
             'user_id' => $user,
             'contact_id' => $user_id,
             )
@@ -151,7 +154,8 @@ class Contact extends AbstractService
             ->setAcceptedDate($date)
             ->setAccepted(true);
         $this->getMapper()->update(
-            $m_contact, array(
+            $m_contact,
+            array(
             'user_id' => $user_id,
             'contact_id' => $user,
             )
@@ -172,28 +176,29 @@ class Contact extends AbstractService
                 $name .= ' '.$m_user->getLastname();
             }
         }
-/*
-        $gcm_notification = new GcmNotification();
-        $gcm_notification->setTitle($name)
-            ->setSound("default")
-            ->setColor("#00A38B")
-            ->setBody('Accepted your request');
-
-        $this->getServiceFcm()->send(
-            $user, ['data' => [
-            'type' => 'connection',
-            'data' => [
-                'state' => 'accept',
-                'user' => $user_id,
-                ]
-            ]
-            ], $gcm_notification
-        );
-*/
+        /*
+                $gcm_notification = new GcmNotification();
+                $gcm_notification->setTitle($name)
+                    ->setSound("default")
+                    ->setColor("#00A38B")
+                    ->setBody('Accepted your request');
+        
+                $this->getServiceFcm()->send(
+                    $user, ['data' => [
+                    'type' => 'connection',
+                    'data' => [
+                        'state' => 'accept',
+                        'user' => $user_id,
+                        ]
+                    ]
+                    ], $gcm_notification
+                );
+        */
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->updateSys(
             $l,
-            'Accepted your request', [
+            'Accepted your request',
+            [
               'state' => 'accept',
               'user' => $user_id,
               'contact' => $user,
@@ -224,7 +229,8 @@ class Contact extends AbstractService
             ->setDeletedDate($date)
             ->setDeleted(false);
         $this->getMapper()->update(
-            $m_contact, array(
+            $m_contact,
+            array(
             'user_id' => $user,
             'contact_id' => $user_id,
             )
@@ -234,7 +240,8 @@ class Contact extends AbstractService
             ->setDeletedDate($date)
             ->setDeleted(true);
         $this->getMapper()->update(
-            $m_contact, array(
+            $m_contact,
+            array(
             'user_id' => $user_id,
             'contact_id' => $user,
             )
@@ -242,16 +249,16 @@ class Contact extends AbstractService
 
         $this->getServiceSubscription()->delete('PU'.$user, $user_id);
         $this->getServiceSubscription()->delete('PU'.$user_id, $user);
-      /*  $this->getServiceFcm()->send(
-            $user, ['data' => [
-            'type' => 'connection',
-            'data' => [
-                'state' => 'remove',
-                'user' => $user_id,
-                ]
-            ]
-            ]
-        );*/
+        /*  $this->getServiceFcm()->send(
+              $user, ['data' => [
+              'type' => 'connection',
+              'data' => [
+                  'state' => 'remove',
+                  'user' => $user_id,
+                  ]
+              ]
+              ]
+          );*/
         $this->getServiceEvent()->sendData($user_id, 'connection.remove', ['SU'.$user]);
         $l = 'C'.(($user > $user_id) ? $user_id.'_'.$user : $user.'_'.$user_id);
         $this->getServicePost()->hardDelete($l);
@@ -285,17 +292,17 @@ class Contact extends AbstractService
         $res_contact = $mapper->usePaginator($filter)->getList($user_id, $exclude, $search);
         $ret = [];
 
-        if(is_array($user_id)) {
-          foreach ($user_id as $id) {
-            $ret[$id] = [];
-          }
-          foreach ($res_contact as $m_contact) {
-              $ret[$m_contact->getUserId()][] = $m_contact->getContactId();
-          }
+        if (is_array($user_id)) {
+            foreach ($user_id as $id) {
+                $ret[$id] = [];
+            }
+            foreach ($res_contact as $m_contact) {
+                $ret[$m_contact->getUserId()][] = $m_contact->getContactId();
+            }
         } else {
-          foreach ($res_contact as $m_contact) {
-              $ret[] = $m_contact->getContactId();
-          }
+            foreach ($res_contact as $m_contact) {
+                $ret[] = $m_contact->getContactId();
+            }
         }
 
         return (null === $filter) ?
@@ -340,37 +347,37 @@ class Contact extends AbstractService
      */
     public function getListRequestId($user_id = null, $contact_id = null)
     {
-        if( (null === $user_id && null === $contact_id) ||  (null !== $user_id && null !== $contact_id)) {
-          throw new \Exception("Error Params user and contact", 1);
+        if ((null === $user_id && null === $contact_id) ||  (null !== $user_id && null !== $contact_id)) {
+            throw new \Exception("Error Params user and contact", 1);
         }
         $res_contact = $this->getMapper()->getListRequest($user_id, $contact_id);
 
         $cu_id = (null !== $user_id) ? $user_id:$contact_id;
 
         $request = [];
-        if(is_array($cu_id)) {
+        if (is_array($cu_id)) {
             foreach ($cu_id as $cu) {
                 $request[$cu] = [];
             }
-            if(null === $user_id) {
-              foreach ($res_contact as $m_contact) {
-                  $request[$m_contact->getContactId()][] = $m_contact->getUserId();
-              }
+            if (null === $user_id) {
+                foreach ($res_contact as $m_contact) {
+                    $request[$m_contact->getContactId()][] = $m_contact->getUserId();
+                }
             } else {
-              foreach ($res_contact as $m_contact) {
-                  $request[$m_contact->getUserId()][] = $m_contact->getContactId();
-              }
+                foreach ($res_contact as $m_contact) {
+                    $request[$m_contact->getUserId()][] = $m_contact->getContactId();
+                }
             }
         } else {
-          if(null === $user_id) {
-            foreach ($res_contact as $m_contact) {
-                $request[] = $m_contact->getUserId();
+            if (null === $user_id) {
+                foreach ($res_contact as $m_contact) {
+                    $request[] = $m_contact->getUserId();
+                }
+            } else {
+                foreach ($res_contact as $m_contact) {
+                    $request[] = $m_contact->getContactId();
+                }
             }
-          } else {
-            foreach ($res_contact as $m_contact) {
-                $request[] = $m_contact->getContactId();
-            }
-          }
         }
 
         return $request;
