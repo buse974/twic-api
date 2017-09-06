@@ -6,6 +6,7 @@ return [
     'modules' => [
         'Application',
         'Box',
+        'LinkedIn',
         'Dal',
         'Dms',
         'JRpc',
@@ -37,6 +38,7 @@ return [
             'Mail' => __DIR__.'/../module/Mail',
             'Rbac' => __DIR__.'/../module/Rbac',
             'Box' => __DIR__.'/../module/Box',
+            'LinkedIn' => __DIR__.'/../module/LinkedIn',
             'SimplePageCrawler' => __DIR__.'/../vendor/blanchonvincent/simple-page-crawler',
         ],
 

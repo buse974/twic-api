@@ -769,7 +769,7 @@ class User extends AbstractService
     /**
      *
      * @param int $id
-     * @return \Dal\Db\ResultSet\ResultSet
+     * @return \Dal\Db\ResultSet\ResultSet | \Application\Model\User
      */
     public function getLite($id)
     {
@@ -953,6 +953,8 @@ class User extends AbstractService
     }
 
     /**
+     * sign In Password 
+     * 
      * @invokable
      *
      * @param string $account_token
@@ -961,45 +963,43 @@ class User extends AbstractService
     public function signIn($account_token, $password)
     {
         $m_registration = $this->getServicePreregistration()->get($account_token);
-        if(false !== $m_registration){
-
-            if ($m_registration->getUserId() instanceof IsNull) {
-
-                $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, $password);
-                $user_id = $this->getMapper()->getLastInsertValue();
-                if(!$m_registration->getOrganizationId() instanceof IsNull){
-                    $this->addOrganization($m_registration->getOrganizationId(), $user_id);
-                }
-                $m_registration->setUserId($user_id);
-                $this->getMapper()->update($m_registration);
-
-                return $this->login($m_registration->getEmail(), $password);
-            }
-            else{
-                $this->_updatePassword($m_registration->getEmail(), $password);
-                $m_registration->setPassword($password);
-                $this->getMapper()->update($m_registration);
-                return $this->login($m_registration->getEmail(), $password);
-            }
+        if(false === $m_registration) {
+            throw new \Exception('Account token not found.');
         }
-        throw new \Exception('Account token not found.');
+        
+        if (is_numeric($m_registration->getUserId())) {
+            $this->getMapper()->update($this->getModel()->setPassword(md5($password)), ['id' => $m_registration->getUserId()]);
+            $user_id = $m_registration->getUserId();
+        } else  {
+            $user_id = $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, $password, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
+        }
+        
+        $m_user = $this->getLite($user_id);
+        $login = $this->login($m_user->getEmail(), $password);
+        $this->getServicePreregistration()->delete($account_token, $m_user->getId());
+        
+        return $login;
     }
 
     /**
      * @invokable
      *
-     * @param string $access_token
+     * @param string $code
      * @param string $account_token
      */
-    public function linkedinSignIn($access_token, $account_token = null )
+    public function linkedinSignIn($code, $account_token = null )
     {
-        $client_id = $this->container->get('config')['linkedin-conf']['client_id'];
+        $identity = $this->getIdentity();
+        
+        $linkedin = $this->getServiceLinkedIn();
+        $linkedin->accessToken($code);
+        
+        /*$client_id = $this->container->get('config')['linkedin-conf']['client_id'];
         $client_secret = $this->container->get('config')['linkedin-conf']['client_secret'];
-        $redirect_uri = "https://lms-v2.com/linkedin_signin";
         $fields = [
             'grant_type' => 'authorization_code',
-            'code' => $access_token,
-            'redirect_uri' => $redirect_uri,
+            'code' => $code,
+            'redirect_uri' => "https://lms-v2.com/linkedin_signin",
             'client_id' => $client_id,
             'client_secret' => $client_secret
         ];
@@ -1016,8 +1016,10 @@ class User extends AbstractService
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $curl_response = json_decode(curl_exec($curl));
         curl_close($curl);
-        $this->getServicePreregistration()->get($curl_response['account_token']);
-        //return $curl_response;
+        
+        print_r($curl_response);
+        //$this->getServicePreregistration()->get();
+        //return $curl_response;*/
     }
 
     /**
@@ -1028,6 +1030,16 @@ class User extends AbstractService
     private function getServicePreregistration()
     {
         return $this->container->get('app_service_preregistration');
+    }
+    
+    /**
+     * Get Service LinkedIn
+     *
+     * @return \LinkedIn
+     */
+    private function getServiceLinkedIn()
+    {
+        return $this->container->get('linkedin.service');
     }
 
     /**
