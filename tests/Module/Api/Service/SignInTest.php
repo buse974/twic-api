@@ -162,8 +162,9 @@ class SignInTest extends AbstractService
             'account_token' => '12345678',
             'firstname' => 'christophe',
             'lastname' => 'robert',
-            'email' => 'crobert2@thestudnet.com',
+            'email' => 'crobert3@thestudnet.com',
             'organization_id' => 1,
+           // 'user_id' => 1
         ]);
         
         $this->assertEquals(count($data) , 3);
@@ -174,14 +175,24 @@ class SignInTest extends AbstractService
     
     public function testCanSignLinkdIn()
     {
+        $this->setIdentity(4);
         $data = $this->jsonRpc('user.linkedinSignIn', [
-            'account_token' => '12345678',
+           // 'account_token' => '12345678',
             'code' => 'AQSQ5LYJmmq6O-ZdmjtbVoosOlrd_-SZbwbJ8tApSYVzabNN0RInfgmVtT0QY6-VqCo7w3vG90rmxfn7VXKBjBVjXD1r-OVzGzAYdgvFyjuyx5uPBGOaZGn9w1V-zL2duOEDXM81XZNv_E11Sp3wJKi7sTKnDg'
         ]);
         
         print_r($data);
         
     }
+    
+    /*public function testCanSignLinkdInAfter()
+    {
+        $data = $this->jsonRpc('user.linkedinSignIn', [
+            'code' => 'AQSQ5LYJmmq6O-ZdmjtbVoosOlrd_-SZbwbJ8tApSYVzabNN0RInfgmVtT0QY6-VqCo7w3vG90rmxfn7VXKBjBVjXD1r-OVzGzAYdgvFyjuyx5uPBGOaZGn9w1V-zL2duOEDXM81XZNv_E11Sp3wJKi7sTKnDg'
+        ]);
+        
+        print_r($data);
+    }*/
     
     
 

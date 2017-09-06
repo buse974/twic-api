@@ -50,6 +50,11 @@ class DbAdapter extends AbstractAdapter
     protected $credential_column;
 
     /**
+     * @var string
+     */
+    protected $linkedin_id;
+    
+    /**
      * Sets username and password for authentication.
      */
     public function __construct(Adapter $db_adapter, $table, $identity_column, $credential_column, $hash = 'MD5(?)', $result = null)
@@ -78,12 +83,18 @@ class DbAdapter extends AbstractAdapter
         $sql = new DbSql($this->db_adapter);
         $select = $sql->select();
         $select->from($this->table)
-            ->columns(array('*'))
-            ->where(array(' ( user.password = MD5(?) ' => $this->credential))
-            ->where(array('user.new_password = MD5(?) )' => $this->credential), Predicate::OP_OR)
-            ->where(array('user.'.$this->identity_column.' = ? ' => $this->identity))
-            ->where(array('user.deleted_date IS NULL'));
-
+            ->columns(['*']);
+        
+        if(null !== $this->linkedin_id ) {
+            $select->where(['user.linkedin_id' => $this->linkedin_id])
+                ->where(['user.deleted_date IS NULL']);
+        } elseif(null !== $this->credential && null !== $this->identity) {
+            $select->where([' ( user.password = MD5(?) ' => $this->credential])
+                ->where(['user.new_password = MD5(?) )' => $this->credential], Predicate::OP_OR)
+                ->where(['user.'.$this->identity_column.' = ? ' => $this->identity])
+                ->where(['user.deleted_date IS NULL']);
+        }
+        
         $statement = $sql->prepareStatementForSqlObject($select);
         $results = $statement->execute();
 
@@ -137,5 +148,17 @@ class DbAdapter extends AbstractAdapter
         }
 
         return $this->result;
+    }
+    
+    public function setLinkedinId($linkedin_id)
+    {
+        $this->linkedin_id = $linkedin_id;
+        
+        return $this;
+    }
+    
+    public function getLinkedinId()
+    {
+        return $this->linkedin_id;
     }
 }
