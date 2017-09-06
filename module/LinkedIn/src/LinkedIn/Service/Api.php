@@ -27,10 +27,8 @@ class Api extends AbstractApi
             'client_id' => $this->client_id,
             'client_secret' => $this->client_secret,
         ]);
-
             $accessToken = new AccessToken($this->getBody($this->send()));
             $this->access_token = $accessToken->getAccessToken();
-            print_r($this->access_token);
         } else {
             $this->access_token = $access_token;
         }
