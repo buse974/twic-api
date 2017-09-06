@@ -3,14 +3,16 @@
 namespace LinkedIn\Service;
 
 use Zend\Http\Request;
-use LinkedIn\Service\AbstractApi;
 use LinkedIn\Model\AccessToken;
 use LinkedIn\Model\People;
 
 class Api extends AbstractApi
 {
     /**
+     * 
      * @param string $code
+     * @param string $access_token
+     * @return \LinkedIn\Model\AccessToken
      */
     public function init($code, $access_token = null)
     {
@@ -33,8 +35,13 @@ class Api extends AbstractApi
             $this->access_token = $access_token;
         }
         $this->_init();
+        
+        return $accessToken;
     }
     
+    /**
+     * @return \LinkedIn\Model\People
+     */
     public function people()
     {
         $this->setMethode(Request::METHOD_GET);

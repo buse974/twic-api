@@ -1095,7 +1095,7 @@ class User extends AbstractService
     /**
      * Get Service LinkedIn
      *
-     * @return \LinkedIn
+     * @return \LinkedIn\Service\Api
      */
     private function getServiceLinkedIn()
     {
