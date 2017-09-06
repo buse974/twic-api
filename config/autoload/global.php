@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 718,
+    'build-commit' => 719,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -68,7 +68,7 @@ return [
         'cache' => 'storage_memcached',
         'log' => 'log-system',
         'environment' => 'dev', /* dev|prod */
-        'persistence' => true,
+        'persistence' => false,
         'services' => [
             'app_service_user',
             'app_service_role',
@@ -140,9 +140,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS718',
+                    'namespace' => 'LMS719',
                     'liboptions' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS718'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS719'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],

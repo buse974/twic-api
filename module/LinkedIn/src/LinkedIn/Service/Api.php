@@ -5,13 +5,21 @@ namespace LinkedIn\Service;
 use Zend\Http\Request;
 use LinkedIn\Service\AbstractApi;
 use LinkedIn\Model\AccessToken;
+use LinkedIn\Model\People;
 
 class Api extends AbstractApi
 {
-    public function accessToken($code)
+    /**
+     * @param string $code
+     */
+    public function init($code, $access_token = null)
     {
+        if(null === $access_token) {
+        $this->http_client->getRequest()->setUri('https://www.linkedin.com');
+        $this->http_client->getRequest()->getHeaders()->clearHeaders();
+        $this->http_client->getRequest()->getHeaders()->addHeaderLine('Content-Type', 'application/x-www-form-urlencoded');
         $this->setMethode(Request::METHOD_POST);
-        $this->setPath(sprintf('oauth/v2/accessToken'));
+        $this->setPath('/oauth/v2/accessToken');
         $this->setPost([
             'grant_type' => 'authorization_code',
             'code' => $code,
@@ -20,6 +28,20 @@ class Api extends AbstractApi
             'client_secret' => $this->client_secret,
         ]);
 
-        return new AccessToken($this->getBody($this->send()));
+        $accessToken = new AccessToken($this->getBody($this->send()));
+        $this->access_token = $accessToken->getAccessToken();
+        print_r($this->access_token);
+        } else {
+            $this->access_token = $access_token;
+        }
+        $this->_init();
+    }
+    
+    public function people()
+    {
+        $this->setMethode(Request::METHOD_GET);
+        $this->setPath(sprintf('/people/~?format=json'));
+        
+        return new People($this->getBody($this->send()));
     }
 }

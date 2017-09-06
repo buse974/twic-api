@@ -8,9 +8,11 @@ use JRpc\Json\Server\Exception\JrpcException;
 abstract class AbstractApi
 {
     protected $path;
+    protected $api_url;
+    protected $access_token;
+    
     protected $client_id;
     protected $client_secret;
-    protected $api_url;
     protected $redirect_uri;
 
     /**
@@ -21,18 +23,21 @@ abstract class AbstractApi
     public function __construct(\Zend\Http\Client $client, $client_id, $client_secret, $api_url, $redirect_uri)
     {
         $this->http_client = $client;
+        $this->api_url = $api_url;
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
         $this->redirect_uri = $redirect_uri;
-        $this->http_client->getRequest()->setUri('https://www.linkedin.com');
-        $this->http_client->getRequest()->getHeaders()->addHeaderLine('Content-Type', 'application/x-www-form-urlencoded');
-        $this->path = $this->http_client->getUri()->getPath();
-
-        
-        //$this->http_client->getRequest()->getHeaders()->addHeaderLine('Authorization', sprintf('Token %s', $apikey));
-        //$this->http_client->getRequest()->getHeaders()->addHeaderLine('Content-Type', 'application/json');
     }
 
+    public function _init()
+    {
+        $this->http_client->getRequest()->setUri($this->api_url);
+        $this->path = $this->http_client->getUri()->getPath();
+        $this->http_client->getRequest()->getHeaders()->clearHeaders();
+        $this->http_client->getRequest()->getHeaders()->addHeaderLine('Connection', 'Keep-Alive');
+        $this->http_client->getRequest()->getHeaders()->addHeaderLine('Authorization', sprintf('Bearer %s', $this->access_token));
+    }
+    
     public function setMethode($methode)
     {
         $this->http_client->setMethod($methode);

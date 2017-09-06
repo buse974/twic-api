@@ -24,7 +24,7 @@ abstract class AbstractModel implements JsonSerializable
      */
     public function exchangeArray(array $data)
     {
-        $hydrator = new ClassMethods(false);
+        $hydrator = new ClassMethods();
         $hydrator->hydrate($data, $this);
 
         return $this;
@@ -37,7 +37,7 @@ abstract class AbstractModel implements JsonSerializable
      */
     public function toArray()
     {
-        $hydrator = new ClassMethods(false);
+        $hydrator = new ClassMethods();
         $vars = $hydrator->extract($this);
 
         foreach ($vars as $key => &$value) {

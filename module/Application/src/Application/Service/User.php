@@ -992,34 +992,44 @@ class User extends AbstractService
         $identity = $this->getIdentity();
         
         $linkedin = $this->getServiceLinkedIn();
-        $linkedin->accessToken($code);
+        $linkedin->init($code, 'AQUb2LudSJn3NejpP4xsiwGP1JzEp2lBzbc-zHIV6E5fY0LBSHSMVaIx3NGjdjXsmhfusSFC-fKuGRo7u7aBzBZyS50XLdThXst7t5ba8m37MGqOJYMnSxDo4_NcngTGl7ElIxNa6OpVVi166uRS_bG8WIHFUWH0xMI_wVoxZqTqqIHpqQE');
+        $m_people = $linkedin->people();
+        $linkedin_id = $m_people->getId();
         
-        /*$client_id = $this->container->get('config')['linkedin-conf']['client_id'];
-        $client_secret = $this->container->get('config')['linkedin-conf']['client_secret'];
-        $fields = [
-            'grant_type' => 'authorization_code',
-            'code' => $code,
-            'redirect_uri' => "https://lms-v2.com/linkedin_signin",
-            'client_id' => $client_id,
-            'client_secret' => $client_secret
-        ];
-        $data_string = http_build_query($fields);
-        $url = $this->container->get('config')['linkedin-conf']['api_url'];
-
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS,$data_string);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
-
-
-        // receive server response ...
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        $curl_response = json_decode(curl_exec($curl));
-        curl_close($curl);
+        if( !$linkedin_id || !is_string($linkedin_id) ) {
+            throw new \Exception('Error');
+        }
         
-        print_r($curl_response);
-        //$this->getServicePreregistration()->get();
-        //return $curl_response;*/
+        
+        $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
+        
+
+        if($res_user->count() > 0) { // utilisateur existe on renvoye une session
+            // RETOUR SESSION
+        } else { // utilisateur existe pas
+            if(isset($identity['id'])) { // SI connecter alors on save id linkedin
+                $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $identity['id']]);
+            } else { 
+                $m_registration = $this->getServicePreregistration()->get($account_token);
+                if(false === $m_registration) {
+                    throw new \Exception('Account token not found.');
+                }
+                
+                if (is_numeric($m_registration->getUserId())) {
+                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $m_registration->getUserId()]);
+                    $user_id = $m_registration->getUserId();
+                } else  {
+                    $user_id = $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
+                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
+                }
+                
+                $m_user = $this->getLite($user_id);
+                
+                $login = $this->login($m_user->getEmail(), $password);
+                
+                $this->getServicePreregistration()->delete($account_token, $m_user->getId());
+            }
+        }
     }
 
     /**

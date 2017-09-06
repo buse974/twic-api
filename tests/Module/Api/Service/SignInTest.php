@@ -87,7 +87,6 @@ class SignInTest extends AbstractService
             'password' => 'tutu'
         ]);
         
-        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 15);
@@ -177,7 +176,7 @@ class SignInTest extends AbstractService
     {
         $data = $this->jsonRpc('user.linkedinSignIn', [
             'account_token' => '12345678',
-            'code' => 'AQRB6rOWxDZpVGAOfnLxkWAylbAorcOXmwC53GDPSByBXpEMfWPl1i-If3-C7GhcZJWP-1j7NQm1VRulTARcSbVIgGAdpGFBFdQStb2p6f9L9OwBgLa6KfBm4mlLnInCx_2CJF6NJJ39TXglDN-yK8uaqMgSAQ'
+            'code' => 'AQSQ5LYJmmq6O-ZdmjtbVoosOlrd_-SZbwbJ8tApSYVzabNN0RInfgmVtT0QY6-VqCo7w3vG90rmxfn7VXKBjBVjXD1r-OVzGzAYdgvFyjuyx5uPBGOaZGn9w1V-zL2duOEDXM81XZNv_E11Sp3wJKi7sTKnDg'
         ]);
         
         print_r($data);
