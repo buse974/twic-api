@@ -688,44 +688,31 @@ class User extends AbstractService
      */
     public function lostPassword($email)
     {
-        $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
-        $long = strlen($cars);
-        srand((double) microtime() * 1000000);
-        $password = '';
-        for ($i = 0; $i < 8; ++ $i) {
-            $password .= substr($cars, rand(0, $long - 1), 1);
-        }
-        
-        $ret = $this->getMapper()->update($this->getModel()
-            ->setNewPassword(md5($password)), [
-            'email' => $email
-        ]);
-        if ($ret > 0) {
-            $m_user = $this->getModel()
+        try {
+            $m_user = $this->getMapper()->select($this->getModel()
                 ->setEmail($email)
                 ->setSuspensionDate(new IsNull())
-                ->setDeletedDate(new IsNull());
+                ->setDeletedDate(new IsNull()))->current();
             
-            $user = $this->getMapper()
-                ->select($m_user)
-                ->current();
-            $m_page = $this->getServicePage()->getLite($user->getOrganizationId());
-            try {
+            if($m_user !== false) {
+                $uniqid = uniqid();
+                $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
+                $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
                 $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, [
                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                     'password' => $password,
                     'email' => $email,
-                    'lastname' => $user->getLastname(),
-                    'firstname' => $user->getFirstname()
+                    'uniqid' => $uniqid,
+                    'lastname' => $m_user->getLastname(),
+                    'firstname' => $m_user->getFirstname()
                 ]);
-            } catch (\Exception $e) {
-                syslog(1, 'Model name does not exist <> password is : ' . $password . ' <> ' . $e->getMessage());
             }
-        } else {
-            throw new JrpcException('bad email', - 32033);
+        } catch (\Exception $e) {
+            syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
         }
+
         
-        return $ret;
+        return true;
     }
 
     /**
@@ -763,7 +750,6 @@ class User extends AbstractService
                 $uniqid = uniqid();
                 $m_user = $res_user->current();
                 $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
-
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
                 $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
                     'prefix' => (is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
