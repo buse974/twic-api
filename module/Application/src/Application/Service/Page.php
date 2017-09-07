@@ -285,7 +285,7 @@ class Page extends AbstractService
      *
      * @invokable
      *
-     * @param $page_id
+     * @param $id
      * @param $library
      **/
     public function addDocument($id, $library)
@@ -462,13 +462,43 @@ class Page extends AbstractService
             $res_post = $this->getServicePost()->getListId(null, null, $id, null, true);
             foreach ($res_post as $m_post) {
                 $this->getServicePostSubscription()->add(
-                'PP'.$id,
-                $m_post->getId(),
-                null,
-                'UPDATE',
-                $owner_id
-            );
+                    'PP'.$id,
+                    $m_post->getId(),
+                    null,
+                    'UPDATE',
+                    $owner_id
+                );
             }
+            if(!$tmp_m_page->getIsPublished() && $tmp_m_page->getType() == ModelPage::TYPE_COURSE){
+                $identity = $this->getServiceUser()->getIdentity();
+                $ar_pages = [];
+                $ar_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($id)[$id]);
+                foreach($ar_user as $m_user){
+                    if($m_user->getId() == $identity['id']){
+                        continue;
+                    }
+                    $m_page = false;
+                    if($m_user->getOrganizationId()){
+                        if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
+                            $ar_pages[$m_user->getOrganizationId()] = $this->getLite($m_user->getOrganizationId());
+                        }
+                        $m_page = $ar_pages[$m_user->getOrganizationId()];
+                    }
+                    
+                    try{
+                        //TODO Ajouter les champs nécessaires
+                        $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
+                            'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                        ]);
+                    }
+                    catch (\Exception $e) {
+                        syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                    }
+                }
+               
+
+            }
+            
         }
 
         if (is_numeric($tmp_m_page->getConversationId()) && null !== $title) {
@@ -574,7 +604,6 @@ class Page extends AbstractService
      */
     public function getLite($id)
     {
-        $this->addChannel();
 
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
@@ -921,5 +950,15 @@ class Page extends AbstractService
     private function getServicePost()
     {
         return $this->container->get('app_service_post');
+    }    
+    
+    /**
+     * Get Service Mail.
+     *
+     * @return \Mail\Service\Mail
+     */
+    private function getServiceMail()
+    {
+        return $this->container->get('mail.service');
     }
 }

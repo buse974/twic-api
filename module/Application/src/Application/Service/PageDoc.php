@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Application\Model\Page as ModelPage;
 
 class PageDoc extends AbstractService
 {
@@ -25,6 +26,36 @@ class PageDoc extends AbstractService
             ->setLibraryId($library);
 
         $this->getMapper()->insert($m_page_doc);
+        
+        $m_page = $this->getServicePage()->getLite($page_id);
+        if($m_page->getType() == ModelPage::TYPE_COURSE){
+            $identity = $this->getServiceUser()->getIdentity();
+            $ar_pages = [];
+            $ar_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
+            foreach($ar_user as $m_user){
+                if($m_user->getId() == $identity['id']){
+                    continue;
+                }
+                $m_page = false;
+                if($m_user->getOrganizationId()){
+                    if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
+                        $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
+                    }
+                    $m_page = $ar_pages[$m_user->getOrganizationId()];
+                }
+
+                try{
+                    //TODO Ajouter les champs nécessaires
+                    $this->getServiceMail()->sendTpl('tpl_coursedoc', $m_user->getEmail(), [
+                        'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                    ]);
+                }
+                catch (\Exception $e) {
+                    syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                }
+            }
+        }
+         
 
         return $library;
     }
@@ -91,5 +122,35 @@ class PageDoc extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+
+    /**
+     * Get Service Page User
+     *
+     * @return \Application\Service\PageUser
+     */
+    private function getServicePageUser()
+    {
+        return $this->container->get('app_service_page_user');
+    }
+    
+    /**
+     * Get Service Mail.
+     *
+     * @return \Mail\Service\Mail
+     */
+    private function getServiceMail()
+    {
+        return $this->container->get('mail.service');
+    }
+
+    /**
+     * Get Service Page
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
     }
 }
