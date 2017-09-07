@@ -186,9 +186,6 @@ class Post extends AbstractService
         }
         $ev=((!empty($event))? $event:(($base_id!==$id) ? ModelPostSubscription::ACTION_COM : ModelPostSubscription ::ACTION_CREATE));
 
-        if (!$is_notif) {
-        }
-
         $this->getServicePostSubscription()->add(
             array_unique($pevent),
             $base_id,
@@ -199,37 +196,55 @@ class Post extends AbstractService
             $data
         );
         
-        if($t_page_id != null && $parent_id == null){
-            $m_page = $this->getServicePage()->getLite($t_page_id);
-            if($m_page->getType() == ModelPage::TYPE_COURSE){
-                $identity = $this->getServiceUser()->getIdentity();
-                $ar_pages = [];
-                $ar_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
-                foreach($ar_user as $m_user){
-                    if($m_user->getId() == $identity['id']){
-                        continue;
-                    }
-                    $m_page = false;
-                    if($m_user->getOrganizationId()){
-                        if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
-                            $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
+        if($parent_id == null){
+            if($t_page_id != null){
+                $m_page = $this->getServicePage()->getLite($t_page_id);
+                if($m_page->getType() == ModelPage::TYPE_COURSE){
+                    $ar_pages = [];
+                    $ar_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
+                    foreach($ar_user as $m_user){
+                        if($m_user->getId() == $user_id){
+                            continue;
                         }
-                        $m_page = $ar_pages[$m_user->getOrganizationId()];
-                    }
+                        $m_page = false;
+                        if($m_user->getOrganizationId()){
+                            if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
+                                $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
+                            }
+                            $m_page = $ar_pages[$m_user->getOrganizationId()];
+                        }
 
-                    try{
-                        //TODO Ajouter les champs nécessaires
-                        $this->getServiceMail()->sendTpl('tpl_coursepost', $m_user->getEmail(), [
-                            'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
-                        ]);
-                    }
-                    catch (\Exception $e) {
-                        syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                        try{
+                            //TODO Ajouter les champs nécessaires
+                            $this->getServiceMail()->sendTpl('tpl_coursepost', $m_user->getEmail(), [
+                                'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                            ]);
+                        }
+                        catch (\Exception $e) {
+                            syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                        }
                     }
                 }
             }
-         
-
+        }
+        else{
+            $m_post = $this->getLite($parent_id);
+            if($user_id != $m_post->getUserId()){
+                $m_user = $this->getServiceUser()->getLite($m_post->getUserId());
+                $m_page = false;
+                if($m_user->getOrganizationId()){
+                    $m_page =  $this->getServicePage()->getLite($m_user->getOrganizationId());
+                }
+                try{
+                    //TODO Ajouter les champs nécessaires
+                    $this->getServiceMail()->sendTpl('tpl_postcomment', $m_user->getEmail(), [
+                        'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                    ]);
+                }
+                catch (\Exception $e) {
+                    syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                }
+            }
 
         }
 
@@ -426,10 +441,28 @@ class Post extends AbstractService
      *
      * @invokable
      *
-     * @param int $post_id
+     * @param int $id
      */
     public function like($id)
     {
+        $m_post = $this->getLite($id);
+        $user_id = $this->getServiceUser()->getIdentity()['id'];
+        if($user_id != $m_post->getUserId()){
+            $m_user = $this->getServiceUser()->getLite($m_post->getUserId());
+            $m_page = false;
+            if($m_user->getOrganizationId()){
+                $m_page =  $this->getServicePage()->getLite($m_user->getOrganizationId());
+            }
+            try{
+                //TODO Ajouter les champs nécessaires
+                $this->getServiceMail()->sendTpl('tpl_postlike', $m_user->getEmail(), [
+                    'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                ]);
+            }
+            catch (\Exception $e) {
+                syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+            }
+        }
         return $this->getServicePostLike()->add($id);
     }
 
@@ -442,6 +475,7 @@ class Post extends AbstractService
      */
     public function unlike($id)
     {
+        
         return $this->getServicePostLike()->delete($id);
     }
 

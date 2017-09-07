@@ -477,18 +477,18 @@ class Page extends AbstractService
                     if($m_user->getId() == $identity['id']){
                         continue;
                     }
-                    $m_page = false;
+                    $m_organization = false;
                     if($m_user->getOrganizationId()){
                         if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
                             $ar_pages[$m_user->getOrganizationId()] = $this->getLite($m_user->getOrganizationId());
                         }
-                        $m_page = $ar_pages[$m_user->getOrganizationId()];
+                        $m_organization = $ar_pages[$m_user->getOrganizationId()];
                     }
                     
                     try{
                         //TODO Ajouter les champs nécessaires
                         $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
-                            'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
                     }
                     catch (\Exception $e) {
