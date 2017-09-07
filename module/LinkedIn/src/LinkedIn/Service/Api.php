@@ -47,8 +47,6 @@ class Api extends AbstractApi
         $this->setMethode(Request::METHOD_GET);
         $this->setPath(sprintf('/people/~:(id,first-name,last-name,summary,positions,picture-urls::(original),picture-url,public-profile-url)?format=json'));
         
-        $body = $this->getBody($this->send());
-        print_r($body);
-        return new People($body);
+        return new People($this->getBody($this->send()));
     }
 }

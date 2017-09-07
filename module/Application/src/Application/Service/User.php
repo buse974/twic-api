@@ -182,7 +182,6 @@ class User extends AbstractService
             
             $secret_key = $this->container->get('config')['app-conf']['secret_key'];
             $user['wstoken'] = sha1($secret_key . $id);
-            
             // $generator = new TokenGenerator($secret_key_fb);
             // $user['fbtoken'] = $generator->setData(array('uid' => (string) $id))->setOption('debug', $secret_key_fb_debug)->setOption('expires', 1506096687)->create();
             $user['fbtoken'] = $this->create_custom_token($id);
