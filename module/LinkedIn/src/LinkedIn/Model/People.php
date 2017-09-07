@@ -208,6 +208,8 @@ class People extends AbstractModel
     public function setId($id)
     {
         $this->id = $id;
+        
+        return $this;
     }
 
     /**
@@ -216,6 +218,8 @@ class People extends AbstractModel
     public function setFirstName($first_name)
     {
         $this->first_name = $first_name;
+        
+        return $this;
     }
 
     /**
@@ -224,6 +228,8 @@ class People extends AbstractModel
     public function setLastName($last_name)
     {
         $this->last_name = $last_name;
+        
+        return $this;
     }
 
     /**
@@ -232,6 +238,8 @@ class People extends AbstractModel
     public function setMaidenName($maiden_name)
     {
         $this->maiden_name = $maiden_name;
+        
+        return $this;
     }
 
     /**
@@ -240,6 +248,8 @@ class People extends AbstractModel
     public function setFormattedName($formatted_name)
     {
         $this->formatted_name = $formatted_name;
+        
+        return $this;
     }
 
     /**
@@ -248,6 +258,8 @@ class People extends AbstractModel
     public function setPhoneticFirstName($phonetic_first_name)
     {
         $this->phonetic_first_name = $phonetic_first_name;
+        
+        return $this;
     }
 
     /**
@@ -256,6 +268,8 @@ class People extends AbstractModel
     public function setPhoneticLastName($phonetic_last_name)
     {
         $this->phonetic_last_name = $phonetic_last_name;
+        
+        return $this;
     }
 
     /**
@@ -264,6 +278,8 @@ class People extends AbstractModel
     public function setFormattedPhoneticName($formatted_phonetic_name)
     {
         $this->formatted_phonetic_name = $formatted_phonetic_name;
+        
+        return $this;
     }
 
     /**
@@ -272,6 +288,8 @@ class People extends AbstractModel
     public function setHeadline($headline)
     {
         $this->headline = $headline;
+        
+        return $this;
     }
 
     /**
@@ -280,6 +298,8 @@ class People extends AbstractModel
     public function setLocation($location)
     {
         $this->location = $location;
+        
+        return $this;
     }
 
     /**
@@ -288,6 +308,8 @@ class People extends AbstractModel
     public function setIndustry($industry)
     {
         $this->industry = $industry;
+        
+        return $this;
     }
 
     /**
@@ -296,6 +318,8 @@ class People extends AbstractModel
     public function setCurrentShare($current_share)
     {
         $this->current_share = $current_share;
+        
+        return $this;
     }
 
     /**
@@ -304,6 +328,8 @@ class People extends AbstractModel
     public function setNumConnections($num_connections)
     {
         $this->num_connections = $num_connections;
+        
+        return $this;
     }
 
     /**
@@ -312,6 +338,8 @@ class People extends AbstractModel
     public function setNumConnectionsCapped($num_connections_capped)
     {
         $this->num_connections_capped = $num_connections_capped;
+        
+        return $this;
     }
 
     /**
@@ -320,6 +348,8 @@ class People extends AbstractModel
     public function setSummary($summary)
     {
         $this->summary = $summary;
+        
+        return $this;
     }
 
     /**
@@ -328,6 +358,8 @@ class People extends AbstractModel
     public function setSpecialties($specialties)
     {
         $this->specialties = $specialties;
+        
+        return $this;
     }
 
     /**
@@ -336,6 +368,8 @@ class People extends AbstractModel
     public function setPositions($positions)
     {
         $this->positions = $positions;
+        
+        return $this;
     }
 
     /**
@@ -344,6 +378,8 @@ class People extends AbstractModel
     public function setPictureUrl($picture_url)
     {
         $this->picture_url = $picture_url;
+        
+        return $this;
     }
 
     /**
@@ -352,6 +388,8 @@ class People extends AbstractModel
     public function setPictureUrls($picture_urls)
     {
         $this->picture_urls = $picture_urls;
+        
+        return $this;
     }
 
     /**
@@ -360,6 +398,8 @@ class People extends AbstractModel
     public function setSiteStandardProfileRequest($site_standard_profile_request)
     {
         $this->site_standard_profile_request = $site_standard_profile_request;
+        
+        return $this;
     }
 
     /**
@@ -368,6 +408,8 @@ class People extends AbstractModel
     public function setApiStandardProfileRequest($api_standard_profile_request)
     {
         $this->api_standard_profile_request = $api_standard_profile_request;
+        
+        return $this;
     }
 
     /**
@@ -376,6 +418,8 @@ class People extends AbstractModel
     public function setPublicProfileUrl($public_profile_url)
     {
         $this->public_profile_url = $public_profile_url;
+        
+        return $this;
     }
 
 

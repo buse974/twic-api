@@ -1051,7 +1051,9 @@ class User extends AbstractService
                     ->setLinkedinId($linkedin_id), [
                     'id' => $identity['id']
                 ]);
-                $login = true;
+                $identity['has_linkedin'] = true;
+                
+                $login = $identity;
             } else {
                 $m_registration = $this->getServicePreregistration()->get($account_token);
                 if (false === $m_registration) {

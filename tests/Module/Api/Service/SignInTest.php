@@ -185,14 +185,14 @@ class SignInTest extends AbstractService
         
     }*/
     
-    public function testCanSignLinkdInAfter()
+    /*public function testCanSignLinkdInAfter()
     {
         $data = $this->jsonRpc('user.linkedinSignIn', [
             'code' => 'AQRRYrz6xh0tgxWSrY9JZ_k--n3MWP_yNK6CPj6b-TzxfntkDnz6dBIzds6Wr1jK_CspBBInCFOuQsXRtUUS2BlgVlZTRqRBhylIXR9-LZ-Y8GI4cZ-psUmJlucZ07-2_qv45r4MawMVETBwt8k2mE6j1ZujbA'
         ]);
         
         print_r($data);
-    }
+    }*/
     
     
 

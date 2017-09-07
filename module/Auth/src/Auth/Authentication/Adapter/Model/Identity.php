@@ -13,9 +13,29 @@ class Identity implements IdentityInterface
     protected $expiration_date;
     protected $avatar;
     protected $email;
+    protected $linkedin_id;
     protected $organization_id;
     protected $suspension_date;
     protected $suspension_reason;
+    protected $has_linkedin;
+
+    /**
+     * @return string $has_linkedin
+     */
+    public function getHasLinkedin()
+    {
+        return $this->has_linkedin;
+    }
+
+    /**
+     * @param string $has_linkedin
+     */
+    public function setHasLinkedin($has_linkedin)
+    {
+        $this->has_linkedin = $has_linkedin;
+        
+        return $this;
+    }
 
     public function exchangeArray(array $datas)
     {
@@ -191,6 +211,18 @@ class Identity implements IdentityInterface
         return $this->toArray();
     }
 
+    public function getLinkedinId()
+    {
+        return $this->linkedin_id;
+    }
+    
+    public function setLinkedinId($linkedin_id)
+    {
+        $this->linkedin_id = $linkedin_id;
+        
+        return $this;
+    }
+    
     public function toArray()
     {
         return [
@@ -206,6 +238,7 @@ class Identity implements IdentityInterface
             'email' => $this->email,
             'avatar' => $this->avatar,
             'expiration_date' => $this->expiration_date,
+            'has_linkedin' => ($this->linkedin_id !== null),
         ];
     }
 }
