@@ -60,12 +60,13 @@ return array(
 		 	),
 		),
 	),
-	'http-adapter' => array(
-		'adapter' => 'Zend\Http\Client\Adapter\Curl',
-		'maxredirects'   => 5,
-		'sslverifypeer'  => false,
-		'timeout'        => 10,
-	),
+	'http-adapter' => [
+		'adapter' => 'Zend\Http\Client\Adapter\Socket',
+		'maxredirects' => 30,
+		'sslverifypeer' => false,
+		'timeout' => 100,
+		'ssltransport' => 'tls',
+	],
 	'caches' => array(
 		'storage_memcached' => array(
 			'adapter' => array(

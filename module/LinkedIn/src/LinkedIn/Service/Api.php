@@ -31,13 +31,12 @@ class Api extends AbstractApi
         ]);
             $accessToken = new AccessToken($this->getBody($this->send()));
             $this->access_token = $accessToken->getAccessToken();
-            print_r($this->access_token);
         } else {
             $this->access_token = $access_token;
         }
         $this->_init();
         
-        return $accessToken;
+        return $this->access_token;
     }
     
     /**
@@ -46,8 +45,10 @@ class Api extends AbstractApi
     public function people()
     {
         $this->setMethode(Request::METHOD_GET);
-        $this->setPath(sprintf('/people/~?format=json'));
+        $this->setPath(sprintf('/people/~:(id,first-name,last-name,summary,positions,picture-urls::(original),picture-url,public-profile-url)?format=json'));
         
-        return new People($this->getBody($this->send()));
+        $body = $this->getBody($this->send());
+        print_r($body);
+        return new People($body);
     }
 }

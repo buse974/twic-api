@@ -1033,9 +1033,11 @@ class User extends AbstractService
     {
         $identity = $this->getIdentity();
         $linkedin = $this->getServiceLinkedIn();
-        $linkedin->init($code, null);
+        //$linkedin->init($code, "AQWEKERnk7D6-ABKmau_8hsxRcwful9ztXx5MpmSzqUvGyPWVdXd_NWKTtdamB7AaS47JWqS8ZavlCV_slbvyeLwwtN6yp8LZaFR_oDH9o_UZdHsjhXejp63JDonst4gA_bFSOUBBD2w2RPkBoldKtg367SZuA18xGuMK7kRH8isUa85JJA");
+        $linkedin->init($code);
         $m_people = $linkedin->people();
         $linkedin_id = $m_people->getId();
+        print_r($m_people->toArray());
         $login = false;
         if (! $linkedin_id || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
