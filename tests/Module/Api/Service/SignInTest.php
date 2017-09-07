@@ -155,7 +155,7 @@ class SignInTest extends AbstractService
         $this->assertEquals($data['jsonrpc'] , 2.0);
     }
     
-    /*public function testCanAddLinkedin()
+    public function testCanAddLinkedin()
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('preregistration.add', [
@@ -171,28 +171,28 @@ class SignInTest extends AbstractService
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals($data['result'] , '12345678');
         $this->assertEquals($data['jsonrpc'] , 2.0);
-    }*/
+    }
     
     /*public function testCanSignLinkdIn()
     {
         $this->setIdentity(4);
         $data = $this->jsonRpc('user.linkedinSignIn', [
            // 'account_token' => '12345678',
-            'code' => 'AQSQ5LYJmmq6O-ZdmjtbVoosOlrd_-SZbwbJ8tApSYVzabNN0RInfgmVtT0QY6-VqCo7w3vG90rmxfn7VXKBjBVjXD1r-OVzGzAYdgvFyjuyx5uPBGOaZGn9w1V-zL2duOEDXM81XZNv_E11Sp3wJKi7sTKnDg'
+            'code' => 'AQQH8sWoOifwr0MN3EK4BuUTP9FHH-hVgJFA0asDnU0d3l_OAHRDKJp2BAuE9G2J09CTcsvRSsmg1e2ntkqKh2lY53LvIdqheCDol8O16g0EGXwBvTO5DZfWTmlEiU69Yacm7RWWTLNXPWsnnjtH50Wyf9P35g'
         ]);
         
         print_r($data);
         
     }*/
     
-    /*public function testCanSignLinkdInAfter()
+    public function testCanSignLinkdInAfter()
     {
         $data = $this->jsonRpc('user.linkedinSignIn', [
-            'code' => 'AQSQ5LYJmmq6O-ZdmjtbVoosOlrd_-SZbwbJ8tApSYVzabNN0RInfgmVtT0QY6-VqCo7w3vG90rmxfn7VXKBjBVjXD1r-OVzGzAYdgvFyjuyx5uPBGOaZGn9w1V-zL2duOEDXM81XZNv_E11Sp3wJKi7sTKnDg'
+            'code' => 'AQRRYrz6xh0tgxWSrY9JZ_k--n3MWP_yNK6CPj6b-TzxfntkDnz6dBIzds6Wr1jK_CspBBInCFOuQsXRtUUS2BlgVlZTRqRBhylIXR9-LZ-Y8GI4cZ-psUmJlucZ07-2_qv45r4MawMVETBwt8k2mE6j1ZujbA'
         ]);
         
         print_r($data);
-    }*/
+    }
     
     
 

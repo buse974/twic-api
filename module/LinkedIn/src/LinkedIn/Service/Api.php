@@ -31,6 +31,7 @@ class Api extends AbstractApi
         ]);
             $accessToken = new AccessToken($this->getBody($this->send()));
             $this->access_token = $accessToken->getAccessToken();
+            print_r($this->access_token);
         } else {
             $this->access_token = $access_token;
         }
