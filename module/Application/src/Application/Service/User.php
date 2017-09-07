@@ -1037,7 +1037,6 @@ class User extends AbstractService
         $linkedin->init($code);
         $m_people = $linkedin->people();
         $linkedin_id = $m_people->getId();
-        print_r($m_people->toArray());
         $login = false;
         if (! $linkedin_id || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
