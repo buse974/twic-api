@@ -470,11 +470,10 @@ class Page extends AbstractService
                 );
             }
             if(!$tmp_m_page->getIsPublished() && $tmp_m_page->getType() == ModelPage::TYPE_COURSE){
-                $identity = $this->getServiceUser()->getIdentity();
                 $ar_pages = [];
                 $ar_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($id)[$id]);
                 foreach($ar_user as $m_user){
-                    if($m_user->getId() == $identity['id']){
+                    if($m_user->getId() == $user_id){
                         continue;
                     }
                     $m_organization = false;
@@ -492,7 +491,7 @@ class Page extends AbstractService
                         ]);
                     }
                     catch (\Exception $e) {
-                        syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                        syslog(1, 'Model name does not exist Page publish <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
                     }
                 }
                
