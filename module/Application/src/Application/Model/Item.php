@@ -18,6 +18,25 @@ class Item extends BaseItem
     const TYPE_DISCUSSION = 'DISC';
     const TYPE_MEDIA = 'MEDIA';
 
+    const TYPE_SECTION_STR = 'admin';
+    const TYPE_LIVE_CLASS_STR = 'user';
+    const TYPE_ASSIGNMENT_STR = 'external';
+    const TYPE_QUIZ_STR = 'admin';
+    const TYPE_PAGE_STR = 'user';
+    const TYPE_DISCUSSION_STR = 'external';
+    const TYPE_MEDIA_STR = 'external';
+    
+    public static $type = [
+        self::TYPE_SECTION => self::TYPE_SECTION_STR,
+        self::TYPE_LIVE_CLASS => self::TYPE_LIVE_CLASS_STR,
+        self::TYPE_ASSIGNMENT => self::TYPE_ASSIGNMENT_STR,
+        self::TYPE_QUIZ => self::TYPE_QUIZ_STR,
+        self::TYPE_PAGE => self::TYPE_PAGE_STR,
+        self::TYPE_DISCUSSION => self::TYPE_DISCUSSION_STR,
+        self::TYPE_MEDIA => self::TYPE_MEDIA_STR,
+    ];
+    
+    
     protected $post_id;
     protected $quiz_id;
     protected $nb_total;

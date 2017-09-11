@@ -3,6 +3,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use ZendService\Google\Gcm\Notification as GcmNotification;
+use Application\Model\Item as ModelItem;
 
 class Item extends AbstractService
 {
@@ -512,11 +513,12 @@ class Item extends AbstractService
                     try{
                         $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
-                            'itemtype' => $m_item->getType(),
+                            'itemtype' => ModelItem::type[$m_item->getType()],
                             'itemtitle' => $m_item->getTitle(),
                             'firstname' => $m_user->getFirstName(),
                             'pageurl' => $url,
                         ]);
+                        
                         
                         $gcm_notification = new GcmNotification();
                         $gcm_notification->setTitle($m_page->getTitle())
@@ -524,7 +526,7 @@ class Item extends AbstractService
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("PAGECOMMENT".$t_page_id)
-                            ->setBody("A new item has been added to the course " . $m_page->getTitle());
+                            ->setBody("A new " . ModelItem::type[$m_item->getType()] . " has been added to the course " . $m_page->getTitle());
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
