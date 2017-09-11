@@ -609,7 +609,7 @@ class Item extends AbstractService
         }
         
         if($m_item->getIsPublished() != $is_published ) {
-            $this->publish($id, true);
+            $this->publish($id, $is_published);
         } else if( $m_item->getIsPublished() ){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
