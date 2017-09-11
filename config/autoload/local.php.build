@@ -18,6 +18,7 @@ return array(
         'account_email' => '${firebase.account_email}',
         'private_key' => "${firebase.private_key}",
         'urldms' => '${dms.url}',
+	'uiurl' => '${ui.url}',
     ],
     'db' => array(
     	'adapters' => array(

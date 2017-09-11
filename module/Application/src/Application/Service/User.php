@@ -697,7 +697,8 @@ class User extends AbstractService
                 $uniqid = uniqid();
                 $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
-                $url = sprintf("https://gnam.twic.community/newpassword/%s",$uniqid);
+                
+                $url = sprintf("https://gnam.%s/newpassword/%s",$this->container->get('config')['app-conf']['uiurl'],$uniqid);
                 $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, [
                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                     'email' => $email,
@@ -750,7 +751,8 @@ class User extends AbstractService
                 $m_user = $res_user->current();
                 $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
-                $url = sprintf("https://gnam.twic.community/signin/%s",$uniqid);
+
+                $url = sprintf("https://gnam.%s/signin/%s",$this->container->get('config')['app-conf']['uiurl'],$uniqid);
                 $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
                     'prefix' => (is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                     'uniqid' => $uniqid,
