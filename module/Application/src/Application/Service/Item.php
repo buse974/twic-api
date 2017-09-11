@@ -612,7 +612,7 @@ class Item extends AbstractService
             if($m_page->getIsPublished() == true) {
                 $ar_pages = [];
                 $m_item = $this->getLite($id)->current();
-                $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
+                $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$m_item->getPageId()]);
                 foreach($res_user as $m_user){
                     if($m_user->getId() == $identity['id']){
                         continue;
