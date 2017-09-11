@@ -699,7 +699,6 @@ class User extends AbstractService
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
                 $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, [
                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
-                    'password' => $password,
                     'email' => $email,
                     'uniqid' => $uniqid,
                     'lastname' => $m_user->getLastname(),
@@ -751,7 +750,6 @@ class User extends AbstractService
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
                 $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
                     'prefix' => (is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
-                    'password' => $password,
                     'uniqid' => $uniqid,
                     'email' => $m_user->getEmail(),
                     'lastname' => $m_user->getLastname(),

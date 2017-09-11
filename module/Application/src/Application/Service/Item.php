@@ -437,6 +437,7 @@ class Item extends AbstractService
      * @invokable
      *
      * @param int|array $id
+     * @return \Application\Model\Item
      */
     public function get($id)
     {
@@ -489,6 +490,39 @@ class Item extends AbstractService
             ->setId($id)
             ->setParentId($parent_id)
             ->setIsPublished($publish));
+        
+        if($publish === true) {
+            $m_page = $this->getServicePage()->getLite($page_id);
+            if($m_page->getIsPublished() === true) {
+                $ar_pages = [];
+                $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
+                foreach($res_user as $m_user){
+                    if($m_user->getId() == $identity['id']){
+                        continue;
+                    }
+                    $m_organization = false;
+                    if($m_user->getOrganizationId()) {
+                        if(!isset($ar_pages[$m_user->getOrganizationId()])){
+                            $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
+                        }
+                        $m_organization = $ar_pages[$m_user->getOrganizationId()];
+                    }
+                    try{
+                        //TODO Ajouter les champs nécessaires
+                        $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
+                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                        ]);
+                    }
+                    catch (\Exception $e) {
+                        syslog(1, 'Model name does not exist Item publish <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                    }
+                }
+                
+                
+            }
+        }
+        
+        
         if (true === $all) {
             if (null !== $id) {
                 $this->publish(null, true, true, $id);
@@ -555,6 +589,38 @@ class Item extends AbstractService
         }
         if (null !== $quiz_id) {
             $this->getServiceQuiz()->update($quiz_id, $id);
+        }
+        
+        
+        if($m_item->getIsPublished() === true && $is_published !== false) {
+            $m_page = $this->getServicePage()->getLite($m_item->getPageId());
+            if($m_page->getIsPublished() === true) {
+                $ar_pages = [];
+                $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
+                foreach($res_user as $m_user){
+                    if($m_user->getId() == $identity['id']){
+                        continue;
+                    }
+                    $m_organization = false;
+                    if($m_user->getOrganizationId()) {
+                        if(!isset($ar_pages[$m_user->getOrganizationId()])){
+                            $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
+                        }
+                        $m_organization = $ar_pages[$m_user->getOrganizationId()];
+                    }
+                    try{
+                        //TODO Ajouter les champs nécessaires
+                        $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
+                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                        ]);
+                    }
+                    catch (\Exception $e) {
+                        syslog(1, 'Model name does not exist Item update <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                    }
+                }
+                
+                
+            }
         }
         
         $m_item = $this->getModel()
@@ -629,6 +695,16 @@ class Item extends AbstractService
         return $this->container->get('app_service_post');
     }
 
+    /**
+     * Get Service Mail.
+     *
+     * @return \Mail\Service\Mail
+     */
+    private function getServiceMail()
+    {
+        return $this->container->get('mail.service');
+    }
+    
     /**
      * Get Service Submission
      *

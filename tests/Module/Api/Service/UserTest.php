@@ -108,7 +108,7 @@ class UserTest extends AbstractService
 
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
-        $this->assertEquals(count($data['result']) , 15);
+        $this->assertEquals(count($data['result']) , 16);
         $this->assertEquals($data['result']['id'] , 8);
         $this->assertEquals(!empty($data['result']['token']), true);
         $this->assertEquals(!empty($data['result']['created_date']) , true);
@@ -121,6 +121,7 @@ class UserTest extends AbstractService
         $this->assertEquals($data['result']['avatar'] , "un_token");
         $this->assertEquals($data['result']['organization_id'] , 1);
         $this->assertEquals($data['result']['expiration_date'] , null);
+        $this->assertEquals($data['result']['has_linkedin'] , false);
         $this->assertEquals(count($data['result']['roles']) , 1);
         $this->assertEquals($data['result']['roles'][2] , "user");
         $this->assertEquals(!empty($data['result']['wstoken']) , true);
