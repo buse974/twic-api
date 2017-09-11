@@ -608,8 +608,9 @@ class Item extends AbstractService
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
         
-        
-        if($m_item->getIsPublished() == true && ($is_published === null || $is_published == true)) {
+        if($m_item->getIsPublished() != $is_published ) {
+            $this->publish($id, true);
+        } else {
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
                 $ar_pages = [];
@@ -655,9 +656,7 @@ class Item extends AbstractService
             }
         }
         
-        if($m_item->getIsPublished() != $is_published ) {
-            $this->publish($id, true);
-        }
+        
         
         $m_item = $this->getModel()
             ->setId($id)
