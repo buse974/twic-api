@@ -494,7 +494,7 @@ class Item extends AbstractService
         
         if($publish == true) {
             $m_page = $this->getServicePage()->getLite($page_id);
-            if($m_page->getIsPublished() === true) {
+            if($m_page->getIsPublished() == true) {
                 $m_item = $this->getLite($id)->current();
                 $ar_pages = [];
                 $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
@@ -607,9 +607,9 @@ class Item extends AbstractService
         }
         
         
-        if($m_item->getIsPublished() !== true && $is_published == true) {
+        if($m_item->getIsPublished() == true || $is_published == true) {
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
-            if($m_page->getIsPublished() === true) {
+            if($m_page->getIsPublished() == true) {
                 $ar_pages = [];
                 $m_item = $this->getLite($id)->current();
                 $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
