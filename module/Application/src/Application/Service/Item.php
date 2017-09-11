@@ -608,7 +608,7 @@ class Item extends AbstractService
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
         
-        if($m_item->getIsPublished() != $is_published ) {
+        if($m_item->getIsPublished() != $is_published && $is_published!==null) {
             $this->publish($id, $is_published);
         } else if( $m_item->getIsPublished() ){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
