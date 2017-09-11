@@ -13,23 +13,26 @@ class Item extends BaseItem
     const TYPE_SECTION = 'SCT';
     const TYPE_LIVE_CLASS = 'LC';
     const TYPE_ASSIGNMENT = 'A';
+    const TYPE_GROUP_ASSIGNMENT = 'GA';
     const TYPE_QUIZ = 'QUIZ';
     const TYPE_PAGE = 'PG';
     const TYPE_DISCUSSION = 'DISC';
     const TYPE_MEDIA = 'MEDIA';
 
-    const TYPE_SECTION_STR = 'admin';
-    const TYPE_LIVE_CLASS_STR = 'user';
-    const TYPE_ASSIGNMENT_STR = 'external';
-    const TYPE_QUIZ_STR = 'admin';
-    const TYPE_PAGE_STR = 'user';
-    const TYPE_DISCUSSION_STR = 'external';
-    const TYPE_MEDIA_STR = 'external';
+    const TYPE_SECTION_STR = 'section';
+    const TYPE_LIVE_CLASS_STR = 'live class';
+    const TYPE_ASSIGNMENT_STR = 'assignment';
+    const TYPE_GROUP_ASSIGNMENT_STR = 'group assignment';
+    const TYPE_QUIZ_STR = 'quiz';
+    const TYPE_PAGE_STR = 'page';
+    const TYPE_DISCUSSION_STR = 'discussion';
+    const TYPE_MEDIA_STR = 'media';
     
     public static $type = [
         self::TYPE_SECTION => self::TYPE_SECTION_STR,
         self::TYPE_LIVE_CLASS => self::TYPE_LIVE_CLASS_STR,
         self::TYPE_ASSIGNMENT => self::TYPE_ASSIGNMENT_STR,
+        self::TYPE_GROUP_ASSIGNMENT => self::TYPE_GROUP_ASSIGNMENT_STR,
         self::TYPE_QUIZ => self::TYPE_QUIZ_STR,
         self::TYPE_PAGE => self::TYPE_PAGE_STR,
         self::TYPE_DISCUSSION => self::TYPE_DISCUSSION_STR,
