@@ -472,8 +472,8 @@ class Page extends AbstractService
             }
             if(!$tmp_m_page->getIsPublished() && $tmp_m_page->getType() == ModelPage::TYPE_COURSE){
                 $ar_pages = [];
-                $ar_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($id)[$id]);
-                foreach($ar_user as $m_user){
+                $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($id)[$id]);
+                foreach($res_user as $m_user){
                     if($m_user->getId() == $user_id){
                         continue;
                     }
@@ -486,8 +486,11 @@ class Page extends AbstractService
                     }
                     
                     try{
-                        //TODO Ajouter les champs nécessaires
+                        $url = sprintf("https://gnam.%s/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_organization->getId());
                         $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
+                            'pagename' => $m_page->getTitle(),
+                            'firstname' => $m_user->getFirstName(),
+                            'pageurl' => $url,
                             'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
                         
@@ -497,7 +500,7 @@ class Page extends AbstractService
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("PAGECOMMENT".$t_page_id)
-                            ->setBody("You have just been added to the course " . $m_page->getTitle());
+                            ->setBody("You have just been added to the course " . $m_organization->getTitle());
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
