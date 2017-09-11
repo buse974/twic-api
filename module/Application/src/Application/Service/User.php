@@ -806,7 +806,7 @@ class User extends AbstractService
     /**
      *
      * @param int $id
-     * @return \Dal\Db\ResultSet\ResultSet | \Application\Model\User
+     * @return \Dal\Db\ResultSet\ResultSet|\Application\Model\User
      */
     public function getLite($id)
     {

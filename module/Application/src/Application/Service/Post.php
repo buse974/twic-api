@@ -284,13 +284,16 @@ class Post extends AbstractService
             $m_post = $this->getLite($parent_id);
             if($user_id != $m_post->getUserId()){
                 $m_user = $this->getServiceUser()->getLite($m_post->getUserId());
+                $m_me = $this->getServiceUser()->getLite($user_id);
                 $m_page = false;
                 if($m_user->getOrganizationId()){
                     $m_page =  $this->getServicePage()->getLite($m_user->getOrganizationId());
                 }
                 try{
-                    //TODO Ajouter les champs nécessaires
                     $this->getServiceMail()->sendTpl('tpl_postcomment', $m_user->getEmail(), [
+                        'url' => "https://gnam.%s",
+                        'firstname' => $m_user->getFirstname(),
+                        'someone' => $m_me->getFirstname(),
                         'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                     ]);
                     
@@ -512,23 +515,26 @@ class Post extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         if($user_id != $m_post->getUserId()){
             $m_user = $this->getServiceUser()->getLite($m_post->getUserId());
+            $m_me = $this->getServiceUser()->getLite($user_id);
             $m_page = false;
             if($m_user->getOrganizationId()){
                 $m_page =  $this->getServicePage()->getLite($m_user->getOrganizationId());
             }
             try{
-                //TODO Ajouter les champs nécessaires
                 $this->getServiceMail()->sendTpl('tpl_postlike', $m_user->getEmail(), [
+                    'url' => "https://gnam.%s",
+                    'firstname' => $m_user->getFirstname(),
+                    'someone' => $m_me->getFirstname(),
                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                 ]);
                 
                 $gcm_notification = new GcmNotification();
                 $gcm_notification->setTitle($m_page->getTitle())
-                ->setSound("default")
-                ->setColor("#00A38B")
-                ->setIcon("icon")
-                ->setTag("PAGECOMMENT".$t_page_id)
-                ->setBody("Someone liked your post");
+                    ->setSound("default")
+                    ->setColor("#00A38B")
+                    ->setIcon("icon")
+                    ->setTag("PAGECOMMENT".$t_page_id)
+                    ->setBody("Someone liked your post");
                 
                 $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
             }

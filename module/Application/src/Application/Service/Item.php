@@ -495,6 +495,7 @@ class Item extends AbstractService
         if($publish === true) {
             $m_page = $this->getServicePage()->getLite($page_id);
             if($m_page->getIsPublished() === true) {
+                $m_item = $this->getLite($id)->current();
                 $ar_pages = [];
                 $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
                 foreach($res_user as $m_user){
@@ -509,9 +510,12 @@ class Item extends AbstractService
                         $m_organization = $ar_pages[$m_user->getOrganizationId()];
                     }
                     try{
-                        //TODO Ajouter les champs nécessaires
+                        $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
-                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                            'itemtype' => $m_item->getType(),
+                            'itemtitle' => $m_item->getTitle(),
+                            'firstname' => $m_user->getFirstName(),
+                            'pageurl' => $url,
                         ]);
                         
                         $gcm_notification = new GcmNotification();
@@ -607,6 +611,7 @@ class Item extends AbstractService
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() === true) {
                 $ar_pages = [];
+                $m_item = $this->getLite($id)->current();
                 $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
                 foreach($res_user as $m_user){
                     if($m_user->getId() == $identity['id']){
@@ -620,9 +625,13 @@ class Item extends AbstractService
                         $m_organization = $ar_pages[$m_user->getOrganizationId()];
                     }
                     try{
-                        //TODO Ajouter les champs nécessaires
+                        $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itemupdate', $m_user->getEmail(), [
-                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                            'itemtype' => $m_item->getType(),
+                            'itemtitle' => $m_item->getTitle(),
+                            'firstname' => $m_user->getFirstName(),
+                            'pagename' => $m_page->getTitle(),
+                            'pageurl' => $url,
                         ]);
                         
                         $gcm_notification = new GcmNotification();

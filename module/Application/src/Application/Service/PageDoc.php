@@ -47,8 +47,12 @@ class PageDoc extends AbstractService
                     }
     
                     try{
-                        //TODO Ajouter les champs nécessaires
+                        
+                        $url = sprintf("https://gnam.%s/page/course/%s/resources",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_coursedoc', $m_user->getEmail(), [
+                            'pagename' => $m_page->getTitle(),
+                            'firstname' => $m_user->getFirstName(),
+                            'pageurl' => $url,
                             'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                         ]);
                         

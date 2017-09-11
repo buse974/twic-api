@@ -193,9 +193,12 @@ class PageUser extends AbstractService
                 }
 
                 try{
-                    //TODO Ajouter les champs nécessaires
+                    
+                    $url = sprintf("https://gnam.%s/page/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                     $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
-                        'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                        'pagename' => $m_page->getTitle(),
+                        'firstname' => $m_user->getFirstName(),
+                        'pageurl' => $url,
                     ]);
                     
                     $gcm_notification = new GcmNotification();
