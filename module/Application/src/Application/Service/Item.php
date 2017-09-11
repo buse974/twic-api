@@ -628,14 +628,14 @@ class Item extends AbstractService
                         $m_organization = $ar_pages[$m_user->getOrganizationId()];
                     }
                     try{
-                        $final_title = ($title !== null) ? $title : $m_page->getTitle();
+                        $final_title = ($title !== null) ? $title : $m_item->getTitle();
                         $final_title = empty($final_title) ? "Untitled" : $final_title;
                         $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itemupdate', $m_user->getEmail(), [
                             'itemtype' => ModelItem::type_relation[$m_item->getType()],
-                            'itemtitle' => $m_item->getTitle(),
+                            'itemtitle' => $final_title,
                             'firstname' => $m_user->getFirstName(),
-                            'pagename' => $final_title,
+                            'pagename' => $m_page->getTitle(),
                             'pageurl' => $url,
                         ]);
                         
