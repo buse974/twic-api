@@ -583,9 +583,9 @@ class Item extends AbstractService
      * @param string $start_date
      * @param string $end_date
      * @param int $parent_id
-     * @param int $library_id,
+     * @param int $library_id
      * @param int $post_id,
-     * @param string $text,
+     * @param string $text
      * @param array $participants,
      * @param int $quiz_id,
      * @param int $is_grade_published
@@ -628,12 +628,14 @@ class Item extends AbstractService
                         $m_organization = $ar_pages[$m_user->getOrganizationId()];
                     }
                     try{
+                        $final_title = ($title !== null) ? $title : $m_page->getTitle();
+                        $final_title = empty($final_title) ? "Untitled" : $final_title;
                         $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itemupdate', $m_user->getEmail(), [
                             'itemtype' => ModelItem::type_relation[$m_item->getType()],
                             'itemtitle' => $m_item->getTitle(),
                             'firstname' => $m_user->getFirstName(),
-                            'pagename' => $m_page->getTitle(),
+                            'pagename' => $final_title,
                             'pageurl' => $url,
                         ]);
                         
@@ -643,7 +645,7 @@ class Item extends AbstractService
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("ITEM".$m_item->getId())
-                            ->setBody("The " . ModelItem::type_relation[$m_item->getType()] ." " . $m_item->getTitle() . " of course " . $m_page->getTitle(). " hes been update");
+                            ->setBody("The " . ModelItem::type_relation[$m_item->getType()] ." " . $final_title . " of course " . $m_page->getTitle(). " hes been update");
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }

@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 769,
+    'build-commit' => 770,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -140,7 +140,7 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS769',
+                    'namespace' => 'LMS770',
                     'liboptions' => [
                         ['option' => \Memcached::OPT_PREFIX_KEY, 'value' => 'LMS726'],
                         ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
