@@ -486,21 +486,21 @@ class Page extends AbstractService
                     }
                     
                     try{
-                        $url = sprintf("https://gnam.%s/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_organization->getId());
+                        $url = sprintf("https://gnam.%s/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$tmp_m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
-                            'pagename' => $m_page->getTitle(),
+                            'pagename' => $tmp_m_page->getTitle(),
                             'firstname' => $m_user->getFirstName(),
                             'pageurl' => $url,
                             'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
                         
                         $gcm_notification = new GcmNotification();
-                        $gcm_notification->setTitle($m_page->getTitle())
+                        $gcm_notification->setTitle($tmp_m_page->getTitle())
                             ->setSound("default")
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("PAGECOMMENT".$t_page_id)
-                            ->setBody("You have just been added to the course " . $m_organization->getTitle());
+                            ->setBody("You have just been added to the course " . $tmp_m_page->getTitle());
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
