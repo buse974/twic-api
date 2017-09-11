@@ -200,7 +200,7 @@ class Post extends AbstractService
         if($parent_id == null){
             if($t_page_id != null){
                 $m_page = $this->getServicePage()->getLite($t_page_id);
-                if($m_page->getType() == ModelPage::TYPE_COURSE) {
+                if($m_page->getType() == ModelPage::TYPE_COURSE && $type === 'post' && $m_page->getIsPublished()) {
                     $ar_pages = [];
                     $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
                     if($res_user !== null) {
@@ -236,7 +236,7 @@ class Post extends AbstractService
                             }
                         }
                     }
-                } elseif($m_page->getType() == ModelPage::TYPE_ORGANIZATION) {
+                } elseif($m_page->getType() == ModelPage::TYPE_ORGANIZATION &&  $type === 'post' && $m_page->getIsPublished()) {
                     $ar_pages = [];
                     $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
                     if($res_user !== null) {
