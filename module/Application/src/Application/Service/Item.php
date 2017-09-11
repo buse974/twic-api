@@ -520,7 +520,7 @@ class Item extends AbstractService
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("PAGECOMMENT".$t_page_id)
-                            ->setBody("You have just been added to the course " . $m_page->getTitle());
+                            ->setBody("A new item has been added to the course " . $m_page->getTitle());
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
@@ -624,6 +624,16 @@ class Item extends AbstractService
                         $this->getServiceMail()->sendTpl('tpl_itemupdate', $m_user->getEmail(), [
                             'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
+                        
+                        $gcm_notification = new GcmNotification();
+                        $gcm_notification->setTitle($m_page->getTitle())
+                            ->setSound("default")
+                            ->setColor("#00A38B")
+                            ->setIcon("icon")
+                            ->setTag("ITEM".$m_item->getId())
+                            ->setBody("The item " . $m_item->getTitle() . " of course " . $m_page->getTitle(). " hes been update");
+                        
+                        $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
                     catch (\Exception $e) {
                         syslog(1, 'Model name does not exist Item update <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());

@@ -88,7 +88,7 @@ class Mail
             ->setTo($to);
 
         $this->getTransport()->send($message);
-        $this->getTransport()->disconnect();
+        
         return true;
     }
 

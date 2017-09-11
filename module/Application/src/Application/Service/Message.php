@@ -125,7 +125,7 @@ class Message extends AbstractService
                         'data' => ['users' => $to,
                             'from' => $user_id,
                             'conversation' => $conversation_id,
-                            'text' => $message_text,
+                            'text' => $text,
                             'doc' => 'document'
                         ],
                     ]],

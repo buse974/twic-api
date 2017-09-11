@@ -189,6 +189,7 @@ class ItemRateTest extends AbstractService
         'page_id' => $id,
       ]);
 
+      print_r($data);
       $this->assertEquals(count($data) , 3);
       $this->assertEquals($data['id'] , 1);
       $this->assertEquals(count($data['result']) , 1);
@@ -260,7 +261,7 @@ class ItemRateTest extends AbstractService
     {
       $this->setIdentity(1);
       $data = $this->jsonRpc('item.getListSubmission', [
-        'id' => [2,3,5],
+        'id' => [2,3,5],    
       ]);
 
       $this->assertEquals(count($data) , 3);
