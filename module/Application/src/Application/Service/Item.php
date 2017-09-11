@@ -492,7 +492,7 @@ class Item extends AbstractService
             ->setParentId($parent_id)
             ->setIsPublished($publish));
         
-        if($publish === true) {
+        if($publish == true) {
             $m_page = $this->getServicePage()->getLite($page_id);
             if($m_page->getIsPublished() === true) {
                 $m_item = $this->getLite($id)->current();
@@ -607,7 +607,7 @@ class Item extends AbstractService
         }
         
         
-        if($m_item->getIsPublished() === true && $is_published !== false) {
+        if($m_item->getIsPublished() !== true && $is_published == true) {
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() === true) {
                 $ar_pages = [];

@@ -290,8 +290,9 @@ class Post extends AbstractService
                     $m_page =  $this->getServicePage()->getLite($m_user->getOrganizationId());
                 }
                 try{
+                    $url = sprintf("https://gnam.%s/",$this->container->get('config')['app-conf']['uiurl']);
                     $this->getServiceMail()->sendTpl('tpl_postcomment', $m_user->getEmail(), [
-                        'url' => "https://gnam.%s",
+                        'url' => $url,
                         'firstname' => $m_user->getFirstname(),
                         'someone' => $m_me->getFirstname(),
                         'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
@@ -521,8 +522,9 @@ class Post extends AbstractService
                 $m_page =  $this->getServicePage()->getLite($m_user->getOrganizationId());
             }
             try{
+                $url = sprintf("https://gnam.%s/",$this->container->get('config')['app-conf']['uiurl']);
                 $this->getServiceMail()->sendTpl('tpl_postlike', $m_user->getEmail(), [
-                    'url' => "https://gnam.%s",
+                    'url' => $url,
                     'firstname' => $m_user->getFirstname(),
                     'someone' => $m_me->getFirstname(),
                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
