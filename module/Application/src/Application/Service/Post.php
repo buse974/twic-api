@@ -216,8 +216,11 @@ class Post extends AbstractService
                                 $m_page = $ar_pages[$m_user->getOrganizationId()];
                             }
                             try {
-                                //TODO Ajouter les champs nécessaires
+                                $url = sprintf("https://gnam.%s/page/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                                 $this->getServiceMail()->sendTpl('tpl_coursepost', $m_user->getEmail(), [
+                                    'pagename' => $m_page->getTitle(),
+                                    'pageurl' => $url,
+                                    'firstname' => $m_user->getFirstName(),
                                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                                 ]);
                                 
@@ -236,7 +239,7 @@ class Post extends AbstractService
                             }
                         }
                     }
-                } elseif($m_page->getType() == ModelPage::TYPE_ORGANIZATION &&  $type === 'post' && $m_page->getIsPublished()) {
+                } elseif($m_page->getType() == ModelPage::TYPE_ORGANIZATION &&  $type === 'post') {
                     $ar_pages = [];
                     $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
                     if($res_user !== null) {
@@ -252,8 +255,11 @@ class Post extends AbstractService
                                 $m_page = $ar_pages[$m_user->getOrganizationId()];
                             }
                             try {
-                                //TODO Ajouter les champs nécessaires
+                                $url = sprintf("https://gnam.%s/page/organization/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                                 $this->getServiceMail()->sendTpl('tpl_organizationpost', $m_user->getEmail(), [
+                                    'pagename' => $m_page->getTitle(),
+                                    'pageurl' => $url,
+                                    'firstname' => $m_user->getFirstName(),
                                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                                 ]);
                                 

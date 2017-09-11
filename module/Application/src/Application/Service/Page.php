@@ -486,7 +486,7 @@ class Page extends AbstractService
                     }
                     
                     try{
-                        $url = sprintf("https://gnam.%s/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$tmp_m_page->getId());
+                        $url = sprintf("https://gnam.%s/page/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$tmp_m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
                             'pagename' => $tmp_m_page->getTitle(),
                             'firstname' => $m_user->getFirstName(),
