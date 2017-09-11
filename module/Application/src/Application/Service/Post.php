@@ -236,6 +236,42 @@ class Post extends AbstractService
                             }
                         }
                     }
+                } elseif($m_page->getType() == ModelPage::TYPE_ORGANIZATION) {
+                    $ar_pages = [];
+                    $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
+                    if($res_user !== null) {
+                        foreach($res_user as $m_user){
+                            if($m_user->getId() == $user_id){
+                                continue;
+                            }
+                            $m_page = false;
+                            if($m_user->getOrganizationId()){
+                                if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
+                                    $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
+                                }
+                                $m_page = $ar_pages[$m_user->getOrganizationId()];
+                            }
+                            try {
+                                //TODO Ajouter les champs nécessaires
+                                $this->getServiceMail()->sendTpl('tpl_organizationpost', $m_user->getEmail(), [
+                                    'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                                ]);
+                                
+                                $gcm_notification = new GcmNotification();
+                                $gcm_notification->setTitle($m_page->getTitle())
+                                ->setSound("default")
+                                ->setColor("#00A38B")
+                                ->setIcon("icon")
+                                ->setTag("PAGEPOST".$t_page_id)
+                                ->setBody("Someone posted in ". $m_page->getTitle());
+                                
+                                $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
+                            }
+                            catch (\Exception $e) {
+                                syslog(1, 'Model name does not exist Post<MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                            }
+                        }
+                    }
                 }
             }
         } else {
