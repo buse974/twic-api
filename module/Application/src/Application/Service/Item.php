@@ -609,7 +609,7 @@ class Item extends AbstractService
         }
         
         
-        if($m_item->getIsPublished() == true || $is_published == true) {
+        if($m_item->getIsPublished() == true && $is_published === null) {
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
                 $ar_pages = [];
@@ -629,7 +629,7 @@ class Item extends AbstractService
                     try{
                         $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itemupdate', $m_user->getEmail(), [
-                            'itemtype' => $m_item->getType(),
+                            'itemtype' => ModelItem::type_relation[$m_item->getType()],
                             'itemtitle' => $m_item->getTitle(),
                             'firstname' => $m_user->getFirstName(),
                             'pagename' => $m_page->getTitle(),
@@ -642,7 +642,7 @@ class Item extends AbstractService
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("ITEM".$m_item->getId())
-                            ->setBody("The item " . $m_item->getTitle() . " of course " . $m_page->getTitle(). " hes been update");
+                            ->setBody("The " . ModelItem::type_relation[$m_item->getType()] ." " . $m_item->getTitle() . " of course " . $m_page->getTitle(). " hes been update");
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
@@ -655,13 +655,16 @@ class Item extends AbstractService
             }
         }
         
+        if($m_item->getIsPublished() == false && $is_published === true ) {
+            $this->publish($id, true);
+        }
+        
         $m_item = $this->getModel()
             ->setId($id)
             ->setTitle($title)
             ->setDescription($description)
             ->setIsAvailable($is_available)
             ->setPoints($points)
-            ->setIsPublished($is_published)
             ->setOrder($order)
             ->setLibraryId($library_id)
             ->setText($text)
@@ -672,6 +675,7 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
+            
         return $this->getMapper()->update($m_item);
     }
 
