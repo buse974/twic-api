@@ -609,7 +609,7 @@ class Item extends AbstractService
         }
         
         
-        if($m_item->getIsPublished() == true && $is_published === null) {
+        if($m_item->getIsPublished() == true && ($is_published === null || $is_published == true)) {
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
                 $ar_pages = [];
@@ -655,7 +655,7 @@ class Item extends AbstractService
             }
         }
         
-        if($m_item->getIsPublished() == false && $is_published === true ) {
+        if($m_item->getIsPublished() == false && $is_published == true ) {
             $this->publish($id, true);
         }
         
