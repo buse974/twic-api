@@ -780,8 +780,18 @@ class Item extends AbstractService
      *
      * @return \Application\Service\Quiz
      */
-    public function getServiceQuiz()
+    private function getServiceQuiz()
     {
         return $this->container->get('app_service_quiz');
+    }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }
