@@ -28,7 +28,7 @@ class Item extends BaseItem
     const TYPE_DISCUSSION_STR = 'discussion';
     const TYPE_MEDIA_STR = 'media';
     
-    public static $type_relation = [
+    const type_relation = [
         self::TYPE_SECTION => self::TYPE_SECTION_STR,
         self::TYPE_LIVE_CLASS => self::TYPE_LIVE_CLASS_STR,
         self::TYPE_ASSIGNMENT => self::TYPE_ASSIGNMENT_STR,
