@@ -655,7 +655,7 @@ class Item extends AbstractService
             }
         }
         
-        if($m_item->getIsPublished() == false && $is_published == true ) {
+        if($m_item->getIsPublished() != $is_published ) {
             $this->publish($id, true);
         }
         
