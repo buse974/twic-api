@@ -13,6 +13,7 @@ use Application\Model\Page as ModelPage;
 use Application\Model\Role as ModelRole;
 use Application\Model\Conversation as ModelConversation;
 use JRpc\Json\Server\Exception\JrpcException;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class Page
@@ -489,6 +490,16 @@ class Page extends AbstractService
                         $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
                             'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
+                        
+                        $gcm_notification = new GcmNotification();
+                        $gcm_notification->setTitle($m_page->getTitle())
+                            ->setSound("default")
+                            ->setColor("#00A38B")
+                            ->setIcon("icon")
+                            ->setTag("PAGECOMMENT".$t_page_id)
+                            ->setBody("You have just been added to the course " . $m_page->getTitle());
+                        
+                        $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
                     catch (\Exception $e) {
                         syslog(1, 'Model name does not exist Page publish <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
@@ -959,5 +970,15 @@ class Page extends AbstractService
     private function getServiceMail()
     {
         return $this->container->get('mail.service');
+    }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }

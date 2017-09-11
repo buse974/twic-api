@@ -12,6 +12,7 @@ use Application\Model\Role as ModelRole;
 use Application\Model\PostSubscription as ModelPostSubscription;
 use Zend\Db\Sql\Predicate\IsNull;
 use Zend\Http\Client;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 /**
  * Class Post
@@ -199,7 +200,7 @@ class Post extends AbstractService
         if($parent_id == null){
             if($t_page_id != null){
                 $m_page = $this->getServicePage()->getLite($t_page_id);
-                if($m_page->getType() == ModelPage::TYPE_COURSE){
+                if($m_page->getType() == ModelPage::TYPE_COURSE) {
                     $ar_pages = [];
                     $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
                     if($res_user !== null) {
@@ -219,6 +220,16 @@ class Post extends AbstractService
                                 $this->getServiceMail()->sendTpl('tpl_coursepost', $m_user->getEmail(), [
                                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                                 ]);
+                                
+                                $gcm_notification = new GcmNotification();
+                                $gcm_notification->setTitle($m_page->getTitle())
+                                    ->setSound("default")
+                                    ->setColor("#00A38B")
+                                    ->setIcon("icon")
+                                    ->setTag("PAGEPOST".$t_page_id)
+                                    ->setBody("Someone posted on the course ". $m_page->getTitle());
+                                
+                                $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                             }
                             catch (\Exception $e) {
                                 syslog(1, 'Model name does not exist Post<MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
@@ -227,8 +238,7 @@ class Post extends AbstractService
                     }
                 }
             }
-        }
-        else{
+        } else {
             $m_post = $this->getLite($parent_id);
             if($user_id != $m_post->getUserId()){
                 $m_user = $this->getServiceUser()->getLite($m_post->getUserId());
@@ -241,6 +251,16 @@ class Post extends AbstractService
                     $this->getServiceMail()->sendTpl('tpl_postcomment', $m_user->getEmail(), [
                         'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                     ]);
+                    
+                    $gcm_notification = new GcmNotification();
+                    $gcm_notification->setTitle($m_page->getTitle())
+                        ->setSound("default")
+                        ->setColor("#00A38B")
+                        ->setIcon("icon")
+                        ->setTag("PAGECOMMENT".$t_page_id)
+                        ->setBody("Someone commented on your post");
+                    
+                    $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                 }
                 catch (\Exception $e) {
                     syslog(1, 'Model name does not exist post comment <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
@@ -459,6 +479,16 @@ class Post extends AbstractService
                 $this->getServiceMail()->sendTpl('tpl_postlike', $m_user->getEmail(), [
                     'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                 ]);
+                
+                $gcm_notification = new GcmNotification();
+                $gcm_notification->setTitle($m_page->getTitle())
+                ->setSound("default")
+                ->setColor("#00A38B")
+                ->setIcon("icon")
+                ->setTag("PAGECOMMENT".$t_page_id)
+                ->setBody("Someone liked your post");
+                
+                $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
             }
             catch (\Exception $e) {
                 syslog(1, 'Model name does not exist <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
@@ -771,5 +801,15 @@ class Post extends AbstractService
     private function getServiceMail()
     {
         return $this->container->get('mail.service');
+    }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }

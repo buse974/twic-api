@@ -2,6 +2,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 class Item extends AbstractService
 {
@@ -512,6 +513,16 @@ class Item extends AbstractService
                         $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
                             'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
+                        
+                        $gcm_notification = new GcmNotification();
+                        $gcm_notification->setTitle($m_page->getTitle())
+                            ->setSound("default")
+                            ->setColor("#00A38B")
+                            ->setIcon("icon")
+                            ->setTag("PAGECOMMENT".$t_page_id)
+                            ->setBody("You have just been added to the course " . $m_page->getTitle());
+                        
+                        $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
                     catch (\Exception $e) {
                         syslog(1, 'Model name does not exist Item publish <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
@@ -610,7 +621,7 @@ class Item extends AbstractService
                     }
                     try{
                         //TODO Ajouter les champs nécessaires
-                        $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
+                        $this->getServiceMail()->sendTpl('tpl_itemupdate', $m_user->getEmail(), [
                             'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                         ]);
                     }

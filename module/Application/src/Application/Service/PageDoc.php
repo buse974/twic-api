@@ -3,6 +3,7 @@ namespace Application\Service;
 
 use Dal\Service\AbstractService;
 use Application\Model\Page as ModelPage;
+use ZendService\Google\Gcm\Notification as GcmNotification;
 
 class PageDoc extends AbstractService
 {
@@ -50,6 +51,16 @@ class PageDoc extends AbstractService
                         $this->getServiceMail()->sendTpl('tpl_coursedoc', $m_user->getEmail(), [
                             'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                         ]);
+                        
+                        $gcm_notification = new GcmNotification();
+                        $gcm_notification->setTitle($m_page->getTitle())
+                            ->setSound("default")
+                            ->setColor("#00A38B")
+                            ->setIcon("icon")
+                            ->setTag("PAGEDOV".$page_id)
+                            ->setBody("A new material has been added to the course ". $m_page->getTitle());
+                        
+                            $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
                     catch (\Exception $e) {
                         syslog(1, 'Model name does not exist PageDoc <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
@@ -154,5 +165,15 @@ class PageDoc extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }

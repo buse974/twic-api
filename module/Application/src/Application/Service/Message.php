@@ -6,6 +6,8 @@ use Dal\Service\AbstractService;
 use Application\Model\Conversation as ModelConversation;
 use Zend\Json\Server\Request;
 use Zend\Http\Client;
+use ZendService\Google\Gcm\Notification as GcmNotification;
+
 
 class Message extends AbstractService
 {
@@ -81,9 +83,57 @@ class Message extends AbstractService
           'id' => (int)$id,
           'users' => $to,
           'type' => $type,
-        ]
-      );
+          ]
+        );
 
+        //////////////////// USER //////////////////////////////////
+        $res_user = $this->getServiceUser()->getLite($to);
+        $ar_name = [];
+        foreach ($res_user as $m_user) {
+            $name = "";
+            if (!is_object($m_user->getNickname()) &&  null !== $m_user->getNickname()) {
+                $name = $m_user->getNickname();
+            } else {
+                if (!is_object($m_user->getFirstname()) &&  null !== $m_user->getFirstname()) {
+                    $name = $m_user->getFirstname();
+                }
+                if (!is_object($m_user->getLastname()) &&  null !== $m_user->getLastname()) {
+                    $name .= ' '.$m_user->getLastname();
+                }
+            }
+            $ar_name[$m_user->getId()] = $name;
+        }
+        
+        foreach ($to as $user) {
+            ////////////////////// DOCUMENT /////////////////////////////
+            $docs = [];
+            if ($user_id != $user) {
+                $gcm_notification = new GcmNotification();
+                $tmp_ar_name = $ar_name;
+                unset($tmp_ar_name[$user]);
+                $gcm_notification->setTitle(implode(", ", $tmp_ar_name))
+                ->setSound("default")
+                ->setColor("#00A38B")
+                ->setIcon("icon")
+                ->setTag("CONV".$conversation_id)
+                ->setBody(((count($to) > 2)? explode(' ', $ar_name[$user_id])[0] . ": ":"").(empty($message_text)?"shared a file.":$message_text));
+                
+                $this->getServiceFcm()->send(
+                    $user,
+                    ['data' => [
+                        'type' => 'message',
+                        'data' => ['users' => $to,
+                            'from' => $user_id,
+                            'conversation' => $conversation_id,
+                            'text' => $message_text,
+                            'doc' => 'document'
+                        ],
+                    ]],
+                    $gcm_notification
+                    );
+            }
+        }
+        
         return [
         'message_id' => $id,
         'conversation_id' => $conversation_id
@@ -202,5 +252,15 @@ class Message extends AbstractService
     private function getServiceLibrary()
     {
         return $this->container->get('app_service_library');
+    }
+    
+    /**
+     * Get Service Service Conversation User.
+     *
+     * @return \Application\Service\Fcm
+     */
+    private function getServiceFcm()
+    {
+        return $this->container->get('fcm');
     }
 }
