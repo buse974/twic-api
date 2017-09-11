@@ -513,7 +513,7 @@ class Item extends AbstractService
                     try{
                         $url = sprintf("https://gnam.%s/page/course/%s/content",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_itempublished', $m_user->getEmail(), [
-                            'itemtype' => ModelItem::type[$m_item->getType()],
+                            'itemtype' => ModelItem::type_relation[$m_item->getType()],
                             'itemtitle' => $m_item->getTitle(),
                             'firstname' => $m_user->getFirstName(),
                             'pageurl' => $url,
@@ -526,7 +526,7 @@ class Item extends AbstractService
                             ->setColor("#00A38B")
                             ->setIcon("icon")
                             ->setTag("PAGECOMMENT".$t_page_id)
-                            ->setBody("A new " . ModelItem::type[$m_item->getType()] . " has been added to the course " . $m_page->getTitle());
+                            ->setBody("A new " . ModelItem::type_relation[$m_item->getType()] . " has been added to the course " . $m_page->getTitle());
                         
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
