@@ -208,12 +208,12 @@ class Post extends AbstractService
                             if($m_user->getId() == $user_id){
                                 continue;
                             }
-                            $m_page = false;
+                            $m_organization = false;
                             if($m_user->getOrganizationId()){
                                 if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
                                     $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
                                 }
-                                $m_page = $ar_pages[$m_user->getOrganizationId()];
+                                $m_organization = $ar_pages[$m_user->getOrganizationId()];
                             }
                             try {
                                 $url = sprintf("https://gnam.%s/page/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
@@ -221,7 +221,7 @@ class Post extends AbstractService
                                     'pagename' => $m_page->getTitle(),
                                     'pageurl' => $url,
                                     'firstname' => $m_user->getFirstName(),
-                                    'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                                    'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_page->getLibelle())) ? $m_organization->getLibelle() : null,
                                 ]);
                                 
                                 $gcm_notification = new GcmNotification();
@@ -247,12 +247,12 @@ class Post extends AbstractService
                             if($m_user->getId() == $user_id){
                                 continue;
                             }
-                            $m_page = false;
+                            $m_organization = false;
                             if($m_user->getOrganizationId()){
                                 if(!array_key_exists($m_user->getOrganizationId(), $ar_pages)){
                                     $ar_pages[$m_user->getOrganizationId()] = $this->getServicePage()->getLite($m_user->getOrganizationId());
                                 }
-                                $m_page = $ar_pages[$m_user->getOrganizationId()];
+                                $m_organization = $ar_pages[$m_user->getOrganizationId()];
                             }
                             try {
                                 $url = sprintf("https://gnam.%s/page/organization/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
@@ -260,7 +260,7 @@ class Post extends AbstractService
                                     'pagename' => $m_page->getTitle(),
                                     'pageurl' => $url,
                                     'firstname' => $m_user->getFirstName(),
-                                    'prefix' => ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
+                                    'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
                                 ]);
                                 
                                 $gcm_notification = new GcmNotification();

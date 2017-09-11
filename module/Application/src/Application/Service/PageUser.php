@@ -175,8 +175,7 @@ class PageUser extends AbstractService
             }
         }
         
-        if ($m_page->getIsPublished() && $m_page->getType() == ModelPage::TYPE_COURSE) {
-                
+        if ($m_page->getIsPublished() && $m_page->getType() == ModelPage::TYPE_COURSE) {   
             $identity = $this->getServiceUser()->getIdentity();
             $ar_pages = [];
             $ar_user = $this->getServiceUser()->getLite($user_id);
