@@ -42,7 +42,7 @@ class Message extends BaseMessage
             $parts[] = $m_part;
         }
         
-        $mimemessage->setParts(array_reverse($parts));
+        $mimemessage->setParts($parts);
 
         $this->setSubject(str_replace($key, $value, $tpl_model->getSubject()));
         $this->setFrom($tpl_model->getFrom(), $tpl_model->getFromName());
