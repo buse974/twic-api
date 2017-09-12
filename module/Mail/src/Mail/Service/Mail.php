@@ -39,21 +39,21 @@ class Mail
     }
 
     /**
-     * Create Template mail.
+     * Create Template mail
      *
      * @invokable
      *
      * @param string $name
      * @param string $from
-     * @param string $from_name
      * @param string $subject
      * @param string $content
      * @param string $text
+     * @param string $from_name
      * @param array  $files
      *
      * @return bool
      */
-    public function addTpl($name, $from, $from_name, $subject, $content, $text, array $files = [])
+    public function addTpl($name, $from, $subject, $content, $text = null, $from_name = null, array $files = [])
     {
         $m_tpl = new TplModel();
         $m_tpl->setName($name)

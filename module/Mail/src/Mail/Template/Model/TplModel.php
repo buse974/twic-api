@@ -87,6 +87,9 @@ class TplModel extends ArrayObject implements \JsonSerializable
             case 'name':
                 $this->setName($v);
                 break;
+            case 'from_name':
+                $this->setFromName($v);
+                break;
             case 'from':
                 $this->setFrom($v);
                 break;
