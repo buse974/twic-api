@@ -4,7 +4,7 @@
  *
  * Activity
  */
-namespace Application\Service;
+namespace Application\Service; 
 
 use Dal\Service\AbstractService;
 use JRpc\Json\Server\Exception\JrpcException;
