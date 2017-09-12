@@ -61,17 +61,19 @@ class Mail
             ->setFrom($from)
             ->setFromName($from_name);
 
-        $html = new Part($content);
-        $html->setEncoding(Mime::ENCODING_8BIT);
-        $html->setType(Mime::TYPE_HTML);
-        $html->setIsMappable(true);
-        $m_tpl->append($html);
+        
 
         $part_text = new Part($text);
         $part_text->setEncoding(Mime::ENCODING_8BIT);
         $part_text->setType(Mime::TYPE_TEXT);
         $part_text->setIsMappable(true);
         $m_tpl->append($part_text);
+        
+        $html = new Part($content);
+        $html->setEncoding(Mime::ENCODING_8BIT);
+        $html->setType(Mime::TYPE_HTML);
+        $html->setIsMappable(true);
+        $m_tpl->append($html);
         
         foreach ($files as $file) {
             $attachement = new Part($file['content']);

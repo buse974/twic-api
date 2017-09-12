@@ -41,7 +41,7 @@ class Message extends BaseMessage
         }
 
         $this->setSubject(str_replace($key, $value, $tpl_model->getSubject()));
-        $this->setFrom($tpl_model->getFrom());
+        $this->setFrom($tpl_model->getFrom(), $tpl_model->getFromName());
         $this->setBody($mimemessage);
 
         $this->has_template = true;
