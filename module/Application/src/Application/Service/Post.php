@@ -202,7 +202,7 @@ class Post extends AbstractService
                 $m_page = $this->getServicePage()->getLite($t_page_id);
                 if($m_page->getType() == ModelPage::TYPE_COURSE && $type === 'post' && $m_page->getIsPublished()) {
                     $ar_pages = [];
-                    $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
+                    $res_user = $this->getServiceUser()->getLite($this->getServiceSubscription()->getListUserId('PP'.$t_page_id));
                     if($res_user !== null) {
                         foreach($res_user as $m_user){
                             if($m_user->getId() == $user_id){
@@ -241,7 +241,7 @@ class Post extends AbstractService
                     }
                 } elseif($m_page->getType() == ModelPage::TYPE_ORGANIZATION &&  $type === 'post') {
                     $ar_pages = [];
-                    $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($t_page_id)[$t_page_id]);
+                    $res_user = $this->getServiceUser()->getLite($this->getServiceSubscription()->getListUserId('PP'.$t_page_id));
                     if($res_user !== null) {
                         foreach($res_user as $m_user){
                             if($m_user->getId() == $user_id){
@@ -833,6 +833,16 @@ class Post extends AbstractService
         return $this->container->get('SimplePageCrawler');
     }
 
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
+    }
+    
     /**
      * Get Service Page User
      *

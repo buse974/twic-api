@@ -5,6 +5,7 @@ namespace Mail\Mail;
 use Zend\Mail\Message as BaseMessage;
 use Zend\Mime\Message as MimeMessage;
 use Mail\Template\Storage\AbstractStorage;
+use Zend\Mime\Mime;
 
 class Message extends BaseMessage
 {
@@ -32,17 +33,22 @@ class Message extends BaseMessage
             $value[] = $v;
         }
 
+        $parts = [];
         $mimemessage = new MimeMessage();
         foreach ($tpl_model as $m_part) {
             if ($m_part->getIsMappable()) {
                 $m_part->setDatas(array('k' => $key, 'v' => $value));
             }
-            $mimemessage->addPart($m_part);
+            $parts[] = $m_part;
         }
+        
+        $mimemessage->setParts($parts);
 
         $this->setSubject(str_replace($key, $value, $tpl_model->getSubject()));
-        $this->setFrom($tpl_model->getFrom());
+        $this->setFrom($tpl_model->getFrom(), $tpl_model->getFromName());
         $this->setBody($mimemessage);
+        $this->setEncoding('UTF-8');
+        $this->getHeaders()->get('content-type')->setType(Mime::MULTIPART_ALTERNATIVE);
 
         $this->has_template = true;
 
