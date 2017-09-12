@@ -9,6 +9,23 @@ class TplModel extends ArrayObject implements \JsonSerializable
     protected $name;
     protected $subject;
     protected $from;
+    protected $from_name;
+
+    /**
+     * @return string $from_name
+     */
+    public function getFromName()
+    {
+        return $this->from_name;
+    }
+
+    /**
+     * @param string $fromName
+     */
+    public function setFromName($from_name)
+    {
+        $this->from_name = $from_name;
+    }
 
     public function setFrom($from)
     {

@@ -45,18 +45,21 @@ class Mail
      *
      * @param string $name
      * @param string $from
+     * @param string $from_name
      * @param string $subject
      * @param string $content
+     * @param string $text
      * @param array  $files
      *
      * @return bool
      */
-    public function addTpl($name, $from, $subject, $content, array $files = array())
+    public function addTpl($name, $from, $from_name, $subject, $content, $text, array $files = [])
     {
         $m_tpl = new TplModel();
         $m_tpl->setName($name)
             ->setSubject($subject)
-            ->setFrom($from);
+            ->setFrom($from)
+            ->setFromName($from_name);
 
         $html = new Part($content);
         $html->setEncoding(Mime::ENCODING_8BIT);
@@ -64,6 +67,12 @@ class Mail
         $html->setIsMappable(true);
         $m_tpl->append($html);
 
+        $part_text = new Part($text);
+        $part_text->setEncoding(Mime::ENCODING_8BIT);
+        $part_text->setType(Mime::TYPE_TEXT);
+        $part_text->setIsMappable(true);
+        $m_tpl->append($part_text);
+        
         foreach ($files as $file) {
             $attachement = new Part($file['content']);
             $attachement->setIsPath(true);
