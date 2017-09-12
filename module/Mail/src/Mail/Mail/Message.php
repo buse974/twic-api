@@ -40,6 +40,7 @@ class Message extends BaseMessage
             $mimemessage->addPart($m_part);
         }
 
+        $this->getHeaders()->get('content-type')->setType('multipart/alternative');
         $this->setSubject(str_replace($key, $value, $tpl_model->getSubject()));
         $this->setFrom($tpl_model->getFrom(), $tpl_model->getFromName());
         $this->setBody($mimemessage);
