@@ -12,12 +12,12 @@ CREATE TABLE IF NOT EXISTS `preregistration` (
   PRIMARY KEY (`account_token`),
   CONSTRAINT `fk_preregistration_1`
     FOREIGN KEY (`organization_id`)
-    REFERENCES `apilms`.`page` (`id`)
+    REFERENCES `page` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_preregistration_2`
     FOREIGN KEY (`user_id`)
-    REFERENCES `apilms`.`user` (`id`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
