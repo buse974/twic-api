@@ -5,6 +5,7 @@ use Dal\Service\AbstractService;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 use Application\Model\Item as ModelItem;
 use Dal\Db\ResultSet\ResultSet;
+use Application\Model\Conversation as ModelConversation;
 
 class Item extends AbstractService
 {
@@ -41,7 +42,7 @@ class Item extends AbstractService
         if (! in_array($identity['id'], $ar_pu[$page_id])) {
             throw new \Exception("not admin of the page");
         }
-        
+       
         $user_id = $identity['id'];
         $m_item = $this->getModel()
             ->setPageId($page_id)
@@ -59,6 +60,10 @@ class Item extends AbstractService
             ->setParticipants($participants)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setUserId($user_id);
+        
+        if($type === ModelItem::TYPE_LIVE_CLASS){
+           $m_item->setConversationId($this->getServiceConversation()->_create(ModelConversation::TYPE_LIVECLASS, null, true));
+        }
         
         $this->getMapper()->insert($m_item);
         
@@ -711,6 +716,16 @@ class Item extends AbstractService
     private function getServiceUser()
     {
         return $this->container->get('app_service_user');
+    }
+
+    /**
+     * Get Service Conversation
+     *
+     * @return \Application\Service\Conversation
+     */
+    private function getServiceConversation()
+    {
+        return $this->container->get('app_service_conversation');
     }
 
     /**

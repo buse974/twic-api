@@ -8,6 +8,7 @@ class Conversation extends BaseConversation
 {
     const TYPE_CHANNEL = 1;
     const TYPE_CHAT = 2;
+    const TYPE_LIVECLASS = 3;
 
     const DEFAULT_NAME = 'Chat';
 
