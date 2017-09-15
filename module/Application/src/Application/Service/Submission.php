@@ -3,7 +3,7 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
-use Zend\Http\Request;
+use Zend\Json\Server\Request;
 use Zend\Http\Client;
 
 class Submission extends AbstractService
@@ -169,9 +169,9 @@ class Submission extends AbstractService
         
         $ret = $this->getServiceSubmissionLibrary()->remove($id, $library_id);
         
-        if($m_item->getParticipants() == 'group') {
+        $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
+        if(count($users_id) > 1) {
             $m_item_user = $res_item_user->current();
-            $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
             $this->sendSubmissionChanged([
                 'item_id' => (int)$m_item_user->getItemId(),
                 'users' => $users_id,

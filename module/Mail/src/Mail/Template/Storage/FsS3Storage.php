@@ -42,18 +42,15 @@ class FsS3Storage extends AbstractStorage
         $model = null;
         switch (true) {
         case isset($this->cache_tpl[$name]):
-        syslog(1, "cachetpl");
           $model = $this->cache_tpl[$name];
           break;
 
         case ($this->cache && $this->cache->hasItem('tpl_mail_'.$name)):
-        syslog(1, "cachememcache");
           $model =  $this->cache->getItem('tpl_mail_'.$name);
           $this->cache_tpl[$name] = $model;
           break;
 
         default:
-        syslog(1, "Nocache");
           $model = unserialize(file_get_contents($this->path.$name.'.obj'));
           $model =  $this->cache->setItem('tpl_mail_'.$name, $model);
           $this->cache_tpl[$name] = $model;
