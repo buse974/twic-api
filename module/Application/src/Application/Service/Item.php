@@ -4,6 +4,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 use Application\Model\Item as ModelItem;
+use Dal\Db\ResultSet\ResultSet;
 use Application\Model\Conversation as ModelConversation;
 
 class Item extends AbstractService
@@ -565,7 +566,7 @@ class Item extends AbstractService
      *
      * @param int $item_id
      *
-     * @return \Application\Model\Item
+     * @return ResultSet|\Application\Model\Item
      */
     public function getLite($id)
     {

@@ -3,10 +3,13 @@
 namespace Application\Service;
 
 use Dal\Service\AbstractService;
+use Zend\Http\Request;
+use Zend\Http\Client;
 
 class Submission extends AbstractService
 {
 
+    private static $id = 0;
   /**
   * Get or Create Submision
   *
@@ -82,7 +85,8 @@ class Submission extends AbstractService
     */
     public function add($item_id, $library_id)
     {
-        $page_id = $this->getServiceItem()->getLite($item_id)->current()->getPageId();
+        $m_item = $this->getServiceItem()->getLite($item_id)->current();
+        $page_id = $m_item->getPageId();
         $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'user');
         $identity = $this->getServiceUser()->getIdentity();
 
@@ -95,7 +99,47 @@ class Submission extends AbstractService
         $submission_id = $m_submission->getId();
         $this->getServiceSubmissionLibrary()->add($submission_id, $library_id);
 
+        if($m_item->getParticipants() == 'group') {
+            $m_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'], $submission_id)->current();
+            $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
+            $this->sendSubmissionChanged([
+                'item_id' => (int)$item_id,
+                'users' => $users_id,
+           ]);
+        }
+        
         return $submission_id;
+    }
+    
+    /**
+     * Send Message Node message.publish
+     *
+     * @param string $data
+     */
+    public function sendSubmissionChanged($data)
+    {
+        $rep = false;
+        $request = new Request();
+        $request->setMethod('submission.changed')
+        ->setParams($data)
+        ->setId(++ self::$id)
+        ->setVersion('2.0');
+        
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+        
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
+        try {
+            $rep = $client->doRequest($request);
+            if ($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
+            syslog(1, $e->getMessage());
+        }
+        
+        return $rep;
     }
 
     /**
@@ -122,8 +166,19 @@ class Submission extends AbstractService
         if ($res_item_user->count() <= 0) {
             throw new \Exception("Bad User", 1);
         }
+        
+        $ret = $this->getServiceSubmissionLibrary()->remove($id, $library_id);
+        
+        if($m_item->getParticipants() == 'group') {
+            $m_item_user = $res_item_user->current();
+            $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
+            $this->sendSubmissionChanged([
+                'item_id' => (int)$m_item_user->getItemId(),
+                'users' => $users_id,
+            ]);
+        }
 
-        return $this->getServiceSubmissionLibrary()->remove($id, $library_id);
+        return $ret;
     }
 
     /**

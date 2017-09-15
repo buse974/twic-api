@@ -745,7 +745,6 @@ class User extends AbstractService
             if ($res_user->count() <= 0) {
                 continue;
             }
-            
             try {
                 $uniqid = uniqid();
                 $m_user = $res_user->current();
