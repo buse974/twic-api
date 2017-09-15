@@ -761,8 +761,8 @@ class User extends AbstractService
                     'lastname' => $m_user->getLastname(),
                     'firstname' => $m_user->getFirstname()
                 ]);
-
-                $nb ++;
+                $this->getMapper()->update($this->getModel()->setEmailSent(true), ['id' => $uid]);
+                $nb++;
             } catch (\Exception $e) {
                 syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
             }

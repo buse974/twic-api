@@ -9,6 +9,7 @@ namespace Application\Mapper;
 use Dal\Mapper\AbstractMapper;
 use Zend\Db\Sql\Predicate\Predicate;
 use Zend\Db\Sql\Expression;
+use Application\Model\Role as ModelRole;
 
 /**
  * Class  User
@@ -51,11 +52,13 @@ class User extends AbstractMapper
             ->where(['user.id' => $user_id])
             ->quantifier('DISTINCT');
 
+            //@TODO Role 
         if ($is_admin === false && $user_id !== $me) {
+            $select->join('user_role', 'user_role.user_id=user.id', []);
             $select->join(['co' => 'circle_organization'], 'co.organization_id=user.organization_id', []);
             $select->join('circle_organization', 'circle_organization.circle_id=co.circle_id', []);
             $select->join(['circle_organization_user' => 'user'], 'circle_organization_user.organization_id=circle_organization.organization_id', []);
-            $select->where(['circle_organization_user.id' => $me]);
+            $select->where([' ( circle_organization_user.id = ? OR user_role.role_id = '.ModelRole::ROLE_ADMIN_ID . ') ' => $me]);
         }
 
         return $this->selectWith($select);
