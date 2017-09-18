@@ -94,13 +94,13 @@ class Submission extends AbstractService
             throw new \Exception("No User", 1);
         }
 
-        $m_submission = $this->getOrCreate($item_id, $identity['id']);
+        $m_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'], null, null, $item_id)->current();
+        $m_submission = $this->getOrCreate($item_id, $identity['id'], $m_item_user->getGroupId());
 
         $submission_id = $m_submission->getId();
         $this->getServiceSubmissionLibrary()->add($submission_id, $library_id);
 
         if($m_item->getParticipants() == 'group') {
-            $m_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'], $submission_id)->current();
             $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
             $this->sendSubmissionChanged([
                 'item_id' => (int)$item_id,

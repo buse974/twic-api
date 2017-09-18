@@ -149,6 +149,7 @@ class ItemUser extends AbstractService
             ->setUserId($user_id)
             ->setItemId($item_id));
         foreach ($res_item_user as $m_item_user) {
+            //@TODO update submission_id
             $this->getMapper()->update($this->getModel()
                 ->setGroupId($group_id)
                 ->setDeletedDate(new IsNull('deleted_date')), [

@@ -20,6 +20,7 @@ class Conversation extends BaseConversation
     protected $message;
     protected $role;
     protected $page_id;
+    protected $item_id;
 
     public function exchangeArray(array &$data)
     {
@@ -28,6 +29,22 @@ class Conversation extends BaseConversation
         $this->message = $this->requireModel('app_model_message', $data);
     }
 
+    /**
+     * @return int $item_id
+     */
+    public function getItemId()
+    {
+        return $this->item_id;
+    }
+    
+    /**
+     * @param int $itemId
+     */
+    public function setItem_id($item_id)
+    {
+        $this->item_id = $item_id;
+    }
+    
     public function getMessage()
     {
         return $this->message;
