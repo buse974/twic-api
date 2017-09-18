@@ -12,7 +12,7 @@ class Item extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'parent_id', 'page_id'])
           ->join('page_user', 'page_user.page_id=item.page_id', [])
-          ->join('item_user', new \Zend\Db\Sql\Predicate\Expression('item_user.item_id=item.id && item_user.deleted_date IS NULL'), [], $select::JOIN_LEFT)
+          ->join('item_user', new \Zend\Db\Sql\Predicate\Expression('item_user.item_id=item.id AND item_user.deleted_date IS NULL'), [], $select::JOIN_LEFT)
           ->where(['page_user.user_id' => $me])
           ->where(['item.page_id' => $page_id])
           ->order('item.page_id ASC')
@@ -72,9 +72,8 @@ class Item extends AbstractMapper
           'parent_id',
           'page_id'])
           ->join('page_user', 'page_user.page_id=item.page_id', [])
-          ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
+          ->join('item_user', new \Zend\Db\Sql\Predicate\Expression('item_user.item_id=item.id AND item_user.deleted_date IS NULL'), [], $select::JOIN_LEFT)
           ->where(['page_user.user_id' => $me])
-          ->where(['item_user.deleted_date IS NULL'])
           ->where(['page_user.state' => 'member'])
           ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
           ->where(['item.is_published IS TRUE'])

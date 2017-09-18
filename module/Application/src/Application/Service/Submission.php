@@ -19,7 +19,7 @@ class Submission extends AbstractService
     public function getOrCreate($item_id, $user_id = null, $group_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        $m_item = $this->getServiceItem()->getLite($item_id)->current();
+        $m_item = $this->getServiceItem()->getLite($item_id);//->current();
         $page_id = $m_item->getPageId();
         $ar_p = $this->getServicePageUser()->getListByPage($page_id);
         $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
@@ -43,8 +43,20 @@ class Submission extends AbstractService
 
         $res_submission = $this->getMapper()->get(null, $item_id, $user_id, $group_id);
         if ($res_submission->count() <= 0) {
-            $this->getMapper()->insert($this->getModel()->setItemId($item_id));
-            $submission_id  = (int) $this->getMapper()->getLastInsertValue();
+            
+            $submission_id = null;
+            // SI c un group on récupére la submission d'un user du group si elle existe.
+            if($m_item->getParticipants() == 'group') {
+                $res_submission = $this->getMapper()->get(null, $item_id, null, $group_id);
+                if($res_submission->count() > 0) {
+                    $submission_id = $res_submission->current()->getSubmissionId();
+                }
+            }
+            if(null === $submission_id) {
+               $this->getMapper()->insert($this->getModel()->setItemId($item_id));
+               $submission_id  = (int) $this->getMapper()->getLastInsertValue();
+            }
+            
             $this->getServiceItemUser()->getOrCreate($item_id, $user_id, $submission_id, $group_id);
             $m_submission = $this->getMapper()->get(null, $item_id, $user_id, $group_id)->current();
         } else {
