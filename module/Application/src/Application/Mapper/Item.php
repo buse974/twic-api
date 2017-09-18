@@ -43,7 +43,7 @@ class Item extends AbstractMapper
         ->join('page', 'page.id=item.page_id', [])
         ->where(['page_user.user_id' => $me])
         ->where(['page_user.state' => 'member'])
-        ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR `item`.`points` IS NOT NULL )"])
+        ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC', 'LC') OR `item`.`points` IS NOT NULL )"])
         ->where(['item.is_published IS TRUE AND item.start_date IS NOT NULL AND page.is_published IS TRUE']);
 
         $select2 = $this->tableGateway->getSql()->select();
@@ -52,7 +52,7 @@ class Item extends AbstractMapper
         ->join('page', 'page.id=item.page_id', [])
         ->where(['page_user.user_id' => $me])
         ->where(['page_user.state' => 'member'])
-        ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR `item`.`points` IS NOT NULL )"])
+        ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC', 'LC') OR `item`.`points` IS NOT NULL )"])
         ->where(['item.is_published IS TRUE AND item.end_date IS NOT NULL AND page.is_published IS TRUE']);
 
         $select1->combine($select2);
