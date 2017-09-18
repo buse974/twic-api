@@ -69,18 +69,19 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns([
-      'id',
-      'parent_id',
-      'page_id'])
-      ->join('page_user', 'page_user.page_id=item.page_id', [])
-      ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
-      ->where(['page_user.user_id' => $me])
-      ->where(['page_user.state' => 'member'])
-      ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
-      ->where(['item.is_published IS TRUE'])
-      ->order('item.page_id ASC')
-      ->order('item.order ASC')
-      ->quantifier('DISTINCT');
+          'id',
+          'parent_id',
+          'page_id'])
+          ->join('page_user', 'page_user.page_id=item.page_id', [])
+          ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
+          ->where(['page_user.user_id' => $me])
+          ->where(['item_user.deleted_date IS NULL'])
+          ->where(['page_user.state' => 'member'])
+          ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
+          ->where(['item.is_published IS TRUE'])
+          ->order('item.page_id ASC')
+          ->order('item.order ASC')
+          ->quantifier('DISTINCT');
 
         if (null !== $page_id) {
             $select->where(['item.page_id' => $page_id]);
@@ -162,20 +163,20 @@ class Item extends AbstractMapper
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'is_grade_published'])
-      ->join('page_user', 'page_user.page_id=item.page_id', ['user_id'])
-      ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['id', 'group_id', 'rate'], $select::JOIN_LEFT)
-      ->join('group', 'group.id=item_user.group_id', ['id', 'name'], $select::JOIN_LEFT)
-      ->join('submission', 'submission.id=item_user.submission_id', ['id', 'post_id',
-      'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
-    ], $select::JOIN_LEFT)
-      ->where(['page_user.role'=> 'user'])
-      ->where(['item.id' => $id]);
-
-        if (null !== $user_id) {
-            $select->where(['page_user.user_id' => $user_id]);
-        }
-
-        return $this->selectWith($select);
+          ->join('page_user', 'page_user.page_id=item.page_id', ['user_id'])
+          ->join('item_user', 'item.id=item_user.item_id AND page_user.user_id=item_user.user_id', ['id', 'group_id', 'rate'], $select::JOIN_LEFT)
+          ->join('group', 'group.id=item_user.group_id', ['id', 'name'], $select::JOIN_LEFT)
+          ->join('submission', 'submission.id=item_user.submission_id', ['id', 'post_id',
+          'submission$submit_date' => new Expression('DATE_FORMAT(submission.submit_date, "%Y-%m-%dT%TZ")'),
+        ], $select::JOIN_LEFT)
+          ->where(['page_user.role'=> 'user'])
+          ->where(['item.id' => $id]);
+    
+            if (null !== $user_id) {
+                $select->where(['page_user.user_id' => $user_id]);
+            }
+    
+            return $this->selectWith($select);
     }
 
 
