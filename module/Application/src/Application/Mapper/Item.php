@@ -14,6 +14,7 @@ class Item extends AbstractMapper
           ->join('page_user', 'page_user.page_id=item.page_id', [])
           ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
           ->where(['page_user.user_id' => $me])
+          ->where(['item_user.deleted_date IS NULL'])
           ->where(['item.page_id' => $page_id])
           ->order('item.page_id ASC')
           ->order('item.order ASC')
@@ -40,7 +41,9 @@ class Item extends AbstractMapper
         $select1 = $this->tableGateway->getSql()->select();
         $select1->columns(['id', 'parent_id', 'page_id', 'item$timeline_type' => new Expression(" 'S' "), 'item$order_date' => new Expression("item.start_date")])
             ->join('page_user', 'page_user.page_id=item.page_id', [])
+            ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
             ->join('page', 'page.id=item.page_id', [])
+            ->where(['item_user.deleted_date IS NULL'])
             ->where(['page_user.user_id' => $me])
             ->where(['page_user.state' => 'member'])
             ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC', 'LC') OR `item`.`points` IS NOT NULL )"])
@@ -49,7 +52,9 @@ class Item extends AbstractMapper
         $select2 = $this->tableGateway->getSql()->select();
         $select2->columns(['id', 'parent_id', 'page_id', 'item$timeline_type' => new Expression(" 'E' "), 'item$order_date' => new Expression("item.end_date")])
             ->join('page_user', 'page_user.page_id=item.page_id', [])
+            ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
             ->join('page', 'page.id=item.page_id', [])
+            ->where(['item_user.deleted_date IS NULL'])
             ->where(['page_user.user_id' => $me])
             ->where(['page_user.state' => 'member'])
             ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC', 'LC') OR `item`.`points` IS NOT NULL )"])
