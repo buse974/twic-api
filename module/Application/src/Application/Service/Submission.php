@@ -180,14 +180,16 @@ class Submission extends AbstractService
         }
         
         $ret = $this->getServiceSubmissionLibrary()->remove($id, $library_id);
-        
-        $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
-        if(count($users_id) > 1) {
-            $m_item_user = $res_item_user->current();
-            $this->sendSubmissionChanged([
-                'item_id' => (int)$m_item_user->getItemId(),
-                'users' => $users_id,
-            ]);
+
+        $m_item_user = $res_item_user->current();
+        if(is_numeric($m_item_user->getGroupId())) {
+            $users_id = $this->getServiceItemUser()->getListUserId($m_item_user->getGroupId());
+            if(count($users_id) > 1) {
+                $this->sendSubmissionChanged([
+                    'item_id' => (int)$m_item_user->getItemId(),
+                    'users' => $users_id,
+                ]);
+            }
         }
 
         return $ret;
