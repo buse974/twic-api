@@ -7,17 +7,17 @@ use Zend\Db\Sql\Expression;
 
 class Item extends AbstractMapper
 {
-    public function getListId($page_id, $me, $is_admin_page, $parent_id = null)
+    public function getListId($page_id, $me, $is_admin_page, $parent_id = null, $is_publish = null)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'parent_id', 'page_id'])
-      ->join('page_user', 'page_user.page_id=item.page_id', [])
-      ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
-      ->where(['page_user.user_id' => $me])
-      ->where(['item.page_id' => $page_id])
-      ->order('item.page_id ASC')
-      ->order('item.order ASC')
-      ->quantifier('DISTINCT');
+          ->join('page_user', 'page_user.page_id=item.page_id', [])
+          ->join('item_user', 'item_user.item_id=item.id', [], $select::JOIN_LEFT)
+          ->where(['page_user.user_id' => $me])
+          ->where(['item.page_id' => $page_id])
+          ->order('item.page_id ASC')
+          ->order('item.order ASC')
+          ->quantifier('DISTINCT');
 
         if (null !== $parent_id) {
             $select->where(['item.parent_id' => $parent_id]);
@@ -28,6 +28,8 @@ class Item extends AbstractMapper
         if ($is_admin_page !== true) {
             $select->where(['item.is_published IS TRUE']);
             $select->where(["( item.participants = 'all' || item_user.user_id = ? )" => $me]);
+        }elseif ($is_admin_page === true && $is_publish === true) {
+            $select->where(['item.is_published IS TRUE']);
         }
 
         return $this->selectWith($select);

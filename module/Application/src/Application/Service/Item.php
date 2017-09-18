@@ -208,7 +208,7 @@ class Item extends AbstractService
      *
      * @param int $page_id
      * @param int $parent_id
-     * @param bool $is_publish
+     * @param bool $is_publish // true - que les item publié
      */
     public function getListId($page_id = null, $parent_id = null, $is_publish = null)
     {
@@ -223,12 +223,7 @@ class Item extends AbstractService
         
         $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
         $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id]));
-        
-        if ($is_admin_page === true && $is_publish === true) {
-            $is_admin_page = false;
-        }
-        
-        $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id);
+        $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id, $is_publish);
         
         $index = ($parent_id === null) ? $page_id : $parent_id;
         
