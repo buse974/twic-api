@@ -19,7 +19,7 @@ class Submission extends AbstractService
     public function getOrCreate($item_id, $user_id = null, $group_id = null)
     {
         $me = $this->getServiceUser()->getIdentity()['id'];
-        $m_item = $this->getServiceItem()->getLite($item_id);//->current();
+        $m_item = $this->getServiceItem()->getLite($item_id)->current();
         $page_id = $m_item->getPageId();
         $ar_p = $this->getServicePageUser()->getListByPage($page_id);
         $ar_pa = $this->getServicePageUser()->getListByPage($page_id, 'admin');
