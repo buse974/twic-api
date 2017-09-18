@@ -107,7 +107,7 @@ class Submission extends AbstractService
         }
 
         $m_item_user = $this->getServiceItemUser()->getLite(null, $identity['id'], null, null, $item_id)->current();
-        $m_submission = $this->getOrCreate($item_id, $identity['id'], $m_item_user->getGroupId());
+        $m_submission = $this->getOrCreate($item_id, $identity['id'], (($m_item_user !== false) ? $m_item_user->getGroupId() : null));
 
         $submission_id = $m_submission->getId();
         $this->getServiceSubmissionLibrary()->add($submission_id, $library_id);
