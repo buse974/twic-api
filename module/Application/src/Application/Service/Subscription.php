@@ -30,9 +30,11 @@ class Subscription extends AbstractService
      * Get List User Id
      *
      * @param  string $libelle
+     * @param array $filter 
+     * @param  string $search
      * @return array
      */
-    public function getListUserId($libelle)
+    public function getListUserId($libelle, $filter = null, $search = null)
     {
         if (!is_array($libelle)) {
             $libelle = [$libelle];
@@ -42,14 +44,19 @@ class Subscription extends AbstractService
             if (strpos($l, 'M') === 0) {
                 $u[] = (int)substr($l, 1);
             } else {
-                $res_subscription = $this->getMapper()->select($this->getModel()->setLibelle($l));
+                if(null != $filter){
+                    $res_subscription = $this->getMapper()->usePaginator($filter)->select($this->getModel()->setLibelle($l));
+                }
+                else{
+                    $res_subscription = $this->getMapper()->select($this->getModel()->setLibelle($l));
+                }
                 foreach ($res_subscription as $m_subscription) {
                     $u[] = $m_subscription->getUserId();
                 }
             }
         }
 
-        return array_unique($u);
+        return null != $filter ? [ 'list' => array_unique($u), 'count' => $this->getMapper()->count() ] : array_unique($u);
     }
 
     public function delete($libelle, $user_id = null)

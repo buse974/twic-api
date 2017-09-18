@@ -620,6 +620,21 @@ class Page extends AbstractService
 
         return $this->getMapper()->select($this->getModel()->setId($id))->current();
     }
+    
+      /**
+     * Get list suscribed users
+     *
+     * @invokable
+     *
+     * @param  int $id
+     * @return array
+     */
+    public function getListSuscribersId($id, $filter)
+    {
+        return $this->getServiceSubscription()->getListUserId('PP'.$id, $filter);;
+    }
+
+    
 
     /**
      * Get Page
@@ -953,6 +968,17 @@ class Page extends AbstractService
     private function getServicePostSubscription()
     {
         return $this->container->get('app_service_post_subscription');
+    }
+
+    /**
+     * Get Service Subscription
+     *
+     * @return \Application\Service\Subscription   
+
+     */
+    private function getServiceSubscription()
+    {
+        return $this->container->get('app_service_subscription');
     }
 
     /**
