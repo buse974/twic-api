@@ -49,7 +49,7 @@ class Submission extends AbstractService
             if($m_item->getParticipants() == 'group') {
                 $res_submission = $this->getMapper()->get(null, $item_id, null, $group_id);
                 if($res_submission->count() > 0) {
-                    $submission_id = $res_submission->current()->getSubmissionId();
+                    $submission_id = $res_submission->current()->getId();
                 }
             }
             if(null === $submission_id) {
