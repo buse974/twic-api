@@ -29,7 +29,6 @@ class Conversation extends AbstractMapper
             ->where(['conversation_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
-            ->where(['item.deleted_date IS NULL'])
             ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
             ->group(['conversation.id']);
 
@@ -58,7 +57,6 @@ class Conversation extends AbstractMapper
               ->join('page', 'page.conversation_id=conversation.id', ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
               ->join('item', 'item.conversation_id=conversation.id', ['conversation$item_id' => 'id'], $select::JOIN_LEFT)
               ->where(['page.deleted_date IS NULL'])
-              ->where(['item.deleted_date IS NULL'])
               ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
               ->order(['conversation_message$id DESC'])
               ->group(['conversation.id']);
