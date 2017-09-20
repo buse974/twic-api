@@ -469,12 +469,17 @@ class Item extends AbstractService
 
     /**
      * Publish Item
-     *
-     * @invokable
-     *
-     * @param int $item_id
+     * 
+     * @param int $id
+     * @param string $publish
+     * @param string $all
+     * @param int $parent_id
+     * @param bool $notify
+     * @throws \Exception
+     * 
+     * @return boolean
      */
-    public function publish($id = null, $publish = true, $all = false, $parent_id = null)
+    public function publish($id = null, $publish = true, $all = false, $parent_id = null, $notify = false)
     {
         if (null === $id && null === $parent_id) {
             throw new \Exception("Error Processing Request", 1);
@@ -494,10 +499,39 @@ class Item extends AbstractService
             ->setParentId($parent_id)
             ->setIsPublished($publish));
         
-        if($publish == true) {
+        if (true === $all) {
+            if (null !== $id) {
+                $this->publish(null, $publish, true, $id);
+            } else {
+                $res_item = $this->getMapper()->select($this->getModel()
+                    ->setParentId($parent_id));
+                foreach ($res_item as $m_item) {
+                    $this->publish(null, $publish, true, $m_item->getId());
+                }
+            }
+        }
+        
+        if($publish == true && $notify === true) {
             $m_page = $this->getServicePage()->getLite($page_id);
             if($m_page->getIsPublished() == true) {
                 $m_item = $this->getLite($id)->current();
+                // SI il y a un parent
+                if(is_numeric($m_item->getParentId())) {
+                    // SI SONT PARENT IS PAS PUBLIER ON SORT
+                    $m_item_parent = $this->getLite($m_item->getParentId())->current();
+                    if(!$m_item_parent->getIsPublished()) {
+                        return true;
+                    }
+                    //SI IL Y A UNE SECTION
+                    if(is_numeric($m_item_parent->getParentId())) {
+                        // SI ELLE NEST PAS PUBLIE
+                        $m_item_section = $this->getLite($m_item_parent->getParentId())->current();
+                        if(!$m_item_section->getIsPublished()) {
+                            return true;
+                        }
+                    }
+                }
+                
                 $ar_pages = [];
                 $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
                 foreach($res_user as $m_user){
@@ -540,19 +574,6 @@ class Item extends AbstractService
             }
         }
         
-        
-        if (true === $all) {
-            if (null !== $id) {
-                $this->publish(null, true, true, $id);
-            } else {
-                $res_item = $this->getMapper()->select($this->getModel()
-                    ->setParentId($parent_id));
-                foreach ($res_item as $m_item) {
-                    $this->publish(null, true, true, $m_item->getId());
-                }
-            }
-        }
-        
         return true;
     }
 
@@ -570,7 +591,7 @@ class Item extends AbstractService
     }
 
     /**
-     * Add item
+     * Update item
      *
      * @invokable
      *
@@ -590,9 +611,12 @@ class Item extends AbstractService
      * @param array $participants,
      * @param int $quiz_id,
      * @param int $is_grade_published
-     *
+     * @param string $notify
+     * @throws \Exception
+     * 
+     * @return int
      */
-    public function update($id, $title = null, $points = null, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null, $library_id = null, $post_id = null, $text = null, $participants = null, $quiz_id = null, $is_grade_published = null)
+    public function update($id, $title = null, $points = null, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null, $library_id = null, $post_id = null, $text = null, $participants = null, $quiz_id = null, $is_grade_published = null, $notify = false)
     {
         $identity = $this->getServiceUser()->getIdentity();
         
@@ -610,8 +634,8 @@ class Item extends AbstractService
         }
         
         if($m_item->getIsPublished() != $is_published && $is_published!==null) {
-            $this->publish($id, $is_published);
-        } else if( $m_item->getIsPublished() ){
+            $this->publish($id, $is_published, null, null, $notify);
+        } else if($notify === true && $m_item->getIsPublished()){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
                 $ar_pages = [];
@@ -658,8 +682,6 @@ class Item extends AbstractService
                 
             }
         }
-        
-        
         
         $m_item = $this->getModel()
             ->setId($id)

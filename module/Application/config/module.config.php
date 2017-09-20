@@ -43,7 +43,7 @@ return [
                          'controller' => 'Application\Controller\Index',
                          'action' => 'statusChange',
                      ],
-                     ],
+                 ],
              ],
             'version' => [
                 'type' => Literal::class,
