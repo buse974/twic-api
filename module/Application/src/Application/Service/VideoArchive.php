@@ -33,7 +33,7 @@ class VideoArchive extends AbstractService
     }
 
     /**
-     * Start record video conf.
+     * Start record video conf
      *
      * @invokable
      *
@@ -70,7 +70,11 @@ class VideoArchive extends AbstractService
         }
         $m_video_archive = $res_video_archive->current();
 
-        return $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
+        $ret = $this->getServiceZOpenTok()->stopArchive($m_video_archive->getArchiveToken());
+
+        $this->updateByArchiveToken($m_video_archive->getArchiveToken(), $ret['status']);
+        
+        return $ret;
     }
 
     /**

@@ -164,9 +164,7 @@ class Conversation extends AbstractService
     public function getList($contact = null, $noread = null, $type = null, $filter = null, $search = null)
     {
         $this->getServicePage()->addChannel();
-
         $user_id = $this->getServiceUser()->getIdentity()['id'];
-
         $mapper = $this->getMapper();
         $res_conversation = $mapper->usePaginator($filter)->getId($user_id, $contact, $noread, $type, $search);
         foreach ($res_conversation as $m_conversation) {
@@ -178,9 +176,9 @@ class Conversation extends AbstractService
         $res_conversation->rewind();
 
         return (null === $filter) ? $res_conversation : [
-        'list' => $res_conversation,
-        'count' => $mapper->count()
-      ];
+            'list' => $res_conversation,
+            'count' => $mapper->count()
+          ];
     }
 
     /**
@@ -197,8 +195,8 @@ class Conversation extends AbstractService
         $m_conversation = $this->getMapper()->select($this->getModel()->setId($id))->current();
         $token = $m_conversation->getToken();
         $media_mode = ($m_conversation->getType() === ModelConversation::TYPE_CHAT) ?
-        MediaMode::RELAYED :
-        MediaMode::ROUTED;
+            MediaMode::RELAYED :
+            MediaMode::ROUTED;
 
         if ($token === null || $token instanceof IsNull) {
             $token = $this->getServiceZOpenTok()->getSessionId($media_mode);
@@ -223,9 +221,9 @@ class Conversation extends AbstractService
         $token = $this->addVideo($id);
 
         return [
-        'token' => $this->getServiceZOpenTok()->createToken($token, '{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
-        'session' => $token,
-        'role' => ($user_id == 3 || $user_id == 7) ? 'admin':'user'
+            'token' => $this->getServiceZOpenTok()->createToken($token, '{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
+            'session' => $token,
+            'role' => ($user_id == 3 || $user_id == 7) ? 'admin':'user'
       ];
     }
 
@@ -257,8 +255,8 @@ class Conversation extends AbstractService
         $res_conversation = $this->getMapper()->select($this->getModel()->setId($id));
 
         return (is_array($id)) ?
-      $res_conversation :
-      $res_conversation->current();
+            $res_conversation :
+            $res_conversation->current();
     }
 
     /**
