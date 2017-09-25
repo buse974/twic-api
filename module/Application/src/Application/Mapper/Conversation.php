@@ -64,26 +64,35 @@ class Conversation extends AbstractMapper
         if (null !== $conversation_id) {
             $select->where(['conversation.id' => $conversation_id]);
         } else {
-            $select->columns($colums)
-        ->join('conversation_user', 'conversation.id=conversation_user.conversation_id', [])
-        ->where(['conversation_user.user_id' => $user_id]);
+            $select->join('conversation_user', 'conversation.id=conversation_user.conversation_id', [], $select::JOIN_LEFT)
+                ->join('page_user', 'page.id=page_user.page_id', [], $select::JOIN_LEFT)
+                ->join('item_user', 'item.id=item_user.item_id', [], $select::JOIN_LEFT)
+                ->where([' ( conversation_user.user_id = ? ' => $user_id])
+                ->where(['page_user.user_id = ? ' => $user_id],  Predicate::OP_OR)
+                ->where(['item_user.user_id = ? )' => $user_id], Predicate::OP_OR);
         }
         $subselect->columns(['conversation_message$id' => new Expression('MAX(message.id)')])
-          ->join('conversation_user', 'conversation_user.conversation_id=message.conversation_id', [])
-          ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]), [], $select::JOIN_LEFT)
-          ->where(['conversation_user.user_id' => $user_id])
-          ->where(['message_user.deleted_date IS NULL'])
-          ->where(['message.conversation_id = conversation.id']);
+            ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]), [], $select::JOIN_LEFT)
+            ->join('conversation_user', 'conversation_user.conversation_id=message.conversation_id', [], $select::JOIN_LEFT)
+            ->join('page', 'page.conversation_id=message.conversation_id', [], $select::JOIN_LEFT)
+            ->join('item', 'item.conversation_id=message.conversation_id', [], $select::JOIN_LEFT)
+            ->join('page_user', 'page.id=page_user.page_id', [], $select::JOIN_LEFT)
+            ->join('item_user', 'item.id=item_user.item_id', [], $select::JOIN_LEFT)
+            ->where([' ( conversation_user.user_id = ? ' => $user_id])
+            ->where(['page_user.user_id = ? ' => $user_id],  Predicate::OP_OR)
+            ->where(['item_user.user_id = ? )' => $user_id], Predicate::OP_OR)
+            ->where(['message_user.deleted_date IS NULL'])
+            ->where(['message.conversation_id = conversation.id']);
 
         if (null !== $search) {
             $searchselect = $this->tableGateway->getSql()->select();
             $searchselect->columns(['id'])
-        ->join('conversation_user', 'conversation.id=conversation_user.conversation_id', [])
-        ->join('user', 'user.id=conversation_user.user_id', [], $select::JOIN_LEFT)
-        ->where(['(conversation.name LIKE ? ' => ''.$search.'%'])
-        ->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
-        ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
-        ->where(['user.nickname LIKE ? )' => ''.$search.'%'], Predicate::OP_OR);
+                ->join('conversation_user', 'conversation.id=conversation_user.conversation_id', [])
+                ->join('user', 'user.id=conversation_user.user_id', [], $select::JOIN_LEFT)
+                ->where(['(conversation.name LIKE ? ' => ''.$search.'%'])
+                ->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                ->where(['CONCAT_WS(" ", user.lastname, user.firstname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
+                ->where(['user.nickname LIKE ? )' => ''.$search.'%'], Predicate::OP_OR);
 
             $select->where(['conversation.id IN (?)' => $searchselect]);
         }
