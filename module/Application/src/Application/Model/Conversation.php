@@ -40,7 +40,7 @@ class Conversation extends BaseConversation
     /**
      * @param int $itemId
      */
-    public function setItem_id($item_id)
+    public function setItemId($item_id)
     {
         $this->item_id = $item_id;
     }
