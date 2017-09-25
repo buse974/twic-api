@@ -43,6 +43,12 @@ class VideoArchive extends AbstractService
      */
     public function startRecord($conversation_id)
     {
+        try {
+            $this->stopRecord($conversation_id);
+        } catch (\Exception $e) {
+            // pas de video
+        }
+        
         $m_conversation = $this->getServiceConversation()->getLite($conversation_id);
 
         $arr_archive = json_decode($this->getServiceZOpenTok()->startArchive($m_conversation->getToken()), true);
