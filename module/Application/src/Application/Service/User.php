@@ -746,7 +746,7 @@ class User extends AbstractService
                 continue;
             }
             try {
-                $uniqid = uniqid();
+                $uniqid = uniqid($uid . "_" , true);
                 $m_user = $res_user->current();
                 $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
                 $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
@@ -1035,52 +1035,44 @@ class User extends AbstractService
     {
         $identity = $this->getIdentity();
         $linkedin = $this->getServiceLinkedIn();
-        //$linkedin->init($code, "AQWEKERnk7D6-ABKmau_8hsxRcwful9ztXx5MpmSzqUvGyPWVdXd_NWKTtdamB7AaS47JWqS8ZavlCV_slbvyeLwwtN6yp8LZaFR_oDH9o_UZdHsjhXejp63JDonst4gA_bFSOUBBD2w2RPkBoldKtg367SZuA18xGuMK7kRH8isUa85JJA");
         $linkedin->init($code);
         $m_people = $linkedin->people();
         $linkedin_id = $m_people->getId();
         $login = false;
-        if (! $linkedin_id || ! is_string($linkedin_id)) {
+        if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
         }
         
-        $res_user = $this->getMapper()->select($this->getModel()
-            ->setLinkedinId($linkedin_id));
+        $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
+        
         if ($res_user->count() > 0) { // utilisateur existe on renvoye une session
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // utilisateur existe pas
-            if (isset($identity['id'])) { // SI connecter alors on save id linkedin
-                $this->getMapper()->update($this->getModel()
-                    ->setLinkedinId($linkedin_id), [
-                    'id' => $identity['id']
-                ]);
-                $identity['has_linkedin'] = true;
-                
-                $login = $identity;
-            } else {
+            if (null !== $account_token) { // SI pas connecter
                 $m_registration = $this->getServicePreregistration()->get($account_token);
                 if (false === $m_registration) {
                     throw new \Exception('Account token not found.');
                 }
                 
                 if (is_numeric($m_registration->getUserId())) {
-                    $this->getMapper()->update($this->getModel()
-                        ->setLinkedinId($linkedin_id), [
-                        'id' => $m_registration->getUserId()
-                    ]);
+                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $m_registration->getUserId()]);
                     $user_id = $m_registration->getUserId();
                 } else {
                     $user_id = $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
-                    $this->getMapper()->update($this->getModel()
-                        ->setLinkedinId($linkedin_id), [
-                        'id' => $user_id
-                    ]);
+                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
                 }
                 
                 $m_user = $this->getLite($user_id);
                 
                 $login = $this->loginLinkedIn($linkedin_id);
                 $this->getServicePreregistration()->delete($account_token, $m_user->getId());
+            } else if(is_numeric($identity['id'])){
+                $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $identity['id']]);
+                $identity['has_linkedin'] = true;
+                
+                $login = $identity;
+            } else {
+                throw new \Exception('Error linkedinSignIn > no: $identity["id"] and no: $account_token');
             }
         }
         

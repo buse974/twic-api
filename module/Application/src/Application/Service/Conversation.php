@@ -170,6 +170,8 @@ class Conversation extends AbstractService
         foreach ($res_conversation as $m_conversation) {
             if ($m_conversation->getType() !==  ModelConversation::TYPE_CHANNEL) {
                 $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
+            } else if ($m_conversation->getType() !==  ModelConversation::TYPE_LIVECLASS) {
+                $m_conversation->setUsers($this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId()));
             }
         }
 
