@@ -23,7 +23,7 @@ class User extends AbstractService
     public function loginLinkedIn($linkedin_id)
     {
         $auth = $this->getServiceAuth();
-        $auth->getAdapter()->setLinkedinId(trim($linkedin_id));
+        $auth->getAdapter()->setLinkedinId($linkedin_id);
         
         $result = $auth->authenticate();
         if (! $result->isValid()) {
@@ -764,7 +764,7 @@ class User extends AbstractService
                 $this->getMapper()->update($this->getModel()->setEmailSent(true), ['id' => $uid]);
                 $nb++;
             } catch (\Exception $e) {
-                syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode() . ' <URL> ' . $url);
+                syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode() . ' <URL> ' . $url . ' <Email> ' . $m_user->getEmail());
             }
         }
         

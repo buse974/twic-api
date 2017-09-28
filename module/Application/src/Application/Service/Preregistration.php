@@ -64,11 +64,11 @@ class Preregistration extends AbstractService
     {
         $nb = 0;
         if (null !== $account_token) {
-            $nb += $this->getMapper()->delete($m_preregistration = $this->getModel()
+            $nb += $this->getMapper()->delete($this->getModel()
                 ->setAccountToken($account_token));
         }
-        if (null !== $user_id) {
-            $nb += $this->getMapper()->delete($m_preregistration = $this->getModel()
+        if (is_numeric($user_id)) {
+            $nb += $this->getMapper()->delete($this->getModel()
                 ->setUserId($user_id));
         }
         

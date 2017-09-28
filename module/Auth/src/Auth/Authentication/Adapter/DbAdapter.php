@@ -93,6 +93,8 @@ class DbAdapter extends AbstractAdapter
                 ->where(['user.new_password = MD5(?) )' => $this->credential], Predicate::OP_OR)
                 ->where(['user.'.$this->identity_column.' = ? ' => $this->identity])
                 ->where(['user.deleted_date IS NULL']);
+        } else {
+            throw new \Exception("error authentification");
         }
         
         $statement = $sql->prepareStatementForSqlObject($select);
@@ -118,7 +120,7 @@ class DbAdapter extends AbstractAdapter
         } elseif ($results->count() > 1) {
             $code = Result::FAILURE_IDENTITY_AMBIGUOUS;
             $message[] = 'More than one record matches the supplied identity.';
-        } else {
+        } elseif ($results->count() === 1) {
             $arrayIdentity = (new ResultSet())->initialize($results)->toArray();
             $arrayIdentity = current($arrayIdentity);
             if (null !== $arrayIdentity['suspension_date']) {
@@ -134,7 +136,10 @@ class DbAdapter extends AbstractAdapter
                 $statement = $sql->prepareStatementForSqlObject($update);
                 $statement->execute();
             }
+        } else {
+            throw new \Exception("Error number result authentification");
         }
+        
         return new Result($code, $identity, $message);
     }
 
@@ -152,7 +157,7 @@ class DbAdapter extends AbstractAdapter
     
     public function setLinkedinId($linkedin_id)
     {
-        $this->linkedin_id = $linkedin_id;
+        $this->linkedin_id = trim($linkedin_id);
         
         return $this;
     }
