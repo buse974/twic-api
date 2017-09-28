@@ -745,13 +745,14 @@ class User extends AbstractService
             if ($res_user->count() <= 0) {
                 continue;
             }
-            try {
-                $uniqid = uniqid($uid . "_" , true);
-                $m_user = $res_user->current();
-                $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
-                $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
-
-                $url = sprintf("https://gnam.%s/signin/%s",$this->container->get('config')['app-conf']['uiurl'],$uniqid);
+            
+            $uniqid = uniqid($uid . "_" , true);
+            $m_user = $res_user->current();
+            $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
+            $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
+            $url = sprintf("https://gnam.%s/signin/%s",$this->container->get('config')['app-conf']['uiurl'],$uniqid);
+                
+             try {
                 $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
                     'prefix' => (is_string($m_page->getLibelle()) && ! empty($m_page->getLibelle())) ? $m_page->getLibelle() : null,
                     'uniqid' => $uniqid,
@@ -763,7 +764,7 @@ class User extends AbstractService
                 $this->getMapper()->update($this->getModel()->setEmailSent(true), ['id' => $uid]);
                 $nb++;
             } catch (\Exception $e) {
-                syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+                syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode() . ' <URL> ' . $url);
             }
         }
         
