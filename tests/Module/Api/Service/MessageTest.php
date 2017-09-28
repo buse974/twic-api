@@ -150,8 +150,6 @@ class MessageTest extends AbstractService
      */
     public function testCanGetIdConvAddVideo($conv)
     {
-
-
         $this->setIdentity(2);
         $data = $this->jsonRpc('conversation.addVideo', [
           'id' => $conv['conversation_id']

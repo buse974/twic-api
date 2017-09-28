@@ -54,12 +54,12 @@ class Conversation extends AbstractMapper
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns($colums)
-              ->join('page', 'page.conversation_id=conversation.id', ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
-              ->join('item', 'item.conversation_id=conversation.id', ['conversation$item_id' => 'id'], $select::JOIN_LEFT)
-              ->where(['page.deleted_date IS NULL'])
-              ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
-              ->order(['conversation_message$id DESC'])
-              ->group(['conversation.id']);
+            ->join('item', 'item.conversation_id=conversation.id', ['conversation$item_id' => 'id'], $select::JOIN_LEFT)
+            ->join('page', new Expression("page.conversation_id=conversation.id OR (item.page_id=page_id AND item.participants = 'all')"), ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
+            ->where(['page.deleted_date IS NULL'])
+            ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
+            ->order(['conversation_message$id DESC'])
+            ->group(['conversation.id']);
 
         if (null !== $conversation_id) {
             $select->where(['conversation.id' => $conversation_id]);
@@ -74,8 +74,8 @@ class Conversation extends AbstractMapper
         $subselect->columns(['conversation_message$id' => new Expression('MAX(message.id)')])
             ->join('message_user', new Expression('message.id=message_user.message_id AND message_user.user_id = ?', [$user_id]), [], $select::JOIN_LEFT)
             ->join('conversation_user', 'conversation_user.conversation_id=message.conversation_id', [], $select::JOIN_LEFT)
-            ->join('page', 'page.conversation_id=message.conversation_id', [], $select::JOIN_LEFT)
             ->join('item', 'item.conversation_id=message.conversation_id', [], $select::JOIN_LEFT)
+            ->join('page', new Expression("page.conversation_id=message.conversation_id OR (item.page_id=page_id AND item.participants = 'all')"), [], $select::JOIN_LEFT)
             ->join('page_user', 'page.id=page_user.page_id', [], $select::JOIN_LEFT)
             ->join('item_user', 'item.id=item_user.item_id', [], $select::JOIN_LEFT)
             ->where([' ( conversation_user.user_id = ? ' => $user_id])
@@ -87,7 +87,7 @@ class Conversation extends AbstractMapper
         if (null !== $search) {
             $searchselect = $this->tableGateway->getSql()->select();
             $searchselect->columns(['id'])
-                ->join('conversation_user', 'conversation.id=conversation_user.conversation_id', [])
+            ->join('conversation_user', 'conversation.id=conversation_user.conversation_id', [])
                 ->join('user', 'user.id=conversation_user.user_id', [], $select::JOIN_LEFT)
                 ->where(['(conversation.name LIKE ? ' => ''.$search.'%'])
                 ->where(['CONCAT_WS(" ", user.firstname, user.lastname) LIKE ? ' => ''.$search.'%'], Predicate::OP_OR)
