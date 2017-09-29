@@ -7,6 +7,7 @@ use Application\Model\Conversation as ModelConversation;
 use OpenTok\MediaMode;
 use OpenTok\Role as OpenTokRole;
 use Zend\Db\Sql\Predicate\IsNull;
+use Application\Model\PageUser as ModelPageUser;
 
 class Conversation extends AbstractService
 {
@@ -129,8 +130,8 @@ class Conversation extends AbstractService
         $res_conversation->rewind();
 
         return (is_array($id)) ?
-        $res_conversation->toArray(['id']) :
-        $res_conversation->current();
+            $res_conversation->toArray(['id']) :
+            $res_conversation->current();
     }
 
     /**
@@ -205,10 +206,27 @@ class Conversation extends AbstractService
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $token = $this->addVideo($id);
 
+        $page_id = null;
+        $is_admin = false;
+        $res_item = $this->getServiceItem()->getLite(null, $id);
+        if($res_item->count() > 0) {
+            $page_id = $res_item->getPageId();
+        } else {
+            $m_page = $this->getServicePage()->getLite(null, $id);
+            if($m_page) {
+                $page_id = $m_page->getId();
+            }
+        }
+        
+        if(null !== $page_id) {
+            $ar_pu = $this->getServicePageUser()->getListByPage($page_id, ModelPageUser::ROLE_ADMIN);
+            $is_admin = (! in_array($user_id, $ar_pu[$page_id]));
+        }
+            
         return [
-            'token' => $this->getServiceZOpenTok()->createToken($token, '{"id":' . $user_id . '}', OpenTokRole::MODERATOR/* : OpenTokRole::PUBLISHER*/),
+            'token' => $this->getServiceZOpenTok()->createToken($token, '{"id":' . $user_id . '}', ($is_admin ? OpenTokRole::MODERATOR: OpenTokRole::PUBLISHER)),
             'session' => $token,
-            'role' => ($user_id == 3 || $user_id == 7) ? 'admin':'user'
+            'role' => $is_admin ? 'admin':'user'
       ];
     }
 
@@ -316,5 +334,15 @@ class Conversation extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+    
+    /**
+     * Get Service Item
+     *
+     * @return \Application\Service\Item
+     */
+    private function getServiceItem()
+    {
+        return $this->container->get('app_service_item');
     }
 }

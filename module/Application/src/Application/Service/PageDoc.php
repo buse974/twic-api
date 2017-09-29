@@ -47,13 +47,16 @@ class PageDoc extends AbstractService
                     }
     
                     try{
-                        
-                        $url = sprintf("https://gnam.%s/page/course/%s/resources",$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
+                        $prefix = ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_organization->getLibelle())) ? 
+                            $m_organization->getLibelle() : null;
+                        $url = sprintf("https://%s%s/page/course/%s/resources",
+                            ($prefix ? $prefix.'.':''),
+                            $this->container->get('config')['app-conf']['uiurl'],
+                            $m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_coursedoc', $m_user->getEmail(), [
                             'pagename' => $m_page->getTitle(),
                             'firstname' => $m_user->getFirstName(),
-                            'pageurl' => $url,
-                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                            'pageurl' => $url
                         ]);
                         
                         $gcm_notification = new GcmNotification();

@@ -486,12 +486,15 @@ class Page extends AbstractService
                     }
                     
                     try{
-                        $url = sprintf("https://gnam.%s/page/course/%s/timeline",$this->container->get('config')['app-conf']['uiurl'],$tmp_m_page->getId());
+                        
+                        $prefix = ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_organization->getLibelle())) ?
+                        $m_organization->getLibelle() : null;
+                        
+                        $url = sprintf("https://%s%s/page/course/%s/timeline",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$tmp_m_page->getId());
                         $this->getServiceMail()->sendTpl('tpl_coursepublished', $m_user->getEmail(), [
                             'pagename' => $tmp_m_page->getTitle(),
                             'firstname' => $m_user->getFirstName(),
-                            'pageurl' => $url,
-                            'prefix' => ($m_organization !== false && is_string($m_organization->getLibelle()) && ! empty($m_organization->getLibelle())) ? $m_organization->getLibelle() : null,
+                            'pageurl' => $url
                         ]);
                         
                         $gcm_notification = new GcmNotification();
@@ -615,10 +618,10 @@ class Page extends AbstractService
      * @param  int $id
      * @return \Application\Model\Page
      */
-    public function getLite($id)
+    public function getLite($id = null, $conversation_id = null)
     {
 
-        return $this->getMapper()->select($this->getModel()->setId($id))->current();
+        return $this->getMapper()->select($this->getModel()->setId($id)->setConversationId($conversation_id))->current();
     }
     
       /**
