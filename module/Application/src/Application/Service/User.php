@@ -687,33 +687,39 @@ class User extends AbstractService
      */
     public function lostPassword($email)
     {
-        try {
-            $m_user = $this->getMapper()->select($this->getModel()
-                ->setEmail($email)
-                ->setSuspensionDate(new IsNull())
-                ->setDeletedDate(new IsNull()))->current();
+        if(empty($email)) {
+            throw new \Exception("email is empty");
+        }
+        
+        $m_user = $this->getMapper()->select($this->getModel()
+            ->setEmail($email)
+            ->setSuspensionDate(new IsNull())
+            ->setDeletedDate(new IsNull()))->current();
+        
+        if ($m_user !== false) {
+            $uniqid = uniqid($uid . "_" , true);
+            $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
+            $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
             
-            if ($m_user !== false) {
-                $uniqid = uniqid();
-                $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
-                $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
-                
-                $prefix = ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ?
-                $m_page->getLibelle() : null;
+            $prefix = ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ?
+            $m_page->getLibelle() : null;
 
-                $url = sprintf("https://%s%s/newpassword/%s",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$uniqid);
-                $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $email, [
-                    'email' => $email,
+            $url = sprintf("https://%s%s/newpassword/%s",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$uniqid);
+            try {
+                $this->getServiceMail()->sendTpl('tpl_forgotpasswd', $m_user->getEmail(), [
+                    'email' => $m_user->getEmail(),
                     'accessurl' => $url,
                     'uniqid' => $uniqid,
                     'lastname' => $m_user->getLastname(),
                     'firstname' => $m_user->getFirstname()
-                ]);
+            ]);
+            } catch (\Exception $e) {
+                syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode() . ' <URL> ' . $url . ' <Email> ' . $m_user->getEmail());
             }
-        } catch (\Exception $e) {
-            syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+        } else {
+            throw new \Exception("no account with email: ". $email);
         }
-
+        
         return true;
     }
 
