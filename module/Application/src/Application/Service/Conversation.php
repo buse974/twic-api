@@ -89,56 +89,39 @@ class Conversation extends AbstractService
             }
             //TYPE 2 => CHAT   ::: TYPE 1 => CHANNEL
             if ($m_conversation->getType() === ModelConversation::TYPE_CHAT) {
-                if ($user_id === 7 || $user_id === 3) {
-                    $m_conversation->setOptions([
-              "record" => true,
-              "nb_user_autorecord" => 2,
-              "rules" => [
-              "autoPublishCamera"     => true,
-              "autoPublishMicrophone" => true,
-              "archive"               => true,
-              "raiseHand"             => false,
-              "publish"               => true,
-              "askDevice"             => true,
-              "askScreen"             => true,
-              "forceMute"             => true,
-              "forceUnpublish"        => true,
-              "kick"                  => true ]
-            ]);
-                } else {
-                    $m_conversation->setOptions([
-              "record" => true,
-              "nb_user_autorecord" => 2,
-              "rules" => [
-              "autoPublishCamera"     => true,
-              "autoPublishMicrophone" => false,
-              "archive"               => false,
-              "raiseHand"             => false,
-              "publish"               => true,
-              "askDevice"             => false,
-              "askScreen"             => false,
-              "forceMute"             => false,
-              "forceUnpublish"        => false,
-              "kick"                  => false ]
-            ]);
-                }
-            } elseif ($m_conversation->getType() === ModelConversation::TYPE_CHANNEL) {
                 $m_conversation->setOptions([
-            "record" => true,
-             "nb_user_autorecord" => 2,
-             "rules" => [
-            "autoPublishCamera"       => [["roles" => ["admin"]]],
-            "autoPublishMicrophone"   => false,
-            "archive"                 => [["roles" => ["admin"]]],
-            "raiseHand"               => [["roles" => ["user"]]],
-            "publish"                 => [["roles" => ["admin"]]],
-            "askDevice"               => [["roles" => ["admin"]]],
-            "askScreen"               => [["roles" => ["admin"]]],
-            "forceMute"               => [["roles" => ["admin"]]],
-            "forceUnpublish"          => [["roles" => ["admin"]]],
-            "kick"                    => [["roles" => ["admin"]]],
-            ]
-          ]);
+                      "record" => false,
+                      "nb_user_autorecord" => 0,
+                      "rules" => [
+                          "autoPublishCamera"     => true,
+                          "autoPublishMicrophone" => false,
+                          "archive"               => false,
+                          "raiseHand"             => false,
+                          "publish"               => true,
+                          "askDevice"             => false,
+                          "askScreen"             => false,
+                          "forceMute"             => false,
+                          "forceUnpublish"        => false,
+                          "kick"                  => false 
+                      ]
+                ]);               
+            } elseif ($m_conversation->getType() === ModelConversation::TYPE_LIVECLASS) {
+                $m_conversation->setOptions([
+                    "record" => false,
+                    "nb_user_autorecord" => 2,
+                    "rules" => [
+                        "autoPublishCamera"       => [["roles" => ["admin"]]],
+                        "autoPublishMicrophone"   => false,
+                        "archive"                 => [["roles" => ["admin"]]],
+                        "raiseHand"               => [["roles" => ["user"]]],
+                        "publish"                 => [["roles" => ["admin"]]],
+                        "askDevice"               => [["roles" => ["admin"]]],
+                        "askScreen"               => [["roles" => ["admin"]]],
+                        "forceMute"               => [["roles" => ["admin"]]],
+                        "forceUnpublish"          => [["roles" => ["admin"]]],
+                        "kick"                    => [["roles" => ["admin"]]],
+                    ]
+                ]);
             }
         }
 
