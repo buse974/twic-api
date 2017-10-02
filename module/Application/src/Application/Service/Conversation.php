@@ -210,7 +210,7 @@ class Conversation extends AbstractService
         $is_admin = false;
         $res_item = $this->getServiceItem()->getLite(null, $id);
         if($res_item->count() > 0) {
-            $page_id = $res_item->getPageId();
+            $page_id = $res_item->current()->getPageId();
         } else {
             $m_page = $this->getServicePage()->getLite(null, $id);
             if($m_page) {
