@@ -26,8 +26,8 @@ class Message extends BaseMessage
 
         $tpl_model = $this->tpl_storage->read($name);
 
-        $key = array();
-        $value = array();
+        $key = [];
+        $value = [];
         foreach ($datas as $k => $v) {
             $key[] = sprintf('{%s}', $k);
             $value[] = $v;
@@ -37,7 +37,7 @@ class Message extends BaseMessage
         $mimemessage = new MimeMessage();
         foreach ($tpl_model as $m_part) {
             if ($m_part->getIsMappable()) {
-                $m_part->setDatas(array('k' => $key, 'v' => $value));
+                $m_part->setDatas(['k' => $key, 'v' => $value]);
             }
             $parts[] = $m_part;
         }
