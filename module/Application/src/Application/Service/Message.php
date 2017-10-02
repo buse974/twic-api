@@ -43,9 +43,10 @@ class Message extends AbstractService
                 $conversation_id = $this->getServiceConversation()->_create(ModelConversation::TYPE_CHAT, $to);
             }
         } elseif ($conversation_id !== null) {
-            if (!$this->getServiceConversationUser()->isInConversation($conversation_id, $user_id)) {
+            // TODO URGENT TESTE CONVERSATIONUSER OU PAGEUSER OU ITEMUSER SELON LE TYPE 
+            /*if (!$this->getServiceConversationUser()->isInConversation($conversation_id, $user_id)) {
                 throw new \Exception('User '.$user_id.' is not in conversation '.$conversation_id);
-            }
+            }*/
         }
 
         if (empty($text) && empty($library)) {
