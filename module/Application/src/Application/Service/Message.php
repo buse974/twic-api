@@ -74,6 +74,7 @@ class Message extends AbstractService
 
         if($type === ModelConversation::TYPE_LIVECLASS) {
             $m_item = $this->getServiceItem()->getLite(null, $conversation_id)->current();
+            $page_id = $m_item->getPageId();
             if($m_item->getParticipants() === 'all') {
                 $to = $this->getServicePageUser()->getListByPage($page_id)[$page_id];
             }else {
