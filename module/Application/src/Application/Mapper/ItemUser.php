@@ -46,11 +46,18 @@ class ItemUser extends AbstractMapper
         return $this->selectWith($select);
     }
 
-    public function getListUserId($group_id)
+    public function getListUserId($group_id = null, $item_id = null)
     {
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['user_id'])
-            ->where(['item_user.group_id' => $group_id]);
+        $select->columns(['user_id']);
+        
+        if(null !== $group_id) {
+            $select->where(['item_user.group_id' => $group_id]);
+        }
+        if(null !== $item_id) {
+            //TODO CHECK IF MEMBER
+            $select->where(['item_user.item_id' => $item_id]);
+        }
         
         return $this->selectWith($select);
     }

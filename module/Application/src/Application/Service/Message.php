@@ -72,8 +72,16 @@ class Message extends AbstractService
             $message_user_id = $this->getServiceMessageUser()->send($id, $conversation_id, $text, $library);
         }
 
-        $to = $this->getServiceConversationUser()->getListUserIdByConversation($conversation_id);
-
+        if($type === ModelConversation::TYPE_LIVECLASS) {
+            $m_item = $this->getServiceItem()->getLite(null, $conversation_id)->current();
+            if($m_item->getParticipants() === 'all') {
+                $to = $this->getServicePageUser()->getListByPage($page_id)[$page_id];
+            }else {
+                $to = $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
+            }
+        } else {
+            $to = $this->getServiceConversationUser()->getListUserIdByConversation($conversation_id);
+        }
         //marque la conversation no read
         $this->getServiceConversationUser()->noread($conversation_id);
 
@@ -245,6 +253,26 @@ class Message extends AbstractService
         return $this->container->get('app_service_conversation');
     }
 
+    /**
+     * Get Service Item
+     *
+     * @return \Application\Service\Item
+     */
+    private function getServiceItem()
+    {
+        return $this->container->get('app_service_item');
+    }
+    
+    /**
+     * Get Service Page
+     *
+     * @return \Application\Service\Page
+     */
+    private function getServicePage()
+    {
+        return $this->container->get('app_service_page');
+    }
+    
     /**
      * Get Service Library
      *
