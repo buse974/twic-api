@@ -398,18 +398,6 @@ class User extends AbstractService
             ->setEmailSent(0)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
         
-        if (empty($password)) {
-            // $cars = 'azertyiopqsdfghjklmwxcvbn0123456789/*.!:;,....';
-            $cars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            $long = strlen($cars);
-            srand((double) microtime() * 1000000);
-            $password = '';
-            for ($i = 0; $i < 8; ++ $i) {
-                $password .= substr($cars, rand(0, $long - 1), 1);
-            }
-        }
-        $m_user->setPassword(md5($password));
-        
         if ($this->getMapper()->insert($m_user) <= 0) {
             throw new \Exception('error insert');
         }
@@ -697,7 +685,7 @@ class User extends AbstractService
             ->setDeletedDate(new IsNull()))->current();
         
         if ($m_user !== false) {
-            $uniqid = uniqid($uid . "_" , true);
+            $uniqid = uniqid($m_user->getId() . "_" , true);
             $m_page = $this->getServicePage()->getLite($m_user->getOrganizationId());
             $this->getServicePreregistration()->add($uniqid, null, null, null, $m_user->getOrganizationId(), $m_user->getId());
             
