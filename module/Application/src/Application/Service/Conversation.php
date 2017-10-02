@@ -218,10 +218,9 @@ class Conversation extends AbstractService
             }
         }
         
-        print_r("page_id> ".$page_id);
         if(null !== $page_id) {
             $ar_pu = $this->getServicePageUser()->getListByPage($page_id, ModelPageUser::ROLE_ADMIN);
-            $is_admin = (! in_array($user_id, $ar_pu[$page_id]));
+            $is_admin = (in_array($user_id, $ar_pu[$page_id]));
         }
             
         return [
