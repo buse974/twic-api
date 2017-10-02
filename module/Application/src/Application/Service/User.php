@@ -1044,6 +1044,11 @@ class User extends AbstractService
      */
     public function linkedinSignIn($code, $account_token = null)
     {
+        syslog(1, json_encode([
+            'code' => $code,
+            'account_token' => $account_token,
+        ]));
+        
         $identity = $this->getIdentity();
         $linkedin = $this->getServiceLinkedIn();
         $linkedin->init($code);
@@ -1065,12 +1070,28 @@ class User extends AbstractService
                     throw new \Exception('Account token not found.');
                 }
                 
-                if (is_numeric($m_registration->getUserId())) {
-                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $m_registration->getUserId()]);
+                $user_id = $m_registration->getUserId();
+                if (is_numeric($user_id)) {
+                    
+                    syslog(1, json_encode([
+                        'code' => $code,
+                        'account_token' => $account_token,
+                        'user_id' => $user_id,
+                        'type' => 'send ou lost password'
+                    ]));
+                    
+                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
                     $user_id = $m_registration->getUserId();
                 } else {
                     $user_id = $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
                     $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
+                    
+                    syslog(1, json_encode([
+                        'code' => $code,
+                        'account_token' => $account_token,
+                        'user_id' => $user_id,
+                        'type' => 'create compte'
+                    ]));
                 }
                 
                 $m_user = $this->getLite($user_id);
@@ -1078,6 +1099,14 @@ class User extends AbstractService
                 $login = $this->loginLinkedIn($linkedin_id);
                 $this->getServicePreregistration()->delete($account_token, $m_user->getId());
             } else if(is_numeric($identity['id'])){
+                
+                syslog(1, json_encode([
+                    'code' => $code,
+                    'account_token' => $account_token,
+                    'user_id' => $identity['id'],
+                    'type' => 'deja connecté'
+                ]));
+                
                 $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $identity['id']]);
                 $identity['has_linkedin'] = true;
                 
