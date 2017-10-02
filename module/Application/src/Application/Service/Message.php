@@ -274,6 +274,26 @@ class Message extends AbstractService
     }
     
     /**
+     * Get Service ItemUser
+     *
+     * @return \Application\Service\ItemUser
+     */
+    private function getServiceItemUser()
+    {
+        return $this->container->get('app_service_item_user');
+    }
+    
+    /**
+     * Get Service PageUser
+     *
+     * @return \Application\Service\PageUser
+     */
+    private function getServicePageUser()
+    {
+        return $this->container->get('app_service_page_user');
+    }
+    
+    /**
      * Get Service Library
      *
      * @return \Application\Service\Library
