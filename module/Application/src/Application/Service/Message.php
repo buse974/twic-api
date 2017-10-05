@@ -74,6 +74,7 @@ class Message extends AbstractService
 
         if($type === ModelConversation::TYPE_LIVECLASS) {
             $m_item = $this->getServiceItem()->getLite(null, $conversation_id)->current();
+            $page_id = $m_item->getPageId();
             if($m_item->getParticipants() === 'all') {
                 $to = $this->getServicePageUser()->getListByPage($page_id)[$page_id];
             }else {
@@ -271,6 +272,26 @@ class Message extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+    
+    /**
+     * Get Service ItemUser
+     *
+     * @return \Application\Service\ItemUser
+     */
+    private function getServiceItemUser()
+    {
+        return $this->container->get('app_service_item_user');
+    }
+    
+    /**
+     * Get Service PageUser
+     *
+     * @return \Application\Service\PageUser
+     */
+    private function getServicePageUser()
+    {
+        return $this->container->get('app_service_page_user');
     }
     
     /**
