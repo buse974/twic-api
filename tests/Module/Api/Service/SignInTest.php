@@ -134,6 +134,7 @@ class SignInTest extends AbstractService
             'password' => 'tutu'
         ]);
         
+        print_r($data);
         $this->assertEquals(count($data) , 3);
         $this->assertEquals($data['id'] , 1);
         $this->assertEquals(count($data['result']) , 16);
