@@ -81,7 +81,7 @@ class Fcm extends AbstractService
             $gcm_message = new GcmMessage();
             $gcm_message->setNotification($notification)
                 ->setPriority("high")
-                ->setData($data);
+                ->setData($data?:[]);
 
             if ($nbTo > 1) {
                 $gcm_message->setRegistrationIds($register_ids);

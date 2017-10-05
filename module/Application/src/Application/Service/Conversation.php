@@ -77,21 +77,21 @@ class Conversation extends AbstractService
                 $m_conversation->setMessage($this->getServiceMessage()->get($message_id));
             }
 
-           
-            $m_page = $this->getServicePage()->getByConversationId($id);
             $ar_uid = null;
             if($m_conversation->getType() === ModelConversation::TYPE_LIVECLASS) {
-                $m_item = $this->getServiceItem()->getLite(null, $m_conversation->getId())->current();
+                $m_item = $this->getServiceItem()->getLite(null, $id)->current();
+                $page_id = $m_item->getPageId();
                 if($m_item->getParticipants() === 'all') {
-                    $ar_uid = $this->getServicePageUser()->getListByPage($m_page->getId())[$m_page->getId()];
+                    $ar_uid = $this->getServicePageUser()->getListByPage($page_id)[$page_id];
                 }else {
                     $ar_uid = $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
                 }
             } else {
-                $ar_uid = $this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId());
+                $ar_uid = $this->getServiceConversationUser()->getListUserIdByConversation($id);
             }
             $m_conversation->setUsers($ar_uid);
-
+            
+            $m_page = $this->getServicePage()->getByConversationId($id);
             if ($m_page) {
                 $role = $this->getServicePageUser()->getRole($m_page->getId());
                 if ($role) {
