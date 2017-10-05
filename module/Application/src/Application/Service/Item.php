@@ -258,12 +258,11 @@ class Item extends AbstractService
         
         if (null !== $page_id) {
             if (! is_array($page_id)) {
-                $page_id = [
-                    $page_id
-                ];
+                $page_id = [$page_id];
             }
             
             foreach ($page_id as $p_id) {
+                $ar_item[$p_id] = [];
                 $ar_pu = $this->getServicePageUser()->getListByPage($p_id, 'admin');
                 $is_admin_page = (in_array($identity['id'], $ar_pu[$p_id]));
                 
