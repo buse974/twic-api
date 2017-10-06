@@ -307,7 +307,7 @@ class Page extends AbstractMapper
     {
         $grades_select =  $this->getGradesSelect($id);
         $sub_select = new Select();
-        $sub_select->columns(['average', 'user_id' => 'item_user$user_id'])
+        $sub_select->columns(['average' => new Expression('AVG(average)'), 'user_id' => 'item_user$user_id'])
             ->from(['g' => $grades_select])
             ->group('item_user$user_id');
         $select = $this->tableGateway->getSql()->select();
@@ -327,10 +327,10 @@ class Page extends AbstractMapper
     {
         $grades_select =  $this->getGradesSelect($id);
         $sub_select = new Select();
-        $sub_select->columns(['average', 'user_id' => 'item_user$user_id'])
+        $sub_select->columns(['average' => new Expression('AVG(average)'), 'user_id' => 'item_user$user_id'])
             ->from(['g' => $grades_select])
             ->group('item_user$user_id')
-            ->order('g.average DESC');
+            ->order('average DESC');
         $sub_select2 = new Select();
         $sub_select2->from(['avg' => $sub_select])
              ->columns(['average', 'user_id'])
@@ -343,6 +343,7 @@ class Page extends AbstractMapper
                 ->where(['page.id' => $id])
                 ->group('t1.average');
 
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 }
