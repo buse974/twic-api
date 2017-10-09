@@ -249,7 +249,7 @@ class PageUser extends AbstractService
                     'type' => $m_page->getType(),
                     ],
                     'member',
-                        ['M'.$user_id]/*sub*/, /*['M'.$user_id, 'PU'.$user_id]/*sub*/,
+                    ['M'.$user_id],/*sub ['M'.$user_id, 'PU'.$user_id]/*sub*/
                     null/*parent*/,
                     null/*page*/,
                     $user_id/*user*/,
