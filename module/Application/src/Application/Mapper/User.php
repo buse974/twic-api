@@ -83,7 +83,8 @@ class User extends AbstractMapper
       $contact_state = null,
       $only_nosend_email = null,
       $role = null,
-      $conversation_id = null
+      $conversation_id = null,
+      $page_type = null
     ) {
         $select = $this->tableGateway->getSql()->select();
         if ($is_admin) {
@@ -140,11 +141,6 @@ class User extends AbstractMapper
             ->where(['post_like.post_id' => $post_id])
             ->where(['post_like.is_like IS TRUE']);
         }
-        if (!empty($page_id)) {
-            $select->join('page_user', 'page_user.user_id=user.id', [])
-            ->join('page', 'page_user.page_id=page.id', [])
-            ->where(['page_user.page_id' => $page_id]);
-        }
         if (!empty($conversation_id)) {
             $select->join('conversation_user', 'conversation_user.user_id=user.id', [])
             ->where(['conversation_user.conversation_id' => $conversation_id]);
@@ -164,12 +160,22 @@ class User extends AbstractMapper
                 $select->having('user$contact_state IS NULL', Predicate::OP_OR);
             }
         }
-
-        if (!empty($role)) {
+        if (!empty($role) || !empty($page_type) || !empty($page_id)) {
             $select->join(['pu' => 'page_user'], 'pu.user_id=user.id', [])
-            ->join(['p' => 'page'], 'pu.page_id=p.id', [])
-            ->where(['pu.role' => $role])
-            ->where(['p.type' => 'course']);
+             ->join(['p' => 'page'], 'pu.page_id=p.id', []);
+        }
+        
+        if (!empty($page_id)) {
+            $select->where(['pu.page_id' => $page_id]);
+        }
+        if (!empty($role)) {
+            if(null === $page_type){
+                $page_type = 'course';
+            }
+            $select->where(['pu.role' => $role]);
+        }
+        if(!empty($page_type)){
+           $select->where(['p.type' => $page_type]);
         }
         return $this->selectWith($select);
     }
