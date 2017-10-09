@@ -80,12 +80,9 @@ class Conversation extends AbstractService
             $ar_uid = null;
             if($m_conversation->getType() === ModelConversation::TYPE_LIVECLASS) {
                 $m_item = $this->getServiceItem()->getLite(null, $id)->current();
-                $page_id = $m_item->getPageId();
-                if($m_item->getParticipants() === 'all') {
-                    $ar_uid = $this->getServicePageUser()->getListByPage($page_id)[$page_id];
-                }else {
-                    $ar_uid = $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
-                }
+                $ar_uid = ($m_item->getParticipants() === 'all') ?
+                    $this->getServicePageUser()->getListByPage($m_item->getPageId())[$m_item->getPageId()] :
+                    $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
             } else {
                 $ar_uid = $this->getServiceConversationUser()->getListUserIdByConversation($id);
             }
@@ -121,7 +118,8 @@ class Conversation extends AbstractService
                     "record" => false,
                     "nb_user_autorecord" => 2,
                     "rules" => [
-                        "autoPublishCamera"       => [["roles" => ["admin"]]],
+                        "autoPublishCamera"       => true,
+                        //"autoPublishCamera"       => [["roles" => ["admin"]]],
                         "autoPublishMicrophone"   => false,
                         "archive"                 => [["roles" => ["admin"]]],
                         "raiseHand"               => [["roles" => ["user"]]],

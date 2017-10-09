@@ -110,41 +110,23 @@ class PageUser extends AbstractService
                 
                 // Si il n'est pas le propriétaire on lui envoie une notification
                 if ($m_page->getUserId() !== $uid) {
-                    if ($m_page->getConfidentiality() == ModelPage::CONFIDENTIALITY_PUBLIC && ModelPage::TYPE_ORGANIZATION !== $m_page->getType()) {
-                        $this->getServicePost()->addSys(
-                            'PPM'.$page_id.'_'.$uid,
-                            '',
-                            [
-                            'state' => 'member',
-                            'user' => $uid,
-                            'page' => $page_id,
-                            'type' => $m_page->getType(),
-                          ],
-                            'member',
-                            ['M'.$uid, 'PU'.$uid]/*sub*/,
-                            null/*parent*/,
-                            $page_id/*page*/,
-                            $uid/*user*/,
-                            'page'
-                        );
-                    } else {
-                        $this->getServicePost()->addSys(
-                            'PPM'.$page_id.'_'.$uid,
-                            '',
-                            [
-                            'state' => 'member',
-                            'user' => $uid,
-                            'page' => $page_id,
-                            'type' => $m_page->getType(),
-                          ],
-                            'member',
-                            ['M'.$uid]/*sub*/,
-                            null/*parent*/,
-                            $page_id/*page*/,
-                            $uid/*user*/,
-                            'page'
-                        );
-                    }
+                    $this->getServicePost()->addSys(
+                        'PPM'.$page_id.'_'.$uid,
+                        '',
+                        [
+                        'state' => 'member',
+                        'user' => $uid,
+                        'page' => $page_id,
+                        'type' => $m_page->getType(),
+                      ],
+                        'member',
+                        ['M'.$uid]/*sub*/,
+                        null/*parent*/,
+                        $page_id/*page*/,
+                        $uid/*user*/,
+                        'page'
+                    );
+                    
                     /*
                                         $this->getServiceFcm()->send(
                                             $uid, [
@@ -267,7 +249,7 @@ class PageUser extends AbstractService
                     'type' => $m_page->getType(),
                     ],
                     'member',
-                    ['M'.$user_id, 'PU'.$user_id]/*sub*/,
+                        ['M'.$user_id]/*sub*/, /*['M'.$user_id, 'PU'.$user_id]/*sub*/,
                     null/*parent*/,
                     null/*page*/,
                     $user_id/*user*/,

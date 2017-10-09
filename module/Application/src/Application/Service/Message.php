@@ -144,9 +144,10 @@ class Message extends AbstractService
             }
         }
         
-        return [
+      return [
         'message_id' => $id,
-        'conversation_id' => $conversation_id
+        'conversation_id' => $conversation_id,
+        'to' => $to,
       ];
     }
 
