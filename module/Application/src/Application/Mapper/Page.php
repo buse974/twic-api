@@ -298,6 +298,7 @@ class Page extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
     /**
      * Execute Request Get users avgs for an organization
      *
@@ -311,13 +312,35 @@ class Page extends AbstractMapper
             ->from(['g' => $grades_select])
             ->group('item_user$user_id');
         $select = $this->tableGateway->getSql()->select();
-        $select->columns(['id', 'page$average' => new Expression('t1.average')])
+        $select->columns(['id', 'page$average' => 't1.average'])
                 ->join(['t1' => $sub_select], new Expression('1'), ['page$user_id' => 'user_id'])
                 ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('@rownum:=@rownum+1')])
                 ->where(['page.id' => $id]);
-
         return $this->selectWith($select);
     }
+    
+     /**
+     * Execute Request Get users avgs for an organization
+     *
+     * @param  int $id
+     * @param  int $user_id
+     */
+    public function getUserGrades($id, $user_id)
+    {
+        $grades_select =  $this->getGradesSelect($id);
+        $sub_select = new Select();
+        $sub_select->columns(['average' => 'average', 'user_id' => 'item_user$user_id',  'page_id' => 'item$page_id'])
+            ->from(['g' => $grades_select])
+            ->where(['item_user$user_id ' => $user_id ]);
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([ 'page$id' => 't1.page_id', 'page$average' => 't1.average'])
+                ->join(['t1' => $sub_select], new Expression('1'), [])
+                ->join(['r' => new Expression('(SELECT @rownum:=0)')], new Expression('1'), ['row_number' => new Expression('@rownum:=@rownum+1')])
+                ->where(['page.id' => $id]);
+        
+        return $this->selectWith($select);
+    }
+    
     /**
      * Execute Request Get users percentiles for an organization
      *
@@ -343,7 +366,6 @@ class Page extends AbstractMapper
                 ->where(['page.id' => $id])
                 ->group('t1.average');
 
-        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 }

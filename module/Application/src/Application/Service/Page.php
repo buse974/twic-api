@@ -702,6 +702,26 @@ class Page extends AbstractService
 
         return [ 'list' => $res_grades, 'count' => $this->getMapper()->count() ];
     }
+    
+     /**
+    * Get user grades per pages
+    *
+    * @invokable
+    *
+    * @param  int $id
+    * @param  int $user_id
+    */
+    public function getUserGrades($id, $user_id)
+    {
+        if(!is_array($user_id)){
+            $user_id = [$user_id];
+        }
+        $var_grades = [];
+        foreach($user_id as $u){
+            $var_grades[$u] = $this->getMapper()->getUserGrades($id, $u);
+        }
+        return $var_grades;
+    }
 
     /**
      * Get Page
