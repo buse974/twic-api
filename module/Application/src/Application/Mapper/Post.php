@@ -59,7 +59,7 @@ class Post extends AbstractMapper
         if($is_admin === true) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['( ( post.uid IS NOT NULL AND (subscription.user_id = ? ' => $me_id])
-                ->where(['  post_subscription.libelle = ?) ) OR post.uid IS NOT NULL ) ' => 'M'.$me_id], Predicate::OP_OR)
+                ->where(['  post_subscription.libelle = ?) ) OR post.uid IS NULL ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
         }
         if (null !== $user_id) {
