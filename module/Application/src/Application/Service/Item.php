@@ -4,6 +4,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use ZendService\Google\Gcm\Notification as GcmNotification;
 use Application\Model\Item as ModelItem;
+use Application\Model\Role as ModelRole;
 use Dal\Db\ResultSet\ResultSet;
 use Application\Model\Conversation as ModelConversation;
 
@@ -222,7 +223,8 @@ class Item extends AbstractService
         }
         
         $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
-        $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id]));
+        $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        
         $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id, $is_publish);
         
         $index = ($parent_id === null) ? $page_id : $parent_id;

@@ -75,7 +75,7 @@ class Item extends AbstractMapper
           ->join('item_user', new \Zend\Db\Sql\Predicate\Expression('item_user.item_id=item.id AND item_user.deleted_date IS NULL'), [], $select::JOIN_LEFT)
           ->where(['page_user.user_id' => $me])
           ->where(['page_user.state' => 'member'])
-          ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC') OR  `item`.`points` IS NOT NULL )"])
+          ->where(["( `item`.`type` IN ('A', 'QUIZ', 'DISC', 'GA') OR  `item`.`points` IS NOT NULL )"])
           ->where(['item.is_published IS TRUE'])
           ->order('item.page_id ASC')
           ->order('item.order ASC')
@@ -189,8 +189,8 @@ class Item extends AbstractMapper
         }
 
         $select->where(['item.page_id' => $page_id])->where(['item.id <> ?' => $id])
-      ->order('order DESC')
-      ->limit(1);
+            ->order('order DESC')
+            ->limit(1);
 
         return $this->selectWith($select);
     }
@@ -199,8 +199,8 @@ class Item extends AbstractMapper
     {
         $update = $this->tableGateway->getSql()->update();
         $update->set(['order' => new Expression('`item`.`order`+1')])
-      ->where(['`item`.`order` >= ? ' => $order])
-      ->where(['page_id' => $page_id]);
+            ->where(['`item`.`order` >= ? ' => $order])
+            ->where(['page_id' => $page_id]);
 
         if (is_numeric($parent_id)) {
             $update->where(['item.parent_id' => $parent_id]);

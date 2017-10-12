@@ -54,6 +54,14 @@ class Post extends AbstractMapper
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
         }
+        
+        // si c un admin studnet on enleve les type notifs les notif on tous des uid
+        if($is_admin === true) {
+            $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
+                ->where(['( ( post.uid IS NOT NULL AND (subscription.user_id = ? ' => $me_id])
+                ->where(['  post_subscription.libelle = ?) ) OR post.uid IS NOT NULL ) ' => 'M'.$me_id], Predicate::OP_OR)
+                ->where(['post.parent_id IS NULL']);
+        }
         if (null !== $user_id) {
             $select->where(['post.t_user_id' => $user_id]);
         }
