@@ -9,7 +9,7 @@ use Zend\Db\Sql\Predicate\Predicate;
 
 class Post extends AbstractMapper
 {
-    public function getListId($me_id, $page_id = null, $user_id = null, $parent_id = null, $is_item = null)
+    public function getListId($me_id, $page_id = null, $user_id = null, $parent_id = null, $is_item = null, $is_admin = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $columns = ['post$id' => new Expression('post.id')];
@@ -46,19 +46,18 @@ class Post extends AbstractMapper
         if (true === $is_item) {
             $select->where(['item.id IS NOT NULL']);
         }
-        if (null === $parent_id) {
+        if (null !== $parent_id) {
+            $select->where(['post.parent_id' => $parent_id]);
+        } else if($is_admin !== true){
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['(subscription.user_id = ? ' => $me_id])
-              //  ->where(['( subscription.user_id IS NULL AND post.user_id = ? )' => $me_id], Predicate::OP_OR) // on ce sait pas a koi ca sert
                 ->where(['  post_subscription.libelle = ? ) ' => 'M'.$me_id], Predicate::OP_OR)
                 ->where(['post.parent_id IS NULL']);
         }
         if (null !== $user_id) {
             $select->where(['post.t_user_id' => $user_id]);
         }
-        if (null !== $parent_id) {
-            $select->where(['post.parent_id' => $parent_id]);
-        }
+        
         if (null !== $page_id) {
             $select->where(['post.t_page_id' => $page_id]);
         }

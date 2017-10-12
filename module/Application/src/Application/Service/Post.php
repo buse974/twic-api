@@ -497,15 +497,15 @@ class Post extends AbstractService
      */
     public function getListId($filter = null, $user_id = null, $page_id = null, $parent_id = null, $is_item = null)
     {
-        $me = $this->getServiceUser()->getIdentity()['id'];
+        $identity = $this->getServiceUser()->getIdentity();
         $mapper = (null !== $filter) ?
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
 
-        $res_posts = $mapper->getListId($me, $page_id, $user_id, $parent_id, $is_item);
+       $res_posts = $mapper->getListId($identity['id'], $page_id, $user_id, $parent_id, $is_item, (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles'])));
 
         return (null !== $filter) ?
-            ['count' => $mapper->count(), 'list' => $res_posts]:
+            ['count' => $mapper->count(), 'list' => $res_posts] :
             $res_posts;
     }
 
