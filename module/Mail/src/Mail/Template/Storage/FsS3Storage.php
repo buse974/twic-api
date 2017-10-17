@@ -52,7 +52,7 @@ class FsS3Storage extends AbstractStorage
 
         default:
           $model = unserialize(file_get_contents($this->path.$name.'.obj'));
-          $model =  $this->cache->setItem('tpl_mail_'.$name, $model);
+          $this->cache->setItem('tpl_mail_'.$name, $model);
           $this->cache_tpl[$name] = $model;
           break;
       }
