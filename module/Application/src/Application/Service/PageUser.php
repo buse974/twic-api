@@ -31,12 +31,26 @@ class PageUser extends AbstractService
      * @param  int|array $user_id
      * @param  string    $role
      * @param  string    $state
+     * @param  string    $email
      * @return int
      */
-    public function add($page_id, $user_id, $role, $state)
+    public function add($page_id, $user_id, $role, $state, $email = null)
     {
         if (!is_array($user_id)) {
             $user_id = [$user_id];
+        }
+        
+        if(null !== $email){
+            $new_accounts = [];
+            if (!is_array($email)) {
+                $email = [$email];
+            }
+            foreach($email as $e){
+                $id = $this->getServiceUser()->add(null, null, $e, null, null, null, null, null, null, null, $page_id);
+                $user_id[] = $id;
+                $new_accounts[] = $id;
+            }
+            //$this->getServiceUser()->sendPassword($new_accounts);
         }
 
         $m_page_user = $this->getModel()

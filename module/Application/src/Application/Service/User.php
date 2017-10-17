@@ -109,7 +109,7 @@ class User extends AbstractService
         return $identity;
     }
 
-    // //////////////// EXTERNAL METHODE ///////////////////
+    // //////////////// EXTERNAL METHOD ///////////////////
     
     /**
      * Log In User.
@@ -750,7 +750,7 @@ class User extends AbstractService
             $prefix = ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ?
             $m_page->getLibelle() : null;
             
-            $url = sprintf("https://%s%s/signin/%s",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$uniqid);
+            $url = sprintf("https://%s%s/signin/%s/%d",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$uniqid, !$m_user->getIsActive());
              try {
                 $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
                     'uniqid' => $uniqid,
@@ -812,6 +812,21 @@ class User extends AbstractService
             ->setId($id));
         
         return (is_array($id)) ? $res_user : $res_user->current();
+    }
+    
+    /**
+     *
+     * Check if an account token is valid
+     * 
+     * @invokable
+     * @param string $token
+     * @return \Dal\Db\ResultSet\ResultSet|\Application\Model\User
+     */
+    public function checkAccountToken($token)
+    {
+        $res_user = $this->getMapper()->checkAccountToken($token);
+        
+        return $res_user->current();
     }
 
     /**
@@ -897,6 +912,45 @@ class User extends AbstractService
             'list' => $users,
             'count' => $mapper->count()
         ];
+    }
+    
+    /**
+     * Get User Id
+     *
+     * @invokable
+     *
+     * @param array|string $email
+     *
+     * @return array
+     */
+    public function getListIdByEmail($email)
+    {
+        
+        if(!is_array($email)){
+            $email = [$email];
+        }
+        
+        if(count($email) === 0){
+            return null;
+        }
+        $identity = $this->getIdentity();
+      
+        
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $mapper = $this->getMapper();
+        $res_user = $mapper->getList($identity['id'], $is_admin, null, null, null, null, null, null, null, null, null, null, $email );
+        
+        $users = [];
+        foreach ($res_user as $m_user) {
+            $users[$m_user->getEmail()] = $m_user->getId();
+        }
+        foreach($email as $e){
+            if(!isset($users[$e])){
+                $users[$e] = null;
+            }
+        }
+        
+        return $users;
     }
 
     /**
@@ -1001,7 +1055,7 @@ class User extends AbstractService
      * @param string $account_token
      * @param string $password
      */
-    public function signIn($account_token, $password)
+    public function signIn($account_token, $password, $firstname = null, $lastname = null)
     {
         $m_registration = $this->getServicePreregistration()->get($account_token);
         if (false === $m_registration) {
@@ -1010,6 +1064,9 @@ class User extends AbstractService
         
         if (is_numeric($m_registration->getUserId())) {
             $this->getMapper()->update($this->getModel()
+                ->setFirstname($firstname)
+                ->setLastname($lastname)
+                ->setIsActive(1)
                 ->setPassword(md5($password)), [
                 'id' => $m_registration->getUserId()
             ]);
@@ -1019,6 +1076,9 @@ class User extends AbstractService
         }
         
         $m_user = $this->getLite($user_id);
+        if(null !== $m_user->getOrganizationId()){
+            $this->getServicePageUser()->update($m_user->getOrganizationId(), $user_id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
+        }
         $login = $this->login($m_user->getEmail(), $password);
         $this->getServicePreregistration()->delete($account_token, $m_user->getId());
         
@@ -1047,6 +1107,7 @@ class User extends AbstractService
         if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
         }
+        syslog(1, json_encode($m_people));
         
         $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
         
@@ -1058,7 +1119,8 @@ class User extends AbstractService
                 if (false === $m_registration) {
                     throw new \Exception('Account token not found.');
                 }
-                
+                $firstname = $m_registration->getFirstname() !== null ? $m_registration->getFirstname() : $people->getFirstname();
+                $lastname = $m_registration->getLastname() !== null ? $m_registration->getLastname() : $people->getLastname();
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
@@ -1068,11 +1130,14 @@ class User extends AbstractService
                         'user_id' => $user_id,
                         'type' => 'send ou lost password'
                     ]));
-                    
-                    $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
+                    $m_user = $this->getModel();
+                    if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
+                        $m_user->setFirstname($firstname)->setLastname($lastname);
+                    }
+                    $this->getMapper()->update($m_user->setLinkedinId($linkedin_id), ['id' => $user_id]);
                     $user_id = $m_registration->getUserId();
                 } else {
-                    $user_id = $this->add($m_registration->getFirstname(), $m_registration->getLastname(), $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
+                    $user_id = $this->add($firstname, $lastname, $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
                     $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
                     
                     syslog(1, json_encode([

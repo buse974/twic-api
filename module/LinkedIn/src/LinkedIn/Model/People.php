@@ -37,7 +37,7 @@ class People extends AbstractModel
     /**
      * @return string
      */
-    public function getFirst_name()
+    public function getFirstname()
     {
         return $this->first_name;
     }
@@ -45,7 +45,7 @@ class People extends AbstractModel
     /**
      * @return string
      */
-    public function getLastName()
+    public function getLastname()
     {
         return $this->last_name;
     }
@@ -69,7 +69,7 @@ class People extends AbstractModel
     /**
      * @return string 
      */
-    public function getPhoneticFirstName()
+    public function getPhoneticFirstname()
     {
         return $this->phonetic_first_name;
     }
@@ -77,7 +77,7 @@ class People extends AbstractModel
     /**
      * @return string 
      */
-    public function getPhoneticLastName()
+    public function getPhoneticLastname()
     {
         return $this->phonetic_last_name;
     }
@@ -215,7 +215,7 @@ class People extends AbstractModel
     /**
      * @param string $first_name
      */
-    public function setFirstName($first_name)
+    public function setFirstname($first_name)
     {
         $this->first_name = $first_name;
         
@@ -225,7 +225,7 @@ class People extends AbstractModel
     /**
      * @param string $last_name
      */
-    public function setLastName($last_name)
+    public function setLastname($last_name)
     {
         $this->last_name = $last_name;
         
@@ -255,7 +255,7 @@ class People extends AbstractModel
     /**
      * @param string $phonetic_first_name
      */
-    public function setPhoneticFirstName($phonetic_first_name)
+    public function setPhoneticFirstname($phonetic_first_name)
     {
         $this->phonetic_first_name = $phonetic_first_name;
         
@@ -265,7 +265,7 @@ class People extends AbstractModel
     /**
      * @param string $phonetic_last_name
      */
-    public function setPhoneticLastName($phonetic_last_name)
+    public function setPhoneticLastname($phonetic_last_name)
     {
         $this->phonetic_last_name = $phonetic_last_name;
         

@@ -179,6 +179,9 @@ class Page extends AbstractService
 
         $is_present = false;
         foreach ($users as $ar_u) {
+            if(isset($ar_u['user_email'])){
+               $ar_u['user_id'] = $this->getServiceUser()->add(null, null, $ar_u['user_email'], null, null, null, null, null, null, null, $id);
+            }
             if ($ar_u['user_id'] === $m_page->getOwnerId()) {
                 $is_present = true;
                 $ar_u['role'] = ModelPageUser::ROLE_ADMIN;
@@ -409,6 +412,9 @@ class Page extends AbstractService
         if (null !== $users) {
             $is_present = false;
             foreach ($users as $ar_u) {
+                if(isset($ar_u['user_email'])){
+                   $ar_u['user_id'] = $this->getServiceUser()->add(null, null, $ar_u['user_email'], null, null, null, null, null, null, null, $id);
+                }
                 if ($ar_u['user_id'] === $m_page->getOwnerId()) {
                     $is_present = true;
                     $ar_u['role'] = ModelPageUser::ROLE_ADMIN;

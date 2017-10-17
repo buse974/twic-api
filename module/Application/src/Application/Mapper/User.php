@@ -84,7 +84,8 @@ class User extends AbstractMapper
       $only_nosend_email = null,
       $role = null,
       $conversation_id = null,
-      $page_type = null
+      $page_type = null,
+      $email = null
     ) {
         $select = $this->tableGateway->getSql()->select();
         if ($is_admin) {
@@ -177,6 +178,12 @@ class User extends AbstractMapper
         if(!empty($page_type)){
            $select->where(['p.type' => $page_type]);
         }
+        if(!empty($email)){
+           $select->where(['user.email' => $email]);
+        }
+        else{
+            $select->where(['user.is_active' => 1]);
+        }
         return $this->selectWith($select);
     }
 
@@ -209,6 +216,22 @@ class User extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+      /**
+     * Check if an account token is valid
+     * @param  string $token
+     * 
+     *
+     * @return \Zend\Db\Sql\Select
+     */
+    public function checkAccountToken($token){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['is_active'])
+            ->join('preregistration', 'preregistration.user_id = user.id', [])
+            ->where(['preregistration.account_token' => $token]);
+        
+        return $this->selectWith($select);
+    }
 
     /**
      * Get Select Objet for Contact State
@@ -232,6 +255,8 @@ class User extends AbstractMapper
 
         return $select;
     }
+    
+  
 
     /**
      * Get Select Objet for Contact Count
