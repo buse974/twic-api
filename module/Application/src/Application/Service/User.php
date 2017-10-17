@@ -1107,7 +1107,6 @@ class User extends AbstractService
         if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
         }
-        syslog(1, json_encode($m_people));
         
         $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
         
