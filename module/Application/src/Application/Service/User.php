@@ -1107,11 +1107,17 @@ class User extends AbstractService
         if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
         }
-        syslog(1, json_encode($m_people));
         
         $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
         
         if ($res_user->count() > 0) { // utilisateur existe on renvoye une session
+            $m_user = $res_user->current();
+            if($m_user->getIsActive() === 0){
+                $this->getMapper()->update($m_user->setFirstname($m_people->getFirstname())->setLastName($m_people->getLastname())->setIsActive(1));
+                if(null !== $m_user->getOrganizationId()){
+                    $this->getServicePageUser()->update($m_user->getOrganizationId(), $m_user->getId(), ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
+                }
+            }
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // utilisateur existe pas
             if (null !== $account_token) { // SI pas connecter
