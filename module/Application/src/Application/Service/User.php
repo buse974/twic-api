@@ -756,8 +756,8 @@ class User extends AbstractService
                     'uniqid' => $uniqid,
                     'email' => $m_user->getEmail(),
                     'accessurl' => $url,
-                    'lastname' => $m_user->getLastname(),
-                    'firstname' => $m_user->getFirstname()
+                    'lastname' => $m_user->getLastname()!== null ? $m_user->getLastname() : "",
+                    'firstname' => $m_user->getFirstname() !== null ? $m_user->getFirstname() : ""
                 ]);
                 $this->getMapper()->update($this->getModel()->setEmailSent(true), ['id' => $uid]);
                 $nb++;
@@ -1107,6 +1107,7 @@ class User extends AbstractService
         if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
         }
+        syslog(1, json_encode($m_people));
         
         $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
         
