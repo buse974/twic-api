@@ -698,8 +698,8 @@ class User extends AbstractService
                     'email' => $m_user->getEmail(),
                     'accessurl' => $url,
                     'uniqid' => $uniqid,
-                    'lastname' => $m_user->getLastname(),
-                    'firstname' => $m_user->getFirstname()
+                    'lastname' => $m_user->getLastname() instanceof IsNull ? "" : $m_user->getLastname() ,
+                    'firstname' => $m_user->getFirstname() instanceof IsNull ? "" : $m_user->getFirstname()
             ]);
             } catch (\Exception $e) {
                 syslog(1, 'Model name does not exist <> uniqid is : ' . $uniqid . ' <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode() . ' <URL> ' . $url . ' <Email> ' . $m_user->getEmail());
@@ -756,8 +756,8 @@ class User extends AbstractService
                     'uniqid' => $uniqid,
                     'email' => $m_user->getEmail(),
                     'accessurl' => $url,
-                    'lastname' => $m_user->getLastname()!== null ? $m_user->getLastname() : "",
-                    'firstname' => $m_user->getFirstname() !== null ? $m_user->getFirstname() : ""
+                    'lastname' => $m_user->getLastname() instanceof IsNull ? "" : $m_user->getLastname(),
+                    'firstname' => $m_user->getFirstname() instanceof IsNull ? "" : $m_user->getFirstname()
                 ]);
                 $this->getMapper()->update($this->getModel()->setEmailSent(true), ['id' => $uid]);
                 $nb++;
