@@ -987,7 +987,7 @@ class User extends AbstractService
         
         foreach ($id as $i) {
             $m_user = $this->getModel();
-            $m_user->setId($i)->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'));
+            $m_user->setId($i)->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setIsActive(0);
             
             $ret[$i] = $this->getMapper()->update($m_user);
         }
@@ -1119,8 +1119,8 @@ class User extends AbstractService
                 if (false === $m_registration) {
                     throw new \Exception('Account token not found.');
                 }
-                $firstname = $m_registration->getFirstname() !== null ? $m_registration->getFirstname() : $people->getFirstname();
-                $lastname = $m_registration->getLastname() !== null ? $m_registration->getLastname() : $people->getLastname();
+                $firstname = $m_registration->getFirstname() instanceof IsNull ? $m_people->getFirstname() : $m_registration->getFirstname();
+                $lastname = $m_registration->getLastname() instanceof IsNull  ? $m_people->getLastname() : $m_registration->getLastname();
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
