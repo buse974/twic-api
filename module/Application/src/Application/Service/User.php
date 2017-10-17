@@ -750,7 +750,7 @@ class User extends AbstractService
             $prefix = ($m_page !== false && is_string($m_page->getLibelle()) && !empty($m_page->getLibelle())) ?
             $m_page->getLibelle() : null;
             
-            $url = sprintf("https://%s%s/signin/%s/%d",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$uniqid, !$m_user->getIsActive());
+            $url = sprintf("https://%s%s/signin/%s",($prefix ? $prefix.'.':''),  $this->container->get('config')['app-conf']['uiurl'],$uniqid);
              try {
                 $this->getServiceMail()->sendTpl('tpl_sendpasswd', $m_user->getEmail(), [
                     'uniqid' => $uniqid,
@@ -1130,11 +1130,11 @@ class User extends AbstractService
                         'user_id' => $user_id,
                         'type' => 'send ou lost password'
                     ]));
-                    $m_user = $this->getModel();
+                    $m_user = $this->getModel()->setId($user_id);
                     if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
                         $m_user->setFirstname($firstname)->setLastname($lastname);
                     }
-                    $this->getMapper()->update($m_user->setLinkedinId($linkedin_id), ['id' => $user_id]);
+                    $this->getMapper()->update($m_user->setLinkedinId($linkedin_id));
                     $user_id = $m_registration->getUserId();
                 } else {
                     $user_id = $this->add($firstname, $lastname, $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
