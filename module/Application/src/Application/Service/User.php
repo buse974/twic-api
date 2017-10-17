@@ -987,7 +987,7 @@ class User extends AbstractService
         
         foreach ($id as $i) {
             $m_user = $this->getModel();
-            $m_user->setId($i)->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setIsActive(0);
+            $m_user->setId($i)->setDeletedDate((new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s'))->setIsActive(0)->setLinkedinId(new IsNull());
             
             $ret[$i] = $this->getMapper()->update($m_user);
         }
