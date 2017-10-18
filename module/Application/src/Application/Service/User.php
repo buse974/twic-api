@@ -1108,9 +1108,9 @@ class User extends AbstractService
             throw new \Exception('Error LinkedIn Id');
         }
         echo "START\n";
-        echo json_encode($m_people);
+        echo json_encode($m_people)."\n";
         
-        $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
+        $res_user = $this->getMapper()->select($this->getModel()->setIsActive(1)->setLinkedinId($linkedin_id));
         
         if ($res_user->count() > 0) { // utilisateur existe on renvoye une session
             echo "USER EXISTS\n";
