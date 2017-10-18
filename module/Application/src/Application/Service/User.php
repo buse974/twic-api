@@ -682,7 +682,7 @@ class User extends AbstractService
         $m_user = $this->getMapper()->select($this->getModel()
             ->setEmail($email)
             ->setSuspensionDate(new IsNull())
-            ->setDeletedDate(new IsNull()))->current();
+            ->setDeletedDate(new IsNull())->setIsActive(1))->current();
         
         if ($m_user !== false) {
             $uniqid = uniqid($m_user->getId() . "_" , true);
@@ -1107,10 +1107,13 @@ class User extends AbstractService
         if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
             throw new \Exception('Error LinkedIn Id');
         }
+        echo "START\n";
+        echo json_encode($m_people);
         
         $res_user = $this->getMapper()->select($this->getModel()->setLinkedinId($linkedin_id));
         
         if ($res_user->count() > 0) { // utilisateur existe on renvoye une session
+            echo "USER EXISTS\n";
             $m_user = $res_user->current();
             if($m_user->getIsActive() === 0){
                 $this->getMapper()->update($m_user->setFirstname($m_people->getFirstname())->setLastName($m_people->getLastname())->setIsActive(1));
@@ -1120,6 +1123,7 @@ class User extends AbstractService
             }
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // utilisateur existe pas
+            echo "USER DOESNT EXISTS".$account_token."\n";
             if (null !== $account_token) { // SI pas connecter
                 $m_registration = $this->getServicePreregistration()->get($account_token);
                 if (false === $m_registration) {
@@ -1156,6 +1160,8 @@ class User extends AbstractService
                 
                 $m_user = $this->getLite($user_id);
                 
+                echo json_encoe($m_user);
+                echo json_encoe($linkedin_id);
                 $login = $this->loginLinkedIn($linkedin_id);
                 $this->getServicePreregistration()->delete($account_token, $m_user->getId());
             } else if(is_numeric($identity['id'])){
