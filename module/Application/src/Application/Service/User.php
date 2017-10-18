@@ -1109,7 +1109,7 @@ class User extends AbstractService
         }
         $res_user = $this->getMapper()->select($this->getModel()->setIsActive(1)->setLinkedinId($linkedin_id));
         
-        if ($res_user->count() > 0) { // utilisateur existe on renvoye une session
+        if ($res_user->count() > 0) { // utilisateur existe on renvoie une session
             $m_user = $res_user->current();
             if($m_user->getIsActive() === 0){
                 $this->getMapper()->update($m_user->setFirstname($m_people->getFirstname())->setLastName($m_people->getLastname())->setIsActive(1));
@@ -1118,12 +1118,14 @@ class User extends AbstractService
                 }
             }
             $login = $this->loginLinkedIn($linkedin_id);
-        } else { // utilisateur existe pas
-            if (null !== $account_token) { // SI pas connecter
+        } else { // Si l'utilisateur n'existe pas
+            if (null !== $account_token) { // SI pas connecté
                 $m_registration = $this->getServicePreregistration()->get($account_token);
                 if (false === $m_registration) {
                     throw new \Exception('Account token not found.');
                 }
+                var_dump($m_registration->getFirstname());
+                var_dump($m_people->getFirstname());
                 $firstname = $m_registration->getFirstname() instanceof IsNull ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = $m_registration->getLastname() instanceof IsNull  ? $m_people->getLastname() : $m_registration->getLastname();
                 $user_id = $m_registration->getUserId();
