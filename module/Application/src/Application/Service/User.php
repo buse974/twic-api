@@ -1124,10 +1124,8 @@ class User extends AbstractService
                 if (false === $m_registration) {
                     throw new \Exception('Account token not found.');
                 }
-                var_dump($m_registration->getFirstname());
-                var_dump($m_people->getFirstname());
-                $firstname = $m_registration->getFirstname() instanceof IsNull ? $m_people->getFirstname() : $m_registration->getFirstname();
-                $lastname = $m_registration->getLastname() instanceof IsNull  ? $m_people->getLastname() : $m_registration->getLastname();
+                $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
+                $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
