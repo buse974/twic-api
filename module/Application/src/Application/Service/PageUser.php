@@ -52,6 +52,7 @@ class PageUser extends AbstractService
                 $new_accounts[] = $id;
             }
             if(count($new_accounts) > 0 && $send_invitation === true){
+                echo "SEND PASSWORDS : " . json_encode($new_accounts);
                 $this->getServiceUser()->sendPassword($new_accounts);
             }
         }
