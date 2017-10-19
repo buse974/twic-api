@@ -79,7 +79,7 @@ class User extends AbstractMapper
       $order = null,
       array $exclude = null,
       $contact_state = null,
-      $only_nosend_email = null,
+      $unsent = null,
       $role = null,
       $conversation_id = null,
       $page_type = null,
@@ -129,7 +129,7 @@ class User extends AbstractMapper
             $select->order(['user.id' => 'DESC']);
         }
 
-        if ($only_nosend_email === true) {
+        if ($unsent === true) {
             $select->where(['user.email_sent IS FALSE']);
         }
         if ($exclude) {
