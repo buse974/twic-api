@@ -26,8 +26,8 @@ class Activity extends AbstractMapper
         return $this->selectWith($select);
     }
 
-
-    public function getListWithFilters($me, $event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, $course_id = null, $item_id = null, $user_id = null, $is_academic = false)
+    public function getListWithFilters($me, $event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, 
+                                       $course_id = null, $item_id = null, $user_id = null, $is_academic = false)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'event', 'object_name', 'object_data', 'object_value', 'target_name', 'target_data', 'user_id', 'activity$date' => new Expression('DATE_FORMAT(activity.date, "%Y-%m-%dT%TZ")')])
@@ -68,6 +68,7 @@ class Activity extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
 
     public function getListWithUser($search)
     {
@@ -83,13 +84,57 @@ class Activity extends AbstractMapper
 
         return $this->selectWith($select);
     }
-    
+
     public function get($id)
     {
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'event', 'object_name', 'object_data', 'target_name', 'target_data']);
         $select->where(['activity.id' => $id]);
       
+        return $this->selectWith($select);
+    }
+
+    public function getList($search, $start_date, $end_date, $user, $organization_id = null, $user_id = null)
+    {
+       $select = $this->tableGateway->getSql()->select();
+       $select->columns(['id', 'user_id', 'event', 'object_name', 'object_data', 'activity$date' => new Expression('DATE_FORMAT(activity.date, "%Y-%m-%dT%TZ")')])
+              ->join('user', 'user.id = activity.user_id', ['firstname',  'lastname', 'nickname', 'avatar', 'organization_id']);
+       $array = explode(" ", $search);
+       if (null != $array)
+       {
+            foreach ($array as $value)
+            {
+                $select->where(['(event LIKE ? ' => '%'.$value.'%'], Predicate::OP_OR)
+                       ->where(['organization_id LIKE ? ' => '%'.$value.'%'], Predicate::OP_OR)
+                       ->where(['object_name LIKE ? ' => '%'.$value.'%'], Predicate::OP_OR)
+                       ->where(['event LIKE ? ' => '%'.$value.'%'], Predicate::OP_OR)
+                       ->where(['firstname LIKE ? ' => '%'.$value.'%'], Predicate::OP_OR)
+                       ->where(['lastname LIKE ? ) ' => '%'.$value.'%'], Predicate::OP_OR);
+            }
+       }
+
+       if (null != $start_date)
+        {
+            $select->where(['date >= ? ' => $start_date]);
+        }
+
+        if (null != $end_date)
+        {
+            $select->where(['date <= ? ' => $end_date]);
+        }
+
+        if (null != $organization_id)
+        {
+            $select->where(['organization_id' => $organization_id]);
+        }
+
+        if (null != $user_id)
+        {
+            $select->where(['user_id' => $user_id]);
+        }
+
+        //echo $this->printSql($select);    
+
         return $this->selectWith($select);
     }
 }

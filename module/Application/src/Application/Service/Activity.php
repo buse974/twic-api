@@ -145,76 +145,115 @@ class Activity extends AbstractService
                 $m_activity->setTargetData(json_decode($o_target, true));
             }
         }
-
-        return $res_activity;
+         return $res_activity;
     }
 
 
     /**
-     * Get List activity.
+     * Get List Activity.
      *
      * @invokable
      *
-     * @param string $date
-     * @param string $event
-     * @param array  $object
-     * @param array  $target
-     * @param array  $user
-     * @param string $start_date
-     * @param string $end_date
-     * @param array  $filter
+     * @param int     $user
+     * @param array   $filter
+     * @param string  $search
+     * @param string  $start_date
+     * @param string  $end_date
      *
      * @return array
      */
-    public function getList($date = null, $event = null, $object = null, $target = null, $user = null, $start_date = null, $end_date = null, $filter = null)
+    public function getList($filter = [], $search = null, $start_date = null, $end_date = null, $user = null)
     {
-        $m_activity = $this->getModel();
-        $m_activity->setEvent($event)
-            ->setDate($date)
-            ->setUserId($user);
+        $mapper = $this->getMapper();
+        $res_activity = $mapper->usePaginator($filter)->getList($search, $start_date, $end_date, $user);
 
-        if (null !== $start_date && null !== $end_date) {
-            $m_activity->setDate(new Between('date', $start_date, $end_date));
-        }
-        if (null !== $object) {
-            if (isset($object['id'])) {
-                $m_activity->setObjectId($object['id']);
+        return ['count' => $mapper->count(), 'list' => $res_activity];
+    }
+
+    /**
+     * Get List connections.
+     *
+     * @invokable
+     *
+     * @param int     $organization_id
+     * @param int     $user
+     * @param int     $user_id
+     * @param string  $start_date
+     * @param string  $interval_date
+     * @param string  $end_date
+     *
+     * @return array
+     */
+    public function getConnections($start_date = null, $end_date = null, $user = null, $organization_id = null, $interval_date = 'D', $user_id = null)
+    {
+        $mapper = $this->getMapper();
+        $res_activity = $mapper->getList(null, $start_date, $end_date, $user, $organization_id, $user_id);
+        $arrayUser = [];
+        $connections = [];
+        foreach ($res_activity as $m_activity)
+        {
+            if(!array_key_exists($m_activity->getUserId(), $arrayUser))
+            {
+                $arrayUser[$m_activity->getUserId()] = 
+                    ['start_date' => $m_activity->getDate(), 'end_date' => $m_activity->getDate()];
             }
-            if (isset($object['name'])) {
-                $m_activity->setObjectName($object['name']);
+            else 
+            {
+                $difference = (strtotime($m_activity->getDate()) - strtotime($arrayUser[$m_activity->getUserId()]['end_date']));
+                if ($difference < 3600 && strcmp($this->interval($m_activity->getDate(), $interval_date), $this->interval($arrayUser[$m_activity->getUserId()]['end_date'], $interval_date)) == 0)
+                  {
+                    $arrayUser[$m_activity->getUserId()]['end_date'] = $m_activity->getDate();
+                  }
+                else
+                  {
+                    $actual_day = $this->interval($arrayUser[$m_activity->getUserId()]['end_date'], $interval_date);
+                    if (!array_key_exists($actual_day, $connections))
+                     {
+                        $connections[$actual_day] = [];
+                     }
+                    $connections[$actual_day][] = strtotime($arrayUser[$m_activity->getUserId()]['end_date']) - strtotime($arrayUser[$m_activity->getUserId()]['start_date']);
+
+                    $arrayUser[$m_activity->getUserId()] = 
+                        ['start_date' => $m_activity->getDate(), 'end_date' => $m_activity->getDate()];
+                  }
             }
-            if (isset($object['data'])) {
-                $m_activity->setObjectData($object['data']);
-            }
-        }
-        if (null !== $target) {
-            if (isset($target['id'])) {
-                $m_activity->setTargetId($target['id']);
-            }
-            if (isset($target['name'])) {
-                $m_activity->setTargetName($target['name']);
-            }
-            if (isset($target['data'])) {
-                $m_activity->setTargetData($target['data']);
-            }
+
         }
 
-        $mapper = ($filter !== null) ? $this->getMapper()->usePaginator($filter) : $this->getMapper();
-
-        $res_activity = $mapper->select($m_activity, array('date' => 'ASC'));
-        foreach ($res_activity as $m_activity) {
-            $m_activity->setDate((new \DateTime($m_activity->getDate()))->format('Y-m-d\TH:i:s\Z'));
-            $o_data = $m_activity->getObjectData();
-            if (is_string($o_data)) {
-                $m_activity->setObjectData(json_decode($o_data, true));
+        foreach ($arrayUser as $m_arrayUser)
+        {
+          $actual_day = $this->interval($arrayUser[$m_activity->getUserId()]['end_date'], $interval_date);
+          if (!array_key_exists($actual_day, $connections))
+            {
+              $connections[$actual_day] = [];
             }
-            $o_target = $m_activity->getTargetData();
-            if (is_string($o_target)) {
-                $m_activity->setTargetData(json_decode($o_target, true));
-            }
+          $connections[$actual_day][] = strtotime($m_arrayUser['end_date']) - strtotime($m_arrayUser['start_date']);
         }
 
-        return ($filter !== null) ? ['count' => $mapper->count(), 'list' => $res_activity] : $res_activity;
+        foreach ($connections as $actual_day => $m_connections)
+        {
+            $connections[$actual_day] = array_sum($m_connections) / count($m_connections);
+        }
+
+        return ['list' => $connections];
+    }
+
+    private function interval($date, $interval = 'D') 
+    {
+        $ret = false;
+        switch ($interval) {
+            case 'D':
+                $ret = substr($date, 0, 10);
+                break;
+            case 'M':
+                $ret = substr($date, 0, 7);
+                break;
+            case 'Y':
+                $ret = substr($date, 0, 4);
+                break;
+        }
+
+        return $ret;
     }
 
     /**
@@ -234,10 +273,11 @@ class Activity extends AbstractService
      *
      * @param array  $filter
      * @param string $search
+     * @param string $date
      *
      * @return array
      */
-    public function getListWithUser($filter = null, $search = null)
+    public function getListWithUser($filter = null, $search = null, $date = null)
     {
         $mapper = $this->getMapper();
         $res_activity = $mapper->usePaginator($filter)->getListWithUser($search);
@@ -271,7 +311,6 @@ class Activity extends AbstractService
                 ->aggregate($e, $user, $object_id, $object_name, $target_id, $target_name)
                 ->current();
         }
-
         return $ret;
     }
 
