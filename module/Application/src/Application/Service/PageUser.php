@@ -32,10 +32,9 @@ class PageUser extends AbstractService
      * @param  string    $role
      * @param  string    $state
      * @param  string    $email
-     * @param  bool      $send_invitation
      * @return int
      */
-    public function add($page_id, $user_id, $role, $state, $email = null, $send_invitation = false)
+    public function add($page_id, $user_id, $role, $state, $email = null)
     {
         if (!is_array($user_id)) {
             $user_id = [$user_id];
@@ -49,10 +48,6 @@ class PageUser extends AbstractService
             foreach($email as $e){
                 $id = $this->getServiceUser()->add(null, null, $e, null, null, null, null, null, null, null, $page_id);
                 $user_id[] = $id;
-                $new_accounts[] = $id;
-            }
-            if(count($new_accounts) > 0 && $send_invitation === true){
-                $this->getServiceUser()->sendPassword($new_accounts);
             }
         }
 
