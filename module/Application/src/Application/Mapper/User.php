@@ -33,13 +33,11 @@ class User extends AbstractMapper
             'avatar',
             'organization_id',
             'ambassador',
+            'email_sent',
             'user$contacts_count' => $this->getSelectContactCount(),
             'user$contact_state' => $this->getSelectContactState($me)
         ];
 
-        if (true === $is_admin) {
-            $columns[] = 'email_sent';
-        }
 
         $select = $this->tableGateway->getSql()->select();
         $select->columns($columns)
