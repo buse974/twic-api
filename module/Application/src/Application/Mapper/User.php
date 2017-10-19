@@ -168,9 +168,10 @@ class User extends AbstractMapper
             $select->where(['pu.page_id' => $page_id]);
         }
         if (!empty($role)) {
-            if(null === $page_type){
+            //JE NE SAIS PAS POURQUOI
+            /*if(null === $page_type){
                 $page_type = 'course';
-            }
+            }*/
             $select->where(['pu.role' => $role]);
         }
         if(!empty($page_type)){
