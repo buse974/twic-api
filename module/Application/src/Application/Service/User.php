@@ -1111,14 +1111,6 @@ class User extends AbstractService
         
         if ($res_user->count() > 0) { // utilisateur existe on renvoie une session
             $m_user = $res_user->current();
-          
-            if($m_user->getAvatar() === null && $m_people->getPictureUrls() !== null){
-                
-                $firstname = strlen($m_user->getFirstname()) === 0 ? $m_people->getFirstname() : $m_user->getFirstname();
-                $lastname = strlen($m_user->getLastname()) === 0   ? $m_people->getLastname() : $m_user->getLastname();
-                $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrls()['values']['0']), $firstname.' '.$lastname);
-                $this->getMapper()->update($m_user);
-            }
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // Si l'utilisateur n'existe pas
             if (null !== $account_token) { // SI pas connecté
@@ -1129,10 +1121,7 @@ class User extends AbstractService
                 $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
                 $avatar = null;
-                if($m_people->getPictureUrls() !== null){
-                    $url = $m_people->getPictureUrls()['values']['0'];
-                    $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
-                }
+              
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
@@ -1144,6 +1133,14 @@ class User extends AbstractService
                     ]));
                     $m_user = $this->getModel()->setId($user_id);
                     if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
+                        if($m_user->getAvatar() === null && $m_people->getPictureUrls() !== null){
+                            $url = $m_people->getPictureUrls()['values']['0'];
+                            $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
+                        }
+                        if($m_user->getOrganizationId() !== null){
+                            $this->getServicePageUser()->update($m_user->getOrganizationId(), $user_id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
+                        }
+                        
                         $m_user->setFirstname($firstname)->setLastname($lastname)->setAvatar($avatar);
                     }
                     $this->getMapper()->update($m_user->setLinkedinId($linkedin_id));
