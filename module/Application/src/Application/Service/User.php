@@ -1111,14 +1111,12 @@ class User extends AbstractService
         
         if ($res_user->count() > 0) { // utilisateur existe on renvoie une session
             $m_user = $res_user->current();
-            if($m_user->getIsActive() === 0){
-                $this->getMapper()->update($m_user->setFirstname($m_people->getFirstname())->setLastName($m_people->getLastname())->setIsActive(1));
-                if(null !== $m_user->getOrganizationId()){
-                    $this->getServicePageUser()->update($m_user->getOrganizationId(), $m_user->getId(), ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
-                }
-            }
+          
             if($m_user->getAvatar() === null && $m_people->getPictureUrls() !== null){
-                $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrls()['values']['0']));
+                
+                $firstname = strlen($m_user->getFirstname()) === 0 ? $m_people->getFirstname() : $m_user->getFirstname();
+                $lastname = strlen($m_user->getLastname()) === 0   ? $m_people->getLastname() : $m_user->getLastname();
+                $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrls()['values']['0']), $firstname.' '.$lastname);
                 $this->getMapper()->update($m_user);
             }
             $login = $this->loginLinkedIn($linkedin_id);
@@ -1130,8 +1128,11 @@ class User extends AbstractService
                 }
                 $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
-                $url = $m_people->getPictureUrls()['values']['0'];
-                $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
+                $avatar = null;
+                if($m_people->getPictureUrls() !== null){
+                    $url = $m_people->getPictureUrls()['values']['0'];
+                    $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
+                }
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     

@@ -314,7 +314,7 @@ class Library extends AbstractService
      * @param  string $url
      * @return string
      */
-    public function upload($url, $name = null)
+    public function upload($url, $name)
     {
         
         
