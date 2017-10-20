@@ -320,8 +320,8 @@ class Library extends AbstractService
         $Client->setMethod('POST');
         $Client->setFileUpload($name, "data" , file_get_contents($url) );
         $r = $Client->send();
-        
-        return json_decode($r->getBody(), 1);
+        return str_replace('/data/', '/save/', $this->container->get('config')['app-conf']['urldms']);
+        return json_decode($r->getBody(), 1)['data'];
         
     }
 
