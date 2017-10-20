@@ -129,9 +129,6 @@ class User extends AbstractMapper
             $select->order(['user.id' => 'DESC']);
         }
 
-        if ($unsent === true) {
-            $select->where(['user.email_sent IS FALSE']);
-        }
         if ($exclude) {
             $select->where->notIn('user.id', $exclude);
         }
@@ -177,12 +174,17 @@ class User extends AbstractMapper
         if(!empty($page_type)){
            $select->where(['p.type' => $page_type]);
         }
+        
+        if ($unsent === true) {
+            $select->where(['user.email_sent IS FALSE']);
+        }
         if(!empty($email)){
            $select->where(['user.email' => $email]);
         }
-        else{
+        else if($unsent !== true){
             $select->where(['user.is_active' => 1]);
         }
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 

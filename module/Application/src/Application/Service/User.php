@@ -1102,6 +1102,7 @@ class User extends AbstractService
         $linkedin = $this->getServiceLinkedIn();
         $linkedin->init($code);
         $m_people = $linkedin->people();
+        var_dump($m_people);
         $linkedin_id = $m_people->getId();
         $login = false;
         if ( empty($linkedin_id) || ! is_string($linkedin_id)) {
@@ -1117,7 +1118,6 @@ class User extends AbstractService
                     $this->getServicePageUser()->update($m_user->getOrganizationId(), $m_user->getId(), ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
                 }
             }
-            var_dump($m_people);
             if($m_user->getAvatar() === null && $m_people->getPictureUrl() !== null){
                 $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrl()));
                 $this->getMapper()->update($m_user);
@@ -1131,6 +1131,8 @@ class User extends AbstractService
                 }
                 $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
+                $avatar = $m_people->getPictureUrl();
+                
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
@@ -1142,12 +1144,12 @@ class User extends AbstractService
                     ]));
                     $m_user = $this->getModel()->setId($user_id);
                     if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
-                        $m_user->setFirstname($firstname)->setLastname($lastname);
+                        $m_user->setFirstname($firstname)->setLastname($lastname)->setAvatar($avatar);
                     }
                     $this->getMapper()->update($m_user->setLinkedinId($linkedin_id));
                     $user_id = $m_registration->getUserId();
                 } else {
-                    $user_id = $this->add($firstname, $lastname, $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
+                    $user_id = $this->add($firstname, $lastname, $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null), $avatar);
                     $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
                     
                     syslog(1, json_encode([
