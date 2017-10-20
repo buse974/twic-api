@@ -323,7 +323,8 @@ class Library extends AbstractService
         $Client->setMethod('POST');
         $Client->setFileUpload($name, "data" , file_get_contents($url) );
         $r = $Client->send();
-        return $r->getBody();
+        return file_get_contents($url);
+        return json_decode($r->getBody(), 1)['data'];
         
     }
 
