@@ -313,8 +313,10 @@ class Library extends AbstractService
      */
     public function upload($url, $name = null)
     {
+        
+        
         $Client = new \Zend\Http\Client();
-        $Client->setUri($this->container->get('config')['app-conf']['urldms']);
+        $Client->setUri(str_replace('/data/', '/save/', $this->container->get('config')['app-conf']['urldms']));
         $Client->setMethod('POST');
         $Client->setFileUpload($name, "data" , file_get_contents($url) );
         $r = $Client->send();
