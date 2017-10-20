@@ -1117,6 +1117,11 @@ class User extends AbstractService
                     $this->getServicePageUser()->update($m_user->getOrganizationId(), $m_user->getId(), ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
                 }
             }
+            echo var_dump($m_people);
+            if($m_user->getAvatar() === null && $m_people->getPictureUrl() !== null){
+                $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrl()));
+                $this->getMapper()->update($m_user);
+            }
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // Si l'utilisateur n'existe pas
             if (null !== $account_token) { // SI pas connecté
