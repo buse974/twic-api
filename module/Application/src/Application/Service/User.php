@@ -1117,6 +1117,10 @@ class User extends AbstractService
                     $this->getServicePageUser()->update($m_user->getOrganizationId(), $m_user->getId(), ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
                 }
             }
+            if($m_user->getAvatar() === null && $m_people->getPictureUrls() !== null){
+                $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrls()['values']['0']));
+                $this->getMapper()->update($m_user);
+            }
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // Si l'utilisateur n'existe pas
             if (null !== $account_token) { // SI pas connecté
@@ -1126,6 +1130,10 @@ class User extends AbstractService
                 }
                 $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
+                $url = $m_people->getPictureUrls()['values']['0'];
+                var_dump("URL : ".$url); 
+                $avatar = $this->getServiceLibrary()->upload();
+                var_dump($avatar); 
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
@@ -1137,12 +1145,12 @@ class User extends AbstractService
                     ]));
                     $m_user = $this->getModel()->setId($user_id);
                     if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
-                        $m_user->setFirstname($firstname)->setLastname($lastname);
+                        $m_user->setFirstname($firstname)->setLastname($lastname)->setAvatar($avatar);
                     }
                     $this->getMapper()->update($m_user->setLinkedinId($linkedin_id));
                     $user_id = $m_registration->getUserId();
                 } else {
-                    $user_id = $this->add($firstname, $lastname, $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null));
+                    $user_id = $this->add($firstname, $lastname, $m_registration->getEmail(), null, null, null, null, null, null, null, (is_numeric($m_registration->getOrganizationId()) ? $m_registration->getOrganizationId() : null), $avatar);
                     $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $user_id]);
                     
                     syslog(1, json_encode([
@@ -1328,5 +1336,15 @@ class User extends AbstractService
     private function getServicePage()
     {
         return $this->container->get('app_service_page');
+    }
+
+    /**
+     * Get Service Library
+     *
+     * @return \Application\Service\Library
+     */
+    private function getServiceLibrary()
+    {
+        return $this->container->get('app_service_library');
     }
 }

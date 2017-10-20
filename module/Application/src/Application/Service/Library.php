@@ -306,6 +306,26 @@ class Library extends AbstractService
 
         return $session;
     }
+    
+    
+    /**
+     * Upload a file by url and return dms token
+     *
+     * @param  string $url
+     * @return string
+     */
+    public function upload($url, $name = null)
+    {
+        
+        
+        $Client = new \Zend\Http\Client();
+        $Client->setUri(str_replace('/data/', '/save/', $this->container->get('config')['app-conf']['urldms']));
+        $Client->setMethod('POST');
+        $Client->setFileUpload($name, "data" , file_get_contents($url) );
+        $r = $Client->send();
+        return $r->getBody();
+        
+    }
 
     /**
      * Get Service User.
