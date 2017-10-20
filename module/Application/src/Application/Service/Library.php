@@ -9,6 +9,7 @@ namespace Application\Service;
 use Dal\Service\AbstractService;
 use Zend\Db\Sql\Predicate\IsNull;
 use Box\Model\Document as ModelDocument;
+use Application\Model\Role as ModelRole;
 use JRpc\Json\Server\Exception\JrpcException;
 
 /**
@@ -122,10 +123,11 @@ class Library extends AbstractService
      */
     public function getList($filter = null, $folder_id = null, $global = null, $folder_name = null, $user_id = null, $page_id = null)
     {
+        $identity = $this->getServiceUser()->getIdentity();
         if (null !== $user_id) {
             $global = true;
         } else {
-            $user_id = $this->getServiceUser()->getIdentity()['id'];
+            $user_id = $identity['id'];
         }
 
         // on récupere le folder selectionné
@@ -149,7 +151,8 @@ class Library extends AbstractService
             $this->getMapper()->usePaginator($filter) :
             $this->getMapper();
 
-        $res_library = $mapper->getList($folder_id, $user_id, $page_id);
+        $is_sadmin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $res_library = $mapper->getList($folder_id, $user_id, $page_id, $is_sadmin);
 
         $ar = [
             'count' => $mapper->count(),
