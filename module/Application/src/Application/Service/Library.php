@@ -320,6 +320,7 @@ class Library extends AbstractService
         $r = $Client->send();
         var_dump(json_decode($r->getBody(), 1));
         var_dump(json_decode($r->getBody(), 1)['data']);
+        
         return json_decode($r->getBody(), 1)['data'];
         
     }
