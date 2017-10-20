@@ -1169,8 +1169,12 @@ class User extends AbstractService
                     'user_id' => $identity['id'],
                     'type' => 'deja connecté'
                 ]));
-                
-                $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $identity['id']]);
+                $m_user = $this->getModel()->setLinkedinId($linkedin_id);
+                if($identity['avatar'] === null && $m_people->getPictureUrls() !== null){
+                    $url = $m_people->getPictureUrls()['values']['0'];
+                    $m_user->setAvatar($this->getServiceLibrary()->upload($url, $identity['firstname'].' '.$identity['lastname']));
+                }
+                $this->getMapper()->update($m_user , ['id' => $identity['id']]);
                 $identity['has_linkedin'] = true;
                 
                 $login = $identity;
