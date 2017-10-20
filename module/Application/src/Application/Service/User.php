@@ -1133,7 +1133,7 @@ class User extends AbstractService
                 $url = $m_people->getPictureUrls()['values']['0'];
                 var_dump("URL : ".$url); 
                 $avatar = $this->getServiceLibrary()->upload();
-                var_dump($avatar);
+                var_dump($avatar); 
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
