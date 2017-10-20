@@ -1130,6 +1130,9 @@ class User extends AbstractService
                 }
                 $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
+                var_dump($m_people->getPictureUrls());
+                var_dump($m_people->getPictureUrls()['values']);
+                var_dump($m_people->getPictureUrls()['values']['0']);
                 $avatar = $this->getServiceLibrary($m_people->getPictureUrls()['values']['0']);
                 
                 $user_id = $m_registration->getUserId();
