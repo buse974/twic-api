@@ -1137,10 +1137,9 @@ class User extends AbstractService
                             $url = $m_people->getPictureUrls()['values']['0'];
                             $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
                         }
-                        var_dump($m_user->getOrganizationId());
-                        if($m_user->getOrganizationId() !== null){
+                        if($m_registration->getOrganizationId() !== null){
                             
-                            $this->getServicePageUser()->update($m_user->getOrganizationId(), $user_id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
+                            $this->getServicePageUser()->update($m_registration->getOrganizationId(), $user_id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
                         }
                         
                         $m_user->setFirstname($firstname)->setLastname($lastname)->setAvatar($avatar);
