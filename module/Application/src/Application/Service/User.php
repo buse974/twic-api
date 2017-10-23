@@ -1133,7 +1133,9 @@ class User extends AbstractService
                     ]));
                     $m_user = $this->getModel()->setId($user_id);
                     if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
-                        if($m_user->getAvatar() === null && $m_people->getPictureUrls() !== null){
+                        if($m_user->getAvatar() === null && 
+                            !empty($m_people->getPictureUrls()) && $m_people->getPictureUrls()['values'] !== null && 
+                            count($m_people->getPictureUrls()['values']) > 0){
                             $url = $m_people->getPictureUrls()['values']['0'];
                             $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
                         }
