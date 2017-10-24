@@ -373,6 +373,8 @@ class PageUser extends AbstractService
      */
     public function getListByPage($page_id, $role = null, $state = null, $sent = null)
     {
+        
+        $identity = $this->getServiceUser()->getIdentity();
         if (!is_array($page_id)) {
             $page_id = [$page_id];
         }
@@ -382,7 +384,8 @@ class PageUser extends AbstractService
             $ret[$page] = [];
         }
 
-        $res_page_user = $this->getMapper()->getList($page_id, null, $role, $state, null, null, $sent);
+        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        $res_page_user = $this->getMapper()->getList($page_id, null, $role, $state, null, $is_admin ? null : $identity['id'], $sent);
         foreach ($res_page_user as $m_page_user) {
             $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
         }
