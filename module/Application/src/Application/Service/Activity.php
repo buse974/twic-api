@@ -169,6 +169,28 @@ class Activity extends AbstractService
 
         return ['count' => $mapper->count(), 'list' => $res_activity];
     }
+    
+    
+    
+    /**
+     * Get List connections.
+     *
+     * @invokable
+     *
+     * @param string  $start_date
+     * @param string  $end_date
+     * @param string  $interval_date
+     * @param int     $organization_id
+     *
+     * @return array
+     */
+    public function getConnectionCount( $start_date = null, $end_date = null, $interval_date = 'D', $organization_id  = null){
+        
+        $interval = $this->interval($interval_date);
+        $identity = $this->getServiceUser()->getIdentity();
+        
+        return $this->getMapper()->getConnectionCount($identity['id'],$interval, $start_date, $end_date, $organization_id);
+    }
 
     /**
      * Get List connections.
@@ -190,6 +212,7 @@ class Activity extends AbstractService
         $res_activity = $mapper->getList(null, $start_date, $end_date, $user, $organization_id, $user_id);
         $arrayUser = [];
         $connections = [];
+        $interval = substr($interval_date);
         foreach ($res_activity as $m_activity)
         {
             if(!array_key_exists($m_activity->getUserId(), $arrayUser))
@@ -200,13 +223,13 @@ class Activity extends AbstractService
             else 
             {
                 $difference = (strtotime($m_activity->getDate()) - strtotime($arrayUser[$m_activity->getUserId()]['end_date']));
-                if ($difference < 3600 && strcmp($this->interval($m_activity->getDate(), $interval_date), $this->interval($arrayUser[$m_activity->getUserId()]['end_date'], $interval_date)) == 0)
+                if ($difference < 3600 && strcmp(substr($m_activity->getDate(), 0, $interval), substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval)) == 0)
                   {
                     $arrayUser[$m_activity->getUserId()]['end_date'] = $m_activity->getDate();
                   }
                 else
                   {
-                    $actual_day = $this->interval($arrayUser[$m_activity->getUserId()]['end_date'], $interval_date);
+                    $actual_day = substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval);
                     if (!array_key_exists($actual_day, $connections))
                      {
                         $connections[$actual_day] = [];
@@ -222,7 +245,7 @@ class Activity extends AbstractService
 
         foreach ($arrayUser as $m_arrayUser)
         {
-          $actual_day = $this->interval($arrayUser[$m_activity->getUserId()]['end_date'], $interval_date);
+          $actual_day = substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval);
           if (!array_key_exists($actual_day, $connections))
             {
               $connections[$actual_day] = [];
@@ -238,18 +261,18 @@ class Activity extends AbstractService
         return ['list' => $connections];
     }
 
-    private function interval($date, $interval = 'D') 
+    public function interval($interval = 'D') 
     {
         $ret = false;
         switch ($interval) {
             case 'D':
-                $ret = substr($date, 0, 10);
+                $ret = 10;
                 break;
             case 'M':
-                $ret = substr($date, 0, 7);
+                $ret = 7;
                 break;
             case 'Y':
-                $ret = substr($date, 0, 4);
+                $ret = 4;
                 break;
         }
 

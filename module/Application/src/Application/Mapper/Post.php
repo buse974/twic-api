@@ -56,7 +56,7 @@ class Post extends AbstractMapper
         }
         
         // si c un admin studnet on enleve les type notifs les notif on tous des uid
-        if($is_admin === true) {
+        if($is_admin === true && null === $parent_id) {
             $select->join('subscription', 'subscription.libelle=post_subscription.libelle', [], $select::JOIN_LEFT)
                 ->where(['( ( post.uid IS NOT NULL AND (subscription.user_id = ? ' => $me_id])
                 ->where(['  post_subscription.libelle = ?) ) OR post.uid IS NULL ) ' => 'M'.$me_id], Predicate::OP_OR)
@@ -117,6 +117,41 @@ class Post extends AbstractMapper
             $select->where(['post.deleted_date IS NULL']);
         }
 
+        return $this->selectWith($select);
+    }
+    
+    
+    
+     public function getCount($me, $interval, $start_date = null, $end_date = null, $organization_id = null, $parent = null){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([ 'post$created_date' => new Expression('SUBSTRING(post.created_date,1,'.$interval.')'), 'post$count' => new Expression('COUNT(DISTINCT post.id)'), 'post$parent_id' => new Expression('IF(post.parent_id IS NOT NULL,1,0)')])
+            ->where('post.deleted_date IS NULL')
+            ->group([new Expression('SUBSTRING(post.created_date,1,'.$interval.')'),  new Expression('IF(post.parent_id IS NOT NULL,1,0)') ]);
+
+        if (null != $start_date)
+        {
+            $select->where(['post.created_date >= ? ' => $start_date]);
+        }
+
+        if (null != $end_date)
+        {
+            $select->where(['post.created_date <= ? ' => $end_date]);
+        }
+
+        if (null != $organization_id)
+        {
+            $select
+                ->join('user', ['post.user_id = user.id'], [])
+                ->where(['user.organization_id' => $organization_id]);
+        }
+        
+        if(0 === $parent){
+            $select->where('post.parent_id IS NULL');
+        }
+        else if(1 === $parent){
+            $select->where('post.parent_id IS NOT NULL');
+        }
+        
         return $this->selectWith($select);
     }
 }

@@ -368,4 +368,36 @@ class Page extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    public function getCount($me, $interval, $start_date = null, $end_date = null, $organization_id = null, $type = null){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([ 'page$created_date' => new Expression('SUBSTRING(page.created_date,1,'.$interval.')'), 'page$count' => new Expression('COUNT(DISTINCT page.id)'), 'type'])
+            ->where('page.deleted_date IS NULL')
+            ->group([new Expression('SUBSTRING(created_date,1,'.$interval.')'), 'page.type']);
+
+        if (null != $start_date)
+        {
+            $select->where(['page.created_date >= ? ' => $start_date]);
+        }
+
+        if (null != $end_date)
+        {
+            $select->where(['page.created_date <= ? ' => $end_date]);
+        }
+
+        if (null != $type)
+        {
+            $select->where(['page.type' => $type]);
+        }
+
+        if (null != $organization_id)
+        {
+            $select
+                ->join('user', ['page.user_id = user.id'], [])
+                ->where(['user.organization_id' => $organization_id]);
+        }
+        
+        return $this->selectWith($select);
+    }
+
 }

@@ -32,6 +32,7 @@ class Page extends BasePage
     protected $average;
     protected $median;
     protected $percentile;
+    protected $count;
 
     public function exchangeArray(array &$data)
     {
@@ -247,6 +248,30 @@ class Page extends BasePage
     public function setPageRelation($page_relation)
     {
         $this->page_relation = $page_relation;
+
+        return $this;
+    }
+
+    /**
+     * Get count
+     *
+     * @return mixed
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Set the value of Count
+     *
+     * @param mixed count
+     *
+     * @return self
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
 
         return $this;
     }
