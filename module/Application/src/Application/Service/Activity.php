@@ -212,7 +212,7 @@ class Activity extends AbstractService
         $res_activity = $mapper->getList(null, $start_date, $end_date, $user, $organization_id, $user_id);
         $arrayUser = [];
         $connections = [];
-        $interval = substr($interval_date);
+        $interval = $this->interval($interval_date);
         foreach ($res_activity as $m_activity)
         {
             if(!array_key_exists($m_activity->getUserId(), $arrayUser))
@@ -258,7 +258,7 @@ class Activity extends AbstractService
             $connections[$actual_day] = array_sum($m_connections) / count($m_connections);
         }
 
-        return ['list' => $connections];
+        return $connections;
     }
 
     public function interval($interval = 'D') 
