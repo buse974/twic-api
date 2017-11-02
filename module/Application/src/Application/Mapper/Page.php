@@ -397,8 +397,6 @@ class Page extends AbstractMapper
                 ->where(['user.organization_id' => $organization_id]);
         }
         
-        syslog(1, $this->printSql($select));
-        
         return $this->selectWith($select);
     }
 

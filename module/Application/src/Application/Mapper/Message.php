@@ -25,4 +25,37 @@ class Message extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    
+    
+    public function getCount($me, $interval, $start_date = null, $end_date = null, $organization_id = null, $type = null){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([ 'message$created_date' => new Expression('SUBSTRING(message.created_date,1,'.$interval.')'), 'message$count' => new Expression('COUNT(DISTINCT message.id)')])
+                ->join('conversation', 'message.conversation_id = conversation.id', ['message$type' => 'type'])
+            ->group([new Expression('SUBSTRING(message.created_date,1,'.$interval.')'), 'conversation.type']);
+
+        if (null != $start_date)
+        {
+            $select->where(['message.created_date >= ? ' => $start_date]);
+        }
+
+        if (null != $end_date)
+        {
+            $select->where(['message.created_date <= ? ' => $end_date]);
+        }
+
+        if (null != $type)
+        {
+            $select->where(['conversation.type' => $type]);
+        }
+
+        if (null != $organization_id)
+        {
+            $select
+                ->join('user', ['message.user_id = user.id'], [])
+                ->where(['user.organization_id' => $organization_id]);
+        }
+        
+        return $this->selectWith($select);
+    }
 }
