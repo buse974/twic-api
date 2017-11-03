@@ -184,7 +184,6 @@ class User extends AbstractMapper
         else if($unsent !== true){
             $select->where(['user.is_active' => 1]);
         }
-        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 

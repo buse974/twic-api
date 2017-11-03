@@ -314,7 +314,7 @@ class Library extends AbstractService
      * @param  string $url
      * @return string
      */
-    public function upload($url, $name = null)
+    public function upload($url, $name)
     {
         
         
@@ -323,7 +323,7 @@ class Library extends AbstractService
         $Client->setMethod('POST');
         $Client->setFileUpload($name, "data" , file_get_contents($url) );
         $r = $Client->send();
-        return $r->getBody();
+        return json_decode($r->getBody(), 1)['data'];
         
     }
 

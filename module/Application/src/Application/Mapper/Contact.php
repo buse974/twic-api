@@ -84,4 +84,29 @@ class Contact extends AbstractMapper
 
         return $this->insertWith($insert);
     }
+    
+    
+    
+    
+     public function getCounts($me, $interval, $start_date = null, $end_date = null, $organization_id = null){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([ 'contact$request_date' => 
+        new Expression('IF(contact.request_date BETWEEN \''.$start_date.'\' AND \''.$end_date.'\', SUBSTRING(contact.request_date,1,'.$interval.'), SUBSTRING(contact.accepted_date,1,'.$interval.'))'), 
+            'contact$accepted' => new Expression('SUM(IF(contact.accepted_date IS NOT NULL, 1, 0)) / 2'),
+            'contact$requested' => new Expression('SUM(IF(contact.request_date IS NOT NULL, 1, 0)) / 2')])
+            ->where(['( contact.request_date BETWEEN ? AND ?' => [$start_date, $end_date]])
+            ->where([' contact.accepted_date BETWEEN ? AND ? )' => [$start_date, $end_date ]], Predicate::OP_OR)
+            ->group(new Expression('IF(contact.request_date BETWEEN \''.$start_date.'\' AND \''.$end_date.'\', SUBSTRING(contact.request_date,1,'.$interval.'), SUBSTRING(contact.accepted_date,1,'.$interval.'))'));
+        
+        if (null != $organization_id)
+        {
+            $select
+                ->join('user', ['contact.user_id = user.id'], [])
+                ->where(['user.organization_id' => $organization_id]);
+        }
+        
+        return $this->selectWith($select);
+        
+      
+    }
 }

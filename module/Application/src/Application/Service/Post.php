@@ -760,6 +760,27 @@ class Post extends AbstractService
 
         return $return;
     }
+    
+     /**
+     * Get page counts.
+     *
+     * @invokable
+     *
+     * @param string  $start_date
+     * @param string  $end_date
+     * @param string  $interval_date
+     * @param string  $type
+     * @param int     $organization_id
+     *
+     * @return array
+     */
+    public function getCount( $start_date = null, $end_date = null, $interval_date = 'D', $parent = null, $organization_id  = null){
+        
+        $interval = $this->getServiceActivity()->interval($interval_date);
+        $identity = $this->getServiceUser()->getIdentity();
+        
+        return $this->getMapper()->getCount($identity['id'],$interval, $start_date, $end_date, $organization_id, $parent);
+    }
 
     /**
      * Get Service User
@@ -860,6 +881,17 @@ class Post extends AbstractService
     {
         return $this->container->get('app_service_page_user');
     }
+    
+    /**
+     * Get Service Activity
+     *
+     * @return \Application\Service\Activity
+     */
+    private function getServiceActivity()
+    {
+        return $this->container->get('app_service_activity');
+    }      
+    
     
     /**
      * Get Service Mail.

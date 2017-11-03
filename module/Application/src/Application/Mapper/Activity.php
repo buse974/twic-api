@@ -25,6 +25,30 @@ class Activity extends AbstractMapper
 
         return $this->selectWith($select);
     }
+    
+    public function getConnectionCount($me, $interval, $start_date = null, $end_date = null, $organization_id = null){
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns([ 'activity$date' => new Expression('SUBSTRING(date,1,'.$interval.')'), 'activity$count' => new Expression('COUNT(activity.id)')])
+            ->join('user', 'activity.user_id = user.id', ['activity$linkedin_id' => new Expression('IF(linkedin_id IS NOT NULL, 1, 0)')])
+            ->group([new Expression('SUBSTRING(date,1,'.$interval.')'), 'user.linkedin_id']);
+
+        if (null != $start_date)
+        {
+            $select->where(['date >= ? ' => $start_date]);
+        }
+
+        if (null != $end_date)
+        {
+            $select->where(['date <= ? ' => $end_date]);
+        }
+
+        if (null != $organization_id)
+        {
+            $select->where(['organization_id' => $organization_id]);
+        }
+        
+        return $this->selectWith($select);
+    }
 
     public function getListWithFilters($me, $event = null, $object_id = null, $object_name = null, $school_id = null, $program_id = null, 
                                        $course_id = null, $item_id = null, $user_id = null, $is_academic = false)

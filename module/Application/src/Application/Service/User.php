@@ -1111,16 +1111,6 @@ class User extends AbstractService
         
         if ($res_user->count() > 0) { // utilisateur existe on renvoie une session
             $m_user = $res_user->current();
-            if($m_user->getIsActive() === 0){
-                $this->getMapper()->update($m_user->setFirstname($m_people->getFirstname())->setLastName($m_people->getLastname())->setIsActive(1));
-                if(null !== $m_user->getOrganizationId()){
-                    $this->getServicePageUser()->update($m_user->getOrganizationId(), $m_user->getId(), ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
-                }
-            }
-            if($m_user->getAvatar() === null && $m_people->getPictureUrls() !== null){
-                $m_user->setAvatar($this->getServiceLibrary()->upload($m_people->getPictureUrls()['values']['0']));
-                $this->getMapper()->update($m_user);
-            }
             $login = $this->loginLinkedIn($linkedin_id);
         } else { // Si l'utilisateur n'existe pas
             if (null !== $account_token) { // SI pas connecté
@@ -1130,10 +1120,8 @@ class User extends AbstractService
                 }
                 $firstname = strlen($m_registration->getFirstname()) === 0 ? $m_people->getFirstname() : $m_registration->getFirstname();
                 $lastname = strlen($m_registration->getLastname()) === 0   ? $m_people->getLastname() : $m_registration->getLastname();
-                $url = $m_people->getPictureUrls()['values']['0'];
-                var_dump("URL : ".$url); 
-                $avatar = $this->getServiceLibrary()->upload();
-                var_dump($avatar); 
+                $avatar = null;
+              
                 $user_id = $m_registration->getUserId();
                 if (is_numeric($user_id)) {
                     
@@ -1145,6 +1133,17 @@ class User extends AbstractService
                     ]));
                     $m_user = $this->getModel()->setId($user_id);
                     if($this->getMapper()->update($m_user->setIsActive(1)) > 0){
+                        if($m_user->getAvatar() === null && 
+                            !empty($m_people->getPictureUrls()) && array_key_exists('values', $m_people->getPictureUrls()) && 
+                            count($m_people->getPictureUrls()['values']) > 0){
+                            $url = $m_people->getPictureUrls()['values']['0'];
+                            $avatar = $this->getServiceLibrary()->upload($url, $firstname.' '.$lastname);
+                        }
+                        if($m_registration->getOrganizationId() !== null){
+                            
+                            $this->getServicePageUser()->update($m_registration->getOrganizationId(), $user_id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
+                        }
+                        
                         $m_user->setFirstname($firstname)->setLastname($lastname)->setAvatar($avatar);
                     }
                     $this->getMapper()->update($m_user->setLinkedinId($linkedin_id));
@@ -1173,8 +1172,12 @@ class User extends AbstractService
                     'user_id' => $identity['id'],
                     'type' => 'deja connecté'
                 ]));
-                
-                $this->getMapper()->update($this->getModel()->setLinkedinId($linkedin_id), ['id' => $identity['id']]);
+                $m_user = $this->getModel()->setLinkedinId($linkedin_id);
+                if($identity['avatar'] === null && $m_people->getPictureUrls() !== null){
+                    $url = $m_people->getPictureUrls()['values']['0'];
+                    $m_user->setAvatar($this->getServiceLibrary()->upload($url, $identity['firstname'].' '.$identity['lastname']));
+                }
+                $this->getMapper()->update($m_user , ['id' => $identity['id']]);
                 $identity['has_linkedin'] = true;
                 
                 $login = $identity;

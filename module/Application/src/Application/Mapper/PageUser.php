@@ -42,13 +42,12 @@ class PageUser extends AbstractMapper
         if(null !== $sent){
             $select->where(['user.email_sent' => $sent]);
         }
-        if (null !== $me && $me !== $user_id) {
+        if (null !== $me) {
             $select->join(['pu' => 'page_user'], 'pu.page_id = page.id', [], $select::JOIN_LEFT)
-            ->where([' ( pu.user_id = ? OR page.confidentiality=0 ) ' => $me]);
-
-            $select->where(['( page.is_published IS TRUE OR page.type <> "course" OR ( page_user.role = "admin" AND page_user.user_id = ? ) )' => $me]);
+            ->where([' ( pu.user_id = ? OR page.confidentiality=0 ) ' => $me])
+            ->where(['(pu.role = "admin" OR user.is_active = 1)'])
+            ->where(['( page.is_published IS TRUE OR page.type <> "course" OR ( pu.role = "admin" AND pu.user_id = ? ) )' => $me]);
         }
-
         return $this->selectWith($select);
     }
 }

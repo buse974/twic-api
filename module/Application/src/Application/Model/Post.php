@@ -14,7 +14,8 @@ class Post extends BasePost
     protected $nbr_likes;
     protected $user;
     protected $subscription;
-
+    protected $count;
+    
     public function exchangeArray(array &$data)
     {
         if ($this->isRepeatRelational()) {
@@ -120,5 +121,30 @@ class Post extends BasePost
     public function getUser()
     {
         return $this->user;
+    }
+    
+    
+    /**
+     * Get count
+     *
+     * @return mixed
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Set the value of Count
+     *
+     * @param mixed count
+     *
+     * @return self
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
+
+        return $this;
     }
 }
