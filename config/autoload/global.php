@@ -14,7 +14,7 @@
 
 return [
     'version' => "dedze",
-    'build-commit' => 892,
+    'build-commit' => 893,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -143,9 +143,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS892',
+                    'namespace' => 'LMS893',
                     'lib_options' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS892'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS893'],
                  /*       ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],*/
