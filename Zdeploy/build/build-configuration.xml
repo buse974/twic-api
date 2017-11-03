@@ -11,7 +11,12 @@
                 <exclude name="**/*.bak/"/>
                 <exclude name="**/*.bak"/>
                 <exclude name="data/cache/*"/>
+        		<exclude name="data/"/>
+        		<exclude name="public/doc/"/>
+        		<exclude name="output/"/>
+        		<exclude name="upload/"/>
                 <exclude name="upload/*/"/>
+        		<exclude name="module/Application/language/"/>
                 <exclude name="**/*docker*"/>
                 <exclude name="**/*Dockerfile*"/>
                 <exclude name="**/*.dist"/>
@@ -30,15 +35,25 @@
                 <exclude name="/config/autoload/**"/>
                 <exclude name="**/*.md"/>
                 <exclude name="**/*.mwb"/>
-                <exclude name="composer.lock"/>
-                <exclude name=".*/**"/>
-                <exclude name=".*"/>
+        		<include name=".e*/**" />
         	</fileset>
         </copy>
 
+    	
+			
+    	<if>
+    	    <equals arg1="${app.eb}" arg2="true" />
+    	    	<then>
+    	            <echo msg="conf elastic beantalk" />
+    	    		<move file="${tmp.basedir}/composer.json" tofile="${tmp.basedir}/ebextensions/eb/composer.json" overwrite="true"/>
+    	    		<move file="${tmp.basedir}/ebextensions" tofile="${tmp.basedir}/.ebextensions" includeemptydirs="true" />
+    	    		<move file="${tmp.basedir}/elasticbeanstalk" tofile="${tmp.basedir}/.elasticbeanstalk" includeemptydirs="true" />
+    	         </then>
+    	</if>
+    	
         <if>
-    			<equals arg1="${app.composer}" arg2="true" />
-    			<then>
+    		<equals arg1="${app.composer}" arg2="true" />
+    		<then>
             <echo msg="Composer install" />
             	<composer command="update" composer="/usr/bin/composer.phar">
     				<arg value="--optimize-autoloader" />
@@ -48,10 +63,7 @@
             		<arg value="-q" />
               </composer>
           </then>
-    		</if>
-
-
-
+    	</if>
 
         <echo msg="copy config" />
     	<copy todir="${tmp.basedir}/config/autoload/" overwrite="true">
@@ -65,12 +77,23 @@
 
 	    <delete includeemptydirs="true">
 	    	<fileset dir="${tmp.basedir}/">
-	        	<include name="composer.*" />
+	        	<!--include name="composer.*" / -->
 	        	<include name=".*" />
 	        	<include name=".*/**" />
 	        	<include name="bin/**" />
+	    		<exclude name=".e*/**" />
 	        </fileset>
 	    </delete>
+    	
+    	<if>
+		    <equals arg1="${app.eb}" arg2="true" />
+	    	<then>
+	    		<echo msg="---------------------------------" />
+	    		<echo msg="Api build success in ${tmp.basedir}" />
+	            <echo msg="Executer la commande -> eb deploy" />
+	    		<echo msg="---------------------------------" />
+	        </then>
+    	</if>
     </target>
 
     <target name="create-targz">
@@ -87,4 +110,7 @@
   			failonerror="true" / -->
     </target>
 
+	
+	
+	
 </project>

@@ -16,7 +16,7 @@
 		"buse974/jrpc" : "dev-master",
 		"buse974/ZOpenTok" : "dev-master",
 		"buse974/sge" : "dev-master",
-		"zendframework/zendservice-google-gcm" : "dev-master",
+		"zendframework/zendservice-google-fcm" : "dev-master",
 		"aws/aws-sdk-php" : "^3.19",
 		"firebase/php-jwt" : "^4.0",
 		"buse974/dms" : "dev-master",
@@ -29,10 +29,10 @@
 	},
 	"repositories" : [{
 			"type" : "vcs",
-			"url" : "git@github.com:buse974/SimplePageCrawler.git"
+			"url" : "git@bitbucket.org:thestudnet/simplepagecrawler.git"
 		}, {
 			"type" : "vcs",
-			"url" : "https://github.com/BabbleCar/ZendService_Google_Gcm.git"
+			"url" : "git@bitbucket.org:thestudnet/zendservice_google_fcm.git"
 		}
 	],
 	"autoload" : {

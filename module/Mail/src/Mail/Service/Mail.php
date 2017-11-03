@@ -90,7 +90,7 @@ class Mail
         return ($this->tpl_storage->write($m_tpl)) ? true : false;
     }
 
-    public function sendTpl($name, $to, $datas = array())
+    public function sendTpl($name, $to, $datas = [])
     {
         $message = $this->getMessage()
             ->setTplStorage($this->tpl_storage)

@@ -74,8 +74,7 @@ return array(
 				'name' => 'memcached',
 				'options' => array(
 					'servers' => array(
-						array('host' => '${memcached.host}' , 'port' => '${memcached.port}', 'weight' => 66),
-						array('host' => '${memcached.host}' , 'port' => '${memcached.port}', 'weight' => 33)
+						array('host' => '${memcached.host}' , 'port' => '${memcached.port}', 'weight' => 100),
 					),
 					'lib_options' => array(
 						array('option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true),

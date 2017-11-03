@@ -13,14 +13,13 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
  */
 class Conf extends AbstractPlugin
 {
-
     /**
      * Option dms-conf
      *
      * @var array
      */
     protected $options;
-
+    
     /**
      * Constructor
      *
@@ -30,14 +29,34 @@ class Conf extends AbstractPlugin
     {
         $this->options = $options;
     }
-
+    
     /**
-     * Get Array Hearders
+     * Get Version
      *
-     * @return array
+     * @return string
      */
     public function getVersion()
     {
         return $this->options['version'];
+    }
+    
+    /**
+     * Get build commit
+     *
+     * @return string
+     */
+    public function getAll()
+    {
+        return $this->options;
+    }
+    
+    /**
+     * Get build commit
+     *
+     * @return string
+     */
+    public function getBuildCommit()
+    {
+        return $this->options['build-commit'];
     }
 }

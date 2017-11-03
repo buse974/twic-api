@@ -13,8 +13,8 @@
  */
 
 return [
-    'version' => "2.0.4",
-    'build-commit' => 891,
+    'version' => "dedze",
+    'build-commit' => 892,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -125,11 +125,14 @@ return [
                 ],
             ],
         ],
-        'headers' => [
-           /*'Access-Control-Allow-Origin' => '*',
-           'Access-Control-Allow-Credentials' => 'true',
-           'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept, Authorization',*/
-        ],
+        'headers' => 
+            [
+                'Access-Control-Allow-Credentials' => 'false', 
+                'Access-Control-Allow-Origin' => '*', 
+                'Access-Control-Allow-Methods' => 'PUT, GET, POST, OPTIONS', 
+                'Access-Control-Allow-Headers' => 'Authorization, X-auth-token, Origin, X-Requested-With, Content-Type, Accept'
+                
+            ],
     ],
     'zopentok-conf' => [
         'expire_time' => 60 * 60 * 24 * 30,
@@ -140,9 +143,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS891',
+                    'namespace' => 'LMS892',
                     'lib_options' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS891'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS892'],
                  /*       ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],*/
