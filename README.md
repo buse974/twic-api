@@ -21,6 +21,7 @@ and use `composer` to install dependencies using the `create-project` command:
 Alternately, clone the repository and manually invoke `composer` using the shipped
 `composer.phar`:
 
+
     cd my/project/dir
     git clone git://github.com/zendframework/ZendSkeletonApplication.git
     cd ZendSkeletonApplication
