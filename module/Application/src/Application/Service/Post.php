@@ -81,7 +81,7 @@ class Post extends AbstractService
             $type = 'post';
         }
         $uid = (($uid) && is_string($uid) && !empty($uid)) ? $uid:null;
-        $is_notif = !!$uid;
+        $is_notif = !!$uid; 
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         if (!$is_notif && null === $parent_id && null === $t_page_id && null === $t_user_id) {
             $t_user_id = $user_id;
