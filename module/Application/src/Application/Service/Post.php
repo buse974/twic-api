@@ -80,9 +80,8 @@ class Post extends AbstractService
         if (empty($type)) {
             $type = 'post';
         }
-        $uid = (($uid) && is_string($uid) && !empty($uid)) ? $uid:false;
+        $uid = (($uid) && is_string($uid) && !empty($uid)) ? $uid:null;
         $is_notif = !!$uid;
-
         $date = (new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s');
         if (!$is_notif && null === $parent_id && null === $t_page_id && null === $t_user_id) {
             $t_user_id = $user_id;
@@ -95,6 +94,7 @@ class Post extends AbstractService
         if (null !== $parent_id) {
             $uid = null;
         }
+        
 
         $user_id = $this->getServiceUser()->getIdentity()['id'];
         $m_post = $this->getModel()

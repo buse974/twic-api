@@ -24,3 +24,8 @@ build/
 .gitkanban
 config/autoload/global.php
 composer-setup.php
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
