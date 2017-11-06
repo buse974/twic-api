@@ -25,6 +25,7 @@
             outputfile="${build.dbdeploy.deployfile}"
             undooutputfile="${build.dbdeploy.undofile}" />
 
+    	<echo message="mysql --default-character-set=utf8 -h${db.host} -u${db.user} ${db.passwordParam} ${db.database} &lt; ${build.dbdeploy.deployfile}" />
         	<exec
             	command="mysql --default-character-set=utf8 -h${db.host} -u${db.user} ${db.passwordParam} ${db.database} &lt; ${build.dbdeploy.deployfile}"
             	dir="${project.basedir}"
