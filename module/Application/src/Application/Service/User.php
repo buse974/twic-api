@@ -1076,7 +1076,7 @@ class User extends AbstractService
         }
         
         $m_user = $this->getLite($user_id);
-        if(null !== $m_user->getOrganizationId()){
+        if(is_numeric( $m_user->getOrganizationId() )){
             $this->getServicePageUser()->update($m_user->getOrganizationId(), $user_id, ModelPageUser::ROLE_USER, ModelPageUser::STATE_MEMBER);
         }
         $login = $this->login($m_user->getEmail(), $password);
