@@ -4,41 +4,83 @@
         <echo msg="Building configuration..." />
         	<delete dir="${tmp.basedir}" includeemptydirs="true" quiet="true" />
 		<mkdir dir="${tmp.basedir}" />
-		<copy todir="${tmp.basedir}" overwrite="true" >
-        	<fileset dir="${project.basedir}">
-            	<include name="**" />
-                <exclude name="**/*Test*"/>
-                <exclude name="**/*.bak/"/>
-                <exclude name="**/*.bak"/>
-                <exclude name="data/cache/*"/>
-        		<exclude name="data/"/>
-        		<exclude name="public/doc/"/>
-        		<exclude name="output/"/>
-        		<exclude name="upload/"/>
-                <exclude name="upload/*/"/>
-        		<exclude name="module/Application/language/"/>
-                <exclude name="**/*docker*"/>
-                <exclude name="**/*Dockerfile*"/>
-                <exclude name="**/*.dist"/>
-                <exclude name="**/*.build"/>
-                <exclude name="tests/**"/>
-                <exclude name="utils/**"/>
-                <exclude name="phpunit.xml"/>
-                <exclude name="composer.lock"/>
-                <exclude name="build/**"/>
-                <exclude name="data/db/**"/>
-                <exclude name="Zdeploy/**"/>
-                <exclude name="build.xml"/>
-                <exclude name="deploy-db-*"/>
-                <exclude name="undo-db-*"/>
-                <exclude name="vendor/**"/>
-                <exclude name="/config/autoload/**"/>
-                <exclude name="**/*.md"/>
-                <exclude name="**/*.mwb"/>
-        		<include name=".e*/**" />
-        	</fileset>
-        </copy>
+		
 
+    	<if>
+	    <equals arg1="${app.eb}" arg2="true" />
+	    	<then>
+	    		<copy todir="${tmp.basedir}" overwrite="true" >
+	    		        	<fileset dir="${project.basedir}">
+	    		            	<include name="**" />
+	    		                <exclude name="**/*Test*"/>
+	    		                <exclude name="**/*.bak/"/>
+	    		                <exclude name="**/*.bak"/>
+	    		                <exclude name="data/cache/*"/>
+	    		        		<exclude name="data/doc/"/>
+	    		        		<exclude name="public/doc/"/>
+	    		        		<exclude name="output/"/>
+	    		        		<exclude name="upload/"/>
+	    		                <exclude name="upload/*/"/>
+	    		        		<exclude name="module/Application/language/"/>
+	    		                <exclude name="**/*docker*"/>
+	    		                <exclude name="**/*Dockerfile*"/>
+	    		                <exclude name="**/*.dist"/>
+	    		                <exclude name="**/*.build"/>
+	    		                <exclude name="tests/**"/>
+	    		                <exclude name="utils/**"/>
+	    		                <exclude name="phpunit.xml"/>
+	    		                <exclude name="composer.lock"/>
+	    		                <exclude name="build/**"/>
+	    		                <exclude name="deploy-db-*"/>
+	    		                <exclude name="undo-db-*"/>
+	    		                <exclude name="vendor/**"/>
+	    		                <exclude name="/config/autoload/**"/>
+	    		                <exclude name="**/*.md"/>
+	    		                <exclude name="**/*.mwb"/>
+	    		        		<include name=".e*/**" />
+	    		        		
+	    		        		
+	    		        	</fileset>
+	    		        </copy>
+	         </then>
+    		 <else>
+    		 	<copy todir="${tmp.basedir}" overwrite="true" >
+    		    	<fileset dir="${project.basedir}">
+    		            	<include name="**" />
+    		                <exclude name="**/*Test*"/>
+    		                <exclude name="**/*.bak/"/>
+    		                <exclude name="**/*.bak"/>
+    		                <exclude name="data/cache/*"/>
+    		        		<exclude name="data/"/>
+    		        		<exclude name="public/doc/"/>
+    		        		<exclude name="output/"/>
+    		        		<exclude name="upload/"/>
+    		                <exclude name="upload/*/"/>
+    		        		<exclude name="module/Application/language/"/>
+    		                <exclude name="**/*docker*"/>
+    		                <exclude name="**/*Dockerfile*"/>
+    		                <exclude name="**/*.dist"/>
+    		                <exclude name="**/*.build"/>
+    		                <exclude name="tests/**"/>
+    		                <exclude name="utils/**"/>
+    		                <exclude name="phpunit.xml"/>
+    		                <exclude name="composer.lock"/>
+    		                <exclude name="build/**"/>
+    		                <exclude name="data/db/**"/>
+    		                <exclude name="Zdeploy/**"/>
+    		                <exclude name="build.xml"/>
+    		                <exclude name="deploy-db-*"/>
+    		                <exclude name="undo-db-*"/>
+    		                <exclude name="vendor/**"/>
+    		                <exclude name="/config/autoload/**"/>
+    		                <exclude name="**/*.md"/>
+    		                <exclude name="**/*.mwb"/>
+    		        		<include name=".e*/**" />
+    		        </fileset>
+    		    </copy>
+    		 </else>
+    	</if>
+    	
     	
 			
     	<if>
