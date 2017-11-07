@@ -255,7 +255,7 @@ class Activity extends AbstractService
 
         foreach ($connections as $actual_day => $m_connections)
         {
-            $connections[$actual_day] = array_sum($m_connections) / count($m_connections);
+            $connections[$actual_day] =  [ 'avg' => array_sum($m_connections) / count($m_connections), 'count' => count($m_connections)];
         }
 
         return $connections;
