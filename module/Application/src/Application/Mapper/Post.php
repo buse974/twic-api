@@ -141,7 +141,7 @@ class Post extends AbstractMapper
         if (null != $organization_id)
         {
             $select
-                ->join('user', ['post.user_id = user.id'], [])
+                ->join('user', 'post.user_id = user.id', [])
                 ->where(['user.organization_id' => $organization_id]);
         }
         
@@ -151,7 +151,8 @@ class Post extends AbstractMapper
         else if(1 === $parent){
             $select->where('post.parent_id IS NOT NULL');
         }
-        
+        syslog(1, json_encode($organization_id));
+        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 }

@@ -101,7 +101,7 @@ class Contact extends AbstractMapper
         if (null != $organization_id)
         {
             $select
-                ->join('user', ['contact.user_id = user.id'], [])
+                ->join('user', 'contact.user_id = user.id', [])
                 ->where(['user.organization_id' => $organization_id]);
         }
         

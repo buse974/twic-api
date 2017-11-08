@@ -393,7 +393,7 @@ class Page extends AbstractMapper
         if (null != $organization_id)
         {
             $select
-                ->join('user', ['page.user_id = user.id'], [])
+                ->join('user', 'page.user_id = user.id', [])
                 ->where(['user.organization_id' => $organization_id]);
         }
         
