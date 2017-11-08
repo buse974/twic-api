@@ -52,7 +52,7 @@ class Message extends AbstractMapper
         if (null != $organization_id)
         {
             $select
-                ->join('user', ['message.user_id = user.id'], [])
+                ->join('user', 'message.user_id = user.id', [])
                 ->where(['user.organization_id' => $organization_id]);
         }
         
