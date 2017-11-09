@@ -26,7 +26,7 @@ class Activity extends AbstractService
      */
     public function add($activities)
     {
-        $ret = [];
+        $ret = []; 
         $user = $this->getServiceUser()->getIdentity()['id'];
         foreach ($activities as $activity) {
             $date = (isset($activity['date'])) ? $activity['date'] : null;
