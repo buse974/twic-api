@@ -128,6 +128,7 @@ class Message extends AbstractService
                 ->setTag("CONV".$conversation_id)
                 ->setBody(((count($to) > 2)? explode(' ', $ar_name[$user_id])[0] . ": ":"").(empty($message_text)?"shared a file.":$message_text));
                 
+                
                 $this->getServiceFcm()->send(
                     $user,
                     ['data' => [
