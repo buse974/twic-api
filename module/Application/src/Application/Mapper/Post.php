@@ -126,6 +126,7 @@ class Post extends AbstractMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns([ 'post$created_date' => new Expression('SUBSTRING(post.created_date,1,'.$interval.')'), 'post$count' => new Expression('COUNT(DISTINCT post.id)'), 'post$parent_id' => new Expression('IF(post.parent_id IS NOT NULL,1,0)')])
             ->where('post.deleted_date IS NULL')
+            ->where('post.uid IS NULL')
             ->group([new Expression('SUBSTRING(post.created_date,1,'.$interval.')'),  new Expression('IF(post.parent_id IS NOT NULL,1,0)') ]);
 
         if (null != $start_date)

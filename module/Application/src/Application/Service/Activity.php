@@ -223,34 +223,33 @@ class Activity extends AbstractService
             else 
             {
                 $difference = (strtotime($m_activity->getDate()) - strtotime($arrayUser[$m_activity->getUserId()]['end_date']));
-                if ($difference < 3600 && strcmp(substr($m_activity->getDate(), 0, $interval), substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval)) == 0)
-                  {
-                    $arrayUser[$m_activity->getUserId()]['end_date'] = $m_activity->getDate();
-                  }
+                if ($difference < 600 && strcmp(substr($m_activity->getDate(), 0, $interval), substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval)) == 0)
+                {
+                  $arrayUser[$m_activity->getUserId()]['end_date'] = $m_activity->getDate();
+                }
                 else
-                  {
+                {
                     $actual_day = substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval);
                     if (!array_key_exists($actual_day, $connections))
-                     {
-                        $connections[$actual_day] = [];
-                     }
+                    {
+                       $connections[$actual_day] = [];
+                    }
                     $connections[$actual_day][] = strtotime($arrayUser[$m_activity->getUserId()]['end_date']) - strtotime($arrayUser[$m_activity->getUserId()]['start_date']);
 
                     $arrayUser[$m_activity->getUserId()] = 
                         ['start_date' => $m_activity->getDate(), 'end_date' => $m_activity->getDate()];
-                  }
+                }
             }
 
         }
-
         foreach ($arrayUser as $m_arrayUser)
         {
-          $actual_day = substr($arrayUser[$m_activity->getUserId()]['end_date'], 0, $interval);
-          if (!array_key_exists($actual_day, $connections))
+            $actual_day = substr($m_arrayUser['end_date'], 0, $interval);
+            if (!array_key_exists($actual_day, $connections))
             {
               $connections[$actual_day] = [];
             }
-          $connections[$actual_day][] = strtotime($m_arrayUser['end_date']) - strtotime($m_arrayUser['start_date']);
+            $connections[$actual_day][] = strtotime($m_arrayUser['end_date']) - strtotime($m_arrayUser['start_date']);
         }
 
         foreach ($connections as $actual_day => $m_connections)

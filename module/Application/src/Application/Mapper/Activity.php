@@ -157,8 +157,6 @@ class Activity extends AbstractMapper
             $select->where(['user_id' => $user_id]);
         }
 
-        //echo $this->printSql($select);    
-
         return $this->selectWith($select);
     }
 }
