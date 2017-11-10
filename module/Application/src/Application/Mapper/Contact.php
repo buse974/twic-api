@@ -97,8 +97,7 @@ class Contact extends AbstractMapper
         {
             $select->join('user', 'contact.contact_id = user.id', [])
                 ->join('page_user', 'user.id = page_user.user_id', [])
-                ->where(['page_user.page_id' => $organization_id])
-                ->group('contact.id');
+                ->where(['page_user.page_id' => $organization_id]);
         }
         return $this->selectWith($select);
         
