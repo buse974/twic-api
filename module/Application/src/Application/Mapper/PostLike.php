@@ -27,7 +27,8 @@ class PostLike extends AbstractMapper
         {
             $select->join('user', 'post_like.user_id = user.id', [])
                 ->join('page_user', 'user.id = page_user.user_id', [])
-                ->where(['page_user.page_id' => $organization_id]);
+                ->where(['page_user.page_id' => $organization_id])
+                ->group('post_like.id');
         }
         
         return $this->selectWith($select);

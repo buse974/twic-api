@@ -53,7 +53,8 @@ class Message extends AbstractMapper
         {
             $select->join('user', 'message.user_id = user.id', [])
                 ->join('page_user', 'user.id = page_user.user_id', [])
-                ->where(['page_user.page_id' => $organization_id]);
+                ->where(['page_user.page_id' => $organization_id])
+                ->group('message.id');
         }
         
         return $this->selectWith($select);
