@@ -395,12 +395,32 @@ class Contact extends AbstractService
      *
      * @return array
      */
-    public function getCounts( $start_date = null, $end_date = null, $interval_date = 'D',  $organization_id  = null){
+    public function getRequestsCount( $start_date = null, $end_date = null, $interval_date = 'D',  $organization_id  = null){
         
         $interval = $this->getServiceActivity()->interval($interval_date);
         $identity = $this->getServiceUser()->getIdentity();
         
-        return $this->getMapper()->getCounts($identity['id'],$interval, $start_date, $end_date, $organization_id);
+        return $this->getMapper()->getRequestsCount($identity['id'],$interval, $start_date, $end_date, $organization_id);
+    }
+    
+     /**
+     * Get page counts.
+     *
+     * @invokable
+     *
+     * @param string  $start_date
+     * @param string  $end_date
+     * @param string  $interval_date
+     * @param int     $organization_id
+     *
+     * @return array
+     */
+    public function getAcceptedCount( $start_date = null, $end_date = null, $interval_date = 'D',  $organization_id  = null){
+        
+        $interval = $this->getServiceActivity()->interval($interval_date);
+        $identity = $this->getServiceUser()->getIdentity();
+        
+        return $this->getMapper()->getAcceptedCount($identity['id'],$interval, $start_date, $end_date, $organization_id);
     }
 
     /**

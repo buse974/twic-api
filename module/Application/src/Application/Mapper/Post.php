@@ -138,13 +138,14 @@ class Post extends AbstractMapper
         {
             $select->where(['post.created_date <= ? ' => $end_date]);
         }
-
+        
         if (null != $organization_id)
         {
-            $select
-                ->join('user', 'post.user_id = user.id', [])
-                ->where(['user.organization_id' => $organization_id]);
+            $select->join('user', 'post.user_id = user.id', [])
+                ->join('page_user', 'user.id = page_user.user_id', [])
+                ->where(['page_user.page_id' => $organization_id]);
         }
+
         
         if(0 === $parent){
             $select->where('post.parent_id IS NULL');
@@ -152,8 +153,6 @@ class Post extends AbstractMapper
         else if(1 === $parent){
             $select->where('post.parent_id IS NOT NULL');
         }
-        syslog(1, json_encode($organization_id));
-        syslog(1, $this->printSql($select));
         return $this->selectWith($select);
     }
 }
