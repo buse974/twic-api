@@ -59,7 +59,13 @@
 			<then><property name="target.basedir" value="/tmp/www/" override="true" /></then>
 		</if>
 
-		<property name="tmp.basedir" value="${tmp.basedir}/${git.rev}" override="true" />
+		<if>
+		    <equals arg1="${app.eb}" arg2="true" />
+	    	<then>
+	    		<property name="tmp.basedir" value="${tmp.basedir}/${git.rev}" override="true" />
+	        </then>
+	    </if>
+		
 		<php expression='preg_replace("/([^:])(\/{2,})/", "$1/", "${tmp.basedir}/")' returnProperty="tmp.basedir" />
 	
 	<target name="main">
