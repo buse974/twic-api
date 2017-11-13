@@ -48,12 +48,12 @@ class Message extends AbstractMapper
         {
             $select->where(['conversation.type' => $type]);
         }
-
+        
         if (null != $organization_id)
         {
-            $select
-                ->join('user', 'message.user_id = user.id', [])
-                ->where(['user.organization_id' => $organization_id]);
+            $select->join('user', 'message.user_id = user.id', [])
+                ->join('page_user', 'user.id = page_user.user_id', [])
+                ->where(['page_user.page_id' => $organization_id]);
         }
         
         return $this->selectWith($select);

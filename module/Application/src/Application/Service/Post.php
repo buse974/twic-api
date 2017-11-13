@@ -508,6 +508,18 @@ class Post extends AbstractService
             ['count' => $mapper->count(), 'list' => $res_posts] :
             $res_posts;
     }
+    
+    /**
+     * Hide post
+     *
+     * @invokable
+     *
+     * @param int   $id
+     */
+    public function hide($id)
+    {
+        return true;
+    }
 
     /**
      * Like post

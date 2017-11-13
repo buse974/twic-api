@@ -149,7 +149,9 @@ class Activity extends AbstractMapper
 
         if (null != $organization_id)
         {
-            $select->where(['organization_id' => $organization_id]);
+            $select->join('page_user', 'user.id = page_user.user_id', [])
+                ->where(['page_user.page_id' => $organization_id])
+                ->group('activity.id');
         }
 
         if (null != $user_id)
