@@ -518,7 +518,7 @@ class Post extends AbstractService
      */
     public function hide($id)
     {
-        return true;
+        return $this->getServicePostUser()->hide($id);
     }
 
     /**
@@ -923,5 +923,15 @@ class Post extends AbstractService
     private function getServiceFcm()
     {
         return $this->container->get('fcm');
+    }
+    
+    /**
+     * Get Service Service Post User.
+     *
+     * @return \Application\Service\PostUser
+     */
+    private function getPostUser()
+    {
+        return $this->container->get('app_service_post_user');
     }
 }
