@@ -930,7 +930,7 @@ class Post extends AbstractService
      *
      * @return \Application\Service\PostUser
      */
-    private function getPostUser()
+    private function getServicePostUser()
     {
         return $this->container->get('app_service_post_user');
     }

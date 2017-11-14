@@ -22,12 +22,15 @@ class Post extends AbstractMapper
 
         $select->columns($columns);
         $select->join('page', 'page.id = post.t_page_id', [], $select::JOIN_LEFT)
-          ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
-          ->where(['post.deleted_date IS NULL'])
-          ->where(['page.deleted_date IS NULL'])
-          ->where(['post.type <> "submission"'])
-          ->group('post.id')
-          ->quantifier('DISTINCT');
+            ->join('post_subscription', 'post_subscription.post_id=post.id', [], $select::JOIN_LEFT)
+            ->join('post_user', 'post_user.post_id=post.id', [], $select::JOIN_LEFT)
+            ->where(['(post_user.user_id = ? AND post_user.hidden = 0' => $me_id])
+            ->where(['  post_user.user_id IS NULL ) '], Predicate::OP_OR)
+            ->where(['post.deleted_date IS NULL'])
+            ->where(['page.deleted_date IS NULL'])
+            ->where(['post.type <> "submission"'])
+            ->group('post.id')
+            ->quantifier('DISTINCT');
 
         // @TODO on part du principe que si il n'y a pas de page_id donc c pour un mur donc on récupére que les post des page publish de type course
         // sinon si on donne la page_id on considére qui a pu récupérer l'id donc c accéssible (normalement que pour les admins de la page et les admins studnet)
