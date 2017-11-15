@@ -29,6 +29,7 @@ class Conversation extends AbstractMapper
             ->where(['conversation_user.user_id' => $user_id])
             ->where(['message_user.deleted_date IS NULL'])
             ->where(['page.deleted_date IS NULL'])
+            ->where(['( conversation.type <> 3 OR (item.id IS NOT NULL AND item.is_published IS TRUE ))'])
             ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
             ->group(['conversation.id']);
 
