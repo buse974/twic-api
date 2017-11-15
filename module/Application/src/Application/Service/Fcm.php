@@ -51,7 +51,7 @@ class Fcm extends AbstractService
         $this->fcm_client = $fcm_client;
     }
 
-    public function register($uuid, $registration_id)
+    public function register($uuid, $registration_id, $package = null)
     {
         $res_session = $this->session->get($uuid);
         foreach ($res_session as $m_session) {
@@ -61,7 +61,7 @@ class Fcm extends AbstractService
             }
         }
 
-        return $this->session->update($this->token, $uuid, $registration_id);
+        return $this->session->update($this->token, $uuid, $registration_id, $package);
     }
 
     public function send($to, $data, $notification = null)

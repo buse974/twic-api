@@ -26,21 +26,25 @@ class Session extends AbstractService
 
     /**
      * Update session fcm
-     *
+     * 
      * @param  string $token
      * @param  string $uuid
      * @param  string $registration_id
+     * @param  string $package
+     * 
      * @return int
      */
-    public function update($token, $uuid, $registration_id)
+    public function update($token, $uuid, $registration_id, $package = null)
     {
         return $this->getMapper()->update(
             $this->getModel()
                 ->setUuid($uuid)
-                ->setRegistrationId($registration_id),
+                ->setRegistrationId($registration_id)
+                ->setPackage($package),
             ['token' => $token]
         );
     }
+    
     /**
      * Delete sesion and fcm session
      *
