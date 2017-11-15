@@ -59,6 +59,7 @@ class Conversation extends AbstractMapper
             ->join('page', new Expression("page.conversation_id=conversation.id OR (item.page_id=page_id AND item.participants = 'all')"), ['conversation$page_id' => 'id'], $select::JOIN_LEFT)
             ->where(['page.deleted_date IS NULL'])
             ->where(['( ( page.type = "course" AND page.is_published IS TRUE ) OR page.type <> "course" OR page.type IS NULL )'])
+            ->where(['( conversation.type <> 3 OR  item.is_published IS TRUE )'])
             ->order(['conversation_message$id DESC'])
             ->group(['conversation.id']);
 
