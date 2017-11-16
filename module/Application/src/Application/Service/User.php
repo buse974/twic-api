@@ -1000,10 +1000,11 @@ class User extends AbstractService
      *
      * @param string $token
      * @param string $uuid
+     * @param string $package
      */
-    public function registerFcm($token, $uuid)
+    public function registerFcm($token, $uuid, $package)
     {
-        return $this->getServiceFcm()->register($uuid, $token);
+        return $this->getServiceFcm()->register($uuid, $token, $package);
     }
 
     /**
