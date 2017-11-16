@@ -7,10 +7,13 @@ use Application\Model\Item as ModelItem;
 use Application\Model\Role as ModelRole;
 use Dal\Db\ResultSet\ResultSet;
 use Application\Model\Conversation as ModelConversation;
+use Zend\Json\Server\Request;
+use Zend\Http\Client;
 
 class Item extends AbstractService
 {
 
+    private static $id = 0;
     /**
      * Add item
      *
@@ -709,6 +712,16 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
+        try{
+            if(null !== $start_date){
+                $this->register($id);
+            }
+            else{
+                $this->unregister($id);
+            }
+        } catch (Exception $ex) {
+            syslog(1, 'Error from rtserver <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+        }
             
         return $this->getMapper()->update($m_item);
     }
@@ -730,9 +743,79 @@ class Item extends AbstractService
         if (! in_array($identity['id'], $ar_pu[$m_item->getPageId()])) {
             throw new \Exception("not admin of the page");
         }
+        try{
+            $this->unregister($id);
+        } catch (Exception $ex) {
+            syslog(1, 'Error from rtserver <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+
+        }
         
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
+    }
+    
+    
+    /**
+    * Send Message Node item.register
+    *
+    * @param int $id
+    */
+    public function register($id)
+    {
+        $m_item = $this->getLite($id)->current();
+        $rep = false;
+        $request = new Request();
+        $request->setMethod('notification.register')
+          ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.available.'.$id, 'data' => [ 'type' => 'item.available', 'data' => ['id' => $id]]])
+          ->setId(++ self::$id)
+          ->setVersion('2.0');
+
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
+        try {
+            $rep = $client->doRequest($request);
+            if ($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
+            syslog(1, $e->getMessage());
+        }
+
+        return $rep;
+    }
+    
+      /**
+    * Send Message Node item.register
+    *
+    * @param int $id
+    */
+    public function unregister($id)
+    {
+        $rep = false;
+        $request = new Request();
+        $request->setMethod('notification.unregister')   
+            ->setParams(['uid' => 'item.available.'.$id])
+            ->setId(++ self::$id)
+            ->setVersion('2.0');
+
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
+        try {
+            $rep = $client->doRequest($request);
+            if ($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
+            syslog(1, $e->getMessage());
+        }
+
+        return $rep;
     }
 
     /**
