@@ -117,7 +117,7 @@ class VideoArchive extends AbstractService
                 $m_video_archive = $this->getMapper()->select($this->getModel()->setArchiveToken($json['id']))->current();
                 $m_conversation = $this->getServiceConversation()->getLite($m_video_archive->getConversationId());
 
-                $m_user = $this->getServiceUser()->getListIdByConversation($m_conversation->getId());
+                $m_user = $this->getServiceConversationUser()->getListUserIdByConversation($m_conversation->getId());
                 $miid = [];
                 foreach ($m_user as $u_id) {
                     $miid[] = 'M'.$u_id;
@@ -172,6 +172,16 @@ class VideoArchive extends AbstractService
     private function getServiceConversation()
     {
         return $this->container->get('app_service_conversation');
+    }
+    
+       /**
+     * Get Service ConversationUser.
+     *
+     * @return \Application\Service\ConversationUser
+     */
+    private function getServiceConversationUser()
+    {
+        return $this->container->get('app_service_conversation_user');
     }
 
     /**
