@@ -14,6 +14,7 @@ use Application\Model\Role as ModelRole;
 use Application\Model\Conversation as ModelConversation;
 use JRpc\Json\Server\Exception\JrpcException;
 use ZendService\Google\Gcm\Notification as GcmNotification;
+use Zend\Db\Sql\Predicate\IsNull;
 
 /**
  * Class Page
@@ -403,9 +404,14 @@ class Page extends AbstractService
             ->setShortTitle($short_title);
 
         if ($address !== null) {
-            $address = $this->getServiceAddress()->getAddress($address);
-            if ($address && null !== ($address_id = $address->getId())) {
-                $m_page->setAddressId($address_id);
+            if($address === 0){
+                $m_page->setAddressId(new IsNull());
+            }
+            else{
+                $address = $this->getServiceAddress()->getAddress($address);
+                if ($address && null !== ($address_id = $address->getId())) {
+                    $m_page->setAddressId($address_id);
+                }
             }
         }
 
