@@ -130,18 +130,17 @@ class Submission extends AbstractService
      */
     public function sendSubmissionChanged($data)
     {
-        $authorization = $this->container->get('config')['node']['authorization'];
+        //$authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
         $request->setMethod('submission.changed')
         ->setParams($data)
         ->setId(++ self::$id)
-        ->setVersion('2.0')
-            ->getHeaders()
-            ->addHeader([ 'Authorization' => $authorization]);
+        ->setVersion('2.0');
         
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
+        //$client->setHeaders([ 'Authorization' => $authorization]);
         
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {
@@ -153,6 +152,7 @@ class Submission extends AbstractService
             syslog(1, 'Request: ' . $request->toJson());
             syslog(1, $e->getMessage());
         }
+        syslog(1, json_encode($rep));
         
         return $rep;
     }

@@ -38,6 +38,7 @@ return array(
 	),
     'node' => array(
         'addr' => '****'
+        'authorization' => "*****" 
     ),
     'zopentok-conf' => [
         'api_key'     =>  '****',
