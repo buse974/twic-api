@@ -759,7 +759,7 @@ class Item extends AbstractService
     */
     public function register($id)
     {
-        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
+        $authorization = $this->container->get('config')['node']['authentification'];
         $m_item = $this->getLite($id)->current();
         $rep = false;
         $request = new Request();
@@ -794,7 +794,7 @@ class Item extends AbstractService
     */
     public function unregister($id)
     {
-        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
+        $authorization = $this->container->get('config')['node']['authentification'];
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.unregister')   
