@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 933,
+    'build-commit' => 941,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -139,14 +139,17 @@ return [
         'expire_time' => 60 * 60 * 24 * 30,
         'adapter' => 'http-adapter',
     ],
+    'rtserver-conf' => [
+        'authorization' => "viserlalunecanemefaitpaspeurmemealusurejycroisencoreetencoeur"
+    ],
     'caches' => [
         'storage_memcached' => [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS933',
+                    'namespace' => 'LMS941',
                     'lib_options' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS933'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS941'],
                  /*       ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],*/

@@ -7,10 +7,13 @@ use Application\Model\Item as ModelItem;
 use Application\Model\Role as ModelRole;
 use Dal\Db\ResultSet\ResultSet;
 use Application\Model\Conversation as ModelConversation;
+use Zend\Json\Server\Request;
+use Zend\Http\Client;
 
 class Item extends AbstractService
 {
 
+    private static $id = 0;
     /**
      * Add item
      *
@@ -641,6 +644,15 @@ class Item extends AbstractService
         
         if($m_item->getIsPublished() != $is_published && $is_published!==null) {
             $this->publish($id, $is_published, null, null, $notify);
+            if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS){
+                if(null !== $start_date && $is_published === true){
+                    $this->register($id);
+                }
+                else{
+                    $this->unregister($id);
+                }
+            }
+          
         } else if($notify === true && $m_item->getIsPublished()){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
@@ -709,7 +721,7 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
-            
+        
         return $this->getMapper()->update($m_item);
     }
 
@@ -731,8 +743,115 @@ class Item extends AbstractService
             throw new \Exception("not admin of the page");
         }
         
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS){
+            $this->unregister($id);
+        }
+        
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
+    }
+    
+    
+    /**
+    * Send Message Node item.register
+    *
+    * @param int $id
+    */
+    public function register($id)
+    {
+        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
+        $m_item = $this->getLite($id)->current();
+        $rep = false;
+        $request = new Request();
+        $request->setMethod('notification.register')
+            ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
+            ->setId(++ self::$id)
+            ->setVersion('2.0')
+            ->getHeaders()
+            ->addHeader([ 'Authorization' => $authorization]);
+
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
+        try {
+            $rep = $client->doRequest($request);
+            if ($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
+            syslog(1, $e->getMessage());
+        }
+
+        return $rep;
+    }
+    
+      /**
+    * Send Message Node item.register
+    *
+    * @param int $id
+    */
+    public function unregister($id)
+    {
+        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
+        $rep = false;
+        $request = new Request();
+        $request->setMethod('notification.unregister')   
+            ->setParams(['uid' => 'item.starting.'.$id])
+            ->setId(++ self::$id)
+            ->setVersion('2.0')
+            ->getHeaders()
+            ->addHeader([ 'Authorization' => $authorization]);
+
+        $client = new Client();
+        $client->setOptions($this->container->get('config')['http-adapter']);
+
+        $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
+        try {
+            $rep = $client->doRequest($request);
+            if ($rep->isError()) {
+                throw new \Exception('Error jrpc nodeJs: ' . $rep->getError()->getMessage(), $rep->getError()->getCode());
+            }
+        } catch (\Exception $e) {
+            syslog(1, 'Request: ' . $request->toJson());
+            syslog(1, $e->getMessage());
+        }
+
+        return $rep;
+    }
+    
+    
+    /**
+     * Update item
+     *
+     * @invokable
+     *
+     * @param int $id
+     * @throws \Exception
+     * 
+     * @return int
+     */
+    public function starting($id){
+        if(!is_array($id)){
+            $id = [$id];
+        }
+        foreach($id as $i){
+            $ar_user = $this->getServiceItemUser()->getListUserId(null, $i);
+            $m_item = $this->getLite($i);
+            $this->getServiceFcm()->send(
+                $ar_user, ['data' => [
+                    'type' => 'item.starting',
+                    'data' => [
+                        'id' => $i,
+                        'title' => $m_item->getTitle(),
+                        'start' => $m_item->getStartDate(),
+                        'type' => ModelItem::type_relation[$m_item->getType()]
+                        ]
+                    ]
+                ]
+            );
+        }
     }
 
     /**

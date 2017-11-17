@@ -20,6 +20,9 @@ return [
             //'videoArchive' => function (\Interop\Container\ContainerInterface\ContainerInterface $container) {
               'videoArchive' => function ($container) {
                   return new videoArchive($container->get('app_service_video_archive'));
+              },    
+              'item' => function ($container) {
+                  return new item($container->get('app_service_item'));
               }
         ],
     ],
@@ -42,6 +45,16 @@ return [
                      'defaults' => [
                          'controller' => 'Application\Controller\Index',
                          'action' => 'statusChange',
+                     ],
+                 ],
+             ],
+            'notify' => [
+                 'type' => Literal::class,
+                     'options' => [
+                     'route' => '/notify',
+                     'defaults' => [
+                         'controller' => 'Application\Controller\Index',
+                         'action' => 'notify',
                      ],
                  ],
              ],
