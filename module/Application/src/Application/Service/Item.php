@@ -759,7 +759,7 @@ class Item extends AbstractService
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.register')
-          ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.available.'.$id, 'data' => [ 'type' => 'item.available', 'data' => ['id' => $id]]])
+          ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
           ->setId(++ self::$id)
           ->setVersion('2.0');
 
@@ -790,7 +790,7 @@ class Item extends AbstractService
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.unregister')   
-            ->setParams(['uid' => 'item.available.'.$id])
+            ->setParams(['uid' => 'item.starting.'.$id])
             ->setId(++ self::$id)
             ->setVersion('2.0');
 

@@ -18,6 +18,11 @@ use Zend\View\Model\JsonModel;
  */
 class IndexController extends AbstractActionController
 {
+    const ITEM_STARTING = 'item.starting';
+    
+    const notification_type = [
+        self::ITEM_STARTING => self::ITEM_STARTING
+    ];
     /**
      * Index
      *
@@ -51,9 +56,14 @@ class IndexController extends AbstractActionController
      *
      * @return \Zend\View\Model\JsonModel
      */
-    public function itemStartingAction()
+    public function notifyAction()
     {
-        $ret = $this->item()->starting($this->getRequest()->getContent());
+        $params = $this->getRequest()->getContent();
+        switch($params['type']){
+            case notification_type::ITEM_STARTING : 
+                $ret = $this->item()->starting($params['data']['id']);
+            break;
+        }
 
         return new JsonModel(['code'=>$ret]);
     }
