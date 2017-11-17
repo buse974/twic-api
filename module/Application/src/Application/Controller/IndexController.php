@@ -58,11 +58,13 @@ class IndexController extends AbstractActionController
      */
     public function notifyAction()
     {
-        $params = $this->getRequest()->getContent();
-        switch($params['type']){
-            case notification_type::ITEM_STARTING : 
-                $ret = $this->item()->starting($params['data']['id']);
-            break;
+        $notifs = $this->getRequest()->getContent();
+        foreach($notifs as $notif){
+            switch($notif['type']['type']){
+                case notification_type::ITEM_STARTING : 
+                    $ret = $this->item()->starting($notif['data']['id']);
+                break;
+            }
         }
 
         return new JsonModel(['code'=>$ret]);
