@@ -759,8 +759,7 @@ class Item extends AbstractService
     */
     public function register($id)
     {
-        return;
-        //$authorization = $this->container->get('config')['node']['authorization'];
+        $authorization = $this->container->get('config')['node']['authorization'];
         $m_item = $this->getLite($id)->current();
         $rep = false;
         $request = new Request();
@@ -771,7 +770,7 @@ class Item extends AbstractService
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
-        //$client->setHeaders([ 'Authorization' => $authorization]);
+        $client->setHeaders([ 'Authorization' => $authorization]);
 
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {
@@ -794,8 +793,7 @@ class Item extends AbstractService
     */
     public function unregister($id)
     {
-        return;
-        //$authorization = $this->container->get('config')['node']['authorization'];
+        $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.unregister')   
@@ -805,7 +803,7 @@ class Item extends AbstractService
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
-        //$client->setHeaders([ 'Authorization' => $authorization]);
+        $client->setHeaders([ 'Authorization' => $authorization]);
 
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {

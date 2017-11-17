@@ -107,7 +107,7 @@ class Event extends AbstractService
      */
     public function sendRequest($users, $notification, $target)
     {
-        //$authorization = $this->container->get('config')['node']['authorization'];
+        $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.publish')
@@ -115,7 +115,7 @@ class Event extends AbstractService
             ->setId(++ self::$id)
             ->setVersion('2.0');
 
-        //$this->getClient()->setHeaders([ 'Authorization' => $authorization]);
+        $this->getClient()->setHeaders([ 'Authorization' => $authorization]);
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $this->getClient());
         try {
             $rep = $client->doRequest($request);
@@ -139,6 +139,7 @@ class Event extends AbstractService
      */
     public function isConnected($user)
     {
+        $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
         $request->setMethod('user.isConnected')
@@ -146,7 +147,7 @@ class Event extends AbstractService
             ->setId(++ self::$id)
             ->setVersion('2.0');
 
-        //$this->getClient()->setHeaders([ 'Authorization' => $authorization]);
+        $this->getClient()->setHeaders([ 'Authorization' => $authorization]);
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $this->getClient());
 
         try {
