@@ -759,13 +759,16 @@ class Item extends AbstractService
     */
     public function register($id)
     {
+        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
         $m_item = $this->getLite($id)->current();
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.register')
-          ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
-          ->setId(++ self::$id)
-          ->setVersion('2.0');
+            ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
+            ->setId(++ self::$id)
+            ->setVersion('2.0')
+            ->getHeaders()
+            ->addHeader([ 'Authorization' => $authorization]);
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
@@ -791,12 +794,15 @@ class Item extends AbstractService
     */
     public function unregister($id)
     {
+        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.unregister')   
             ->setParams(['uid' => 'item.starting.'.$id])
             ->setId(++ self::$id)
-            ->setVersion('2.0');
+            ->setVersion('2.0')
+            ->getHeaders()
+            ->addHeader([ 'Authorization' => $authorization]);
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);

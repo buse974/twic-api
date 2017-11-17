@@ -130,12 +130,15 @@ class Submission extends AbstractService
      */
     public function sendSubmissionChanged($data)
     {
+        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
         $rep = false;
         $request = new Request();
         $request->setMethod('submission.changed')
         ->setParams($data)
         ->setId(++ self::$id)
-        ->setVersion('2.0');
+        ->setVersion('2.0')
+            ->getHeaders()
+            ->addHeader([ 'Authorization' => $authorization]);
         
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);

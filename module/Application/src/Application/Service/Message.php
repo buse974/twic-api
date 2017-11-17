@@ -159,12 +159,15 @@ class Message extends AbstractService
     */
     public function sendMessage($data)
     {
+        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
         $rep = false;
         $request = new Request();
         $request->setMethod('message.publish')
-          ->setParams($data)
-          ->setId(++ self::$id)
-          ->setVersion('2.0');
+            ->setParams($data)
+            ->setId(++ self::$id)
+            ->setVersion('2.0')
+            ->getHeaders()
+            ->addHeader([ 'Authorization' => $authorization]);
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);

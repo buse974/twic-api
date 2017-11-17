@@ -12,6 +12,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
+use JRpc\Json\Server\Exception;
 
 /**
  * Controller Index
@@ -58,15 +59,22 @@ class IndexController extends AbstractActionController
      */
     public function notifyAction()
     {
-        $notifs = $this->getRequest()->getContent();
-        foreach($notifs as $notif){
-            switch($notif['type']['type']){
-                case notification_type::ITEM_STARTING : 
-                    $ret = $this->item()->starting($notif['data']['id']);
-                break;
+        $authorization = $this->conf()['rtserver-conf']['authorization'];
+        $req_authorization = $this->getHeaders('Authorization')->getFieldValue();
+        if($authorization === $req_authorization){
+            foreach($notifs as $notif){
+                switch($notif['type']['type']){
+                    case notification_type::ITEM_STARTING : 
+                        $ret = $this->item()->starting($notif['data']['id']);
+                    break;
+                }
             }
-        }
 
-        return new JsonModel(['code'=>$ret]);
+            return new JsonModel(['code'=>$ret]);
+        }
+        else{
+            throw new JrpcException('No authorization: notify', - 32029);
+        }
+       
     }
 }
