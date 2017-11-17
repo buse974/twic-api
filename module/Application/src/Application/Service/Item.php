@@ -759,6 +759,7 @@ class Item extends AbstractService
     */
     public function register($id)
     {
+        return;
         //$authorization = $this->container->get('config')['node']['authorization'];
         $m_item = $this->getLite($id)->current();
         $rep = false;
@@ -793,6 +794,7 @@ class Item extends AbstractService
     */
     public function unregister($id)
     {
+        return;
         //$authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
