@@ -642,7 +642,7 @@ class Item extends AbstractService
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
-            if(null !== $m_item->getStartDate() && $m_item->getIsPublished()){
+            if(is_string($m_item->getStartDate()) && $m_item->getIsPublished()){
                 $this->register($id);
             }
             else{
