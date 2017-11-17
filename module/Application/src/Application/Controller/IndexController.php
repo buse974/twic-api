@@ -59,7 +59,7 @@ class IndexController extends AbstractActionController
      */
     public function notifyAction()
     {
-        $authorization = $this->conf()['rtserver-conf']['authorization'];
+        $authorization = $this->conf()['node']['authorization'];
         $req_authorization = $this->getHeaders('Authorization')->getFieldValue();
         if($authorization === $req_authorization){
             foreach($notifs as $notif){

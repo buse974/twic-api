@@ -130,7 +130,7 @@ class Submission extends AbstractService
      */
     public function sendSubmissionChanged($data)
     {
-        $authorization = $this->container->get('config')['rtserver-conf']['authentification'];
+        $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
         $request->setMethod('submission.changed')
