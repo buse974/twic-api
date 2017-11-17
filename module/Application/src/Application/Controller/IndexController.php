@@ -45,4 +45,16 @@ class IndexController extends AbstractActionController
 
         return new JsonModel(['code'=>$ret]);
     }
+    
+      /**
+     * Check Status
+     *
+     * @return \Zend\View\Model\JsonModel
+     */
+    public function itemStartingAction()
+    {
+        $ret = $this->item()->starting($this->getRequest()->getContent());
+
+        return new JsonModel(['code'=>$ret]);
+    }
 }

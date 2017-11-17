@@ -712,17 +712,14 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
-        try{
-            if(null !== $start_date){
-                $this->register($id);
-            }
-            else{
-                $this->unregister($id);
-            }
-        } catch (Exception $ex) {
-            syslog(1, 'Error from rtserver <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
+     
+        if(null !== $start_date){
+            $this->register($id);
         }
-            
+        else{
+            $this->unregister($id);
+        }
+      
         return $this->getMapper()->update($m_item);
     }
 
@@ -743,12 +740,8 @@ class Item extends AbstractService
         if (! in_array($identity['id'], $ar_pu[$m_item->getPageId()])) {
             throw new \Exception("not admin of the page");
         }
-        try{
-            $this->unregister($id);
-        } catch (Exception $ex) {
-            syslog(1, 'Error from rtserver <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
-
-        }
+        
+        $this->unregister($id);
         
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
@@ -816,6 +809,39 @@ class Item extends AbstractService
         }
 
         return $rep;
+    }
+    
+    
+    /**
+     * Update item
+     *
+     * @invokable
+     *
+     * @param int $id
+     * @throws \Exception
+     * 
+     * @return int
+     */
+    public function starting($id){
+        if(!is_array($id)){
+            $id = [$id];
+        }
+        foreach($id as $i){
+            $ar_user = $this->getServiceItemUser()->getListUserId(null, $i);
+            $m_item = $this->getLite($i);
+            $this->getServiceFcm()->send(
+                $ar_user, ['data' => [
+                    'type' => 'item.starting',
+                    'data' => [
+                        'id' => $i,
+                        'title' => $m_item->getTitle(),
+                        'start' => $m_item->getStartDate(),
+                        'type' => ModelItem::type_relation[$m_item->getType()]
+                        ]
+                    ]
+                ]
+            );
+        }
     }
 
     /**
