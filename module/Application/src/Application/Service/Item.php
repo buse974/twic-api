@@ -641,17 +641,17 @@ class Item extends AbstractService
         if (null !== $quiz_id) {
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
-        
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
+            if(null !== $m_item->getStartDate() && $m_item->getIsPublished()){
+                $this->register($id);
+            }
+            else{
+                $this->unregister($id);
+            }
+        }
         if($m_item->getIsPublished() != $is_published && $is_published!==null) {
             $this->publish($id, $is_published, null, null, $notify);
-            if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS){
-                if(null !== $start_date && $is_published === true){
-                    $this->register($id);
-                }
-                else{
-                    $this->unregister($id);
-                }
-            }
+           
           
         } else if($notify === true && $m_item->getIsPublished()){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
