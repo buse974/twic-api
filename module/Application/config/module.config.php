@@ -48,6 +48,16 @@ return [
                      ],
                  ],
              ],
+            'notify' => [
+                 'type' => Literal::class,
+                     'options' => [
+                     'route' => '/notify',
+                     'defaults' => [
+                         'controller' => 'Application\Controller\Index',
+                         'action' => 'notify',
+                     ],
+                 ],
+             ],
             'version' => [
                 'type' => Literal::class,
                 'options' => [

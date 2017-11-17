@@ -32,7 +32,7 @@ class item extends AbstractPlugin
     }
 
     /**
-     * check Status
+     * item starting
      *
      * @param string $json
      */
