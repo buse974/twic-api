@@ -766,12 +766,11 @@ class Item extends AbstractService
         $request->setMethod('notification.register')
             ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
             ->setId(++ self::$id)
-            ->setVersion('2.0')
-            ->getHeaders()
-            ->addHeader([ 'Authorization' => $authorization]);
+            ->setVersion('2.0');
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
+        $client->setHeaders([ 'Authorization' => $authorization]);
 
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {
@@ -800,12 +799,11 @@ class Item extends AbstractService
         $request->setMethod('notification.unregister')   
             ->setParams(['uid' => 'item.starting.'.$id])
             ->setId(++ self::$id)
-            ->setVersion('2.0')
-            ->getHeaders()
-            ->addHeader([ 'Authorization' => $authorization]);
+            ->setVersion('2.0');
 
         $client = new Client();
         $client->setOptions($this->container->get('config')['http-adapter']);
+        $client->setHeaders([ 'Authorization' => $authorization]);
 
         $client = new \Zend\Json\Server\Client($this->container->get('config')['node']['addr'], $client);
         try {
