@@ -644,6 +644,15 @@ class Item extends AbstractService
         
         if($m_item->getIsPublished() != $is_published && $is_published!==null) {
             $this->publish($id, $is_published, null, null, $notify);
+            if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS){
+                if(null !== $start_date && $is_published === true){
+                    $this->register($id);
+                }
+                else{
+                    $this->unregister($id);
+                }
+            }
+          
         } else if($notify === true && $m_item->getIsPublished()){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
@@ -712,14 +721,7 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
-     
-        if(null !== $start_date){
-            $this->register($id);
-        }
-        else{
-            $this->unregister($id);
-        }
-      
+        
         return $this->getMapper()->update($m_item);
     }
 
@@ -741,7 +743,9 @@ class Item extends AbstractService
             throw new \Exception("not admin of the page");
         }
         
-        $this->unregister($id);
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS){
+            $this->unregister($id);
+        }
         
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
