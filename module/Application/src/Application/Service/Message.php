@@ -159,7 +159,7 @@ class Message extends AbstractService
     */
     public function sendMessage($data)
     {
-        $authorization = $this->container->get('config')['node']['authentification'];
+        $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
         $request->setMethod('message.publish')
