@@ -39,7 +39,6 @@ return array(
     'node' => array(
       'addr' => '${node.addr}',
       'authorization' => '{node.authorization}' 
-      ''
     ),
     'zopentok-conf' => [
         'api_key'     =>  '${opentok.apikey}',
