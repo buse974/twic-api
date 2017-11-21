@@ -67,7 +67,7 @@ class IndexController extends AbstractActionController
             syslog(1,"Auth ok");
             $notifs = json_decode($this->getRequest()->getContent());
             foreach($notifs as $notif){
-                syslog(1,"Notif treated : ".$notif['type']);
+                syslog(1,"Notif treated : ".json_encode($notif));
                 switch($notif['type']){
                     case notification_type::ITEM_STARTING : 
                         $ret = $this->item()->starting($notif['data']['id']);
