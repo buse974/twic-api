@@ -38,6 +38,6 @@ class item extends AbstractPlugin
      */
     public function starting($json)
     {
-        return $this->item->starting(json_decode($json, true));
+        return $this->item->starting($json);
     }
 }
