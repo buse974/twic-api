@@ -61,7 +61,7 @@ class IndexController extends AbstractActionController
     {
         $authorization = $this->conf()->getAll()['node']['authorization'];
         $request = $this->getRequest();
-        syslog(1,"Notify called ".$request->getHeaders('Authorization') );
+        syslog(1,"Notify called ".$request->getHeaders()->get('Authorization') );
         if($request->getHeaders()->get('Authorization') !== false && $authorization === $request->getHeaders()->get('Authorization')->getFieldValue()){
             syslog(1,"Auth ok");
             foreach($notifs as $notif){
