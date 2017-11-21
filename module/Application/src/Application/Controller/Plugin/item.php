@@ -34,10 +34,10 @@ class item extends AbstractPlugin
     /**
      * item starting
      *
-     * @param string $json
+     * @param int $id
      */
-    public function starting($json)
+    public function starting($id)
     {
-        return $this->item->starting($json);
+        return $this->item->starting($id);
     }
 }
