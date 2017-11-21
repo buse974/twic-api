@@ -716,7 +716,7 @@ class Item extends AbstractService
         
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
             if((is_string($start_date) || is_string($m_item->getStartDate())) 
-                    && ($is_published === true || ($is_published === null && $m_item->getIsPublished()))){
+                    && ($is_published === 1 || ($is_published === null && $m_item->getIsPublished()))){
                 $this->register($id,is_string($start_date) ? $start_date : $m_item->getStartDate());
             }
             else{
