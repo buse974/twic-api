@@ -9,7 +9,7 @@ namespace Application\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
- * Plugin videoArchive
+ * Plugin item
  */
 class item extends AbstractPlugin
 {
@@ -36,7 +36,7 @@ class item extends AbstractPlugin
      *
      * @param string $json
      */
-    public function itemStarting($json)
+    public function starting($json)
     {
         return $this->item->starting(json_decode($json, true));
     }
