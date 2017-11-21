@@ -88,9 +88,10 @@ class Contact extends AbstractMapper
     public function getAcceptedCount($me, $interval, $start_date = null, $end_date = null, $organization_id = null){
         $select = $this->tableGateway->getSql()->select();
         $select->columns([ 'contact$accepted_date' => new Expression(' SUBSTRING(contact.accepted_date,1,'.$interval.')'), 
-                           'contact$accepted' => new Expression('SUM(contact.accepted)')])
+                           'contact$accepted' => new Expression('COUNT(DISTINCT contact.id)')])
             ->where(['contact.accepted_date BETWEEN ? AND ? ' => [$start_date, $end_date ]])
             ->where('contact.deleted_date IS NULL')
+            ->where('contact.accepted IS TRUE')
             ->group(new Expression(' SUBSTRING(contact.accepted_date,1,'.$interval.')'));
         
         if (null != $organization_id)
@@ -107,9 +108,10 @@ class Contact extends AbstractMapper
      public function getRequestsCount($me, $interval, $start_date = null, $end_date = null, $organization_id = null){
          $select = $this->tableGateway->getSql()->select();
         $select->columns([ 'contact$request_date' => new Expression(' SUBSTRING(contact.request_date,1,'.$interval.')'), 
-                           'contact$requested' => new Expression('SUM(contact.requested)')])
+                           'contact$requested' => new Expression('COUNT(DISTINCT contact.id)')])
             ->where(['contact.request_date BETWEEN ? AND ? ' => [$start_date, $end_date ]])
             ->where('contact.deleted_date IS NULL')
+            ->where('contact.requested IS TRUE')
             ->group(new Expression(' SUBSTRING(contact.request_date,1,'.$interval.')'));
         
         if (null != $organization_id)
