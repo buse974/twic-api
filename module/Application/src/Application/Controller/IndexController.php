@@ -12,7 +12,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\JsonModel;
-use JRpc\Json\Server\Exception;
+use JRpc\Json\Server\Exception\JrpcException;
 
 /**
  * Controller Index
@@ -60,9 +60,9 @@ class IndexController extends AbstractActionController
     public function notifyAction()
     {
         $authorization = $this->conf()->getAll()['node']['authorization'];
-        $req_authorization = $this->getHeaders('Authorization')->getFieldValue();
-        syslog(1,"Notify called");
-        if($authorization === $req_authorization){
+        $request = $this->getRequest();
+        syslog(1,"Notify called ".$request->getHeaders('Authorization') );
+        if($request->getHeaders('Authorization') && $authorization === $request->getHeaders('Authorization')->getFieldValue()){
             syslog(1,"Auth ok");
             foreach($notifs as $notif){
                 syslog(1,"Notif treated : ".$notif['data']['type']);
