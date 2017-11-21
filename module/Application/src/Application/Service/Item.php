@@ -698,7 +698,7 @@ class Item extends AbstractService
             }
         }
         
-        $m_item = $this->getModel()
+        $m_updateditem = $this->getModel()
             ->setId($id)
             ->setTitle($title)
             ->setDescription($description)
@@ -714,16 +714,16 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
-        $ret = $this->getMapper()->update($m_item);
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
-            if(is_string($m_item->getStartDate()) && $m_item->getIsPublished()){
-                $this->register($id);
+            if((is_string($start_date) || is_string($m_item->getStartDate())) 
+                    && ($is_published === true || ($is_published === null && $m_item->getIsPublished()))){
+                $this->register($id,is_string($start_date) ? $start_date : $m_item->getStartDate());
             }
             else{
                 $this->unregister($id);
             }
         }
-        return $ret;
+        return $this->getMapper()->update($m_updateditem);
     }
 
     /**
@@ -758,15 +758,13 @@ class Item extends AbstractService
     *
     * @param int $id
     */
-    public function register($id)
+    public function register($id, $date)
     {
-        $identity = $this->getServiceUser()->getIdentity();
         $authorization = $this->container->get('config')['node']['authorization'];
-        $m_item = $this->get($id, $identity['id']);
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.register')
-            ->setParams(['date' => $m_item->getStartDate(), 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
+            ->setParams(['date' => $date, 'uid' => 'item.starting.'.$id, 'data' => [ 'type' => 'item.starting', 'data' => ['id' => $id]]])
             ->setId(++ self::$id)
             ->setVersion('2.0');
 
