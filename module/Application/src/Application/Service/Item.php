@@ -834,15 +834,11 @@ class Item extends AbstractService
         if(!is_array($id)){
             $id = [$id];
         }
-        syslog(1, "Des sacrifices, s'il le faut j'en ferai, et j'en ai déjà fais, mais toujours le poing levé!");
         foreach($id as $i){
             $m_item = $this->getLite($i)->current();
             $ar_user = ($m_item->getParticipants() === 'all') ?
                     $this->getServicePageUser()->getListByPage($m_item->getPageId())[$m_item->getPageId()] :
                     $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
-            syslog(1, "Users : ".json_encode($ar_user));
-            syslog(1, "Item : ".json_encode($m_item));
-            syslog(1, "Type : ".ModelItem::type_relation[$m_item->getType()]);
             $this->getServiceFcm()->send(
                 $ar_user, ['data' => [
                     'type' => 'item.starting',
@@ -853,7 +849,8 @@ class Item extends AbstractService
                         'type' => ModelItem::type_relation[$m_item->getType()]
                         ]
                     ]
-                ]
+                ],
+                $this->getServiceFcm()::PACKAGE_TWIC_MESSENGER
             );
         }
     }

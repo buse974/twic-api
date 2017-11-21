@@ -16,6 +16,7 @@ class Fcm extends AbstractService
 {
     const PREFIX='sess_';
     const ACTIVITY='FCM_PLUGIN_ACTIVITY';
+    const PACKAGE_TWIC_MESSENGER=null;
 
     /**
      * Fcm Client
@@ -64,14 +65,14 @@ class Fcm extends AbstractService
         return $this->session->update($this->token, $uuid, $registration_id, $package);
     }
 
-    public function send($to, $data, $notification = null)
+    public function send($to, $data, $notification = null, $package = null)
     {
         if (null !== $notification && empty($notification->getClickAction())) {
             $notification->setClickAction(self::ACTIVITY);
         }
 
         $register_ids = [];
-        $res_session = $this->session->get(null, $to);
+        $res_session = $this->session->get(null, $to, $package);
         foreach ($res_session as $m_session) {
             $register_ids[] = $m_session->getRegistrationId();
         }
