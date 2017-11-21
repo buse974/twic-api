@@ -91,6 +91,7 @@ class Contact extends AbstractMapper
                            'contact$accepted' => new Expression('COUNT(DISTINCT contact.id)')])
             ->where(['contact.accepted_date BETWEEN ? AND ? ' => [$start_date, $end_date ]])
             ->where('contact.deleted_date IS NULL')
+            ->where('contact.accepted IS TRUE')
             ->group(new Expression(' SUBSTRING(contact.accepted_date,1,'.$interval.')'));
         
         if (null != $organization_id)
@@ -110,6 +111,7 @@ class Contact extends AbstractMapper
                            'contact$requested' => new Expression('COUNT(DISTINCT contact.id)')])
             ->where(['contact.request_date BETWEEN ? AND ? ' => [$start_date, $end_date ]])
             ->where('contact.deleted_date IS NULL')
+            ->where('contact.requested IS TRUE')
             ->group(new Expression(' SUBSTRING(contact.request_date,1,'.$interval.')'));
         
         if (null != $organization_id)
