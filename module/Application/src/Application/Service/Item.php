@@ -641,14 +641,7 @@ class Item extends AbstractService
         if (null !== $quiz_id) {
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
-        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
-            if(is_string($m_item->getStartDate()) && $m_item->getIsPublished()){
-                $this->register($id);
-            }
-            else{
-                $this->unregister($id);
-            }
-        }
+     
         if($m_item->getIsPublished() != $is_published && $is_published!==null) {
             $this->publish($id, $is_published, null, null, $notify);
            
@@ -721,8 +714,16 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
-        
-        return $this->getMapper()->update($m_item);
+        $ret = $this->getMapper()->update($m_item);
+        if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
+            if(is_string($m_item->getStartDate()) && $m_item->getIsPublished()){
+                $this->register($id);
+            }
+            else{
+                $this->unregister($id);
+            }
+        }
+        return $ret;
     }
 
     /**
