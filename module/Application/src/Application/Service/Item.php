@@ -714,11 +714,6 @@ class Item extends AbstractService
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
         
-        syslog(1, 'ITEM TYPE : '.$m_item->getType());
-        syslog(1, 'NEW START DATE : '.$start_date);
-        syslog(1, 'OLD START DATE : '.$m_item->getStartDate());
-        syslog(1, 'NEW IS PUBLISHED : '.$is_published);
-        syslog(1, 'OLD IS PUBLISHED : '.$m_item->getIsPublished());
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
             if((is_string($start_date) || is_string($m_item->getStartDate())) 
                     && ($is_published === 1 || ($is_published === null && $m_item->getIsPublished()))){
@@ -765,7 +760,6 @@ class Item extends AbstractService
     */
     public function register($id, $date)
     {
-        syslog(1, "REGISTER ".$id." ".$date);
         $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
@@ -840,6 +834,7 @@ class Item extends AbstractService
         if(!is_array($id)){
             $id = [$id];
         }
+        syslog(1, "Des sacrifices, s'il le faut j'en ferai, et j'en ai déjà fais, mais toujours le poing levé!");
         foreach($id as $i){
             $ar_user = $this->getServiceItemUser()->getListUserId(null, $i);
             $m_item = $this->getLite($i);
