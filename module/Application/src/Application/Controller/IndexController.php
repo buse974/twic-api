@@ -20,10 +20,6 @@ use JRpc\Json\Server\Exception\JrpcException;
 class IndexController extends AbstractActionController
 {
     const ITEM_STARTING = 'item.starting';
-    
-    const notification_type = [
-        self::ITEM_STARTING => self::ITEM_STARTING
-    ];
     /**
      * Index
      *
@@ -69,7 +65,7 @@ class IndexController extends AbstractActionController
             foreach($notifs as $notif){
                 syslog(1,"Notif treated : ".json_encode($notif));
                 switch($notif['type']){
-                    case notification_type::ITEM_STARTING : 
+                    case self::ITEM_STARTING : 
                         $ret = $this->item()->starting($notif['data']['id']);
                     break;
                 }
