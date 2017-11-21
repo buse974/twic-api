@@ -837,7 +837,7 @@ class Item extends AbstractService
         syslog(1, "Des sacrifices, s'il le faut j'en ferai, et j'en ai déjà fais, mais toujours le poing levé!");
         foreach($id as $i){
             $ar_user = $this->getServiceItemUser()->getListUserId(null, $i);
-            $m_item = $this->getLite($i);
+            $m_item = $this->getLite($i)->current();
             $this->getServiceFcm()->send(
                 $ar_user, ['data' => [
                     'type' => 'item.starting',
