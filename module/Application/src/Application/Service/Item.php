@@ -838,6 +838,9 @@ class Item extends AbstractService
         foreach($id as $i){
             $ar_user = $this->getServiceItemUser()->getListUserId(null, $i);
             $m_item = $this->getLite($i)->current();
+            syslog(1, "Users : ".json_encode($ar_user));
+            syslog(1, "Item : ".json_encode($m_item));
+            syslog(1, "Type : ".ModelItem::type_relation[$m_item->getType()]);
             $this->getServiceFcm()->send(
                 $ar_user, ['data' => [
                     'type' => 'item.starting',
