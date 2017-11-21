@@ -59,7 +59,7 @@ class IndexController extends AbstractActionController
      */
     public function notifyAction()
     {
-        $authorization = $this->conf()['node']['authorization'];
+        $authorization = $this->conf()->getAll()['node']['authorization'];
         $req_authorization = $this->getHeaders('Authorization')->getFieldValue();
         syslog(1,"Notify called");
         if($authorization === $req_authorization){
