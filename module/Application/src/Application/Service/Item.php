@@ -765,6 +765,7 @@ class Item extends AbstractService
     */
     public function register($id, $date)
     {
+        syslog(1, "REGISTER ".$id." ".$date);
         $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
