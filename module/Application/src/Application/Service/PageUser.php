@@ -375,6 +375,7 @@ class PageUser extends AbstractService
     {
         
         $identity = $this->getServiceUser()->getIdentity();
+        syslog(1, "IDENTITY : ".json_encode($identity));
         if (!is_array($page_id)) {
             $page_id = [$page_id];
         }
@@ -383,8 +384,8 @@ class PageUser extends AbstractService
         foreach ($page_id as $page) {
             $ret[$page] = [];
         }
-
-        $is_admin = (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
+        
+        $is_admin = null === $identity || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
         $res_page_user = $this->getMapper()->getList($page_id, null, $role, $state, null, $is_admin ? null : $identity['id'], $sent);
         foreach ($res_page_user as $m_page_user) {
             $ret[$m_page_user->getPageId()][] = $m_page_user->getUserId();
