@@ -759,8 +759,9 @@ class Item extends AbstractService
     */
     public function register($id)
     {
+        $identity = $this->getServiceUser()->getIdentity();
         $authorization = $this->container->get('config')['node']['authorization'];
-        $m_item = $this->getLite($id)->current();
+        $m_item = $this->get($id, $identity['id']);
         $rep = false;
         $request = new Request();
         $request->setMethod('notification.register')
