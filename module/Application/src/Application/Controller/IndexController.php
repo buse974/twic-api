@@ -61,9 +61,12 @@ class IndexController extends AbstractActionController
     {
         $authorization = $this->conf()['node']['authorization'];
         $req_authorization = $this->getHeaders('Authorization')->getFieldValue();
+        syslog(1,"Notify called");
         if($authorization === $req_authorization){
+            syslog(1,"Auth ok");
             foreach($notifs as $notif){
-                switch($notif['type']['type']){
+                syslog(1,"Notif treated : ".$notif['data']['type']);
+                switch($notif['data']['type']){
                     case notification_type::ITEM_STARTING : 
                         $ret = $this->item()->starting($notif['data']['id']);
                     break;
