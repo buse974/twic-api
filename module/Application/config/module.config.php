@@ -2,6 +2,7 @@
 
 use \Application\Controller\Plugin\ConfFactory;
 use \Application\Controller\Plugin\videoArchive;
+use \Application\Controller\Plugin\item;
 use \Zend\Router\Http\Literal;
 
 /**
