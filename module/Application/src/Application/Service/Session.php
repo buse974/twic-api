@@ -12,7 +12,7 @@ class Session extends AbstractService
      * @param  string $uuid
      * @return \Application\Model\Session[]
      */
-    public function get($uuid = null, $uid = null)
+    public function get($uuid = null, $uid = null, $package = null)
     {
         if (null === $uuid && null === $uid) {
             throw new \Exception('error get session: all params is null');
@@ -20,7 +20,7 @@ class Session extends AbstractService
 
         return $this->getMapper()->select(
             $this->getModel()
-                ->setUuid($uuid)->setUid($uid)->setRegistrationId(new IsNotNull())
+                ->setUuid($uuid)->setUid($uid)->setRegistrationId(new IsNotNull())->setPackage($package)
         );
     }
 

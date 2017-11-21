@@ -375,7 +375,6 @@ class PageUser extends AbstractService
     {
         
         $identity = $this->getServiceUser()->getIdentity();
-        syslog(1, "IDENTITY : ".json_encode($identity));
         if (!is_array($page_id)) {
             $page_id = [$page_id];
         }
