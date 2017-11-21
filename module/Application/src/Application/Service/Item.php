@@ -836,8 +836,10 @@ class Item extends AbstractService
         }
         syslog(1, "Des sacrifices, s'il le faut j'en ferai, et j'en ai déjà fais, mais toujours le poing levé!");
         foreach($id as $i){
-            $ar_user = $this->getServiceItemUser()->getListUserId(null, $i);
             $m_item = $this->getLite($i)->current();
+            $ar_user = ($m_item->getParticipants() === 'all') ?
+                    $this->getServicePageUser()->getListByPage($m_item->getPageId())[$m_item->getPageId()] :
+                    $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
             syslog(1, "Users : ".json_encode($ar_user));
             syslog(1, "Item : ".json_encode($m_item));
             syslog(1, "Type : ".ModelItem::type_relation[$m_item->getType()]);
