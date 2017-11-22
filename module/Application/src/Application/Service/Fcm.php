@@ -98,8 +98,8 @@ class Fcm extends AbstractService
                 $response = $this->fcm_client->send($gcm_message);
 
                 syslog(1, "FCM OK?");
-                syslog(1, "FCM RESPONSE".$response->toString() );
-                syslog(1, "FCM RESPONSE CT".json_encode($response->getContent()) );
+                syslog(1, "FCM RESPONSE".$response->getMessage() );
+                syslog(1, "FCM RESULTS".json_encode($response->getResults()) );
 
                 return $response;
             } catch (\Exception $e) {
