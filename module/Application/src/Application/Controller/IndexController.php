@@ -32,10 +32,10 @@ class IndexController extends AbstractActionController
         $response = $this->getResponse();
         $response->getHeaders()->addHeaderLine('Location', 'doc/index.html');
         $response->setStatusCode(302);
-        
+
         return $response;
     }
-    
+
     /**
      * Check Status
      *
@@ -47,7 +47,7 @@ class IndexController extends AbstractActionController
 
         return new JsonModel(['code'=>$ret]);
     }
-    
+
       /**
      * Check Status
      *
@@ -55,21 +55,20 @@ class IndexController extends AbstractActionController
      */
     public function notifyAction()
     {
-        syslog(1, "TU VIENS D'APPELER LA ROUTE NOTIFY ET TU AURAIS PU AJOUTER CE SYSLOG TOUT SEUL ESPECE DE *******!");
         syslog(1, "\nPARAMS : ".$this->getRequest()->getContent());
         $authorization = $this->conf()->getAll()['node']['authorization'];
         syslog(1, "CONF API : ".$authorization);
         $request = $this->getRequest();
         syslog(1, "SI CE SYSLOG APPARAIT C'EST QUE LE GET REQUEST FONCTIONNE");
-        syslog(1, "HEADER AUTH : ".json_encode($request->getHeader('x-auth-token', null)) );
-        syslog(1, "HEADER AUTH VALUE : ".json_encode($request->getHeader('x-auth-token', null)->getFieldValue()) );
-        syslog(1, "AUTHORIZATION : ".$authorization . ' === '. $request->getHeader('x-auth-token', null)->getFieldValue() . ' ?');
-        if($request->getHeaders()->get('x-auth-token') !== false && $authorization === $request->getHeader('x-auth-token', null)->getFieldValue()){
+        syslog(1, "HEADERS : ".$request->getHeaders()->toString() );
+        syslog(1, "HEADER AUTH VALUE : ".json_encode($request->getHeader('x-auth-token')->getFieldValue()) );
+        syslog(1, "AUTHORIZATION : ".$authorization . ' === '. $request->getHeader('x-auth-token')->getFieldValue() . ' ?');
+        if($request->getHeaders()->get('x-auth-token') !== false && $authorization === $request->getHeader('x-auth-token')->getFieldValue()){
             $notifs = json_decode($this->getRequest()->getContent(), true);
             foreach($notifs as $notif){
                 syslog(1, self::ITEM_STARTING. ' == ' .$notif['type']);
                 switch($notif['type']){
-                    case self::ITEM_STARTING : 
+                    case self::ITEM_STARTING :
                         $ret = $this->item()->starting($notif['data']['id']);
                     break;
                 }
@@ -80,6 +79,6 @@ class IndexController extends AbstractActionController
         else{
             throw new JrpcException('No authorization: notify', - 32029);
         }
-       
+
     }
 }

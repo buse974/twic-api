@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 991,
+    'build-commit' => 992,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -126,11 +126,11 @@ return [
                 ],
             ],
         ],
-        'headers' => 
+        'headers' =>
             [
-                'Access-Control-Allow-Credentials' => 'false', 
-                'Access-Control-Allow-Origin' => '*', 
-                'Access-Control-Allow-Methods' => 'PUT, GET, POST, OPTIONS, DELETE', 
+                'Access-Control-Allow-Credentials' => 'false',
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Methods' => 'PUT, GET, POST, OPTIONS, DELETE',
                 'Access-Control-Allow-Headers' => 'Authorization, X-auth-token, Origin, X-Requested-With, Content-Type, Accept',
                 'Access-Control-Max-Age' => '600',
             ],
@@ -144,9 +144,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS991',
+                    'namespace' => 'LMS992',
                     'lib_options' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS991'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS992'],
                  /*       ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],*/
