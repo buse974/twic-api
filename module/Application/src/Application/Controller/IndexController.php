@@ -55,6 +55,8 @@ class IndexController extends AbstractActionController
      */
     public function notifyAction()
     {
+        syslog(1, "TU VIENS D'APPELER LA ROUTE NOTIFY ET TU AURAIS PU AJOUTER CE SYSLOG TOUT SEUL ESPECT DE *******!");
+        syslog(1, "\nPARAMS : ".$this->getRequest()->getContent());
         $authorization = $this->conf()->getAll()['node']['authorization'];
         $request = $this->getRequest();
         if($request->getHeaders()->get('Authorization') !== false && $authorization === $request->getHeaders()->get('Authorization')->getFieldValue()){
