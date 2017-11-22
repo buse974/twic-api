@@ -59,6 +59,7 @@ class IndexController extends AbstractActionController
         syslog(1, "\nPARAMS : ".$this->getRequest()->getContent());
         $authorization = $this->conf()->getAll()['node']['authorization'];
         $request = $this->getRequest();
+        syslog(1, "AUTHORIZATION : ".$authorization . ' === '. $request->getHeaders()->get('Authorization')->getFieldValue() . ' ?');
         if($request->getHeaders()->get('Authorization') !== false && $authorization === $request->getHeaders()->get('Authorization')->getFieldValue()){
             $notifs = json_decode($this->getRequest()->getContent(), true);
             foreach($notifs as $notif){
