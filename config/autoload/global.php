@@ -129,7 +129,7 @@ return [
         'headers' =>
             [
                 'Access-Control-Allow-Credentials' => 'false',
-                //'Access-Control-Allow-Origin' => '*', 
+                'Access-Control-Allow-Origin' => '*',
                 'Access-Control-Allow-Methods' => 'PUT, GET, POST, OPTIONS, DELETE',
                 'Access-Control-Allow-Headers' => 'Authorization, X-auth-token, Origin, X-Requested-With, Content-Type, Accept',
                 'Access-Control-Max-Age' => '600',
