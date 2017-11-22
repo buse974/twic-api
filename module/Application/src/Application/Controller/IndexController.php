@@ -62,6 +62,7 @@ class IndexController extends AbstractActionController
         if($request->getHeaders()->get('Authorization') !== false && $authorization === $request->getHeaders()->get('Authorization')->getFieldValue()){
             $notifs = json_decode($this->getRequest()->getContent(), true);
             foreach($notifs as $notif){
+                syslog(1, self::ITEM_STARTING. ' == ' .$notif['type']);
                 switch($notif['type']){
                     case self::ITEM_STARTING : 
                         $ret = $this->item()->starting($notif['data']['id']);

@@ -831,6 +831,7 @@ class Item extends AbstractService
      * @return int
      */
     public function starting($id){
+        syslog(1, 'TU VIENS D\'APPELER LA METHODE ITEM.STARTING QUI VA T\'ENVOYER LA NOTIF FCM');
         if(!is_array($id)){
             $id = [$id];
         }
