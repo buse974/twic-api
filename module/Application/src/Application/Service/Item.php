@@ -842,9 +842,10 @@ class Item extends AbstractService
                     $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
 
             syslog(1, "SENDING TO USERS:".json_encode($ar_user) );
-            
+
             $this->getServiceFcm()->send(
-                $ar_user, ['data' => [
+                $ar_user,
+                ['data' => [
                     'type' => 'item.starting',
                     'data' => [
                         'id' => $i,
@@ -854,6 +855,7 @@ class Item extends AbstractService
                         ]
                     ]
                 ],
+                null,
                 $this->getServiceFcm()::PACKAGE_TWIC_MESSENGER
             );
         }
