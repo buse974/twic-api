@@ -74,11 +74,11 @@ class Fcm extends AbstractService
         $register_ids = [];
         $res_session = $this->session->get(null, $to, $package);
 
-        syslog(1, "SESSION RESULT SET:".json_encode($res_session) );
-
         foreach ($res_session as $m_session) {
             $register_ids[] = $m_session->getRegistrationId();
         }
+
+        syslog(1, "SESSION SET:".json_encode($register_ids) );
 
         $nbTo = count($register_ids);
         if ($nbTo > 0) {
