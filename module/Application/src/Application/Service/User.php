@@ -942,7 +942,7 @@ class User extends AbstractService
         
         $users = [];
         foreach ($res_user as $m_user) {
-            $users[$m_user->getEmail()] = $m_user->getId();
+            $users[trim($m_user->getEmail())] = $m_user->getId();
         }
         foreach($email as $e){
             if(!isset($users[$e])){

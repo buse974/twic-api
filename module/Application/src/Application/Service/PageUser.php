@@ -41,7 +41,6 @@ class PageUser extends AbstractService
         }
         
         if(null !== $email){
-            $new_accounts = [];
             if (!is_array($email)) {
                 $email = [$email];
             }
