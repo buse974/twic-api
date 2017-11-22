@@ -831,6 +831,7 @@ class Item extends AbstractService
      * @return int
      */
     public function starting($id){
+        syslog(1, 'TU VIENS D\'APPELER LA METHODE ITEM.STARTING QUI VA T\'ENVOYER LA NOTIF FCM');
         if(!is_array($id)){
             $id = [$id];
         }
@@ -839,6 +840,14 @@ class Item extends AbstractService
             $ar_user = ($m_item->getParticipants() === 'all') ?
                     $this->getServicePageUser()->getListByPage($m_item->getPageId())[$m_item->getPageId()] :
                     $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
+            syslog(1, "JE VAIS ENVOYER LA NOTIF FCM JUSTE APRES CE LOG ET TU AURAIS PU AJOUTER CE SYSLOG TOUT SEUL ESPECT DE *******!");
+            syslog(1, "\nPARAMS (BON OK DU COUP LE LOG DU DESSUS C'ETAIT PAS LE DERNIER TRUC JUSTE AVANT L'ENVOI DE LA NOTIF MAIS CELUI LA OUI) : ".json_encode(['data' => [
+                        'id' => $i,
+                        'title' => $m_item->getTitle(),
+                        'start' => $m_item->getStartDate(),
+                        'type' => ModelItem::type_relation[$m_item->getType()]
+                        ]
+                    ]));
             $this->getServiceFcm()->send(
                 $ar_user, ['data' => [
                     'type' => 'item.starting',
