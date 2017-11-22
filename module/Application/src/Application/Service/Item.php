@@ -41,12 +41,12 @@ class Item extends AbstractService
     public function add($page_id, $title, $points = null, $description = null, $type = null, $is_available = null, $is_published = null, $order_id = null, $start_date = null, $end_date = null, $parent_id = null, $library_id = null, $post_id = null, $text = null, $participants = null, $quiz_id = null, $is_grade_published = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
         if (! in_array($identity['id'], $ar_pu[$page_id])) {
             throw new \Exception("not admin of the page");
         }
-       
+
         $user_id = $identity['id'];
         $m_item = $this->getModel()
             ->setPageId($page_id)
@@ -64,24 +64,24 @@ class Item extends AbstractService
             ->setParticipants($participants)
             ->setCreatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setUserId($user_id);
-        
+
         if($type === ModelItem::TYPE_LIVE_CLASS){
            $m_item->setConversationId($this->getServiceConversation()->_create(ModelConversation::TYPE_LIVECLASS, null, true));
         }
-        
+
         $this->getMapper()->insert($m_item);
-        
+
         $id = (int) $this->getMapper()->getLastInsertValue();
-        
+
         if (null !== $post_id) {
             $this->getServicePost()->update($post_id, null, null, null, null, null, null, null, null, null, null, null, null, null, $id);
         }
         if (null !== $quiz_id) {
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
-        
+
         $this->move($id, - 1, $parent_id);
-        
+
         return $id;
     }
 
@@ -101,12 +101,12 @@ class Item extends AbstractService
                 ->setParentId($parent_id)
                 ->setId($id));
         }
-        
+
         $m_base_order = $this->getMapper()
             ->select($this->getModel()
             ->setId($id))
             ->current();
-        
+
         if (- 1 === $order_id || (null === $order_id && null !== $parent_id)) {
             $order = 1;
             // on récuper l'ordre le plus grand +1
@@ -114,14 +114,14 @@ class Item extends AbstractService
             if ($res_order_last->count() > 0) {
                 $order = $res_order_last->current()->getOrder() + 1;
             }
-            
+
             // on atribut l'ordre
             $this->getMapper()->update($this->getModel()
                 ->setId($id)
                 ->setOrder($order));
         } elseif (is_numeric($order_id)) {
             // on verirfie si il existe une ordre superieur
-            
+
             if ($order_id !== 0) {
                 $m_order = $this->getMapper()
                     ->select($this->getModel()
@@ -131,14 +131,14 @@ class Item extends AbstractService
             } else {
                 $order = 1;
             }
-            
+
             $res_order_sup = $this->getMapper()->select($this->getModel()
                 ->setOrder($order));
             if ($res_order_sup->count() > 0) {
                 // si oui on decaler
                 $this->getMapper()->uptOrder($m_base_order->getPageId(), $order, $m_base_order->getParentId());
             }
-            
+
             // on atribut l'ordre
             $this->getMapper()->update($this->getModel()
                 ->setId($id)
@@ -168,7 +168,7 @@ class Item extends AbstractService
         foreach ($res_item_user as $m_item_user) {
             $arr_item_user[$m_item_user->getItemId()][] = $m_item_user->toArray();
         }
-        
+
         return $arr_item_user;
     }
 
@@ -188,7 +188,7 @@ class Item extends AbstractService
             $m_group = $this->getServiceGroup()->getOrCreate($group_name, $id);
             $group_id = $m_group->getId();
         }
-        
+
         return $this->getServiceItemUser()->addUsers($id, $user_ids, $group_id);
     }
 
@@ -217,21 +217,21 @@ class Item extends AbstractService
     public function getListId($page_id = null, $parent_id = null, $is_publish = null)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         if (is_array($page_id)) {
             $page_id = reset($page_id);
         }
         if (null === $page_id) {
             $page_id = $this->getServicePage()->getIdByItem($parent_id);
         }
-        
+
         $ar_pu = $this->getServicePageUser()->getListByPage($page_id, 'admin');
         $is_admin_page = (in_array($identity['id'], $ar_pu[$page_id])) || (in_array(ModelRole::ROLE_ADMIN_STR, $identity['roles']));
-        
+
         $res_item = $this->getMapper()->getListId($page_id, $identity['id'], $is_admin_page, $parent_id, $is_publish);
-        
+
         $index = ($parent_id === null) ? $page_id : $parent_id;
-        
+
         if (is_array($index)) {
             foreach ($index as $i) {
                 $ar_item[$i] = [];
@@ -239,12 +239,12 @@ class Item extends AbstractService
         } else {
             $ar_item[$index] = [];
         }
-        
+
         foreach ($res_item as $m_item) {
             $ii = (! is_numeric($m_item->getParentId())) ? $m_item->getPageId() : $m_item->getParentId();
             $ar_item[$ii][] = $m_item->getId();
         }
-        
+
         return $ar_item;
     }
 
@@ -260,17 +260,17 @@ class Item extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $ar_item = [];
-        
+
         if (null !== $page_id) {
             if (! is_array($page_id)) {
                 $page_id = [$page_id];
             }
-            
+
             foreach ($page_id as $p_id) {
                 $ar_item[$p_id] = [];
                 $ar_pu = $this->getServicePageUser()->getListByPage($p_id, 'admin');
                 $is_admin_page = (in_array($identity['id'], $ar_pu[$p_id]));
-                
+
                 $res_item = $this->getMapper()->getListAssignmentId($identity['id'], $p_id, $filter, $is_admin_page);
                 foreach ($res_item as $m_item) {
                     $ar_item[$m_item->getPageId()][] = $m_item->getId();
@@ -282,7 +282,7 @@ class Item extends AbstractService
                 $ar_item[] = $m_item->getId();
             }
         }
-        
+
         return $ar_item;
     }
 
@@ -296,7 +296,7 @@ class Item extends AbstractService
     public function getListTimeline($filter = [])
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         return $this->getMapper()
             ->usePaginator($filter)
             ->getListTimeline($identity['id']);
@@ -316,7 +316,7 @@ class Item extends AbstractService
                 $id
             ];
         }
-        
+
         // TODO check admin page
         $ar = [];
         foreach ($id as $i) {
@@ -325,7 +325,7 @@ class Item extends AbstractService
                 ->current()
                 ->toArray();
         }
-        
+
         return $ar;
     }
 
@@ -344,7 +344,7 @@ class Item extends AbstractService
                 $id
             ];
         }
-        
+
         $ar = [];
         foreach ($id as $i) {
             $paticipants = $this->getMapper()
@@ -428,13 +428,13 @@ class Item extends AbstractService
                             }
                         }
                     }
-                    
+
                     break;
                 default:
                     break;
             }
         }
-        
+
         return $ar;
     }
 
@@ -450,7 +450,7 @@ class Item extends AbstractService
     {
         $identity = $this->getServiceUser()->getIdentity();
         $res_item = $this->getMapper()->get($id, $identity['id']);
-        
+
         return (is_array($id)) ? $res_item->toArray([
             'id'
         ]) : $res_item->current();
@@ -473,14 +473,14 @@ class Item extends AbstractService
 
     /**
      * Publish Item
-     * 
+     *
      * @param int $id
      * @param string $publish
      * @param string $all
      * @param int $parent_id
      * @param bool $notify
      * @throws \Exception
-     * 
+     *
      * @return boolean
      */
     public function publish($id = null, $publish = true, $all = false, $parent_id = null, $notify = false)
@@ -488,7 +488,7 @@ class Item extends AbstractService
         if (null === $id && null === $parent_id) {
             throw new \Exception("Error Processing Request", 1);
         }
-        
+
         $page_id = $this->getLite((null !== $id) ? $id : $parent_id)
             ->current()
             ->getPageId();
@@ -497,12 +497,12 @@ class Item extends AbstractService
         if (! in_array($identity['id'], $ar_pu[$page_id])) {
             throw new \Exception("No admin", 1);
         }
-        
+
         $this->getMapper()->update($this->getModel()
             ->setId($id)
             ->setParentId($parent_id)
             ->setIsPublished($publish));
-        
+
         if (true === $all) {
             if (null !== $id) {
                 $this->publish(null, $publish, true, $id);
@@ -514,7 +514,7 @@ class Item extends AbstractService
                 }
             }
         }
-        
+
         if($publish == true && $notify === true) {
             $m_page = $this->getServicePage()->getLite($page_id);
             if($m_page->getIsPublished() == true) {
@@ -535,7 +535,7 @@ class Item extends AbstractService
                         }
                     }
                 }
-                
+
                 $ar_pages = [];
                 $res_user = $this->getServiceUser()->getLite($this->getServicePageUser()->getListByPage($page_id)[$page_id]);
                 foreach($res_user as $m_user){
@@ -550,7 +550,7 @@ class Item extends AbstractService
                         $m_organization = $ar_pages[$m_user->getOrganizationId()];
                     }
                     try{
-                        
+
                         $prefix = ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_organization->getLibelle())) ?
                         $m_organization->getLibelle() : null;
                         $url = sprintf("https://%s%s/page/course/%s/content",($prefix ? $prefix.'.':''),$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
@@ -560,8 +560,8 @@ class Item extends AbstractService
                             'firstname' => $m_user->getFirstName(),
                             'pageurl' => $url,
                         ]);
-                        
-                        
+
+
                         $gcm_notification = new GcmNotification();
                         $gcm_notification->setTitle($m_page->getTitle())
                             ->setSound("default")
@@ -569,18 +569,18 @@ class Item extends AbstractService
                             ->setIcon("icon")
                             ->setTag("PAGECOMMENT".$t_page_id)
                             ->setBody("A new " . ModelItem::type_relation[$m_item->getType()] . " has been added to the course " . $m_page->getTitle());
-                        
+
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
                     catch (\Exception $e) {
                         syslog(1, 'Model name does not exist Item publish <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
                     }
                 }
-                
-                
+
+
             }
         }
-        
+
         return true;
     }
 
@@ -622,30 +622,30 @@ class Item extends AbstractService
      * @param int $is_grade_published
      * @param string $notify
      * @throws \Exception
-     * 
+     *
      * @return int
      */
     public function update($id, $title = null, $points = null, $description = null, $is_available = null, $is_published = null, $order = null, $start_date = null, $end_date = null, $parent_id = null, $library_id = null, $post_id = null, $text = null, $participants = null, $quiz_id = null, $is_grade_published = null, $notify = false)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         $m_item = $this->get($id);
         $ar_pu = $this->getServicePageUser()->getListByPage($m_item->getPageId(), 'admin');
         if (! in_array($identity['id'], $ar_pu[$m_item->getPageId()])) {
             throw new \Exception("not admin of the page");
         }
-        
+
         if (null !== $post_id) {
             $this->getServicePost()->update($post_id, null, null, null, null, null, null, null, null, null, null, null, null, null, $id);
         }
         if (null !== $quiz_id) {
             $this->getServiceQuiz()->update($quiz_id, $id);
         }
-     
+
         if($m_item->getIsPublished() != $is_published && $is_published!==null) {
             $this->publish($id, $is_published, null, null, $notify);
-           
-          
+
+
         } else if($notify === true && $m_item->getIsPublished()){
             $m_page = $this->getServicePage()->getLite($m_item->getPageId());
             if($m_page->getIsPublished() == true) {
@@ -666,8 +666,8 @@ class Item extends AbstractService
                     try{
                         $final_title = ($title !== null) ? $title : $m_item->getTitle();
                         $final_title = empty($final_title) ? "Untitled" : $final_title;
-                        
-                        
+
+
                         $prefix = ($m_organization !== false && is_string($m_organization->getLibelle()) && !empty($m_organization->getLibelle())) ?
                         $m_organization->getLibelle() : null;
                         $url = sprintf("https://%s%s/page/course/%s/content",($prefix ? $prefix.'.':''),$this->container->get('config')['app-conf']['uiurl'],$m_page->getId());
@@ -678,7 +678,7 @@ class Item extends AbstractService
                             'pagename' => $m_page->getTitle(),
                             'pageurl' => $url,
                         ]);
-                        
+
                         $gcm_notification = new GcmNotification();
                         $gcm_notification->setTitle($m_page->getTitle())
                             ->setSound("default")
@@ -686,18 +686,18 @@ class Item extends AbstractService
                             ->setIcon("icon")
                             ->setTag("ITEM".$m_item->getId())
                             ->setBody("The " . ModelItem::type_relation[$m_item->getType()] ." " . $final_title . " of course " . $m_page->getTitle(). " hes been update");
-                        
+
                         $this->getServiceFcm()->send($m_user->getId(),null,$gcm_notification);
                     }
                     catch (\Exception $e) {
                         syslog(1, 'Model name does not exist Item update <MESSAGE> ' . $e->getMessage() . '  <CODE> ' . $e->getCode());
                     }
                 }
-                
-                
+
+
             }
         }
-        
+
         $m_updateditem = $this->getModel()
             ->setId($id)
             ->setTitle($title)
@@ -713,9 +713,9 @@ class Item extends AbstractService
             ->setEndDate($end_date)
             ->setUpdatedDate((new \DateTime('now', new \DateTimeZone('UTC')))->format('Y-m-d H:i:s'))
             ->setParentId($parent_id);
-        
+
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS ){
-            if((is_string($start_date) || is_string($m_item->getStartDate())) 
+            if((is_string($start_date) || is_string($m_item->getStartDate()))
                     && ($is_published === 1 || ($is_published === null && $m_item->getIsPublished()))){
                 $this->register($id,is_string($start_date) ? $start_date : $m_item->getStartDate());
             }
@@ -737,22 +737,22 @@ class Item extends AbstractService
     public function delete($id)
     {
         $identity = $this->getServiceUser()->getIdentity();
-        
+
         $m_item = $this->get($id);
         $ar_pu = $this->getServicePageUser()->getListByPage($m_item->getPageId(), 'admin');
         if (! in_array($identity['id'], $ar_pu[$m_item->getPageId()])) {
             throw new \Exception("not admin of the page");
         }
-        
+
         if($m_item->getType() === ModelItem::TYPE_LIVE_CLASS){
             $this->unregister($id);
         }
-        
+
         return $this->getMapper()->delete($this->getModel()
             ->setId($id));
     }
-    
-    
+
+
     /**
     * Send Message Node item.register
     *
@@ -785,7 +785,7 @@ class Item extends AbstractService
 
         return $rep;
     }
-    
+
       /**
     * Send Message Node item.register
     *
@@ -796,7 +796,7 @@ class Item extends AbstractService
         $authorization = $this->container->get('config')['node']['authorization'];
         $rep = false;
         $request = new Request();
-        $request->setMethod('notification.unregister')   
+        $request->setMethod('notification.unregister')
             ->setParams(['uid' => 'item.starting.'.$id])
             ->setId(++ self::$id)
             ->setVersion('2.0');
@@ -818,8 +818,8 @@ class Item extends AbstractService
 
         return $rep;
     }
-    
-    
+
+
     /**
      * Update item
      *
@@ -827,11 +827,11 @@ class Item extends AbstractService
      *
      * @param int $id
      * @throws \Exception
-     * 
+     *
      * @return int
      */
     public function starting($id){
-        syslog(1, 'TU VIENS D\'APPELER LA METHODE ITEM.STARTING QUI VA T\'ENVOYER LA NOTIF FCM');
+        syslog(1, 'CALLING ITEM.STARTING::ID'.$id);
         if(!is_array($id)){
             $id = [$id];
         }
@@ -840,16 +840,12 @@ class Item extends AbstractService
             $ar_user = ($m_item->getParticipants() === 'all') ?
                     $this->getServicePageUser()->getListByPage($m_item->getPageId())[$m_item->getPageId()] :
                     $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
-            syslog(1, "JE VAIS ENVOYER LA NOTIF FCM JUSTE APRES CE LOG ET TU AURAIS PU AJOUTER CE SYSLOG TOUT SEUL ESPECE DE *******!");
-            syslog(1, "\nPARAMS (BON OK DU COUP LE LOG DU DESSUS C'ETAIT PAS LE DERNIER TRUC JUSTE AVANT L'ENVOI DE LA NOTIF MAIS CELUI LA OUI) : ".json_encode(['data' => [
-                        'id' => $i,
-                        'title' => $m_item->getTitle(),
-                        'start' => $m_item->getStartDate(),
-                        'type' => ModelItem::type_relation[$m_item->getType()]
-                        ]
-                    ]));
+
+            syslog(1, "SENDING TO USERS:".json_encode($ar_user) );
+
             $this->getServiceFcm()->send(
-                $ar_user, ['data' => [
+                $ar_user,
+                ['data' => [
                     'type' => 'item.starting',
                     'data' => [
                         'id' => $i,
@@ -859,6 +855,7 @@ class Item extends AbstractService
                         ]
                     ]
                 ],
+                null,
                 $this->getServiceFcm()::PACKAGE_TWIC_MESSENGER
             );
         }
@@ -913,7 +910,7 @@ class Item extends AbstractService
     {
         return $this->container->get('mail.service');
     }
-    
+
     /**
      * Get Service Submission
      *
@@ -963,7 +960,7 @@ class Item extends AbstractService
     {
         return $this->container->get('app_service_quiz');
     }
-    
+
     /**
      * Get Service Service Conversation User.
      *

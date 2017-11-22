@@ -16,7 +16,7 @@ class Fcm extends AbstractService
 {
     const PREFIX='sess_';
     const ACTIVITY='FCM_PLUGIN_ACTIVITY';
-    const PACKAGE_TWIC_MESSENGER=null;
+    const PACKAGE_TWIC_MESSENGER='com.twic.messenger';
 
     /**
      * Fcm Client
@@ -73,9 +73,12 @@ class Fcm extends AbstractService
 
         $register_ids = [];
         $res_session = $this->session->get(null, $to, $package);
+
         foreach ($res_session as $m_session) {
             $register_ids[] = $m_session->getRegistrationId();
         }
+
+        syslog(1, "SESSION SET:".json_encode($register_ids) );
 
         $nbTo = count($register_ids);
         if ($nbTo > 0) {
