@@ -38,8 +38,9 @@ return array(
 		)
 	),
 	'node' => array(
-        'addr' => 'http://192.168.1.36:8282'
-    ),
+            'addr' => 'http://192.168.1.36:8282',
+            'authorization' => 'viserlalunecanemefaitpaspeurmemealusurejycroisencoreetencoeur'
+        ),
     'zopentok-conf' => [
         'api_key' => '45105812',
         'api_secret' => '071024b92d648e39339d0bb891668401a2254bd4',

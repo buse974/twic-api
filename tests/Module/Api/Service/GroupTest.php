@@ -41,7 +41,6 @@ class GroupTest extends AbstractService
             ]
         ]);
         
-        $this->printCreateTest($data);
         $this->assertEquals(count($data), 3);
         $this->assertEquals($data['id'], 1);
         $this->assertEquals($data['result'], 1);
