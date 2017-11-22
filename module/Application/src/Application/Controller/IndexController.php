@@ -59,10 +59,8 @@ class IndexController extends AbstractActionController
         $authorization = $this->conf()->getAll()['node']['authorization'];
         syslog(1, "CONF API : ".$authorization);
         $request = $this->getRequest();
-        syslog(1, "SI CE SYSLOG APPARAIT C'EST QUE LE GET REQUEST FONCTIONNE");
         syslog(1, "HEADERS : ".$request->getHeaders()->toString() );
-        syslog(1, "HEADER AUTH VALUE : ".json_encode($request->getHeader('x-auth-token')->getFieldValue()) );
-        syslog(1, "AUTHORIZATION : ".$authorization . ' === '. $request->getHeader('x-auth-token')->getFieldValue() . ' ?');
+        
         if($request->getHeaders()->get('x-auth-token') !== false && $authorization === $request->getHeader('x-auth-token')->getFieldValue()){
             $notifs = json_decode($this->getRequest()->getContent(), true);
             foreach($notifs as $notif){

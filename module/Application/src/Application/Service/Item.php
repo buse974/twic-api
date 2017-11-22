@@ -843,6 +843,14 @@ class Item extends AbstractService
 
             syslog(1, "SENDING TO USERS:".json_encode($ar_user) );
 
+            $gcm_notification = new GcmNotification();
+            $gcm_notification->setTitle( $m_item->getTitle() )
+                ->setSound("default")
+                ->setColor("#00A38B")
+                ->setIcon("icon")
+                ->setTag("LC".$m_item->getId())
+                ->setBody('The liveclass is starting !');
+
             $this->getServiceFcm()->send(
                 $ar_user,
                 ['data' => [
@@ -855,7 +863,7 @@ class Item extends AbstractService
                         ]
                     ]
                 ],
-                null,
+                $gcm_notification,
                 $this->getServiceFcm()::PACKAGE_TWIC_MESSENGER
             );
         }

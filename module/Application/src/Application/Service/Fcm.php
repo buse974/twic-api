@@ -94,6 +94,7 @@ class Fcm extends AbstractService
             }
 
             try {
+                syslog(1, "FCM MSG SENT:".json_encode( current($register_ids) ) );
                 return $this->fcm_client->send($gcm_message);
             } catch (\Exception $e) {
                 syslog(1, "error fcm: ".$e->getMessage());
