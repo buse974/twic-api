@@ -20,6 +20,10 @@ return array(
         'urldms' => '${dms.url}',
 	'uiurl' => '${ui.url}',
     ],
+    'gcm' => [
+        'api_key' => '${firebase.key}',
+        'adapter' => 'http-adapter',
+    ],
     'db' => array(
     	'adapters' => array(
     	  'db-adapter' => array(

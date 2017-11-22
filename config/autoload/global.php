@@ -14,7 +14,7 @@
 
 return [
     'version' => "2.0.4",
-    'build-commit' => 992,
+    'build-commit' => 993,
     'app-conf' => [
         'cache' => 'storage_memcached',
         'secret_key' => 'toto',
@@ -55,7 +55,6 @@ return [
     ],
     'gcm' => [
         'api_key' => 'AIzaSyCOoniWUpLoLIQTaVWfMfv_hisjm6mXFUI',
-        'sender_id' => '606201661282',
         'adapter' => 'http-adapter',
     ],
     'rbac-conf' => [
@@ -144,9 +143,9 @@ return [
             'adapter' => [
                 'name' => 'memcached',
                 'options' => [
-                    'namespace' => 'LMS992',
+                    'namespace' => 'LMS993',
                     'lib_options' => [
-                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS992'],
+                        ['option' => Memcached::OPT_PREFIX_KEY, 'value' => 'LMS993'],
                  /*       ['option' => Memcached::OPT_LIBKETAMA_COMPATIBLE, 'value' => true],
                         ['option' => Memcached::OPT_SERIALIZER, 'value' => Memcached::SERIALIZER_IGBINARY],
                         ['option' => Memcached::OPT_DISTRIBUTION, 'value' => Memcached::DISTRIBUTION_CONSISTENT],*/

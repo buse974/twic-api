@@ -20,6 +20,10 @@ return array(
         'urldms' => '****',
         'uiurl' => ******,
      ],
+     'gcm' => [
+        'api_key' => '*************',
+        'adapter' => 'http-adapter',
+     ],
 	'db' => array(
 		'adapters' => array(
 			'db-adapter' => array(
