@@ -119,6 +119,9 @@ abstract class AbstractService extends AbstractHttpControllerTestCase
         if (is_object($data) || is_array($data)) {
             print("\$this->assertEquals(count(" . $name . ") , " . count($data) . "); \n");
             foreach ($data as $key => $val) {
+                if(is_string($val)){
+                    $val = str_replace('"', '\"', $val);
+                }
                 $fkey = is_object($data) ? "->" . $key : ((is_numeric($key)) ? "[" . $key . "]" : "['" . $key . "']");
                 if (is_object($val) || is_array($val)) {
                     $this->printCreateTest($val, $name . $fkey);
