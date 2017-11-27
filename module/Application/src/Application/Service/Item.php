@@ -859,7 +859,8 @@ class Item extends AbstractService
                         'id' => $i,
                         'title' => $m_item->getTitle(),
                         'start' => $m_item->getStartDate(),
-                        'type' => ModelItem::type_relation[$m_item->getType()]
+                        'conversation_id' => $m_item->getConversationId(),
+                        'type' => $m_item->getType()
                         ]
                     ]
                 ],
