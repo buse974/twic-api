@@ -1189,6 +1189,22 @@ class User extends AbstractService
         
         return $login;
     }
+    
+    /**
+     * @invokable
+     *
+     * @param string $linkedin_id
+     */
+    public function linkedinLogIn($linkedin_id)
+    {
+        $res_user = $this->getMapper()->select($this->getModel()->setIsActive(1)->setLinkedinId($linkedin_id));
+        if ($res_user->count() > 0) {
+            $m_user = $res_user->current();
+            return $this->loginLinkedIn($linkedin_id);
+        } else {
+            throw new \Exception('Error linkedinLogIn >'. $linkedin_id);
+        }
+    }
 
     /**
      * Get Service Preregistration
