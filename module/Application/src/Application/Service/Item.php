@@ -830,8 +830,8 @@ class Item extends AbstractService
      *
      * @return int
      */
-    public function starting($id){
-        syslog(1, 'CALLING ITEM.STARTING::ID'.$id);
+    public function starting($id) {
+        
         if(!is_array($id)){
             $id = [$id];
         }
@@ -841,15 +841,13 @@ class Item extends AbstractService
                     $this->getServicePageUser()->getListByPage($m_item->getPageId())[$m_item->getPageId()] :
                     $this->getServiceItemUser()->getListUserId(null, $m_item->getId());
 
-            syslog(1, "SENDING TO USERS:".json_encode($ar_user) );
-
             $gcm_notification = new GcmNotification();
             $gcm_notification->setTitle( $m_item->getTitle() )
                 ->setSound("default")
                 ->setColor("#00A38B")
                 ->setIcon("icon")
                 ->setTag("LC".$m_item->getId())
-                ->setBody('The liveclass is starting !');
+                ->setBody('The Liveclass is starting now. Join!');
 
             $this->getServiceFcm()->send(
                 $ar_user,

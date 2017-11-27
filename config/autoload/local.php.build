@@ -24,6 +24,11 @@ return array(
         'api_key' => '${firebase.key}',
         'adapter' => 'http-adapter',
     ],
+    'linkedin-conf' => [
+        'redirect_uri' => '${linkedin.redirect_uri}',
+	'client_id' => '${linkedin.client_id}',
+	'client_secret' => '${linkedin.client_secret}',
+    ],
     'db' => array(
     	'adapters' => array(
     	  'db-adapter' => array(

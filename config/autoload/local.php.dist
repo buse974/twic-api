@@ -24,7 +24,12 @@ return array(
         'api_key' => '*************',
         'adapter' => 'http-adapter',
      ],
-	'db' => array(
+     'linkedin-conf' => [
+        'redirect_uri' => '********',
+		'client_id' => '********',
+		'client_secret' => '********',
+     ],
+	 'db' => array(
 		'adapters' => array(
 			'db-adapter' => array(
 				'driver' => '****',
